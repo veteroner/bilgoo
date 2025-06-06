@@ -1,0 +1,33 @@
+# Netlify Redirects
+# SPA routing için
+
+# API calls redirect to Netlify Functions
+/api/* /.netlify/functions/:splat 200
+
+# Security endpoint mock
+/api/config /.netlify/functions/config 200
+/api/health /.netlify/functions/health 200
+/api/security/check /.netlify/functions/security-check 200
+
+# SPA fallback - tüm route'lar index.html'e
+/* /index.html 200
+
+# Security redirects
+/server.js /404.html 404
+/middleware/* /404.html 404
+/config/* /404.html 404
+/logs/* /404.html 404
+/.env /404.html 404
+
+# Cache headers
+/static/* /static/:splat 200
+  Cache-Control: public, max-age=31536000
+
+# Security headers
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains 

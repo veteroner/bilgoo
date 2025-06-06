@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "checkJs": false
+  },
+  "include": [
+    "*.html",
+    "*.js",
+    "*.ts",
+    "../*.js",
+    "../*.ts"
+  ],
+  "exclude": [
+    "../node_modules",
+    "../android",
+    "../ios",
+    "node_modules"
+  ]
+} 

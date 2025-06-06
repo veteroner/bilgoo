@@ -1,0 +1,1037 @@
+{
+    "Allgemeinwissen": [
+        {
+            "question": "Was ist die Hauptstadt von Deutschland?",
+            "options": ["München", "Hamburg", "Berlin", "Frankfurt"],
+            "correctAnswer": "Berlin",
+            "translations": {
+                "tr": {
+                    "question": "Almanya'nın başkenti neresidir?",
+                    "options": ["Münih", "Hamburg", "Berlin", "Frankfurt"],
+                    "correctAnswer": "Berlin"
+                },
+                "en": {
+                    "question": "What is the capital of Germany?",
+                    "options": ["Munich", "Hamburg", "Berlin", "Frankfurt"],
+                    "correctAnswer": "Berlin"
+                }
+            }
+        },
+        {
+            "question": "Welches ist das größte Land der Welt nach Fläche?",
+            "options": ["China", "Kanada", "USA", "Russland"],
+            "correctAnswer": "Russland",
+            "translations": {
+                "tr": {
+                    "question": "Yüzölçümü bakımından dünyanın en büyük ülkesi hangisidir?",
+                    "options": ["Çin", "Kanada", "ABD", "Rusya"],
+                    "correctAnswer": "Rusya"
+                },
+                "en": {
+                    "question": "Which is the largest country in the world by area?",
+                    "options": ["China", "Canada", "USA", "Russia"],
+                    "correctAnswer": "Russia"
+                }
+            }
+        },
+        {
+            "question": "Wer hat die Relativitätstheorie entwickelt?",
+            "options": ["Isaac Newton", "Albert Einstein", "Galileo Galilei", "Stephen Hawking"],
+            "correctAnswer": "Albert Einstein",
+            "translations": {
+                "tr": {
+                    "question": "Görelilik teorisini kim geliştirmiştir?",
+                    "options": ["Isaac Newton", "Albert Einstein", "Galileo Galilei", "Stephen Hawking"],
+                    "correctAnswer": "Albert Einstein"
+                },
+                "en": {
+                    "question": "Who developed the theory of relativity?",
+                    "options": ["Isaac Newton", "Albert Einstein", "Galileo Galilei", "Stephen Hawking"],
+                    "correctAnswer": "Albert Einstein"
+                }
+            }
+        },
+        {
+            "question": "Welcher Planet wird als der 'Rote Planet' bezeichnet?",
+            "options": ["Venus", "Mars", "Jupiter", "Merkur"],
+            "correctAnswer": "Mars",
+            "translations": {
+                "tr": {
+                    "question": "Hangi gezegen 'Kızıl Gezegen' olarak bilinir?",
+                    "options": ["Venüs", "Mars", "Jüpiter", "Merkür"],
+                    "correctAnswer": "Mars"
+                },
+                "en": {
+                    "question": "Which planet is known as the 'Red Planet'?",
+                    "options": ["Venus", "Mars", "Jupiter", "Mercury"],
+                    "correctAnswer": "Mars"
+                }
+            }
+        },
+        {
+            "question": "Was ist das chemische Symbol für Gold?",
+            "options": ["Go", "Gd", "Au", "Ag"],
+            "correctAnswer": "Au",
+            "translations": {
+                "tr": {
+                    "question": "Altının kimyasal sembolü nedir?",
+                    "options": ["Go", "Gd", "Au", "Ag"],
+                    "correctAnswer": "Au"
+                },
+                "en": {
+                    "question": "What is the chemical symbol for gold?",
+                    "options": ["Go", "Gd", "Au", "Ag"],
+                    "correctAnswer": "Au"
+                }
+            }
+        },
+        {
+            "question": "In welchem Land befindet sich das Great Barrier Reef?",
+            "options": ["Brasilien", "Australien", "Thailand", "Mexiko"],
+            "correctAnswer": "Australien",
+            "translations": {
+                "tr": {
+                    "question": "Büyük Set Resifi hangi ülkededir?",
+                    "options": ["Brezilya", "Avustralya", "Tayland", "Meksika"],
+                    "correctAnswer": "Avustralya"
+                },
+                "en": {
+                    "question": "In which country is the Great Barrier Reef located?",
+                    "options": ["Brazil", "Australia", "Thailand", "Mexico"],
+                    "correctAnswer": "Australia"
+                }
+            }
+        },
+        {
+            "question": "Was ist die Hauptstadt von Kanada?",
+            "options": ["Toronto", "Vancouver", "Montreal", "Ottawa"],
+            "correctAnswer": "Ottawa",
+            "translations": {
+                "tr": {
+                    "question": "Kanada'nın başkenti neresidir?",
+                    "options": ["Toronto", "Vancouver", "Montreal", "Ottawa"],
+                    "correctAnswer": "Ottawa"
+                },
+                "en": {
+                    "question": "What is the capital of Canada?",
+                    "options": ["Toronto", "Vancouver", "Montreal", "Ottawa"],
+                    "correctAnswer": "Ottawa"
+                }
+            }
+        },
+        {
+            "question": "Wer malte die Mona Lisa?",
+            "options": ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Michelangelo"],
+            "correctAnswer": "Leonardo da Vinci",
+            "translations": {
+                "tr": {
+                    "question": "Mona Lisa'yı kim resmetmiştir?",
+                    "options": ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Michelangelo"],
+                    "correctAnswer": "Leonardo da Vinci"
+                },
+                "en": {
+                    "question": "Who painted the Mona Lisa?",
+                    "options": ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Michelangelo"],
+                    "correctAnswer": "Leonardo da Vinci"
+                }
+            }
+        },
+        {
+            "question": "Welches ist das größte Säugetier der Welt?",
+            "options": ["Afrikanischer Elefant", "Blauwal", "Giraffe", "Eisbär"],
+            "correctAnswer": "Blauwal",
+            "translations": {
+                "tr": {
+                    "question": "Dünyanın en büyük memeli hayvanı hangisidir?",
+                    "options": ["Afrika Fili", "Mavi Balina", "Zürafa", "Kutup Ayısı"],
+                    "correctAnswer": "Mavi Balina"
+                },
+                "en": {
+                    "question": "What is the largest mammal in the world?",
+                    "options": ["African Elephant", "Blue Whale", "Giraffe", "Polar Bear"],
+                    "correctAnswer": "Blue Whale"
+                }
+            }
+        },
+        {
+            "question": "Welches Land ist als das Land der aufgehenden Sonne bekannt?",
+            "options": ["China", "Südkorea", "Japan", "Thailand"],
+            "correctAnswer": "Japan",
+            "translations": {
+                "tr": {
+                    "question": "Hangi ülke Güneşin Doğduğu Ülke olarak bilinir?",
+                    "options": ["Çin", "Güney Kore", "Japonya", "Tayland"],
+                    "correctAnswer": "Japonya"
+                },
+                "en": {
+                    "question": "Which country is known as the Land of the Rising Sun?",
+                    "options": ["China", "South Korea", "Japan", "Thailand"],
+                    "correctAnswer": "Japan"
+                }
+            }
+        },
+        {
+            "question": "Was ist die Währung des Vereinigten Königreichs?",
+            "options": ["Euro", "Dollar", "Pfund Sterling", "Yen"],
+            "correctAnswer": "Pfund Sterling",
+            "translations": {
+                "tr": {
+                    "question": "Birleşik Krallık'ın para birimi nedir?",
+                    "options": ["Euro", "Dolar", "Sterlin", "Yen"],
+                    "correctAnswer": "Sterlin"
+                },
+                "en": {
+                    "question": "What is the currency of the United Kingdom?",
+                    "options": ["Euro", "Dollar", "Pound Sterling", "Yen"],
+                    "correctAnswer": "Pound Sterling"
+                }
+            }
+        },
+        {
+            "question": "Welcher ist der kleinste Kontinent nach Landfläche?",
+            "options": ["Europa", "Australien", "Antarktis", "Südamerika"],
+            "correctAnswer": "Australien",
+            "translations": {
+                "tr": {
+                    "question": "Yüzölçümü bakımından en küçük kıta hangisidir?",
+                    "options": ["Avrupa", "Avustralya", "Antarktika", "Güney Amerika"],
+                    "correctAnswer": "Avustralya"
+                },
+                "en": {
+                    "question": "Which is the smallest continent by land area?",
+                    "options": ["Europe", "Australia", "Antarctica", "South America"],
+                    "correctAnswer": "Australia"
+                }
+            }
+        },
+        {
+            "question": "Welches ist das größte Organ im menschlichen Körper?",
+            "options": ["Herz", "Leber", "Haut", "Gehirn"],
+            "correctAnswer": "Haut",
+            "translations": {
+                "tr": {
+                    "question": "İnsan vücudundaki en büyük organ hangisidir?",
+                    "options": ["Kalp", "Karaciğer", "Deri", "Beyin"],
+                    "correctAnswer": "Deri"
+                },
+                "en": {
+                    "question": "What is the largest organ in the human body?",
+                    "options": ["Heart", "Liver", "Skin", "Brain"],
+                    "correctAnswer": "Skin"
+                }
+            }
+        },
+        {
+            "question": "Welcher berühmte Wissenschaftler entwickelte die Relativitätstheorie?",
+            "options": ["Isaac Newton", "Albert Einstein", "Galileo Galilei", "Stephen Hawking"],
+            "correctAnswer": "Albert Einstein",
+            "translations": {
+                "tr": {
+                    "question": "Görelilik teorisini hangi ünlü bilim insanı geliştirmiştir?",
+                    "options": ["Isaac Newton", "Albert Einstein", "Galileo Galilei", "Stephen Hawking"],
+                    "correctAnswer": "Albert Einstein"
+                },
+                "en": {
+                    "question": "Which famous scientist developed the theory of relativity?",
+                    "options": ["Isaac Newton", "Albert Einstein", "Galileo Galilei", "Stephen Hawking"],
+                    "correctAnswer": "Albert Einstein"
+                }
+            }
+        },
+        {
+            "question": "Wie heißt der längste Fluss der Welt?",
+            "options": ["Amazonas", "Nil", "Mississippi", "Jangtse"],
+            "correctAnswer": "Nil",
+            "translations": {
+                "tr": {
+                    "question": "Dünyanın en uzun nehrinin adı nedir?",
+                    "options": ["Amazon", "Nil", "Mississippi", "Yangtze"],
+                    "correctAnswer": "Nil"
+                },
+                "en": {
+                    "question": "What is the name of the longest river in the world?",
+                    "options": ["Amazon", "Nile", "Mississippi", "Yangtze"],
+                    "correctAnswer": "Nile"
+                }
+            }
+        },
+        {
+            "question": "Welches dieser Bauwerke gehört nicht zu den Sieben Weltwundern der Antike?",
+            "options": ["Große Pyramide von Gizeh", "Kolosseum in Rom", "Hängende Gärten von Babylon", "Leuchtturm von Alexandria"],
+            "correctAnswer": "Kolosseum in Rom",
+            "translations": {
+                "tr": {
+                    "question": "Bunlardan hangisi Antik Dünyanın Yedi Harikasından biri değildir?",
+                    "options": ["Giza'nın Büyük Piramidi", "Roma Kolezyumu", "Babil'in Asma Bahçeleri", "İskenderiye Feneri"],
+                    "correctAnswer": "Roma Kolezyumu"
+                },
+                "en": {
+                    "question": "Which of these is not one of the Seven Wonders of the Ancient World?",
+                    "options": ["Great Pyramid of Giza", "Colosseum of Rome", "Hanging Gardens of Babylon", "Lighthouse of Alexandria"],
+                    "correctAnswer": "Colosseum of Rome"
+                }
+            }
+        },
+        {
+            "question": "Was ist die Hauptstadt von Brasilien?",
+            "options": ["Rio de Janeiro", "São Paulo", "Brasília", "Salvador"],
+            "correctAnswer": "Brasília",
+            "translations": {
+                "tr": {
+                    "question": "Brezilya'nın başkenti neresidir?",
+                    "options": ["Rio de Janeiro", "São Paulo", "Brasília", "Salvador"],
+                    "correctAnswer": "Brasília"
+                },
+                "en": {
+                    "question": "What is the capital of Brazil?",
+                    "options": ["Rio de Janeiro", "São Paulo", "Brasília", "Salvador"],
+                    "correctAnswer": "Brasília"
+                }
+            }
+        },
+        {
+            "question": "Welches Element hat das chemische Symbol 'O'?",
+            "options": ["Gold", "Sauerstoff", "Osmium", "Oganesson"],
+            "correctAnswer": "Sauerstoff",
+            "translations": {
+                "tr": {
+                    "question": "Hangi elementin kimyasal sembolü 'O'dur?",
+                    "options": ["Altın", "Oksijen", "Osmiyum", "Oganesson"],
+                    "correctAnswer": "Oksijen"
+                },
+                "en": {
+                    "question": "Which element has the chemical symbol 'O'?",
+                    "options": ["Gold", "Oxygen", "Osmium", "Oganesson"],
+                    "correctAnswer": "Oxygen"
+                }
+            }
+        },
+        {
+            "question": "Wer war der erste Mensch, der auf dem Mond ging?",
+            "options": ["Buzz Aldrin", "Neil Armstrong", "Juri Gagarin", "John Glenn"],
+            "correctAnswer": "Neil Armstrong",
+            "translations": {
+                "tr": {
+                    "question": "Ay'a ilk ayak basan kişi kimdir?",
+                    "options": ["Buzz Aldrin", "Neil Armstrong", "Yuri Gagarin", "John Glenn"],
+                    "correctAnswer": "Neil Armstrong"
+                },
+                "en": {
+                    "question": "Who was the first person to walk on the moon?",
+                    "options": ["Buzz Aldrin", "Neil Armstrong", "Yuri Gagarin", "John Glenn"],
+                    "correctAnswer": "Neil Armstrong"
+                }
+            }
+        },
+        {
+            "question": "Welches dieser Länder liegt nicht in Europa?",
+            "options": ["Portugal", "Griechenland", "Marokko", "Schweden"],
+            "correctAnswer": "Marokko",
+            "translations": {
+                "tr": {
+                    "question": "Bu ülkelerden hangisi Avrupa'da değildir?",
+                    "options": ["Portekiz", "Yunanistan", "Fas", "İsveç"],
+                    "correctAnswer": "Fas"
+                },
+                "en": {
+                    "question": "Which of these countries is not in Europe?",
+                    "options": ["Portugal", "Greece", "Morocco", "Sweden"],
+                    "correctAnswer": "Morocco"
+                }
+            }
+        },
+        {
+            "question": "Welche ist die größte Wüste der Welt?",
+            "options": ["Gobi-Wüste", "Kalahari-Wüste", "Sahara", "Antarktische Wüste"],
+            "correctAnswer": "Antarktische Wüste",
+            "translations": {
+                "tr": {
+                    "question": "Dünyanın en büyük çölü hangisidir?",
+                    "options": ["Gobi Çölü", "Kalahari Çölü", "Sahra Çölü", "Antarktika Çölü"],
+                    "correctAnswer": "Antarktika Çölü"
+                },
+                "en": {
+                    "question": "What is the largest desert in the world?",
+                    "options": ["Gobi Desert", "Kalahari Desert", "Sahara Desert", "Antarctic Desert"],
+                    "correctAnswer": "Antarctic Desert"
+                }
+            }
+        },
+        {
+            "question": "Vervollständigen Sie den Namen dieses berühmten Komponisten: Ludwig van ____",
+            "type": "BlankFilling",
+            "correctAnswer": "Beethoven",
+            "choices": ["B", "E", "E", "T", "H", "O", "V", "E", "N", "M"],
+            "translations": {
+                "tr": {
+                    "question": "Bu ünlü bestecinin adını tamamlayın: Ludwig van ____",
+                    "correctAnswer": "Beethoven",
+                    "choices": ["B", "E", "E", "T", "H", "O", "V", "E", "N", "M"]
+                },
+                "en": {
+                    "question": "Complete the name of this famous composer: Ludwig van ____",
+                    "correctAnswer": "Beethoven",
+                    "choices": ["B", "E", "E", "T", "H", "O", "V", "E", "N", "M"]
+                }
+            }
+        },
+        {
+            "question": "Der Kölner Dom ist das höchste Kirchengebäude Europas.",
+            "type": "TrueFalse",
+            "options": ["WAHR", "FALSCH"],
+            "correctAnswer": "FALSCH",
+            "translations": {
+                "tr": {
+                    "question": "Köln Katedrali, Avrupa'nın en yüksek kilise binasıdır.",
+                    "options": ["DOĞRU", "YANLIŞ"],
+                    "correctAnswer": "YANLIŞ"
+                },
+                "en": {
+                    "question": "Cologne Cathedral is the tallest church building in Europe.",
+                    "options": ["TRUE", "FALSE"],
+                    "correctAnswer": "FALSE"
+                }
+            }
+        },
+        {
+            "question": "Welche Stadt wird oft als 'Venedig des Nordens' bezeichnet?",
+            "options": ["Amsterdam", "Stockholm", "Kopenhagen", "Hamburg"],
+            "correctAnswer": "Amsterdam",
+            "translations": {
+                "tr": {
+                    "question": "Hangi şehir genellikle 'Kuzey'in Venedik'i' olarak adlandırılır?",
+                    "options": ["Amsterdam", "Stockholm", "Kopenhag", "Hamburg"],
+                    "correctAnswer": "Amsterdam"
+                },
+                "en": {
+                    "question": "Which city is often called the 'Venice of the North'?",
+                    "options": ["Amsterdam", "Stockholm", "Copenhagen", "Hamburg"],
+                    "correctAnswer": "Amsterdam"
+                }
+            }
+        }
+    ],
+    "Wissenschaft": [
+        {
+            "question": "Was ist das chemische Symbol für Wasser?",
+            "options": ["WA", "H2O", "W", "AQ"],
+            "correctAnswer": "H2O",
+            "translations": {
+                "tr": {
+                    "question": "Suyun kimyasal sembolü nedir?",
+                    "options": ["WA", "H2O", "W", "AQ"],
+                    "correctAnswer": "H2O"
+                },
+                "en": {
+                    "question": "What is the chemical symbol for water?",
+                    "options": ["WA", "H2O", "W", "AQ"],
+                    "correctAnswer": "H2O"
+                }
+            }
+        },
+        {
+            "question": "Welcher Planet hat die meisten Monde?",
+            "options": ["Jupiter", "Saturn", "Uranus", "Neptun"],
+            "correctAnswer": "Saturn",
+            "translations": {
+                "tr": {
+                    "question": "Hangi gezegenin en çok uydusu vardır?",
+                    "options": ["Jüpiter", "Satürn", "Uranüs", "Neptün"],
+                    "correctAnswer": "Satürn"
+                },
+                "en": {
+                    "question": "Which planet has the most moons?",
+                    "options": ["Jupiter", "Saturn", "Uranus", "Neptune"],
+                    "correctAnswer": "Saturn"
+                }
+            }
+        },
+        {
+            "question": "Was ist die härteste natürliche Substanz auf der Erde?",
+            "options": ["Platin", "Diamant", "Quarz", "Eisen"],
+            "correctAnswer": "Diamant",
+            "translations": {
+                "tr": {
+                    "question": "Dünya'daki en sert doğal madde nedir?",
+                    "options": ["Platin", "Elmas", "Kuvars", "Demir"],
+                    "correctAnswer": "Elmas"
+                },
+                "en": {
+                    "question": "What is the hardest natural substance on Earth?",
+                    "options": ["Platinum", "Diamond", "Quartz", "Iron"],
+                    "correctAnswer": "Diamond"
+                }
+            }
+        },
+        {
+            "question": "Das chemische Symbol für Wasserstoff ist ____.",
+            "type": "BlankFilling",
+            "correctAnswer": "H",
+            "choices": ["H", "W", "S", "T", "O", "F", "A", "Z", "Y", "E"],
+            "translations": {
+                "tr": {
+                    "question": "Hidrojenin kimyasal sembolü ____.",
+                    "correctAnswer": "H",
+                    "choices": ["H", "İ", "D", "R", "O", "J", "E", "N", "S", "T"]
+                },
+                "en": {
+                    "question": "The chemical symbol for hydrogen is ____.",
+                    "correctAnswer": "H",
+                    "choices": ["H", "Y", "D", "R", "O", "G", "E", "N", "S", "T"]
+                }
+            }
+        },
+        {
+            "question": "Der Mount Everest ist der höchste Berg der Welt.",
+            "type": "TrueFalse",
+            "options": ["WAHR", "FALSCH"],
+            "correctAnswer": "WAHR",
+            "translations": {
+                "tr": {
+                    "question": "Everest Dağı dünyanın en yüksek dağıdır.",
+                    "options": ["DOĞRU", "YANLIŞ"],
+                    "correctAnswer": "DOĞRU"
+                },
+                "en": {
+                    "question": "Mount Everest is the highest mountain in the world.",
+                    "options": ["TRUE", "FALSE"],
+                    "correctAnswer": "TRUE"
+                }
+            }
+        }
+    ],
+    "Technologie": [
+        {
+            "question": "Wer gründete Apple Inc.?",
+            "options": ["Bill Gates", "Steve Jobs", "Mark Zuckerberg", "Jeff Bezos"],
+            "correctAnswer": "Steve Jobs",
+            "translations": {
+                "tr": {
+                    "question": "Apple Inc.'i kim kurdu?",
+                    "options": ["Bill Gates", "Steve Jobs", "Mark Zuckerberg", "Jeff Bezos"],
+                    "correctAnswer": "Steve Jobs"
+                },
+                "en": {
+                    "question": "Who founded Apple Inc.?",
+                    "options": ["Bill Gates", "Steve Jobs", "Mark Zuckerberg", "Jeff Bezos"],
+                    "correctAnswer": "Steve Jobs"
+                }
+            }
+        },
+        {
+            "question": "Wofür steht CPU?",
+            "options": ["Central Processing Unit", "Computer Personal Unit", "Central Program Utility", "Central Processor Unlimited"],
+            "correctAnswer": "Central Processing Unit",
+            "translations": {
+                "tr": {
+                    "question": "CPU neyin kısaltmasıdır?",
+                    "options": ["Central Processing Unit", "Computer Personal Unit", "Central Program Utility", "Central Processor Unlimited"],
+                    "correctAnswer": "Central Processing Unit"
+                },
+                "en": {
+                    "question": "What does CPU stand for?",
+                    "options": ["Central Processing Unit", "Computer Personal Unit", "Central Program Utility", "Central Processor Unlimited"],
+                    "correctAnswer": "Central Processing Unit"
+                }
+            }
+        },
+        {
+            "question": "Welches davon ist KEINE Programmiersprache?",
+            "options": ["Java", "Python", "Banana", "Ruby"],
+            "correctAnswer": "Banana",
+            "translations": {
+                "tr": {
+                    "question": "Bunlardan hangisi bir programlama dili DEĞİLDİR?",
+                    "options": ["Java", "Python", "Banana", "Ruby"],
+                    "correctAnswer": "Banana"
+                },
+                "en": {
+                    "question": "Which of these is NOT a programming language?",
+                    "options": ["Java", "Python", "Banana", "Ruby"],
+                    "correctAnswer": "Banana"
+                }
+            }
+        },
+        {
+            "question": "HTML wird für ____ verwendet.",
+            "type": "BlankFilling",
+            "correctAnswer": "Webentwicklung",
+            "choices": ["W", "E", "B", "E", "N", "T", "W", "I", "C", "K"],
+            "translations": {
+                "tr": {
+                    "question": "HTML ____ için kullanılır.",
+                    "correctAnswer": "web geliştirme",
+                    "choices": ["W", "E", "B", "G", "E", "L", "İ", "Ş", "T", "İ"]
+                },
+                "en": {
+                    "question": "HTML is used for ____.",
+                    "correctAnswer": "web development",
+                    "choices": ["W", "E", "B", "D", "E", "V", "L", "O", "P", "M"]
+                }
+            }
+        },
+        {
+            "question": "Bitcoin ist eine Art von Kryptowährung.",
+            "type": "TrueFalse",
+            "options": ["WAHR", "FALSCH"],
+            "correctAnswer": "WAHR",
+            "translations": {
+                "tr": {
+                    "question": "Bitcoin bir kripto para birimidir.",
+                    "options": ["DOĞRU", "YANLIŞ"],
+                    "correctAnswer": "DOĞRU"
+                },
+                "en": {
+                    "question": "Bitcoin is a type of cryptocurrency.",
+                    "options": ["TRUE", "FALSE"],
+                    "correctAnswer": "TRUE"
+                }
+            }
+        }
+    ],
+    "Sport": [
+        {
+            "question": "Welches Land gewann die FIFA-Weltmeisterschaft 2018?",
+            "options": ["Brasilien", "Deutschland", "Frankreich", "Argentinien"],
+            "correctAnswer": "Frankreich",
+            "translations": {
+                "tr": {
+                    "question": "2018 FIFA Dünya Kupası'nı hangi ülke kazandı?",
+                    "options": ["Brezilya", "Almanya", "Fransa", "Arjantin"],
+                    "correctAnswer": "Fransa"
+                },
+                "en": {
+                    "question": "Which country won the FIFA World Cup in 2018?",
+                    "options": ["Brazil", "Germany", "France", "Argentina"],
+                    "correctAnswer": "France"
+                }
+            }
+        },
+        {
+            "question": "In welcher Sportart würde man einen Slam Dunk ausführen?",
+            "options": ["Tennis", "Basketball", "Golf", "Schwimmen"],
+            "correctAnswer": "Basketball",
+            "translations": {
+                "tr": {
+                    "question": "Hangi sporda smaç yaparsınız?",
+                    "options": ["Tenis", "Basketbol", "Golf", "Yüzme"],
+                    "correctAnswer": "Basketbol"
+                },
+                "en": {
+                    "question": "In which sport would you perform a slam dunk?",
+                    "options": ["Tennis", "Basketball", "Golf", "Swimming"],
+                    "correctAnswer": "Basketball"
+                }
+            }
+        },
+        {
+            "question": "Wie viele Spieler befinden sich in einer Standard-Fußballmannschaft auf dem Feld?",
+            "options": ["9", "10", "11", "12"],
+            "correctAnswer": "11",
+            "translations": {
+                "tr": {
+                    "question": "Standart bir futbol takımında sahada kaç oyuncu vardır?",
+                    "options": ["9", "10", "11", "12"],
+                    "correctAnswer": "11"
+                },
+                "en": {
+                    "question": "How many players are there in a standard soccer team on the field?",
+                    "options": ["9", "10", "11", "12"],
+                    "correctAnswer": "11"
+                }
+            }
+        },
+        {
+            "question": "Die Olympischen Spiele finden alle ____ Jahre statt.",
+            "type": "BlankFilling",
+            "correctAnswer": "vier",
+            "choices": ["V", "I", "E", "R", "Z", "W", "E", "I", "S", "E"],
+            "translations": {
+                "tr": {
+                    "question": "Olimpiyat Oyunları her ____ yılda bir düzenlenir.",
+                    "correctAnswer": "dört",
+                    "choices": ["D", "Ö", "R", "T", "İ", "K", "İ", "A", "L", "T"]
+                },
+                "en": {
+                    "question": "The Olympic Games are held every ____ years.",
+                    "correctAnswer": "four",
+                    "choices": ["F", "O", "U", "R", "T", "W", "O", "S", "I", "X"]
+                }
+            }
+        },
+        {
+            "question": "Tennis wird auf einem runden Platz gespielt.",
+            "type": "TrueFalse",
+            "options": ["WAHR", "FALSCH"],
+            "correctAnswer": "FALSCH",
+            "translations": {
+                "tr": {
+                    "question": "Tenis yuvarlak bir kortta oynanır.",
+                    "options": ["DOĞRU", "YANLIŞ"],
+                    "correctAnswer": "YANLIŞ"
+                },
+                "en": {
+                    "question": "Tennis is played on a round court.",
+                    "options": ["TRUE", "FALSE"],
+                    "correctAnswer": "FALSE"
+                }
+            }
+        }
+    ],
+    "Geschichte": [
+        {
+            "question": "Wer war der erste Präsident der Vereinigten Staaten?",
+            "options": ["Thomas Jefferson", "Abraham Lincoln", "George Washington", "John Adams"],
+            "correctAnswer": "George Washington",
+            "translations": {
+                "tr": {
+                    "question": "Amerika Birleşik Devletleri'nin ilk başkanı kimdi?",
+                    "options": ["Thomas Jefferson", "Abraham Lincoln", "George Washington", "John Adams"],
+                    "correctAnswer": "George Washington"
+                },
+                "en": {
+                    "question": "Who was the first president of the United States?",
+                    "options": ["Thomas Jefferson", "Abraham Lincoln", "George Washington", "John Adams"],
+                    "correctAnswer": "George Washington"
+                }
+            }
+        },
+        {
+            "question": "In welchem Jahr endete der Zweite Weltkrieg?",
+            "options": ["1943", "1945", "1947", "1950"],
+            "correctAnswer": "1945",
+            "translations": {
+                "tr": {
+                    "question": "İkinci Dünya Savaşı hangi yılda sona erdi?",
+                    "options": ["1943", "1945", "1947", "1950"],
+                    "correctAnswer": "1945"
+                },
+                "en": {
+                    "question": "In which year did World War II end?",
+                    "options": ["1943", "1945", "1947", "1950"],
+                    "correctAnswer": "1945"
+                }
+            }
+        },
+        {
+            "question": "In welchem Jahr begann die Französische Revolution?",
+            "options": ["1689", "1789", "1889", "1989"],
+            "correctAnswer": "1789",
+            "translations": {
+                "tr": {
+                    "question": "Fransız Devrimi hangi yılda başladı?",
+                    "options": ["1689", "1789", "1889", "1989"],
+                    "correctAnswer": "1789"
+                },
+                "en": {
+                    "question": "The French Revolution began in which year?",
+                    "options": ["1689", "1789", "1889", "1989"],
+                    "correctAnswer": "1789"
+                }
+            }
+        },
+        {
+            "question": "Die antike Stadt Rom wurde im Jahr ____ gegründet.",
+            "type": "BlankFilling",
+            "correctAnswer": "753 v. Chr.",
+            "choices": ["7", "5", "3", "v", ".", "C", "h", "r", "n", "E"],
+            "translations": {
+                "tr": {
+                    "question": "Antik Roma şehri ____ yılında kurulmuştur.",
+                    "correctAnswer": "MÖ 753",
+                    "choices": ["M", "Ö", "7", "5", "3", "M", "S", "1", "0", "E"]
+                },
+                "en": {
+                    "question": "The ancient city of Rome was founded in ____.",
+                    "correctAnswer": "753 BC",
+                    "choices": ["7", "5", "3", "B", "C", "A", "D", "1", "0", "E"]
+                }
+            }
+        },
+        {
+            "question": "Die Titanic sank auf ihrer Jungfernfahrt.",
+            "type": "TrueFalse",
+            "options": ["WAHR", "FALSCH"],
+            "correctAnswer": "WAHR",
+            "translations": {
+                "tr": {
+                    "question": "Titanic ilk yolculuğunda battı.",
+                    "options": ["DOĞRU", "YANLIŞ"],
+                    "correctAnswer": "DOĞRU"
+                },
+                "en": {
+                    "question": "The Titanic sank on its maiden voyage.",
+                    "options": ["TRUE", "FALSE"],
+                    "correctAnswer": "TRUE"
+                }
+            }
+        }
+    ],
+    "Geographie": [
+        {
+            "question": "Welcher ist der größte Kontinent nach Landfläche?",
+            "options": ["Nordamerika", "Europa", "Afrika", "Asien"],
+            "correctAnswer": "Asien",
+            "translations": {
+                "tr": {
+                    "question": "Yüzölçümü bakımından en büyük kıta hangisidir?",
+                    "options": ["Kuzey Amerika", "Avrupa", "Afrika", "Asya"],
+                    "correctAnswer": "Asya"
+                },
+                "en": {
+                    "question": "Which is the largest continent by land area?",
+                    "options": ["North America", "Europe", "Africa", "Asia"],
+                    "correctAnswer": "Asia"
+                }
+            }
+        },
+        {
+            "question": "Was ist die Hauptstadt von Australien?",
+            "options": ["Sydney", "Melbourne", "Canberra", "Perth"],
+            "correctAnswer": "Canberra",
+            "translations": {
+                "tr": {
+                    "question": "Avustralya'nın başkenti neresidir?",
+                    "options": ["Sidney", "Melbourne", "Kanberra", "Perth"],
+                    "correctAnswer": "Kanberra"
+                },
+                "en": {
+                    "question": "What is the capital of Australia?",
+                    "options": ["Sydney", "Melbourne", "Canberra", "Perth"],
+                    "correctAnswer": "Canberra"
+                }
+            }
+        },
+        {
+            "question": "Welches Gebirge trennt Europa von Asien?",
+            "options": ["Alpen", "Anden", "Himalaya", "Uralgebirge"],
+            "correctAnswer": "Uralgebirge",
+            "translations": {
+                "tr": {
+                    "question": "Hangi dağ sırası Avrupa'yı Asya'dan ayırır?",
+                    "options": ["Alpler", "And Dağları", "Himalayalar", "Ural Dağları"],
+                    "correctAnswer": "Ural Dağları"
+                },
+                "en": {
+                    "question": "Which mountain range separates Europe from Asia?",
+                    "options": ["Alps", "Andes", "Himalayas", "Ural Mountains"],
+                    "correctAnswer": "Ural Mountains"
+                }
+            }
+        },
+        {
+            "question": "Der längste Fluss der Welt ist der ____.",
+            "type": "BlankFilling",
+            "correctAnswer": "Nil",
+            "choices": ["N", "I", "L", "A", "M", "A", "Z", "O", "N", "A"],
+            "translations": {
+                "tr": {
+                    "question": "Dünyanın en uzun nehri ____.",
+                    "correctAnswer": "Nil",
+                    "choices": ["N", "İ", "L", "A", "M", "A", "Z", "O", "N", "E"]
+                },
+                "en": {
+                    "question": "The longest river in the world is the ____.",
+                    "correctAnswer": "Nile",
+                    "choices": ["N", "I", "L", "E", "A", "M", "A", "Z", "O", "N"]
+                }
+            }
+        },
+        {
+            "question": "Die Sahara-Wüste befindet sich in Afrika.",
+            "type": "TrueFalse",
+            "options": ["WAHR", "FALSCH"],
+            "correctAnswer": "WAHR",
+            "translations": {
+                "tr": {
+                    "question": "Sahra Çölü Afrika'da bulunur.",
+                    "options": ["DOĞRU", "YANLIŞ"],
+                    "correctAnswer": "DOĞRU"
+                },
+                "en": {
+                    "question": "The Sahara Desert is located in Africa.",
+                    "options": ["TRUE", "FALSE"],
+                    "correctAnswer": "TRUE"
+                }
+            }
+        }
+    ],
+    "Musik": [
+        {
+            "question": "Welche Band führte den Hit 'Bohemian Rhapsody' auf?",
+            "options": ["The Beatles", "Queen", "The Rolling Stones", "Led Zeppelin"],
+            "correctAnswer": "Queen",
+            "translations": {
+                "tr": {
+                    "question": "'Bohemian Rhapsody' hit şarkısını hangi grup seslendirdi?",
+                    "options": ["The Beatles", "Queen", "The Rolling Stones", "Led Zeppelin"],
+                    "correctAnswer": "Queen"
+                },
+                "en": {
+                    "question": "Which band performed the hit song 'Bohemian Rhapsody'?",
+                    "options": ["The Beatles", "Queen", "The Rolling Stones", "Led Zeppelin"],
+                    "correctAnswer": "Queen"
+                }
+            }
+        },
+        {
+            "question": "Welches Instrument hat 88 Tasten?",
+            "options": ["Gitarre", "Geige", "Klavier", "Trompete"],
+            "correctAnswer": "Klavier",
+            "translations": {
+                "tr": {
+                    "question": "Hangi enstrümanın 88 tuşu vardır?",
+                    "options": ["Gitar", "Keman", "Piyano", "Trompet"],
+                    "correctAnswer": "Piyano"
+                },
+                "en": {
+                    "question": "Which instrument has 88 keys?",
+                    "options": ["Guitar", "Violin", "Piano", "Trumpet"],
+                    "correctAnswer": "Piano"
+                }
+            }
+        },
+        {
+            "question": "Wer ist als 'King of Pop' bekannt?",
+            "options": ["Elvis Presley", "Michael Jackson", "Prince", "Justin Timberlake"],
+            "correctAnswer": "Michael Jackson",
+            "translations": {
+                "tr": {
+                    "question": "Kim 'Pop Kralı' olarak bilinir?",
+                    "options": ["Elvis Presley", "Michael Jackson", "Prince", "Justin Timberlake"],
+                    "correctAnswer": "Michael Jackson"
+                },
+                "en": {
+                    "question": "Who is known as the 'King of Pop'?",
+                    "options": ["Elvis Presley", "Michael Jackson", "Prince", "Justin Timberlake"],
+                    "correctAnswer": "Michael Jackson"
+                }
+            }
+        },
+        {
+            "question": "Der musikalische Begriff 'forte' bedeutet ____ zu spielen.",
+            "type": "BlankFilling",
+            "correctAnswer": "laut",
+            "choices": ["L", "A", "U", "T", "L", "E", "I", "S", "E", "N"],
+            "translations": {
+                "tr": {
+                    "question": "Müzikte 'forte' terimi ____ çalmak anlamına gelir.",
+                    "correctAnswer": "yüksek sesle",
+                    "choices": ["Y", "Ü", "K", "S", "E", "K", "S", "E", "S", "L"]
+                },
+                "en": {
+                    "question": "The musical term 'forte' means to play ____.",
+                    "correctAnswer": "loudly",
+                    "choices": ["L", "O", "U", "D", "L", "Y", "S", "O", "F", "T"]
+                }
+            }
+        },
+        {
+            "question": "Mozart wurde in Österreich geboren.",
+            "type": "TrueFalse",
+            "options": ["WAHR", "FALSCH"],
+            "correctAnswer": "WAHR",
+            "translations": {
+                "tr": {
+                    "question": "Mozart Avusturya'da doğmuştur.",
+                    "options": ["DOĞRU", "YANLIŞ"],
+                    "correctAnswer": "DOĞRU"
+                },
+                "en": {
+                    "question": "Mozart was born in Austria.",
+                    "options": ["TRUE", "FALSE"],
+                    "correctAnswer": "TRUE"
+                }
+            }
+        }
+    ],
+    "Literatur": [
+        {
+            "question": "Wer hat 'Stolz und Vorurteil' geschrieben?",
+            "options": ["Jane Austen", "Emily Brontë", "Charles Dickens", "Mark Twain"],
+            "correctAnswer": "Jane Austen",
+            "translations": {
+                "tr": {
+                    "question": "'Gurur ve Önyargı'yı kim yazmıştır?",
+                    "options": ["Jane Austen", "Emily Brontë", "Charles Dickens", "Mark Twain"],
+                    "correctAnswer": "Jane Austen"
+                },
+                "en": {
+                    "question": "Who wrote 'Pride and Prejudice'?",
+                    "options": ["Jane Austen", "Emily Brontë", "Charles Dickens", "Mark Twain"],
+                    "correctAnswer": "Jane Austen"
+                }
+            }
+        },
+        {
+            "question": "Welches dieser Bücher wurde von George Orwell geschrieben?",
+            "options": ["Der große Gatsby", "Schöne neue Welt", "1984", "Der Fänger im Roggen"],
+            "correctAnswer": "1984",
+            "translations": {
+                "tr": {
+                    "question": "Bu kitaplardan hangisi George Orwell tarafından yazılmıştır?",
+                    "options": ["Muhteşem Gatsby", "Cesur Yeni Dünya", "1984", "Çavdar Tarlasında Çocuklar"],
+                    "correctAnswer": "1984"
+                },
+                "en": {
+                    "question": "Which of these books was written by George Orwell?",
+                    "options": ["The Great Gatsby", "Brave New World", "1984", "The Catcher in the Rye"],
+                    "correctAnswer": "1984"
+                }
+            }
+        },
+        {
+            "question": "Wer ist der Autor der 'Göttlichen Komödie'?",
+            "options": ["Dante Alighieri", "Giovanni Boccaccio", "Francesco Petrarca", "Niccolò Machiavelli"],
+            "correctAnswer": "Dante Alighieri",
+            "translations": {
+                "tr": {
+                    "question": "'İlahi Komedya'nın yazarı kimdir?",
+                    "options": ["Dante Alighieri", "Giovanni Boccaccio", "Francesco Petrarca", "Niccolò Machiavelli"],
+                    "correctAnswer": "Dante Alighieri"
+                },
+                "en": {
+                    "question": "Who is the author of 'The Divine Comedy'?",
+                    "options": ["Dante Alighieri", "Giovanni Boccaccio", "Francesco Petrarca", "Niccolò Machiavelli"],
+                    "correctAnswer": "Dante Alighieri"
+                }
+            }
+        },
+        {
+            "question": "Das Stück 'Hamlet' wurde von ____ geschrieben.",
+            "type": "BlankFilling",
+            "correctAnswer": "Shakespeare",
+            "choices": ["S", "H", "A", "K", "E", "S", "P", "E", "A", "R"],
+            "translations": {
+                "tr": {
+                    "question": "'Hamlet' oyunu ____ tarafından yazılmıştır.",
+                    "correctAnswer": "Shakespeare",
+                    "choices": ["S", "H", "A", "K", "E", "S", "P", "E", "A", "R"]
+                },
+                "en": {
+                    "question": "The play 'Hamlet' was written by ____.",
+                    "correctAnswer": "Shakespeare",
+                    "choices": ["S", "H", "A", "K", "E", "S", "P", "E", "A", "R"]
+                }
+            }
+        },
+        {
+            "question": "Die Harry-Potter-Reihe wurde von J.K. Rowling geschrieben.",
+            "type": "TrueFalse",
+            "options": ["WAHR", "FALSCH"],
+            "correctAnswer": "WAHR",
+            "translations": {
+                "tr": {
+                    "question": "Harry Potter serisi J.K. Rowling tarafından yazılmıştır.",
+                    "options": ["DOĞRU", "YANLIŞ"],
+                    "correctAnswer": "DOĞRU"
+                },
+                "en": {
+                    "question": "The Harry Potter series was written by J.K. Rowling.",
+                    "options": ["TRUE", "FALSE"],
+                    "correctAnswer": "TRUE"
+                }
+            }
+        }
+    ]
+} 

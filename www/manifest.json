@@ -1,0 +1,35 @@
+// Bu dosya artık kullanılmıyor
+// Manifest içeriği index.html dosyasına inline olarak eklenmiştir
+{
+  "name": "Bilgoo",
+  "short_name": "Bilgoo",
+  "description": "Bilgini test et! Kategoriler arası sorular ve çevrimiçi yarışma imkanı.",
+  "start_url": ".",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#4a148c",
+  "theme_color": "#4a148c",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icons/avatars/avatar1.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/192x192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/512x512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+} 

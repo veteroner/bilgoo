@@ -1,0 +1,122 @@
+# Netlify Build Configuration
+
+[build]
+  # Build command (static hosting için gerekli değil)
+  command = "echo 'Static build completed'"
+  
+  # Publish directory
+  publish = "."
+  
+  # Functions directory
+  functions = "netlify/functions"
+
+[build.environment]
+  # Node.js version
+  NODE_VERSION = "18"
+  
+  # NPM version
+  NPM_VERSION = "8"
+
+# Headers for all pages - GÜÇLÜ GÜVENLİK
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    X-Security-Policy = "Netlify-Protected"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    Content-Security-Policy = "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com"
+
+# Security headers for static assets
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# API headers
+[[headers]]
+  for = "/.netlify/functions/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Headers = "Content-Type, X-API-Key"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+
+# Redirect rules
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# SPA fallback
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  conditions = { Role = ["admin", "user"] }
+
+# Block sensitive files
+[[redirects]]
+  from = "/server.js"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/middleware/*"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/config/*"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/logs/*"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/.env"
+  to = "/404.html"
+  status = 404
+
+# Performance settings
+[build.processing]
+  skip_processing = false
+  
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = false
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+# Security settings
+[context.production]
+  environment = { NODE_ENV = "production" }
+  
+# HTTPS zorla aktifleştir
+[[redirects]]
+  from = "http://bilgoov3.netlify.app/*"
+  to = "https://bilgoov3.netlify.app/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://bilgoov3.netlify.com/*"
+  to = "https://bilgoov3.netlify.app/:splat"
+  status = 301
+  force = true
+
+[context.deploy-preview]
+  environment = { NODE_ENV = "preview" }
+
+[context.branch-deploy]
+  environment = { NODE_ENV = "development" } 
