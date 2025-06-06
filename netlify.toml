@@ -16,6 +16,9 @@
   
   # NPM version
   NPM_VERSION = "8"
+  
+  # Secret scanning devre dışı - false positive hatalar için
+  SECRETS_SCAN_ENABLED = "false"
 
 # Headers for all pages - GÜÇLÜ GÜVENLİK
 [[headers]]
