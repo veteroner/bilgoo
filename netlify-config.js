@@ -34,26 +34,36 @@ if (isStaticHosting) {
     
     console.info('✅ Netlify Firebase config yüklendi');
     
-    // SecurityConfig'i Netlify için ayarla
-    if (typeof SecurityConfig !== 'undefined') {
-        // DevTools detection'ı devre dışı bırak (Netlify'da sorun çıkarıyor)
-        SecurityConfig.PRODUCTION_MODE = false;
-        
-        // Güvenlik kontrollerini yumuşat
-        const originalBlockDevTools = SecurityConfig.blockDevTools;
-        SecurityConfig.blockDevTools = function() {
-            // Netlify'da DevTools blocking'i devre dışı
-            console.info('🔧 DevTools blocking Netlify için devre dışı');
-        };
-        
-        const originalHandleDevToolsOpen = SecurityConfig.handleDevToolsOpen;
-        SecurityConfig.handleDevToolsOpen = function() {
-            // Sadece warning ver, sayfayı kapatma
-            console.warn('⚠️ DevTools açık tespit edildi ama Netlify'da izin veriliyor');
-        };
-        
-        console.info('🔧 SecurityConfig Netlify için optimize edildi');
-    }
+    // SecurityConfig ayarlarını DOM yüklendikten sonra yap
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            if (typeof SecurityConfig !== 'undefined') {
+                // DevTools detection'ı devre dışı bırak (Netlify'da sorun çıkarıyor)
+                SecurityConfig.PRODUCTION_MODE = false;
+                
+                // Güvenlik kontrollerini yumuşat
+                if (SecurityConfig.blockDevTools) {
+                    const originalBlockDevTools = SecurityConfig.blockDevTools;
+                    SecurityConfig.blockDevTools = function() {
+                        // Netlify'da DevTools blocking'i devre dışı
+                        console.info('🔧 DevTools blocking Netlify için devre dışı');
+                    };
+                }
+                
+                if (SecurityConfig.handleDevToolsOpen) {
+                    const originalHandleDevToolsOpen = SecurityConfig.handleDevToolsOpen;
+                    SecurityConfig.handleDevToolsOpen = function() {
+                        // Sadece warning ver, sayfayı kapatma
+                        console.warn('⚠️ DevTools açık tespit edildi ama Netlify'da izin veriliyor');
+                    };
+                }
+                
+                console.info('🔧 SecurityConfig Netlify için optimize edildi');
+            } else {
+                console.warn('⚠️ SecurityConfig henüz yüklenmedi, daha sonra denenecek');
+            }
+        }, 1000);
+    });
 } else {
     console.info('🔧 Server-based hosting tespit edildi, normal config kullanılıyor');
 }

@@ -4,9 +4,14 @@
 class SecurityManager {
     constructor() {
         this.PRODUCTION_MODE = this.detectProductionMode();
+        this.IS_MOBILE = this.detectMobileDevice();
+        this.IS_NETLIFY = this.detectNetlifyEnvironment();
         this.SECURITY_KEY = this.generateSecurityKey();
-        this.ALLOWED_DOMAINS = ['localhost', '127.0.0.1', 'bilgoo.com', '*.bilgoo.com'];
+        this.ALLOWED_DOMAINS = ['localhost', '127.0.0.1', 'bilgoo.com', '*.bilgoo.com', 'netlify.app', '*.netlify.app'];
         this.BLOCKED_PATTERNS = ['<script', 'javascript:', 'eval\\(', 'onclick=', 'onerror='];
+        
+        // Güvenlik seviyesini ortama göre ayarla
+        this.SECURITY_LEVEL = this.determinSecurityLevel();
         
         this.initSecurity();
     }
@@ -17,6 +22,31 @@ class SecurityManager {
         return hostname !== 'localhost' && 
                !hostname.includes('127.0.0.1') && 
                !hostname.includes('192.168.');
+    }
+    
+    // Mobile device tespiti
+    detectMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+               (window.screen && window.screen.width <= 768) ||
+               (window.innerWidth && window.innerWidth <= 768) ||
+               ('ontouchstart' in window);
+    }
+    
+    // Netlify environment tespiti
+    detectNetlifyEnvironment() {
+        return window.location.hostname.includes('netlify.app') || 
+               window.location.hostname.includes('netlify.com');
+    }
+    
+    // Güvenlik seviyesi belirleme
+    determinSecurityLevel() {
+        if (!this.PRODUCTION_MODE) {
+            return 'DEVELOPMENT'; // Geliştirme ortamı - gevşek güvenlik
+        } else if (this.IS_MOBILE || this.IS_NETLIFY) {
+            return 'MODERATE'; // Mobil/Netlify - orta seviye güvenlik
+        } else {
+            return 'STRICT'; // Tam production - sıkı güvenlik
+        }
     }
     
     // Güvenlik anahtarı oluştur
@@ -31,6 +61,15 @@ class SecurityManager {
     
     // Güvenlik başlatma
     initSecurity() {
+        // Güvenlik seviyesi bilgisi
+        console.info('🔒 SecurityConfig başlatıldı:', {
+            securityLevel: this.SECURITY_LEVEL,
+            production: this.PRODUCTION_MODE,
+            mobile: this.IS_MOBILE,
+            netlify: this.IS_NETLIFY,
+            hostname: window.location.hostname
+        });
+        
         this.setupCSP();
         this.blockDebugConsole();
         this.preventContextMenu();
@@ -48,9 +87,9 @@ class SecurityManager {
         }
     }
     
-    // Console debug engelleme (production'da)
+    // Console debug engelleme (sadece strict modda)
     blockDebugConsole() {
-        if (this.PRODUCTION_MODE) {
+        if (this.SECURITY_LEVEL === 'STRICT') {
             // Console'u devre dışı bırak
             window.console = {
                 log: () => {},
@@ -66,12 +105,16 @@ class SecurityManager {
                 time: () => {},
                 timeEnd: () => {}
             };
+        } else {
+            // Mobil/Netlify'da console'u açık bırak (debug için)
+            console.info('🔒 Console koruması', this.SECURITY_LEVEL, 'seviyesinde devre dışı');
         }
     }
     
-    // Sağ tık menü engelleme (production'da)
+    // Sağ tık menü engelleme (ortam bazlı)
     preventContextMenu() {
-        if (this.PRODUCTION_MODE) {
+        if (this.SECURITY_LEVEL === 'STRICT') {
+            // Desktop production'da tam engelleme
             document.addEventListener('contextmenu', (e) => {
                 e.preventDefault();
                 return false;
@@ -86,12 +129,22 @@ class SecurityManager {
                     return false;
                 }
             });
+        } else if (this.SECURITY_LEVEL === 'MODERATE') {
+            // Mobil/Netlify'da sadece F12 engelle, sağ tık serbest
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'F12') {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+            console.info('🔒 Sağ tık menü koruması mobil/Netlify için gevşetildi');
         }
     }
     
     // DevTools tespiti
     blockDevTools() {
-        if (this.PRODUCTION_MODE) {
+        // Sadece STRICT seviyede aktif
+        if (this.SECURITY_LEVEL === 'STRICT') {
             let devtools = {
                 open: false,
                 orientation: null
@@ -110,18 +163,30 @@ class SecurityManager {
                     devtools.open = false;
                 }
             }, 500);
+        } else if (this.SECURITY_LEVEL === 'MODERATE') {
+            // Mobil/Netlify için sadece warning
+            console.warn('🔒 DevTools koruması mobil/Netlify için devre dışı');
         }
     }
     
     // DevTools açıldığında
     handleDevToolsOpen() {
-        // Sayfa içeriğini gizle
-        document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:Arial;"><h2>⚠️ Güvenlik İhlali Tespit Edildi</h2></div>';
+        if (this.IS_MOBILE || this.IS_NETLIFY) {
+            // Mobil/Netlify'da sadece console warning
+            console.warn('⚠️ DevTools açık tespit edildi, ancak mobil/Netlify ortamında izin veriliyor');
+            return;
+        }
         
-        // Sayfa yönlendirmesi
-        setTimeout(() => {
-            window.location.href = 'about:blank';
-        }, 2000);
+        // Sadece desktop production'da sıkı önlemler
+        if (this.SECURITY_LEVEL === 'STRICT') {
+            // Sayfa içeriğini gizle
+            document.body.innerHTML = '<div style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:Arial;"><h2>⚠️ Güvenlik İhlali Tespit Edildi</h2></div>';
+            
+            // Sayfa yönlendirmesi
+            setTimeout(() => {
+                window.location.href = 'about:blank';
+            }, 2000);
+        }
     }
     
     // Input sanitization

@@ -5632,7 +5632,7 @@ const quizApp = {
             this.addEventListeners();
             
             // Firebase authentication state listener
-            if (firebase.auth) {
+            if (typeof firebase !== 'undefined' && firebase.auth) {
                 firebase.auth().onAuthStateChanged(user => {
                     if (user) {
                         // Kullanıcı giriş yapmış
@@ -5675,13 +5675,42 @@ const quizApp = {
                     }
                 });
             } else {
-                console.error("Firebase authentication bulunamadı!");
+                console.warn("Firebase authentication henüz yüklenmedi, event listener ekleniyor...");
                 
-                // Firebase olmadan da uygulamanın çalışabilmesi için
-                this.isLoggedIn = false;
-                if (this.mainMenu) {
-                    this.mainMenu.style.display = 'block';
-                }
+                // Firebase ready event'ini dinle
+                document.addEventListener('firebaseReady', (event) => {
+                    console.info('🔥 Firebase Ready event alındı');
+                    const { auth } = event.detail;
+                    
+                    if (auth) {
+                        auth.onAuthStateChanged(user => {
+                            if (user) {
+                                this.isLoggedIn = true;
+                                this.currentUser = user;
+                                
+                                if (this.mainMenu) {
+                                    this.mainMenu.style.display = 'block';
+                                }
+                                
+                                this.loadUserData(user.uid);
+                                this.loadUserSettings();
+                                this.loadJokerInventory();
+                            } else {
+                                this.isLoggedIn = false;
+                                this.currentUser = null;
+                                window.location.href = 'login.html';
+                            }
+                        });
+                    }
+                });
+                
+                // Firebase olmadan da uygulamanın çalışabilmesi için (fallback)
+                setTimeout(() => {
+                    if (!this.isLoggedIn && this.mainMenu) {
+                        console.warn('⚠️ Firebase yüklenmedi, misafir modda çalışıyor');
+                        this.mainMenu.style.display = 'block';
+                    }
+                }, 3000);
             }
         } catch (error) {
             console.error("initUI fonksiyonunda kritik hata:", error);
