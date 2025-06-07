@@ -30,6 +30,9 @@ let firestore = null;
 // Çevrimdışı mod kapalı - Firebase bağlantısını etkinleştir
 const offlineMode = false;
 
+// Network durumu kontrol et
+const isOnline = navigator.onLine;
+
 // Tarayıcı izleme önleme algılama
 const detectTrackingPrevention = function() {
   return new Promise((resolve, reject) => {
@@ -249,7 +252,11 @@ try {
     throw new Error("Çevrimdışı mod aktif");
   }
 } catch (error) {
-  console.log("Çevrimdışı mod aktif: Çevrimiçi özellikler devre dışı", error);
+  if (!isOnline) {
+        console.log("Çevrimdışı mod aktif: İnternet bağlantısı yok", error);
+      } else {
+        console.log("Firebase bağlantı sorunu: Çevrimiçi özellikler sınırlı", error);
+      }
   
   // Sahte Firebase nesnesi oluştur (hata almaması için)
   if (!window.firebase) {

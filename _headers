@@ -4,13 +4,8 @@
 # 🔒 GÜVENLİK BAŞLIKLARI
 
 /*
-  # Temel Güvenlik Headers (Daha esnek)
+  # Minimal Güvenlik Headers
   X-Content-Type-Options: nosniff
-  X-XSS-Protection: 1; mode=block
-  Referrer-Policy: origin-when-cross-origin
-  
-  # Content Security Policy (Gevşetilmiş)
-  Content-Security-Policy: default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: data:; style-src 'self' 'unsafe-inline' https:; font-src 'self' https: data:; img-src 'self' https: data: blob:; media-src 'self' https: data: blob:; connect-src 'self' https: wss:;
   
   # Caching Headers
   Cache-Control: public, max-age=3600

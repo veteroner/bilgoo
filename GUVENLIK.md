@@ -165,6 +165,14 @@ Bu hata alıyorsanız:
 
 ## 🔄 Versiyon Geçmişi
 
+- **v2.1.0** - Güvenlik sistemi esnetildi (Tarayıcı uyumluluğu için)
+  - ❌ CSP tamamen kaldırıldı
+  - ❌ HSTS zorlaması kaldırıldı
+  - ❌ Agresif engellemeler kaldırıldı
+  - ✅ Minimal güvenlik headers
+  - ✅ Firebase Database desteği eklendi
+  - ✅ Monitoring sistemi eklendi
+
 - **v2.0.0** - Yeni güvenlik sistemi (Basit ve etkili)
 - **v1.x.x** - Eski karmaşık güvenlik sistemi (Kaldırıldı)
 
