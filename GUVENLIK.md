@@ -122,12 +122,28 @@ console.info('🔒 Güvenlik kontrolleri aktif:', {
 
 ## 🔧 Sorun Giderme
 
-### CSP (Content Security Policy) Hataları
-Eğer console'da CSP hatası görüyorsanız:
+### "Tehlikeli Site" Uyarısı
+Eğer tarayıcıda "Tehlikeli site" uyarısı çıkıyorsa:
 
-1. **Script yükleme hataları**: `script-src` direktifini kontrol edin
-2. **Media yükleme hataları**: `media-src` direktifi eklenmiştir
-3. **Firebase bağlantı hataları**: Tüm Firebase domain'leri `connect-src`'ye eklenmiştir
+1. **Sıkı güvenlik başlıkları**: Güvenlik başlıkları gevşetilmiştir
+2. **CSP çok kısıtlayıcı**: Content Security Policy daha esnek hale getirilmiştir
+3. **HSTS zorlaması**: Strict-Transport-Security kaldırılmıştır
+4. **X-Frame-Options**: DENY yerine daha esnek ayarlar kullanılmıştır
+
+### CSP (Content Security Policy) Hataları  
+Yeni gevşetilmiş CSP kuralları:
+```
+Content-Security-Policy: default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:; 
+                        script-src 'self' 'unsafe-inline' 'unsafe-eval' https: data:; 
+                        style-src 'self' 'unsafe-inline' https:;
+```
+
+### Güvenlik Seviyesi Değişikliği
+**v2.1.0** ile güvenlik yaklaşımı değiştirildi:
+- ❌ Agresif engellemeler kaldırıldı
+- ✅ Monitoring ve uyarı sistemi aktif
+- ✅ Tarayıcı uyumluluğu artırıldı
+- ✅ Kullanıcı deneyimi iyileştirildi
 
 ### Firebase Initialization Hataları
 ```
@@ -136,12 +152,6 @@ FirebaseError: Firebase: No Firebase App '[DEFAULT]' has been created
 Bu hata alıyorsanız:
 1. Firebase script'lerinin doğru sırada yüklendiğinden emin olun
 2. `firebase-config.js` dosyasının Firebase SDK'lardan sonra yüklendiğini kontrol edin
-
-### X-Frame-Options Uyarısı
-```
-X-Frame-Options may only be set via an HTTP header sent along with a document
-```
-Bu uyarı normaldir. X-Frame-Options artık sadece `_headers` dosyasında tanımlanmıştır.
 
 ## ⚠️ Önemli Notlar
 

@@ -56,39 +56,37 @@ class BilgooSecurity {
         setInterval(detectDevTools, 500);
     }
 
-    // Production güvenlik önlemleri
+    // Production güvenlik önlemleri (Daha esnek)
     setupProductionSecurity() {
-        // Sağ tık engelleme
+        // Sadece temel uyarılar - engellemeler kaldırıldı
+        console.info('🔒 Production güvenlik modu aktif');
+        
+        // Agresif engellemeler kaldırıldı - sadece monitoring yapılıyor
+        this.monitorSecurity();
+    }
+
+    // Güvenlik monitoring (engellemeden)
+    monitorSecurity() {
+        let warningCount = 0;
+        const maxWarnings = 3;
+
+        // Sağ tık monitoring (engellemiyor, sadece uyarıyor)
         document.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-            this.showSecurityMessage('Sağ tık devre dışı bırakılmıştır.');
-        });
-
-        // Klavye kısayolları engelleme
-        document.addEventListener('keydown', (e) => {
-            // F12, Ctrl+Shift+I, Ctrl+U, Ctrl+S kısayollarını engelle
-            if (e.keyCode === 123 || 
-                (e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
-                (e.ctrlKey && e.keyCode === 85) ||
-                (e.ctrlKey && e.keyCode === 83)) {
-                e.preventDefault();
-                this.showSecurityMessage('Bu işlem güvenlik nedeniyle engellenmiştir.');
-                return false;
+            if (warningCount < maxWarnings) {
+                console.warn('🔒 Sağ tık algılandı');
+                warningCount++;
             }
         });
 
-        // Sayfa kaynağını görüntüleme engelleme
+        // DevTools monitoring
         document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && (e.keyCode === 85)) {
-                e.preventDefault();
-                return false;
+            if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) {
+                if (warningCount < maxWarnings) {
+                    console.warn('🔒 DevTools açma denemesi algılandı');
+                    warningCount++;
+                }
             }
         });
-
-        // Metin seçimi engelleme (isteğe bağlı)
-        // document.addEventListener('selectstart', (e) => {
-        //     e.preventDefault();
-        // });
     }
 
     // Güvenlik mesajı göster
