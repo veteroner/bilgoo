@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+    <!-- 🔒 GÜVENLİK HEADERLERİ -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googleapis.com https://*.gstatic.com https://*.firebaseapp.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.googleapis.com https://*.firebaseapp.com;">
     <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains; preload">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    
     <meta name="description" content="Ücretsiz Türkçe bilgi yarışması! Genel kültür, bilim, tarih ve daha fazla kategoride binlerce soru. Arkadaşlarınla yarış, lider tablosunda yerini al. Hemen oyna!">
     <meta name="keywords" content="bilgi yarışması, quiz, test, genel kültür, eğitim, oyun, türkçe, online, ücretsiz">
     <meta name="author" content="Teknova Bilişim">
     <meta name="robots" content="index, follow">
     <meta name="language" content="Turkish">
     <meta name="theme-color" content="#4a148c">
-    
-    <!-- 🔒 Güvenlik Meta Tags -->
-    <meta http-equiv="pragma" content="no-cache">
-    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="expires" content="0">
-    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
-    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -67,19 +67,16 @@
     <link rel="stylesheet" href="font-awesome-minimal.css">
     <!-- Favicon -->
     <link rel="icon" href="bilgoo-logo.svg" type="image/svg+xml">
-    <!-- 🔒 GÜVENLİK KONFİGÜRASYONU -->
-    <link rel="stylesheet" href="production-protection.css">
-    <script src="production-security.js"></script>
-    <script src="runtime-env.js"></script>
-    <script src="env-config.js"></script>
-    <script src="netlify-config.js"></script>
-    <script src="netlify-firebase-fix.js"></script>
-    <script src="security-config.js"></script>
+    
     <!-- Görsel içeren sorular ve Doğru/Yanlış soruları için stil -->
     <link rel="stylesheet" href="custom-question-styles.css">
     <link rel="stylesheet" href="admin-pending-styles.css">
     <!-- Manifest linki direkt olarak ekle -->
     <link rel="manifest" href="manifest.json">
+    
+    <!-- 🔒 GÜVENLİK SCRİPTİ -->
+    <script src="security.js"></script>
+    
     <style>
         /* Genel stil */
         :root {
@@ -2076,35 +2073,6 @@
                             <tr><td colspan="3" class="no-data">Henüz kaydedilen skor yok</td></tr>
                         </tbody>
                     </table>
-                </div>
-                
-                <div class="recent-activities">
-                    <h3><i class="fas fa-history"></i> Son Aktiviteler</h3>
-                    <div class="activity-list" id="recent-activities-list">
-                        <!-- Aktiviteler burada gösterilecek -->
-                        <div class="activity-item">
-                            <div class="activity-icon"><i class="fas fa-gamepad"></i></div>
-                            <div class="activity-details">
-                                <div class="activity-title">Genel Kültür kategorisinde bir oyun oynandı</div>
-                                <div class="activity-time">4 saat önce</div>
-                            </div>
-                            <div class="activity-score">Skor: 75</div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-icon"><i class="fas fa-award"></i></div>
-                            <div class="activity-details">
-                                <div class="activity-title">"Bilgi Ustası" rozeti kazanıldı</div>
-                                <div class="activity-time">2 gün önce</div>
-                            </div>
-                        </div>
-                        <div class="activity-item">
-                            <div class="activity-icon"><i class="fas fa-tasks"></i></div>
-                            <div class="activity-details">
-                                <div class="activity-title">3 günlük görev tamamlandı</div>
-                                <div class="activity-time">3 gün önce</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 
                 <div class="profile-actions">

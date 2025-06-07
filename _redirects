@@ -1,23 +1,25 @@
 # Netlify Redirects
 # SPA routing için
 
-# API calls redirect to Netlify Functions
+# 🔒 GÜVENLİK YÖNLENDİRMELERİ
+
+# HTTP'den HTTPS'e yönlendirme
+http://bilgoov3.netlify.app/* https://bilgoov3.netlify.app/:splat 301!
+
+# API endpoint'leri
 /api/* /.netlify/functions/:splat 200
 
-# Security endpoint mock
-/api/config /.netlify/functions/config 200
-/api/health /.netlify/functions/health 200
-/api/security/check /.netlify/functions/security-check 200
-
-# Security redirects
-/server.js /404.html 404
-/middleware/* /404.html 404
-/config/* /404.html 404
-/logs/* /404.html 404
-/.env /404.html 404
-
-# SPA fallback - tüm route'lar index.html'e
+# 404 sayfası
 /* /index.html 200
+
+# Güvenlik için yasaklı dosya uzantıları
+*.log /404.html 404
+*.tmp /404.html 404
+*.bak /404.html 404
+*.old /404.html 404
+/config/* /404.html 404
+/.env* /404.html 404
+/backup* /404.html 404
 
 # Cache headers
 /static/* /static/:splat 200
