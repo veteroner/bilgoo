@@ -23,14 +23,17 @@ if (isStaticHosting) {
     console.info('📱 Static hosting için Firebase config yükleniyor...');
     
     // Netlify Environment Variables'dan al (Build time'da enjekte ediliyor)
-    window.FIREBASE_API_KEY = process.env.REACT_APP_FIREBASE_API_KEY || window.NETLIFY_FIREBASE_API_KEY || "AIzaSyAbI5Swc136jjPCKeH1erjoDuhG2GUPnn0";
-    window.FIREBASE_AUTH_DOMAIN = process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || window.NETLIFY_FIREBASE_AUTH_DOMAIN || "bilgisel-3e9a0.firebaseapp.com";
-    window.FIREBASE_DATABASE_URL = process.env.REACT_APP_FIREBASE_DATABASE_URL || window.NETLIFY_FIREBASE_DATABASE_URL || "https://bilgisel-3e9a0-default-rtdb.firebaseio.com";
-    window.FIREBASE_PROJECT_ID = process.env.REACT_APP_FIREBASE_PROJECT_ID || window.NETLIFY_FIREBASE_PROJECT_ID || "bilgisel-3e9a0";
-    window.FIREBASE_STORAGE_BUCKET = process.env.REACT_APP_FIREBASE_STORAGE_BUCKET || window.NETLIFY_FIREBASE_STORAGE_BUCKET || "bilgisel-3e9a0.appspot.com";
-    window.FIREBASE_MESSAGING_SENDER_ID = process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || window.NETLIFY_FIREBASE_MESSAGING_SENDER_ID || "921907280109";
-    window.FIREBASE_APP_ID = process.env.REACT_APP_FIREBASE_APP_ID || window.NETLIFY_FIREBASE_APP_ID || "1:921907280109:web:7d9b4844067a7a1ac174e4";
-    window.FIREBASE_MEASUREMENT_ID = process.env.REACT_APP_FIREBASE_MEASUREMENT_ID || window.NETLIFY_FIREBASE_MEASUREMENT_ID || "G-XH10LS7DW8";
+    // BUILD_ENV runtime config'dan al, yoksa fallback kullan
+    const buildEnv = window.BUILD_ENV || {};
+    
+    window.FIREBASE_API_KEY = buildEnv.FIREBASE_API_KEY || window.NETLIFY_FIREBASE_API_KEY || "AIzaSyAbI5Swc136jjPCKeH1erjoDuhG2GUPnn0";
+    window.FIREBASE_AUTH_DOMAIN = buildEnv.FIREBASE_AUTH_DOMAIN || window.NETLIFY_FIREBASE_AUTH_DOMAIN || "bilgisel-3e9a0.firebaseapp.com";
+    window.FIREBASE_DATABASE_URL = buildEnv.FIREBASE_DATABASE_URL || window.NETLIFY_FIREBASE_DATABASE_URL || "https://bilgisel-3e9a0-default-rtdb.firebaseio.com";
+    window.FIREBASE_PROJECT_ID = buildEnv.FIREBASE_PROJECT_ID || window.NETLIFY_FIREBASE_PROJECT_ID || "bilgisel-3e9a0";
+    window.FIREBASE_STORAGE_BUCKET = buildEnv.FIREBASE_STORAGE_BUCKET || window.NETLIFY_FIREBASE_STORAGE_BUCKET || "bilgisel-3e9a0.appspot.com";
+    window.FIREBASE_MESSAGING_SENDER_ID = buildEnv.FIREBASE_MESSAGING_SENDER_ID || window.NETLIFY_FIREBASE_MESSAGING_SENDER_ID || "921907280109";
+    window.FIREBASE_APP_ID = buildEnv.FIREBASE_APP_ID || window.NETLIFY_FIREBASE_APP_ID || "1:921907280109:web:7d9b4844067a7a1ac174e4";
+    window.FIREBASE_MEASUREMENT_ID = buildEnv.FIREBASE_MEASUREMENT_ID || window.NETLIFY_FIREBASE_MEASUREMENT_ID || "G-XH10LS7DW8";
     
     console.info('✅ Netlify Firebase config yüklendi');
     
