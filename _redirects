@@ -9,15 +9,15 @@
 /api/health /.netlify/functions/health 200
 /api/security/check /.netlify/functions/security-check 200
 
-# SPA fallback - tüm route'lar index.html'e
-/* /index.html 200
-
 # Security redirects
 /server.js /404.html 404
 /middleware/* /404.html 404
 /config/* /404.html 404
 /logs/* /404.html 404
 /.env /404.html 404
+
+# SPA fallback - tüm route'lar index.html'e
+/* /index.html 200
 
 # Cache headers
 /static/* /static/:splat 200

@@ -20,11 +20,14 @@
 /static/*
   Cache-Control: public, max-age=31536000, immutable
 
-# CSS ve JS için cache
-*.css
+# CSS dosyaları için cache
+/style.css
   Cache-Control: public, max-age=604800
-  
-*.js
+
+/font-awesome-minimal.css
+  Cache-Control: public, max-age=604800
+
+/admin-pending-styles.css
   Cache-Control: public, max-age=604800
 
 # HTML dosyaları - cache yok
