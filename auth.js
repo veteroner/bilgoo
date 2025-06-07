@@ -166,39 +166,79 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // Misafir giriş
+        // Misafir giriş - Gelişmiş hata yönetimi ile
         if (anonymousLoginBtn) {
             anonymousLoginBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 
                 console.info('🥸 Misafir girişi başlatılıyor...');
+                loginError.textContent = 'Bağlantı kuruluyor, lütfen bekleyin...';
+                anonymousLoginBtn.disabled = true;
                 
-                // Netlify özel fonksiyonu var mı kontrol et
-                if (isNetlify && window.netlifyAnonymousLogin) {
-                    window.netlifyAnonymousLogin()
-                        .then(() => {
+                // Retry mekanizması
+                async function attemptAnonymousLogin(retryCount = 0, maxRetries = 3) {
+                    try {
+                        // Netlify özel fonksiyonu var mı kontrol et
+                        if (isNetlify && window.netlifyAnonymousLogin) {
+                            await window.netlifyAnonymousLogin();
                             console.info('✅ Netlify misafir girişi başarılı');
                             window.location.href = 'index.html';
-                        })
-                        .catch((error) => {
-                            loginError.textContent = 'Misafir girişi başarısız: ' + error.message;
-                            console.error('❌ Netlify misafir girişi hatası:', error);
-                        });
-                } else if (auth) {
-                    // Normal Firebase auth
-                    auth.signInAnonymously()
-                        .then(() => {
+                        } else if (auth) {
+                            // Firebase bağlantı durumunu kontrol et
+                            const user = await new Promise((resolve, reject) => {
+                                const timeout = setTimeout(() => {
+                                    reject(new Error('Bağlantı zaman aşımına uğradı. İnternet bağlantınızı kontrol edin.'));
+                                }, 15000); // 15 saniye timeout
+                                
+                                auth.signInAnonymously()
+                                    .then((userCredential) => {
+                                        clearTimeout(timeout);
+                                        resolve(userCredential.user);
+                                    })
+                                    .catch((error) => {
+                                        clearTimeout(timeout);
+                                        reject(error);
+                                    });
+                            });
+                            
                             console.info('✅ Misafir girişi başarılı');
                             window.location.href = 'index.html';
-                        })
-                        .catch((error) => {
-                            loginError.textContent = 'Misafir girişi başarısız: ' + error.message;
-                            console.error('❌ Misafir girişi hatası:', error);
-                        });
-                } else {
-                    loginError.textContent = 'Firebase bağlantısı kurulamadı. Lütfen sayfayı yenileyin.';
-                    console.error('❌ Firebase auth bulunamadı');
+                        } else {
+                            throw new Error('Firebase bağlantısı kurulamadı');
+                        }
+                    } catch (error) {
+                        console.error(`❌ Misafir girişi denemesi ${retryCount + 1} başarısız:`, error);
+                        
+                        if (retryCount < maxRetries) {
+                            console.info(`🔄 ${retryCount + 1}. deneme başarısız, ${maxRetries - retryCount} deneme kaldı...`);
+                            loginError.textContent = `Bağlantı hatası! ${maxRetries - retryCount} deneme kaldı... (${error.message})`;
+                            
+                            // 2 saniye bekle ve tekrar dene
+                            setTimeout(() => {
+                                attemptAnonymousLogin(retryCount + 1, maxRetries);
+                            }, 2000);
+                        } else {
+                            // Tüm denemeler başarısız
+                            let errorMessage = 'Misafir girişi başarısız: ';
+                            
+                            if (error.message.includes('network')) {
+                                errorMessage += 'İnternet bağlantınızı kontrol edin ve tekrar deneyin.';
+                            } else if (error.message.includes('timeout')) {
+                                errorMessage += 'Bağlantı zaman aşımına uğradı. Sayfayı yenileyin ve tekrar deneyin.';
+                            } else if (error.code === 'auth/network-request-failed') {
+                                errorMessage += 'Ağ isteği başarısız. İnternet bağlantınızı kontrol edin.';
+                            } else {
+                                errorMessage += error.message;
+                            }
+                            
+                            loginError.textContent = errorMessage;
+                            anonymousLoginBtn.disabled = false;
+                        }
+                    }
                 }
+                
+                // Giriş denemesini başlat
+                attemptAnonymousLogin();
             });
         }
         

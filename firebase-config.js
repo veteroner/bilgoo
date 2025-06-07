@@ -165,11 +165,34 @@ try {
         const firestoreSettings = {
           experimentalForceLongPolling: true, // Uzun süreli bağlantı sorunlarını çözmek için
           cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED, // Çevrimdışı çalışmayı iyileştir
-          merge: true // Host üzerine yazma ayarlarını birleştir
+          merge: true, // Host üzerine yazma ayarlarını birleştir
+          ignoreUndefinedProperties: true, // Tanımsız özellikleri yoksay
         };
         
-        firestore.settings(firestoreSettings);
-        console.log("Firestore gelişmiş bağlantı ayarları aktifleştirildi");
+        try {
+          firestore.settings(firestoreSettings);
+          console.log("Firestore gelişmiş bağlantı ayarları aktifleştirildi");
+        } catch (settingsError) {
+          console.warn("Firestore ayarları uygulanırken hata:", settingsError);
+          // Varsayılan ayarlarla devam et
+        }
+      }
+      
+      // Auth için ek ayarlar
+      if (auth) {
+        // Ağ zaman aşımı ayarları
+        auth.settings = {
+          appVerificationDisabledForTesting: false
+        };
+        
+        // Auth durumu değişikliklerini dinle
+        auth.onAuthStateChanged((user) => {
+          if (user) {
+            console.log("Kullanıcı kimlik doğrulaması başarılı:", user.uid);
+          }
+        }, (error) => {
+          console.error("Kimlik doğrulama hatası:", error);
+        });
       }
       
       console.log("Firebase başarıyla başlatıldı");
