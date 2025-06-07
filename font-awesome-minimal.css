@@ -159,12 +159,13 @@
 .fa-medal-solid::before { content: "🥇"; }
 .fa-gem::before { content: "💎"; }
 
-/* Joker simgeleri */
-.fa-magic::before { content: "✨"; }
-.fa-wand::before { content: "🪄"; }
-.fa-crystal-ball::before { content: "🔮"; }
-.fa-hourglass::before { content: "⌛"; }
-.fa-stopwatch::before { content: "⏱"; }
+/* Joker simgeleri - Emoji stil */
+.fa-star-half-alt::before { content: "⭐"; }
+.fa-lightbulb::before { content: "💡"; }
+.fa-clock::before { content: "🕐"; }
+.fa-forward::before { content: "⏭️"; }
+.fa-store::before { content: "🏪"; }
+.fa-shopping-cart::before { content: "🛒"; }
 
 /* Kontrol ve Düzenleme İkonları */
 .fa-backspace::before { content: "⌫"; }

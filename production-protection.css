@@ -1,0 +1,134 @@
+/* 🔒 PRODUCTION CSS KORUMA */
+/* Bu dosya production ortamında kod görüntülemeyi zorlaştırır */
+
+@media screen {
+    /* Tüm içeriği gizle eğer DevTools açıksa */
+    @media (max-device-width: 800px) and (orientation: landscape) {
+        body {
+            display: none !important;
+        }
+        
+        body::before {
+            content: "Bu sayfa güvenlik nedeniyle mobil DevTools'u desteklememektedir.";
+            display: block !important;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ff6b6b;
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            z-index: 999999;
+        }
+    }
+    
+    /* Text selection tamamen engelle */
+    * {
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+        -webkit-touch-callout: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+        -webkit-appearance: none !important;
+    }
+    
+    /* Input elementleri için selection'ı geri aç */
+    input, textarea, [contenteditable="true"] {
+        -webkit-user-select: text !important;
+        -moz-user-select: text !important;
+        -ms-user-select: text !important;
+        user-select: text !important;
+    }
+    
+    /* DevTools detection ile content hide */
+    @media (min-device-width: 1200px) {
+        html[data-devtools-open="true"] {
+            display: none !important;
+        }
+        
+        html[data-devtools-open="true"]::before {
+            content: "🔒 Developer Tools Detected - Access Denied";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
+            color: #ff6b6b;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            z-index: 999999;
+        }
+    }
+    
+    /* Debugging için kullanılan outline'ları kaldır */
+    * {
+        outline: none !important;
+        border: none !important;
+    }
+    
+    /* Console'a focus engellemesi */
+    :focus {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+    
+    /* Print media - sayfa yazdırma engeli */
+    @media print {
+        * {
+            display: none !important;
+        }
+        
+        body::before {
+            content: "Bu sayfa yazdırılamaz.";
+            display: block !important;
+            font-size: 2rem;
+            text-align: center;
+            color: red;
+        }
+    }
+}
+
+/* High contrast mode detection */
+@media (prefers-contrast: high) {
+    body {
+        filter: invert(0) !important;
+    }
+}
+
+/* Motion sensitivity - debugging tool detection */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0s !important;
+        transition-duration: 0s !important;
+    }
+}
+
+/* Developer tool specific hiding */
+@supports (-webkit-appearance: none) {
+    /* WebKit DevTools detection */
+    body {
+        -webkit-transform: translateZ(0);
+    }
+}
+
+/* Firefox DevTools detection */
+@-moz-document url-prefix() {
+    body {
+        -moz-transform: translateZ(0);
+    }
+}
+
+/* IE/Edge DevTools detection */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    body {
+        transform: translateZ(0);
+    }
+} 

@@ -63,9 +63,9 @@ async function initializeFirebaseSafely() {
         // Firebase'i başlat (eğer başlatılmamışsa)
         if (!firebase.apps.length) {
             firebase.initializeApp(config);
-            console.info('✅ Firebase app başlatıldı');
+            if (!isProductionMode) console.info('✅ Firebase app başlatıldı');
         } else {
-            console.info('✅ Firebase app zaten başlatılmış');
+            if (!isProductionMode) console.info('✅ Firebase app zaten başlatılmış');
         }
         
         // Firebase servislerini başlat

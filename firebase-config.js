@@ -12,11 +12,11 @@ const firebaseConfig = {
 };
 
 // ⚠️ UYARI: Production'da API anahtarlarını environment variables olarak ayarlayın!
-const isProduction = window.location.hostname !== 'localhost' && 
+const isFirebaseProduction = window.location.hostname !== 'localhost' && 
                     !window.location.hostname.includes('127.0.0.1') &&
                     !window.location.hostname.includes('192.168.');
 
-if (isProduction) {
+if (isFirebaseProduction) {
   // Production modda uyarı gösterme
 } else {
   console.warn('🔒 GÜVENLIK: Production ortamında API anahtarları environment variables\'tan okunmalı!');
@@ -188,7 +188,7 @@ try {
             }
           });
           
-          if (!isProduction) console.log("Firestore gelişmiş bağlantı ayarları aktifleştirildi");
+          if (!isFirebaseProduction) console.log("Firestore gelişmiş bağlantı ayarları aktifleştirildi");
         } catch (settingsError) {
           console.warn("Firestore ayarları uygulanırken hata:", settingsError);
           // Varsayılan ayarlarla devam et
@@ -217,7 +217,7 @@ try {
         });
       }
       
-      if (!isProduction) console.log("Firebase başarıyla başlatıldı");
+      if (!isFirebaseProduction) console.log("Firebase başarıyla başlatıldı");
       
       // Tarayıcı izleme önleme testi
       setTimeout(() => {
