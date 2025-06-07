@@ -1,12 +1,10 @@
 // 🌐 NETLIFY KONFİGÜRASYONU
 // Static hosting için özel ayarlar
 
-console.info('🌐 Netlify config yükleniyor...');
-
 // Netlify ortamı tespiti
 const isNetlify = window.location.hostname.includes('netlify.app') || 
                  window.location.hostname.includes('netlify.com') ||
-                 (typeof window.netlifyIdentity !== 'undefined');
+                 typeof window.netlifyIdentity !== 'undefined';
 
 // Production ama static hosting kontrolü
 const isStaticHosting = isNetlify || 
@@ -40,8 +38,8 @@ if (isStaticHosting) {
     console.info('✅ Netlify Firebase config yüklendi');
     
     // SecurityConfig ayarlarını DOM yüklendikten sonra yap
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
             if (typeof SecurityConfig !== 'undefined') {
                 // DevTools detection'ı devre dışı bırak (Netlify'da sorun çıkarıyor)
                 SecurityConfig.PRODUCTION_MODE = false;
@@ -59,7 +57,7 @@ if (isStaticHosting) {
                     const originalHandleDevToolsOpen = SecurityConfig.handleDevToolsOpen;
                     SecurityConfig.handleDevToolsOpen = function() {
                         // Sadece warning ver, sayfayı kapatma
-                        console.warn('⚠️ DevTools açık tespit edildi ama Netlify için izin veriliyor');
+                        console.warn('⚠️ DevTools açık tespit edildi ama Netlify'da izin veriliyor');
                     };
                 }
                 
@@ -78,18 +76,18 @@ if (isNetlify && typeof netlifyIdentity !== 'undefined') {
     console.info('🔑 Netlify Identity entegrasyonu aktif');
     
     // Netlify Identity olaylarını dinle
-    netlifyIdentity.on('init', function(user) {
+    netlifyIdentity.on('init', user => {
         if (user) {
             console.info('👤 Netlify user giriş yapmış:', user.email);
         }
     });
     
-    netlifyIdentity.on('login', function(user) {
+    netlifyIdentity.on('login', user => {
         console.info('✅ Netlify login başarılı:', user.email);
         netlifyIdentity.close();
     });
     
-    netlifyIdentity.on('logout', function() {
+    netlifyIdentity.on('logout', () => {
         console.info('👋 Netlify logout');
     });
 }
@@ -100,41 +98,26 @@ window.NetlifyAPI = {
     baseURL: isNetlify ? '/.netlify/functions/' : '/api/',
     
     // Güvenli API call
-    call: function(endpoint, options) {
-        options = options || {};
-        
-        return new Promise(function(resolve, reject) {
-            try {
-                const url = this.baseURL + endpoint;
-                const headers = {
-                    'Content-Type': 'application/json'
-                };
-                
-                if (options.headers) {
-                    Object.assign(headers, options.headers);
-                }
-                
-                const fetchOptions = Object.assign({}, options, { headers: headers });
-                
-                fetch(url, fetchOptions)
-                    .then(function(response) {
-                        if (!response.ok) {
-                            throw new Error('API call failed: ' + response.status);
-                        }
-                        return response.json();
-                    })
-                    .then(function(data) {
-                        resolve(data);
-                    })
-                    .catch(function(error) {
-                        console.error('Netlify API call error:', error);
-                        reject(error);
-                    });
-            } catch (error) {
-                console.error('Netlify API call error:', error);
-                reject(error);
+    call: async function(endpoint, options = {}) {
+        try {
+            const url = this.baseURL + endpoint;
+            const response = await fetch(url, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...options.headers
+                },
+                ...options
+            });
+            
+            if (!response.ok) {
+                throw new Error(`API call failed: ${response.status}`);
             }
-        }.bind(this));
+            
+            return await response.json();
+        } catch (error) {
+            console.error('Netlify API call error:', error);
+            throw error;
+        }
     }
 };
 

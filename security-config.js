@@ -82,7 +82,7 @@ class SecurityManager {
         if (this.PRODUCTION_MODE) {
             const meta = document.createElement('meta');
             meta.httpEquiv = 'Content-Security-Policy';
-            meta.content = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googleapis.com https://apis.google.com https://www.gstatic.com https://cdnjs.cloudflare.com https://*.firebaseapp.com https://*.firebaseio.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.firebaseapp.com https://*.firebaseio.com https://firestore.googleapis.com";
+            meta.content = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googleapis.com https://apis.google.com https://www.gstatic.com https://cdnjs.cloudflare.com https://*.firebaseapp.com https://*.firebaseio.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://*.firebaseapp.com https://*.firebaseio.com https://firestore.googleapis.com https://www.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com";
             document.head.appendChild(meta);
         }
     }
