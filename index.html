@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
     <!-- 🔒 GÜVENLİK HEADERLERİ -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googleapis.com https://*.gstatic.com https://*.firebaseapp.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.googleapis.com https://*.firebaseapp.com;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googleapis.com https://*.gstatic.com https://*.firebaseapp.com https://*.firebaseio.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https: blob:; media-src 'self' https: data: blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseapp.com https://*.firebaseio.com wss://*.firebaseio.com https://firestore.googleapis.com wss://firestore.googleapis.com https://firebase.googleapis.com https://securetoken.googleapis.com;">
     <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains; preload">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="X-XSS-Protection" content="1; mode=block">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     
@@ -2319,22 +2318,8 @@
     <script src="firebase-sdk/firebase-app.js"></script>
     <script src="firebase-sdk/firebase-auth.js"></script>
     <script src="firebase-sdk/firebase-firestore.js"></script>
-    <!-- Firebase config yükleme düzenlemesi - Firebase App başlatıldıktan sonra yükle -->
-    <script>
-        // Firebase SDK'ların yüklenmesini bekle
-        window.addEventListener('DOMContentLoaded', function() {
-            // Firebase config dosyasını dinamik olarak yükle
-            const script = document.createElement('script');
-            script.src = 'firebase-config.js';
-            script.onload = function() {
-                console.log('Firebase config yüklendi');
-            };
-            script.onerror = function() {
-                console.error('Firebase config yüklenemedi');
-            };
-            document.head.appendChild(script);
-        });
-    </script>
+    <!-- Firebase config dosyası -->
+    <script src="firebase-config.js"></script>
     <!-- Diğer JS dosyaları -->
     <!-- Dil dosyası -->
     <script src="languages.js"></script>

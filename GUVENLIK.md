@@ -8,12 +8,13 @@ Bu dokümantasyon, Bilgoo Quiz uygulamasında uygulanan güvenlik tedbirlerini a
 
 #### Content Security Policy (CSP)
 ```
-Content-Security-Policy: default-src 'self'; 
-                        script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googleapis.com https://*.gstatic.com https://*.firebaseapp.com; 
-                        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
-                        font-src 'self' https://fonts.gstatic.com; 
-                        img-src 'self' data: https:; 
-                        connect-src 'self' https://*.googleapis.com https://*.firebaseapp.com;
+Content-Security-Policy: default-src 'self' https: data: blob:; 
+                        script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.googleapis.com https://*.gstatic.com https://*.firebaseapp.com https://*.firebaseio.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; 
+                        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; 
+                        font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; 
+                        img-src 'self' data: https: blob:; 
+                        media-src 'self' https: data: blob:; 
+                        connect-src 'self' https://*.googleapis.com https://*.firebaseapp.com https://*.firebaseio.com wss://*.firebaseio.com https://firestore.googleapis.com wss://firestore.googleapis.com https://firebase.googleapis.com https://securetoken.googleapis.com;
 ```
 
 #### Diğer Güvenlik Başlıkları
@@ -118,6 +119,29 @@ console.info('🔒 Güvenlik kontrolleri aktif:', {
     url: string
 });
 ```
+
+## 🔧 Sorun Giderme
+
+### CSP (Content Security Policy) Hataları
+Eğer console'da CSP hatası görüyorsanız:
+
+1. **Script yükleme hataları**: `script-src` direktifini kontrol edin
+2. **Media yükleme hataları**: `media-src` direktifi eklenmiştir
+3. **Firebase bağlantı hataları**: Tüm Firebase domain'leri `connect-src`'ye eklenmiştir
+
+### Firebase Initialization Hataları
+```
+FirebaseError: Firebase: No Firebase App '[DEFAULT]' has been created
+```
+Bu hata alıyorsanız:
+1. Firebase script'lerinin doğru sırada yüklendiğinden emin olun
+2. `firebase-config.js` dosyasının Firebase SDK'lardan sonra yüklendiğini kontrol edin
+
+### X-Frame-Options Uyarısı
+```
+X-Frame-Options may only be set via an HTTP header sent along with a document
+```
+Bu uyarı normaldir. X-Frame-Options artık sadece `_headers` dosyasında tanımlanmıştır.
 
 ## ⚠️ Önemli Notlar
 
