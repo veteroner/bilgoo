@@ -162,7 +162,7 @@ window.addEventListener('unhandledrejection', (event) => {
 });
 
 // CSP image loading errors için
-document.addEventListener('securitypolicyviolation', (event) => {
+document.addEventListener('error', (event) => {
     if (event.violatedDirective === 'img-src') {
         console.warn('🚫 CSP img-src violation:', event.blockedURI);
     }

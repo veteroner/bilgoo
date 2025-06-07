@@ -1,35 +1,13 @@
 # Netlify Redirects
 # SPA routing için
 
-# 🔒 GÜVENLİK YÖNLENDİRMELERİ
+# Basit yönlendirmeler
 
 # HTTP'den HTTPS'e yönlendirme
-http://bilgoov3.netlify.app/* https://bilgoov3.netlify.app/:splat 301!
+http://bilgoov4.netlify.app/* https://bilgoov4.netlify.app/:splat 301!
 
 # API endpoint'leri
 /api/* /.netlify/functions/:splat 200
 
-# 404 sayfası
-/* /index.html 200
-
-# Güvenlik için yasaklı dosya uzantıları
-*.log /404.html 404
-*.tmp /404.html 404
-*.bak /404.html 404
-*.old /404.html 404
-/config/* /404.html 404
-/.env* /404.html 404
-/backup* /404.html 404
-
-# Cache headers
-/static/* /static/:splat 200
-  Cache-Control: public, max-age=31536000
-
-# Security headers
-/*
-  X-Frame-Options: DENY
-  X-Content-Type-Options: nosniff
-  X-XSS-Protection: 1; mode=block
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Strict-Transport-Security: max-age=31536000; includeSubDomains 
+# SPA fallback
+/* /index.html 200 

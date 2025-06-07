@@ -1118,14 +1118,14 @@ const onlineGame = {
     createRoom: function() {
         const roomName = this.roomNameInput.value.trim() || 'Quiz Odası';
         if (roomName.length < 3) {
-            SecurityConfig.secureAlert('Oda adı en az 3 karakter olmalıdır.', 'warning');
+            alert('Oda adı en az 3 karakter olmalıdır.');
             return;
         }
         // Kategori seçimini al
         const categorySelect = document.getElementById('room-category');
         const selectedCategory = categorySelect ? categorySelect.value : '';
         if (!selectedCategory) {
-            SecurityConfig.secureAlert('Lütfen bir kategori seçin!', 'warning');
+            alert('Lütfen bir kategori seçin!');
             return;
         }
         // 6 karakter uzunluğunda rastgele bir kod oluştur

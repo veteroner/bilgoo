@@ -2,67 +2,8 @@
 /* eslint-disable */
 // Bu dosya JavaScript'tir, TypeScript değildir.
 
-// 🔒 GÜVENLİK: Production mode kontrolü
+// Production mode kontrolü
 const PRODUCTION_MODE = window.location.hostname !== 'localhost' && !window.location.hostname.includes('127.0.0.1');
-
-// 🔒 GÜVENLİ CONSOLE LOGGING
-const secureLog = {
-    info: function(message, data = null) {
-        if (!PRODUCTION_MODE) {
-            console.log(message, data);
-        }
-    },
-    error: function(message, error = null) {
-        if (!PRODUCTION_MODE) {
-            console.error(message, error);
-        }
-    },
-    warn: function(message, data = null) {
-        if (!PRODUCTION_MODE) {
-            console.warn(message, data);
-        }
-    }
-};
-
-// Console override - production modda tüm console çıktılarını gizle
-if (PRODUCTION_MODE) {
-    // Önce orijinal console'u sakla
-    const originalConsole = { ...window.console };
-    
-    // Production modda console'ı override et
-    window.console = {
-        log: () => {},
-        error: (msg, ...args) => {
-            // Sadece kritik hataları göster
-            if (msg && typeof msg === 'string' && msg.includes('KRITIK')) {
-                originalConsole.error(msg, ...args);
-            }
-        },
-        warn: () => {},
-        info: () => {},
-        debug: () => {},
-        trace: () => {},
-        clear: () => {},
-        dir: () => {},
-        group: () => {},
-        groupEnd: () => {},
-        time: () => {},
-        timeEnd: () => {},
-        count: () => {},
-        assert: () => {},
-        table: () => {},
-        dirxml: () => {},
-        profile: () => {},
-        profileEnd: () => {}
-    };
-    
-    // Console'u readonly yap
-    Object.defineProperty(window, 'console', {
-        value: window.console,
-        writable: false,
-        configurable: false
-    });
-}
 
 // Sayfa Yükleme İşlemleri
 document.addEventListener('DOMContentLoaded', () => {
@@ -146,7 +87,7 @@ const quizApp = {
     
     // Başlangıç
     init: function() {
-        secureLog.info("Quiz Uygulaması Başlatılıyor...");
+        console.log("Quiz Uygulaması Başlatılıyor...");
         
         // Tarayıcı özelliklerini kontrol et
         this.checkBrowserSupport();
@@ -200,7 +141,7 @@ const quizApp = {
         try {
             // Dil dosyası import edilmiş mi kontrol et
             if (typeof languages === 'undefined') {
-                SecurityConfig.secureLog.warn('Dil dosyası yüklenemedi. Varsayılan metin gösteriliyor.');
+                console.warn('Dil dosyası yüklenemedi. Varsayılan metin gösteriliyor.');
                 return this.getDefaultTranslation(key);
             }
             
@@ -5302,11 +5243,6 @@ const quizApp = {
         console.log("Uyarı mesajı gösteriliyor:", message, type);
         
         // Daha önce oluşturulmuş uyarı varsa kaldır
-        // 🔒 GÜVENLİ ALERT: SecurityConfig kullan
-        if (typeof SecurityConfig !== 'undefined') {
-            SecurityConfig.secureAlert(message, type);
-            return;
-        }
         
         const existingAlert = document.querySelector('.custom-alert');
         if (existingAlert) {
@@ -6091,12 +6027,12 @@ const quizApp = {
         img.onload = () => {
             loadingDiv.remove();
             imageContainer.appendChild(img);
-            secureLog.info(`Görsel başarıyla yüklendi: ${questionData.imageUrl}`);
+                            console.log(`Görsel başarıyla yüklendi: ${questionData.imageUrl}`);
         };
         
         // Hata durumu - gelişmiş yönetim
         img.onerror = () => {
-            secureLog.warn(`Soru görseli yüklenemedi: ${questionData.imageUrl}`);
+                            console.warn(`Soru görseli yüklenemedi: ${questionData.imageUrl}`);
             
             // Loading göstergesini kaldır
             loadingDiv.remove();
@@ -6145,7 +6081,7 @@ const quizApp = {
         // Timeout mekanizması - 10 saniye sonra hata ver
         setTimeout(() => {
             if (!img.complete || img.naturalHeight === 0) {
-                secureLog.warn(`Görsel yükleme zaman aşımı: ${questionData.imageUrl}`);
+                console.warn(`Görsel yükleme zaman aşımı: ${questionData.imageUrl}`);
                 img.onerror();
             }
         }, 10000);

@@ -4,11 +4,11 @@ const CACHE_NAME = 'quiz-app-v3';
 const isProduction = self.location.hostname !== 'localhost' && 
                     !self.location.hostname.includes('127.0.0.1');
 
-// Güvenli logging
-const secureLog = {
-    log: (msg) => { if (!isProduction) console.log(msg); },
-    error: (msg) => { if (!isProduction) console.error(msg); },
-    warn: (msg) => { if (!isProduction) console.warn(msg); }
+// Logging
+const log = {
+    log: (msg) => console.log(msg),
+    error: (msg) => console.error(msg),
+    warn: (msg) => console.warn(msg)
 };
 
 const urlsToCache = [
@@ -39,13 +39,13 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        secureLog.log('Temel uygulama kabuğu önbelleğe alınıyor');
+        log.log('Temel uygulama kabuğu önbelleğe alınıyor');
         return cache.addAll(urlsToCache).catch(error => {
-          secureLog.error('Cache addAll hatası:', error);
+          log.error('Cache addAll hatası:', error);
           // Tek tek önbelleğe alma denemeleri
           const cachePromises = urlsToCache.map(url => {
             return cache.add(url).catch(err => {
-              secureLog.error(`${url} önbelleğe alınamadı:`, err);
+              log.error(`${url} önbelleğe alınamadı:`, err);
             });
           });
           return Promise.allSettled(cachePromises);
@@ -63,7 +63,7 @@ self.addEventListener('activate', event => {
       return Promise.all(
         cacheNames.map(cacheName => {
           if (cacheWhitelist.indexOf(cacheName) === -1) {
-            secureLog.log('Eski cache siliniyor:', cacheName);
+            log.log('Eski cache siliniyor:', cacheName);
             return caches.delete(cacheName);
           }
         })
@@ -75,19 +75,19 @@ self.addEventListener('activate', event => {
 // Service Worker'a mesaj gönderme dinleyicisi
 self.addEventListener('message', event => {
   if (event.data && event.data.action === 'clearCache') {
-    secureLog.log('Önbellek temizleme isteği alındı');
+    log.log('Önbellek temizleme isteği alındı');
     event.waitUntil(
       caches.keys().then(cacheNames => {
         return Promise.all(
           cacheNames.map(cacheName => {
-            secureLog.log(`Önbellek siliniyor: ${cacheName}`);
+            log.log(`Önbellek siliniyor: ${cacheName}`);
             return caches.delete(cacheName);
           })
         ).then(() => {
-          secureLog.log('Tüm önbellekler temizlendi');
+          log.log('Tüm önbellekler temizlendi');
           // Yeni önbelleği oluştur
           return caches.open(CACHE_NAME).then(cache => {
-            secureLog.log('Yeni önbellek oluşturuluyor');
+            log.log('Yeni önbellek oluşturuluyor');
             return cache.addAll(urlsToCache);
           });
         });
@@ -144,7 +144,7 @@ self.addEventListener('fetch', event => {
                 // Sadece yerel kaynakları önbelleğe al
                 if (event.request.url.startsWith(self.location.origin)) {
                   cache.put(event.request, responseToCache).catch(error => {
-                    secureLog.error('Cache put hatası:', error);
+                    log.error('Cache put hatası:', error);
                   });
                 }
               });
@@ -153,7 +153,7 @@ self.addEventListener('fetch', event => {
           }
         ).catch(error => {
           // If both cache and network fail, show fallback content
-          secureLog.log('Fetch işlemi başarısız; offline sayfa görüntüleniyor.', error);
+          log.log('Fetch işlemi başarısız; offline sayfa görüntüleniyor.', error);
           return caches.match('./index.html');
         });
       })

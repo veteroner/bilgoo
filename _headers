@@ -78,4 +78,8 @@
   Cache-Control: public, max-age=31536000
   
 /*.svg
-  Cache-Control: public, max-age=31536000 
+  Cache-Control: public, max-age=31536000
+
+# HTML için no-cache
+/*.html
+  Cache-Control: no-cache 

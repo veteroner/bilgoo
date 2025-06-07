@@ -1,12 +1,11 @@
 // 🌐 NETLIFY KONFİGÜRASYONU
 // Static hosting için özel ayarlar
 
-console.info('🌐 Netlify config yükleniyor...');
+console.log('Netlify config loading...');
 
 // Netlify ortamı tespiti
 const isNetlify = window.location.hostname.includes('netlify.app') || 
-                 window.location.hostname.includes('netlify.com') ||
-                 (typeof window.netlifyIdentity !== 'undefined');
+                 window.location.hostname.includes('netlify.com');
 
 // Production ama static hosting kontrolü
 const isStaticHosting = isNetlify || 
@@ -21,54 +20,23 @@ console.info('🌐 Hosting ortamı tespit edildi:', {
 });
 
 // Netlify için Firebase config (güvenli şekilde)
-if (isStaticHosting) {
-    console.info('📱 Static hosting için Firebase config yükleniyor...');
+if (isNetlify) {
+    console.log('Loading Firebase config for static hosting...');
     
     // Netlify Environment Variables'dan al (Build time'da enjekte ediliyor)
     // BUILD_ENV runtime config'dan al, yoksa fallback kullan
     const buildEnv = window.BUILD_ENV || {};
     
-    window.FIREBASE_API_KEY = buildEnv.FIREBASE_API_KEY || window.NETLIFY_FIREBASE_API_KEY || "AIzaSyAbI5Swc136jjPCKeH1erjoDuhG2GUPnn0";
-    window.FIREBASE_AUTH_DOMAIN = buildEnv.FIREBASE_AUTH_DOMAIN || window.NETLIFY_FIREBASE_AUTH_DOMAIN || "bilgisel-3e9a0.firebaseapp.com";
-    window.FIREBASE_DATABASE_URL = buildEnv.FIREBASE_DATABASE_URL || window.NETLIFY_FIREBASE_DATABASE_URL || "https://bilgisel-3e9a0-default-rtdb.firebaseio.com";
-    window.FIREBASE_PROJECT_ID = buildEnv.FIREBASE_PROJECT_ID || window.NETLIFY_FIREBASE_PROJECT_ID || "bilgisel-3e9a0";
-    window.FIREBASE_STORAGE_BUCKET = buildEnv.FIREBASE_STORAGE_BUCKET || window.NETLIFY_FIREBASE_STORAGE_BUCKET || "bilgisel-3e9a0.appspot.com";
-    window.FIREBASE_MESSAGING_SENDER_ID = buildEnv.FIREBASE_MESSAGING_SENDER_ID || window.NETLIFY_FIREBASE_MESSAGING_SENDER_ID || "921907280109";
-    window.FIREBASE_APP_ID = buildEnv.FIREBASE_APP_ID || window.NETLIFY_FIREBASE_APP_ID || "1:921907280109:web:7d9b4844067a7a1ac174e4";
-    window.FIREBASE_MEASUREMENT_ID = buildEnv.FIREBASE_MEASUREMENT_ID || window.NETLIFY_FIREBASE_MEASUREMENT_ID || "G-XH10LS7DW8";
+    window.FIREBASE_API_KEY = buildEnv.FIREBASE_API_KEY || "AIzaSyAbI5Swc136jjPCKeH1erjoDuhG2GUPnn0";
+    window.FIREBASE_AUTH_DOMAIN = buildEnv.FIREBASE_AUTH_DOMAIN || "bilgisel-3e9a0.firebaseapp.com";
+    window.FIREBASE_DATABASE_URL = buildEnv.FIREBASE_DATABASE_URL || "https://bilgisel-3e9a0-default-rtdb.firebaseio.com";
+    window.FIREBASE_PROJECT_ID = buildEnv.FIREBASE_PROJECT_ID || "bilgisel-3e9a0";
+    window.FIREBASE_STORAGE_BUCKET = buildEnv.FIREBASE_STORAGE_BUCKET || "bilgisel-3e9a0.appspot.com";
+    window.FIREBASE_MESSAGING_SENDER_ID = buildEnv.FIREBASE_MESSAGING_SENDER_ID || "921907280109";
+    window.FIREBASE_APP_ID = buildEnv.FIREBASE_APP_ID || "1:921907280109:web:7d9b4844067a7a1ac174e4";
+    window.FIREBASE_MEASUREMENT_ID = buildEnv.FIREBASE_MEASUREMENT_ID || "G-XH10LS7DW8";
     
-    console.info('✅ Netlify Firebase config yüklendi');
-    
-    // SecurityConfig ayarlarını DOM yüklendikten sonra yap
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-            if (typeof SecurityConfig !== 'undefined') {
-                // DevTools detection'ı devre dışı bırak (Netlify'da sorun çıkarıyor)
-                SecurityConfig.PRODUCTION_MODE = false;
-                
-                // Güvenlik kontrollerini yumuşat
-                if (SecurityConfig.blockDevTools) {
-                    const originalBlockDevTools = SecurityConfig.blockDevTools;
-                    SecurityConfig.blockDevTools = function() {
-                        // Netlify'da DevTools blocking'i devre dışı
-                        console.info('🔧 DevTools blocking Netlify için devre dışı');
-                    };
-                }
-                
-                if (SecurityConfig.handleDevToolsOpen) {
-                    const originalHandleDevToolsOpen = SecurityConfig.handleDevToolsOpen;
-                    SecurityConfig.handleDevToolsOpen = function() {
-                        // Sadece warning ver, sayfayı kapatma
-                        console.warn('⚠️ DevTools açık tespit edildi ama Netlify için izin veriliyor');
-                    };
-                }
-                
-                console.info('🔧 SecurityConfig Netlify için optimize edildi');
-            } else {
-                console.warn('⚠️ SecurityConfig henüz yüklenmedi, daha sonra denenecek');
-            }
-        }, 1000);
-    });
+    console.log('Firebase config loaded for Netlify');
 } else {
     console.info('🔧 Server-based hosting tespit edildi, normal config kullanılıyor');
 }
@@ -138,4 +106,4 @@ window.NetlifyAPI = {
     }
 };
 
-console.info('✅ Netlify konfigürasyonu tamamlandı'); 
+console.log('Netlify configuration completed'); 

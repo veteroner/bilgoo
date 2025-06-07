@@ -1,5 +1,4 @@
-// 🔒 GÜVENLİ Firebase yapılandırma
-// API anahtarları environment variables'tan alınmalı
+// Firebase yapılandırma
 const firebaseConfig = {
   apiKey: window.FIREBASE_API_KEY || "AIzaSyAbI5Swc136jjPCKeH1erjoDuhG2GUPnn0",
   authDomain: window.FIREBASE_AUTH_DOMAIN || "bilgisel-3e9a0.firebaseapp.com",
@@ -11,16 +10,7 @@ const firebaseConfig = {
   measurementId: window.FIREBASE_MEASUREMENT_ID || "G-XH10LS7DW8"
 };
 
-// ⚠️ UYARI: Production'da API anahtarlarını environment variables olarak ayarlayın!
-const isFirebaseProduction = window.location.hostname !== 'localhost' && 
-                    !window.location.hostname.includes('127.0.0.1') &&
-                    !window.location.hostname.includes('192.168.');
-
-if (isFirebaseProduction) {
-  // Production modda uyarı gösterme
-} else {
-  console.warn('🔒 GÜVENLIK: Production ortamında API anahtarları environment variables\'tan okunmalı!');
-}
+// Firebase configuration
 
 // Firebase bağlantı değişkenleri
 let database = null;

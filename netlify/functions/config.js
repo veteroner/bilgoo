@@ -8,7 +8,7 @@ exports.handler = async (event, context) => {
         'Access-Control-Allow-Headers': 'Content-Type, X-API-Key',
         'Access-Control-Allow-Methods': 'GET, OPTIONS',
         'Content-Type': 'application/json',
-        'X-Security-Policy': 'Netlify-Protected'
+        'X-Content-Type-Options': 'nosniff'
     };
     
     // Preflight request
