@@ -24,6 +24,46 @@ const secureLog = {
     }
 };
 
+// Console override - production modda tüm console çıktılarını gizle
+if (PRODUCTION_MODE) {
+    // Önce orijinal console'u sakla
+    const originalConsole = { ...window.console };
+    
+    // Production modda console'ı override et
+    window.console = {
+        log: () => {},
+        error: (msg, ...args) => {
+            // Sadece kritik hataları göster
+            if (msg && typeof msg === 'string' && msg.includes('KRITIK')) {
+                originalConsole.error(msg, ...args);
+            }
+        },
+        warn: () => {},
+        info: () => {},
+        debug: () => {},
+        trace: () => {},
+        clear: () => {},
+        dir: () => {},
+        group: () => {},
+        groupEnd: () => {},
+        time: () => {},
+        timeEnd: () => {},
+        count: () => {},
+        assert: () => {},
+        table: () => {},
+        dirxml: () => {},
+        profile: () => {},
+        profileEnd: () => {}
+    };
+    
+    // Console'u readonly yap
+    Object.defineProperty(window, 'console', {
+        value: window.console,
+        writable: false,
+        configurable: false
+    });
+}
+
 // Sayfa Yükleme İşlemleri
 document.addEventListener('DOMContentLoaded', () => {
     // Ana içeriği görünür yap
@@ -2555,35 +2595,7 @@ const quizApp = {
             
             // Eğer soruda görsel varsa göster
             if (questionData.imageUrl) {
-                const imageContainer = document.createElement('div');
-                imageContainer.className = 'question-image';
-                const img = document.createElement('img');
-                img.src = questionData.imageUrl;
-                img.alt = this.getTranslation('questionImage');
-                img.style.maxWidth = '100%';
-                img.style.maxHeight = '300px';
-                img.style.margin = '10px auto';
-                img.style.display = 'block';
-                img.onerror = () => {
-                    console.warn(`${this.getTranslation('imageLoadError')}: ${questionData.imageUrl}`);
-                    this.showToast(this.getTranslation('imageLoadError'), "toast-warning");
-                    if (this.questions.length > this.currentQuestionIndex + 1) {
-                        clearInterval(this.timerInterval);
-                        setTimeout(() => {
-                            this.currentQuestionIndex++;
-                            this.displayQuestion(this.questions[this.currentQuestionIndex]);
-                        }, 1000);
-                    } else {
-                        setTimeout(() => {
-                            this.showResult();
-                        }, 1000);
-                    }
-                    return;
-                };
-                const oldImages = this.questionElement.querySelectorAll('.question-image');
-                oldImages.forEach(img => img.remove());
-                imageContainer.appendChild(img);
-                this.questionElement.appendChild(imageContainer);
+                this.loadQuestionImage(questionData);
             }
         }
         
@@ -3095,19 +3107,7 @@ const quizApp = {
             
             // Eğer soruda görsel varsa göster
             if (questionData.imageUrl) {
-                const imageContainer = document.createElement('div');
-                imageContainer.className = 'question-image';
-                const img = document.createElement('img');
-                img.src = questionData.imageUrl;
-                img.alt = this.getTranslation('questionImage');
-                img.style.maxWidth = '100%';
-                img.style.maxHeight = '300px';
-                img.style.margin = '10px auto';
-                img.style.display = 'block';
-                const oldImages = this.questionElement.querySelectorAll('.question-image');
-                oldImages.forEach(img => img.remove());
-                imageContainer.appendChild(img);
-                this.questionElement.appendChild(imageContainer);
+                this.loadQuestionImage(questionData);
             }
         }
         
@@ -4616,50 +4616,7 @@ const quizApp = {
             
             // Eğer soruda görsel varsa göster
             if (question.imageUrl) {
-                const imageContainer = document.createElement('div');
-                imageContainer.className = 'question-image';
-                
-                const img = document.createElement('img');
-                img.src = question.imageUrl;
-                img.alt = 'Soru görseli';
-                img.style.maxWidth = '100%';
-                img.style.maxHeight = '300px';
-                img.style.margin = '10px auto';
-                img.style.display = 'block';
-                
-                // Görsel yükleme hatası durumunda - soruyu değiştirme mekanizması
-                img.onerror = () => {
-                    console.warn(`Soru görseli yüklenemedi: ${question.imageUrl}. Sonraki soruya geçiliyor...`);
-                    
-                    // Toast bildirimi göster
-                    this.showToast("Görsel yüklenemedi, başka bir soruya geçiliyor...", "toast-warning");
-                    
-                    // Görseli yüklenemeyen soruyu atla
-                    if (this.questions.length > this.currentQuestionIndex + 1) {
-                        // Zamanlayıcıyı durdur
-                        clearInterval(this.timerInterval);
-                        
-                        // Sonraki soruya geç
-                        setTimeout(() => {
-                            this.currentQuestionIndex++;
-                            this.displayQuestion(this.questions[this.currentQuestionIndex]);
-                        }, 1000);
-                    } else {
-                        // Soru kalmadıysa sonucu göster
-                        setTimeout(() => {
-                            this.showResult();
-                        }, 1000);
-                    }
-                    return;
-                };
-                
-                // Önce tüm eski resim elementlerini kaldır
-                const oldImages = this.questionElement.querySelectorAll('.question-image');
-                oldImages.forEach(img => img.remove());
-                
-                // Yeni resmi ekle
-                imageContainer.appendChild(img);
-                this.questionElement.appendChild(imageContainer);
+                this.loadQuestionImage(question);
             }
         }
         
@@ -6095,6 +6052,108 @@ const quizApp = {
     
 
     
+    // Soru resmini yükle - gelişmiş hata yönetimi ile
+    loadQuestionImage: function(questionData) {
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'question-image';
+        
+        // Loading göstergesi
+        const loadingDiv = document.createElement('div');
+        loadingDiv.innerHTML = '🖼️ Görsel yükleniyor...';
+        loadingDiv.style.cssText = `
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        `;
+        imageContainer.appendChild(loadingDiv);
+        
+        // Önce tüm eski resim elementlerini kaldır
+        const oldImages = this.questionElement.querySelectorAll('.question-image');
+        oldImages.forEach(img => img.remove());
+        
+        // Loading state'i göster
+        this.questionElement.appendChild(imageContainer);
+        
+        const img = document.createElement('img');
+        img.style.cssText = `
+            max-width: 100%;
+            max-height: 300px;
+            margin: 10px auto;
+            display: block;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
+        `;
+        img.alt = this.getTranslation ? this.getTranslation('questionImage') : 'Soru görseli';
+        
+        // Başarılı yükleme durumu
+        img.onload = () => {
+            loadingDiv.remove();
+            imageContainer.appendChild(img);
+            secureLog.info(`Görsel başarıyla yüklendi: ${questionData.imageUrl}`);
+        };
+        
+        // Hata durumu - gelişmiş yönetim
+        img.onerror = () => {
+            secureLog.warn(`Soru görseli yüklenemedi: ${questionData.imageUrl}`);
+            
+            // Loading göstergesini kaldır
+            loadingDiv.remove();
+            
+            // Hata mesajı göster
+            const errorDiv = document.createElement('div');
+            errorDiv.innerHTML = `
+                <div style="padding: 20px; text-align: center; color: #666; border: 2px dashed #ccc; border-radius: 8px; margin: 10px;">
+                    <div style="font-size: 24px; margin-bottom: 10px;">🚫</div>
+                    <div>Görsel yüklenemedi</div>
+                    <small style="display: block; margin-top: 5px; color: #999;">
+                        Ağ bağlantınızı kontrol edin
+                    </small>
+                </div>
+            `;
+            imageContainer.appendChild(errorDiv);
+            
+            // Toast bildirimi göster (eğer fonksiyon varsa)
+            if (this.showToast) {
+                const errorMessage = this.getTranslation ? 
+                    this.getTranslation('imageLoadError') : 
+                    "Görsel yüklenemedi, başka bir soruya geçiliyor...";
+                this.showToast(errorMessage, "toast-warning");
+            }
+            
+            // 3 saniye sonra soruyu atla
+            setTimeout(() => {
+                if (this.questions.length > this.currentQuestionIndex + 1) {
+                    // Zamanlayıcıyı durdur
+                    if (this.timerInterval) {
+                        clearInterval(this.timerInterval);
+                    }
+                    
+                    // Sonraki soruya geç
+                    this.currentQuestionIndex++;
+                    this.displayQuestion(this.questions[this.currentQuestionIndex]);
+                } else {
+                    // Soru kalmadıysa sonucu göster
+                    if (this.showResult) {
+                        this.showResult();
+                    }
+                }
+            }, 3000);
+        };
+        
+        // Timeout mekanizması - 10 saniye sonra hata ver
+        setTimeout(() => {
+            if (!img.complete || img.naturalHeight === 0) {
+                secureLog.warn(`Görsel yükleme zaman aşımı: ${questionData.imageUrl}`);
+                img.onerror();
+            }
+        }, 10000);
+        
+        // Direkt olarak orijinal URL'yi yükle (proxy gerekmedi)
+        img.src = questionData.imageUrl;
+    },
+
     // Oyun durumunu tamamen sıfırla (hamburger menü için)
     resetGameState: function() {
         console.log('Oyun durumu sıfırlanıyor...');

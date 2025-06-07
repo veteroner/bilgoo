@@ -1226,15 +1226,26 @@ const onlineGame = {
         const roomList = document.getElementById('room-list');
         roomList.innerHTML = `<div class="loading-rooms"><i class="fas fa-spinner fa-spin"></i> ${this.translateText('rooms_loading', 'Odalar yükleniyor...')}</div>`;
         
-        // Firebase'den mevcut odaları çek
-        database.ref('rooms').orderByChild('createdAt').limitToLast(10).once('value')
+        // Firebase'den mevcut odaları çek - Firestore ile uyumlu hale getirildi
+        try {
+            // Firebase servisleri kontrolü
+            if (!firebase || !firebase.firestore) {
+                throw new Error('Firebase Firestore yüklenmemiş');
+            }
+            
+            // Firestore koleksiyonu kullan
+            const roomsCollection = firebase.firestore().collection('rooms');
+            roomsCollection.where('status', '==', 'waiting')
+                .orderBy('createdAt', 'desc')
+                .limit(10)
+                .get()
             .then(snapshot => {
                 roomList.innerHTML = '';
                 let roomCount = 0;
                 
                 snapshot.forEach(roomSnapshot => {
-                    const roomData = roomSnapshot.val();
-                    const roomCode = roomSnapshot.key;
+                    const roomData = roomSnapshot.data();
+                    const roomCode = roomSnapshot.id;
                     
                     // Sadece bekleyen odaları göster
                     if (roomData.status === 'waiting') {
@@ -1271,6 +1282,10 @@ const onlineGame = {
                 console.error('Oda listesi yükleme hatası:', error);
                 roomList.innerHTML = '<div class="error-message">Odalar yüklenemedi. Lütfen tekrar deneyin.</div>';
             });
+        } catch (error) {
+            console.error('Firestore bağlantı hatası:', error);
+            roomList.innerHTML = '<div class="error-message">Veritabanı bağlantısı kurulamadı.</div>';
+        }
     },
     
     // Odaya katıl
@@ -1408,10 +1423,16 @@ const onlineGame = {
                 // Yeni oyuncu katıldı bildirimi
                 if (this.isHost && notification.playerId !== this.userId) {
                     this.showToast(`${notification.playerName} odaya katıldı`);
-                    // Oyuncu katıldı ses efekti
-                    const joinSound = new Audio('https://assets.mixkit.co/active_storage/sfx/254/254.wav');
-                    joinSound.volume = 0.5;
-                    joinSound.play().catch(e => console.log('Ses çalma hatası:', e));
+                    // Oyuncu katıldı ses efekti - Güvenli ses çalma
+                    try {
+                        const joinSound = document.getElementById('sound-correct');
+                        if (joinSound) {
+                            joinSound.volume = 0.5;
+                            joinSound.play().catch(e => console.log('Ses çalma hatası:', e));
+                        }
+                    } catch (soundError) {
+                        console.warn('Ses efekti çalınamadı:', soundError);
+                    }
                 }
             }
         });

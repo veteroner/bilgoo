@@ -12,7 +12,13 @@ const firebaseConfig = {
 };
 
 // ⚠️ UYARI: Production'da API anahtarlarını environment variables olarak ayarlayın!
-if (window.location.hostname !== 'localhost' && !window.location.hostname.includes('127.0.0.1')) {
+const isProduction = window.location.hostname !== 'localhost' && 
+                    !window.location.hostname.includes('127.0.0.1') &&
+                    !window.location.hostname.includes('192.168.');
+
+if (isProduction) {
+  // Production modda uyarı gösterme
+} else {
   console.warn('🔒 GÜVENLIK: Production ortamında API anahtarları environment variables\'tan okunmalı!');
 }
 
@@ -165,17 +171,33 @@ try {
         const firestoreSettings = {
           experimentalForceLongPolling: true, // Uzun süreli bağlantı sorunlarını çözmek için
           cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED, // Çevrimdışı çalışmayı iyileştir
-          merge: true, // Host üzerine yazma ayarlarını birleştir
           ignoreUndefinedProperties: true, // Tanımsız özellikleri yoksay
         };
         
         try {
           firestore.settings(firestoreSettings);
-          console.log("Firestore gelişmiş bağlantı ayarları aktifleştirildi");
+          
+          // Çevrimdışı persistence'ı aktifleştir
+          firestore.enablePersistence({ synchronizeTabs: true }).then(() => {
+            console.log("Firestore offline persistence aktifleştirildi");
+          }).catch((err) => {
+            if (err.code === 'failed-precondition') {
+              console.warn("Firestore persistence: Birden fazla sekme açık");
+            } else if (err.code === 'unimplemented') {
+              console.warn("Firestore persistence bu tarayıcıda desteklenmiyor");
+            }
+          });
+          
+          if (!isProduction) console.log("Firestore gelişmiş bağlantı ayarları aktifleştirildi");
         } catch (settingsError) {
           console.warn("Firestore ayarları uygulanırken hata:", settingsError);
           // Varsayılan ayarlarla devam et
         }
+        
+        // Firestore bağlantı durumunu izle
+        firestore.enableNetwork().catch((error) => {
+          console.warn("Firestore ağ bağlantısı sorunu:", error);
+        });
       }
       
       // Auth için ek ayarlar
@@ -195,7 +217,7 @@ try {
         });
       }
       
-      console.log("Firebase başarıyla başlatıldı");
+      if (!isProduction) console.log("Firebase başarıyla başlatıldı");
       
       // Tarayıcı izleme önleme testi
       setTimeout(() => {

@@ -1,7 +1,11 @@
 // 🔧 NETLIFY FIREBASE HATA DÜZELTMESİ
 // Firebase SDK yüklenmesini bekle ve hataları önle
 
-console.info('🔧 Firebase Fix başlatılıyor...');
+// Production mode kontrolü
+const isProductionMode = window.location.hostname !== 'localhost' && 
+                         !window.location.hostname.includes('127.0.0.1');
+
+if (!isProductionMode) console.info('🔧 Firebase Fix başlatılıyor...');
 
 // Firebase SDK'ların yüklenmesini bekle
 function waitForFirebaseSDK() {
@@ -13,10 +17,10 @@ function waitForFirebaseSDK() {
             attempts++;
             
             if (typeof firebase !== 'undefined' && firebase.auth && firebase.firestore && firebase.database) {
-                console.info('✅ Firebase SDK yüklendi');
+                if (!isProductionMode) console.info('✅ Firebase SDK yüklendi');
                 resolve(true);
             } else if (attempts >= maxAttempts) {
-                console.error('❌ Firebase SDK yüklenemedi (timeout)');
+                if (!isProductionMode) console.error('❌ Firebase SDK yüklenemedi (timeout)');
                 resolve(false);
             } else {
                 setTimeout(checkFirebase, 100);
@@ -69,11 +73,41 @@ async function initializeFirebaseSafely() {
         const database = firebase.database();
         const firestore = firebase.firestore();
         
-        // Firestore ayarları
-        firestore.settings({
-            experimentalForceLongPolling: true,
-            merge: true
-        });
+        // Firestore ayarları - Netlify için optimize edildi
+        try {
+            firestore.settings({
+                experimentalForceLongPolling: true,
+                cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED,
+                ignoreUndefinedProperties: true
+            });
+            
+            // Offline persistence etkinleştir
+            firestore.enablePersistence({ synchronizeTabs: true })
+                .then(() => {
+                    console.info('✅ Firestore offline persistence aktifleştirildi');
+                })
+                .catch((err) => {
+                    if (err.code == 'failed-precondition') {
+                        console.warn('⚠️ Firestore persistence: Birden fazla sekme açık');
+                    } else if (err.code == 'unimplemented') {
+                        console.warn('⚠️ Firestore persistence: Tarayıcı desteklemiyor');
+                    } else {
+                        console.warn('⚠️ Firestore persistence hatası:', err);
+                    }
+                });
+                
+            // Network durumunu izle
+            firestore.enableNetwork()
+                .then(() => {
+                    console.info('✅ Firestore ağ bağlantısı aktif');
+                })
+                .catch((networkError) => {
+                    console.warn('⚠️ Firestore ağ bağlantısı sorunu:', networkError);
+                });
+                
+        } catch (persistError) {
+            console.warn('⚠️ Firestore persistence ayarlanamadı:', persistError);
+        }
         
         // Global erişim için
         window.firebaseAuth = auth;
@@ -111,7 +145,7 @@ if (document.readyState === 'loading') {
     setTimeout(initializeFirebaseSafely, 500);
 }
 
-// Error handler
+// Error handlers
 window.addEventListener('error', (event) => {
     if (event.message && event.message.includes('firebase')) {
         console.error('🔥 Firebase hatası yakalandı:', event.message);
@@ -119,4 +153,19 @@ window.addEventListener('error', (event) => {
     }
 });
 
-console.info('✅ Firebase Fix hazır'); 
+// Unhandled promise rejections için
+window.addEventListener('unhandledrejection', (event) => {
+    if (event.reason && event.reason.toString().includes('firestore')) {
+        console.error('🔥 Firestore promise hatası yakalandı:', event.reason);
+        event.preventDefault();
+    }
+});
+
+// CSP image loading errors için
+document.addEventListener('securitypolicyviolation', (event) => {
+    if (event.violatedDirective === 'img-src') {
+        console.warn('🚫 CSP img-src violation:', event.blockedURI);
+    }
+});
+
+if (!isProductionMode) console.info('✅ Firebase Fix hazır'); 
