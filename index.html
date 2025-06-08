@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    
     <meta name="description" content="Ücretsiz Türkçe bilgi yarışması! Genel kültür, bilim, tarih ve daha fazla kategoride binlerce soru. Arkadaşlarınla yarış, lider tablosunda yerini al. Hemen oyna!">
     <meta name="keywords" content="bilgi yarışması, quiz, test, genel kültür, eğitim, oyun, türkçe, online, ücretsiz">
     <meta name="author" content="Teknova Bilişim">
@@ -56,16 +55,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <!-- Font Awesome İkonları -->
-    <link rel="stylesheet" href="font-awesome-minimal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- Favicon -->
     <link rel="icon" href="bilgoo-logo.svg" type="image/svg+xml">
-    
     <!-- Görsel içeren sorular ve Doğru/Yanlış soruları için stil -->
     <link rel="stylesheet" href="custom-question-styles.css">
     <link rel="stylesheet" href="admin-pending-styles.css">
     <!-- Manifest linki direkt olarak ekle -->
     <link rel="manifest" href="manifest.json">
-    
     <style>
         /* Genel stil */
         :root {
@@ -2064,6 +2061,35 @@
                     </table>
                 </div>
                 
+                <div class="recent-activities">
+                    <h3><i class="fas fa-history"></i> Son Aktiviteler</h3>
+                    <div class="activity-list" id="recent-activities-list">
+                        <!-- Aktiviteler burada gösterilecek -->
+                        <div class="activity-item">
+                            <div class="activity-icon"><i class="fas fa-gamepad"></i></div>
+                            <div class="activity-details">
+                                <div class="activity-title">Genel Kültür kategorisinde bir oyun oynandı</div>
+                                <div class="activity-time">4 saat önce</div>
+                            </div>
+                            <div class="activity-score">Skor: 75</div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon"><i class="fas fa-award"></i></div>
+                            <div class="activity-details">
+                                <div class="activity-title">"Bilgi Ustası" rozeti kazanıldı</div>
+                                <div class="activity-time">2 gün önce</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon"><i class="fas fa-tasks"></i></div>
+                            <div class="activity-details">
+                                <div class="activity-title">3 günlük görev tamamlandı</div>
+                                <div class="activity-time">3 gün önce</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="profile-actions">
                     <button class="btn-primary" id="back-from-profile"><i class="fas fa-arrow-left"></i> Ana Menüye Dön</button>
                     <button class="btn-danger" id="logout-from-profile"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</button>
@@ -2304,12 +2330,11 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <!-- Chart.js için CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Firebase SDK - Yerel Dosyalar (Edge Tracking Prevention Çözümü) -->
-    <script src="firebase-sdk/firebase-app.js"></script>
-    <script src="firebase-sdk/firebase-auth.js"></script>
-    <script src="firebase-sdk/firebase-firestore.js"></script>
-    <script src="firebase-sdk/firebase-database.js"></script>
-    <!-- Firebase config dosyası -->
+    <!-- Firebase için CDN -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="firebase-config.js"></script>
     <!-- Diğer JS dosyaları -->
     <!-- Dil dosyası -->
@@ -2463,41 +2488,31 @@
             });
             
             // Menü öğelerine olay dinleyiciler ekle
-            const menuHomeElement = document.getElementById('menu-home');
-            if (menuHomeElement) {
-                console.log('menu-home elementi bulundu, event listener ekleniyor...');
-                menuHomeElement.addEventListener('click', function() {
-                console.log('=== Ana Sayfa butonuna tıklandı ===');
-                
+            document.getElementById('menu-home').addEventListener('click', function() {
                 hamburgerMenu.classList.remove('active');
                 menuOverlay.classList.remove('active');
                 
-                // OYUN CLEANUP İŞLEMLERİ
+                // OYUNU DURDUR - Timer'ları ve oyun durumunu temizle
                 if (typeof quizApp !== 'undefined') {
-                    console.log('quizApp bulundu, cleanup başlıyor...');
-                    
-                    // Timer'ı durdur
+                    // Zamanlayıcıyı durdur
                     if (quizApp.stopTimer) {
                         quizApp.stopTimer();
-                        console.log('Timer durduruldu (hamburger menu)');
                     }
+                    
+                    // Online oyun varsa durdur
+                    if (typeof onlineGame !== 'undefined' && onlineGame && onlineGame.gameStarted) {
+                        onlineGame.gameStarted = false;
+                        onlineGame.leaveRoom();
+                    }
+                    
+                    // Oyun durumunu sıfırla
+                    quizApp.currentQuestionIndex = 0;
+                    quizApp.score = 0;
+                    quizApp.lives = 5;
+                    quizApp.timeLeft = 0;
                     
                     // Body class'larını temizle
                     document.body.classList.remove('quiz-active', 'category-selection');
-                    
-                    // Oyun durumunu sıfırla
-                    if (quizApp.resetGameState) {
-                        try {
-                            quizApp.resetGameState();
-                            console.log('resetGameState başarıyla çalıştı');
-                        } catch (error) {
-                            console.error('resetGameState hatası:', error);
-                        }
-                    }
-                    
-                    console.log('Oyun durumu temizlendi (hamburger menu)');
-                } else {
-                    console.log('quizApp bulunamadı!');
                 }
                 
                 // Tüm sayfaları gizle
@@ -2529,10 +2544,7 @@
                     icon.classList.remove('fa-times');
                     icon.classList.add('fa-bars');
                 }
-                });
-            } else {
-                console.error('menu-home elementi bulunamadı!');
-            }
+            });
             
             document.getElementById('menu-profile').addEventListener('click', function() {
                 hamburgerMenu.classList.remove('active');

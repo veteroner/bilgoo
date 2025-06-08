@@ -1,16 +1,14 @@
 // Firebase yapılandırma
 const firebaseConfig = {
-  apiKey: window.FIREBASE_API_KEY || "AIzaSyAbI5Swc136jjPCKeH1erjoDuhG2GUPnn0",
-  authDomain: window.FIREBASE_AUTH_DOMAIN || "bilgisel-3e9a0.firebaseapp.com",
-  databaseURL: window.FIREBASE_DATABASE_URL || "https://bilgisel-3e9a0-default-rtdb.firebaseio.com",
-  projectId: window.FIREBASE_PROJECT_ID || "bilgisel-3e9a0",
-  storageBucket: window.FIREBASE_STORAGE_BUCKET || "bilgisel-3e9a0.appspot.com",
-  messagingSenderId: window.FIREBASE_MESSAGING_SENDER_ID || "921907280109",
-  appId: window.FIREBASE_APP_ID || "1:921907280109:web:7d9b4844067a7a1ac174e4",
-  measurementId: window.FIREBASE_MEASUREMENT_ID || "G-XH10LS7DW8"
+  apiKey: "AIzaSyAbI5Swc136jjPCKeH1erjoDuhG2GUPnn0",
+  authDomain: "bilgisel-3e9a0.firebaseapp.com",
+  databaseURL: "https://bilgisel-3e9a0-default-rtdb.firebaseio.com",
+  projectId: "bilgisel-3e9a0",
+  storageBucket: "bilgisel-3e9a0.appspot.com",
+  messagingSenderId: "921907280109",
+  appId: "1:921907280109:web:7d9b4844067a7a1ac174e4",
+  measurementId: "G-XH10LS7DW8"
 };
-
-// Firebase configuration
 
 // Firebase bağlantı değişkenleri
 let database = null;
@@ -19,9 +17,6 @@ let firestore = null;
 
 // Çevrimdışı mod kapalı - Firebase bağlantısını etkinleştir
 const offlineMode = false;
-
-// Network durumu kontrol et
-const isOnline = navigator.onLine;
 
 // Tarayıcı izleme önleme algılama
 const detectTrackingPrevention = function() {
@@ -164,53 +159,14 @@ try {
         const firestoreSettings = {
           experimentalForceLongPolling: true, // Uzun süreli bağlantı sorunlarını çözmek için
           cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED, // Çevrimdışı çalışmayı iyileştir
-          ignoreUndefinedProperties: true, // Tanımsız özellikleri yoksay
+          merge: true // Host üzerine yazma ayarlarını birleştir
         };
         
-        try {
-          firestore.settings(firestoreSettings);
-          
-          // Çevrimdışı persistence'ı aktifleştir
-          firestore.enablePersistence({ synchronizeTabs: true }).then(() => {
-            console.log("Firestore offline persistence aktifleştirildi");
-          }).catch((err) => {
-            if (err.code === 'failed-precondition') {
-              console.warn("Firestore persistence: Birden fazla sekme açık");
-            } else if (err.code === 'unimplemented') {
-              console.warn("Firestore persistence bu tarayıcıda desteklenmiyor");
-            }
-          });
-          
-          if (!isFirebaseProduction) console.log("Firestore gelişmiş bağlantı ayarları aktifleştirildi");
-        } catch (settingsError) {
-          console.warn("Firestore ayarları uygulanırken hata:", settingsError);
-          // Varsayılan ayarlarla devam et
-        }
-        
-        // Firestore bağlantı durumunu izle
-        firestore.enableNetwork().catch((error) => {
-          console.warn("Firestore ağ bağlantısı sorunu:", error);
-        });
+        firestore.settings(firestoreSettings);
+        console.log("Firestore gelişmiş bağlantı ayarları aktifleştirildi");
       }
       
-      // Auth için ek ayarlar
-      if (auth) {
-        // Ağ zaman aşımı ayarları
-        auth.settings = {
-          appVerificationDisabledForTesting: false
-        };
-        
-        // Auth durumu değişikliklerini dinle
-        auth.onAuthStateChanged((user) => {
-          if (user) {
-            console.log("Kullanıcı kimlik doğrulaması başarılı:", user.uid);
-          }
-        }, (error) => {
-          console.error("Kimlik doğrulama hatası:", error);
-        });
-      }
-      
-      if (!isFirebaseProduction) console.log("Firebase başarıyla başlatıldı");
+      console.log("Firebase başarıyla başlatıldı");
       
       // Tarayıcı izleme önleme testi
       setTimeout(() => {
@@ -242,11 +198,7 @@ try {
     throw new Error("Çevrimdışı mod aktif");
   }
 } catch (error) {
-  if (!isOnline) {
-        console.log("Çevrimdışı mod aktif: İnternet bağlantısı yok", error);
-      } else {
-        console.log("Firebase bağlantı sorunu: Çevrimiçi özellikler sınırlı", error);
-      }
+  console.log("Çevrimdışı mod aktif: Çevrimiçi özellikler devre dışı", error);
   
   // Sahte Firebase nesnesi oluştur (hata almaması için)
   if (!window.firebase) {

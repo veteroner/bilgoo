@@ -1,23 +1,20 @@
 {
-  "name": "bilgoo-quiz-game",
-  "version": "2.0.0",
-  "description": "Güvenli Quiz Oyunu - Netlify Edition",
-  "main": "index.html",
+  "name": "quiz-oyunu",
+  "version": "1.0.0",
+  "description": "Bilgoo uygulaması, kullanıcıların bilgilerini çeşitli kategorilerde test edebilecekleri interaktif bir web uygulamasıdır.",
+  "main": "achievements.js",
   "scripts": {
-    "build": "node build-env.js",
-    "start": "python -m http.server 8000",
-    "dev": "python -m http.server 8080"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["quiz", "game", "turkish", "education", "firebase"],
-  "author": "Teknova Game Labs",
-  "license": "MIT",
-  "dependencies": {},
-  "devDependencies": {},
-  "engines": {
-    "node": ">=14.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/your-username/bilgoo-quiz-game.git"
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@capacitor/android": "^7.2.0",
+    "@capacitor/cli": "^7.2.0",
+    "@capacitor/core": "^7.2.0",
+    "@capacitor/ios": "^7.2.0",
+    "@capacitor/splash-screen": "^7.0.1",
+    "@capacitor/status-bar": "^7.0.1"
   }
 }

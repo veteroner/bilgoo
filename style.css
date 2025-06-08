@@ -6216,12 +6216,15 @@ body.quiz-active .main-logo-container svg {
 .option.disabled-option {
     opacity: 0.3 !important;
     cursor: not-allowed !important;
-    transform: none !important;
+    transform: scale(0.95) !important;
     pointer-events: none !important;
-    background: #f0f0f0 !important;
-    color: #999 !important;
-    border-color: #ddd !important;
-    text-decoration: line-through;
+    background: linear-gradient(135deg, #ddd, #ccc) !important;
+    color: #666 !important;
+    border: 2px solid #f0f0f0 !important;
+    text-decoration: line-through !important;
+    filter: blur(1px) !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
 }
 
 /* Dark theme için focus durumları */
@@ -6248,10 +6251,13 @@ body.quiz-active .main-logo-container svg {
 [data-theme="dark"] .option.disabled,
 [data-theme="dark"] .option.disabled-option {
     opacity: 0.3 !important;
-    background: #1a1a1a !important;
+    background: linear-gradient(135deg, #333, #222) !important;
     color: #666 !important;
-    border-color: #333 !important;
-    text-decoration: line-through;
+    border: 2px solid #444 !important;
+    text-decoration: line-through !important;
+    filter: blur(1px) !important;
+    transform: scale(0.95) !important;
+    transition: all 0.3s ease !important;
 }
 
 .true-false-option.selected.correct {
@@ -7580,5 +7586,79 @@ body.quiz-active .main-logo-container svg {
     .friend-requests-section,
     .friends-list-section {
         padding: 20px;
+    }
+}
+
+/* 50:50 Joker için X işareti animasyonu */
+@keyframes bounceIn {
+    0% { 
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% { 
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    100% { 
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Joker sayım badge'i stilleri */
+.joker-count-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ff6b35;
+    color: white;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    line-height: 1;
+}
+
+.joker-used {
+    font-size: 10px;
+    color: #999;
+    margin-left: 5px;
+    font-weight: normal;
+}
+
+/* Dark tema için joker badge */
+[data-theme="dark"] .joker-count-badge {
+    background: #e74c3c;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .joker-used {
+    color: #666;
+}
+
+/* Joker butonlarının relative konumlandırması badge için */
+.joker-btn {
+    position: relative !important;
+}
+
+/* Responsive tasarım için joker badge */
+@media (max-width: 768px) {
+    .joker-count-badge {
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        top: -6px;
+        right: -6px;
+    }
+    
+    .joker-used {
+        font-size: 8px;
     }
 }

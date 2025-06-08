@@ -1,75 +1,71 @@
 @echo off
-echo Quiz Oyunu başlatılıyor...
+echo =====================================================
+echo           QUIZ OYUNU UYGULAMASI BASLATILIYOR
+echo =====================================================
 echo.
-echo Lütfen bekleyin, web sunucusu başlatılıyor...
+echo Lütfen bekleyin, uygulama baslatiliyor...
 echo.
 
 :: Komut satırı konumunu dosyanın bulunduğu dizin olarak ayarla
 cd /d %~dp0
 
-:: Dosyaların varlığını kontrol et
+:: Gerekli dosyaların varlığını kontrol et
+echo Dosyalar kontrol ediliyor...
 if not exist "index.html" (
-    echo Hata: index.html dosyası bulunamadı!
-    echo Lütfen uygulamanın doğru klasörde olduğundan emin olun.
+    echo HATA: index.html dosyasi bulunamadi!
+    echo Lutfen uygulamanin dogru klasorde oldugunden emin olun.
     pause
     exit /b 1
 )
 
-if not exist "questions.json" (
-    echo Uyarı: questions.json dosyası bulunamadı!
-    echo Uygulama varsayılan sorular ile çalışacak.
-    echo.
+if not exist "script.js" (
+    echo HATA: script.js dosyasi bulunamadi!
+    echo Lutfen uygulamanin dogru klasorde oldugunden emin olun.
+    pause
+    exit /b 1
 )
 
-:: Python yüklü mü kontrol et
-where python >nul 2>nul
-if %errorlevel% equ 0 (
-    echo Python bulundu, HTTP sunucusu başlatılıyor...
+echo ✓ Gerekli dosyalar bulundu.
+echo.
+
+:: Port kontrolü ve web sunucusu başlatma
+echo Web sunucusu baslatiliyor...
+echo.
+
+:: Python varsa HTTP sunucusu başlat
+python --version >nul 2>&1
+if %errorlevel% == 0 (
+    echo Python ile web sunucusu baslatiliyor...
+    echo Uygulama: http://localhost:8000
     echo.
-    echo Tarayıcıda http://localhost:8000 adresine gidin
+    echo Uygulamayi kapatmak icin CTRL+C tuslayiniz.
     echo.
-    echo Uyarı: Eğer kategoriler veya sorular görünmüyorsa:
-    echo 1. Tarayıcıda F12'ye basarak konsolu açın
-    echo 2. Hata mesajlarını kontrol edin
-    echo 3. Sayfayı yenileyin (F5)
-    echo.
-    echo Sunucuyu durdurmak için bu pencereyi kapatın.
-    echo.
-    
-    :: Tarayıcıyı aç
-    start "" "http://localhost:8000"
-    
-    :: HTTP sunucusunu başlat
+    start http://localhost:8000
     python -m http.server 8000
-) else (
-    :: Python yoksa alternatif olarak Node.js kontrol et
-    where node >nul 2>nul
-    if %errorlevel% equ 0 (
-        echo Node.js bulundu, HTTP sunucusu başlatılıyor...
-        echo.
-        echo Tarayıcıda http://localhost:3000 adresine gidin
-        echo.
-        echo Uyarı: Eğer kategoriler veya sorular görünmüyorsa:
-        echo 1. Tarayıcıda F12'ye basarak konsolu açın
-        echo 2. Hata mesajlarını kontrol edin
-        echo 3. Sayfayı yenileyin (F5)
-        echo.
-        echo Sunucuyu durdurmak için bu pencereyi kapatın.
-        echo.
-        
-        :: Tarayıcıyı aç
-        start "" "http://localhost:3000"
-        
-        :: HTTP sunucusunu başlat (npx kullanarak)
-        npx serve -l 3000
-    ) else (
-        echo Hata: Lütfen Python veya Node.js yükleyin!
-        echo.
-        echo Uygulamayı çalıştırmak için şunlardan birini yükleyin:
-        echo  - Python (https://www.python.org/downloads/)
-        echo  - Node.js (https://nodejs.org/en/download/)
-        echo.
-        echo Yükledikten sonra bu dosyayı tekrar çalıştırın.
-        pause
-    )
-) 
+    goto :end
+)
+
+:: Node.js varsa HTTP sunucusu başlat
+node --version >nul 2>&1
+if %errorlevel% == 0 (
+    echo Node.js ile web sunucusu baslatiliyor...
+    echo Uygulama: http://localhost:3000
+    echo.
+    echo Uygulamayi kapatmak icin CTRL+C tuslayiniz.
+    echo.
+    start http://localhost:3000
+    npx http-server -p 3000
+    goto :end
+)
+
+:: Hiçbiri yoksa dosyayı doğrudan aç
+echo Web sunucusu bulunamadi. Dosya dogrudan aciliyor...
+echo.
+echo NOT: En iyi deneyim icin bir web sunucusu kullanmaniz önerilir.
+echo.
+start index.html
+
+:end
+echo.
+echo Uygulama kapatiliyor...
+pause 

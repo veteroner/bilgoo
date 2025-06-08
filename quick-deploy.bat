@@ -1,34 +1,22 @@
 @echo off
-echo 🚀 Hızlı Git Deploy
-echo.
-
-REM Değişiklikleri kontrol et
-echo 📝 Değişiklikler kontrol ediliyor...
-git status
+chcp 65001 >nul
+title Hızlı Netlify Deploy
 
 echo.
-set /p deploy_message="📝 Deploy mesajı girin: "
-if "%deploy_message%"=="" (
-    echo ❌ Mesaj gerekli!
-    pause
-    exit /b
-)
-
+echo ⚡ HIZLI DEPLOY BAŞLATIYOR...
 echo.
-echo 📦 Dosyalar ekleniyor...
+
+REM Değişiklikleri git'e ekle
 git add .
+git commit -m "Hızlı deploy: %date% %time%"
+git push origin main
 
 echo.
-echo 💾 Commit yapılıyor...
-git commit -m "%deploy_message%"
+echo 🚀 Netlify'a deploy ediliyor...
+netlify deploy --prod --dir .
 
 echo.
-echo 🚀 Deploy ediliyor...
-git push
+echo ✅ Deploy tamamlandı!
+netlify open
 
-echo.
-echo ✅ BAŞARILI! 
-echo 🌐 Site 30-60 saniye içinde güncellenecek
-echo 🔗 https://bilgoov3.netlify.app
-echo.
 pause 

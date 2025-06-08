@@ -4,16 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#4a148c">
-
     <title>Bilgoo - Kullanıcı Girişi</title>
     <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="font-awesome-minimal.css">
-    <!-- 🔒 GÜVENLİK KONFİGÜRASYONU -->
-    <script src="runtime-env.js"></script>
-    <script src="env-config.js"></script>
-    <script src="netlify-config.js"></script>
-    <script src="netlify-firebase-fix.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         /* Ekstra ortalama için CSS */
         .user-preferences-container {
@@ -204,8 +197,7 @@
         </div>
     </div>
 
-            <!-- Login container -->
-    <div class="container login-container" style="display: none; visibility: hidden;">
+    <div class="container login-container" style="visibility: hidden;">
         <div class="auth-box" id="login-box">
             <div class="main-logo">
                 <svg width="300" height="84" viewBox="0 0 500 140" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto 10px auto; display: block;">
@@ -360,10 +352,10 @@
         // Firebase durumunu göster
         document.getElementById('firebase-status').style.display = 'block';
     </script>
-    <!-- Firebase SDK - Yerel Dosyalar (Edge Tracking Prevention Çözümü) -->
-    <script src="firebase-sdk/firebase-app.js"></script>
-    <script src="firebase-sdk/firebase-auth.js"></script>
-    <script src="firebase-sdk/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="./firebase-config.js"></script>
     <script src="./auth.js"></script>
     <script>
