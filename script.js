@@ -627,7 +627,10 @@ const quizApp = {
             friendsText.textContent = this.getTranslation('friends');
         }
         
-
+        const leaderboardText = document.getElementById('menu-leaderboard-text');
+        if (leaderboardText) {
+            leaderboardText.textContent = this.getTranslation('leaderboardMenu');
+        }
         
         // Ayarlar metinleri
         const languageText = document.getElementById('menu-language-text');
@@ -2042,13 +2045,14 @@ const quizApp = {
         if (this.currentQuestionIndex > 0 && this.currentQuestionIndex % 5 === 0 && this.currentQuestionIndex < this.questions.length) {
             this.currentSection++; // Bölüm sayısını artır
             
-            // 10. bölüm tamamlandıysa özel kutlama göster
-            if (this.currentSection > 10) {
-                this.showCategoryCompletion();
-                return;
-            }
+                    // Progressive difficulty sistemi ile dinamik bölüm sayısı
+        const maxSections = this.getMaxSectionsForCategory();
+        if (this.currentSection > maxSections) {
+            this.showCategoryCompletion();
+            return;
+        }
             
-            // 50 bölüm tamamlandıysa, oyunu bitir
+            // 50 bölüm tamamlandıysa, oyunu bitir (eski kod - artık kullanılmıyor)
             if (this.currentSection > this.totalSections) {
                 this.showGameCompletion();
                 return;
@@ -2061,228 +2065,165 @@ const quizApp = {
             this.showResult();
         }
     },
-
-    // Kategori Tamamlama Kutlama Ekranı (10. bölüm tamamlandığında)
+    
+    // Kategoriye göre maksimum bölüm sayısını belirle
+    getMaxSectionsForCategory: function() {
+        // Kategoriye özel zorluk seviyesi belirle
+        const categoryDifficultyMap = {
+            // Kolay kategoriler (12-15 bölüm)
+            'Hayvanlar': 12,
+            'Renkler': 12, 
+            'Basit Kelimeler': 13,
+            'Sayılar': 13,
+            'Vücut': 14,
+            'Aile': 14,
+            'Yemek': 15,
+            'Ev': 15,
+            
+            // Orta kategoriler (15-18 bölüm)
+            'Spor': 15,
+            'Müzik': 16,
+            'Meslek': 16,
+            'Ulaşım': 17,
+            'Doğa': 17,
+            'Teknoloji': 18,
+            'Sağlık': 18,
+            
+            // Zor kategoriler (18-25 bölüm)
+            'Bilim': 20,
+            'Tarih': 20,
+            'Edebiyat': 22,
+            'Coğrafya': 22,
+            'Felsefe': 24,
+            'Matematik': 24,
+            'Fizik': 25,
+            'Kimya': 25
+        };
+        
+        // Seçilen kategoriye göre bölüm sayısı döndür
+        const maxSections = categoryDifficultyMap[this.selectedCategory] || 15; // Varsayılan 15 bölüm
+        console.log(`Kategori: ${this.selectedCategory}, Maksimum Bölüm: ${maxSections}`);
+        return maxSections;
+    },
+    
+    // Progressive difficulty: Mevcut bölüme göre zorluk seviyesi belirle
+    getProgressiveDifficulty: function() {
+        const maxSections = this.getMaxSectionsForCategory();
+        const currentProgress = this.currentSection / maxSections;
+        
+        // İlk %40'ı kolay, sonraki %40'ı orta, son %20'si zor
+        if (currentProgress <= 0.4) {
+            return 1; // Kolay
+        } else if (currentProgress <= 0.8) {
+            return 2; // Orta  
+        } else {
+            return 3; // Zor
+        }
+    },
+    
+    // Kategori Tamamlama Ekranını Göster (dinamik bölüm sayısına göre)
     showCategoryCompletion: function() {
-        // Sayacı durdur
+        // Zamanlayıcıyı durdur
         clearInterval(this.timerInterval);
         
-        // Kategori için son istatistikleri hesapla
-        const totalCorrectAnswers = this.sectionStats.reduce((total, section) => total + (section?.correct || 0), 0);
-        const totalQuestions = this.currentQuestionIndex;
-        const accuracy = totalQuestions > 0 ? Math.round((totalCorrectAnswers / totalQuestions) * 100) : 0;
-        
-        // Kategorinin çevirisini al
-        const categoryDisplayName = this.getTranslation(this.selectedCategory) || this.selectedCategory;
-        
-        // Kutlama ekranını oluştur
-        const completionElement = document.createElement('div');
-        completionElement.className = 'category-completion-celebration';
-        completionElement.innerHTML = `
-            <div class="celebration-overlay"></div>
-            <div class="celebration-content">
-                <!-- Konfeti Konteyneri -->
-                <div class="confetti-container" id="confetti-container"></div>
+        // Kategori tamamlama modalını oluştur
+        const categoryCompletionModal = document.createElement('div');
+        categoryCompletionModal.className = 'category-completion-modal';
+        categoryCompletionModal.innerHTML = `
+            <div class="category-completion-content">
+                <div class="completion-header">
+                    <div class="completion-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h2>Kategori Tamamlandı!</h2>
+                    <p class="completion-message">"${this.selectedCategory}" kategorisinin tüm bölümlerini başarıyla tamamladınız!</p>
+                </div>
                 
-                <!-- Ana İçerik -->
-                <div class="celebration-main">
-                    <div class="trophy-celebration">
-                        <i class="fas fa-trophy trophy-mega"></i>
-                        <div class="trophy-glow"></div>
-                    </div>
+                <div class="completion-stats">
+                                         <div class="stat-item">
+                         <div class="stat-icon">
+                             <i class="fas fa-layer-group"></i>
+                         </div>
+                         <div class="stat-content">
+                             <div class="stat-value">${this.getMaxSectionsForCategory()}</div>
+                             <div class="stat-label">Bölüm Tamamlandı</div>
+                         </div>
+                     </div>
                     
-                    <h1 class="celebration-title">
-                        <span class="title-line1">🎉 TEBRİKLER! 🎉</span>
-                        <span class="title-line2">${categoryDisplayName}</span>
-                        <span class="title-line3">Kategorisini Tamamladınız!</span>
-                    </h1>
-                    
-                    <div class="achievement-badge">
-                        <i class="fas fa-medal achievement-icon"></i>
-                        <div class="achievement-text">Kategori Ustası</div>
-                    </div>
-                    
-                    <div class="celebration-stats">
-                        <div class="stat-item">
-                            <div class="stat-icon"><i class="fas fa-star"></i></div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-content">
                             <div class="stat-value">${this.score}</div>
                             <div class="stat-label">Toplam Puan</div>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
-                            <div class="stat-value">${totalCorrectAnswers}/${totalQuestions}</div>
+                    </div>
+                    
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">${this.correctAnswers}</div>
                             <div class="stat-label">Doğru Cevap</div>
                         </div>
-                        <div class="stat-item">
-                            <div class="stat-icon"><i class="fas fa-percentage"></i></div>
-                            <div class="stat-value">%${accuracy}</div>
-                            <div class="stat-label">Başarı Oranı</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-icon"><i class="fas fa-layer-group"></i></div>
-                            <div class="stat-value">10/10</div>
-                            <div class="stat-label">Bölüm</div>
-                        </div>
                     </div>
                     
-                    <div class="celebration-message">
-                        <p class="congrats-text">Harika bir performans sergileyerek ${categoryDisplayName} kategorisindeki tüm bölümleri başarıyla tamamladınız!</p>
-                        <p class="motivational-text">Artık bu kategoride gerçek bir uzmansınız! 🌟</p>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">${this.lives}</div>
+                            <div class="stat-label">Kalan Can</div>
+                        </div>
                     </div>
-                    
-                    <div class="celebration-actions">
-                        <button id="try-another-category" class="celebration-btn celebration-btn-primary">
-                            <i class="fas fa-repeat"></i> Başka Kategori Dene
-                        </button>
-                        <button id="share-achievement" class="celebration-btn celebration-btn-secondary">
-                            <i class="fas fa-share-alt"></i> Başarımı Paylaş
-                        </button>
-                        <button id="continue-playing" class="celebration-btn celebration-btn-tertiary">
-                            <i class="fas fa-play"></i> Oyuna Devam Et
-                        </button>
-                    </div>
+                </div>
+                
+                <div class="completion-actions">
+                    <button id="show-final-results" class="completion-btn primary">
+                        <i class="fas fa-chart-line"></i>
+                        Detaylı Sonuçları Gör
+                    </button>
                 </div>
             </div>
         `;
         
-        // Body'ye ekle
-        document.body.appendChild(completionElement);
+        document.body.appendChild(categoryCompletionModal);
         
-        // Konfeti efekti başlat
-        this.startConfettiEffect();
-        
-        // Kutlama sesleri çal
-        this.playCelebrationSounds();
-        
-        // Buton event listener'ları ekle
-        this.setupCelebrationButtons(completionElement, categoryDisplayName);
-        
-        // İstatistikleri kaydet
-        this.saveStats(this.selectedCategory, this.score, this.answeredQuestions, 
-            this.answerTimes.length > 0 ? Math.round(this.answerTimes.reduce((a, b) => a + b, 0) / this.answerTimes.length) : 0);
-        
-        // Otomatik konfeti durdurma (10 saniye sonra)
-        setTimeout(() => {
-            this.stopConfettiEffect();
-        }, 10000);
-    },
-    
-    // Konfeti efekti başlat
-    startConfettiEffect: function() {
-        const confettiContainer = document.getElementById('confetti-container');
-        if (!confettiContainer) return;
-        
-        // Konfeti parçacık sayısı
-        const confettiCount = 100;
-        const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dda0dd', '#98d8c8', '#f7dc6f'];
-        
-        for (let i = 0; i < confettiCount; i++) {
-            setTimeout(() => {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti-piece';
-                confetti.style.cssText = `
-                    position: absolute;
-                    width: ${Math.random() * 10 + 5}px;
-                    height: ${Math.random() * 10 + 5}px;
-                    background-color: ${colors[Math.floor(Math.random() * colors.length)]};
-                    left: ${Math.random() * 100}%;
-                    top: -10px;
-                    opacity: ${Math.random() * 0.8 + 0.2};
-                    border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
-                    animation: confettiFall ${Math.random() * 2 + 3}s linear forwards;
-                    transform: rotate(${Math.random() * 360}deg);
-                    z-index: 10001;
-                `;
+        // Detaylı sonuçları göster butonu
+        const showResultsBtn = document.getElementById('show-final-results');
+        if (showResultsBtn) {
+            showResultsBtn.addEventListener('click', () => {
+                // Modalı kaldır
+                categoryCompletionModal.remove();
                 
-                confettiContainer.appendChild(confetti);
-                
-                // Animasyon bittiğinde elementi kaldır
+                // Normal oyun bitiş ekranını göster
                 setTimeout(() => {
-                    if (confetti.parentNode) {
-                        confetti.parentNode.removeChild(confetti);
-                    }
-                }, 5000);
-            }, i * 50); // Her konfeti arasında 50ms gecikme
-        }
-    },
-    
-    // Konfeti efekti durdur
-    stopConfettiEffect: function() {
-        const confettiContainer = document.getElementById('confetti-container');
-        if (confettiContainer) {
-            confettiContainer.innerHTML = '';
-        }
-    },
-    
-    // Kutlama sesleri çal
-    playCelebrationSounds: function() {
-        if (!this.soundEnabled) return;
-        
-        // Alkış sesi çal
-        const applauseSound = document.getElementById('sound-applause');
-        if (applauseSound) {
-            applauseSound.play().catch(e => console.error("Alkış sesi çalınamadı:", e));
+                    this.showResult();
+                }, 500);
+            });
         }
         
-        // 2 saniye sonra zafer sesi çal
-        setTimeout(() => {
-            const victorySound = document.getElementById('sound-victory');
-            if (victorySound) {
-                victorySound.play().catch(e => console.error("Zafer sesi çalınamadı:", e));
+        // Modal dışına tıklanırsa da sonuç ekranını göster
+        categoryCompletionModal.addEventListener('click', (e) => {
+            if (e.target === categoryCompletionModal) {
+                categoryCompletionModal.remove();
+                setTimeout(() => {
+                    this.showResult();
+                }, 500);
             }
-        }, 2000);
-    },
-    
-    // Kutlama butonu event listener'ları
-    setupCelebrationButtons: function(completionElement, categoryName) {
-        // Başka kategori dene butonu
-        const tryAnotherBtn = document.getElementById('try-another-category');
-        if (tryAnotherBtn) {
-            tryAnotherBtn.addEventListener('click', () => {
-                document.body.removeChild(completionElement);
-                this.stopConfettiEffect();
-                this.showCategorySelection();
-            });
+        });
+        
+        // Başarı ses efekti çal
+        if (this.soundEnabled) {
+            const victorySound = document.getElementById('sound-level-completion');
+            if (victorySound) victorySound.play().catch(e => console.error("Ses çalınamadı:", e));
         }
         
-        // Başarımı paylaş butonu
-        const shareBtn = document.getElementById('share-achievement');
-        if (shareBtn) {
-            shareBtn.addEventListener('click', () => {
-                const shareText = `🎉 ${categoryName} kategorisini %${Math.round((this.score / this.currentQuestionIndex) * 100)} başarı oranıyla tamamladım! Bilgoo'da sen de kategorileri tamamlamaya ne dersin? 🏆`;
-                
-                if (navigator.share) {
-                    navigator.share({
-                        title: 'Bilgoo - Kategori Tamamlama Başarısı',
-                        text: shareText,
-                        url: window.location.href
-                    }).catch(err => {
-                        console.error('Paylaşım hatası:', err);
-                        this.showToast('Başarı paylaşılamadı', 'toast-error');
-                    });
-                } else {
-                    navigator.clipboard.writeText(shareText)
-                        .then(() => {
-                            this.showToast('Başarı panoya kopyalandı! 🎉', 'toast-success');
-                        })
-                        .catch(err => {
-                            console.error('Panoya kopyalama hatası:', err);
-                            this.showToast('Başarı kopyalanamadı', 'toast-error');
-                        });
-                }
-            });
-        }
-        
-        // Oyuna devam et butonu
-        const continueBtn = document.getElementById('continue-playing');
-        if (continueBtn) {
-            continueBtn.addEventListener('click', () => {
-                document.body.removeChild(completionElement);
-                this.stopConfettiEffect();
-                // Normal oyun bitişi ekranını göster
-                this.showResult();
-            });
-        }
+        // Konfeti efekti eklenebilir
+        console.log(`${this.selectedCategory} kategorisi ${this.getMaxSectionsForCategory()} bölüm ile tamamlandı!`);
     },
     
     // Oyun Tamamlama Ekranını Göster (50 bölüm tamamlandığında)
@@ -2440,6 +2381,7 @@ const quizApp = {
                     <p><i class="fas fa-star"></i> ${this.getTranslation('currentScore')}: ${this.score}</p>
                     <p><i class="fas fa-heart"></i> ${this.getTranslation('remainingLives')}: ${this.lives}</p>
                     <p><i class="fas fa-check-circle"></i> ${this.getTranslation('correctAnswers')}: ${stats.correct}/${stats.total} (${correctPercentage}%)</p>
+                    <p><i class="fas fa-chart-line"></i> Sonraki Bölüm: ${['', 'Kolay', 'Orta', 'Zor'][this.getProgressiveDifficulty()]} Seviye</p>
                 </div>
                 <button id="next-section-btn" class="level-btn"><i class="fas fa-forward"></i> ${this.getTranslation('nextSection')}</button>
             </div>
@@ -3161,11 +3103,7 @@ const quizApp = {
         this.answeredQuestions++;
         this.answerTimes.push(this.TIME_PER_BLANK_FILLING_QUESTION - this.timeLeft);
 
-        if (this.lives <= 0) {
-            setTimeout(() => {
-                this.showResult();
-            }, 1500);
-        }
+        // Can kontrolü kaldırıldı - loseLife fonksiyonu kendi başına can satın alma modalını handle ediyor
     },
     
     // Doğru cevaba benzer yanlış şıklar üret
@@ -3220,34 +3158,12 @@ const quizApp = {
             return;
         }
         
-        // Hamburger menüdeki zorluk ayarını al
-        const difficultySelect = document.getElementById('difficulty-level');
-        let selectedDifficulty = 'medium'; // varsayılan
+        // Progressive difficulty sistemi: Bölüme göre otomatik zorluk belirleme
+        const targetDifficulty = this.getProgressiveDifficulty();
+        const difficultyNames = { 1: 'Kolay', 2: 'Orta', 3: 'Zor' };
+        const difficultyName = difficultyNames[targetDifficulty];
         
-        if (difficultySelect && difficultySelect.value) {
-            selectedDifficulty = difficultySelect.value;
-            console.log('Zorluk dropdown\'dan alındı:', selectedDifficulty);
-        } else {
-            // localStorage'dan zorluk ayarını al
-            selectedDifficulty = localStorage.getItem('difficulty') || 
-                                localStorage.getItem('calculated_difficulty') || 
-                                (this.userSettings && this.userSettings.difficulty) ||
-                                this.currentDifficulty || 'medium';
-            console.log('Zorluk localStorage\'dan alındı:', selectedDifficulty);
-        }
-        
-        // Zorluk seviyesini sayısal değere çevir
-        const difficultyMapping = {
-            'easy': 1,
-            'medium': 2, 
-            'hard': 3
-        };
-        
-        const targetDifficulty = difficultyMapping[selectedDifficulty] || 2;
-        console.log(`Seçilen zorluk: ${selectedDifficulty} (seviye ${targetDifficulty})`);
-        console.log('Zorluk eşleme tablosu:', difficultyMapping);
-        console.log('localStorage difficulty:', localStorage.getItem('difficulty'));
-        console.log('localStorage calculated_difficulty:', localStorage.getItem('calculated_difficulty'));
+        console.log(`🎯 Progressive Difficulty: Bölüm ${this.currentSection}/${this.getMaxSectionsForCategory()} - Zorluk: ${difficultyName} (${targetDifficulty})`);
         
         // Soruları zorluklarına göre grupla
         const groupedByDifficulty = {};
@@ -3306,9 +3222,9 @@ const quizApp = {
             difficultyCheck[diff] = (difficultyCheck[diff] || 0) + 1;
         });
         const difficultyNames = { 1: 'Kolay', 2: 'Orta', 3: 'Zor' };
-        console.log(`🎯 Seçilen zorluk: ${difficultyNames[targetDifficulty]} (${targetDifficulty})`);
+        console.log(`🎯 Progressive Zorluk: ${difficultyNames[targetDifficulty]} (${targetDifficulty})`);
         console.log(`✅ Yüklenen ${this.questions.length} sorunun zorluk dağılımı:`, difficultyCheck);
-        console.log(`Seviye ${this.currentLevel} için ${this.questions.length} soru yüklendi.`);
+        console.log(`Bölüm ${this.currentSection} için ${this.questions.length} soru yüklendi.`);
         
         // İlk soruyu göster
         if (this.questions.length > 0) {
@@ -3500,12 +3416,7 @@ const quizApp = {
         this.answeredQuestions++;
         this.answerTimes.push(this.TIME_PER_QUESTION - this.timeLeft);
         
-        // Oyun bitti mi kontrol et
-        if (this.lives <= 0) {
-            setTimeout(() => {
-                this.showResult();
-            }, 1500);
-        }
+        // Can kontrolü kaldırıldı - loseLife fonksiyonu kendi başına can satın alma modalını handle ediyor
     },
     
     // Profil sayfasını göster
@@ -4539,7 +4450,7 @@ const quizApp = {
         }
     },
     
-    // Lider tablosu verilerini yükle (İyileştirilmiş versiyon)
+    // Lider tablosu verilerini yükle
     loadLeaderboardData: function() {
         const leaderboardList = document.getElementById('leaderboard-list');
         if (!leaderboardList) return;
@@ -4547,98 +4458,31 @@ const quizApp = {
         // Yükleniyor mesajı göster
         leaderboardList.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin fa-2x"></i><p>Lider tablosu yükleniyor...</p></div>';
         
-        // Online game modülü varsa onun kapsamlı lider tablosu fonksiyonunu kullan
-        if (window.onlineGame && typeof window.onlineGame.loadLeaderboard === 'function') {
-            console.log('Online game modülü kullanılarak lider tablosu yükleniyor...');
-            window.onlineGame.loadLeaderboard();
-            return;
-        }
-        
         // Firebase'den verileri çek
         if (firebase.database) {
-            const promises = [];
-            let allEntries = [];
-            
-            // 1. Realtime Database'den verileri çek
             const leaderboardRef = firebase.database().ref('leaderboard');
-            promises.push(
-                leaderboardRef.orderByChild('score').limitToLast(100).once('value')
-                    .then(snapshot => {
-                        const data = snapshot.val();
-                        if (data) {
-                            Object.keys(data).forEach(key => {
-                                allEntries.push({
-                                    id: key,
-                                    ...data[key],
-                                    source: 'realtime'
-                                });
-                            });
-                            console.log(`Realtime Database'den ${Object.keys(data).length} kayıt yüklendi`);
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Realtime Database lider tablosu yüklenirken hata:", error);
-                    })
-            );
+            const categoryFilter = document.getElementById('leaderboard-category').value;
+            const timeFilter = document.getElementById('leaderboard-time').value;
             
-            // 2. Firestore'dan da verileri çek (eğer varsa)
-            if (typeof firebase.firestore === 'function') {
-                try {
-                    const firestoreQuery = firebase.firestore()
-                        .collection('highScores')
-                        .orderBy('timestamp', 'desc')
-                        .limit(100);
-                        
-                    promises.push(
-                        firestoreQuery.get()
-                            .then(querySnapshot => {
-                                querySnapshot.forEach(doc => {
-                                    const entry = doc.data();
-                                    if (entry.score !== undefined) {
-                                        allEntries.push({
-                                            id: doc.id,
-                                            score: entry.score,
-                                            userName: entry.username,
-                                            category: entry.category,
-                                            date: entry.timestamp ? entry.timestamp.toDate().getTime() : Date.now(),
-                                            source: 'firestore'
-                                        });
-                                    }
-                                });
-                                console.log(`Firestore'dan ${querySnapshot.size} kayıt yüklendi`);
-                            })
-                            .catch(error => {
-                                console.error('Firestore lider tablosu yükleme hatası:', error);
-                            })
-                    );
-                } catch (error) {
-                    console.error('Firestore sorgu oluşturma hatası:', error);
-                }
-            }
-            
-            // Tüm veri kaynaklarından sonra tabloyu oluştur
-            Promise.all(promises)
-                .then(() => {
-                    if (allEntries.length === 0) {
+            leaderboardRef.orderByChild('score').limitToLast(50).once('value')
+                .then(snapshot => {
+                    const data = snapshot.val();
+                    if (!data) {
                         leaderboardList.innerHTML = '<div class="no-data-message">Henüz kayıt yok</div>';
                         return;
                     }
                     
-                    // Kullanıcı bazında en yüksek skorları al
-                    const userBestScores = {};
-                    allEntries.forEach(entry => {
-                        const userKey = `${entry.userName || 'Anonim'}_${entry.category || 'Genel'}`;
-                        if (!userBestScores[userKey] || (entry.score || 0) > (userBestScores[userKey].score || 0)) {
-                            userBestScores[userKey] = entry;
-                        }
+                    // Verileri skor sırasına göre diziye çevir
+                    const leaderboardArray = [];
+                    Object.keys(data).forEach(key => {
+                        leaderboardArray.push({
+                            id: key,
+                            ...data[key]
+                        });
                     });
                     
-                    // Benzersiz kayıtları skora göre sırala
-                    const uniqueEntries = Object.values(userBestScores);
-                    uniqueEntries.sort((a, b) => (b.score || 0) - (a.score || 0));
-                    
-                    // En fazla 50 sonuç göster
-                    const topEntries = uniqueEntries.slice(0, 50);
+                    // Skora göre sırala (azalan)
+                    leaderboardArray.sort((a, b) => b.score - a.score);
                     
                     // Tabloya ekle
                     leaderboardList.innerHTML = '';
@@ -4654,37 +4498,29 @@ const quizApp = {
                             <th>Skor</th>
                             <th>Kategori</th>
                             <th>Tarih</th>
-                            <th>Kaynak</th>
                         </tr>
                     `;
                     table.appendChild(thead);
                     
                     // Tablo içeriği
                     const tbody = document.createElement('tbody');
-                    topEntries.forEach((item, index) => {
+                    leaderboardArray.forEach((item, index) => {
                         const row = document.createElement('tr');
-                        const sourceIcon = item.source === 'firestore' ? 
-                            '<i class="fas fa-cloud" title="Firestore"></i>' : 
-                            '<i class="fas fa-database" title="Realtime DB"></i>';
-                        
                         row.innerHTML = `
                             <td>${index + 1}</td>
                             <td>${item.userName || 'Anonim'}</td>
                             <td>${item.score || 0}</td>
                             <td>${item.category || 'Genel'}</td>
                             <td>${new Date(item.date || Date.now()).toLocaleDateString()}</td>
-                            <td>${sourceIcon}</td>
                         `;
                         tbody.appendChild(row);
                     });
                     table.appendChild(tbody);
                     
                     leaderboardList.appendChild(table);
-                    
-                    console.log(`Toplam ${topEntries.length} kayıt gösteriliyor`);
                 })
                 .catch(error => {
-                    console.error("Lider tablosu yüklenirken genel hata:", error);
+                    console.error("Lider tablosu yüklenirken hata:", error);
                     leaderboardList.innerHTML = '<div class="error-message">Lider tablosu yüklenemedi</div>';
                 });
         } else {
@@ -4815,15 +4651,8 @@ const quizApp = {
                 onlineGame.submitAnswer(false);
             }
         }
-        if (this.lives <= 0) {
-            // Eğer can satın alma modalı açık değilse oyunu bitir
-            if (!document.getElementById('buyLivesModal')) {
-                setTimeout(() => {
-                    this.showResult();
-                }, 1500);
-            }
-            return;
-        }
+        // Can kontrolü kaldırıldı - loseLife fonksiyonu kendi başına can satın alma modalını handle ediyor
+        
         if (this.nextButton) {
             this.nextButton.style.display = 'block';
         } else {
@@ -4897,16 +4726,7 @@ const quizApp = {
                 onlineGame.submitAnswer(false);
             }
             
-            // Can kontrolü - Modal açık değilse direkt showResult çağır
-            if (this.lives <= 0) {
-                // Eğer can satın alma modalı açık değilse oyunu bitir
-                if (!document.getElementById('buyLivesModal')) {
-                    setTimeout(() => {
-                        this.showResult();
-                    }, 1500);
-                }
-                return;
-            }
+            // Can kontrolü kaldırıldı - loseLife fonksiyonu kendi başına can satın alma modalını handle ediyor
         }
         
         // Bir sonraki soruya geç
@@ -4994,15 +4814,7 @@ const quizApp = {
         if (typeof onlineGame !== 'undefined' && onlineGame && onlineGame.gameStarted) {
             onlineGame.submitAnswer(false);
         }
-        if (this.lives <= 0) {
-            // Eğer can satın alma modalı açık değilse oyunu bitir
-            if (!document.getElementById('buyLivesModal')) {
-                setTimeout(() => {
-                    this.showResult();
-                }, 1500);
-            }
-            return;
-        }
+        // Can kontrolü kaldırıldı - loseLife fonksiyonu kendi başına can satın alma modalını handle ediyor
     },
     
     // Load question işlevini güncelle
@@ -5019,14 +4831,7 @@ const quizApp = {
                 correctMessageElement.remove();
             }
             
-            // Oyun bitti kontrolü yap
-            if (this.lives <= 0) {
-                // Eğer can satın alma modalı açık değilse oyunu bitir
-                if (!document.getElementById('buyLivesModal')) {
-                    this.showResult();
-                }
-                return;
-            }
+            // Can kontrolü kaldırıldı - canlar bittiyse loseLife fonksiyonu zaten can satın alma modalını açıyor
             
             // Mevcut soru indeksi kontrolü
             if (this.currentQuestionIndex >= this.questions.length) {
@@ -6141,6 +5946,144 @@ const quizApp = {
                 livesContainer.appendChild(span);
             }
         }
+    },
+
+    // Can satın alma modalını göster
+    showBuyLivesModal: function() {
+        const LIVES_PRICE = 500; // 3 can için 500 puan
+        const LIVES_AMOUNT = 3; // Satın alınacak can sayısı
+        
+        // Oyuncunun puanını kontrol et
+        const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
+        
+        // Modal oluştur
+        const buyLivesModal = document.createElement('div');
+        buyLivesModal.className = 'buy-lives-modal';
+        buyLivesModal.innerHTML = `
+            <div class="buy-lives-modal-content">
+                <div class="buy-lives-header">
+                    <div class="lives-out-icon">
+                        <i class="fas fa-heart-broken"></i>
+                    </div>
+                    <h2>Canlarınız Bitti!</h2>
+                    <p class="lives-out-message">Oyuna devam etmek için can satın alabilirsiniz.</p>
+                </div>
+                
+                <div class="buy-lives-offer">
+                    <div class="lives-package">
+                        <div class="package-icon">
+                            <i class="fas fa-heart"></i>
+                            <i class="fas fa-heart"></i>
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="package-details">
+                            <h3>3 Can Paketi</h3>
+                            <p class="package-description">Oyuna 3 canla devam edin!</p>
+                            <div class="package-price">
+                                <span class="price-amount">${LIVES_PRICE}</span>
+                                <i class="fas fa-coins"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="current-points">
+                        <i class="fas fa-wallet"></i>
+                        <span>Mevcut Puanınız: ${currentPoints}</span>
+                    </div>
+                </div>
+                
+                <div class="buy-lives-actions">
+                    ${currentPoints >= LIVES_PRICE ? 
+                        `<button id="confirm-buy-lives" class="btn-buy-lives">
+                            <i class="fas fa-shopping-cart"></i>
+                            3 Can Satın Al (${LIVES_PRICE} Puan)
+                        </button>` : 
+                        `<button class="btn-buy-lives disabled" disabled>
+                            <i class="fas fa-times"></i>
+                            Yetersiz Puan (${LIVES_PRICE} Gerekli)
+                        </button>`
+                    }
+                    <button id="decline-buy-lives" class="btn-decline-lives">
+                        <i class="fas fa-flag-checkered"></i>
+                        Oyunu Bitir
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(buyLivesModal);
+        
+        // Satın alma butonuna event listener ekle
+        const confirmBuyBtn = document.getElementById('confirm-buy-lives');
+        if (confirmBuyBtn) {
+            confirmBuyBtn.addEventListener('click', () => {
+                this.buyLives(LIVES_AMOUNT, LIVES_PRICE);
+                buyLivesModal.remove();
+            });
+        }
+        
+        // Oyunu bitir butonuna event listener ekle
+        const declineBuyBtn = document.getElementById('decline-buy-lives');
+        if (declineBuyBtn) {
+            declineBuyBtn.addEventListener('click', () => {
+                buyLivesModal.remove();
+                // Oyun sonu ekranını göster
+                setTimeout(() => {
+                    this.showResult();
+                }, 500);
+            });
+        }
+        
+        // Modal dışına tıklanırsa oyunu bitir
+        buyLivesModal.addEventListener('click', (e) => {
+            if (e.target === buyLivesModal) {
+                buyLivesModal.remove();
+                setTimeout(() => {
+                    this.showResult();
+                }, 500);
+            }
+        });
+    },
+
+    // Can satın alma işlemi
+    buyLives: function(livesAmount, price) {
+        const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
+        
+        // Puan kontrolü
+        if (currentPoints < price) {
+            this.showToast('Yetersiz puan!', 'toast-error');
+            return false;
+        }
+        
+        // Puanı düş
+        if (this.isLoggedIn) {
+            this.totalScore -= price;
+            this.delayedSaveUserData(); // Firebase'e kaydet
+        } else {
+            this.sessionScore -= price;
+        }
+        
+        // Canları ekle
+        this.lives = livesAmount;
+        
+        // Görüntüleri güncelle
+        this.updateLives();
+        this.updateScoreDisplay();
+        this.updateTotalScoreDisplay();
+        
+        // Başarı mesajı göster
+        this.showToast(`${livesAmount} can satın alındı! Oyun devam ediyor...`, 'toast-success');
+        
+        // Kısa bir gecikme ile oyunu devam ettir
+        setTimeout(() => {
+            // Zamanlayıcıyı yeniden başlat
+            this.timeLeft = this.TIME_PER_QUESTION;
+            this.startTimer();
+        }, 1500);
+        
+        console.log(`${livesAmount} can satın alındı. Kalan puan: ${this.isLoggedIn ? this.totalScore : this.sessionScore}`);
+        
+        return true;
     },
     
     // Yüksek skor ekleme fonksiyonu - Firebase ve localStorage'a kaydet
@@ -7395,195 +7338,6 @@ const quizApp = {
         } else {
             console.log('7. Test kayıt atlandı - gerekli şartlar sağlanmadı');
         }
-    },
-
-    // Can satın alma modalını göster
-    showBuyLivesModal: function() {
-        const languages = window.languages || {};
-        const currentLang = this.currentLanguage || 'tr';
-        const texts = languages[currentLang] || languages.tr;
-
-        // Modal HTML'ini oluştur
-        const modalHtml = `
-            <div class="buy-lives-modal" id="buyLivesModal">
-                <div class="buy-lives-modal-content">
-                    <div class="buy-lives-modal-icon">
-                        <i class="fas fa-heart-broken"></i>
-                    </div>
-                    <h2 class="buy-lives-modal-title">${texts.buyLivesTitle}</h2>
-                    <p class="buy-lives-modal-subtitle">${texts.buyLivesSubtitle}</p>
-                    
-                    <div class="buy-lives-offer">
-                        <div class="buy-lives-offer-hearts">
-                            <i class="fas fa-heart"></i>
-                            <i class="fas fa-heart"></i>
-                            <i class="fas fa-heart"></i>
-                        </div>
-                        <div class="buy-lives-offer-text">${texts.buyLivesOffer}</div>
-                        <div class="buy-lives-offer-price">
-                            <i class="fas fa-coins"></i>
-                            ${texts.buyLivesPrice}
-                        </div>
-                    </div>
-                    
-                    <div class="buy-lives-modal-actions">
-                        <button class="buy-lives-btn" id="buyLivesBtn">
-                            <i class="fas fa-shopping-cart"></i>
-                            ${texts.buyLivesButton}
-                        </button>
-                        <button class="decline-lives-btn" id="declineLivesBtn">
-                            <i class="fas fa-times"></i>
-                            ${texts.declineLives}
-                        </button>
-                    </div>
-                    
-                    <div class="insufficient-points" id="insufficientPoints" style="display: none;">
-                        ${texts.insufficientPoints}
-                    </div>
-                </div>
-            </div>
-        `;
-
-        // Modal'ı body'ye ekle
-        document.body.insertAdjacentHTML('beforeend', modalHtml);
-        
-        // Modal'ı göster
-        const modal = document.getElementById('buyLivesModal');
-        setTimeout(() => {
-            modal.classList.add('show');
-        }, 100);
-
-        // Event listener'ları ekle
-        this.setupBuyLivesModalEvents();
-    },
-
-    // Can satın alma modal event'lerini ayarla
-    setupBuyLivesModalEvents: function() {
-        const modal = document.getElementById('buyLivesModal');
-        const buyBtn = document.getElementById('buyLivesBtn');
-        const declineBtn = document.getElementById('declineLivesBtn');
-        const insufficientMsg = document.getElementById('insufficientPoints');
-
-        // Yetersiz puan kontrolü
-        const requiredPoints = 500;
-        if (this.totalScore < requiredPoints) {
-            buyBtn.disabled = true;
-            insufficientMsg.style.display = 'block';
-        }
-
-        // Satın al butonu
-        buyBtn.addEventListener('click', () => {
-            if (this.totalScore >= requiredPoints) {
-                this.buyLives();
-            }
-        });
-
-        // Reddet butonu
-        declineBtn.addEventListener('click', () => {
-            this.closeBuyLivesModal();
-            // Oyunu bitir
-            setTimeout(() => {
-                this.showResult();
-            }, 500);
-        });
-    },
-
-    // Can satın alma işlemi
-    buyLives: function() {
-        const requiredPoints = 500;
-        const newLives = 3;
-
-        if (this.totalScore >= requiredPoints) {
-            // Puanı düş
-            this.totalScore -= requiredPoints;
-            
-            // Canları ekle
-            this.lives = newLives;
-            
-            // Verileri güncelle
-            this.updateTotalScoreDisplay();
-            this.updateLives();
-            
-            // Firebase'e kaydet
-            if (this.isLoggedIn && firebase.firestore) {
-                const db = firebase.firestore();
-                db.collection('users').doc(this.currentUser.uid).update({
-                    totalScore: this.totalScore
-                }).catch(error => {
-                    console.error('Can satın alma Firebase kaydı hatası:', error);
-                });
-            }
-
-            // Başarı mesajı göster
-            this.showToast(window.languages[this.currentLanguage].livesRestored, 'success');
-
-            // Modal'ı kapat
-            this.closeBuyLivesModal();
-
-            // Zamanlayıcıyı yeniden başlat
-            setTimeout(() => {
-                this.startTimer();
-            }, 1000);
-        }
-    },
-
-    // Can satın alma modalını kapat
-    closeBuyLivesModal: function() {
-        const modal = document.getElementById('buyLivesModal');
-        if (modal) {
-            modal.classList.remove('show');
-            setTimeout(() => {
-                modal.remove();
-            }, 400);
-        }
-    },
-
-    // Toast bildirimi göster
-    showToast: function(message, type = 'info') {
-        const toastHtml = `
-            <div class="toast toast-${type}" id="toast-${Date.now()}">
-                <div class="toast-content">
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
-                    <span>${message}</span>
-                </div>
-            </div>
-        `;
-
-        // Toast container'ı yoksa oluştur
-        let toastContainer = document.getElementById('toast-container');
-        if (!toastContainer) {
-            toastContainer = document.createElement('div');
-            toastContainer.id = 'toast-container';
-            toastContainer.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                z-index: 9999;
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-            `;
-            document.body.appendChild(toastContainer);
-        }
-
-        // Toast'ı ekle
-        toastContainer.insertAdjacentHTML('beforeend', toastHtml);
-        
-        // Toast'ı göster
-        const toastElement = toastContainer.lastElementChild;
-        setTimeout(() => {
-            toastElement.classList.add('show');
-        }, 100);
-
-        // 3 saniye sonra kaldır
-        setTimeout(() => {
-            toastElement.classList.remove('show');
-            setTimeout(() => {
-                if (toastElement.parentNode) {
-                    toastElement.remove();
-                }
-            }, 300);
-        }, 3000);
     }
 };
 

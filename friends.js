@@ -165,9 +165,9 @@ const friendsModule = {
         // displayName ile ara (eğer en az 2 karakter varsa)
         if (query.length >= 2) {
             searchPromises.push(
-                this.db.collection('users')
-                    .where('displayNameLower', '>=', query.toLowerCase())
-                    .where('displayNameLower', '<=', query.toLowerCase() + '\uf8ff')
+        this.db.collection('users')
+            .where('displayNameLower', '>=', query.toLowerCase())
+            .where('displayNameLower', '<=', query.toLowerCase() + '\uf8ff')
                     .limit(10)
                     .get()
             );
@@ -176,10 +176,10 @@ const friendsModule = {
         // email ile ara (eğer @ işareti varsa tam eşleşme)
         if (query.includes('@')) {
             searchPromises.push(
-                this.db.collection('users')
-                    .where('email', '==', query.toLowerCase())
-                    .limit(5)
-                    .get()
+            this.db.collection('users')
+                .where('email', '==', query.toLowerCase())
+                .limit(5)
+            .get()
             );
         }
         
@@ -319,7 +319,7 @@ const friendsModule = {
             })
             .catch(error => {
                 console.error('Arkadaşlık isteği gönderirken hata:', error);
-                alert('Arkadaşlık isteği gönderilemedi. Lütfen daha sonra tekrar deneyin.');
+                        alert('Arkadaşlık isteği gönderilemedi. Lütfen daha sonra tekrar deneyin.');
             });
     },
     
