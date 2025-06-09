@@ -1591,6 +1591,20 @@ const quizApp = {
         console.log('resetJokers tamamlandı, final envanter:', JSON.stringify(this.jokerInventory));
     },
     
+    // Yeni oyun için joker envanterini yenile
+    refreshJokersForNewGame: function() {
+        console.log('refreshJokersForNewGame çağrıldı, jokerler yenileniyor...');
+        
+        // Önce joker kullanım durumlarını sıfırla
+        this.resetJokerUsage();
+        
+        // Her yeni oyunda fresh jokerler ver
+        this.jokerInventory = {fifty: 1, hint: 1, time: 1, skip: 1};
+        this.saveJokerInventory();
+        
+        console.log('Jokerler yenilendi, yeni envanter:', JSON.stringify(this.jokerInventory));
+    },
+    
     // 50:50 joker ile devre dışı bırakılan seçenekleri sıfırla
     resetDisabledOptions: function() {
         const disabledOptions = document.querySelectorAll('.option.disabled-option');
@@ -2349,8 +2363,8 @@ const quizApp = {
             this.answerTimes = [];
             this.lives = 5;
             
-            // Joker kullanım durumlarını sıfırla
-            this.resetJokerUsage();
+            // Her yeni oyunda jokerları yenile
+            this.refreshJokersForNewGame();
             
             // Kategori seçim ekranını gizle
             if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'none';
