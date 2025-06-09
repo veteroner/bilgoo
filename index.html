@@ -4160,38 +4160,72 @@
         function loadStatisticsData() {
             console.log('İstatistik verileri yükleniyor...');
             
-            // quizApp nesnesinden istatistikleri al
-            if (window.quizApp && window.quizApp.userStats) {
-                const stats = window.quizApp.userStats;
-                updateStatisticsUI(stats);
-            } else {
-                // localStorage'dan istatistikleri yükle
-                try {
+            try {
+                // QuizApp'den gerçek istatistikleri hesapla
+                let stats;
+                if (window.quizApp && typeof window.quizApp.calculateRealStats === 'function') {
+                    stats = window.quizApp.calculateRealStats();
+                    console.log('QuizApp\'den hesaplanan istatistikler:', stats);
+                } else {
+                    // Fallback: localStorage'dan doğrudan al
                     const localStats = localStorage.getItem('userStats');
                     if (localStats) {
-                        const stats = JSON.parse(localStats);
-                        updateStatisticsUI(stats);
+                        stats = JSON.parse(localStats);
                     } else {
-                        // Boş istatistikler göster
-                        updateStatisticsUI({
-                            totalGames: 0,
-                            totalQuestions: 0,
-                            correctAnswers: 0,
-                            highestScore: 0,
-                            categoryStats: {}
-                        });
+                        // Manuel hesaplama
+                        stats = calculateStatsManually();
                     }
-                } catch (error) {
-                    console.error('İstatistikler yüklenirken hata:', error);
-                    updateStatisticsUI({
-                        totalGames: 0,
-                        totalQuestions: 0,
-                        correctAnswers: 0,
-                        highestScore: 0,
-                        categoryStats: {}
-                    });
                 }
+                
+                updateStatisticsUI(stats);
+            } catch (error) {
+                console.error('İstatistikler yüklenirken hata:', error);
+                updateStatisticsUI({
+                    totalGames: 0,
+                    totalQuestions: 0,
+                    correctAnswers: 0,
+                    highestScore: 0,
+                    averageScore: 0,
+                    accuracy: 0,
+                    categoryStats: {}
+                });
             }
+        }
+
+        // Manuel istatistik hesaplama (fallback)
+        function calculateStatsManually() {
+            const gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
+            let totalGames = gameHistory.length;
+            let totalQuestions = 0;
+            let correctAnswers = 0;
+            let totalScore = 0;
+            let categoryStats = {};
+
+            gameHistory.forEach(game => {
+                totalQuestions += game.totalQuestions || 0;
+                correctAnswers += game.correctAnswers || 0;
+                totalScore += game.score || 0;
+                
+                if (game.category) {
+                    if (!categoryStats[game.category]) {
+                        categoryStats[game.category] = { total: 0, correct: 0, games: 0 };
+                    }
+                    categoryStats[game.category].total += game.totalQuestions || 0;
+                    categoryStats[game.category].correct += game.correctAnswers || 0;
+                    categoryStats[game.category].games++;
+                }
+            });
+
+            return {
+                totalGames,
+                totalQuestions,
+                correctAnswers,
+                totalScore,
+                highestScore: totalScore,
+                averageScore: totalGames > 0 ? Math.round(totalScore / totalGames) : 0,
+                accuracy: totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0,
+                categoryStats
+            };
         }
         
         // İstatistik UI'sını güncelle
@@ -4309,7 +4343,8 @@
         function drawStatisticsCharts(stats) {
             // Chart.js kullanarak grafikleri çiz
             if (typeof Chart === 'undefined') {
-                console.warn('Chart.js yüklenmedi, grafikler gösterilemiyor');
+                console.warn('Chart.js yüklenmedi, basit grafikler gösteriliyor');
+                drawSimpleCharts(stats);
                 return;
             }
             
@@ -4389,6 +4424,86 @@
                         }
                     }
                 });
+            }
+        }
+
+        // Basit grafikler çiz (Chart.js olmadan)
+        function drawSimpleCharts(stats) {
+            try {
+                // Kategori dağılımı için basit çubuk grafik
+                const categoryPieCtx = document.getElementById('category-pie-chart');
+                if (categoryPieCtx && stats.categoryStats) {
+                    const categoryData = Object.entries(stats.categoryStats);
+                    if (categoryData.length > 0) {
+                        categoryPieCtx.innerHTML = '';
+                        categoryPieCtx.style.display = 'flex';
+                        categoryPieCtx.style.flexDirection = 'column';
+                        categoryPieCtx.style.gap = '10px';
+                        categoryPieCtx.style.padding = '20px';
+                        
+                        const maxValue = Math.max(...categoryData.map(([cat, data]) => data.total || 0));
+                        
+                        categoryData.forEach(([category, data], index) => {
+                            const value = data.total || 0;
+                            const percentage = maxValue > 0 ? (value / maxValue) * 100 : 0;
+                            const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'];
+                            const color = colors[index % colors.length];
+                            
+                            const barContainer = document.createElement('div');
+                            barContainer.style.cssText = `
+                                display: flex;
+                                align-items: center;
+                                margin-bottom: 8px;
+                            `;
+                            
+                            barContainer.innerHTML = `
+                                <div style="width: 100px; font-size: 12px; margin-right: 10px;">${category}</div>
+                                <div style="flex: 1; background: #f0f0f0; border-radius: 10px; height: 20px; position: relative;">
+                                    <div style="background: ${color}; height: 100%; width: ${percentage}%; border-radius: 10px; transition: width 0.3s ease;"></div>
+                                </div>
+                                <div style="margin-left: 10px; font-size: 12px; font-weight: bold;">${value}</div>
+                            `;
+                            
+                            categoryPieCtx.appendChild(barContainer);
+                        });
+                    }
+                }
+                
+                // Performans çizgi grafiği için basit çizgi
+                const performanceLineCtx = document.getElementById('performance-line-chart');
+                if (performanceLineCtx) {
+                    performanceLineCtx.innerHTML = '';
+                    performanceLineCtx.style.display = 'flex';
+                    performanceLineCtx.style.alignItems = 'center';
+                    performanceLineCtx.style.justifyContent = 'center';
+                    performanceLineCtx.style.height = '200px';
+                    performanceLineCtx.style.background = 'linear-gradient(45deg, #f0f8ff, #e6f3ff)';
+                    performanceLineCtx.style.borderRadius = '10px';
+                    performanceLineCtx.style.padding = '20px';
+                    
+                    const accuracy = stats.accuracy || 0;
+                    const perfectGames = stats.perfectGames || 0;
+                    const totalGames = stats.totalGames || 0;
+                    
+                    performanceLineCtx.innerHTML = `
+                        <div style="text-align: center;">
+                            <div style="font-size: 48px; font-weight: bold; color: #36A2EB; margin-bottom: 10px;">${accuracy}%</div>
+                            <div style="font-size: 16px; color: #666; margin-bottom: 15px;">Ortalama Başarı Oranı</div>
+                            <div style="display: flex; justify-content: space-around; margin-top: 20px;">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 24px; font-weight: bold; color: #4BC0C0;">${perfectGames}</div>
+                                    <div style="font-size: 12px; color: #666;">Mükemmel Oyun</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 24px; font-weight: bold; color: #FFCE56;">${totalGames}</div>
+                                    <div style="font-size: 12px; color: #666;">Toplam Oyun</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Basit grafikler çizilirken hata:', error);
             }
         }
 

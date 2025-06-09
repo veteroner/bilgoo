@@ -160,8 +160,8 @@
             <form id="user-preferences-form">
                 <div class="form-group">
                     <label for="user-language"><i class="fas fa-language"></i> Tercih ettiğiniz dil</label>
-                    <select id="user-language" required>
-                        <option value="tr" selected>Türkçe</option>
+                    <select id="user-language">
+                        <option value="tr">Türkçe</option>
                         <option value="en">English</option>
                         <option value="de">Deutsch</option>
                     </select>
@@ -169,20 +169,10 @@
                 
                 <div class="form-group">
                     <label for="user-age"><i class="fas fa-user-clock"></i> Yaş Aralığınız</label>
-                    <select id="user-age" required>
-                        <option value="child">Çocuk (7-12)</option>
-                        <option value="teen">Genç (13-17)</option>
-                        <option value="adult" selected>Yetişkin (18+)</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="difficulty-preference"><i class="fas fa-sliders-h"></i> Zorluk Seviyesi</label>
-                    <select id="difficulty-preference">
-                        <option value="auto" selected>Otomatik (Yaşa göre ayarla)</option>
-                        <option value="easy">Kolay</option>
-                        <option value="medium">Orta</option>
-                        <option value="hard">Zor</option>
+                    <select id="user-age">
+                        <option value="child">7-12</option>
+                        <option value="teen">13-17</option>
+                        <option value="adult">Yetişkin (18+)</option>
                     </select>
                 </div>
                 
@@ -467,27 +457,10 @@
                 console.log('saveUserPreferences fonksiyonu başladı');
                 const language = document.getElementById('user-language').value;
                 const ageGroup = document.getElementById('user-age').value;
-                const difficulty = document.getElementById('difficulty-preference').value;
                 
                 // Tercihleri localStorage'a kaydet
                 localStorage.setItem('user_language', language);
                 localStorage.setItem('user_age_group', ageGroup);
-                localStorage.setItem('difficulty_preference', difficulty);
-                
-                // Otomatik zorluk ayarı ise yaşa göre zorluk belirle
-                if (difficulty === 'auto') {
-                    let calculatedDifficulty = 'medium'; // varsayılan
-                    
-                    if (ageGroup === 'child') {
-                        calculatedDifficulty = 'easy';
-                    } else if (ageGroup === 'teen') {
-                        calculatedDifficulty = 'medium';
-                    } else if (ageGroup === 'adult') {
-                        calculatedDifficulty = 'hard';
-                    }
-                    
-                    localStorage.setItem('calculated_difficulty', calculatedDifficulty);
-                }
                 
                 // Dil tercihini HTML etiketlerine hemen uygula
                 document.documentElement.setAttribute('lang', language);
@@ -496,7 +469,7 @@
                 // Sayfadaki metinleri hemen değiştir
                 applyLanguageToUI(language);
                 
-                console.log(`Tercihler kaydedildi: Dil=${language}, Yaş Grubu=${ageGroup}, Zorluk=${difficulty}`);
+                console.log(`Tercihler kaydedildi: Dil=${language}, Yaş Grubu=${ageGroup}`);
                 
                 // Tercihler ekranını kapat ve login ekranını göster
                 console.log('Ekran geçişi yapılıyor...');
@@ -551,10 +524,6 @@
                         'confirmPassword': 'Şifre Tekrar',
                         'registerBtn': 'Kayıt Ol',
                         'haveAccount': 'Zaten hesabınız var mı?',
-                        'auto': 'Otomatik (Yaşa göre ayarla)',
-                        'easy': 'Kolay',
-                        'medium': 'Orta',
-                        'hard': 'Zor',
                         'child': 'Çocuk (7-12)',
                         'teen': 'Genç (13-17)',
                         'adult': 'Yetişkin (18+)'
@@ -581,10 +550,6 @@
                         'confirmPassword': 'Confirm Password',
                         'registerBtn': 'Register',
                         'haveAccount': 'Already have an account?',
-                        'auto': 'Automatic (Adjust based on age)',
-                        'easy': 'Easy',
-                        'medium': 'Medium',
-                        'hard': 'Hard',
                         'child': 'Child (7-12)',
                         'teen': 'Teen (13-17)',
                         'adult': 'Adult (18+)'
@@ -611,10 +576,6 @@
                         'confirmPassword': 'Passwort bestätigen',
                         'registerBtn': 'Registrieren',
                         'haveAccount': 'Haben Sie bereits ein Konto?',
-                        'auto': 'Automatisch (Nach Alter anpassen)',
-                        'easy': 'Leicht',
-                        'medium': 'Mittel',
-                        'hard': 'Schwer',
                         'child': 'Kind (7-12)',
                         'teen': 'Jugendlicher (13-17)',
                         'adult': 'Erwachsener (18+)'
@@ -638,7 +599,6 @@
                 // Form etiketleri
                 document.querySelector('label[for="user-language"]').innerHTML = `<i class="fas fa-language"></i> ${langData.langLabel}`;
                 document.querySelector('label[for="user-age"]').innerHTML = `<i class="fas fa-user-clock"></i> ${langData.ageLabel}`;
-                document.querySelector('label[for="difficulty-preference"]').innerHTML = `<i class="fas fa-sliders-h"></i> ${langData.difficultyLabel}`;
                 
                 // Seçenek metinlerini güncelle (select options)
                 const ageSelect = document.getElementById('user-age');
@@ -647,15 +607,6 @@
                     if (option.value === 'child') option.textContent = langData.child;
                     if (option.value === 'teen') option.textContent = langData.teen;
                     if (option.value === 'adult') option.textContent = langData.adult;
-                }
-                
-                const diffSelect = document.getElementById('difficulty-preference');
-                for (let i = 0; i < diffSelect.options.length; i++) {
-                    const option = diffSelect.options[i];
-                    if (option.value === 'auto') option.textContent = langData.auto;
-                    if (option.value === 'easy') option.textContent = langData.easy;
-                    if (option.value === 'medium') option.textContent = langData.medium;
-                    if (option.value === 'hard') option.textContent = langData.hard;
                 }
                 
                 // Buton ve diğer metinler
@@ -803,7 +754,7 @@
                         saveUserPreferences();
                     }
                 });
-                                } else {
+            } else {
                 console.error('Devam Et butonu bulunamadı!');
             }
         });

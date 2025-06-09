@@ -77,7 +77,7 @@ const quizApp = {
     TIME_PER_QUESTION: 45,
     TIME_PER_BLANK_FILLING_QUESTION: 60,
     SEEN_QUESTIONS_KEY: 'quizSeenQuestions',
-    QUESTIONS_PER_GAME: 50,
+    QUESTIONS_PER_GAME: 'dynamic', // Artık kategoriye göre dinamik
     STATS_KEY: 'quizStats',
     USER_SETTINGS_KEY: 'quizSettings',
     JOKER_INVENTORY_KEY: 'quizJokerInventory',
@@ -2046,23 +2046,21 @@ const quizApp = {
             this.currentSection++; // Bölüm sayısını artır
             
                     // Progressive difficulty sistemi ile dinamik bölüm sayısı
-        const maxSections = this.getMaxSectionsForCategory();
-        if (this.currentSection > maxSections) {
-            this.showCategoryCompletion();
-            return;
-        }
-            
-            // 50 bölüm tamamlandıysa, oyunu bitir (eski kod - artık kullanılmıyor)
-            if (this.currentSection > this.totalSections) {
-                this.showGameCompletion();
+            const maxSections = this.getMaxSectionsForCategory();
+            if (this.currentSection > maxSections) {
+                this.showCategoryCompletion();
                 return;
             }
+            
+            // Eski 50 bölüm kontrolü kaldırıldı - artık dinamik sistem kullanılıyor
             
             this.showSectionTransition();
         } else if (this.currentQuestionIndex < this.questions.length) {
             this.displayQuestion(this.questions[this.currentQuestionIndex]);
         } else {
-            this.showResult();
+            // Tüm sorular cevaplandı - kategori tamamlama ekranını göster
+            console.log("Tüm sorular cevaplandı, kategori tamamlama ekranı gösteriliyor...");
+            this.showCategoryCompletion();
         }
     },
     
@@ -2106,6 +2104,19 @@ const quizApp = {
         return maxSections;
     },
     
+    // Kategori zorluk seviyesi metni
+    getCategoryDifficultyText: function() {
+        const maxSections = this.getMaxSectionsForCategory();
+        
+        if (maxSections <= 15) {
+            return "🟢 Kolay Kategori";
+        } else if (maxSections <= 18) {
+            return "🟡 Orta Kategori";
+        } else {
+            return "🔴 Zor Kategori";
+        }
+    },
+    
     // Progressive difficulty: Mevcut bölüme göre zorluk seviyesi belirle
     getProgressiveDifficulty: function() {
         const maxSections = this.getMaxSectionsForCategory();
@@ -2136,7 +2147,10 @@ const quizApp = {
                         <i class="fas fa-trophy"></i>
                     </div>
                     <h2>Kategori Tamamlandı!</h2>
-                    <p class="completion-message">"${this.selectedCategory}" kategorisinin tüm bölümlerini başarıyla tamamladınız!</p>
+                    <p class="completion-message">"${this.selectedCategory}" kategorisinin ${this.getMaxSectionsForCategory()} bölümünü başarıyla tamamladınız!</p>
+                    <p class="completion-difficulty" style="font-size: 14px; color: #64748b; margin-top: 10px;">
+                        ${this.getCategoryDifficultyText()} • Progressive Zorluk Sistemi
+                    </p>
                 </div>
                 
                 <div class="completion-stats">
@@ -2177,6 +2191,16 @@ const quizApp = {
                         <div class="stat-content">
                             <div class="stat-value">${this.lives}</div>
                             <div class="stat-label">Kalan Can</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-item" style="grid-column: 1 / -1;">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" style="font-size: 14px;">Kolay → Orta → Zor</div>
+                            <div class="stat-label">Zorluk Progresyonu</div>
                         </div>
                     </div>
                 </div>
@@ -2222,8 +2246,22 @@ const quizApp = {
             if (victorySound) victorySound.play().catch(e => console.error("Ses çalınamadı:", e));
         }
         
+        // 10 saniye sonra otomatik olarak sonuç ekranını göster
+        setTimeout(() => {
+            if (document.body.contains(categoryCompletionModal)) {
+                categoryCompletionModal.remove();
+                this.showResult();
+            }
+        }, 10000);
+        
         // Konfeti efekti eklenebilir
         console.log(`${this.selectedCategory} kategorisi ${this.getMaxSectionsForCategory()} bölüm ile tamamlandı!`);
+    },
+
+    // DEBUG: Kategori tamamlama modalını test et
+    testCategoryCompletion: function() {
+        console.log("Test: Kategori tamamlama modalı manuel olarak gösteriliyor...");
+        this.showCategoryCompletion();
     },
     
     // Oyun Tamamlama Ekranını Göster (50 bölüm tamamlandığında)
@@ -2553,11 +2591,25 @@ const quizApp = {
                 console.log("Soru sayısı:", this.questions.length);
                 console.log("Aktif dil:", this.currentLanguage);
                 
-                // Maksimum soru sayısını sınırla (opsiyonel)
-                const maxQuestions = this.MAX_QUESTIONS || 50; // MAX_QUESTIONS tanımlanmamışsa 50 kullan
+                // Maksimum soru sayısını dinamik olarak hesapla
+                const maxSections = this.getMaxSectionsForCategory();
+                const maxQuestions = maxSections * 5; // Her bölümde 5 soru
+                
+                console.log(`Kategori: ${this.selectedCategory}`);
+                console.log(`Maksimum bölüm: ${maxSections}`);
+                console.log(`Maksimum soru: ${maxQuestions}`);
+                
                 if (this.questions.length > maxQuestions) {
                     this.questions = this.questions.slice(0, maxQuestions);
-                    console.log("Sorular", maxQuestions, "ile sınırlandırıldı");
+                    console.log("Sorular", maxQuestions, "ile sınırlandırıldı (dinamik sistem)");
+                } else if (this.questions.length < maxQuestions) {
+                    // Eğer yeterli soru yoksa mevcut soruları tekrarla
+                    const originalQuestions = [...this.questions];
+                    while (this.questions.length < maxQuestions) {
+                        this.questions = this.questions.concat(this.shuffleArray([...originalQuestions]));
+                    }
+                    this.questions = this.questions.slice(0, maxQuestions);
+                    console.log("Yetersiz soru! Sorular tekrarlanarak", maxQuestions, "soraya çıkarıldı");
                 }
                 
                 // Toplam puan göstergesini başlat
@@ -3201,7 +3253,6 @@ const quizApp = {
         
         // Eğer hiç soru yoksa kullanıcıyı bilgilendir
         if (levelQuestions.length === 0) {
-            const difficultyNames = { 1: 'Kolay', 2: 'Orta', 3: 'Zor' };
             const difficultyName = difficultyNames[targetDifficulty] || 'Bilinmeyen';
             
             alert(`Bu kategoride "${difficultyName}" seviyesinde soru bulunmuyor. Lütfen başka bir kategori veya zorluk seviyesi seçin.`);
@@ -3221,7 +3272,6 @@ const quizApp = {
             const diff = q.difficulty || 'undefined';
             difficultyCheck[diff] = (difficultyCheck[diff] || 0) + 1;
         });
-        const difficultyNames = { 1: 'Kolay', 2: 'Orta', 3: 'Zor' };
         console.log(`🎯 Progressive Zorluk: ${difficultyNames[targetDifficulty]} (${targetDifficulty})`);
         console.log(`✅ Yüklenen ${this.questions.length} sorunun zorluk dağılımı:`, difficultyCheck);
         console.log(`Bölüm ${this.currentSection} için ${this.questions.length} soru yüklendi.`);
@@ -3768,44 +3818,82 @@ const quizApp = {
         try {
             console.log('calculateRealStats çağrıldı');
             
-            // gameStats anahtarından temel istatistikleri al
-            const gameStats = JSON.parse(localStorage.getItem('gameStats') || '{}');
-            console.log('gameStats:', gameStats);
+            // Oyun geçmişini al
+            const gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
+            console.log('Oyun geçmişi:', gameHistory);
             
-            let totalGames = gameStats.totalGames || 0;
-            let totalQuestions = gameStats.totalQuestions || 0;
-            let correctAnswers = gameStats.correctAnswers || 0;
+            let totalGames = 0;
+            let totalQuestions = 0;
+            let correctAnswers = 0;
             let totalScore = 0;
             let perfectGames = 0;
-            let fastAnswers = gameStats.fastAnswers || 0;
+            let fastAnswers = 0;
             let categoriesPlayed = new Set();
+            let categoryStats = {};
 
-            // Kategori bazlı skorları da al
-            if (gameStats.categories) {
-                Object.values(gameStats.categories).forEach(categoryStats => {
-                    // Zaten gameStats'den aldığımız için tekrar eklemeye gerek yok
-                    // Sadece kategori sayısını takip edelim
-                    categoriesPlayed.add(Object.keys(gameStats.categories));
-                });
-            }
-            
-            // Tüm kategorilerden yüksek skorları topla
-            const categories = ['Genel Kültür', 'Bilim', 'Teknoloji', 'Spor', 'Müzik', 'Tarih', 'Coğrafya', 'Sanat'];
+            // Her oyunu analiz et
+            gameHistory.forEach(game => {
+                totalGames++;
+                totalQuestions += game.totalQuestions || 0;
+                correctAnswers += game.correctAnswers || 0;
+                totalScore += game.score || 0;
+                
+                // Mükemmel oyunları say
+                if (game.correctAnswers === game.totalQuestions && game.totalQuestions > 0) {
+                    perfectGames++;
+                }
+                
+                // Hızlı cevapları say (ortalama süre 10 saniyeden az ise)
+                if (game.averageTime && game.averageTime < 10) {
+                    fastAnswers++;
+                }
+                
+                // Kategorileri topla
+                if (game.category) {
+                    categoriesPlayed.add(game.category);
+                    
+                    // Kategori istatistikleri
+                    if (!categoryStats[game.category]) {
+                        categoryStats[game.category] = { total: 0, correct: 0, games: 0 };
+                    }
+                    categoryStats[game.category].total += game.totalQuestions || 0;
+                    categoryStats[game.category].correct += game.correctAnswers || 0;
+                    categoryStats[game.category].games++;
+                }
+            });
+
+            // High scores'tan da veri topla (eski format desteği için)
+            const categories = ['Genel Kültür', 'Bilim', 'Teknoloji', 'Spor', 'Müzik', 'Tarih', 'Coğrafya', 'Sanat', 'Edebiyat', 'Hayvanlar', 'Matematik'];
             
             categories.forEach(category => {
                 const categoryScores = JSON.parse(localStorage.getItem(`highScores_${category}`) || '[]');
-                console.log(`${category} kategorisi skorları:`, categoryScores);
-                
                 categoryScores.forEach(score => {
                     if (score.score) {
-                        totalScore += score.score;
+                        // Sadece gameHistory'de yoksa ekle (duplikasyon önleme)
+                        const existsInHistory = gameHistory.some(game => 
+                            game.category === category && 
+                            Math.abs((game.score || 0) - score.score) < 5 // Küçük fark toleransı
+                        );
                         
-                        // Mükemmel oyunları say (100% başarı)
-                        if (score.percentage === 100) {
-                            perfectGames++;
+                        if (!existsInHistory) {
+                            totalGames++;
+                            totalScore += score.score;
+                            totalQuestions += score.totalQuestions || 10; // Varsayılan
+                            correctAnswers += score.correctAnswers || Math.round(score.score / 10);
+                            
+                            if (score.percentage === 100) {
+                                perfectGames++;
+                            }
+                            categoriesPlayed.add(category);
+                            
+                            // Kategori istatistikleri
+                            if (!categoryStats[category]) {
+                                categoryStats[category] = { total: 0, correct: 0, games: 0 };
+                            }
+                            categoryStats[category].total += score.totalQuestions || 10;
+                            categoryStats[category].correct += score.correctAnswers || Math.round(score.score / 10);
+                            categoryStats[category].games++;
                         }
-                        
-                        categoriesPlayed.add(category);
                     }
                 });
             });
@@ -3818,12 +3906,19 @@ const quizApp = {
                 perfectGames,
                 fastAnswers,
                 categoriesPlayed: categoriesPlayed.size,
-                accuracy: totalQuestions > 0 ? (correctAnswers / totalQuestions) * 100 : 0
+                accuracy: totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0,
+                averageScore: totalGames > 0 ? Math.round(totalScore / totalGames) : 0,
+                highestScore: Math.max(...[totalScore, ...categories.map(cat => {
+                    const scores = JSON.parse(localStorage.getItem(`highScores_${cat}`) || '[]');
+                    return scores.length > 0 ? Math.max(...scores.map(s => s.score || 0)) : 0;
+                })]),
+                categoryStats
             };
 
             console.log('Hesaplanan istatistikler:', stats);
 
             // İstatistikleri localStorage'a kaydet
+            localStorage.setItem('userStats', JSON.stringify(stats));
             localStorage.setItem('quiz-user-stats', JSON.stringify(stats));
             
             return stats;
@@ -3837,7 +3932,10 @@ const quizApp = {
                 perfectGames: 0,
                 fastAnswers: 0,
                 categoriesPlayed: 0,
-                accuracy: 0
+                accuracy: 0,
+                averageScore: 0,
+                highestScore: 0,
+                categoryStats: {}
             };
         }
     },
@@ -4835,7 +4933,8 @@ const quizApp = {
             
             // Mevcut soru indeksi kontrolü
             if (this.currentQuestionIndex >= this.questions.length) {
-                this.showResult();
+                console.log("Tüm sorular tamamlandı, kategori tamamlama ekranı gösteriliyor...");
+                this.showCategoryCompletion();
                 return;
             }
             
@@ -6239,6 +6338,31 @@ const quizApp = {
             
             // LOCALSTORAGE'A KAYDET (Yedek olarak)
             if (this.isLocalStorageAvailable()) {
+                // Oyun geçmişine bu oyunu ekle
+                const gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
+                const gameRecord = {
+                    category: this.selectedCategory,
+                    score: this.score,
+                    totalQuestions: this.answeredQuestions,
+                    correctAnswers: this.score, // Bu örnekte score = correctAnswers
+                    lives: this.lives,
+                    averageTime: this.answerTimes.length > 0 ? 
+                        (this.answerTimes.reduce((a, b) => a + b, 0) / this.answerTimes.length) : 0,
+                    date: new Date().toISOString(),
+                    timestamp: Date.now()
+                };
+                
+                gameHistory.push(gameRecord);
+                
+                // Son 100 oyunu sakla (hafıza tasarrufu için)
+                if (gameHistory.length > 100) {
+                    gameHistory.splice(0, gameHistory.length - 100);
+                }
+                
+                localStorage.setItem('gameHistory', JSON.stringify(gameHistory));
+                console.log('Oyun geçmişine eklendi:', gameRecord);
+                
+                // Eski format istatistikler (uyumluluk için)
                 const statsKey = 'gameStats';
                 let stats = JSON.parse(localStorage.getItem(statsKey)) || {
                     totalGames: 0,
