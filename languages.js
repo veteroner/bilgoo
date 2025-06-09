@@ -157,6 +157,16 @@ const languages = {
         imageLoadError: 'Görsel yüklenemedi, başka bir soruya geçiliyor...',
         emptyAnswer: 'Lütfen bir cevap girin!',
         
+        // Can satın alma
+        buyLivesTitle: 'Can Satın Al',
+        buyLivesSubtitle: 'Canlarınız bitti! Oyunu sürdürmek ister misiniz?',
+        buyLivesOffer: '3 Can',
+        buyLivesPrice: '500 Puan',
+        buyLivesButton: 'Satın Al',
+        declineLives: 'Hayır',
+        insufficientPoints: 'Yeterli puanınız bulunmuyor',
+        livesRestored: 'Canlarınız yenilendi! Oyun devam ediyor...',
+        
         // Diğer
         seconds: 'saniye',
         second: 'saniye',
@@ -312,6 +322,16 @@ const languages = {
         categoryMath: 'Mathematics',
         categoryBlankFilling: 'Fill in the Blank',
         categoryOther: 'Other',
+        
+        // Buy lives
+        buyLivesTitle: 'Buy Lives',
+        buyLivesSubtitle: 'You\'re out of lives! Would you like to continue the game?',
+        buyLivesOffer: '3 Lives',
+        buyLivesPrice: '500 Points',
+        buyLivesButton: 'Buy',
+        declineLives: 'No',
+        insufficientPoints: 'You don\'t have enough points',
+        livesRestored: 'Lives restored! Game continues...',
         
         // Jokerler
         jokerFifty: '50:50',
@@ -651,6 +671,16 @@ const languages = {
         questionLoadError: 'Fehler beim Laden der Fragedaten: Bitte aktualisieren Sie die Seite.',
         imageLoadError: 'Bild konnte nicht geladen werden, wechsle zu einer anderen Frage...',
         emptyAnswer: 'Bitte geben Sie eine Antwort ein!',
+        
+        // Leben kaufen
+        buyLivesTitle: 'Leben kaufen',
+        buyLivesSubtitle: 'Ihre Leben sind aufgebraucht! Möchten Sie das Spiel fortsetzen?',
+        buyLivesOffer: '3 Leben',
+        buyLivesPrice: '500 Punkte',
+        buyLivesButton: 'Kaufen',
+        declineLives: 'Nein',
+        insufficientPoints: 'Sie haben nicht genügend Punkte',
+        livesRestored: 'Leben wiederhergestellt! Spiel wird fortgesetzt...',
         
         // Sonstiges
         seconds: 'Sekunden',

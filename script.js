@@ -1318,8 +1318,8 @@ const quizApp = {
         var buyButtons = modal.querySelectorAll('.joker-buy-btn');
         var pointsDisplay = document.getElementById('joker-store-points-display');
         
-        // Mevcut puanları ve joker envanterini göster
-        pointsDisplay.textContent = this.score || 0;
+        // Mevcut toplam puanları ve joker envanterini göster
+        pointsDisplay.textContent = this.totalScore || 0;
         
         // Oyun ekranındaki joker butonlarını da güncelle
         this.updateJokerButtons();
@@ -1333,22 +1333,21 @@ const quizApp = {
             var jokerType = item.dataset.joker;
             var price = parseInt(item.dataset.price);
             
-            // Yeterli puan varsa butonu etkinleştir
-            btn.disabled = this.score < price;
+            // Yeterli toplam puan varsa butonu etkinleştir
+            btn.disabled = this.totalScore < price;
             
             // Satın alma olayı
             var self = this;
             btn.onclick = function() {
-                console.log(`Joker satın alma denemesi: ${jokerType}, Fiyat: ${price}, Mevcut Puan: ${self.score}`);
+                console.log(`Joker satın alma denemesi: ${jokerType}, Fiyat: ${price}, Mevcut Toplam Puan: ${self.totalScore}`);
                 console.log('Satın alma öncesi envanter:', JSON.stringify(self.jokerInventory));
                 
-                if (self.score >= price) {
-                    // Puanı azalt
-                    self.score -= price;
+                if (self.totalScore >= price) {
+                    // Toplam puanı azalt
+                    self.totalScore -= price;
                     
                     // PUANI FIREBASE'E KAYDET
                     if (self.isLoggedIn) {
-                        self.totalScore -= price; // Toplam puandan da düş
                         self.delayedSaveUserData(); // Firebase'e geciktirilmiş kaydet
                         console.log(`Joker satın alma: ${price} puan harcandı. Yeni toplam: ${self.totalScore}`);
                     }
@@ -1363,9 +1362,9 @@ const quizApp = {
                     self.saveJokerInventory();
                     
                     // Göstergeleri güncelle
-                    pointsDisplay.textContent = self.score;
+                    pointsDisplay.textContent = self.totalScore;
                     
-                    // Joker mağazasındaki sayımları güncelle
+                    // Joker mağazasındaki sayımları ve buton durumlarını güncelle
                     self.updateJokerStoreDisplay(modal);
                     
                     // OYUN EKRANINDAKİ JOKER BUTONLARINI DA GÜNCELLE
@@ -1373,9 +1372,6 @@ const quizApp = {
                     
                     // Skor gösterimini güncelle
                     self.updateScoreDisplay();
-                    
-                    // Yeterli puan kaldıysa butonu aktif tut, yoksa devre dışı bırak
-                    btn.disabled = self.score < price;
                     
                     // Toast bildirimi göster
                     var jokerName = jokerType === 'fifty' ? '50:50' : 
@@ -1541,6 +1537,7 @@ const quizApp = {
     updateJokerStoreDisplay: function(modal) {
         console.log('Joker mağazası sayımları güncelleniyor...');
         console.log('Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
+        console.log('Mevcut toplam puan:', this.totalScore);
         
         const ownedCountElements = modal.querySelectorAll('.joker-owned-count');
         ownedCountElements.forEach((el) => {
@@ -1548,6 +1545,15 @@ const quizApp = {
             const count = this.jokerInventory[jokerType] || 0;
             el.textContent = count;
             console.log(`${jokerType} joker sayısı mağazada güncellendi: ${count}`);
+        });
+        
+        // Satın alma butonlarının durumunu da güncelle
+        const buyButtons = modal.querySelectorAll('.joker-buy-btn');
+        buyButtons.forEach((btn) => {
+            const item = btn.closest('.joker-store-item');
+            const price = parseInt(item.dataset.price);
+            btn.disabled = this.totalScore < price;
+            console.log(`Buton durumu güncellendi: Fiyat ${price}, Toplam puan ${this.totalScore}, Aktif: ${this.totalScore >= price}`);
         });
     },
 
@@ -3386,6 +3392,9 @@ const quizApp = {
             }
             }
             
+        // Firebase'den kullanıcı verilerini yükle (puan, istatistikler vs.)
+        this.loadFirebaseUserStats(userId);
+        
         // Gerçek istatistikleri güncelle
         this.updateRealUserStats();
             
@@ -3452,16 +3461,21 @@ const quizApp = {
                     const userData = doc.data();
                     console.log('Kullanıcı verileri:', userData);
                     
+                    // Firebase'den gelen totalScore'u quizApp'e ata
+                    if (userData.totalScore !== undefined) {
+                        this.totalScore = userData.totalScore;
+                    }
+                    
                     // Profilde toplam puanı göster
                     const profileTotalScore = document.getElementById('profile-total-score');
                     if (profileTotalScore) {
-                        profileTotalScore.textContent = userData.totalScore || 0;
+                        profileTotalScore.textContent = this.totalScore || 0;
                     }
                     
                     // Profilde seviyeyi göster
                     const profileUserLevel = document.getElementById('profile-user-level');
                     if (profileUserLevel) {
-                        const level = Math.floor((userData.totalScore || 0) / 500) + 1;
+                        const level = Math.floor((this.totalScore || 0) / 500) + 1;
                         profileUserLevel.textContent = level;
                     }
                     
@@ -3548,14 +3562,25 @@ const quizApp = {
     
     // Profil istatistiklerini güncelle
     updateProfileStats: function(stats) {
+        console.log('updateProfileStats çağrıldı, stats:', stats);
+        
         const totalGames = document.getElementById('stats-total-games');
-        if (totalGames) totalGames.textContent = stats.totalGames || 0;
+        if (totalGames) {
+            totalGames.textContent = stats.totalGames || 0;
+            console.log('Toplam oyun güncellendi:', stats.totalGames || 0);
+        }
         
         const totalQuestions = document.getElementById('stats-total-questions');
-        if (totalQuestions) totalQuestions.textContent = stats.totalQuestions || 0;
+        if (totalQuestions) {
+            totalQuestions.textContent = stats.totalQuestions || 0;
+            console.log('Toplam soru güncellendi:', stats.totalQuestions || 0);
+        }
         
         const correctAnswers = document.getElementById('stats-correct-answers');
-        if (correctAnswers) correctAnswers.textContent = stats.correctAnswers || 0;
+        if (correctAnswers) {
+            correctAnswers.textContent = stats.correctAnswers || 0;
+            console.log('Doğru cevap güncellendi:', stats.correctAnswers || 0);
+        }
         
         // Doğruluk oranı
         const accuracy = document.getElementById('stats-accuracy');
@@ -3564,6 +3589,7 @@ const quizApp = {
                 ? Math.round((stats.correctAnswers / stats.totalQuestions) * 100) 
                 : 0;
             accuracy.textContent = `%${accuracyValue}`;
+            console.log('Doğruluk oranı güncellendi:', accuracyValue);
         }
     },
 
@@ -3580,16 +3606,16 @@ const quizApp = {
         if (profilePage && profilePage.style.display !== 'none') {
             this.updateProfileStats(realStats);
             
-            // Toplam puanı güncelle
+            // Toplam puanı güncelle (Firebase'den gelen veya mevcut toplam puan)
             const profileTotalScore = document.getElementById('profile-total-score');
             if (profileTotalScore) {
-                profileTotalScore.textContent = realStats.totalScore || 0;
+                profileTotalScore.textContent = this.totalScore || 0;
             }
             
-            // Seviyeyi güncelle
+            // Seviyeyi güncelle (toplam puana göre)
             const profileUserLevel = document.getElementById('profile-user-level');
             if (profileUserLevel) {
-                const level = Math.floor((realStats.totalScore || 0) / 500) + 1;
+                const level = Math.floor((this.totalScore || 0) / 500) + 1;
                 profileUserLevel.textContent = level;
             }
         }
@@ -3603,9 +3629,11 @@ const quizApp = {
     // Gerçek istatistikleri hesapla
     calculateRealStats: function() {
         try {
-            // localStorage'dan mevcut tüm skorları al
-            const highScores = JSON.parse(localStorage.getItem('quiz-high-scores') || '[]');
-            const gameStats = JSON.parse(localStorage.getItem('quiz-game-stats') || '{}');
+            console.log('calculateRealStats çağrıldı');
+            
+            // gameStats anahtarından temel istatistikleri al
+            const gameStats = JSON.parse(localStorage.getItem('gameStats') || '{}');
+            console.log('gameStats:', gameStats);
             
             let totalGames = gameStats.totalGames || 0;
             let totalQuestions = gameStats.totalQuestions || 0;
@@ -3615,22 +3643,34 @@ const quizApp = {
             let fastAnswers = gameStats.fastAnswers || 0;
             let categoriesPlayed = new Set();
 
-            // Yüksek skorlardan istatistikleri hesapla
-            highScores.forEach(score => {
-                totalGames++;
-                totalQuestions += score.totalQuestions || 10;
-                correctAnswers += score.correctAnswers || score.score || 0;
-                totalScore += score.score || 0;
+            // Kategori bazlı skorları da al
+            if (gameStats.categories) {
+                Object.values(gameStats.categories).forEach(categoryStats => {
+                    // Zaten gameStats'den aldığımız için tekrar eklemeye gerek yok
+                    // Sadece kategori sayısını takip edelim
+                    categoriesPlayed.add(Object.keys(gameStats.categories));
+                });
+            }
+            
+            // Tüm kategorilerden yüksek skorları topla
+            const categories = ['Genel Kültür', 'Bilim', 'Teknoloji', 'Spor', 'Müzik', 'Tarih', 'Coğrafya', 'Sanat'];
+            
+            categories.forEach(category => {
+                const categoryScores = JSON.parse(localStorage.getItem(`highScores_${category}`) || '[]');
+                console.log(`${category} kategorisi skorları:`, categoryScores);
                 
-                // Mükemmel oyunları say
-                if (score.correctAnswers === score.totalQuestions) {
-                    perfectGames++;
-                }
-                
-                // Kategori çeşitliliğini takip et
-                if (score.category) {
-                    categoriesPlayed.add(score.category);
-                }
+                categoryScores.forEach(score => {
+                    if (score.score) {
+                        totalScore += score.score;
+                        
+                        // Mükemmel oyunları say (100% başarı)
+                        if (score.percentage === 100) {
+                            perfectGames++;
+                        }
+                        
+                        categoriesPlayed.add(category);
+                    }
+                });
             });
 
             const stats = {
@@ -3643,6 +3683,8 @@ const quizApp = {
                 categoriesPlayed: categoriesPlayed.size,
                 accuracy: totalQuestions > 0 ? (correctAnswers / totalQuestions) * 100 : 0
             };
+
+            console.log('Hesaplanan istatistikler:', stats);
 
             // İstatistikleri localStorage'a kaydet
             localStorage.setItem('quiz-user-stats', JSON.stringify(stats));
@@ -4473,9 +4515,12 @@ const quizApp = {
             }
         }
         if (this.lives <= 0) {
-            setTimeout(() => {
-                this.showResult();
-            }, 1500);
+            // Eğer can satın alma modalı açık değilse oyunu bitir
+            if (!document.getElementById('buyLivesModal')) {
+                setTimeout(() => {
+                    this.showResult();
+                }, 1500);
+            }
             return;
         }
         if (this.nextButton) {
@@ -4551,11 +4596,14 @@ const quizApp = {
                 onlineGame.submitAnswer(false);
             }
             
-            // Can kontrolü
+            // Can kontrolü - Modal açık değilse direkt showResult çağır
             if (this.lives <= 0) {
-                setTimeout(() => {
-                    this.showResult();
-                }, 1500);
+                // Eğer can satın alma modalı açık değilse oyunu bitir
+                if (!document.getElementById('buyLivesModal')) {
+                    setTimeout(() => {
+                        this.showResult();
+                    }, 1500);
+                }
                 return;
             }
         }
@@ -4646,9 +4694,12 @@ const quizApp = {
             onlineGame.submitAnswer(false);
         }
         if (this.lives <= 0) {
-            setTimeout(() => {
-                this.showResult();
-            }, 1500);
+            // Eğer can satın alma modalı açık değilse oyunu bitir
+            if (!document.getElementById('buyLivesModal')) {
+                setTimeout(() => {
+                    this.showResult();
+                }, 1500);
+            }
             return;
         }
     },
@@ -4669,7 +4720,10 @@ const quizApp = {
             
             // Oyun bitti kontrolü yap
             if (this.lives <= 0) {
-                this.showResult();
+                // Eğer can satın alma modalı açık değilse oyunu bitir
+                if (!document.getElementById('buyLivesModal')) {
+                    this.showResult();
+                }
                 return;
             }
             
@@ -5758,17 +5812,15 @@ const quizApp = {
         // DOM'u güncelle
         this.updateLives();
         
-        // Can kontrolü - canlar bittiyse oyunu bitir
+        // Can kontrolü - canlar bittiyse can satın alma teklifi göster
         if (this.lives <= 0) {
-            console.log("Canlar bitti, oyun sona eriyor...");
+            console.log("Canlar bitti, can satın alma teklifi gösteriliyor...");
             
             // Zamanlayıcıyı durdur
             this.stopTimer();
             
-            // Kısa bir gecikme ile oyun sonu ekranını göster
-            setTimeout(() => {
-                this.showResult();
-            }, 1000); // 1 saniye gecikme ile oyuncu durumu anlasın
+            // Can satın alma modalını göster
+            this.showBuyLivesModal();
         }
     },
     
@@ -6857,6 +6909,19 @@ const quizApp = {
             totalScoreElement.textContent = scoreValue;
         }
         
+        // Profil sayfasındaki puan gösterimini güncelle
+        const profileTotalScore = document.getElementById('profile-total-score');
+        if (profileTotalScore) {
+            profileTotalScore.textContent = this.totalScore || 0;
+        }
+        
+        // Profil sayfasındaki seviye gösterimini güncelle
+        const profileUserLevel = document.getElementById('profile-user-level');
+        if (profileUserLevel) {
+            const level = Math.floor((this.totalScore || 0) / 500) + 1;
+            profileUserLevel.textContent = level;
+        }
+        
         // Eski puan gösterimini de destekle (geriye uyumluluk için)
         const totalScoreElements = document.querySelectorAll('.total-score-display');
         totalScoreElements.forEach(element => {
@@ -7029,6 +7094,195 @@ const quizApp = {
         } else {
             console.log('7. Test kayıt atlandı - gerekli şartlar sağlanmadı');
         }
+    },
+
+    // Can satın alma modalını göster
+    showBuyLivesModal: function() {
+        const languages = window.languages || {};
+        const currentLang = this.currentLanguage || 'tr';
+        const texts = languages[currentLang] || languages.tr;
+
+        // Modal HTML'ini oluştur
+        const modalHtml = `
+            <div class="buy-lives-modal" id="buyLivesModal">
+                <div class="buy-lives-modal-content">
+                    <div class="buy-lives-modal-icon">
+                        <i class="fas fa-heart-broken"></i>
+                    </div>
+                    <h2 class="buy-lives-modal-title">${texts.buyLivesTitle}</h2>
+                    <p class="buy-lives-modal-subtitle">${texts.buyLivesSubtitle}</p>
+                    
+                    <div class="buy-lives-offer">
+                        <div class="buy-lives-offer-hearts">
+                            <i class="fas fa-heart"></i>
+                            <i class="fas fa-heart"></i>
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="buy-lives-offer-text">${texts.buyLivesOffer}</div>
+                        <div class="buy-lives-offer-price">
+                            <i class="fas fa-coins"></i>
+                            ${texts.buyLivesPrice}
+                        </div>
+                    </div>
+                    
+                    <div class="buy-lives-modal-actions">
+                        <button class="buy-lives-btn" id="buyLivesBtn">
+                            <i class="fas fa-shopping-cart"></i>
+                            ${texts.buyLivesButton}
+                        </button>
+                        <button class="decline-lives-btn" id="declineLivesBtn">
+                            <i class="fas fa-times"></i>
+                            ${texts.declineLives}
+                        </button>
+                    </div>
+                    
+                    <div class="insufficient-points" id="insufficientPoints" style="display: none;">
+                        ${texts.insufficientPoints}
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Modal'ı body'ye ekle
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        
+        // Modal'ı göster
+        const modal = document.getElementById('buyLivesModal');
+        setTimeout(() => {
+            modal.classList.add('show');
+        }, 100);
+
+        // Event listener'ları ekle
+        this.setupBuyLivesModalEvents();
+    },
+
+    // Can satın alma modal event'lerini ayarla
+    setupBuyLivesModalEvents: function() {
+        const modal = document.getElementById('buyLivesModal');
+        const buyBtn = document.getElementById('buyLivesBtn');
+        const declineBtn = document.getElementById('declineLivesBtn');
+        const insufficientMsg = document.getElementById('insufficientPoints');
+
+        // Yetersiz puan kontrolü
+        const requiredPoints = 500;
+        if (this.totalScore < requiredPoints) {
+            buyBtn.disabled = true;
+            insufficientMsg.style.display = 'block';
+        }
+
+        // Satın al butonu
+        buyBtn.addEventListener('click', () => {
+            if (this.totalScore >= requiredPoints) {
+                this.buyLives();
+            }
+        });
+
+        // Reddet butonu
+        declineBtn.addEventListener('click', () => {
+            this.closeBuyLivesModal();
+            // Oyunu bitir
+            setTimeout(() => {
+                this.showResult();
+            }, 500);
+        });
+    },
+
+    // Can satın alma işlemi
+    buyLives: function() {
+        const requiredPoints = 500;
+        const newLives = 3;
+
+        if (this.totalScore >= requiredPoints) {
+            // Puanı düş
+            this.totalScore -= requiredPoints;
+            
+            // Canları ekle
+            this.lives = newLives;
+            
+            // Verileri güncelle
+            this.updateTotalScoreDisplay();
+            this.updateLives();
+            
+            // Firebase'e kaydet
+            if (this.isLoggedIn && firebase.firestore) {
+                const db = firebase.firestore();
+                db.collection('users').doc(this.currentUser.uid).update({
+                    totalScore: this.totalScore
+                }).catch(error => {
+                    console.error('Can satın alma Firebase kaydı hatası:', error);
+                });
+            }
+
+            // Başarı mesajı göster
+            this.showToast(window.languages[this.currentLanguage].livesRestored, 'success');
+
+            // Modal'ı kapat
+            this.closeBuyLivesModal();
+
+            // Zamanlayıcıyı yeniden başlat
+            setTimeout(() => {
+                this.startTimer();
+            }, 1000);
+        }
+    },
+
+    // Can satın alma modalını kapat
+    closeBuyLivesModal: function() {
+        const modal = document.getElementById('buyLivesModal');
+        if (modal) {
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.remove();
+            }, 400);
+        }
+    },
+
+    // Toast bildirimi göster
+    showToast: function(message, type = 'info') {
+        const toastHtml = `
+            <div class="toast toast-${type}" id="toast-${Date.now()}">
+                <div class="toast-content">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            </div>
+        `;
+
+        // Toast container'ı yoksa oluştur
+        let toastContainer = document.getElementById('toast-container');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.id = 'toast-container';
+            toastContainer.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            `;
+            document.body.appendChild(toastContainer);
+        }
+
+        // Toast'ı ekle
+        toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+        
+        // Toast'ı göster
+        const toastElement = toastContainer.lastElementChild;
+        setTimeout(() => {
+            toastElement.classList.add('show');
+        }, 100);
+
+        // 3 saniye sonra kaldır
+        setTimeout(() => {
+            toastElement.classList.remove('show');
+            setTimeout(() => {
+                if (toastElement.parentNode) {
+                    toastElement.remove();
+                }
+            }, 300);
+        }, 3000);
     }
 };
 
