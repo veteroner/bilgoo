@@ -104,6 +104,37 @@ body::after {
     display: none; /* Sol üstteki dil seçimini gizle */
 }
 
+/* Profil sayfasında footer logoyu gizle - Tüm ekran boyutları için */
+body.profile-active footer .company-info {
+    display: none !important;
+}
+
+/* Mobil cihazlarda overflow problemlerini çöz */
+@media (max-width: 768px) {
+    body.profile-active {
+        overflow-x: hidden;
+    }
+    
+    .profile-container {
+        overflow: hidden;
+    }
+    
+    .profile-card {
+        max-width: 100%;
+        overflow: hidden;
+    }
+    
+    .stats-grid, .badges-grid {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .stat-item, .badge-item {
+        overflow: hidden;
+        word-wrap: break-word;
+    }
+}
+
 
 
 /* Tema Değiştirme Düğmesi */
@@ -5685,9 +5716,14 @@ input:checked + .switch-label:before {
 
 /* Touch ekranlar için daha büyük tıklama alanları */
 @media (pointer: coarse) {
-    .option, button, .true-false-option, .joker-btn {
+    .option, button, .true-false-option, .joker-btn, .joker-store-btn {
         min-height: 44px; /* Apple accessibility standard */
         touch-action: manipulation; /* Dokunma gecikmesini engeller */
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
     }
     
     input[type="text"], 
@@ -5699,10 +5735,39 @@ input:checked + .switch-label:before {
     }
     
     /* Dokunmatik cihazlar için active state stillemesi */
-    .option:active, button:active, .true-false-option:active {
+    .option:active, button:active, .true-false-option:active, .joker-btn:active, .joker-store-btn:active {
         transform: scale(0.98);
         opacity: 0.9;
         transition: transform 0.1s, opacity 0.1s;
+    }
+    
+    /* Modal için özel touch desteği */
+    .close-modal {
+        min-height: 44px;
+        min-width: 44px;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+    
+    /* Joker mağaza butonuna özel touch desteği */
+    #joker-store, .joker-store-btn {
+        -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+        touch-action: manipulation !important;
+        cursor: pointer !important;
+        min-height: 44px !important;
+        min-width: 44px !important;
+        position: relative !important;
+        z-index: 10 !important;
+    }
+    
+    /* Modal butonları için touch desteği */
+    .joker-buy-btn, .close-modal {
+        -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+        touch-action: manipulation !important;
+        cursor: pointer !important;
+        min-height: 44px !important;
+        min-width: 44px !important;
     }
 }
 
@@ -8286,75 +8351,334 @@ body.category-selection[data-theme="dark"] .logo {
 }
 
 @media (max-width: 768px) {
+    /* Profil sayfasında logoyu gizle */
+    body.profile-active .company-info,
+    body.profile-active footer .company-info {
+        display: none !important;
+    }
+    
     .profile-container {
-        padding: 15px;
+        padding: 8px;
+        max-width: 100%;
+        background: none;
+    }
+    
+    .profile-page-header {
+        margin-bottom: 15px;
+        padding: 12px;
+        border-radius: 12px;
     }
     
     .profile-page-header h2 {
-        font-size: 2rem;
+        font-size: 1.4rem;
+        margin: 0;
     }
     
     .profile-page-header i {
-        font-size: 2.5rem;
+        font-size: 1.6rem;
+        margin-right: 8px;
     }
     
     .profile-card {
-        padding: 20px;
+        grid-template-columns: 1fr;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 15px;
+        gap: 15px;
     }
     
-
-    
     .profile-details h2 {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
+        margin-bottom: 5px;
+    }
+    
+    .profile-details p {
+        font-size: 0.9rem;
+        margin: 3px 0;
     }
     
     .profile-score {
+        margin-top: 12px;
+        padding-top: 12px;
+        gap: 8px;
         grid-template-columns: 1fr;
-        gap: 10px;
+    }
+    
+    .score-info, .level-info {
+        padding: 10px 8px;
+        border-radius: 12px;
+    }
+    
+    .score-label, .level-label {
+        font-size: 0.75rem;
+        margin-bottom: 4px;
+    }
+    
+    .score-value, .level-value {
+        font-size: 1.3rem;
+    }
+    
+    .profile-actions-secondary {
+        align-items: stretch;
+    }
+    
+    .profile-actions-secondary .btn-secondary {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+        border-radius: 18px;
+    }
+    
+    .stats-card, .badges-showcase, .high-scores-card, .recent-activities {
+        padding: 12px;
+        margin-bottom: 12px;
+        border-radius: 12px;
+    }
+    
+    .stats-card h3, .badges-showcase h3, .high-scores-card h3, .recent-activities h3 {
+        font-size: 1rem;
+        margin-bottom: 10px;
+        padding-bottom: 8px;
     }
     
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
+        gap: 6px;
+    }
+    
+    .stat-item {
+        padding: 10px 6px;
+        min-height: 70px;
+        border-radius: 10px;
+    }
+    
+    .stat-value {
+        font-size: 1.4rem;
+        margin-bottom: 3px;
+    }
+    
+    .stat-label {
+        font-size: 0.7rem;
+        line-height: 1.1;
     }
     
     .badges-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+    }
+    
+    .badge-item {
+        padding: 6px 3px;
+        border-radius: 10px;
+        min-width: auto;
+    }
+    
+    .badge-icon {
+        font-size: 1rem;
+        margin-bottom: 3px;
+    }
+    
+    .badge-name {
+        font-size: 0.65rem;
+        margin-bottom: 2px;
+        line-height: 1.1;
+    }
+    
+    .badge-date {
+        font-size: 0.6rem;
     }
     
     .activity-item {
-        flex-direction: column;
-        text-align: center;
-        gap: 10px;
+        padding: 10px;
+        font-size: 0.8rem;
+        border-radius: 10px;
+        flex-direction: row;
+        text-align: left;
+        gap: 8px;
     }
     
     .activity-icon {
-        margin-right: 0;
-        margin-bottom: 10px;
+        font-size: 1rem;
+        width: 24px;
+        height: 24px;
+        margin-right: 8px;
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+    
+    .activity-title {
+        font-size: 0.8rem;
+    }
+    
+    .activity-time {
+        font-size: 0.7rem;
+    }
+    
+    .activity-score {
+        font-size: 0.75rem;
+    }
+    
+    .high-scores-table {
+        font-size: 0.8rem;
+    }
+    
+    .high-scores-table th, 
+    .high-scores-table td {
+        padding: 6px 4px;
     }
     
     .profile-actions {
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
+        margin-top: 12px;
+    }
+    
+    .profile-actions .btn-primary,
+    .profile-actions .btn-danger {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+        border-radius: 18px;
     }
 }
 
 @media (max-width: 480px) {
+    .profile-container {
+        padding: 6px;
+    }
+    
     .profile-page-header {
-        padding: 15px;
+        padding: 10px 8px;
+        margin-bottom: 12px;
     }
     
     .profile-page-header h2 {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
+    }
+    
+    .profile-page-header i {
+        font-size: 1.4rem;
+        margin-right: 6px;
+    }
+    
+    .profile-card {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+    
+    .profile-details h2 {
+        font-size: 1.1rem;
+    }
+    
+    .profile-details p {
+        font-size: 0.85rem;
+    }
+    
+    .profile-score {
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+    
+    .score-info, .level-info {
+        padding: 8px 6px;
+    }
+    
+    .score-label, .level-label {
+        font-size: 0.7rem;
+    }
+    
+    .score-value, .level-value {
+        font-size: 1.2rem;
+    }
+    
+    .profile-actions-secondary .btn-secondary {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+    }
+    
+    .stats-card, .badges-showcase, .high-scores-card, .recent-activities {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .stats-card h3, .badges-showcase h3, .high-scores-card h3, .recent-activities h3 {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+        padding-bottom: 6px;
     }
     
     .stats-grid {
         grid-template-columns: 1fr;
+        gap: 5px;
+    }
+    
+    .stat-item {
+        padding: 8px 5px;
+        min-height: 60px;
+    }
+    
+    .stat-value {
+        font-size: 1.2rem;
+    }
+    
+    .stat-label {
+        font-size: 0.65rem;
     }
     
     .badges-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+    }
+    
+    .badge-item {
+        padding: 5px 2px;
+    }
+    
+    .badge-icon {
+        font-size: 0.9rem;
+    }
+    
+    .badge-name {
+        font-size: 0.6rem;
+    }
+    
+    .badge-date {
+        font-size: 0.55rem;
+    }
+    
+    .activity-item {
+        padding: 8px;
+        flex-direction: column;
+        text-align: center;
+        gap: 6px;
+    }
+    
+    .activity-icon {
+        margin-right: 0;
+        margin-bottom: 4px;
+        width: 20px;
+        height: 20px;
+    }
+    
+    .activity-title {
+        font-size: 0.75rem;
+    }
+    
+    .activity-time, .activity-score {
+        font-size: 0.65rem;
+    }
+    
+    .high-scores-table {
+        font-size: 0.75rem;
+    }
+    
+    .high-scores-table th, 
+    .high-scores-table td {
+        padding: 4px 3px;
+    }
+    
+    .profile-actions .btn-primary,
+    .profile-actions .btn-danger {
+        padding: 6px 12px;
+        font-size: 0.75rem;
     }
 }
 

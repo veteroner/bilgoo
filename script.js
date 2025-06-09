@@ -1005,6 +1005,14 @@ const quizApp = {
         console.log('jokerSkipBtn:', this.jokerSkipBtn);
         console.log('jokerStoreBtn:', this.jokerStoreBtn);
         
+        // Mobil debug için
+        console.log('Mobile device check:', /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+        console.log('Touch events supported:', 'ontouchstart' in window);
+        
+        // Joker store modal element kontrolü
+        const jokerStoreModal = document.getElementById('joker-store-modal');
+        console.log('Joker store modal element:', jokerStoreModal);
+        
         // 50:50 jokeri
         if (this.jokerFiftyBtn) {
             this.jokerFiftyBtn.addEventListener('click', () => {
@@ -1273,17 +1281,37 @@ const quizApp = {
         
         // Joker mağazası butonu
         if (this.jokerStoreBtn) {
-            this.jokerStoreBtn.addEventListener('click', () => {
+            // Click event (desktop)
+            this.jokerStoreBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 this.openJokerStore();
             });
+            
+            // Touch event (mobile)
+            this.jokerStoreBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+            
+            this.jokerStoreBtn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.openJokerStore();
+            });
+            
+            // Mobil cihazlarda butonun tıklanabilir olduğunu garanti et
+            this.jokerStoreBtn.style.cursor = 'pointer';
+            this.jokerStoreBtn.style.touchAction = 'manipulation';
         }
     },
     
     // Joker mağazasını aç
     openJokerStore: function() {
-        console.log('Joker mağazası açılıyor...');
-        console.log('Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
-        console.log('Mevcut puan:', this.score);
+        console.log('🛒 Joker mağazası açılıyor...');
+        console.log('📱 User Agent:', navigator.userAgent);
+        console.log('🎮 Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
+        console.log('💰 Mevcut puan:', this.score);
         
         var modal = document.getElementById('joker-store-modal');
         var closeBtn = modal.querySelector('.close-modal');
@@ -1368,23 +1396,63 @@ const quizApp = {
         
         // Modalı göster
         modal.style.display = 'block';
+        modal.style.visibility = 'visible';
+        modal.style.opacity = '1';
+        
+        // Mobil cihazlarda modalın üstte görünmesini garanti et
+        modal.style.zIndex = '9999';
+        modal.classList.add('show');
+        
+        // Body scroll'unu engelle (mobil cihazlarda önemli)
+        document.body.style.overflow = 'hidden';
+        
+        console.log('✅ Joker mağazası modal açıldı');
+        console.log('Modal visibility:', modal.style.visibility);
+        console.log('Modal display:', modal.style.display);
+        console.log('Modal z-index:', modal.style.zIndex);
+        console.log('Modal classList:', modal.classList.toString());
         
         // Kapat butonuna tıklama olayı
         var self = this;
-        closeBtn.onclick = function() {
+        const closeModal = function() {
             modal.style.display = 'none';
+            modal.style.visibility = 'hidden';
+            modal.style.opacity = '0';
+            modal.classList.remove('show');
+            document.body.style.overflow = ''; // Body scroll'unu restore et
             // Mağaza kapandığında joker butonlarını güncelle
             self.updateJokerButtons();
         };
         
+        // Close button events (both click and touch)
+        closeBtn.onclick = closeModal;
+        closeBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            closeModal();
+        });
+        
         // Modal dışına tıklama olayı
         window.onclick = function(event) {
             if (event.target === modal) {
-                modal.style.display = 'none';
-                // Mağaza kapandığında joker butonlarını güncelle
-                self.updateJokerButtons();
+                closeModal();
             }
         };
+        
+        // Modal dışına dokunma olayı (mobil)
+        modal.addEventListener('touchend', function(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+        
+        // Satın alma butonlarına da touch event ekle (mobil)
+        buyButtons.forEach(function(btn) {
+            btn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                // onclick event'i zaten çalışacak, sadece touch'u handle ediyoruz
+            });
+        });
     },
     
     // Joker butonlarını güncelle
@@ -3299,18 +3367,18 @@ const quizApp = {
                 const date = new Date(user.metadata.creationTime);
                 joinDate.textContent = date.toLocaleDateString('tr-TR');
             }
-        }
-        
+            }
+            
         // Gerçek istatistikleri güncelle
         this.updateRealUserStats();
-        
-        // Rozetleri yükle
+            
+            // Rozetleri yükle
         this.loadUserBadgesForProfile(userId);
-        
-        // Yüksek skorları yükle
+            
+            // Yüksek skorları yükle
         this.loadHighScoresForProfile(userId);
-        
-        // Son aktiviteleri yükle
+            
+            // Son aktiviteleri yükle
         this.loadRecentActivitiesForProfile(userId);
     },
 
@@ -3611,19 +3679,19 @@ const quizApp = {
                     badgeDate = 'Henüz kazanılmadı';
                 }
                 
-                badgeElement.innerHTML = `
+                        badgeElement.innerHTML = `
                     <i class="badge-icon ${badge.icon || 'fas fa-award'}"></i>
-                    <div class="badge-name">${badge.name || 'Bilinmeyen Rozet'}</div>
+                            <div class="badge-name">${badge.name || 'Bilinmeyen Rozet'}</div>
                     <div class="badge-date">${badgeDate}</div>
-                `;
+                        `;
                 
                 // Rozet tıklama olayı ekle
                 badgeElement.addEventListener('click', () => {
                     this.showBadgeInfoModal(badge, isEarned, badgeDate);
                 });
-                
-                badgesContainer.appendChild(badgeElement);
-            });
+                        
+                        badgesContainer.appendChild(badgeElement);
+                    });
             
             // Rozetleri yükledikten sonra güncel istatistikleri kontrol et ve rozetleri güncelle
             this.checkAndUpdateBadges(userId);
@@ -3658,7 +3726,7 @@ const quizApp = {
                     <div class="badge-info-display">
                         <div class="badge-icon-large ${statusClass}">
                             <i class="${badge.icon}"></i>
-                        </div>
+                </div>
                         <div class="badge-details">
                             <h4>${badge.name}</h4>
                             <p class="badge-description">${badge.description}</p>
@@ -3673,8 +3741,8 @@ const quizApp = {
                         <p>${howToEarnText}</p>
                     </div>
                 </div>
-            </div>
-        `;
+                </div>
+            `;
         
         document.body.appendChild(modal);
         
@@ -3800,10 +3868,10 @@ const quizApp = {
         ];
         
         setTimeout(() => {
-            activitiesList.innerHTML = '';
+                    activitiesList.innerHTML = '';
             sampleActivities.forEach(activity => {
-                const activityElement = document.createElement('div');
-                activityElement.className = 'activity-item';
+                        const activityElement = document.createElement('div');
+                        activityElement.className = 'activity-item';
                 activityElement.innerHTML = `
                     <div class="activity-icon"><i class="${activity.icon}"></i></div>
                     <div class="activity-details">
@@ -3859,7 +3927,7 @@ const quizApp = {
             if (displayNameInput && user.displayName) {
                 displayNameInput.value = user.displayName;
             }
-        } else {
+                            } else {
             // Firebase yoksa localStorage'dan al
             const userId = this.getCurrentUserId();
             try {
@@ -3871,8 +3939,8 @@ const quizApp = {
                     }
                     if (bioInput && profile.bio) {
                         bioInput.value = profile.bio;
-                    }
-                } else {
+                            }
+                        } else {
                     // Varsayılan kullanıcı adını göster
                     const currentName = document.getElementById('profile-name')?.textContent;
                     if (displayNameInput && currentName) {
@@ -3923,7 +3991,7 @@ const quizApp = {
             }).catch(error => {
                 console.error('Profil güncelleme hatası:', error);
                 this.showToast('Profil güncellenirken hata oluştu', 'toast-error');
-            });
+                });
         } else {
             // Firebase yoksa localStorage'a kaydet
             const userId = this.getCurrentUserId();
