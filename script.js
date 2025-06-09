@@ -627,10 +627,7 @@ const quizApp = {
             friendsText.textContent = this.getTranslation('friends');
         }
         
-        const leaderboardText = document.getElementById('menu-leaderboard-text');
-        if (leaderboardText) {
-            leaderboardText.textContent = this.getTranslation('leaderboardMenu');
-        }
+
         
         // Ayarlar metinleri
         const languageText = document.getElementById('menu-language-text');
@@ -2045,6 +2042,12 @@ const quizApp = {
         if (this.currentQuestionIndex > 0 && this.currentQuestionIndex % 5 === 0 && this.currentQuestionIndex < this.questions.length) {
             this.currentSection++; // Bölüm sayısını artır
             
+            // 10. bölüm tamamlandıysa özel kutlama göster
+            if (this.currentSection > 10) {
+                this.showCategoryCompletion();
+                return;
+            }
+            
             // 50 bölüm tamamlandıysa, oyunu bitir
             if (this.currentSection > this.totalSections) {
                 this.showGameCompletion();
@@ -2056,6 +2059,229 @@ const quizApp = {
             this.displayQuestion(this.questions[this.currentQuestionIndex]);
         } else {
             this.showResult();
+        }
+    },
+
+    // Kategori Tamamlama Kutlama Ekranı (10. bölüm tamamlandığında)
+    showCategoryCompletion: function() {
+        // Sayacı durdur
+        clearInterval(this.timerInterval);
+        
+        // Kategori için son istatistikleri hesapla
+        const totalCorrectAnswers = this.sectionStats.reduce((total, section) => total + (section?.correct || 0), 0);
+        const totalQuestions = this.currentQuestionIndex;
+        const accuracy = totalQuestions > 0 ? Math.round((totalCorrectAnswers / totalQuestions) * 100) : 0;
+        
+        // Kategorinin çevirisini al
+        const categoryDisplayName = this.getTranslation(this.selectedCategory) || this.selectedCategory;
+        
+        // Kutlama ekranını oluştur
+        const completionElement = document.createElement('div');
+        completionElement.className = 'category-completion-celebration';
+        completionElement.innerHTML = `
+            <div class="celebration-overlay"></div>
+            <div class="celebration-content">
+                <!-- Konfeti Konteyneri -->
+                <div class="confetti-container" id="confetti-container"></div>
+                
+                <!-- Ana İçerik -->
+                <div class="celebration-main">
+                    <div class="trophy-celebration">
+                        <i class="fas fa-trophy trophy-mega"></i>
+                        <div class="trophy-glow"></div>
+                    </div>
+                    
+                    <h1 class="celebration-title">
+                        <span class="title-line1">🎉 TEBRİKLER! 🎉</span>
+                        <span class="title-line2">${categoryDisplayName}</span>
+                        <span class="title-line3">Kategorisini Tamamladınız!</span>
+                    </h1>
+                    
+                    <div class="achievement-badge">
+                        <i class="fas fa-medal achievement-icon"></i>
+                        <div class="achievement-text">Kategori Ustası</div>
+                    </div>
+                    
+                    <div class="celebration-stats">
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-star"></i></div>
+                            <div class="stat-value">${this.score}</div>
+                            <div class="stat-label">Toplam Puan</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                            <div class="stat-value">${totalCorrectAnswers}/${totalQuestions}</div>
+                            <div class="stat-label">Doğru Cevap</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                            <div class="stat-value">%${accuracy}</div>
+                            <div class="stat-label">Başarı Oranı</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-layer-group"></i></div>
+                            <div class="stat-value">10/10</div>
+                            <div class="stat-label">Bölüm</div>
+                        </div>
+                    </div>
+                    
+                    <div class="celebration-message">
+                        <p class="congrats-text">Harika bir performans sergileyerek ${categoryDisplayName} kategorisindeki tüm bölümleri başarıyla tamamladınız!</p>
+                        <p class="motivational-text">Artık bu kategoride gerçek bir uzmansınız! 🌟</p>
+                    </div>
+                    
+                    <div class="celebration-actions">
+                        <button id="try-another-category" class="celebration-btn celebration-btn-primary">
+                            <i class="fas fa-repeat"></i> Başka Kategori Dene
+                        </button>
+                        <button id="share-achievement" class="celebration-btn celebration-btn-secondary">
+                            <i class="fas fa-share-alt"></i> Başarımı Paylaş
+                        </button>
+                        <button id="continue-playing" class="celebration-btn celebration-btn-tertiary">
+                            <i class="fas fa-play"></i> Oyuna Devam Et
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Body'ye ekle
+        document.body.appendChild(completionElement);
+        
+        // Konfeti efekti başlat
+        this.startConfettiEffect();
+        
+        // Kutlama sesleri çal
+        this.playCelebrationSounds();
+        
+        // Buton event listener'ları ekle
+        this.setupCelebrationButtons(completionElement, categoryDisplayName);
+        
+        // İstatistikleri kaydet
+        this.saveStats(this.selectedCategory, this.score, this.answeredQuestions, 
+            this.answerTimes.length > 0 ? Math.round(this.answerTimes.reduce((a, b) => a + b, 0) / this.answerTimes.length) : 0);
+        
+        // Otomatik konfeti durdurma (10 saniye sonra)
+        setTimeout(() => {
+            this.stopConfettiEffect();
+        }, 10000);
+    },
+    
+    // Konfeti efekti başlat
+    startConfettiEffect: function() {
+        const confettiContainer = document.getElementById('confetti-container');
+        if (!confettiContainer) return;
+        
+        // Konfeti parçacık sayısı
+        const confettiCount = 100;
+        const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dda0dd', '#98d8c8', '#f7dc6f'];
+        
+        for (let i = 0; i < confettiCount; i++) {
+            setTimeout(() => {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.style.cssText = `
+                    position: absolute;
+                    width: ${Math.random() * 10 + 5}px;
+                    height: ${Math.random() * 10 + 5}px;
+                    background-color: ${colors[Math.floor(Math.random() * colors.length)]};
+                    left: ${Math.random() * 100}%;
+                    top: -10px;
+                    opacity: ${Math.random() * 0.8 + 0.2};
+                    border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+                    animation: confettiFall ${Math.random() * 2 + 3}s linear forwards;
+                    transform: rotate(${Math.random() * 360}deg);
+                    z-index: 10001;
+                `;
+                
+                confettiContainer.appendChild(confetti);
+                
+                // Animasyon bittiğinde elementi kaldır
+                setTimeout(() => {
+                    if (confetti.parentNode) {
+                        confetti.parentNode.removeChild(confetti);
+                    }
+                }, 5000);
+            }, i * 50); // Her konfeti arasında 50ms gecikme
+        }
+    },
+    
+    // Konfeti efekti durdur
+    stopConfettiEffect: function() {
+        const confettiContainer = document.getElementById('confetti-container');
+        if (confettiContainer) {
+            confettiContainer.innerHTML = '';
+        }
+    },
+    
+    // Kutlama sesleri çal
+    playCelebrationSounds: function() {
+        if (!this.soundEnabled) return;
+        
+        // Alkış sesi çal
+        const applauseSound = document.getElementById('sound-applause');
+        if (applauseSound) {
+            applauseSound.play().catch(e => console.error("Alkış sesi çalınamadı:", e));
+        }
+        
+        // 2 saniye sonra zafer sesi çal
+        setTimeout(() => {
+            const victorySound = document.getElementById('sound-victory');
+            if (victorySound) {
+                victorySound.play().catch(e => console.error("Zafer sesi çalınamadı:", e));
+            }
+        }, 2000);
+    },
+    
+    // Kutlama butonu event listener'ları
+    setupCelebrationButtons: function(completionElement, categoryName) {
+        // Başka kategori dene butonu
+        const tryAnotherBtn = document.getElementById('try-another-category');
+        if (tryAnotherBtn) {
+            tryAnotherBtn.addEventListener('click', () => {
+                document.body.removeChild(completionElement);
+                this.stopConfettiEffect();
+                this.showCategorySelection();
+            });
+        }
+        
+        // Başarımı paylaş butonu
+        const shareBtn = document.getElementById('share-achievement');
+        if (shareBtn) {
+            shareBtn.addEventListener('click', () => {
+                const shareText = `🎉 ${categoryName} kategorisini %${Math.round((this.score / this.currentQuestionIndex) * 100)} başarı oranıyla tamamladım! Bilgoo'da sen de kategorileri tamamlamaya ne dersin? 🏆`;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Bilgoo - Kategori Tamamlama Başarısı',
+                        text: shareText,
+                        url: window.location.href
+                    }).catch(err => {
+                        console.error('Paylaşım hatası:', err);
+                        this.showToast('Başarı paylaşılamadı', 'toast-error');
+                    });
+                } else {
+                    navigator.clipboard.writeText(shareText)
+                        .then(() => {
+                            this.showToast('Başarı panoya kopyalandı! 🎉', 'toast-success');
+                        })
+                        .catch(err => {
+                            console.error('Panoya kopyalama hatası:', err);
+                            this.showToast('Başarı kopyalanamadı', 'toast-error');
+                        });
+                }
+            });
+        }
+        
+        // Oyuna devam et butonu
+        const continueBtn = document.getElementById('continue-playing');
+        if (continueBtn) {
+            continueBtn.addEventListener('click', () => {
+                document.body.removeChild(completionElement);
+                this.stopConfettiEffect();
+                // Normal oyun bitişi ekranını göster
+                this.showResult();
+            });
         }
     },
     
@@ -4313,7 +4539,7 @@ const quizApp = {
         }
     },
     
-    // Lider tablosu verilerini yükle
+    // Lider tablosu verilerini yükle (İyileştirilmiş versiyon)
     loadLeaderboardData: function() {
         const leaderboardList = document.getElementById('leaderboard-list');
         if (!leaderboardList) return;
@@ -4321,31 +4547,98 @@ const quizApp = {
         // Yükleniyor mesajı göster
         leaderboardList.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin fa-2x"></i><p>Lider tablosu yükleniyor...</p></div>';
         
+        // Online game modülü varsa onun kapsamlı lider tablosu fonksiyonunu kullan
+        if (window.onlineGame && typeof window.onlineGame.loadLeaderboard === 'function') {
+            console.log('Online game modülü kullanılarak lider tablosu yükleniyor...');
+            window.onlineGame.loadLeaderboard();
+            return;
+        }
+        
         // Firebase'den verileri çek
         if (firebase.database) {
-            const leaderboardRef = firebase.database().ref('leaderboard');
-            const categoryFilter = document.getElementById('leaderboard-category').value;
-            const timeFilter = document.getElementById('leaderboard-time').value;
+            const promises = [];
+            let allEntries = [];
             
-            leaderboardRef.orderByChild('score').limitToLast(50).once('value')
-                .then(snapshot => {
-                    const data = snapshot.val();
-                    if (!data) {
+            // 1. Realtime Database'den verileri çek
+            const leaderboardRef = firebase.database().ref('leaderboard');
+            promises.push(
+                leaderboardRef.orderByChild('score').limitToLast(100).once('value')
+                    .then(snapshot => {
+                        const data = snapshot.val();
+                        if (data) {
+                            Object.keys(data).forEach(key => {
+                                allEntries.push({
+                                    id: key,
+                                    ...data[key],
+                                    source: 'realtime'
+                                });
+                            });
+                            console.log(`Realtime Database'den ${Object.keys(data).length} kayıt yüklendi`);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Realtime Database lider tablosu yüklenirken hata:", error);
+                    })
+            );
+            
+            // 2. Firestore'dan da verileri çek (eğer varsa)
+            if (typeof firebase.firestore === 'function') {
+                try {
+                    const firestoreQuery = firebase.firestore()
+                        .collection('highScores')
+                        .orderBy('timestamp', 'desc')
+                        .limit(100);
+                        
+                    promises.push(
+                        firestoreQuery.get()
+                            .then(querySnapshot => {
+                                querySnapshot.forEach(doc => {
+                                    const entry = doc.data();
+                                    if (entry.score !== undefined) {
+                                        allEntries.push({
+                                            id: doc.id,
+                                            score: entry.score,
+                                            userName: entry.username,
+                                            category: entry.category,
+                                            date: entry.timestamp ? entry.timestamp.toDate().getTime() : Date.now(),
+                                            source: 'firestore'
+                                        });
+                                    }
+                                });
+                                console.log(`Firestore'dan ${querySnapshot.size} kayıt yüklendi`);
+                            })
+                            .catch(error => {
+                                console.error('Firestore lider tablosu yükleme hatası:', error);
+                            })
+                    );
+                } catch (error) {
+                    console.error('Firestore sorgu oluşturma hatası:', error);
+                }
+            }
+            
+            // Tüm veri kaynaklarından sonra tabloyu oluştur
+            Promise.all(promises)
+                .then(() => {
+                    if (allEntries.length === 0) {
                         leaderboardList.innerHTML = '<div class="no-data-message">Henüz kayıt yok</div>';
                         return;
                     }
                     
-                    // Verileri skor sırasına göre diziye çevir
-                    const leaderboardArray = [];
-                    Object.keys(data).forEach(key => {
-                        leaderboardArray.push({
-                            id: key,
-                            ...data[key]
-                        });
+                    // Kullanıcı bazında en yüksek skorları al
+                    const userBestScores = {};
+                    allEntries.forEach(entry => {
+                        const userKey = `${entry.userName || 'Anonim'}_${entry.category || 'Genel'}`;
+                        if (!userBestScores[userKey] || (entry.score || 0) > (userBestScores[userKey].score || 0)) {
+                            userBestScores[userKey] = entry;
+                        }
                     });
                     
-                    // Skora göre sırala (azalan)
-                    leaderboardArray.sort((a, b) => b.score - a.score);
+                    // Benzersiz kayıtları skora göre sırala
+                    const uniqueEntries = Object.values(userBestScores);
+                    uniqueEntries.sort((a, b) => (b.score || 0) - (a.score || 0));
+                    
+                    // En fazla 50 sonuç göster
+                    const topEntries = uniqueEntries.slice(0, 50);
                     
                     // Tabloya ekle
                     leaderboardList.innerHTML = '';
@@ -4361,29 +4654,37 @@ const quizApp = {
                             <th>Skor</th>
                             <th>Kategori</th>
                             <th>Tarih</th>
+                            <th>Kaynak</th>
                         </tr>
                     `;
                     table.appendChild(thead);
                     
                     // Tablo içeriği
                     const tbody = document.createElement('tbody');
-                    leaderboardArray.forEach((item, index) => {
+                    topEntries.forEach((item, index) => {
                         const row = document.createElement('tr');
+                        const sourceIcon = item.source === 'firestore' ? 
+                            '<i class="fas fa-cloud" title="Firestore"></i>' : 
+                            '<i class="fas fa-database" title="Realtime DB"></i>';
+                        
                         row.innerHTML = `
                             <td>${index + 1}</td>
                             <td>${item.userName || 'Anonim'}</td>
                             <td>${item.score || 0}</td>
                             <td>${item.category || 'Genel'}</td>
                             <td>${new Date(item.date || Date.now()).toLocaleDateString()}</td>
+                            <td>${sourceIcon}</td>
                         `;
                         tbody.appendChild(row);
                     });
                     table.appendChild(tbody);
                     
                     leaderboardList.appendChild(table);
+                    
+                    console.log(`Toplam ${topEntries.length} kayıt gösteriliyor`);
                 })
                 .catch(error => {
-                    console.error("Lider tablosu yüklenirken hata:", error);
+                    console.error("Lider tablosu yüklenirken genel hata:", error);
                     leaderboardList.innerHTML = '<div class="error-message">Lider tablosu yüklenemedi</div>';
                 });
         } else {

@@ -1624,6 +1624,7 @@
     <audio id="sound-timer" src="https://assets.mixkit.co/active_storage/sfx/3005/3005.wav" preload="auto"></audio>
     <audio id="sound-gameover" src="https://assets.mixkit.co/active_storage/sfx/3006/3006.wav" preload="auto"></audio>
     <audio id="sound-victory" src="https://assets.mixkit.co/active_storage/sfx/2018/2018.wav" preload="auto"></audio>
+    <audio id="sound-applause" src="https://assets.mixkit.co/active_storage/sfx/1465/1465.wav" preload="auto"></audio>
     
     <!-- Hamburger Menü Toggle -->
     <div class="hamburger-toggle" id="hamburger-toggle">
@@ -1657,9 +1658,6 @@
             </div>
             <div class="menu-item" id="menu-friends">
                 <i class="fas fa-user-friends"></i> <span id="menu-friends-text">Arkadaşlarım</span>
-            </div>
-            <div class="menu-item" id="menu-leaderboard">
-                <i class="fas fa-trophy"></i> <span id="menu-leaderboard-text">Lider Tablosu</span>
             </div>
             <div class="menu-item" id="menu-admin-panel" style="display: none;">
                 <i class="fas fa-shield-alt"></i> <span id="menu-admin-text">Yönetici Paneli</span>
@@ -2214,6 +2212,224 @@
             </div>
         </div>
 
+        <!-- İstatistikler Sayfası -->
+        <div id="statistics-page" style="display: none;">
+            <div class="page-header">
+                <h2><i class="fas fa-chart-bar"></i> İstatistiklerim</h2>
+                <button id="back-from-stats" class="btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Ana Menüye Dön
+                </button>
+            </div>
+            
+            <div class="statistics-container">
+                <!-- Genel İstatistikler -->
+                <div class="stats-section">
+                    <h3><i class="fas fa-trophy"></i> Genel İstatistikler</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-gamepad"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="total-games-stat">0</span>
+                                <span class="stat-label">Toplam Oyun</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="total-questions-stat">0</span>
+                                <span class="stat-label">Toplam Soru</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="correct-answers-stat">0</span>
+                                <span class="stat-label">Doğru Cevap</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="accuracy-stat">%0</span>
+                                <span class="stat-label">Doğruluk Oranı</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="highest-score-stat">0</span>
+                                <span class="stat-label">En Yüksek Skor</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="average-score-stat">0</span>
+                                <span class="stat-label">Ortalama Skor</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Kategori İstatistikleri -->
+                <div class="stats-section">
+                    <h3><i class="fas fa-th-list"></i> Kategori Başarıları</h3>
+                    <div id="category-stats" class="category-stats">
+                        <!-- Kategori istatistikleri JavaScript ile eklenecek -->
+                    </div>
+                </div>
+                
+                <!-- Son Oyunlar -->
+                <div class="stats-section">
+                    <h3><i class="fas fa-history"></i> Son Oyunlar</h3>
+                    <div id="recent-games" class="recent-games">
+                        <!-- Son oyunlar JavaScript ile eklenecek -->
+                    </div>
+                </div>
+                
+                <!-- Grafikler -->
+                <div class="stats-section">
+                    <h3><i class="fas fa-chart-area"></i> Performans Grafikleri</h3>
+                    <div class="charts-container">
+                        <div class="chart-box">
+                            <h4>Kategori Dağılımı</h4>
+                            <canvas id="category-pie-chart"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h4>Zaman İçindeki Performans</h4>
+                            <canvas id="performance-line-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- İstatistikler Sayfası -->
+        <div id="statistics-page" style="display: none;">
+            <div class="page-header">
+                <h2><i class="fas fa-chart-bar"></i> İstatistiklerim</h2>
+                <button id="back-from-stats" class="btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Ana Menüye Dön
+                </button>
+            </div>
+            
+            <div class="statistics-container">
+                <!-- Genel İstatistikler -->
+                <div class="stats-section">
+                    <h3><i class="fas fa-trophy"></i> Genel İstatistikler</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-gamepad"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="total-games-stat">0</span>
+                                <span class="stat-label">Toplam Oyun</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-question-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="total-questions-stat">0</span>
+                                <span class="stat-label">Toplam Soru</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="correct-answers-stat">0</span>
+                                <span class="stat-label">Doğru Cevap</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="accuracy-stat">%0</span>
+                                <span class="stat-label">Doğruluk Oranı</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="highest-score-stat">0</span>
+                                <span class="stat-label">En Yüksek Skor</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-value" id="average-score-stat">0</span>
+                                <span class="stat-label">Ortalama Skor</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Kategori İstatistikleri -->
+                <div class="stats-section">
+                    <h3><i class="fas fa-th-list"></i> Kategori Başarıları</h3>
+                    <div id="category-stats" class="category-stats">
+                        <!-- Kategori istatistikleri JavaScript ile eklenecek -->
+                    </div>
+                </div>
+                
+                <!-- Son Oyunlar -->
+                <div class="stats-section">
+                    <h3><i class="fas fa-history"></i> Son Oyunlar</h3>
+                    <div id="recent-games" class="recent-games">
+                        <!-- Son oyunlar JavaScript ile eklenecek -->
+                    </div>
+                </div>
+                
+                <!-- Grafikler -->
+                <div class="stats-section">
+                    <h3><i class="fas fa-chart-area"></i> Performans Grafikleri</h3>
+                    <div class="charts-container">
+                        <div class="chart-box">
+                            <h4>Kategori Dağılımı</h4>
+                            <canvas id="category-pie-chart"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h4>Zaman İçindeki Performans</h4>
+                            <canvas id="performance-line-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Soru Ekleme Formu -->
         <div id="add-question-form" class="modal" style="display: none;">
             <div class="modal-content">
@@ -2594,49 +2810,7 @@
                 }
             });
             
-            document.getElementById('menu-leaderboard').addEventListener('click', function() {
-                hamburgerMenu.classList.remove('active');
-                menuOverlay.classList.remove('active');
-                
-                // Lider tablosunu göster
-                if (typeof quizApp !== 'undefined' && typeof quizApp.showGlobalLeaderboard === 'function') {
-                    quizApp.showGlobalLeaderboard();
-                } else {
-                    // quizApp veya fonksiyon yoksa
-                    const globalLeaderboard = document.getElementById('global-leaderboard');
-                    if (globalLeaderboard) {
-                        // Tüm sayfaları gizle
-                        const elementsToHide = [
-                            'main-menu',
-                            'quiz',
-                            'category-selection',
-                            'result',
-                            'profile-page',
-                            'online-game-options',
-                            'friends-page',
-                            'admin-panel'
-                        ];
-                        
-                        elementsToHide.forEach(id => {
-                            const element = document.getElementById(id);
-                            if (element) element.style.display = 'none';
-                        });
-                        
-                        // Lider tablosunu göster
-                        globalLeaderboard.style.display = 'block';
-                    } else {
-                        alert('Lider tablosu şu anda kullanılamıyor.');
-                    }
-                }
-                
-                // Hamburger menü ikonunu bars'a geri çevir
-                const icon = hamburgerToggle.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            });
-            
+
             document.getElementById('menu-logout').addEventListener('click', function() {
                 hamburgerMenu.classList.remove('active');
                 menuOverlay.classList.remove('active');
@@ -3714,6 +3888,66 @@
                     showStatistics();
                 });
             }
+            
+            // İstatistikler sayfası geri butonu
+            const backFromStatsBtn = document.getElementById('back-from-stats');
+            if (backFromStatsBtn) {
+                backFromStatsBtn.addEventListener('click', function() {
+                    hideStatistics();
+                });
+            }
+            
+            // Ana menüdeki Küresel Skor Tablosu butonu
+            const globalLeaderboardBtn = document.getElementById('view-global-leaderboard');
+            if (globalLeaderboardBtn) {
+                globalLeaderboardBtn.addEventListener('click', function() {
+                    console.log('Küresel Skor Tablosu butonu tıklandı');
+                    
+                    // Tüm sayfaları gizle
+                    const elementsToHide = [
+                        'main-menu',
+                        'quiz',
+                        'category-selection',
+                        'result',
+                        'profile-page',
+                        'online-game-options',
+                        'friends-page',
+                        'admin-panel',
+                        'statistics-page'
+                    ];
+                    
+                    elementsToHide.forEach(id => {
+                        const element = document.getElementById(id);
+                        if (element) element.style.display = 'none';
+                    });
+                    
+                    // Lider tablosunu göster
+                    const globalLeaderboard = document.getElementById('global-leaderboard');
+                    if (globalLeaderboard) {
+                        globalLeaderboard.style.display = 'block';
+                        
+                        // Online game modülü varsa onun lider tablosu fonksiyonunu kullan (daha kapsamlı)
+                        if (window.onlineGame && typeof window.onlineGame.loadLeaderboard === 'function') {
+                            console.log('Online game lider tablosu yükleniyor...');
+                            window.onlineGame.loadLeaderboard();
+                        } 
+                        // QuizApp varsa onun fonksiyonunu kullan
+                        else if (typeof quizApp !== 'undefined' && typeof quizApp.loadLeaderboardData === 'function') {
+                            console.log('QuizApp lider tablosu yükleniyor...');
+                            quizApp.loadLeaderboardData();
+                        }
+                        else {
+                            // Hiçbiri yoksa basit mesaj göster
+                            const leaderboardList = document.getElementById('leaderboard-list');
+                            if (leaderboardList) {
+                                leaderboardList.innerHTML = '<div class="loading-message">Lider tablosu yükleniyor...</div>';
+                            }
+                        }
+                    } else {
+                        alert('Lider tablosu sayfası bulunamadı.');
+                    }
+                });
+            }
 
             // Soru ekle butonu
             if (addQuestionBtn) {
@@ -3873,6 +4107,289 @@
                 });
             }
         });
+
+        // İstatistikler sayfasını göster
+        function showStatistics() {
+            console.log('İstatistikler sayfası açılıyor...');
+            
+            // Tüm sayfaları gizle
+            const elementsToHide = [
+                'main-menu',
+                'quiz',
+                'category-selection',
+                'result',
+                'profile-page',
+                'online-game-options',
+                'global-leaderboard',
+                'friends-page',
+                'admin-panel'
+            ];
+            
+            elementsToHide.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.style.display = 'none';
+            });
+            
+            // İstatistikler sayfasını göster
+            const statsPage = document.getElementById('statistics-page');
+            if (statsPage) {
+                statsPage.style.display = 'block';
+                loadStatisticsData();
+            } else {
+                console.error('İstatistikler sayfası bulunamadı!');
+                alert('İstatistikler sayfası şu anda kullanılamıyor.');
+            }
+        }
+        
+        // İstatistikler sayfasını gizle
+        function hideStatistics() {
+            const statsPage = document.getElementById('statistics-page');
+            if (statsPage) {
+                statsPage.style.display = 'none';
+            }
+            
+            // Ana menüyü göster
+            const mainMenu = document.getElementById('main-menu');
+            if (mainMenu) {
+                mainMenu.style.display = 'block';
+            }
+        }
+        
+        // İstatistik verilerini yükle
+        function loadStatisticsData() {
+            console.log('İstatistik verileri yükleniyor...');
+            
+            // quizApp nesnesinden istatistikleri al
+            if (window.quizApp && window.quizApp.userStats) {
+                const stats = window.quizApp.userStats;
+                updateStatisticsUI(stats);
+            } else {
+                // localStorage'dan istatistikleri yükle
+                try {
+                    const localStats = localStorage.getItem('userStats');
+                    if (localStats) {
+                        const stats = JSON.parse(localStats);
+                        updateStatisticsUI(stats);
+                    } else {
+                        // Boş istatistikler göster
+                        updateStatisticsUI({
+                            totalGames: 0,
+                            totalQuestions: 0,
+                            correctAnswers: 0,
+                            highestScore: 0,
+                            categoryStats: {}
+                        });
+                    }
+                } catch (error) {
+                    console.error('İstatistikler yüklenirken hata:', error);
+                    updateStatisticsUI({
+                        totalGames: 0,
+                        totalQuestions: 0,
+                        correctAnswers: 0,
+                        highestScore: 0,
+                        categoryStats: {}
+                    });
+                }
+            }
+        }
+        
+        // İstatistik UI'sını güncelle
+        function updateStatisticsUI(stats) {
+            console.log('İstatistik UI güncelleniyor:', stats);
+            
+            // Genel istatistikler
+            const totalGames = stats.totalGames || 0;
+            const totalQuestions = stats.totalQuestions || 0;
+            const correctAnswers = stats.correctAnswers || 0;
+            const highestScore = stats.highestScore || 0;
+            
+            // Doğruluk oranını hesapla
+            const accuracy = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+            const averageScore = totalGames > 0 ? Math.round(highestScore / totalGames) : 0;
+            
+            // UI elementlerini güncelle
+            document.getElementById('total-games-stat').textContent = totalGames;
+            document.getElementById('total-questions-stat').textContent = totalQuestions;
+            document.getElementById('correct-answers-stat').textContent = correctAnswers;
+            document.getElementById('accuracy-stat').textContent = '%' + accuracy;
+            document.getElementById('highest-score-stat').textContent = highestScore;
+            document.getElementById('average-score-stat').textContent = averageScore;
+            
+            // Kategori istatistiklerini güncelle
+            updateCategoryStats(stats.categoryStats || {});
+            
+            // Son oyunları yükle
+            loadRecentGames();
+            
+            // Grafikleri çiz
+            drawStatisticsCharts(stats);
+        }
+        
+        // Kategori istatistiklerini güncelle
+        function updateCategoryStats(categoryStats) {
+            const categoryContainer = document.getElementById('category-stats');
+            if (!categoryContainer) return;
+            
+            categoryContainer.innerHTML = '';
+            
+            if (Object.keys(categoryStats).length === 0) {
+                categoryContainer.innerHTML = '<p class="empty-message">Henüz kategori istatistiği bulunmuyor.</p>';
+                return;
+            }
+            
+            Object.entries(categoryStats).forEach(([category, data]) => {
+                const accuracy = data.total > 0 ? Math.round((data.correct / data.total) * 100) : 0;
+                
+                const categoryItem = document.createElement('div');
+                categoryItem.className = 'category-stat-item';
+                categoryItem.innerHTML = `
+                    <div class="category-info">
+                        <h4>${category}</h4>
+                        <div class="category-details">
+                            <span>Oynanmış: ${data.total || 0} soru</span>
+                            <span>Doğru: ${data.correct || 0}</span>
+                            <span>Başarı: %${accuracy}</span>
+                        </div>
+                    </div>
+                    <div class="category-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${accuracy}%"></div>
+                        </div>
+                    </div>
+                `;
+                
+                categoryContainer.appendChild(categoryItem);
+            });
+        }
+        
+        // Son oyunları yükle
+        function loadRecentGames() {
+            const recentGamesContainer = document.getElementById('recent-games');
+            if (!recentGamesContainer) return;
+            
+            try {
+                const gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
+                const recentGames = gameHistory.slice(-5).reverse(); // Son 5 oyun
+                
+                if (recentGames.length === 0) {
+                    recentGamesContainer.innerHTML = '<p class="empty-message">Henüz oyun geçmişi bulunmuyor.</p>';
+                    return;
+                }
+                
+                recentGamesContainer.innerHTML = '';
+                
+                recentGames.forEach((game, index) => {
+                    const gameDate = new Date(game.date || Date.now()).toLocaleDateString('tr-TR');
+                    const accuracy = game.totalQuestions > 0 ? Math.round((game.correctAnswers / game.totalQuestions) * 100) : 0;
+                    
+                    const gameItem = document.createElement('div');
+                    gameItem.className = 'recent-game-item';
+                    gameItem.innerHTML = `
+                        <div class="game-info">
+                            <h4>${game.category || 'Bilinmeyen Kategori'}</h4>
+                            <span class="game-date">${gameDate}</span>
+                        </div>
+                        <div class="game-results">
+                            <span>Skor: ${game.score || 0}</span>
+                            <span>Doğru: ${game.correctAnswers || 0}/${game.totalQuestions || 0}</span>
+                            <span class="accuracy ${accuracy >= 70 ? 'good' : accuracy >= 50 ? 'average' : 'poor'}">%${accuracy}</span>
+                        </div>
+                    `;
+                    
+                    recentGamesContainer.appendChild(gameItem);
+                });
+            } catch (error) {
+                console.error('Son oyunlar yüklenirken hata:', error);
+                recentGamesContainer.innerHTML = '<p class="error-message">Son oyunlar yüklenirken bir hata oluştu.</p>';
+            }
+        }
+        
+        // İstatistik grafiklerini çiz
+        function drawStatisticsCharts(stats) {
+            // Chart.js kullanarak grafikleri çiz
+            if (typeof Chart === 'undefined') {
+                console.warn('Chart.js yüklenmedi, grafikler gösterilemiyor');
+                return;
+            }
+            
+            // Kategori dağılımı pasta grafiği
+            const categoryPieCtx = document.getElementById('category-pie-chart');
+            if (categoryPieCtx && stats.categoryStats) {
+                const categoryData = Object.entries(stats.categoryStats);
+                if (categoryData.length > 0) {
+                    new Chart(categoryPieCtx, {
+                        type: 'pie',
+                        data: {
+                            labels: categoryData.map(([category, data]) => category),
+                            datasets: [{
+                                data: categoryData.map(([category, data]) => data.total || 0),
+                                backgroundColor: [
+                                    '#FF6384',
+                                    '#36A2EB',
+                                    '#FFCE56',
+                                    '#4BC0C0',
+                                    '#9966FF',
+                                    '#FF9F40',
+                                    '#FF6384',
+                                    '#C9CBCF'
+                                ]
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom'
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+            
+            // Performans çizgi grafiği (basit örnek)
+            const performanceLineCtx = document.getElementById('performance-line-chart');
+            if (performanceLineCtx) {
+                // Son 30 günün örnek verisi
+                const dates = [];
+                const scores = [];
+                for (let i = 29; i >= 0; i--) {
+                    const date = new Date();
+                    date.setDate(date.getDate() - i);
+                    dates.push(date.toLocaleDateString('tr-TR', { month: 'short', day: 'numeric' }));
+                    scores.push(Math.floor(Math.random() * 100)); // Örnek veri
+                }
+                
+                new Chart(performanceLineCtx, {
+                    type: 'line',
+                    data: {
+                        labels: dates,
+                        datasets: [{
+                            label: 'Doğruluk Oranı (%)',
+                            data: scores,
+                            borderColor: '#36A2EB',
+                            backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                            fill: true,
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+        }
 
         // Admin panel başlatma fonksiyonu
         function initializeAdminPanel() {

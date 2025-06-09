@@ -151,22 +151,37 @@ const friendsModule = {
             return;
         }
         
+        // Minimum karakter kontrolü
+        if (query.length < 2 && !query.includes('@')) {
+            this.searchResultsContainer.innerHTML = '<p class="info">En az 2 karakter girin veya tam email adresini yazın.</p>';
+            return;
+        }
+        
         this.searchResultsContainer.innerHTML = '<p class="loading"><i class="fas fa-spinner fa-spin"></i> Aranıyor...</p>';
         
         // Kullanıcıları ara - displayName veya email ile
-        const searchPromises = [
-            // displayName ile ara
-        this.db.collection('users')
-            .where('displayNameLower', '>=', query.toLowerCase())
-            .where('displayNameLower', '<=', query.toLowerCase() + '\uf8ff')
-                .limit(5)
-                .get(),
-            // email ile ara (tam eşleşme)
-            this.db.collection('users')
-                .where('email', '==', query.toLowerCase())
-                .limit(5)
-            .get()
-        ];
+        const searchPromises = [];
+        
+        // displayName ile ara (eğer en az 2 karakter varsa)
+        if (query.length >= 2) {
+            searchPromises.push(
+                this.db.collection('users')
+                    .where('displayNameLower', '>=', query.toLowerCase())
+                    .where('displayNameLower', '<=', query.toLowerCase() + '\uf8ff')
+                    .limit(10)
+                    .get()
+            );
+        }
+        
+        // email ile ara (eğer @ işareti varsa tam eşleşme)
+        if (query.includes('@')) {
+            searchPromises.push(
+                this.db.collection('users')
+                    .where('email', '==', query.toLowerCase())
+                    .limit(5)
+                    .get()
+            );
+        }
         
         Promise.all(searchPromises)
             .then((results) => {
@@ -187,7 +202,7 @@ const friendsModule = {
                 });
                 
                 if (foundUsers.size === 0) {
-                    this.searchResultsContainer.innerHTML = '<p class="empty-message">Kullanıcı bulunamadı.</p>';
+                    this.searchResultsContainer.innerHTML = '<p class="empty-message">Hiçbir kullanıcı bulunamadı. Farklı bir arama terimi deneyin.</p>';
                     return;
                 }
                 
@@ -226,7 +241,16 @@ const friendsModule = {
             })
             .catch((error) => {
                 console.error("Kullanıcı arama hatası:", error);
-                this.searchResultsContainer.innerHTML = '<p class="error">Arama sırasında bir hata oluştu.</p>';
+                let errorMessage = 'Arama sırasında bir hata oluştu.';
+                
+                // Firestore güvenlik kuralları hatası kontrolü
+                if (error.code === 'permission-denied') {
+                    errorMessage = 'Kullanıcı arama için yetkiniz yok. Lütfen oturum açtığınızdan emin olun.';
+                } else if (error.code === 'unavailable') {
+                    errorMessage = 'Veritabanı şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.';
+                }
+                
+                this.searchResultsContainer.innerHTML = `<p class="error">${errorMessage}</p>`;
             });
     },
     
@@ -248,64 +272,54 @@ const friendsModule = {
     
     // Bekleyen istek kontrolü (daha güvenilir)
     checkPendingRequest: function(userId) {
-        // Firestore'dan gerçek zamanlı kontrol yapmak yerine mevcut verileri kontrol et
-        return this.friendRequests.some(request => 
+        // Önce local cache'den kontrol et
+        const localCheck = this.friendRequests.some(request => 
             (request.senderId === this.currentUserId && request.receiverId === userId) ||
             (request.receiverId === this.currentUserId && request.senderId === userId)
         );
+        
+        return localCheck;
     },
     
     // Arkadaşlık isteği gönder
     sendFriendRequest: function(receiverId) {
         if (!this.currentUserId) return;
         
-        // Gönderen kullanıcının bilgilerini al
-        firebase.auth().currentUser.getIdToken(true)
-            .then((token) => {
-                // Arkadaşlık isteği gönderme işlemi için Cloud Function'a istek gönder
-                return fetch('https://us-central1-[PROJENİZİN-ID].cloudfunctions.net/sendFriendRequest', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        receiverId: receiverId
-                    })
-                });
+        // Doğrudan Firestore'a arkadaşlık isteği ekleme (Cloud Function yerine)
+        const requestData = {
+            senderId: this.currentUserId,
+            receiverId: receiverId,
+            status: 'pending',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            senderDisplayName: firebase.auth().currentUser.displayName || firebase.auth().currentUser.email || 'Kullanıcı'
+        };
+        
+        // Önce aynı istek daha önce gönderilmiş mi kontrol et
+        this.db.collection('friendRequests')
+            .where('senderId', '==', this.currentUserId)
+            .where('receiverId', '==', receiverId)
+            .where('status', '==', 'pending')
+            .get()
+            .then((querySnapshot) => {
+                if (!querySnapshot.empty) {
+                    // Zaten bekleyen bir istek var
+                    alert('Bu kişiye zaten arkadaşlık isteği gönderdiniz.');
+                    return;
+                }
+                
+                // Yeni istek ekle
+                return this.db.collection('friendRequests').add(requestData);
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+            .then((docRef) => {
+                if (docRef) {
                     console.log('Arkadaşlık isteği gönderildi');
                     // İstek gönderimini hemen göster
                     this.showRequestSentNotification(receiverId);
-                } else {
-                    console.error('Arkadaşlık isteği gönderilemedi:', data.error);
-                    alert('Arkadaşlık isteği gönderilemedi: ' + data.error);
                 }
             })
             .catch(error => {
                 console.error('Arkadaşlık isteği gönderirken hata:', error);
-                
-                // Alternatif olarak doğrudan Firestore'a yazma işlemi (Cloud Function yoksa)
-                const requestData = {
-                    senderId: this.currentUserId,
-                    receiverId: receiverId,
-                    status: 'pending',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-                
-                this.db.collection('friendRequests').add(requestData)
-                    .then(() => {
-                        console.log('Arkadaşlık isteği gönderildi (alternatif)');
-                        // İstek gönderimini hemen göster
-                        this.showRequestSentNotification(receiverId);
-                    })
-                    .catch(err => {
-                        console.error('Arkadaşlık isteği gönderirken alternatif hata:', err);
-                        alert('Arkadaşlık isteği gönderilemedi. Lütfen daha sonra tekrar deneyin.');
-                    });
+                alert('Arkadaşlık isteği gönderilemedi. Lütfen daha sonra tekrar deneyin.');
             });
     },
     
