@@ -1,4 +1,4 @@
-const CACHE_NAME = 'quiz-app-v3';
+const CACHE_NAME = 'quiz-app-v6';
 
 // Production mode kontrolü
 const isProduction = self.location.hostname !== 'localhost' && 

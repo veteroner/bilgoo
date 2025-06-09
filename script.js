@@ -1,6 +1,7 @@
 ﻿// @ts-nocheck
 /* eslint-disable */
 // Bu dosya JavaScript'tir, TypeScript değildir.
+// Script Version 3.0 - Firebase puan kaydetme sistemi tamamlandı
 
 // Sayfa Yükleme İşlemleri
 document.addEventListener('DOMContentLoaded', () => {
@@ -85,6 +86,12 @@ const quizApp = {
     // Başlangıç
     init: function() {
         console.log("Quiz Uygulaması Başlatılıyor...");
+        
+        // İlk Firebase durumu kontrolü
+        console.log('🔥 Firebase İlk Durum Kontrolü:');
+        console.log('- Firebase nesnesi:', typeof firebase !== 'undefined' ? 'VAR' : 'YOK');
+        console.log('- Firebase.auth:', firebase && firebase.auth ? 'VAR' : 'YOK');
+        console.log('- Firebase.firestore:', firebase && firebase.firestore ? 'VAR' : 'YOK');
         
         // Tarayıcı özelliklerini kontrol et
         this.checkBrowserSupport();
@@ -433,7 +440,7 @@ const quizApp = {
                 const sampleQuestion = this.translatedQuestions[sampleCategory][0];
                 
                 // Bu soru çevrilmiş mi? (Kategori adını kontrol et)
-                // Türkçe kategorinin çevrilmiş adıyla karşılaştır
+                // Türkçe kategorinin çevrilmiş adını bul
                 const originalCategoryName = Object.keys(this.questionsData)[0]; // İlk Türkçe kategori
                 const expectedTranslatedName = this.getTranslatedCategoryName(originalCategoryName, language);
                 
@@ -1122,6 +1129,14 @@ const quizApp = {
                     if (currentQuestion.correctAnswer.length > 3) {
                         hint += "ve son harfi \"" + currentQuestion.correctAnswer.charAt(currentQuestion.correctAnswer.length - 1) + "\"";
                     }
+                } else if (currentQuestion.type === "DoğruYanlış" || currentQuestion.type === "TrueFalse") {
+                    // Doğru/Yanlış sorular için özel ipucu
+                    const correctAnswer = currentQuestion.correctAnswer.toLowerCase();
+                    if (correctAnswer === 'doğru' || correctAnswer === 'true' || correctAnswer === 'evet') {
+                        hint = "İpucu: Bu ifade doğru bir bilgidir.";
+                    } else {
+                        hint = "İpucu: Bu ifadede bir yanlışlık vardır.";
+                    }
                 } else {
                     const correctAnswer = currentQuestion.correctAnswer;
                     // Cevabın ilk ve varsa son harfini ipucu olarak ver
@@ -1282,13 +1297,7 @@ const quizApp = {
         this.updateJokerButtons();
         
         // Joker miktarlarını güncelle
-        var ownedCountElements = modal.querySelectorAll('.joker-owned-count');
-        ownedCountElements.forEach(function(el) {
-            var jokerType = el.closest('.joker-store-item').dataset.joker;
-            var count = this.jokerInventory[jokerType] || 0;
-            el.textContent = count;
-            console.log(`${jokerType} joker sayısı mağazada gösteriliyor: ${count}`);
-        }.bind(this));
+        this.updateJokerStoreDisplay(modal);
         
         // Satın alma butonlarını etkinleştir
         buyButtons.forEach(function(btn) {
@@ -1309,6 +1318,13 @@ const quizApp = {
                     // Puanı azalt
                     self.score -= price;
                     
+                    // PUANI FIREBASE'E KAYDET
+                    if (self.isLoggedIn) {
+                        self.totalScore -= price; // Toplam puandan da düş
+                        self.delayedSaveUserData(); // Firebase'e geciktirilmiş kaydet
+                        console.log(`Joker satın alma: ${price} puan harcandı. Yeni toplam: ${self.totalScore}`);
+                    }
+                    
                     // Jokeri envantere ekle
                     var previousCount = self.jokerInventory[jokerType] || 0;
                     self.jokerInventory[jokerType]++;
@@ -1320,7 +1336,9 @@ const quizApp = {
                     
                     // Göstergeleri güncelle
                     pointsDisplay.textContent = self.score;
-                    item.querySelector('.joker-owned-count').textContent = self.jokerInventory[jokerType];
+                    
+                    // Joker mağazasındaki sayımları güncelle
+                    self.updateJokerStoreDisplay(modal);
                     
                     // OYUN EKRANINDAKİ JOKER BUTONLARINI DA GÜNCELLE
                     self.updateJokerButtons();
@@ -1382,6 +1400,9 @@ const quizApp = {
         const isTrueFalse = currentQuestion.type === "DoğruYanlış" || currentQuestion.type === "TrueFalse";
         const isBlankFilling = currentQuestion.type === "BlankFilling";
         
+        console.log('updateJokerButtons çağrıldı');
+        console.log('Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
+        console.log('Joker kullanım durumları:', JSON.stringify(this.jokersUsed));
         console.log('updateJokerButtons - elementler:', {
             fifty: !!this.jokerFiftyBtn,
             hint: !!this.jokerHintBtn,
@@ -1393,66 +1414,38 @@ const quizApp = {
         // 50:50 jokeri
         if (this.jokerFiftyBtn) {
             const fiftyCount = this.jokerInventory.fifty || 0;
-            if (isTrueFalse || isBlankFilling) {
-                this.jokerFiftyBtn.disabled = true;
-                this.jokerFiftyBtn.style.opacity = '0.3';
-                this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i><span class="joker-count-badge">${fiftyCount}</span>`;
-            } else if (this.jokersUsed.fifty) {
-                this.jokerFiftyBtn.disabled = true;
-                this.jokerFiftyBtn.style.opacity = '0.5';
-                this.jokerFiftyBtn.innerHTML = '<i class="fas fa-star-half-alt"></i><span class="joker-used">Kullanıldı</span>';
-            } else {
-                this.jokerFiftyBtn.disabled = fiftyCount <= 0;
-                this.jokerFiftyBtn.style.opacity = fiftyCount <= 0 ? '0.5' : '1';
-                this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i><span class="joker-count-badge">${fiftyCount}</span>`;
-            }
+            const used = this.jokersUsed.fifty;
+            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${fiftyCount}${used ? '<span class=\'joker-used-text\'>✓</span>' : ''}</span>`;
+            this.jokerFiftyBtn.disabled = (fiftyCount <= 0) || used || isTrueFalse || isBlankFilling;
+            this.jokerFiftyBtn.style.opacity = (fiftyCount <= 0 || used || isTrueFalse || isBlankFilling) ? '0.3' : '1';
+            this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i>${badgeHtml}`;
         }
         // İpucu jokeri
         if (this.jokerHintBtn) {
             const hintCount = this.jokerInventory.hint || 0;
-            if (isTrueFalse || isBlankFilling) {
-                this.jokerHintBtn.disabled = true;
-                this.jokerHintBtn.style.opacity = '0.3';
-                this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i><span class="joker-count-badge">${hintCount}</span>`;
-            } else if (this.jokersUsed.hint) {
-                this.jokerHintBtn.disabled = true;
-                this.jokerHintBtn.style.opacity = '0.5';
-                this.jokerHintBtn.innerHTML = '<i class="fas fa-lightbulb"></i><span class="joker-used">Kullanıldı</span>';
-            } else {
-                this.jokerHintBtn.disabled = hintCount <= 0;
-                this.jokerHintBtn.style.opacity = hintCount <= 0 ? '0.5' : '1';
-                this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i><span class="joker-count-badge">${hintCount}</span>`;
-            }
+            const used = this.jokersUsed.hint;
+            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${hintCount}${used ? '<span class=\'joker-used-text\'>✓</span>' : ''}</span>`;
+            this.jokerHintBtn.disabled = (hintCount <= 0) || used || isBlankFilling;
+            this.jokerHintBtn.style.opacity = (hintCount <= 0 || used || isBlankFilling) ? '0.3' : '1';
+            this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i>${badgeHtml}`;
         }
         // Süre jokeri
         if (this.jokerTimeBtn) {
             const timeCount = this.jokerInventory.time || 0;
-            if (isTrueFalse || isBlankFilling) {
-                this.jokerTimeBtn.disabled = true;
-                this.jokerTimeBtn.style.opacity = '0.3';
-                this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i><span class="joker-count-badge">${timeCount}</span>`;
-            } else if (this.jokersUsed.time) {
-                this.jokerTimeBtn.disabled = true;
-                this.jokerTimeBtn.style.opacity = '0.5';
-                this.jokerTimeBtn.innerHTML = '<i class="fas fa-clock"></i><span class="joker-used">Kullanıldı</span>';
-            } else {
-                this.jokerTimeBtn.disabled = timeCount <= 0;
-                this.jokerTimeBtn.style.opacity = timeCount <= 0 ? '0.5' : '1';
-                this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i><span class="joker-count-badge">${timeCount}</span>`;
-            }
+            const used = this.jokersUsed.time;
+            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${timeCount}${used ? '<span class=\'joker-used-text\'>✓</span>' : ''}</span>`;
+            this.jokerTimeBtn.disabled = (timeCount <= 0) || used || isBlankFilling;
+            this.jokerTimeBtn.style.opacity = (timeCount <= 0 || used || isBlankFilling) ? '0.3' : '1';
+            this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i>${badgeHtml}`;
         }
         // Pas jokeri
         if (this.jokerSkipBtn) {
             const skipCount = this.jokerInventory.skip || 0;
-            if (this.jokersUsed.skip) {
-                this.jokerSkipBtn.disabled = true;
-                this.jokerSkipBtn.style.opacity = '0.5';
-                this.jokerSkipBtn.innerHTML = '<i class="fas fa-forward"></i><span class="joker-used">Kullanıldı</span>';
-            } else {
-                this.jokerSkipBtn.disabled = skipCount <= 0;
-                this.jokerSkipBtn.style.opacity = skipCount <= 0 ? '0.5' : '1';
-                this.jokerSkipBtn.innerHTML = `<i class="fas fa-forward"></i><span class="joker-count-badge">${skipCount}</span>`;
-            }
+            const used = this.jokersUsed.skip;
+            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${skipCount}${used ? '<span class=\'joker-used-text\'>✓</span>' : ''}</span>`;
+            this.jokerSkipBtn.disabled = (skipCount <= 0) || used;
+            this.jokerSkipBtn.style.opacity = (skipCount <= 0 || used) ? '0.3' : '1';
+            this.jokerSkipBtn.innerHTML = `<i class="fas fa-forward"></i>${badgeHtml}`;
         }
         // Joker mağazası
         if (this.jokerStoreBtn) {
@@ -1476,6 +1469,20 @@ const quizApp = {
         }
     },
     
+    // Joker mağazası sayım gösterimini güncelle
+    updateJokerStoreDisplay: function(modal) {
+        console.log('Joker mağazası sayımları güncelleniyor...');
+        console.log('Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
+        
+        const ownedCountElements = modal.querySelectorAll('.joker-owned-count');
+        ownedCountElements.forEach((el) => {
+            const jokerType = el.closest('.joker-store-item').dataset.joker;
+            const count = this.jokerInventory[jokerType] || 0;
+            el.textContent = count;
+            console.log(`${jokerType} joker sayısı mağazada güncellendi: ${count}`);
+        });
+    },
+
     // Joker kullanım durumlarını sıfırla (envanter korunur)
     resetJokerUsage: function() {
         console.log('Joker kullanım durumları sıfırlanıyor...');
@@ -1909,6 +1916,8 @@ const quizApp = {
     
     // Sonraki soruyu göster
     showNextQuestion: function() {
+        // Yeni soruya geçerken joker kullanımlarını sıfırla
+        this.resetJokerUsage();
         // Önceki sonuç ve seçili şıkları temizle
         if (this.resultElement) {
             this.resultElement.style.display = 'none';
@@ -2400,6 +2409,9 @@ const quizApp = {
         
         // Skorları güncelle
         this.updateScoreDisplay();
+        
+        // Joker butonlarını başlangıç durumuna getir
+        this.updateJokerButtons();
         
         // İlk soruyu göster
         this.displayQuestion(this.questions[0]);
@@ -3206,6 +3218,7 @@ const quizApp = {
         const profilePage = document.getElementById('profile-page');
         if (profilePage) {
             profilePage.style.display = 'block';
+            document.body.classList.add('profile-active');
             
             // Profil bilgilerini yükle
             this.loadProfileData();
@@ -3230,6 +3243,7 @@ const quizApp = {
                 // Profil sayfasını gizle
                 const profilePage = document.getElementById('profile-page');
                 if (profilePage) profilePage.style.display = 'none';
+                document.body.classList.remove('profile-active');
                 
                 // Ana menüyü göster
                 const mainMenu = document.getElementById('main-menu');
@@ -3257,13 +3271,17 @@ const quizApp = {
         const editProfileBtn = document.getElementById('edit-profile-btn');
         if (editProfileBtn) {
             editProfileBtn.addEventListener('click', () => {
-                this.showToast("Profil düzenleme özelliği yakında eklenecek", "toast-info");
+                this.showEditProfileModal();
             });
+            // Buton metnini güncelle
+            editProfileBtn.innerHTML = '<i class="fas fa-edit"></i> Profili Düzenle';
         }
     },
     
     // Profil verilerini yükle
     loadProfileData: function() {
+        const userId = this.getCurrentUserId();
+        
         // Kullanıcı bilgilerini yükle
         if (firebase.auth && firebase.auth().currentUser) {
             const user = firebase.auth().currentUser;
@@ -3279,38 +3297,284 @@ const quizApp = {
             const joinDate = document.getElementById('profile-join-date');
             if (joinDate && user.metadata && user.metadata.creationTime) {
                 const date = new Date(user.metadata.creationTime);
-                joinDate.textContent = date.toLocaleDateString();
+                joinDate.textContent = date.toLocaleDateString('tr-TR');
             }
-            
-            // İstatistikler
+        }
+        
+        // Gerçek istatistikleri güncelle
+        this.updateRealUserStats();
+        
+        // Rozetleri yükle
+        this.loadUserBadgesForProfile(userId);
+        
+        // Yüksek skorları yükle
+        this.loadHighScoresForProfile(userId);
+        
+        // Son aktiviteleri yükle
+        this.loadRecentActivitiesForProfile(userId);
+    },
+
+    // Mevcut kullanıcı ID'sini al
+    getCurrentUserId: function() {
+        if (firebase.auth && firebase.auth().currentUser) {
+            return firebase.auth().currentUser.uid;
+        }
+        // Firebase yoksa yerel ID kullan
+        return 'local-user';
+    },
+
+    // Test verileri oluştur (geliştirme amaçlı)
+    createTestData: function() {
+        const userId = this.getCurrentUserId();
+        
+        // Test skorları oluştur
+        const testScores = [
+            { category: 'Genel Kültür', score: 85, totalQuestions: 10, correctAnswers: 8, date: Date.now() - 86400000 },
+            { category: 'Bilim', score: 92, totalQuestions: 10, correctAnswers: 9, date: Date.now() - 172800000 },
+            { category: 'Tarih', score: 78, totalQuestions: 10, correctAnswers: 7, date: Date.now() - 259200000 },
+            { category: 'Spor', score: 90, totalQuestions: 10, correctAnswers: 9, date: Date.now() - 345600000 },
+            { category: 'Coğrafya', score: 100, totalQuestions: 10, correctAnswers: 10, date: Date.now() - 432000000 }
+        ];
+        
+        // Skorları localStorage'a kaydet
+        localStorage.setItem('quiz-high-scores', JSON.stringify(testScores));
+        
+        // İstatistikleri hesapla ve kaydet
+        this.calculateRealStats();
+        
+        // İlk oyun rozetini ver
+        this.badgeSystem.awardBadge(userId, this.badgeSystem.badges.firstGame);
+        
+        console.log('Test verileri oluşturuldu!');
+        this.showToast('Test verileri oluşturuldu! Profil sayfasını yenileyin.', 'toast-success');
+    },
+    
+    // Firebase'den kullanıcı istatistiklerini yükle
+    loadFirebaseUserStats: function(userId) {
+        if (!firebase.firestore) {
+            // Firebase yoksa localStorage'dan istatistikleri al
             const stats = this.getStats();
+            this.updateProfileStats(stats);
+            return;
+        }
+        
+        const db = firebase.firestore();
+        
+        // Kullanıcı dokümanından temel bilgileri al
+        db.collection('users').doc(userId).get()
+            .then((doc) => {
+                if (doc.exists) {
+                    const userData = doc.data();
+                    console.log('Kullanıcı verileri:', userData);
+                    
+                    // Profilde toplam puanı göster
+                    const profileTotalScore = document.getElementById('profile-total-score');
+                    if (profileTotalScore) {
+                        profileTotalScore.textContent = userData.totalScore || 0;
+                    }
+                    
+                    // Profilde seviyeyi göster
+                    const profileUserLevel = document.getElementById('profile-user-level');
+                    if (profileUserLevel) {
+                        const level = Math.floor((userData.totalScore || 0) / 500) + 1;
+                        profileUserLevel.textContent = level;
+                    }
+                    
+                    // Eğer kullanıcı verisinde istatistik yoksa skorlardan hesapla
+                    if (!userData.stats) {
+                        this.calculateStatsFromScores(userId);
+                    } else {
+                        this.updateProfileStats(userData.stats);
+                    }
+                } else {
+                    // Kullanıcı verisi yoksa skorlardan hesapla
+                    this.calculateStatsFromScores(userId);
+                }
+            })
+            .catch((error) => {
+                console.error('Kullanıcı verileri yüklenirken hata:', error);
+                // Hata durumunda localStorage'dan al
+                const stats = this.getStats();
+                this.updateProfileStats(stats);
+            });
+    },
+    
+    // Skorlardan istatistikleri hesapla
+    calculateStatsFromScores: function(userId) {
+        if (!firebase.firestore) return;
+        
+        const db = firebase.firestore();
+        
+        // Firestore'daki highScores koleksiyonundan kullanıcının skorlarını al
+        db.collection('highScores')
+            .where('userId', '==', userId)
+            .get()
+            .then((querySnapshot) => {
+                let totalGames = 0;
+                let totalQuestions = 0;
+                let totalCorrect = 0;
+                let categoryStats = {};
+                
+                querySnapshot.forEach((doc) => {
+                    const scoreData = doc.data();
+                    totalGames++;
+                    totalQuestions += scoreData.totalQuestions || 0;
+                    totalCorrect += scoreData.correctAnswers || scoreData.score || 0;
+                    
+                    // Kategori istatistikleri
+                    const category = scoreData.category || 'Genel';
+                    if (!categoryStats[category]) {
+                        categoryStats[category] = {
+                            games: 0,
+                            questions: 0,
+                            correct: 0
+                        };
+                    }
+                    categoryStats[category].games++;
+                    categoryStats[category].questions += scoreData.totalQuestions || 0;
+                    categoryStats[category].correct += scoreData.correctAnswers || scoreData.score || 0;
+                });
+                
+                const stats = {
+                    totalGames,
+                    totalQuestions,
+                    correctAnswers: totalCorrect,
+                    categoryStats
+                };
+                
+                console.log('Hesaplanan istatistikler:', stats);
+                this.updateProfileStats(stats);
+                
+                // İstatistikleri kullanıcı dokümanına kaydet
+                db.collection('users').doc(userId).update({
+                    stats: stats,
+                    statsLastUpdated: new Date()
+                }).catch((error) => {
+                    console.error('İstatistikler kaydedilirken hata:', error);
+                });
+            })
+            .catch((error) => {
+                console.error('Skorlar alınırken hata:', error);
+                // Hata durumunda localStorage'dan al
+                const stats = this.getStats();
+                this.updateProfileStats(stats);
+            });
+    },
+    
+    // Profil istatistiklerini güncelle
+    updateProfileStats: function(stats) {
+        const totalGames = document.getElementById('stats-total-games');
+        if (totalGames) totalGames.textContent = stats.totalGames || 0;
+        
+        const totalQuestions = document.getElementById('stats-total-questions');
+        if (totalQuestions) totalQuestions.textContent = stats.totalQuestions || 0;
+        
+        const correctAnswers = document.getElementById('stats-correct-answers');
+        if (correctAnswers) correctAnswers.textContent = stats.correctAnswers || 0;
+        
+        // Doğruluk oranı
+        const accuracy = document.getElementById('stats-accuracy');
+        if (accuracy) {
+            const accuracyValue = stats.totalQuestions > 0 
+                ? Math.round((stats.correctAnswers / stats.totalQuestions) * 100) 
+                : 0;
+            accuracy.textContent = `%${accuracyValue}`;
+        }
+    },
+
+    // Gerçek kullanıcı istatistiklerini al ve güncelle
+    updateRealUserStats: function() {
+        const userId = this.getCurrentUserId();
+        if (!userId) return;
+
+        // localStorage'dan gerçek istatistikleri çek
+        const realStats = this.calculateRealStats();
+        
+        // Profil sayfası açıksa istatistikleri güncelle
+        const profilePage = document.getElementById('profile-page');
+        if (profilePage && profilePage.style.display !== 'none') {
+            this.updateProfileStats(realStats);
             
-            const totalGames = document.getElementById('stats-total-games');
-            if (totalGames) totalGames.textContent = stats.totalGames || 0;
-            
-            const totalQuestions = document.getElementById('stats-total-questions');
-            if (totalQuestions) totalQuestions.textContent = stats.totalQuestions || 0;
-            
-            const correctAnswers = document.getElementById('stats-correct-answers');
-            if (correctAnswers) correctAnswers.textContent = stats.correctAnswers || 0;
-            
-            // Doğruluk oranı
-            const accuracy = document.getElementById('stats-accuracy');
-            if (accuracy) {
-                const accuracyValue = stats.totalQuestions > 0 
-                    ? Math.round((stats.correctAnswers / stats.totalQuestions) * 100) 
-                    : 0;
-                accuracy.textContent = `%${accuracyValue}`;
+            // Toplam puanı güncelle
+            const profileTotalScore = document.getElementById('profile-total-score');
+            if (profileTotalScore) {
+                profileTotalScore.textContent = realStats.totalScore || 0;
             }
             
-            // Rozetleri yükle
-            this.loadUserBadgesForProfile(user.uid);
+            // Seviyeyi güncelle
+            const profileUserLevel = document.getElementById('profile-user-level');
+            if (profileUserLevel) {
+                const level = Math.floor((realStats.totalScore || 0) / 500) + 1;
+                profileUserLevel.textContent = level;
+            }
+        }
+
+        // Rozet sistemini kontrol et
+        this.badgeSystem.checkAndAwardBadges(userId, realStats);
+        
+        return realStats;
+    },
+
+    // Gerçek istatistikleri hesapla
+    calculateRealStats: function() {
+        try {
+            // localStorage'dan mevcut tüm skorları al
+            const highScores = JSON.parse(localStorage.getItem('quiz-high-scores') || '[]');
+            const gameStats = JSON.parse(localStorage.getItem('quiz-game-stats') || '{}');
             
-            // Yüksek skorları yükle
-            this.loadHighScoresForProfile(user.uid);
+            let totalGames = gameStats.totalGames || 0;
+            let totalQuestions = gameStats.totalQuestions || 0;
+            let correctAnswers = gameStats.correctAnswers || 0;
+            let totalScore = 0;
+            let perfectGames = 0;
+            let fastAnswers = gameStats.fastAnswers || 0;
+            let categoriesPlayed = new Set();
+
+            // Yüksek skorlardan istatistikleri hesapla
+            highScores.forEach(score => {
+                totalGames++;
+                totalQuestions += score.totalQuestions || 10;
+                correctAnswers += score.correctAnswers || score.score || 0;
+                totalScore += score.score || 0;
+                
+                // Mükemmel oyunları say
+                if (score.correctAnswers === score.totalQuestions) {
+                    perfectGames++;
+                }
+                
+                // Kategori çeşitliliğini takip et
+                if (score.category) {
+                    categoriesPlayed.add(score.category);
+                }
+            });
+
+            const stats = {
+                totalGames,
+                totalQuestions,
+                correctAnswers,
+                totalScore,
+                perfectGames,
+                fastAnswers,
+                categoriesPlayed: categoriesPlayed.size,
+                accuracy: totalQuestions > 0 ? (correctAnswers / totalQuestions) * 100 : 0
+            };
+
+            // İstatistikleri localStorage'a kaydet
+            localStorage.setItem('quiz-user-stats', JSON.stringify(stats));
             
-            // Son aktiviteleri yükle
-            this.loadRecentActivitiesForProfile(user.uid);
+            return stats;
+        } catch (error) {
+            console.error('İstatistikler hesaplanırken hata:', error);
+            return {
+                totalGames: 0,
+                totalQuestions: 0,
+                correctAnswers: 0,
+                totalScore: 0,
+                perfectGames: 0,
+                fastAnswers: 0,
+                categoriesPlayed: 0,
+                accuracy: 0
+            };
         }
     },
     
@@ -3321,61 +3585,130 @@ const quizApp = {
         
         badgesContainer.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Rozetler yükleniyor...</div>';
         
-        // Firebase'den kullanıcı rozetlerini çek
-        if (firebase.database) {
-            const badgesRef = firebase.database().ref(`users/${userId}/badges`);
+        // Kullanıcının kazandığı rozetleri al
+        const userBadges = this.badgeSystem.getUserBadges(userId);
+        // Tüm mevcut rozetleri al
+        const allBadges = this.badgeSystem.badges;
+        
+        setTimeout(() => {
+            badgesContainer.innerHTML = '';
             
-            badgesRef.once('value')
-                .then(snapshot => {
-                    const badges = snapshot.val();
-                    
-                    if (!badges) {
-                        badgesContainer.innerHTML = '<div class="badge-placeholder">Henüz rozet kazanılmadı</div>';
-                        return;
-                    }
-                    
-                    // Rozetleri ekrana yazdir
-                    badgesContainer.innerHTML = '';
-                    
-                    Object.keys(badges).forEach(badgeId => {
-                        const badge = badges[badgeId];
-                        
-                        const badgeElement = document.createElement('div');
-                        badgeElement.className = 'badge-item';
-                        badgeElement.innerHTML = `
-                            <div class="badge-icon">
-                                <i class="fas ${badge.icon || 'fa-award'}"></i>
-                            </div>
-                            <div class="badge-name">${badge.name || 'Bilinmeyen Rozet'}</div>
-                            <div class="badge-date">${new Date(badge.earnedDate || Date.now()).toLocaleDateString()}</div>
-                        `;
-                        
-                        badgesContainer.appendChild(badgeElement);
-                    });
-                })
-                .catch(error => {
-                    console.error("Rozetler yüklenirken hata oluştu:", error);
-                    badgesContainer.innerHTML = '<div class="error-message">Rozetler yüklenemedi</div>';
+            // Tüm rozetleri göster (kazanılan ve kazanılmayan)
+            Object.values(allBadges).forEach(badge => {
+                const badgeElement = document.createElement('div');
+                const isEarned = userBadges[badge.id] !== undefined;
+                
+                badgeElement.className = isEarned ? 'badge-item earned' : 'badge-item';
+                badgeElement.setAttribute('data-badge-id', badge.id);
+                
+                let badgeDate = '';
+                if (isEarned) {
+                    const earnedDate = userBadges[badge.id].earnedDate ? 
+                        new Date(userBadges[badge.id].earnedDate).toLocaleDateString('tr-TR') : 
+                        'Bilinmiyor';
+                    badgeDate = earnedDate;
+                } else {
+                    badgeDate = 'Henüz kazanılmadı';
+                }
+                
+                badgeElement.innerHTML = `
+                    <i class="badge-icon ${badge.icon || 'fas fa-award'}"></i>
+                    <div class="badge-name">${badge.name || 'Bilinmeyen Rozet'}</div>
+                    <div class="badge-date">${badgeDate}</div>
+                `;
+                
+                // Rozet tıklama olayı ekle
+                badgeElement.addEventListener('click', () => {
+                    this.showBadgeInfoModal(badge, isEarned, badgeDate);
                 });
-        } else {
-            // Firebase yoksa demo veriler göster
-            badgesContainer.innerHTML = `
-                <div class="badge-item">
-                    <div class="badge-icon"><i class="fas fa-trophy"></i></div>
-                    <div class="badge-name">Bilgi Kralı</div>
-                    <div class="badge-date">01.01.2025</div>
+                
+                badgesContainer.appendChild(badgeElement);
+            });
+            
+            // Rozetleri yükledikten sonra güncel istatistikleri kontrol et ve rozetleri güncelle
+            this.checkAndUpdateBadges(userId);
+            
+            // Hiç rozet yoksa placeholder göster
+            if (Object.keys(allBadges).length === 0) {
+                badgesContainer.innerHTML = '<div class="badge-placeholder">Henüz tanımlı rozet yok</div>';
+            }
+        }, 500);
+    },
+
+    // Rozet bilgi modalını göster
+    showBadgeInfoModal: function(badge, isEarned, earnedDate) {
+        // Modal oluştur
+        const modal = document.createElement('div');
+        modal.className = 'modal badge-info-modal';
+        modal.id = 'badge-info-modal';
+        
+        const statusText = isEarned ? '✅ Kazanıldı!' : '⏳ Henüz Kazanılmadı';
+        const statusClass = isEarned ? 'earned' : 'not-earned';
+        const howToEarnText = this.getBadgeRequirementText(badge);
+        
+        modal.innerHTML = `
+            <div class="modal-content badge-modal-content">
+                <div class="modal-header">
+                    <h3><i class="${badge.icon}"></i> ${badge.name}</h3>
+                    <button class="close-modal" onclick="this.closest('.modal').remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-                <div class="badge-item">
-                    <div class="badge-icon"><i class="fas fa-bolt"></i></div>
-                    <div class="badge-name">Hız Ustası</div>
-                    <div class="badge-date">15.02.2025</div>
+                <div class="modal-body">
+                    <div class="badge-info-display">
+                        <div class="badge-icon-large ${statusClass}">
+                            <i class="${badge.icon}"></i>
+                        </div>
+                        <div class="badge-details">
+                            <h4>${badge.name}</h4>
+                            <p class="badge-description">${badge.description}</p>
+                            <div class="badge-status ${statusClass}">
+                                ${statusText}
+                            </div>
+                            ${isEarned ? `<div class="badge-earned-date">Kazanıldı: ${earnedDate}</div>` : ''}
+                        </div>
+                    </div>
+                    <div class="badge-requirements">
+                        <h5><i class="fas fa-tasks"></i> Nasıl Kazanılır:</h5>
+                        <p>${howToEarnText}</p>
+                    </div>
                 </div>
-                <div class="badge-item">
-                    <div class="badge-icon"><i class="fas fa-book"></i></div>
-                    <div class="badge-name">Bilim Dahisi</div>
-                    <div class="badge-date">23.03.2025</div>
-                </div>
-            `;
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Modal göster
+        setTimeout(() => modal.classList.add('show'), 10);
+    },
+
+    // Rozet gereksinimlerini açıklayan metin
+    getBadgeRequirementText: function(badge) {
+        const requirements = {
+            'firstGame': 'İlk quiz oyununuzu oynayın.',
+            'perfectScore': 'Bir oyunda tüm soruları doğru cevaplayın (10/10 puan).',
+            'speedster': '5 soruyu 10 saniyeden kısa sürede cevaplayın.',
+            'scholar': 'Toplamda 50 soruyu doğru cevaplayın.',
+            'dedicated': 'Toplamda 10 oyun tamamlayın.',
+            'genius': 'En az 20 soru cevapladıktan sonra %90 veya üzeri doğruluk oranına sahip olun.',
+            'explorer': '5 farklı kategoride oyun oynayın.'
+        };
+        return requirements[badge.id] || 'Bu rozetin gereksinimleri henüz tanımlanmamış.';
+    },
+
+    // Rozetleri kontrol et ve güncelle
+    checkAndUpdateBadges: function(userId) {
+        // Güncel istatistikleri al
+        const currentStats = this.calculateRealStats();
+        
+        // Yeni rozetleri kontrol et
+        const newBadges = this.badgeSystem.checkAndAwardBadges(userId, currentStats);
+        
+        // Eğer yeni rozet kazanıldıysa profili yenile
+        if (newBadges && newBadges.length > 0) {
+            setTimeout(() => {
+                this.loadUserBadgesForProfile(userId);
+            }, 1000);
         }
     },
     
@@ -3384,60 +3717,56 @@ const quizApp = {
         const highScoresTable = document.getElementById('profile-high-scores');
         if (!highScoresTable) return;
         
-        highScoresTable.innerHTML = '<tr><td colspan="3" class="loading-scores">Skorlar yükleniyor...</td></tr>';
+        highScoresTable.innerHTML = '<tr><td colspan="3" class="loading">Skorlar yükleniyor...</td></tr>';
         
-        // Firebase'den kullanıcının yüksek skorlarını çek
-        if (firebase.database) {
-            const scoresRef = firebase.database().ref(`users/${userId}/scores`)
-                .orderByChild('score')
-                .limitToLast(10);
+        if (firebase.firestore) {
+            const db = firebase.firestore();
             
-            scoresRef.once('value')
-                .then(snapshot => {
-                    const scores = snapshot.val();
-                    
-                    if (!scores) {
+            db.collection('highScores')
+                .where('userId', '==', userId)
+                .orderBy('score', 'desc')
+                .limit(10)
+                .get()
+                .then(querySnapshot => {
+                    if (querySnapshot.empty) {
                         highScoresTable.innerHTML = '<tr><td colspan="3" class="no-data">Henüz kaydedilen skor yok</td></tr>';
                         return;
                     }
                     
-                    // Skorları diziye çevir ve skora göre sırala
-                    const scoresArray = [];
-                    Object.keys(scores).forEach(key => {
-                        scoresArray.push({
-                            id: key,
-                            ...scores[key]
-                        });
-                    });
-                    
-                    // Skora göre azalan sıralama
-                    scoresArray.sort((a, b) => b.score - a.score);
-                    
-                    // Tabloyu oluştur
                     highScoresTable.innerHTML = '';
-                    
-                    scoresArray.forEach(score => {
+                    querySnapshot.forEach(doc => {
+                        const scoreData = doc.data();
                         const row = document.createElement('tr');
                         row.innerHTML = `
-                            <td>${score.category || 'Genel'}</td>
-                            <td>${score.score || 0}</td>
-                            <td>${new Date(score.date || Date.now()).toLocaleDateString()}</td>
+                            <td>${scoreData.category || 'Genel'}</td>
+                            <td>${scoreData.score || 0}</td>
+                            <td>${scoreData.date ? new Date(scoreData.date.toDate()).toLocaleDateString('tr-TR') : 'Bilinmiyor'}</td>
                         `;
-                        
                         highScoresTable.appendChild(row);
                     });
                 })
                 .catch(error => {
-                    console.error("Skorlar yüklenirken hata oluştu:", error);
-                    highScoresTable.innerHTML = '<tr><td colspan="3" class="error-data">Skorlar yüklenemedi</td></tr>';
+                    console.error('Yüksek skorlar yüklenirken hata:', error);
+                    highScoresTable.innerHTML = '<tr><td colspan="3" class="no-data">Skorlar yüklenirken hata oluştu</td></tr>';
                 });
         } else {
-            // Firebase yoksa demo veriler göster
-            highScoresTable.innerHTML = `
-                <tr><td>Genel Kültür</td><td>85</td><td>01.04.2025</td></tr>
-                <tr><td>Bilim</td><td>78</td><td>28.03.2025</td></tr>
-                <tr><td>Tarih</td><td>72</td><td>15.03.2025</td></tr>
-            `;
+            // Firebase yoksa localStorage'dan al
+            const scores = this.getHighScores();
+            if (scores.length === 0) {
+                highScoresTable.innerHTML = '<tr><td colspan="3" class="no-data">Henüz kaydedilen skor yok</td></tr>';
+                return;
+            }
+            
+            highScoresTable.innerHTML = '';
+            scores.slice(0, 10).forEach(score => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${score.category || 'Genel'}</td>
+                    <td>${score.score || 0}</td>
+                    <td>${score.date ? new Date(score.date).toLocaleDateString('tr-TR') : 'Bugün'}</td>
+                `;
+                highScoresTable.appendChild(row);
+            });
         }
     },
     
@@ -3446,73 +3775,356 @@ const quizApp = {
         const activitiesList = document.getElementById('recent-activities-list');
         if (!activitiesList) return;
         
-        // Firebase'den kullanıcının son aktivitelerini çek
-        if (firebase.database) {
-            const activitiesRef = firebase.database().ref(`users/${userId}/activities`)
-                .orderByChild('timestamp')
-                .limitToLast(5);
-            
-            activitiesRef.once('value')
-                .then(snapshot => {
-                    const activities = snapshot.val();
-                    
-                    if (!activities) {
-                        activitiesList.innerHTML = '<div class="no-activity">Henüz aktivite yok</div>';
-                        return;
+        activitiesList.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Aktiviteler yükleniyor...</div>';
+        
+        // Örnek aktiviteler (gerçek veritabanı bağlantısı yoksa)
+        const sampleActivities = [
+            {
+                icon: 'fas fa-gamepad',
+                title: 'Genel Kültür kategorisinde bir oyun oynandı',
+                time: '2 saat önce',
+                score: 85
+            },
+            {
+                icon: 'fas fa-award',
+                title: '"Bilgi Ustası" rozeti kazanıldı',
+                time: '1 gün önce',
+                score: null
+            },
+            {
+                icon: 'fas fa-tasks',
+                title: 'Günlük görev tamamlandı',
+                time: '2 gün önce',
+                score: null
+            }
+        ];
+        
+        setTimeout(() => {
+            activitiesList.innerHTML = '';
+            sampleActivities.forEach(activity => {
+                const activityElement = document.createElement('div');
+                activityElement.className = 'activity-item';
+                activityElement.innerHTML = `
+                    <div class="activity-icon"><i class="${activity.icon}"></i></div>
+                    <div class="activity-details">
+                        <div class="activity-title">${activity.title}</div>
+                        <div class="activity-time">${activity.time}</div>
+                    </div>
+                    ${activity.score ? `<div class="activity-score">Skor: ${activity.score}</div>` : ''}
+                `;
+                activitiesList.appendChild(activityElement);
+            });
+        }, 1000);
+    },
+    
+    // Profil düzenleme modalını göster
+    showEditProfileModal: function() {
+        // Modal oluştur
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.id = 'edit-profile-modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-edit"></i> Profili Düzenle</h3>
+                    <button class="close-modal" onclick="this.closest('.modal').remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="edit-display-name">Görünen Ad:</label>
+                        <input type="text" id="edit-display-name" placeholder="Adınızı girin">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-bio">Hakkımda:</label>
+                        <textarea id="edit-bio" placeholder="Kendiniz hakkında kısa bilgi..." rows="3"></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn-secondary" onclick="this.closest('.modal').remove()">İptal</button>
+                        <button class="btn-primary" onclick="quizApp.saveProfileChanges()">Kaydet</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Mevcut verileri doldur
+        const displayNameInput = document.getElementById('edit-display-name');
+        const bioInput = document.getElementById('edit-bio');
+        
+        if (firebase.auth && firebase.auth().currentUser) {
+            const user = firebase.auth().currentUser;
+            if (displayNameInput && user.displayName) {
+                displayNameInput.value = user.displayName;
+            }
+        } else {
+            // Firebase yoksa localStorage'dan al
+            const userId = this.getCurrentUserId();
+            try {
+                const profileData = localStorage.getItem(`user-profile-${userId}`);
+                if (profileData) {
+                    const profile = JSON.parse(profileData);
+                    if (displayNameInput && profile.displayName) {
+                        displayNameInput.value = profile.displayName;
                     }
-                    
-                    // Aktiviteleri diziye çevir ve zamana göre sırala
-                    const activitiesArray = [];
-                    Object.keys(activities).forEach(key => {
-                        activitiesArray.push({
-                            id: key,
-                            ...activities[key]
-                        });
+                    if (bioInput && profile.bio) {
+                        bioInput.value = profile.bio;
+                    }
+                } else {
+                    // Varsayılan kullanıcı adını göster
+                    const currentName = document.getElementById('profile-name')?.textContent;
+                    if (displayNameInput && currentName) {
+                        displayNameInput.value = currentName;
+                    }
+                }
+            } catch (error) {
+                console.error('Profil verileri yüklenemedi:', error);
+            }
+        }
+        
+        // Modal göster
+        setTimeout(() => modal.classList.add('show'), 10);
+    },
+    
+    // Profil değişikliklerini kaydet
+    saveProfileChanges: function() {
+        const displayName = document.getElementById('edit-display-name').value.trim();
+        const bio = document.getElementById('edit-bio').value.trim();
+        
+        if (!displayName) {
+            this.showToast('Görünen ad boş olamaz', 'toast-error');
+            return;
+        }
+        
+        // Firebase kullanıcısı varsa
+        if (firebase.auth && firebase.auth().currentUser) {
+            const user = firebase.auth().currentUser;
+            
+            // Firebase Authentication'da displayName güncelle
+            user.updateProfile({
+                displayName: displayName
+            }).then(() => {
+                // Firestore'da da güncelle (varsa)
+                if (firebase.firestore) {
+                    const db = firebase.firestore();
+                    db.collection('users').doc(user.uid).update({
+                        displayName: displayName,
+                        bio: bio,
+                        lastUpdated: new Date()
+                    }).catch(error => {
+                        console.error('Firestore güncelleme hatası:', error);
                     });
-                    
-                    // Zamana göre azalan sıralama (en yeni en üstte)
-                    activitiesArray.sort((a, b) => b.timestamp - a.timestamp);
-                    
-                    // Listeyi oluştur
-                    activitiesList.innerHTML = '';
-                    
-                    activitiesArray.forEach(activity => {
-                        const activityElement = document.createElement('div');
-                        activityElement.className = 'activity-item';
-                        
-                        // Aktivite tipine göre ikon seç
-                        let icon = 'fa-star';
-                        switch (activity.type) {
-                            case 'game':
-                                icon = 'fa-gamepad';
-                                break;
-                            case 'badge':
-                                icon = 'fa-award';
-                                break;
-                            case 'task':
-                                icon = 'fa-tasks';
-                                break;
-                        }
-                        
-                        // Aktivite zaman bilgisini hesapla
-                        const timeAgo = this.calculateTimeAgo(activity.timestamp);
-                        
-                        activityElement.innerHTML = `
-                            <div class="activity-icon"><i class="fas ${icon}"></i></div>
-                            <div class="activity-details">
-                                <div class="activity-title">${activity.description || 'Bilinmeyen aktivite'}</div>
-                                <div class="activity-time">${timeAgo}</div>
-                            </div>
-                            ${activity.score ? `<div class="activity-score">Skor: ${activity.score}</div>` : ''}
-                        `;
-                        
-                        activitiesList.appendChild(activityElement);
+                }
+                
+                this.updateProfileUI(displayName, bio);
+                this.showToast('Profil başarıyla güncellendi', 'toast-success');
+            }).catch(error => {
+                console.error('Profil güncelleme hatası:', error);
+                this.showToast('Profil güncellenirken hata oluştu', 'toast-error');
+            });
+        } else {
+            // Firebase yoksa localStorage'a kaydet
+            const userId = this.getCurrentUserId();
+            const profileData = {
+                displayName: displayName,
+                bio: bio,
+                lastUpdated: new Date().toISOString()
+            };
+            
+            try {
+                localStorage.setItem(`user-profile-${userId}`, JSON.stringify(profileData));
+                this.updateProfileUI(displayName, bio);
+                this.showToast('Profil başarıyla güncellendi', 'toast-success');
+            } catch (error) {
+                console.error('Profil localStorage\'a kaydedilemedi:', error);
+                this.showToast('Profil kaydedilemedi', 'toast-error');
+            }
+        }
+    },
+
+    // Profil UI'sini güncelle
+    updateProfileUI: function(displayName, bio) {
+        // Profil sayfasındaki bilgileri güncelle
+        const profileName = document.getElementById('profile-name');
+        if (profileName) {
+            profileName.textContent = displayName;
+        }
+        
+        // Bio varsa göster (henüz UI'da yer yoksa eklenecek)
+        const profileBio = document.getElementById('profile-bio');
+        if (profileBio) {
+            profileBio.textContent = bio;
+        }
+        
+        // Modal kapat
+        const modal = document.getElementById('edit-profile-modal');
+        if (modal) modal.remove();
+        
+        // Profil sayfasını yenile
+        this.loadProfileData();
+    },
+
+    // Zaman farkı hesaplama yardımcı fonksiyonu
+    calculateTimeAgo: function(timestamp) {
+        const now = Date.now();
+        const diff = now - timestamp;
+        
+        const minutes = Math.floor(diff / (1000 * 60));
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        
+        if (minutes < 60) {
+            return minutes <= 1 ? '1 dakika önce' : `${minutes} dakika önce`;
+        } else if (hours < 24) {
+            return hours === 1 ? '1 saat önce' : `${hours} saat önce`;
+        } else {
+            return days === 1 ? '1 gün önce' : `${days} gün önce`;
+        }
+    },
+
+    // Tüm yüksek skorları al (localStorage'dan)
+    getAllHighScores: function() {
+        try {
+            const scores = localStorage.getItem('quiz-high-scores');
+            return scores ? JSON.parse(scores) : [];
+        } catch (error) {
+            console.error('Skorlar okunurken hata:', error);
+            return [];
+        }
+    },
+
+    // Rozet sistemi
+    badgeSystem: {
+        // Mevcut rozetler tanımları
+        badges: {
+            firstGame: {
+                id: 'firstGame',
+                name: 'İlk Oyun',
+                description: 'İlk oyununu tamamladın!',
+                icon: 'fas fa-play',
+                condition: (stats) => stats.totalGames >= 1
+            },
+            perfectScore: {
+                id: 'perfectScore',
+                name: 'Mükemmel',
+                description: 'Bir oyunda tüm soruları doğru cevapladın!',
+                icon: 'fas fa-star',
+                condition: (stats) => stats.perfectGames >= 1
+            },
+            speedster: {
+                id: 'speedster',
+                name: 'Hız Ustası',
+                description: '10 saniyede altında cevap verdin!',
+                icon: 'fas fa-bolt',
+                condition: (stats) => stats.fastAnswers >= 5
+            },
+            scholar: {
+                id: 'scholar',
+                name: 'Bilgi Ustası',
+                description: '50 soruyu doğru cevapladın!',
+                icon: 'fas fa-graduation-cap',
+                condition: (stats) => stats.correctAnswers >= 50
+            },
+            dedicated: {
+                id: 'dedicated',
+                name: 'Azimli',
+                description: '10 oyun tamamladın!',
+                icon: 'fas fa-trophy',
+                condition: (stats) => stats.totalGames >= 10
+            },
+            genius: {
+                id: 'genius',
+                name: 'Deha',
+                description: '%90 üzeri doğruluk oranına sahipsin!',
+                icon: 'fas fa-brain',
+                condition: (stats) => stats.totalQuestions > 20 && (stats.correctAnswers / stats.totalQuestions) >= 0.9
+            },
+            explorer: {
+                id: 'explorer',
+                name: 'Kaşif',
+                description: '5 farklı kategoride oyun oynadın!',
+                icon: 'fas fa-compass',
+                condition: (stats) => stats.categoriesPlayed >= 5
+            }
+        },
+
+        // Kullanıcının rozetlerini kontrol et ve yeni rozetler ver
+        checkAndAwardBadges: function(userId, currentStats) {
+            if (!userId) return;
+
+            const userBadges = this.getUserBadges(userId);
+            const newBadges = [];
+
+            Object.values(this.badges).forEach(badge => {
+                // Eğer kullanıcı bu rozeti henüz kazanmadıysa ve şartları sağlıyorsa
+                if (!userBadges[badge.id] && badge.condition(currentStats)) {
+                    this.awardBadge(userId, badge);
+                    newBadges.push(badge);
+                }
+            });
+
+            // Yeni rozet kazanıldıysa bildir
+            if (newBadges.length > 0) {
+                this.showBadgeNotification(newBadges);
+            }
+
+            return newBadges;
+        },
+
+        // Kullanıcının mevcut rozetlerini al
+        getUserBadges: function(userId) {
+            try {
+                const badges = localStorage.getItem(`user-badges-${userId}`);
+                return badges ? JSON.parse(badges) : {};
+            } catch (error) {
+                console.error('Rozetler okunurken hata:', error);
+                return {};
+            }
+        },
+
+        // Rozet ver
+        awardBadge: function(userId, badge) {
+            const userBadges = this.getUserBadges(userId);
+            const badgeData = {
+                ...badge,
+                earnedDate: new Date().toISOString()
+            };
+            
+            userBadges[badge.id] = badgeData;
+
+            try {
+                // LocalStorage'a kaydet
+                localStorage.setItem(`user-badges-${userId}`, JSON.stringify(userBadges));
+                
+                // Firestore'a kaydet (varsa)
+                if (firebase.firestore) {
+                    const db = firebase.firestore();
+                    db.collection('users').doc(userId).set({
+                        badges: userBadges,
+                        lastUpdated: new Date()
+                    }, { merge: true }).catch(error => {
+                        console.error('Rozet Firestore\'a kaydedilemedi:', error);
                     });
-                })
-                .catch(error => {
-                    console.error("Aktiviteler yüklenirken hata oluştu:", error);
-                    activitiesList.innerHTML = '<div class="error-activity">Aktiviteler yüklenemedi</div>';
-                });
+                }
+                
+                // Firebase Realtime Database'e de kaydet (geriye uyumluluk)
+                if (firebase.database) {
+                    firebase.database().ref(`users/${userId}/badges/${badge.id}`).set(badgeData).catch(error => {
+                        console.error('Rozet Firebase Realtime\'a kaydedilemedi:', error);
+                    });
+                }
+            } catch (error) {
+                console.error('Rozet kaydedilemedi:', error);
+            }
+        },
+
+        // Rozet bildirimi göster
+        showBadgeNotification: function(newBadges) {
+            newBadges.forEach(badge => {
+                quizApp.showToast(`🎉 Yeni rozet kazandınız: ${badge.name}!`, 'toast-success');
+            });
         }
     },
     
@@ -4181,6 +4793,27 @@ const quizApp = {
         // Oyun istatistiklerini kaydet
         this.saveGameStatistics();
         this.addNewHighScore(finalStats.category, finalStats.score, finalStats.totalQuestions);
+        
+        // PUANLARI KULLANICI HESABINA KAYDET
+        if (this.isLoggedIn) {
+            this.totalScore += this.score;
+            this.sessionScore += this.score;
+            this.levelProgress += this.score;
+            
+            // Seviye kontrolü yap
+            this.checkLevelUp();
+            
+            // Kullanıcı verilerini Firebase'e kaydet
+            this.saveUserData();
+            
+            console.log(`Oyun sonu: ${this.score} puan hesaba eklendi. Toplam puan: ${this.totalScore}`);
+        } else {
+            // Giriş yapmamış kullanıcılar için session score'u kaydet
+            this.sessionScore += this.score;
+            this.saveScoreToLocalStorage();
+            
+            console.log(`Oyun sonu (misafir): ${this.score} puan session'a eklendi. Session toplam: ${this.sessionScore}`);
+        }
         
         try {
             // TAM SAYFA SONUÇ EKRANI İÇİN SAYFAYI TEMİZLE
@@ -5072,41 +5705,78 @@ const quizApp = {
         }
     },
     
-    // Yüksek skor ekleme fonksiyonu
+    // Yüksek skor ekleme fonksiyonu - Firebase ve localStorage'a kaydet
     addNewHighScore: function(category, score, total) {
         try {
-            // Eğer yerel depolama desteklenmiyorsa çık
-            if (!this.isLocalStorageAvailable()) {
-                return false;
-            }
-            
             // Tarih bilgisi
             const date = new Date().toLocaleDateString();
+            const timestamp = new Date();
             
-            // Yüksek skorlar için yerel depolama anahtarı
-            const highScoresKey = 'highScores_' + category;
-            
-            // Mevcut yüksek skorları al
-            let highScores = JSON.parse(localStorage.getItem(highScoresKey)) || [];
-            
-            // Yeni skoru ekle
-            highScores.push({
+            // Yeni skor verisi
+            const scoreData = {
                 score: score,
-                total: total,
+                totalQuestions: total,
+                correctAnswers: score, // Score genellikle doğru cevap sayısıdır
+                category: category,
                 percentage: Math.round((score / total) * 100),
-                date: date
-            });
+                date: date,
+                timestamp: timestamp,
+                userId: this.isLoggedIn ? this.currentUser.uid : 'guest',
+                userName: this.isLoggedIn ? (this.currentUser.displayName || this.currentUser.email) : 'Misafir'
+            };
             
-            // Skorları yüzdeye göre sırala (yüksekten düşüğe)
-            highScores.sort((a, b) => b.percentage - a.percentage);
-            
-            // Maksimum 10 skor tut
-            if (highScores.length > 10) {
-                highScores = highScores.slice(0, 10);
+            // FIREBASE'E KAYDET
+            if (this.isLoggedIn && firebase.firestore) {
+                const db = firebase.firestore();
+                
+                // highScores koleksiyonuna ekle
+                db.collection('highScores').add(scoreData)
+                    .then((docRef) => {
+                        console.log('Firebase\'e skor kaydedildi, ID:', docRef.id);
+                    })
+                    .catch((error) => {
+                        console.error('Firebase\'e skor kaydedilirken hata:', error);
+                    });
+                
+                // Kullanıcının kişisel skorlarını da güncelle
+                const userScoreData = {
+                    ...scoreData,
+                    gameId: Date.now().toString() // Benzersiz oyun ID'si
+                };
+                
+                db.collection('users').doc(this.currentUser.uid)
+                    .collection('personalScores').add(userScoreData)
+                    .then(() => {
+                        console.log('Kullanıcının kişisel skorları güncellendi');
+                    })
+                    .catch((error) => {
+                        console.error('Kişisel skorlar kaydedilirken hata:', error);
+                    });
             }
             
-            // Güncellenmiş listeyi kaydet
-            localStorage.setItem(highScoresKey, JSON.stringify(highScores));
+            // LOCALSTORAGE'A KAYDET (Yedek olarak)
+            if (this.isLocalStorageAvailable()) {
+                const highScoresKey = 'highScores_' + category;
+                let highScores = JSON.parse(localStorage.getItem(highScoresKey)) || [];
+                
+                highScores.push({
+                    score: score,
+                    total: total,
+                    percentage: Math.round((score / total) * 100),
+                    date: date
+                });
+                
+                // Skorları yüzdeye göre sırala (yüksekten düşüğe)
+                highScores.sort((a, b) => b.percentage - a.percentage);
+                
+                // Maksimum 10 skor tut
+                if (highScores.length > 10) {
+                    highScores = highScores.slice(0, 10);
+                }
+                
+                localStorage.setItem(highScoresKey, JSON.stringify(highScores));
+            }
+            
             return true;
         } catch (error) {
             console.error("Yüksek skor kaydetme hatası:", error);
@@ -5114,46 +5784,109 @@ const quizApp = {
         }
     },
     
-    // Oyun istatistiklerini kaydetme
+    // Oyun istatistiklerini kaydetme - Firebase ve localStorage'a
     saveGameStatistics: function() {
         try {
-            // Eğer yerel depolama desteklenmiyorsa çık
-            if (!this.isLocalStorageAvailable()) {
-                return false;
-            }
-            
-            // Genel istatistikler için yerel depolama anahtarı
-            const statsKey = 'gameStats';
-            
-            // Mevcut istatistikleri al
-            let stats = JSON.parse(localStorage.getItem(statsKey)) || {
-                totalGames: 0,
-                totalQuestions: 0,
-                correctAnswers: 0,
-                categories: {}
+            // İstatistik verisi hazırla
+            const gameStatsData = {
+                category: this.selectedCategory,
+                score: this.score,
+                totalQuestions: this.answeredQuestions,
+                correctAnswers: this.score,
+                lives: this.lives,
+                averageTime: this.answerTimes.length > 0 ? 
+                    (this.answerTimes.reduce((a, b) => a + b, 0) / this.answerTimes.length) : 0,
+                timestamp: new Date(),
+                userId: this.isLoggedIn ? this.currentUser.uid : 'guest'
             };
             
-            // İstatistikleri güncelle
-            stats.totalGames++;
-            stats.totalQuestions += this.answeredQuestions;
-            stats.correctAnswers += this.score;
-            
-            // Kategori bazlı istatistikler
-            if (!stats.categories[this.selectedCategory]) {
-                stats.categories[this.selectedCategory] = {
-                    games: 0,
-                    questions: 0,
-                    correct: 0
-                };
+            // FIREBASE'E KAYDET
+            if (this.isLoggedIn && firebase.firestore) {
+                const db = firebase.firestore();
+                
+                // gameStats koleksiyonuna oyun verilerini kaydet
+                db.collection('gameStats').add(gameStatsData)
+                    .then(() => {
+                        console.log('Oyun istatistikleri Firebase\'e kaydedildi');
+                    })
+                    .catch((error) => {
+                        console.error('Firebase\'e istatistik kaydedilirken hata:', error);
+                    });
+                
+                // Kullanıcının genel istatistiklerini güncelle
+                const userStatsRef = db.collection('users').doc(this.currentUser.uid);
+                
+                userStatsRef.get().then((doc) => {
+                    const userData = doc.exists ? doc.data() : {};
+                    const currentStats = userData.stats || {
+                        totalGames: 0,
+                        totalQuestions: 0,
+                        correctAnswers: 0,
+                        categories: {}
+                    };
+                    
+                    // İstatistikleri güncelle
+                    currentStats.totalGames++;
+                    currentStats.totalQuestions += this.answeredQuestions;
+                    currentStats.correctAnswers += this.score;
+                    
+                    // Kategori bazlı istatistikler
+                    if (!currentStats.categories[this.selectedCategory]) {
+                        currentStats.categories[this.selectedCategory] = {
+                            games: 0,
+                            questions: 0,
+                            correct: 0
+                        };
+                    }
+                    
+                    currentStats.categories[this.selectedCategory].games++;
+                    currentStats.categories[this.selectedCategory].questions += this.answeredQuestions;
+                    currentStats.categories[this.selectedCategory].correct += this.score;
+                    
+                    // Firebase'e güncelleme kaydet
+                    userStatsRef.update({ stats: currentStats })
+                        .then(() => {
+                            console.log('Kullanıcı istatistikleri güncellendi');
+                        })
+                        .catch((error) => {
+                            console.error('Kullanıcı istatistikleri güncellenirken hata:', error);
+                        });
+                }).catch((error) => {
+                    console.error('Kullanıcı istatistikleri alınırken hata:', error);
+                });
             }
             
-            // Kategori istatistiklerini güncelle
-            stats.categories[this.selectedCategory].games++;
-            stats.categories[this.selectedCategory].questions += this.answeredQuestions;
-            stats.categories[this.selectedCategory].correct += this.score;
+            // LOCALSTORAGE'A KAYDET (Yedek olarak)
+            if (this.isLocalStorageAvailable()) {
+                const statsKey = 'gameStats';
+                let stats = JSON.parse(localStorage.getItem(statsKey)) || {
+                    totalGames: 0,
+                    totalQuestions: 0,
+                    correctAnswers: 0,
+                    categories: {}
+                };
+                
+                // İstatistikleri güncelle
+                stats.totalGames++;
+                stats.totalQuestions += this.answeredQuestions;
+                stats.correctAnswers += this.score;
+                
+                // Kategori bazlı istatistikler
+                if (!stats.categories[this.selectedCategory]) {
+                    stats.categories[this.selectedCategory] = {
+                        games: 0,
+                        questions: 0,
+                        correct: 0
+                    };
+                }
+                
+                stats.categories[this.selectedCategory].games++;
+                stats.categories[this.selectedCategory].questions += this.answeredQuestions;
+                stats.categories[this.selectedCategory].correct += this.score;
+                
+                localStorage.setItem(statsKey, JSON.stringify(stats));
+            }
             
-            // Güncellenmiş istatistikleri kaydet
-            localStorage.setItem(statsKey, JSON.stringify(stats));
             return true;
         } catch (error) {
             console.error("İstatistik kaydetme hatası:", error);
@@ -5563,8 +6296,9 @@ const quizApp = {
                             console.error("mainMenu elementi null!");
                         }
                         
-                        // Kullanıcı verilerini yükle
+                        // Kullanıcı verilerini yükle ve Firebase'den senkronize et
                         this.loadUserData(user.uid);
+                        this.syncUserStatsFromFirebase();
                         
                         // Joker ve ayarları yükle
                         this.loadUserSettings();
@@ -5844,8 +6578,13 @@ const quizApp = {
     
     // Kullanıcı verilerini kaydet
     saveUserData: function() {
+        console.log('=== saveUserData çağrıldı ===');
+        console.log('Giriş durumu:', this.isLoggedIn);
+        console.log('Mevcut kullanıcı:', this.currentUser ? this.currentUser.uid : 'null');
+        console.log('Firebase.firestore var mı:', firebase && firebase.firestore ? 'VAR' : 'YOK');
+        
         if (!this.isLoggedIn || !this.currentUser || !firebase.firestore) {
-            console.log("Kullanıcı giriş yapmamış veya Firebase mevcut değil");
+            console.warn('Firebase kayıt atlanıyor - localStorage\'a kaydediliyor');
             // LocalStorage'a da kaydet (giriş yapmadan da skor tutulsun)
             this.saveScoreToLocalStorage();
             return;
@@ -5862,23 +6601,47 @@ const quizApp = {
         };
         
         console.log('Firebase\'e kaydedilecek veriler:', updateData);
+        console.log('Kullanıcı ID:', userId);
+        
+        // Firebase isteklerini sinirla - son kaydetme ile arasinda en az 3 saniye olmali
+        const now = Date.now();
+        if (this.lastFirebaseSave && (now - this.lastFirebaseSave) < 3000) {
+            console.log('Firebase kayıt çok sık - localStorage\'a kaydediliyor');
+            this.saveScoreToLocalStorage();
+            return;
+        }
+        
+        this.lastFirebaseSave = now;
+        
+        console.log('Firebase\'e kayıt başlatılıyor...');
         
         db.collection('users').doc(userId).update(updateData)
             .then(() => {
-                console.log('Kullanıcı verileri Firebase\'e kaydedildi');
+                console.log('✅ Firebase\'e başarıyla kaydedildi!');
                 // Aynı zamanda localStorage'a da kaydet (backup olarak)
                 this.saveScoreToLocalStorage();
             })
             .catch((error) => {
-                console.error('Kullanıcı verileri Firebase\'e kaydedilirken hata:', error);
-                // Firebase hatası durumunda localStorage'a kaydet
-                this.saveScoreToLocalStorage();
+                console.error('❌ Firebase kayıt hatası:', error.code, error.message);
                 
-                // Eğer doküman yoksa yeni oluştur
-                if (error.code === 'not-found') {
-                    this.initializeNewUser(userId);
+                // Hata loglarını azalt - sadece önemli hataları logla
+                if (error.code === 'not-found' || (error.message && error.message.includes('No document to update'))) {
+                    console.log('Kullanıcı dokümanı yok - yeni oluşturuluyor...');
+                    db.collection('users').doc(userId).set(updateData, { merge: true })
+                        .then(() => {
+                            console.log('✅ Yeni kullanıcı dokümanı oluşturuldu!');
+                            this.saveScoreToLocalStorage();
+                        })
+                        .catch((err) => {
+                            console.error('❌ Yeni dokuman oluşturma hatası:', err.code, err.message);
+                            this.saveScoreToLocalStorage();
+                        });
+                } else {
+                    console.error('❌ Diğer Firebase hatası:', error.code, error.message);
+                    // Firebase hatası durumunda localStorage'a kaydet
+                    this.saveScoreToLocalStorage();
                 }
-                          });
+            });
     },
     
     // localStorage'a skor kaydet (backup veya giriş yapmamış kullanıcılar için)
@@ -5932,6 +6695,14 @@ const quizApp = {
         this.score += points;
         this.sessionScore += points;
         
+        // Firebase bağlantı durumunu kontrol et
+        console.log('Firebase Durum Kontrolü:', {
+            isLoggedIn: this.isLoggedIn,
+            currentUser: this.currentUser ? this.currentUser.uid : 'null',
+            firebaseExists: typeof firebase !== 'undefined',
+            firestoreExists: firebase && firebase.firestore ? true : false
+        });
+        
         // Giriş yapılmışsa toplam puana ekle
         if (this.isLoggedIn) {
             this.totalScore += points;
@@ -5940,8 +6711,12 @@ const quizApp = {
             // Seviye kontrolü yap
             this.checkLevelUp();
             
-            // Verileri kaydet
-            this.saveUserData();
+            // Firebase kaydetmeyi geciktir (çok sık kayıt önleme)
+            this.delayedSaveUserData();
+            
+            console.log(`Firebase'e kayıt için bekleniyor: +${points} puan`);
+        } else {
+            console.warn('Kullanıcı giriş yapmamış - sadece localStorage\'a kaydediliyor');
         }
         
         // Görüntüleri güncelle
@@ -5949,6 +6724,20 @@ const quizApp = {
         this.updateTotalScoreDisplay();
         
         console.log(`Puan eklendi: +${points} (Oyun: ${previousScore} → ${this.score}, Toplam: ${previousTotalScore} → ${this.totalScore})`);
+    },
+    
+    // Geciktirilmiş kullanıcı verisi kaydetme (aşırı sık istekleri önlemek için)
+    delayedSaveUserData: function() {
+        // Önceki timeout'u temizle
+        if (this.saveTimeout) {
+            clearTimeout(this.saveTimeout);
+        }
+        
+        // 2 saniye sonra kaydet (sürekli istek yerine toplu kaydetme)
+        this.saveTimeout = setTimeout(() => {
+            this.saveUserData();
+            this.saveTimeout = null;
+        }, 2000);
     },
     
     // Seviye atlatma kontrolü
@@ -5999,6 +6788,162 @@ const quizApp = {
                 `;
             }
         });
+    },
+    
+    // Firebase'den en yüksek skorları çek
+    loadFirebaseHighScores: function(category = null, limit = 10) {
+        if (!firebase.firestore) {
+            console.warn('Firebase Firestore kullanılamıyor');
+            return Promise.resolve([]);
+        }
+        
+        const db = firebase.firestore();
+        let query = db.collection('highScores')
+            .orderBy('score', 'desc')
+            .limit(limit);
+        
+        // Kategori filtresi varsa ekle
+        if (category && category !== 'all') {
+            query = query.where('category', '==', category);
+        }
+        
+        return query.get()
+            .then((querySnapshot) => {
+                const highScores = [];
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    highScores.push({
+                        id: doc.id,
+                        ...data,
+                        // Tarih formatını düzelt
+                        date: data.timestamp ? data.timestamp.toDate().toLocaleDateString() : data.date
+                    });
+                });
+                
+                console.log(`Firebase'den ${highScores.length} yüksek skor çekildi`);
+                return highScores;
+            })
+            .catch((error) => {
+                console.error('Firebase\'den yüksek skorlar çekilirken hata:', error);
+                return [];
+            });
+    },
+    
+    // Kullanıcının kişisel en yüksek skorlarını çek
+    loadUserPersonalScores: function(userId, limit = 10) {
+        if (!firebase.firestore || !userId) {
+            return Promise.resolve([]);
+        }
+        
+        const db = firebase.firestore();
+        
+        return db.collection('users').doc(userId)
+            .collection('personalScores')
+            .orderBy('score', 'desc')
+            .limit(limit)
+            .get()
+            .then((querySnapshot) => {
+                const personalScores = [];
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    personalScores.push({
+                        id: doc.id,
+                        ...data,
+                        date: data.timestamp ? data.timestamp.toDate().toLocaleDateString() : data.date
+                    });
+                });
+                
+                console.log(`Kullanıcının ${personalScores.length} kişisel skoru çekildi`);
+                return personalScores;
+            })
+            .catch((error) => {
+                console.error('Kişisel skorlar çekilirken hata:', error);
+                return [];
+            });
+    },
+    
+    // Firebase'den kullanıcı istatistiklerini çek ve senkronize et
+    syncUserStatsFromFirebase: function() {
+        if (!this.isLoggedIn || !firebase.firestore) {
+            console.warn('syncUserStatsFromFirebase atlandı - kullanıcı giriş yapmamış veya Firebase yok');
+            return Promise.resolve();
+        }
+        
+        const db = firebase.firestore();
+        const userId = this.currentUser.uid;
+        
+        console.log('Firebase\'den kullanıcı verileri çekiliyor:', userId);
+        
+        return db.collection('users').doc(userId).get()
+            .then((doc) => {
+                if (doc.exists) {
+                    const userData = doc.data();
+                    console.log('Firebase\'den çekilen veri:', userData);
+                    
+                    // Puan verilerini senkronize et
+                    if (userData.totalScore !== undefined) {
+                        this.totalScore = userData.totalScore;
+                    }
+                    if (userData.userLevel !== undefined) {
+                        this.userLevel = userData.userLevel;
+                    }
+                    if (userData.levelProgress !== undefined) {
+                        this.levelProgress = userData.levelProgress;
+                    }
+                    
+                    // Görüntüyü güncelle
+                    this.updateTotalScoreDisplay();
+                    
+                    console.log('Firebase\'den kullanıcı verileri senkronize edildi:', {
+                        totalScore: this.totalScore,
+                        userLevel: this.userLevel,
+                        levelProgress: this.levelProgress
+                    });
+                } else {
+                    console.log('Kullanıcı dokümanı bulunamadı - yeni oluşturuluyor');
+                    // Kullanıcı verisi yoksa yeni oluştur
+                    this.initializeNewUser(userId);
+                }
+            })
+            .catch((error) => {
+                console.error('Firebase\'den veri senkronizasyonu hatası:', error);
+            });
+    },
+    
+    // Firebase bağlantı durumunu kontrol et (debug amaçlı)
+    checkFirebaseConnection: function() {
+        console.log('=== Firebase Bağlantı Kontrolü ===');
+        console.log('1. Firebase nesnesi var mı:', typeof firebase !== 'undefined');
+        console.log('2. Firebase.auth var mı:', firebase && firebase.auth ? 'VAR' : 'YOK');
+        console.log('3. Firebase.firestore var mı:', firebase && firebase.firestore ? 'VAR' : 'YOK');
+        console.log('4. Kullanıcı giriş yapmış mı:', this.isLoggedIn);
+        console.log('5. Mevcut kullanıcı:', this.currentUser ? this.currentUser.uid : 'YOK');
+        
+        if (firebase && firebase.auth) {
+            const currentUser = firebase.auth().currentUser;
+            console.log('6. Firebase.auth().currentUser:', currentUser ? currentUser.uid : 'YOK');
+        }
+        
+        // Test kayıt yapma
+        if (this.isLoggedIn && this.currentUser && firebase.firestore) {
+            console.log('7. Test kayıt yapılıyor...');
+            const db = firebase.firestore();
+            const testData = {
+                test: true,
+                timestamp: new Date(),
+                message: 'Bu bir test kaydıdır'
+            };
+            
+            db.collection('users').doc(this.currentUser.uid).set(testData, { merge: true })
+                .then(() => {
+                    console.log('✅ Test kayıt başarılı!');
+                })
+                .catch((error) => {
+                    console.error('❌ Test kayıt başarısız:', error);
+                });
+        } else {
+            console.log('7. Test kayıt atlandı - gerekli şartlar sağlanmadı');
+        }
     }
 };
 
@@ -6006,4 +6951,78 @@ const quizApp = {
 quizApp.init(); 
 
 // QuizApp modülünü global olarak erişilebilir yap
-window.quizApp = quizApp; 
+window.quizApp = quizApp;
+
+// Debug fonksiyonlarını global erişim için ekle
+window.debugFirebase = function() {
+    return quizApp.checkFirebaseConnection();
+};
+
+window.testFirebaseSave = function() {
+    console.log('Manuel Firebase kayıt testi başlatılıyor...');
+    quizApp.addScore(10); // 10 puan ekle ve Firebase'e kaydet
+};
+
+window.showUserData = function() {
+    console.log('=== Kullanıcı Veri Durumu ===');
+    console.log('Giriş durumu:', quizApp.isLoggedIn);
+    console.log('Toplam puan:', quizApp.totalScore);
+    console.log('Seviye:', quizApp.userLevel);
+    console.log('Mevcut kullanıcı:', quizApp.currentUser ? quizApp.currentUser.uid : 'YOK');
+};
+
+// Profil için debug fonksiyonları
+window.debugProfile = {
+    createTestData: () => quizApp.createTestData(),
+    showProfile: () => quizApp.showProfilePage(),
+    refreshProfile: () => quizApp.loadProfileData(),
+    clearAllData: () => {
+        localStorage.removeItem('quiz-high-scores');
+        localStorage.removeItem('quiz-stats');
+        localStorage.removeItem('quiz-user-stats');
+        const userId = quizApp.getCurrentUserId();
+        localStorage.removeItem(`user-badges-${userId}`);
+        localStorage.removeItem(`user-profile-${userId}`);
+        console.log('✅ Tüm profil verileri temizlendi!');
+    },
+    getUserStats: () => {
+        const stats = quizApp.calculateRealStats();
+        console.log('📊 Kullanıcı İstatistikleri:', stats);
+        return stats;
+    },
+    getBadges: () => {
+        const userId = quizApp.getCurrentUserId();
+        const badges = quizApp.badgeSystem.getUserBadges(userId);
+        console.log('🏆 Kullanıcı Rozetleri:', badges);
+        return badges;
+    },
+    testEditProfile: () => {
+        // Profil düzenleme modalını test et
+        console.log('🔧 Profil düzenleme modalı açılıyor...');
+        quizApp.showEditProfileModal();
+    },
+    testProfileData: () => {
+        const userId = quizApp.getCurrentUserId();
+        const profileData = {
+            displayName: 'Test Kullanıcısı',
+            bio: 'Bu bir test biyografisidir.',
+            lastUpdated: new Date().toISOString()
+        };
+        
+        localStorage.setItem(`user-profile-${userId}`, JSON.stringify(profileData));
+        console.log('✅ Test profil verileri oluşturuldu:', profileData);
+        
+        // Profil sayfasını yenile
+        if (document.getElementById('profile-container')) {
+            quizApp.loadProfileData();
+        }
+    },
+    checkProfileData: () => {
+        const userId = quizApp.getCurrentUserId();
+        const profileData = localStorage.getItem(`user-profile-${userId}`);
+        console.log('📋 Mevcut profil verileri:', profileData ? JSON.parse(profileData) : 'Veri yok');
+        return profileData ? JSON.parse(profileData) : null;
+    }
+};
+
+ 

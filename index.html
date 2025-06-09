@@ -53,11 +53,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2.9">
     <!-- Font Awesome İkonları -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- Favicon -->
-    <link rel="icon" href="bilgoo-logo.svg" type="image/svg+xml">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%234a148c'/><text x='50' y='65' text-anchor='middle' font-size='45' fill='white'>Q</text></svg>" type="image/svg+xml">
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%234a148c'/><text x='50' y='65' text-anchor='middle' font-size='45' fill='white'>Q</text></svg>" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="bilgoo-logo.svg">
     <!-- Görsel içeren sorular ve Doğru/Yanlış soruları için stil -->
     <link rel="stylesheet" href="custom-question-styles.css">
     <link rel="stylesheet" href="admin-pending-styles.css">
@@ -1997,17 +1999,26 @@
 
         <!-- Profil Sayfası -->
         <div id="profile-page" style="display: none;">
-            <h2><i class="fas fa-user"></i> Profil Sayfası</h2>
+            <div class="profile-page-header">
+                <h2><i class="fas fa-user-circle"></i> Profilim</h2>
+            </div>
             
             <div class="profile-container">
                 <div class="profile-card">
-                    <div class="profile-avatar">
-                        <i class="fas fa-user-circle fa-4x"></i>
-                    </div>
                     <div class="profile-details">
                         <h2 id="profile-name">Kullanıcı Adı</h2>
                         <p id="profile-email">kullanici@email.com</p>
                         <p class="profile-since">Üyelik: <span id="profile-join-date">01.01.2025</span></p>
+                        <div class="profile-score">
+                            <div class="score-info">
+                                <span class="score-label">Toplam Puanım:</span>
+                                <span class="score-value" id="profile-total-score">0</span>
+                            </div>
+                            <div class="level-info">
+                                <span class="level-label">Seviye:</span>
+                                <span class="level-value" id="profile-user-level">1</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="profile-actions-secondary">
                         <button class="btn-secondary" id="edit-profile-btn"><i class="fas fa-edit"></i> Profili Düzenle</button>
@@ -2339,8 +2350,8 @@
     <!-- Diğer JS dosyaları -->
     <!-- Dil dosyası -->
     <script src="languages.js"></script>
-    <script src="script.js"></script>
-    <script src="online-game.js"></script>
+    <script src="script.js?v=2.9"></script>
+    <script src="online-game.js?v=2.1"></script>
     <script src="friends.js"></script>
     <script src="daily-tasks.js"></script>
     <script src="achievements.js"></script>
@@ -4995,7 +5006,7 @@
             renderQuestionsPage();
         }
 
-        // Kullanıcıları sayfa sayfa göster
+        // Kullanıcıları sayfa saya göster
         function renderUsersPage() {
             const usersList = document.getElementById('admin-users-list');
             if (!usersList) return;
@@ -5069,7 +5080,7 @@
             }
         }
 
-        // Soruları sayfa sayfa göster
+        // Soruları sayfa saya göster
         function renderQuestionsPage() {
             const questionsList = document.getElementById('admin-questions-list');
             if (!questionsList) return;

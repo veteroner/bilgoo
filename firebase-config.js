@@ -155,11 +155,10 @@ try {
       if (firebase.firestore) {
         firestore = firebase.firestore();
         
-        // Firestore ayarlarını güncelle - tarayıcının izleme önleme sorunlarını atlatmak için
+        // Firestore ayarlarını güncelle - basit ayarlarla test
         const firestoreSettings = {
-          experimentalForceLongPolling: true, // Uzun süreli bağlantı sorunlarını çözmek için
+          experimentalForceLongPolling: false, // Geçici olarak devre dışı
           cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED, // Çevrimdışı çalışmayı iyileştir
-          merge: true // Host üzerine yazma ayarlarını birleştir
         };
         
         firestore.settings(firestoreSettings);
