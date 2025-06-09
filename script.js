@@ -1493,8 +1493,8 @@ const quizApp = {
             const hintCount = this.jokerInventory.hint || 0;
             const used = this.jokersUsed.hint;
             let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${hintCount}${used ? '<span class=\'joker-used-text\'>✓</span>' : ''}</span>`;
-            this.jokerHintBtn.disabled = (hintCount <= 0) || used || isBlankFilling;
-            this.jokerHintBtn.style.opacity = (hintCount <= 0 || used || isBlankFilling) ? '0.3' : '1';
+            this.jokerHintBtn.disabled = (hintCount <= 0) || used;
+            this.jokerHintBtn.style.opacity = (hintCount <= 0 || used) ? '0.3' : '1';
             this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i>${badgeHtml}`;
         }
         // Süre jokeri
@@ -1502,8 +1502,8 @@ const quizApp = {
             const timeCount = this.jokerInventory.time || 0;
             const used = this.jokersUsed.time;
             let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${timeCount}${used ? '<span class=\'joker-used-text\'>✓</span>' : ''}</span>`;
-            this.jokerTimeBtn.disabled = (timeCount <= 0) || used || isBlankFilling;
-            this.jokerTimeBtn.style.opacity = (timeCount <= 0 || used || isBlankFilling) ? '0.3' : '1';
+            this.jokerTimeBtn.disabled = (timeCount <= 0) || used;
+            this.jokerTimeBtn.style.opacity = (timeCount <= 0 || used) ? '0.3' : '1';
             this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i>${badgeHtml}`;
         }
         // Pas jokeri
@@ -2348,6 +2348,9 @@ const quizApp = {
             this.answeredQuestions = 0;
             this.answerTimes = [];
             this.lives = 5;
+            
+            // Joker kullanım durumlarını sıfırla
+            this.resetJokerUsage();
             
             // Kategori seçim ekranını gizle
             if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'none';
