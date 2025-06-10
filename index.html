@@ -8,7 +8,24 @@
     <meta name="author" content="Teknova Bilişim">
     <meta name="robots" content="index, follow">
     <meta name="language" content="Turkish">
-    <meta name="theme-color" content="#4a148c">
+    <meta name="theme-color" content="#3b82f6">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="application-name" content="Quiz Oyunu">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Quiz Oyunu">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#3b82f6">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+    <!-- PWA İkonları -->
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-192x192.png">
+    <link rel="mask-icon" href="icons/icon-192x192.png" color="#3b82f6">
+    <link rel="shortcut icon" href="icons/icon-192x192.png">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -57,10 +74,7 @@
     <link rel="stylesheet" href="statistics.css">
     <!-- Font Awesome İkonları -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%234a148c'/><text x='50' y='65' text-anchor='middle' font-size='45' fill='white'>Q</text></svg>" type="image/svg+xml">
-    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%234a148c'/><text x='50' y='65' text-anchor='middle' font-size='45' fill='white'>Q</text></svg>" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="bilgoo-logo.svg">
+
     <!-- Görsel içeren sorular ve Doğru/Yanlış soruları için stil -->
     <link rel="stylesheet" href="custom-question-styles.css">
     <link rel="stylesheet" href="admin-pending-styles.css">
@@ -8008,6 +8022,183 @@
             }, 500);
         }, 3000);
     }
+    </script>
+
+    <!-- PWA Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                        
+                        // Update check
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // Yeni versiyon mevcut - kullanıcıyı bilgilendir
+                                    showUpdateAvailable();
+                                }
+                            });
+                        });
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+
+            // PWA yükleme prompt'u
+            let deferredPrompt;
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                showInstallPrompt();
+            });
+
+            // PWA yükleme prompt göster
+            function showInstallPrompt() {
+                const installBanner = document.createElement('div');
+                installBanner.innerHTML = `
+                    <div style="
+                        position: fixed;
+                        bottom: 20px;
+                        left: 20px;
+                        right: 20px;
+                        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+                        color: white;
+                        padding: 15px;
+                        border-radius: 12px;
+                        box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+                        z-index: 10000;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        font-family: 'Poppins', sans-serif;
+                        animation: slideInUp 0.5s ease-out;
+                    ">
+                        <div>
+                            <i class="fas fa-mobile-alt" style="margin-right: 10px;"></i>
+                            <strong>Ana ekrana ekle</strong><br>
+                            <small>Hızlı erişim için uygulamayı yükle</small>
+                        </div>
+                        <div>
+                            <button onclick="installPWA()" style="
+                                background: rgba(255,255,255,0.2);
+                                border: 1px solid rgba(255,255,255,0.3);
+                                color: white;
+                                padding: 8px 16px;
+                                border-radius: 8px;
+                                margin-right: 10px;
+                                cursor: pointer;
+                                font-weight: 600;
+                            ">Yükle</button>
+                            <button onclick="dismissInstallPrompt()" style="
+                                background: transparent;
+                                border: none;
+                                color: white;
+                                font-size: 18px;
+                                cursor: pointer;
+                            ">×</button>
+                        </div>
+                    </div>
+                `;
+                installBanner.id = 'install-banner';
+                document.body.appendChild(installBanner);
+            }
+
+            window.installPWA = function() {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User accepted the install prompt');
+                        }
+                        deferredPrompt = null;
+                        dismissInstallPrompt();
+                    });
+                }
+            };
+
+            window.dismissInstallPrompt = function() {
+                const banner = document.getElementById('install-banner');
+                if (banner) {
+                    banner.style.animation = 'slideOutDown 0.5s ease-out';
+                    setTimeout(() => banner.remove(), 500);
+                }
+            };
+
+            // Güncelleme mevcut bildirim
+            function showUpdateAvailable() {
+                const updateBanner = document.createElement('div');
+                updateBanner.innerHTML = `
+                    <div style="
+                        position: fixed;
+                        top: 20px;
+                        left: 20px;
+                        right: 20px;
+                        background: linear-gradient(135deg, #059669, #047857);
+                        color: white;
+                        padding: 15px;
+                        border-radius: 12px;
+                        box-shadow: 0 4px 20px rgba(5, 150, 105, 0.3);
+                        z-index: 10000;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        font-family: 'Poppins', sans-serif;
+                        animation: slideInDown 0.5s ease-out;
+                    ">
+                        <div>
+                            <i class="fas fa-sync-alt" style="margin-right: 10px;"></i>
+                            <strong>Güncelleme mevcut!</strong><br>
+                            <small>Yeni özellikler için sayfayı yenile</small>
+                        </div>
+                        <button onclick="window.location.reload()" style="
+                            background: rgba(255,255,255,0.2);
+                            border: 1px solid rgba(255,255,255,0.3);
+                            color: white;
+                            padding: 8px 16px;
+                            border-radius: 8px;
+                            cursor: pointer;
+                            font-weight: 600;
+                        ">Yenile</button>
+                    </div>
+                `;
+                updateBanner.id = 'update-banner';
+                document.body.appendChild(updateBanner);
+                
+                setTimeout(() => {
+                    const banner = document.getElementById('update-banner');
+                    if (banner) {
+                        banner.style.animation = 'slideOutUp 0.5s ease-out';
+                        setTimeout(() => banner.remove(), 500);
+                    }
+                }, 10000);
+            }
+        }
+
+        // PWA animasyonları
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInUp {
+                from { transform: translateY(100%); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+            @keyframes slideOutDown {
+                from { transform: translateY(0); opacity: 1; }
+                to { transform: translateY(100%); opacity: 0; }
+            }
+            @keyframes slideInDown {
+                from { transform: translateY(-100%); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+            @keyframes slideOutUp {
+                from { transform: translateY(0); opacity: 1; }
+                to { transform: translateY(-100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
