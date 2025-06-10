@@ -104,7 +104,6 @@
   "launch_handler": {
     "client_mode": "focus-existing"
   },
-  "display_override": ["window-controls-overlay", "standalone"],
   "handle_links": "preferred",
   "screenshots": [],
   "iarc_rating_id": "e84b072d-71de-5b85-a95a-a83a2c5f7db9"

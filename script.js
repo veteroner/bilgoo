@@ -3,8 +3,86 @@
 // Bu dosya JavaScript'tir, TypeScript değildir.
 // Script Version 3.0 - Firebase puan kaydetme sistemi tamamlandı
 
+// Tam Ekran Modunu Ayarla
+function initFullscreenMode() {
+    // PWA tam ekran modunu etkinleştir
+    if ('serviceWorker' in navigator) {
+        // PWA modunda çalışıyor mu kontrol et
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
+                           window.navigator.standalone ||
+                           document.referrer.includes('android-app://');
+        
+        if (isStandalone) {
+            console.log('✅ PWA standalone modunda çalışıyor');
+            
+            // Tam ekran için CSS sınıfları ekle
+            document.body.classList.add('pwa-fullscreen');
+            document.documentElement.classList.add('pwa-fullscreen');
+            
+            // Viewport meta tag güncelle
+            const viewport = document.querySelector('meta[name="viewport"]');
+            if (viewport) {
+                viewport.setAttribute('content', 
+                    'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+            }
+            
+            // Status bar rengi ayarla
+            const themeColor = document.querySelector('meta[name="theme-color"]');
+            if (themeColor) {
+                themeColor.setAttribute('content', '#1e40af');
+            }
+        } else {
+            console.log('⚠️ PWA standalone modunda çalışmıyor - tarayıcı modunda');
+        }
+    }
+    
+    // CSS ile tam ekran stillerini uygula
+    const fullscreenStyles = `
+        .pwa-fullscreen {
+            height: 100vh !important;
+            height: 100dvh !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        
+        .pwa-fullscreen .container {
+            height: 100vh !important;
+            height: 100dvh !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow-y: auto !important;
+        }
+        
+        /* Safe area için padding ekle */
+        @supports (padding: max(0px)) {
+            .pwa-fullscreen .container {
+                padding-top: max(env(safe-area-inset-top), 0px) !important;
+                padding-bottom: max(env(safe-area-inset-bottom), 0px) !important;
+                padding-left: max(env(safe-area-inset-left), 0px) !important;
+                padding-right: max(env(safe-area-inset-right), 0px) !important;
+            }
+        }
+        
+        /* Capacitor/Cordova için */
+        .platform-cordova .pwa-fullscreen,
+        .platform-capacitor .pwa-fullscreen {
+            height: 100vh !important;
+            overflow: hidden !important;
+        }
+    `;
+    
+    // Stilleri head'e ekle
+    const styleSheet = document.createElement('style');
+    styleSheet.type = 'text/css';
+    styleSheet.innerText = fullscreenStyles;
+    document.head.appendChild(styleSheet);
+}
+
 // Sayfa Yükleme İşlemleri
 document.addEventListener('DOMContentLoaded', () => {
+    // Tam ekran modunu başlat
+    initFullscreenMode();
+    
     // Ana içeriği görünür yap
     const container = document.querySelector('.container');
     if (container) {
@@ -2225,7 +2303,7 @@ const quizApp = {
                 
                 // Normal oyun bitiş ekranını göster
                 setTimeout(() => {
-                    this.showResult();
+            this.showResult();
                 }, 500);
             });
         }
@@ -3855,7 +3933,7 @@ const quizApp = {
                     // Kategori istatistikleri
                     if (!categoryStats[game.category]) {
                         categoryStats[game.category] = { total: 0, correct: 0, games: 0 };
-                    }
+            }
                     categoryStats[game.category].total += game.totalQuestions || 0;
                     categoryStats[game.category].correct += game.correctAnswers || 0;
                     categoryStats[game.category].games++;
@@ -3877,14 +3955,14 @@ const quizApp = {
                         
                         if (!existsInHistory) {
                             totalGames++;
-                            totalScore += score.score;
+                        totalScore += score.score;
                             totalQuestions += score.totalQuestions || 10; // Varsayılan
                             correctAnswers += score.correctAnswers || Math.round(score.score / 10);
-                            
-                            if (score.percentage === 100) {
-                                perfectGames++;
-                            }
-                            categoriesPlayed.add(category);
+                        
+                        if (score.percentage === 100) {
+                            perfectGames++;
+                        }
+                        categoriesPlayed.add(category);
                             
                             // Kategori istatistikleri
                             if (!categoryStats[category]) {

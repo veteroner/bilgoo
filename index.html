@@ -13,12 +13,23 @@
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Quiz Oyunu">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Quiz Oyunu">
     <meta name="format-detection" content="telephone=no">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="msapplication-TileColor" content="#3b82f6">
     <meta name="msapplication-tap-highlight" content="no">
+    
+    <!-- Tam Ekran PWA Ayarları -->
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-orientations" content="portrait">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="x5-page-mode" content="app">
+    <meta name="browsermode" content="application">
+    <meta name="full-screen" content="yes">
+    <meta name="x5-browsermode" content="app">
     
     <!-- PWA İkonları -->
     <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-192x192.png">
@@ -4149,7 +4160,7 @@
                 if (window.quizApp && typeof window.quizApp.calculateRealStats === 'function') {
                     stats = window.quizApp.calculateRealStats();
                     console.log('QuizApp\'den hesaplanan istatistikler:', stats);
-                } else {
+            } else {
                     // Fallback: localStorage'dan doğrudan al
                     const localStats = localStorage.getItem('userStats');
                     if (localStats) {
@@ -4161,19 +4172,19 @@
                 }
                 
                 updateStatisticsUI(stats);
-            } catch (error) {
-                console.error('İstatistikler yüklenirken hata:', error);
-                updateStatisticsUI({
-                    totalGames: 0,
-                    totalQuestions: 0,
-                    correctAnswers: 0,
-                    highestScore: 0,
+                } catch (error) {
+                    console.error('İstatistikler yüklenirken hata:', error);
+                    updateStatisticsUI({
+                        totalGames: 0,
+                        totalQuestions: 0,
+                        correctAnswers: 0,
+                        highestScore: 0,
                     averageScore: 0,
                     accuracy: 0,
-                    categoryStats: {}
-                });
+                        categoryStats: {}
+                    });
+                }
             }
-        }
 
         // Manuel istatistik hesaplama (fallback)
         function calculateStatsManually() {
