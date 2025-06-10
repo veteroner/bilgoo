@@ -1,4 +1,4 @@
-const CACHE_NAME = 'quiz-oyunu-v1.4.0';
+const CACHE_NAME = 'quiz-oyunu-v1.5.0';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -104,18 +104,36 @@ self.addEventListener('fetch', event => {
 
 // Background sync
 self.addEventListener('sync', event => {
+  console.log('Service Worker: Background sync çalışıyor, tag:', event.tag);
   if (event.tag === 'background-sync') {
-    console.log('Service Worker: Background sync çalışıyor');
     event.waitUntil(doBackgroundSync());
   }
 });
 
+// Periodic background sync
+self.addEventListener('periodicsync', event => {
+  console.log('Service Worker: Periodic sync çalışıyor, tag:', event.tag);
+  if (event.tag === 'content-sync') {
+    event.waitUntil(doPeriodicSync());
+  }
+});
+
 function doBackgroundSync() {
-  // Offline sırasında biriken verileri senkronize et
+  console.log('Background sync işlemi başlatılıyor...');
   return new Promise((resolve) => {
-    // Bu kısımda offline sırasında kaydedilen puanları, 
-    // oynanan oyunları vs. senkronize edebiliriz
+    // Offline sırasında biriken verileri senkronize et
+    // Puanları, oynanan oyunları vs. senkronize edebiliriz
     resolve();
+  });
+}
+
+function doPeriodicSync() {
+  console.log('Periodic sync işlemi başlatılıyor...');
+  return fetch('/api/sync-data', {
+    method: 'POST',
+    body: JSON.stringify({ lastSync: Date.now() })
+  }).catch(err => {
+    console.log('Periodic sync hatası (normal):', err);
   });
 }
 

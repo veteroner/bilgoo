@@ -7996,26 +7996,37 @@
     <!-- PWA Service Worker -->
     <script>
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then((registration) => {
-                        console.log('SW registered: ', registration);
-                        
-                        // Update check
-                        registration.addEventListener('updatefound', () => {
-                            const newWorker = registration.installing;
-                            newWorker.addEventListener('statechange', () => {
-                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                    // Yeni versiyon mevcut - kullanıcıyı bilgilendir
-                                    showUpdateAvailable();
-                                }
-                            });
+            // Service Worker'ı hemen kaydet
+            navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                .then((registration) => {
+                    console.log('SW registered: ', registration);
+                    
+                    // Background sync kaydet
+                    if ('sync' in window.ServiceWorkerRegistration.prototype) {
+                        console.log('Background sync destekleniyor');
+                    }
+                    
+                    // Periodic sync kaydet
+                    if ('periodicSync' in window.ServiceWorkerRegistration.prototype) {
+                        registration.periodicSync.register('content-sync', {
+                            minInterval: 24 * 60 * 60 * 1000, // 24 saat
                         });
-                    })
-                    .catch((registrationError) => {
-                        console.log('SW registration failed: ', registrationError);
+                    }
+                    
+                    // Update check
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // Yeni versiyon mevcut - kullanıcıyı bilgilendir
+                                showUpdateAvailable();
+                            }
+                        });
                     });
-            });
+                })
+                .catch((registrationError) => {
+                    console.log('SW registration failed: ', registrationError);
+                });
 
             // PWA yükleme prompt'u
             let deferredPrompt;
