@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA İkon Oluşturucu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin: 10px;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        .controls {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .design-selector {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        select {
+            padding: 8px 12px;
+            margin: 0 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .preview {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .design-option {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            background: white;
+        }
+        .design-option:hover {
+            border-color: #3b82f6;
+        }
+        .design-option.selected {
+            border-color: #3b82f6;
+            background: #f0f7ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PWA İkon Oluşturucu - Quiz Oyunu</h1>
+        <p>Farklı tasarımlarla PWA ikonları oluşturur ve indirir.</p>
+        
+        <div class="design-selector">
+            <h3>Tasarım Seçin:</h3>
+            <div id="design-options">
+                <div class="design-option" data-design="question" onclick="selectDesign('question')">
+                    <canvas width="80" height="80"></canvas>
+                    <div>Soru İşareti</div>
+                </div>
+                <div class="design-option selected" data-design="q-letter" onclick="selectDesign('q-letter')">
+                    <canvas width="80" height="80"></canvas>
+                    <div>Q Harfi</div>
+                </div>
+                <div class="design-option" data-design="brain" onclick="selectDesign('brain')">
+                    <canvas width="80" height="80"></canvas>
+                    <div>Beyin</div>
+                </div>
+                <div class="design-option" data-design="book" onclick="selectDesign('book')">
+                    <canvas width="80" height="80"></canvas>
+                    <div>Kitap</div>
+                </div>
+                <div class="design-option" data-design="bilgoo" onclick="selectDesign('bilgoo')">
+                    <canvas width="80" height="80"></canvas>
+                    <div>Bilgoo Logo</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button onclick="generateAllIcons()">Seçili Tasarımla İkonları Oluştur</button>
+            <button onclick="downloadAll()">Hepsini İndir</button>
+        </div>
+        
+        <div class="preview" id="preview">
+        </div>
+    </div>
+
+    <script>
+        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        let canvases = [];
+        let selectedDesign = 'q-letter';
+
+        function selectDesign(design) {
+            selectedDesign = design;
+            // Update UI
+            document.querySelectorAll('.design-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            document.querySelector(`.design-option[data-design="${design}"]`).classList.add('selected');
+            
+            // Update preview canvases
+            updateDesignPreviews();
+        }
+
+        function updateDesignPreviews() {
+            document.querySelectorAll('.design-option canvas').forEach((canvas, index) => {
+                const designs = ['question', 'q-letter', 'brain', 'book', 'bilgoo'];
+                const design = designs[index];
+                createIcon(80, design, canvas);
+            });
+        }
+
+        function createIcon(size, design = selectedDesign, targetCanvas = null) {
+            const canvas = targetCanvas || document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            // Gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#3b82f6');
+            gradient.addColorStop(1, '#1e40af');
+            
+            // Draw circle background
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size/2 - 8, 0, 2 * Math.PI);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            
+            // Add border
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#1e40af';
+            ctx.stroke();
+
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            switch(design) {
+                case 'question':
+                    // Question mark
+                    ctx.font = `bold ${size * 0.55}px Arial`;
+                    ctx.fillText('?', size/2, size/2);
+                    break;
+                    
+                case 'q-letter':
+                    // Letter Q
+                    ctx.font = `bold ${size * 0.6}px Arial`;
+                    ctx.fillText('Q', size/2, size/2);
+                    // Add small line for Q tail
+                    ctx.lineWidth = 3;
+                    ctx.strokeStyle = 'white';
+                    ctx.beginPath();
+                    ctx.moveTo(size * 0.65, size * 0.65);
+                    ctx.lineTo(size * 0.75, size * 0.75);
+                    ctx.stroke();
+                    break;
+                    
+                case 'brain':
+                    // Simple brain shape
+                    ctx.font = `${size * 0.4}px Arial`;
+                    ctx.fillText('🧠', size/2, size/2);
+                    break;
+                    
+                case 'book':
+                    // Book icon
+                    ctx.fillStyle = 'white';
+                    // Book base
+                    ctx.fillRect(size*0.25, size*0.3, size*0.5, size*0.4);
+                    // Book pages
+                    ctx.strokeStyle = '#1e40af';
+                    ctx.lineWidth = 2;
+                    for(let i = 0; i < 3; i++) {
+                        ctx.beginPath();
+                        ctx.moveTo(size*0.3, size*0.35 + i*size*0.05);
+                        ctx.lineTo(size*0.7, size*0.35 + i*size*0.05);
+                        ctx.stroke();
+                    }
+                    break;
+                    
+                case 'bilgoo':
+                    // Bilgoo text
+                    ctx.font = `bold ${size * 0.15}px Arial`;
+                    ctx.fillText('BILGOO', size/2, size*0.4);
+                    ctx.font = `${size * 0.12}px Arial`;
+                    ctx.fillText('QUIZ', size/2, size*0.6);
+                    break;
+            }
+
+            // Add Turkish flag reference (small red circle)
+            ctx.beginPath();
+            ctx.arc(size * 0.78, size * 0.78, size * 0.06, 0, 2 * Math.PI);
+            ctx.fillStyle = '#e11d48';
+            ctx.fill();
+
+            return canvas;
+        }
+
+        function generateAllIcons() {
+            const preview = document.getElementById('preview');
+            preview.innerHTML = '';
+            canvases = [];
+
+            sizes.forEach(size => {
+                const canvas = createIcon(size);
+                canvas.style.maxWidth = '100px';
+                canvas.style.maxHeight = '100px';
+                canvas.title = `${size}x${size}`;
+                
+                const container = document.createElement('div');
+                container.style.textAlign = 'center';
+                container.style.margin = '10px';
+                
+                const label = document.createElement('div');
+                label.textContent = `${size}x${size}`;
+                label.style.fontSize = '12px';
+                label.style.marginTop = '5px';
+                
+                const downloadBtn = document.createElement('button');
+                downloadBtn.textContent = 'İndir';
+                downloadBtn.onclick = () => downloadIcon(canvas, size);
+                
+                container.appendChild(canvas);
+                container.appendChild(label);
+                container.appendChild(downloadBtn);
+                preview.appendChild(container);
+                
+                canvases.push({canvas, size});
+            });
+        }
+
+        function downloadIcon(canvas, size) {
+            const link = document.createElement('a');
+            link.download = `icon-${size}x${size}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        function downloadAll() {
+            if (canvases.length === 0) {
+                alert('Önce ikonları oluşturun!');
+                return;
+            }
+            
+            canvases.forEach(({canvas, size}) => {
+                setTimeout(() => downloadIcon(canvas, size), size); // Slight delay between downloads
+            });
+        }
+
+        // Auto-generate on load
+        window.onload = () => {
+            updateDesignPreviews();
+            generateAllIcons();
+        };
+    </script>
+</body>
+</html> 

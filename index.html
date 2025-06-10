@@ -2652,38 +2652,7 @@
         </div>
     </div>
 
-    <!-- Service Worker kaydı -->
-    <script>
-        // Service Worker kaydı
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .then(registration => {
-                        console.log('Service Worker başarıyla kaydedildi:', registration);
-                        
-                        // Önbelleği temizleme işlemi
-                        if (navigator.serviceWorker.controller) {
-                            console.log('Önbellek temizleme isteği gönderiliyor...');
-                            navigator.serviceWorker.controller.postMessage({
-                                action: 'clearCache'
-                            });
-                        } else {
-                            console.log('Service Worker henüz aktif değil, önbellek temizlenemiyor');
-                            // Service Worker'ın aktifleşmesini bekleyelim
-                            navigator.serviceWorker.addEventListener('controllerchange', () => {
-                                console.log('Service Worker aktifleşti, önbellek temizleniyor...');
-                                navigator.serviceWorker.controller.postMessage({
-                                    action: 'clearCache'
-                                });
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.log('Service Worker kaydı başarısız:', error);
-                    });
-            });
-        }
-    </script>
+
 
     <script>
         // Hamburger menü işlevleri
