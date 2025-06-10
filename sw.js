@@ -1,19 +1,19 @@
-const CACHE_NAME = 'quiz-oyunu-v1.3.0';
+const CACHE_NAME = 'quiz-oyunu-v1.4.0';
 const urlsToCache = [
   '/',
   '/index.html',
   '/style.css',
   '/script.js',
   '/manifest.json',
+  '/sw.js',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png',
+  '/icons/icon-144x144.png',
+  '/icons/icon-384x384.png',
+  '/icons/shortcut-96x96.png',
+  '/icons/online-96x96.png',
   // Font awesome ikonları
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-  // Firebase SDK
-  'https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js',
-  'https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js',
-  'https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js',
-  'https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js'
+  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css'
 ];
 
 // Service Worker yükleme
