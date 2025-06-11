@@ -608,23 +608,59 @@
                 overflow: hidden !important;
             }
             
-            /* İçerik taşmasını önle */
+            /* İçerik taşmasını önle - çok küçük padding */
             .hamburger-menu .menu-section {
-                padding: 15px 20px !important;
+                padding: 8px 15px !important;
                 margin: 0 !important;
             }
             
-            /* Yazı boyutlarını optimize et */
+            /* Handle için az boşluk */
+            .hamburger-menu .menu-handle {
+                margin: 5px auto 8px auto !important;
+                width: 30px !important;
+                height: 3px !important;
+            }
+            
+            /* Yazı boyutlarını çok küçük yap */
             .hamburger-menu .menu-item {
-                padding: 8px 15px !important;
-                margin: 3px 0 !important;
-                font-size: 14px !important;
+                padding: 4px 10px !important;
+                margin: 2px 0 !important;
+                font-size: 12px !important;
+                min-height: auto !important;
+                line-height: 1.2 !important;
             }
             
             .hamburger-menu .menu-section h3 {
+                font-size: 10px !important;
+                margin: 0 0 5px 0 !important;
+                padding-bottom: 3px !important;
+                line-height: 1.1 !important;
+            }
+            
+            /* Toggle switch'leri küçült */
+            .hamburger-menu .toggle-switch,
+            .hamburger-menu .theme-switch-wrapper {
+                transform: scale(0.7) !important;
+                margin-left: auto !important;
+            }
+            
+            /* Tema switch içindeki icon'ları küçült */
+            .hamburger-menu .theme-switch .slider i {
+                font-size: 8px !important;
+            }
+            
+            /* Icon'ları küçült */
+            .hamburger-menu .menu-item i {
                 font-size: 12px !important;
-                margin: 0 0 10px 0 !important;
-                padding-bottom: 5px !important;
+                margin-right: 8px !important;
+                width: 15px !important;
+            }
+            
+            /* Çıkış bölümü için özel ayar */
+            .hamburger-menu .menu-section:last-of-type {
+                border-top: 1px solid rgba(255, 107, 107, 0.3) !important;
+                margin-top: 5px !important;
+                padding-top: 5px !important;
             }
             
             /* Çıkış bölümünü mobilde göster */
@@ -634,11 +670,14 @@
                 margin-top: 15px;
             }
             
-            /* Çıkış butonu özel stil mobilde */
+            /* Çıkış butonu özel stil mobilde - küçük */
             .hamburger-menu #menu-logout {
                 background: rgba(255, 107, 107, 0.1);
                 border: 1px solid rgba(255, 107, 107, 0.3);
                 color: #ff6b6b !important;
+                border-radius: 6px !important;
+                padding: 3px 8px !important;
+                font-size: 11px !important;
             }
             
             .hamburger-menu #menu-logout:hover {
@@ -648,6 +687,7 @@
             
             .hamburger-menu #menu-logout i {
                 color: #ff6b6b !important;
+                font-size: 11px !important;
             }
         }
 
