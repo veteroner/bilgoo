@@ -600,10 +600,31 @@
                 display: none !important;
             }
             
-            /* Mobilde menü yüksekliğini azalt */
+            /* Mobilde menü sabit boyut - kaydırma yok */
             .hamburger-menu {
-                height: 45vh !important;
-                max-height: 300px !important;
+                height: 280px !important;
+                max-height: 280px !important;
+                min-height: 280px !important;
+                overflow: hidden !important;
+            }
+            
+            /* İçerik taşmasını önle */
+            .hamburger-menu .menu-section {
+                padding: 15px 20px !important;
+                margin: 0 !important;
+            }
+            
+            /* Yazı boyutlarını optimize et */
+            .hamburger-menu .menu-item {
+                padding: 8px 15px !important;
+                margin: 3px 0 !important;
+                font-size: 14px !important;
+            }
+            
+            .hamburger-menu .menu-section h3 {
+                font-size: 12px !important;
+                margin: 0 0 10px 0 !important;
+                padding-bottom: 5px !important;
             }
             
             /* Çıkış bölümünü mobilde göster */
@@ -2869,6 +2890,7 @@
             // Menüyü aç/kapat
             hamburgerToggle.addEventListener('click', function() {
                 hamburgerMenu.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
                 
                 // Debug: Admin panel durumunu kontrol et
                 const adminPanelMenuItem = document.getElementById('menu-admin-panel');
@@ -2899,8 +2921,28 @@
                 
                 // İkonu bars'a geri çevir
                 const icon = hamburgerToggle.querySelector('i');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+            // Bottom sheet dışına tıklayınca kapat (mobil için)
+            document.addEventListener('click', function(e) {
+                if (hamburgerMenu.classList.contains('active')) {
+                    // Tıklanan element hamburger menü veya toggle değilse kapat
+                    if (!hamburgerMenu.contains(e.target) && 
+                        !hamburgerToggle.contains(e.target) &&
+                        !e.target.closest('.tab-item')) {
+                        
+                        hamburgerMenu.classList.remove('active');
+                        const icon = hamburgerToggle.querySelector('i');
+                        if (icon) {
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                        }
+                    }
+                }
             });
             
             // Menü öğelerine olay dinleyiciler ekle
@@ -3051,6 +3093,7 @@
                         case 'tab-settings':
                             // Ayarlar için bottom sheet menüyü aç
                             hamburgerMenu.classList.add('active');
+                            menuOverlay.classList.add('active');
                             break;
                     }
                 });
@@ -3432,8 +3475,8 @@
                             window.quizApp.loadScoreFromLocalStorage();
                         }
                         
-                        // Çıkış öğesini gizle (giriş yapmamış kullanıcı için)
-                        document.getElementById('menu-logout').style.display = 'none';
+                        // Çıkış butonu her zaman görünsün - mobilde bottom sheet'te var
+                        // document.getElementById('menu-logout').style.display = 'none';
                         document.getElementById('menu-profile').style.display = 'none';
                         adminPanelMenuItem.style.display = 'none';
                     }
