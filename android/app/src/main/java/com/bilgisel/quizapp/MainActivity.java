@@ -10,10 +10,14 @@ public class MainActivity extends BridgeActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
-        // Tam ekran ayarları
-        setFullScreen();
+        try {
+            super.onCreate(savedInstanceState);
+            
+            // Tam ekran ayarları
+            setFullScreen();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     private void setFullScreen() {
@@ -35,7 +39,7 @@ public class MainActivity extends BridgeActivity {
     }
     
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         // Resume'da da tam ekran ayarlarını uygula
         setFullScreen();
