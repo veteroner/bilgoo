@@ -3660,13 +3660,14 @@ input:checked + .switch-label:before {
     
     .category-btn {
         font-size: 0.85rem; /* 0.9rem'den 0.85rem'e küçültüldü */
-        padding: 0.7rem 1rem; /* padding küçültüldü: 0.8rem 1.2rem'den 0.7rem 1rem'e */
-        margin-bottom: 0.4rem; /* margin küçültüldü */
+        padding: 1.4rem 1.2rem; /* padding arttırıldı: 1rem 1.2rem'den 1.4rem 1.2rem'e - yükseklik daha da arttı */
+        margin-bottom: 0.8rem; /* margin arttırıldı: 0.6rem'den 0.8rem'e */
+        min-height: 70px; /* minimum yükseklik arttırıldı: 55px'den 70px'e */
     }
     
     #categories {
-        gap: 0.8rem; /* 1.2rem'den 0.8rem'e azaltıldı */
-        margin-top: 1.5rem; /* 2rem'den 1.5rem'e azaltıldı */
+        gap: 1.2rem; /* gap arttırıldı: 1rem'den 1.2rem'e */
+        margin-top: 2rem; /* margin-top arttırıldı: 1.8rem'den 2rem'e */
         grid-template-columns: repeat(2, 1fr); /* 3 sütundan 2 sütuna düşürüldü */
     }
     
@@ -3740,13 +3741,14 @@ input:checked + .switch-label:before {
     
     .category-btn {
         font-size: 0.8rem; /* Daha da küçük font */
-        padding: 0.6rem 0.8rem; /* Daha küçük padding */
-        margin-bottom: 0.3rem; /* Daha küçük margin */
+        padding: 1.2rem 1rem; /* padding arttırıldı: 0.9rem 1rem'den 1.2rem 1rem'e - yükseklik daha da arttı */
+        margin-bottom: 0.7rem; /* margin arttırıldı: 0.5rem'den 0.7rem'e */
+        min-height: 60px; /* minimum yükseklik arttırıldı: 50px'den 60px'e */
     }
     
     #categories {
-        gap: 0.6rem; /* Daha küçük gap */
-        margin-top: 1rem; /* Daha küçük top margin */
+        gap: 1rem; /* gap arttırıldı: 0.8rem'den 1rem'e */
+        margin-top: 1.6rem; /* margin-top arttırıldı: 1.3rem'den 1.6rem'e */
         grid-template-columns: repeat(2, 1fr); /* 2 sütun kalsın */
     }
     
@@ -3837,12 +3839,13 @@ input:checked + .switch-label:before {
         
         .category-btn {
             font-size: 0.75rem;  /* Landscape'de kategori butonlarını daha da küçült */
-            padding: 0.5rem 0.7rem;  /* Daha küçük padding */
+            padding: 1rem 0.9rem;  /* padding arttırıldı: 0.7rem 0.9rem'den 1rem 0.9rem'e - landscape'de bile yükseklik arttı */
+            min-height: 55px; /* minimum yükseklik arttırıldı: 45px'den 55px'e */
         }
         
         #categories {
-            gap: 0.4rem;  /* Daha küçük gap */
-            margin-top: 0.8rem;  /* Daha küçük top margin */
+            gap: 0.8rem;  /* gap arttırıldı: 0.6rem'den 0.8rem'e */
+            margin-top: 1.3rem;  /* margin-top arttırıldı: 1rem'den 1.3rem'e */
         }
         
         #jokers {
@@ -9621,8 +9624,18 @@ body.category-selection[data-theme="dark"] .logo {
     height: 100vh !important;
     margin: 0 !important;
     padding: 10px !important;
+    padding-bottom: 80px !important; /* Tab bar için boşluk */
     overflow-y: auto !important;
     overflow-x: hidden !important;
+}
+
+/* Android uygulamasında hamburger menüyü gizle, tab menüyü göster */
+.platform-capacitor .hamburger-toggle {
+    display: none !important;
+}
+
+.platform-capacitor .mobile-tab-bar {
+    display: flex !important;
 }
 
 /* Mobile Browser Tam Ekran */
