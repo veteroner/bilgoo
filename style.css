@@ -9632,10 +9632,52 @@ body.category-selection[data-theme="dark"] .logo {
 /* Android uygulamasında hamburger menüyü gizle, tab menüyü göster */
 .platform-capacitor .hamburger-toggle {
     display: none !important;
+    visibility: hidden !important;
 }
 
 .platform-capacitor .mobile-tab-bar {
     display: flex !important;
+    visibility: visible !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 9999 !important;
+}
+
+/* Android/Cordova platformunda tab bar'ı kesin göster */
+.platform-cordova .hamburger-toggle,
+body.platform-cordova .hamburger-toggle,
+html.platform-cordova .hamburger-toggle {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+.platform-cordova .mobile-tab-bar,
+body.platform-cordova .mobile-tab-bar,
+html.platform-cordova .mobile-tab-bar {
+    display: flex !important;
+    visibility: visible !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 9999 !important;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    backdrop-filter: blur(20px) !important;
+    height: 70px !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Android için container alt boşluk */
+.platform-cordova .container,
+body.platform-cordova .container,
+html.platform-cordova .container {
+    padding-bottom: 80px !important;
 }
 
 /* Mobile Browser Tam Ekran */
