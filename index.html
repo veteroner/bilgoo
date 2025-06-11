@@ -595,15 +595,38 @@
                 display: none !important;
             }
             
-            /* Mobilde menü yüksekliğini azalt */
-            .hamburger-menu {
-                height: 50vh !important;
-                max-height: 350px !important;
+            /* Zorluk bilgisini gizle mobilde (yer kaplıyor) */
+            .hamburger-menu .menu-item[style*="flex-direction: column"] {
+                display: none !important;
             }
             
-            /* Çıkış bölümünü de gizle mobilde */
+            /* Mobilde menü yüksekliğini azalt */
+            .hamburger-menu {
+                height: 45vh !important;
+                max-height: 300px !important;
+            }
+            
+            /* Çıkış bölümünü mobilde göster */
             .hamburger-menu .menu-section:last-of-type {
-                display: none;
+                display: block !important;
+                border-top: 2px solid rgba(255, 107, 107, 0.3);
+                margin-top: 15px;
+            }
+            
+            /* Çıkış butonu özel stil mobilde */
+            .hamburger-menu #menu-logout {
+                background: rgba(255, 107, 107, 0.1);
+                border: 1px solid rgba(255, 107, 107, 0.3);
+                color: #ff6b6b !important;
+            }
+            
+            .hamburger-menu #menu-logout:hover {
+                background: rgba(255, 107, 107, 0.2) !important;
+                color: white !important;
+            }
+            
+            .hamburger-menu #menu-logout i {
+                color: #ff6b6b !important;
             }
         }
 
@@ -3032,24 +3055,7 @@
                     }
                 });
 
-                // Uzun basma ile çıkış (sadece ayarlar tab'ı için)
-                tab.addEventListener('touchstart', function(e) {
-                    if (this.id === 'tab-settings') {
-                        pressTimer = setTimeout(() => {
-                            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
-                                document.getElementById('menu-logout').click();
-                            }
-                        }, 1000); // 1 saniye uzun basma
-                    }
-                });
-
-                tab.addEventListener('touchend', function() {
-                    clearTimeout(pressTimer);
-                });
-
-                tab.addEventListener('touchmove', function() {
-                    clearTimeout(pressTimer);
-                });
+                // Uzun basma kaldırıldı - artık direkt çıkış butonu var
             });
 
             // Bottom sheet için swipe özelliği (mobilde aşağı kaydırarak kapatma)
