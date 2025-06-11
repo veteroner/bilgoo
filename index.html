@@ -508,6 +508,14 @@
             border-top: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
         }
+        
+        /* Mobilde ayarlar menüsü için özel başlık */
+        @media (max-width: 768px) {
+            .hamburger-menu .menu-section:nth-of-type(2) h3::before {
+                content: "⚙️ ";
+                margin-right: 8px;
+            }
+        }
 
         .tab-item {
             display: flex;
@@ -557,7 +565,7 @@
         /* Mobilde hamburger toggle'ı gizle, tab bar'ı göster */
         @media (max-width: 768px) {
             .hamburger-toggle {
-                display: none;
+                display: none !important;
             }
             
             .mobile-tab-bar {
@@ -567,6 +575,22 @@
             /* Container'a alt boşluk ekle */
             .container {
                 padding-bottom: 80px;
+            }
+            
+            /* Mobilde gereksiz menü öğelerini gizle */
+            .hamburger-menu .menu-section:first-of-type {
+                display: none;
+            }
+            
+            /* Mobilde menü yüksekliğini azalt */
+            .hamburger-menu {
+                height: 50vh !important;
+                max-height: 350px !important;
+            }
+            
+            /* Çıkış bölümünü de gizle mobilde */
+            .hamburger-menu .menu-section:last-of-type {
+                display: none;
             }
         }
 
@@ -2964,6 +2988,9 @@
             
             // Tab item click events
             tabItems.forEach(tab => {
+                let pressTimer;
+                
+                // Normal tıklama
                 tab.addEventListener('click', function() {
                     // Aktif tab'ı temizle
                     tabItems.forEach(t => t.classList.remove('active'));
@@ -2990,6 +3017,25 @@
                             hamburgerMenu.classList.add('active');
                             break;
                     }
+                });
+
+                // Uzun basma ile çıkış (sadece ayarlar tab'ı için)
+                tab.addEventListener('touchstart', function(e) {
+                    if (this.id === 'tab-settings') {
+                        pressTimer = setTimeout(() => {
+                            if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                                document.getElementById('menu-logout').click();
+                            }
+                        }, 1000); // 1 saniye uzun basma
+                    }
+                });
+
+                tab.addEventListener('touchend', function() {
+                    clearTimeout(pressTimer);
+                });
+
+                tab.addEventListener('touchmove', function() {
+                    clearTimeout(pressTimer);
                 });
             });
 
