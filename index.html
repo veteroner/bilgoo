@@ -578,8 +578,21 @@
             }
             
             /* Mobilde gereksiz menü öğelerini gizle */
+            .hamburger-menu #menu-home,
+            .hamburger-menu #menu-profile,
+            .hamburger-menu #menu-friends,
+            .hamburger-menu #menu-admin-panel {
+                display: none !important;
+            }
+            
+            /* Uygulama başlığını da gizle */
+            .hamburger-menu #menu-app-title {
+                display: none !important;
+            }
+            
+            /* İlk menu section'ı gizle (boş kalacağı için) */
             .hamburger-menu .menu-section:first-of-type {
-                display: none;
+                display: none !important;
             }
             
             /* Mobilde menü yüksekliğini azalt */
