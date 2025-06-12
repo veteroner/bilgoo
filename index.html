@@ -1991,26 +1991,6 @@
         </div>
     </div>
 
-    <!-- Mobil Tab Bar (Sadece mobilde görünür) -->
-    <div class="mobile-tab-bar" id="mobile-tab-bar">
-        <div class="tab-item" id="tab-home">
-            <i class="fas fa-home"></i>
-            <span>Ana Sayfa</span>
-        </div>
-        <div class="tab-item" id="tab-profile">
-            <i class="fas fa-user"></i>
-            <span>Profil</span>
-        </div>
-        <div class="tab-item" id="tab-friends">
-            <i class="fas fa-user-friends"></i>
-            <span>Arkadaş</span>
-        </div>
-        <div class="tab-item" id="tab-settings">
-            <i class="fas fa-cog"></i>
-            <span>Ayarlar</span>
-        </div>
-    </div>
-
     <div class="container">
         <div class="main-logo-container" style="text-align: center; margin-bottom: 10px;">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 140" width="400" height="112" style="max-width: 100%; height: auto;">
@@ -3122,107 +3102,6 @@
                 }
             });
             
-            // Mobil Tab Bar işlevleri
-            const tabItems = document.querySelectorAll('.tab-item');
-            
-            // Tab item click events
-            tabItems.forEach(tab => {
-                let pressTimer;
-                
-                // Normal tıklama
-                tab.addEventListener('click', function() {
-                    // Aktif tab'ı temizle
-                    tabItems.forEach(t => t.classList.remove('active'));
-                    // Bu tab'ı aktif yap
-                    this.classList.add('active');
-                    
-                    // Tab'a göre işlem yap
-                    const tabId = this.id;
-                    switch(tabId) {
-                        case 'tab-home':
-                            // Ana sayfa fonksiyonunu çağır
-                            document.getElementById('menu-home').click();
-                            break;
-                        case 'tab-profile':
-                            // Profil fonksiyonunu çağır
-                            document.getElementById('menu-profile').click();
-                            break;
-                        case 'tab-friends':
-                            // Arkadaşlar fonksiyonunu çağır
-                            document.getElementById('menu-friends').click();
-                            break;
-                        case 'tab-settings':
-                            // Ayarlar için bottom sheet menüyü aç
-                            hamburgerMenu.classList.add('active');
-                            menuOverlay.classList.add('active');
-                            break;
-                    }
-                });
-
-                // Uzun basma kaldırıldı - artık direkt çıkış butonu var
-            });
-
-            // Bottom sheet için swipe özelliği (mobilde aşağı kaydırarak kapatma)
-            let startY = 0;
-            let currentY = 0;
-            let isScrolling = false;
-
-            hamburgerMenu.addEventListener('touchstart', function(e) {
-                startY = e.touches[0].clientY;
-                isScrolling = false;
-            });
-
-            hamburgerMenu.addEventListener('touchmove', function(e) {
-                currentY = e.touches[0].clientY;
-                const deltaY = currentY - startY;
-                
-                // Aşağı kaydırma algılandı ve menü scrollTop'ta
-                if (deltaY > 0 && hamburgerMenu.scrollTop === 0) {
-                    e.preventDefault();
-                    isScrolling = true;
-                    
-                    // Menüyü hafifçe aşağı kaydır (visual feedback)
-                    if (deltaY < 100) {
-                        hamburgerMenu.style.transform = `translateY(${deltaY}px)`;
-                    }
-                }
-            });
-
-            hamburgerMenu.addEventListener('touchend', function(e) {
-                if (isScrolling) {
-                    const deltaY = currentY - startY;
-                    
-                    // Eğer 100px'den fazla aşağı kaydırıldıysa menüyü kapat
-                    if (deltaY > 100) {
-                        hamburgerMenu.classList.remove('active');
-                        // Icon'u da sıfırla
-                        const icon = hamburgerToggle.querySelector('i');
-                        if (icon) {
-                            icon.classList.remove('fa-times');
-                            icon.classList.add('fa-bars');
-                        }
-                    }
-                    
-                    // Transform'u sıfırla
-                    hamburgerMenu.style.transform = '';
-                }
-                
-                isScrolling = false;
-            });
-
-            // Menu handle'a tıklama ile kapatma
-            const menuHandle = document.querySelector('.menu-handle');
-            if (menuHandle) {
-                menuHandle.addEventListener('click', function() {
-                    hamburgerMenu.classList.remove('active');
-                    const icon = hamburgerToggle.querySelector('i');
-                    if (icon) {
-                        icon.classList.remove('fa-times');
-                        icon.classList.add('fa-bars');
-                    }
-                });
-            }
-
             // Yönetici Paneli menü öğesi (sadece adminler için görünür)
             document.getElementById('menu-admin-panel').addEventListener('click', function() {
                 hamburgerMenu.classList.remove('active');
@@ -8589,5 +8468,7 @@
         `;
         document.head.appendChild(style);
     </script>
+    
+
 </body>
 </html>

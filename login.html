@@ -154,7 +154,7 @@
             <h2>Tercihlerinizi Ayarlayın</h2>
             
             <div class="preferences-description">
-                Oyun deneyiminizi kişiselleştirmek için lütfen aşağıdaki tercihleri ayarlayın. Bu tercihler, sizin için uygun zorlukta ve dilde soruların hazırlanmasını sağlayacaktır.
+                Tercih ettiğiniz dili seçerek oyunu kişiselleştirebilirsiniz. Bu sayede oyun içeriği seçtiğiniz dilde görüntülenecektir.
             </div>
             
             <form id="user-preferences-form">
@@ -167,14 +167,7 @@
                     </select>
                 </div>
                 
-                <div class="form-group">
-                    <label for="user-age"><i class="fas fa-user-clock"></i> Yaş Aralığınız</label>
-                    <select id="user-age">
-                        <option value="child">7-12</option>
-                        <option value="teen">13-17</option>
-                        <option value="adult">Yetişkin (18+)</option>
-                    </select>
-                </div>
+                <!-- Yaş seçimi artık zorluk ayarı için gerekli değil, kaldırıldı -->
                 
                 <div class="form-group">
                     <button type="submit" class="btn-primary" id="save-preferences">Devam Et</button>
@@ -456,7 +449,8 @@
             function saveUserPreferences() {
                 console.log('saveUserPreferences fonksiyonu başladı');
                 const language = document.getElementById('user-language').value;
-                const ageGroup = document.getElementById('user-age').value;
+                // Yaş seçimi kaldırıldı, varsayılan olarak yetişkin ayarla
+                const ageGroup = "adult";
                 
                 // Tercihleri localStorage'a kaydet
                 localStorage.setItem('user_language', language);
@@ -506,7 +500,7 @@
                         'pageTitle': 'Bilgoo - Kullanıcı Girişi',
                         'gameTitle': 'Bilgoo',
                         'preferences': 'Tercihlerinizi Ayarlayın',
-                        'preferencesDesc': 'Oyun deneyiminizi kişiselleştirmek için lütfen aşağıdaki tercihleri ayarlayın. Bu tercihler, sizin için uygun zorlukta ve dilde soruların hazırlanmasını sağlayacaktır.',
+                        'preferencesDesc': 'Tercih ettiğiniz dili seçerek oyunu kişiselleştirebilirsiniz. Bu sayede oyun içeriği seçtiğiniz dilde görüntülenecektir.',
                         'langLabel': 'Tercih ettiğiniz dil',
                         'ageLabel': 'Yaş Aralığınız',
                         'difficultyLabel': 'Zorluk Seviyesi',
@@ -532,7 +526,7 @@
                         'pageTitle': 'Quiz Game - User Login',
                         'gameTitle': 'Quiz Game',
                         'preferences': 'Set Your Preferences',
-                        'preferencesDesc': 'Please set the following preferences to customize your game experience. These preferences will ensure that questions are prepared in the appropriate difficulty and language for you.',
+                        'preferencesDesc': 'Select your preferred language to customize the game. This will display the game content in your selected language.',
                         'langLabel': 'Preferred language',
                         'ageLabel': 'Age Range',
                         'difficultyLabel': 'Difficulty Level',
@@ -558,7 +552,7 @@
                         'pageTitle': 'Quiz-Spiel - Benutzeranmeldung',
                         'gameTitle': 'Quiz-Spiel',
                         'preferences': 'Stellen Sie Ihre Präferenzen ein',
-                        'preferencesDesc': 'Bitte legen Sie die folgenden Präferenzen fest, um Ihr Spielerlebnis anzupassen. Diese Einstellungen stellen sicher, dass Fragen in der für Sie geeigneten Schwierigkeit und Sprache vorbereitet werden.',
+                        'preferencesDesc': 'Wählen Sie Ihre bevorzugte Sprache, um das Spiel anzupassen. Dadurch wird der Spielinhalt in Ihrer ausgewählten Sprache angezeigt.',
                         'langLabel': 'Bevorzugte Sprache',
                         'ageLabel': 'Altersbereich',
                         'difficultyLabel': 'Schwierigkeitsgrad',
@@ -598,16 +592,6 @@
                 
                 // Form etiketleri
                 document.querySelector('label[for="user-language"]').innerHTML = `<i class="fas fa-language"></i> ${langData.langLabel}`;
-                document.querySelector('label[for="user-age"]').innerHTML = `<i class="fas fa-user-clock"></i> ${langData.ageLabel}`;
-                
-                // Seçenek metinlerini güncelle (select options)
-                const ageSelect = document.getElementById('user-age');
-                for (let i = 0; i < ageSelect.options.length; i++) {
-                    const option = ageSelect.options[i];
-                    if (option.value === 'child') option.textContent = langData.child;
-                    if (option.value === 'teen') option.textContent = langData.teen;
-                    if (option.value === 'adult') option.textContent = langData.adult;
-                }
                 
                 // Buton ve diğer metinler
                 document.getElementById('save-preferences').textContent = langData.continueBtn;
@@ -686,45 +670,7 @@
                 applyLanguageToUI(selectedLanguage);
             });
             
-            // Yaş seçimi değiştiğinde, otomatik zorluk seçilmişse zorluğu güncelle
-            document.getElementById('user-age').addEventListener('change', function() {
-                const difficultySelect = document.getElementById('difficulty-preference');
-                if (difficultySelect.value === 'auto') {
-                    // Bilgilendirme mesajı göster
-                    const language = document.getElementById('user-language').value;
-                    const messages = {
-                        'tr': 'Zorluk seviyesi yaşınıza göre otomatik ayarlanacaktır.',
-                        'en': 'Difficulty level will be automatically adjusted based on your age.',
-                        'de': 'Der Schwierigkeitsgrad wird automatisch an Ihr Alter angepasst.'
-                    };
-                    const message = messages[language] || messages['tr'];
-                    
-                    // Flash mesajı göster
-                    const flashMsg = document.createElement('div');
-                    flashMsg.className = 'flash-message';
-                    flashMsg.textContent = message;
-                    flashMsg.style.position = 'fixed';
-                    flashMsg.style.bottom = '20px';
-                    flashMsg.style.left = '50%';
-                    flashMsg.style.transform = 'translateX(-50%)';
-                    flashMsg.style.padding = '10px 20px';
-                    flashMsg.style.backgroundColor = 'rgba(74, 20, 140, 0.8)';
-                    flashMsg.style.color = 'white';
-                    flashMsg.style.borderRadius = '5px';
-                    flashMsg.style.zIndex = '1000';
-                    
-                    document.body.appendChild(flashMsg);
-                    
-                    setTimeout(() => {
-                        flashMsg.style.opacity = '0';
-                        flashMsg.style.transition = 'opacity 0.5s';
-                        
-                        setTimeout(() => {
-                            document.body.removeChild(flashMsg);
-                        }, 500);
-                    }, 3000);
-                }
-            });
+            // Yaş seçimi kaldırıldı
             
             // Preferences form submit işlemi
             if (preferencesForm) {
