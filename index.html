@@ -1953,15 +1953,7 @@
         <!-- Ayarlar Bölümü -->
         <div class="menu-section">
             <h3 id="menu-settings-title">Ayarlar</h3>
-            <!-- Progressive Difficulty Bilgisi -->
-            <div class="menu-item" style="flex-direction: column; align-items: flex-start;">
-                <div style="display: flex; align-items: center; width: 100%; margin-bottom: 8px;">
-                    <i class="fas fa-chart-line"></i> <span id="menu-difficulty-text">Adaptif Zorluk</span>
-                </div>
-                <p style="font-size: 12px; color: rgba(255,255,255,0.7); margin: 0; line-height: 1.4;">
-                    Oyun kolaydan başlar, ilerledikçe zorlaşır. Her kategori kendi zorluk eğrisine sahiptir.
-                </p>
-            </div>
+
             
             <!-- Ses Ayarları -->
             <div class="menu-item">
@@ -3333,68 +3325,7 @@
                 }
             }
             
-            // Zorluk seviyesi değişimi
-            const difficultySelect = document.getElementById('difficulty-level');
-            if (difficultySelect) {
-                difficultySelect.addEventListener('change', function() {
-                    const difficulty = this.value;
-                    localStorage.setItem('difficulty', difficulty);
-                    console.log('Zorluk seviyesi değiştirildi:', difficulty);
-                    
-                    // quizApp'e zorluk ayarını bildir
-                    if (window.quizApp) {
-                        // userSettings objesini oluştur eğer yoksa
-                        if (!window.quizApp.userSettings) {
-                            window.quizApp.userSettings = {};
-                        }
-                        window.quizApp.userSettings.difficulty = difficulty;
-                        window.quizApp.currentDifficulty = difficulty;
-                        
-                        // Ayarları kaydet
-                        if (typeof window.quizApp.saveUserSettings === 'function') {
-                            window.quizApp.saveUserSettings();
-                        }
-                        
-                        console.log('quizApp zorluk ayarı güncellendi:', difficulty);
-                    }
-                    
-                    // Kullanıcıya bilgi ver
-                    const difficultyText = {
-                        'easy': 'Kolay',
-                        'medium': 'Orta', 
-                        'hard': 'Zor'
-                    };
-                    
-                    // Kısa süre göster
-                    const notification = document.createElement('div');
-                    notification.style.cssText = `
-                        position: fixed;
-                        top: 20px;
-                        right: 20px;
-                        background: #4CAF50;
-                        color: white;
-                        padding: 15px 20px;
-                        border-radius: 8px;
-                        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-                        z-index: 10000;
-                        font-size: 14px;
-                        font-weight: bold;
-                    `;
-                    notification.textContent = `Zorluk seviyesi: ${difficultyText[difficulty]}`;
-                    document.body.appendChild(notification);
-                    
-                    setTimeout(() => {
-                        if (notification.parentNode) {
-                            notification.parentNode.removeChild(notification);
-                        }
-                    }, 2000);
-                });
-                
-                // Sayfa yüklendiğinde kayıtlı zorluk seviyesini uygula
-                const savedDifficulty = localStorage.getItem('difficulty') || 'medium';
-                difficultySelect.value = savedDifficulty;
-                console.log('Başlangıç zorluk seviyesi:', savedDifficulty);
-            }
+            // Zorluk seviyesi ayarları kaldırıldı
             
             // Firebase auth state change dinleyicisi
             if (firebase.auth) {
