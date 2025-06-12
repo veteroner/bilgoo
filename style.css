@@ -1405,7 +1405,7 @@ h3 {
 
 .option:active {
     transform: translateY(-1px);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .option.correct {
@@ -7074,7 +7074,7 @@ body.quiz-active .main-logo-container svg {
 @media (max-width: 360px) {
     .category-completion-content {
         padding: 12px 8px;
-        margin: 2px;
+        margin: 2px;  
         max-width: 100%;
         max-height: 98vh;
         border-radius: 10px;
@@ -9629,45 +9629,34 @@ body.category-selection[data-theme="dark"] .logo {
     overflow-x: hidden !important;
 }
 
-/* Android uygulamasında sadece tab menüyü göster, hamburger menüyü gizleme */
-.platform-capacitor .mobile-tab-bar,
-body.platform-capacitor .mobile-tab-bar,
-html.platform-capacitor .mobile-tab-bar,
-.platform-android .mobile-tab-bar {
-    display: flex !important;
-    visibility: visible !important;
-    position: fixed !important;
-    bottom: 55px !important; /* Android gezinme çubuğunun üzerinde */
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 99999 !important; /* Yüksek z-index */
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    backdrop-filter: blur(20px) !important;
-    height: 80px !important;
-    justify-content: space-around !important;
-    align-items: center !important;
-    border-top: 2px solid rgba(255, 255, 255, 0.3) !important;
-    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2) !important;
-    padding-bottom: env(safe-area-inset-bottom, 0) !important; /* iPhone X ve sonrası için güvenli alan */
-    width: 100% !important; /* Tam genişlik */
-    max-width: 100% !important;
-    pointer-events: auto !important;
-    opacity: 1 !important;
+/* Android uygulamasında hamburger menüyü gizle, tab menüyü göster */
+.platform-capacitor .hamburger-toggle {
+    display: none !important;
+    visibility: hidden !important;
 }
 
-/* Android/Cordova platformunda tab bar'ı kesin göster, hamburger menüyü gizleme */
-.platform-cordova .mobile-tab-bar {
+.platform-capacitor .mobile-tab-bar {
     display: flex !important;
     visibility: visible !important;
     position: fixed !important;
-    bottom: 55px !important; /* Android gezinme çubuğunun üzerinde */
-    z-index: 999999 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 9999 !important;
+}
+
+/* Android/Cordova platformunda tab bar'ı kesin göster */
+.platform-cordova .hamburger-toggle,
+body.platform-cordova .hamburger-toggle,
+html.platform-cordova .hamburger-toggle {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
 }
 
 .platform-cordova .mobile-tab-bar,
 body.platform-cordova .mobile-tab-bar,
-html.platform-cordova .mobile-tab-bar,
-.mobile-tab-bar {
+html.platform-cordova .mobile-tab-bar {
     display: flex !important;
     visibility: visible !important;
     position: fixed !important;
@@ -9684,81 +9673,11 @@ html.platform-cordova .mobile-tab-bar,
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1) !important;
 }
 
-/* Android için tab-item stillerini iyileştir */
-.platform-capacitor .mobile-tab-bar .tab-item,
-.platform-cordova .mobile-tab-bar .tab-item {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 10px 15px !important;
-    border-radius: 12px !important;
-    min-width: 70px !important;
-    min-height: 60px !important;
-    transition: all 0.3s ease !important;
-}
-
-.platform-capacitor .mobile-tab-bar .tab-item i,
-.platform-cordova .mobile-tab-bar .tab-item i {
-    font-size: 22px !important;
-    margin-bottom: 6px !important;
-}
-
-.platform-capacitor .mobile-tab-bar .tab-item span,
-.platform-cordova .mobile-tab-bar .tab-item span {
-    font-size: 12px !important;
-    font-weight: 500 !important;
-}
-
-.platform-capacitor .mobile-tab-bar .tab-item:hover,
-.platform-capacitor .mobile-tab-bar .tab-item.active,
-.platform-cordova .mobile-tab-bar .tab-item:hover,
-.platform-cordova .mobile-tab-bar .tab-item.active {
-    background: rgba(255, 255, 255, 0.2) !important;
-    transform: translateY(-3px) !important;
-}
-
 /* Android için container alt boşluk */
 .platform-cordova .container,
 body.platform-cordova .container,
-html.platform-cordova .container,
-.platform-capacitor .container,
-body.platform-capacitor .container,
-html.platform-capacitor .container,
-.container {
-    padding-bottom: 90px !important; /* Tab bar için daha fazla boşluk */
-}
-
-/* Android için özel tab menü stillemesi */
-.platform-android .mobile-tab-bar,
-html.platform-android .mobile-tab-bar,
-body.platform-android .mobile-tab-bar {
-    display: flex !important;
-    visibility: visible !important;
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 999999 !important;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    height: 80px !important;
-    justify-content: space-around !important;
-    align-items: center !important;
-    border-top: 3px solid rgba(255, 255, 255, 0.4) !important;
-    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3) !important;
-    width: 100vw !important;
-    max-width: 100vw !important;
-    overflow: visible !important;
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-}
-
-/* Android için özel container boşluğu */
-.platform-android .container,
-html.platform-android .container,
-body.platform-android .container {
-    padding-bottom: 100px !important;
-    margin-bottom: 90px !important;
+html.platform-cordova .container {
+    padding-bottom: 80px !important;
 }
 
 /* Mobile Browser Tam Ekran */
