@@ -79,14 +79,14 @@ const friendsModule = {
             <div class="container friends-container">
                 <div class="friends-header">
                     <h1>Arkadaşlarım</h1>
-                    <button id="back-from-friends" class="btn-secondary"><i class="fas fa-arrow-left"></i> Ana Menüye Dön</button>
+                    <button id="back-from-friends" class="btn-secondary" style="background: var(--btn-primary); color: white;"><i class="fas fa-arrow-left"></i> Ana Menüye Dön</button>
                 </div>
                 
                 <div class="search-section">
                     <h2>Arkadaş Ara</h2>
                     <div class="search-box">
                         <input type="text" id="friend-search" placeholder="Kullanıcı adı veya e-posta ile ara">
-                        <button id="search-button" class="btn-primary"><i class="fas fa-search"></i> Ara</button>
+                        <button id="search-button" class="btn-primary" style="background: var(--primary-color); color: white;"><i class="fas fa-search"></i> Ara</button>
                     </div>
                     <div id="search-results" class="search-results"></div>
                 </div>
@@ -216,11 +216,11 @@ const friendsModule = {
                         
                         let actionButton = '';
                         if (isFriend) {
-                            actionButton = `<button class="btn-small btn-success" disabled><i class="fas fa-check"></i> Arkadaş</button>`;
+                            actionButton = `<button class="btn-small btn-success" disabled style="background: var(--btn-success); color: white;"><i class="fas fa-check"></i> Arkadaş</button>`;
                         } else if (requestSent) {
-                            actionButton = `<button class="btn-small btn-info" disabled><i class="fas fa-clock"></i> İstek Gönderildi</button>`;
+                            actionButton = `<button class="btn-small btn-info" disabled style="background: var(--accent-color); color: white;"><i class="fas fa-clock"></i> İstek Gönderildi</button>`;
                         } else {
-                            actionButton = `<button class="btn-small btn-primary add-friend-btn" data-user-id="${userId}"><i class="fas fa-user-plus"></i> Ekle</button>`;
+                            actionButton = `<button class="btn-small btn-primary add-friend-btn" data-user-id="${userId}" style="background: var(--primary-color); color: white;"><i class="fas fa-user-plus"></i> Ekle</button>`;
                         }
                         
                         userElement.innerHTML = `
@@ -266,6 +266,7 @@ const friendsModule = {
                 button.disabled = true;
                 button.innerHTML = '<i class="fas fa-clock"></i> İstek Gönderildi';
                 button.classList.replace('btn-primary', 'btn-info');
+                button.style.background = 'var(--accent-color)';
             });
         });
     },
@@ -475,10 +476,10 @@ const friendsModule = {
                                             <span>${friendData.displayName || friendData.email || 'Kullanıcı'}</span>
                                         </div>
                                         <div class="friend-actions">
-                                            <button class="btn-small btn-primary invite-btn" data-user-id="${friendId}">
+                                            <button class="btn-small btn-primary invite-btn" data-user-id="${friendId}" style="background: var(--primary-color); color: white;">
                                                 <i class="fas fa-gamepad"></i> Oyuna Davet Et
                                             </button>
-                                            <button class="btn-small btn-danger remove-friend-btn" data-user-id="${friendId}">
+                                            <button class="btn-small btn-danger remove-friend-btn" data-user-id="${friendId}" style="background: var(--wrong-color); color: white;">
                                                 <i class="fas fa-user-minus"></i> Çıkar
                                             </button>
                                         </div>
@@ -571,10 +572,10 @@ const friendsModule = {
                                         <span>${senderData.displayName || senderData.email || 'Kullanıcı'}</span>
                                     </div>
                                     <div class="request-actions">
-                                        <button class="btn-small btn-success accept-btn" data-request-id="${requestId}">
+                                        <button class="btn-small btn-success accept-btn" data-request-id="${requestId}" style="background: var(--btn-success); color: white;">
                                             <i class="fas fa-check"></i> Kabul Et
                                         </button>
-                                        <button class="btn-small btn-danger reject-btn" data-request-id="${requestId}">
+                                        <button class="btn-small btn-danger reject-btn" data-request-id="${requestId}" style="background: var(--wrong-color); color: white;">
                                             <i class="fas fa-times"></i> Reddet
                                         </button>
                                     </div>
@@ -703,8 +704,8 @@ const friendsModule = {
                 <h3>Oyun Daveti</h3>
                 <p>${inviteData.senderName} sizi bir oyuna davet ediyor!</p>
                 <div class="invite-actions">
-                    <button id="accept-invite" class="btn-success">Kabul Et</button>
-                    <button id="reject-invite" class="btn-danger">Reddet</button>
+                    <button id="accept-invite" class="btn-success" style="background: var(--btn-success); color: white;">Kabul Et</button>
+                    <button id="reject-invite" class="btn-danger" style="background: var(--wrong-color); color: white;">Reddet</button>
                 </div>
             </div>
         `;
