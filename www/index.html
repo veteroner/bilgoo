@@ -437,6 +437,77 @@
         
         /* ... other existing styles ... */
 
+        /* Hamburger menü stilleri - Bottom Sheet tasarım */
+        .hamburger-menu {
+            position: fixed;
+            bottom: -100%;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 70vh;
+            max-height: 500px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            backdrop-filter: blur(20px);
+            color: white;
+            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            overflow-y: auto;
+            padding: 0;
+            border-top: 3px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .hamburger-menu.active {
+            bottom: 0;
+        }
+
+        /* Desktop için yan panel */
+        @media (min-width: 769px) {
+            .hamburger-menu {
+                top: 0;
+                right: -350px;
+                bottom: 0;
+                left: auto;
+                width: 350px;
+                height: 100vh;
+                min-height: 100vh;
+                max-height: 100vh;
+                border-radius: 0;
+                border-top: none;
+                border-left: 3px solid rgba(255, 255, 255, 0.2);
+                display: flex;
+                flex-direction: column;
+            }
+
+            .hamburger-menu.active {
+                right: 0;
+                bottom: 0;
+            }
+            
+            /* Desktop'ta menü handle'ı gizle */
+            .hamburger-menu .menu-handle {
+                display: none;
+            }
+            
+            /* Desktop'ta menü içeriğinin tüm alanı kapsaması */
+            .hamburger-menu .menu-section {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        /* Bottom sheet handle (yukarı çekme çubuğu) */
+        .menu-handle {
+            width: 40px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 2px;
+            margin: 10px auto 20px auto;
+            cursor: pointer;
+        }
+
         /* Mobil Tab Bar Stilleri */
         .mobile-tab-bar {
             position: fixed;
@@ -454,6 +525,14 @@
             box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
         }
         
+        /* Mobilde ayarlar menüsü için özel başlık */
+        @media (max-width: 768px) {
+            .hamburger-menu .menu-section:nth-of-type(2) h3::before {
+                content: "⚙️ ";
+                margin-right: 8px;
+            }
+        }
+
         .tab-item {
             display: flex;
             flex-direction: column;
@@ -631,6 +710,84 @@
                 color: #ff6b6b !important;
                 font-size: 16px !important;
             }
+        }
+
+        .hamburger-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hamburger-toggle:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 30px rgba(255, 107, 107, 0.5);
+            background: linear-gradient(135deg, #ff5252, #d32f2f);
+        }
+
+        .hamburger-toggle i {
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .hamburger-toggle:hover i {
+            transform: rotate(90deg);
+        }
+
+        .menu-section {
+            padding: 20px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            position: relative;
+        }
+
+        .menu-section::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #ff6b6b, #ee5a24);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .menu-section:hover::before {
+            opacity: 1;
+        }
+
+        .menu-section h3 {
+            margin: 0 0 15px 0;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .menu-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: linear-gradient(to right, #ff6b6b, #ee5a24);
+            border-radius: 1px;
         }
 
         .menu-item {
@@ -1432,6 +1589,10 @@
             color: #f5f5f5;
         }
 
+        [data-theme="dark"] .admin-table td {
+            border-bottom-color: #555;
+        }
+
         [data-theme="dark"] .admin-table tr:hover {
             background: #444;
         }
@@ -1744,7 +1905,93 @@
     <audio id="sound-victory" src="https://assets.mixkit.co/active_storage/sfx/2018/2018.wav" preload="auto"></audio>
     <audio id="sound-applause" src="https://assets.mixkit.co/active_storage/sfx/1465/1465.wav" preload="auto"></audio>
     
-    <!-- Mobil Tab Menü (body'nin en sonuna, footer'dan hemen önce ekle) -->
+    <!-- Hamburger Menü Toggle -->
+    <div class="hamburger-toggle" id="hamburger-toggle">
+        <i class="fas fa-bars"></i>
+    </div>
+    
+    <!-- Menü Overlay (Arka plan kapatıcı) -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+    
+    <!-- Hamburger Menü -->
+    <div class="hamburger-menu" id="hamburger-menu">
+        <!-- Bottom sheet handle -->
+        <div class="menu-handle"></div>
+        
+        <!-- Kullanıcı Profil Bilgisi (Oturum açıksa görünür) -->
+        <div class="user-profile-section" id="user-profile-section" style="display: none;">
+            <div class="user-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="user-info-menu">
+                <p class="user-name" id="menu-user-name">Kullanıcı</p>
+                <p class="user-email" id="menu-user-email">kullanici@email.com</p>
+            </div>
+        </div>
+        
+        <!-- Menü Öğeleri -->
+        <div class="menu-section">
+            <h3 id="menu-app-title">Uygulama</h3>
+            <div class="menu-item" id="menu-home">
+                <i class="fas fa-home"></i> <span id="menu-home-text">Ana Sayfa</span>
+            </div>
+            <div class="menu-item" id="menu-profile">
+                <i class="fas fa-user"></i> <span id="menu-profile-text">Profilim</span>
+            </div>
+            <div class="menu-item" id="menu-friends">
+                <i class="fas fa-user-friends"></i> <span id="menu-friends-text">Arkadaşlarım</span>
+            </div>
+            <div class="menu-item" id="menu-admin-panel" style="display: none;">
+                <i class="fas fa-shield-alt"></i> <span id="menu-admin-text">Yönetici Paneli</span>
+            </div>
+        </div>
+        
+        <!-- Ayarlar Bölümü -->
+        <div class="menu-section">
+            <h3 id="menu-settings-title">Ayarlar</h3>
+            <!-- Progressive Difficulty Bilgisi -->
+            <div class="menu-item" style="flex-direction: column; align-items: flex-start;">
+                <div style="display: flex; align-items: center; width: 100%; margin-bottom: 8px;">
+                    <i class="fas fa-chart-line"></i> <span id="menu-difficulty-text">Adaptif Zorluk</span>
+                </div>
+                <p style="font-size: 12px; color: rgba(255,255,255,0.7); margin: 0; line-height: 1.4;">
+                    Oyun kolaydan başlar, ilerledikçe zorlaşır. Her kategori kendi zorluk eğrisine sahiptir.
+                </p>
+            </div>
+            
+            <!-- Ses Ayarları -->
+            <div class="menu-item">
+                <i class="fas fa-volume-up"></i> <span id="menu-sound-text">Ses</span>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="sound-toggle" checked />
+                    <label for="sound-toggle" class="switch-label"></label>
+                </div>
+            </div>
+            
+            <!-- Tema Ayarları -->
+            <div class="menu-item">
+                <i class="fas fa-moon"></i> <span id="menu-theme-text">Karanlık Tema</span>
+                <div class="theme-switch-wrapper">
+                    <label class="theme-switch" for="checkbox">
+                        <input type="checkbox" id="checkbox" />
+                        <div class="slider round">
+                            <i class="fas fa-sun"></i>
+                            <i class="fas fa-moon"></i>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Çıkış Bölümü -->
+        <div class="menu-section">
+            <div class="menu-item" id="menu-logout">
+                <i class="fas fa-sign-out-alt"></i> <span id="menu-logout-text">Çıkış Yap</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobil Tab Bar (Sadece mobilde görünür) -->
     <div class="mobile-tab-bar" id="mobile-tab-bar">
         <div class="tab-item" id="tab-home">
             <i class="fas fa-home"></i>
@@ -1756,77 +2003,13 @@
         </div>
         <div class="tab-item" id="tab-friends">
             <i class="fas fa-user-friends"></i>
-            <span>Arkadaşlar</span>
+            <span>Arkadaş</span>
         </div>
         <div class="tab-item" id="tab-settings">
             <i class="fas fa-cog"></i>
             <span>Ayarlar</span>
         </div>
     </div>
-
-    <script>
-    // Tab menü eventleri
-    function hideAllPages() {
-        const pages = [
-            'main-menu',
-            'profile-page',
-            'friends-page',
-            'category-selection',
-            'quiz',
-            'result',
-            'online-game-options',
-            'global-leaderboard',
-            'statistics-page',
-            'admin-panel'
-        ];
-        pages.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.style.display = 'none';
-        });
-    }
-    document.getElementById('tab-home').addEventListener('click', function() {
-        hideAllPages();
-        const mainMenu = document.getElementById('main-menu');
-        if (mainMenu) mainMenu.style.display = 'block';
-        setActiveTab('tab-home');
-    });
-    document.getElementById('tab-profile').addEventListener('click', function() {
-        hideAllPages();
-        if (typeof quizApp !== 'undefined' && typeof quizApp.showProfilePage === 'function') {
-            quizApp.showProfilePage();
-        } else {
-            const profilePage = document.getElementById('profile-page');
-            if (profilePage) profilePage.style.display = 'block';
-        }
-        setActiveTab('tab-profile');
-    });
-    document.getElementById('tab-friends').addEventListener('click', function() {
-        hideAllPages();
-        if (window.friendsModule && window.friendsModule.showFriendsPage) {
-            window.friendsModule.showFriendsPage();
-        } else {
-            const friendsPage = document.getElementById('friends-page');
-            if (friendsPage) friendsPage.style.display = 'block';
-        }
-        setActiveTab('tab-friends');
-    });
-    document.getElementById('tab-settings').addEventListener('click', function() {
-        hideAllPages();
-        // Ayarlar sayfası yoksa profil sayfasını aç
-        const profilePage = document.getElementById('profile-page');
-        if (profilePage) profilePage.style.display = 'block';
-        setActiveTab('tab-settings');
-    });
-    function setActiveTab(tabId) {
-        document.querySelectorAll('.tab-item').forEach(tab => {
-            tab.classList.remove('active');
-        });
-        const activeTab = document.getElementById(tabId);
-        if (activeTab) activeTab.classList.add('active');
-    }
-    // Sayfa yüklendiğinde ana sayfa aktif olsun
-    setActiveTab('tab-home');
-    </script>
 
     <div class="container">
         <div class="main-logo-container" style="text-align: center; margin-bottom: 10px;">
@@ -2939,6 +3122,151 @@
                 }
             });
             
+            // Mobil Tab Bar işlevleri
+            const tabItems = document.querySelectorAll('.tab-item');
+            
+            // Tab item click events
+            tabItems.forEach(tab => {
+                let pressTimer;
+                
+                // Normal tıklama
+                tab.addEventListener('click', function() {
+                    // Aktif tab'ı temizle
+                    tabItems.forEach(t => t.classList.remove('active'));
+                    // Bu tab'ı aktif yap
+                    this.classList.add('active');
+                    
+                    // Tab'a göre işlem yap
+                    const tabId = this.id;
+                    switch(tabId) {
+                        case 'tab-home':
+                            // Ana sayfa fonksiyonunu çağır
+                            document.getElementById('menu-home').click();
+                            break;
+                        case 'tab-profile':
+                            // Profil fonksiyonunu çağır
+                            document.getElementById('menu-profile').click();
+                            break;
+                        case 'tab-friends':
+                            // Arkadaşlar fonksiyonunu çağır
+                            document.getElementById('menu-friends').click();
+                            break;
+                        case 'tab-settings':
+                            // Ayarlar için bottom sheet menüyü aç
+                            hamburgerMenu.classList.add('active');
+                            menuOverlay.classList.add('active');
+                            break;
+                    }
+                });
+
+                // Uzun basma kaldırıldı - artık direkt çıkış butonu var
+            });
+
+            // Bottom sheet için swipe özelliği (mobilde aşağı kaydırarak kapatma)
+            let startY = 0;
+            let currentY = 0;
+            let isScrolling = false;
+
+            hamburgerMenu.addEventListener('touchstart', function(e) {
+                startY = e.touches[0].clientY;
+                isScrolling = false;
+            });
+
+            hamburgerMenu.addEventListener('touchmove', function(e) {
+                currentY = e.touches[0].clientY;
+                const deltaY = currentY - startY;
+                
+                // Aşağı kaydırma algılandı ve menü scrollTop'ta
+                if (deltaY > 0 && hamburgerMenu.scrollTop === 0) {
+                    e.preventDefault();
+                    isScrolling = true;
+                    
+                    // Menüyü hafifçe aşağı kaydır (visual feedback)
+                    if (deltaY < 100) {
+                        hamburgerMenu.style.transform = `translateY(${deltaY}px)`;
+                    }
+                }
+            });
+
+            hamburgerMenu.addEventListener('touchend', function(e) {
+                if (isScrolling) {
+                    const deltaY = currentY - startY;
+                    
+                    // Eğer 100px'den fazla aşağı kaydırıldıysa menüyü kapat
+                    if (deltaY > 100) {
+                        hamburgerMenu.classList.remove('active');
+                        // Icon'u da sıfırla
+                        const icon = hamburgerToggle.querySelector('i');
+                        if (icon) {
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                        }
+                    }
+                    
+                    // Transform'u sıfırla
+                    hamburgerMenu.style.transform = '';
+                }
+                
+                isScrolling = false;
+            });
+
+            // Menu handle'a tıklama ile kapatma
+            const menuHandle = document.querySelector('.menu-handle');
+            if (menuHandle) {
+                menuHandle.addEventListener('click', function() {
+                    hamburgerMenu.classList.remove('active');
+                    const icon = hamburgerToggle.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+            }
+
+            // Yönetici Paneli menü öğesi (sadece adminler için görünür)
+            document.getElementById('menu-admin-panel').addEventListener('click', function() {
+                hamburgerMenu.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                
+                // Yönetici panelini göster
+                if (window.adminModule && window.adminModule.showAdminPanel) {
+                    window.adminModule.showAdminPanel();
+                } else {
+                    // adminModule yoksa basit gösterim
+                    const adminPanel = document.getElementById('admin-panel');
+                    if (adminPanel) {
+                        // Tüm sayfaları gizle
+                        const elementsToHide = [
+                            'main-menu',
+                            'quiz',
+                            'category-selection',
+                            'result',
+                            'profile-page',
+                            'online-game-options',
+                            'global-leaderboard',
+                            'friends-page'
+                        ];
+                        
+                        elementsToHide.forEach(id => {
+                            const element = document.getElementById(id);
+                            if (element) element.style.display = 'none';
+                        });
+                        
+                        // Yönetici panelini göster
+                        adminPanel.style.display = 'block';
+                    } else {
+                        alert('Yönetici paneli şu anda kullanılamıyor.');
+                    }
+                }
+                
+                // Hamburger menü ikonunu bars'a geri çevir
+                const icon = hamburgerToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
             // Hamburger menüdeki tema toggle işlevi
             const themeToggle = document.getElementById('checkbox');
             if (themeToggle) {
@@ -3221,7 +3549,7 @@
             if (backFromProfileBtn) {
                 backFromProfileBtn.addEventListener('click', function() {
                     // Profil sayfasını gizle
-                const profilePage = document.getElementById('profile-page');
+                    const profilePage = document.getElementById('profile-page');
                     if (profilePage) profilePage.style.display = 'none';
                     
                     // Ana menüyü göster
@@ -5452,7 +5780,7 @@
                                 <div>
                                     <h4 style="margin: 0 0 5px 0; color: #333;">${question.question}</h4>
                                     <div style="font-size: 14px; color: #666;">
-                                        <strong>Kategori:</strong> ${question.category} |
+                                        <strong>Kategori:</strong> ${question.category} | 
                                         <strong>Zorluk:</strong> ${getDifficultyText(question.difficulty)} |
                                         <strong>Gönderen:</strong> ${question.submittedBy}
                                     </div>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Bilgoo</string>
-    <string name="title_activity_main">Bilgoo</string>
-    <string name="package_name">com.bilgisel.quizapp</string>
-    <string name="custom_url_scheme">com.bilgisel.quizapp</string>
+    <string name="app_name">Quiz Oyunu - Bilgoo</string>
+    <string name="title_activity_main">Quiz Oyunu - Bilgoo</string>
+    <string name="package_name">com.bilgoo.quizapp</string>
+    <string name="custom_url_scheme">com.bilgoo.quizapp</string>
 </resources>

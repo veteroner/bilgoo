@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "com.bilgisel.quizapp"
-    compileSdk rootProject.ext.compileSdkVersion
+    namespace "com.bilgoo.quizapp"
+    compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.bilgisel.quizapp"
+        applicationId "com.bilgoo.quizapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

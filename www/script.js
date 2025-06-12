@@ -3,33 +3,6 @@
 // Bu dosya JavaScript'tir, TypeScript değildir.
 // Script Version 3.0 - Firebase puan kaydetme sistemi tamamlandı
 
-// Global Error Handler - Android Crash Prevention
-window.addEventListener('error', function(e) {
-    console.error('Global Error:', e.error);
-    console.error('Filename:', e.filename);
-    console.error('Line:', e.lineno);
-    console.error('Column:', e.colno);
-    // Prevent app crash
-    e.preventDefault();
-    return true;
-});
-
-window.addEventListener('unhandledrejection', function(e) {
-    console.error('Unhandled Promise Rejection:', e.reason);
-    // Prevent app crash
-    e.preventDefault();
-    return true;
-});
-
-// Firebase Error Handler
-if (typeof firebase !== 'undefined') {
-    try {
-        console.log('🔥 Firebase loaded successfully');
-    } catch (e) {
-        console.error('🔥 Firebase Error:', e);
-    }
-}
-
 // Tam Ekran Modunu Ayarla
 function initFullscreenMode() {
     // PWA tam ekran modunu etkinleştir
