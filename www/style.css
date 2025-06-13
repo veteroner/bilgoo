@@ -3672,7 +3672,7 @@ input:checked + .switch-label:before {
     }
     
     .quiz-container {
-        min-height: 400px; /* 500px'den 400px'e azaltıldı */
+        min-height: 200px; /* 500px'den 400px'e azaltıldı */
         gap: 15px; /* 20px'den 15px'e azaltıldı */
     }
     
