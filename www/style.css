@@ -7725,11 +7725,11 @@ body.quiz-active .main-logo-container svg {
     
     .quiz-container {
         padding-top: 70px;
-        padding-bottom: 100px; /* Joker butonlarının üzerinde yeterli alan bırakmak için arttırıldı */
+        padding-bottom: 140px; /* Tab bar ve jokerler için ekstra alan bırakıldı */
     }
     
     .quiz-main {
-        padding-bottom: 100px; /* Joker butonlarının üzerinde yeterli alan bırakmak için arttırıldı */
+        padding-bottom: 140px; /* Tab bar ve jokerler için ekstra alan bırakıldı */
     }
 }
 
