@@ -3673,7 +3673,7 @@ input:checked + .switch-label:before {
     
     .quiz-container {
         min-height: 200px; /* 500px'den 400px'e azaltıldı */
-        gap: 15px; /* 20px'den 15px'e azaltıldı */
+        gap: 10px; /* 20px'den 15px'e azaltıldı */
     }
     
     #high-scores-list li {
@@ -5438,7 +5438,7 @@ input:checked + .switch-label:before {
 }
 
 .quiz-main {
-    width: 100%;
+    width: 60%;
     display: flex;
     flex-direction: column;
 }
