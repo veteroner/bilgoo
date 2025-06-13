@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#4a148c">
+    
+    <!-- Google AdSense Kodu -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453"
+     crossorigin="anonymous"></script>
+    
     <title>Bilgoo - Kullanıcı Girişi</title>
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -154,7 +159,7 @@
             <h2>Tercihlerinizi Ayarlayın</h2>
             
             <div class="preferences-description">
-                Oyun deneyiminizi kişiselleştirmek için lütfen aşağıdaki tercihleri ayarlayın. Bu tercihler, sizin için uygun zorlukta ve dilde soruların hazırlanmasını sağlayacaktır.
+                Oyun deneyiminizi kişiselleştirmek için lütfen tercih ettiğiniz dili seçin. Bu tercih, sizin için uygun dilde soruların hazırlanmasını sağlayacaktır.
             </div>
             
             <form id="user-preferences-form">
@@ -164,15 +169,6 @@
                         <option value="tr">Türkçe</option>
                         <option value="en">English</option>
                         <option value="de">Deutsch</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="user-age"><i class="fas fa-user-clock"></i> Yaş Aralığınız</label>
-                    <select id="user-age">
-                        <option value="child">7-12</option>
-                        <option value="teen">13-17</option>
-                        <option value="adult">Yetişkin (18+)</option>
                     </select>
                 </div>
                 
@@ -456,11 +452,11 @@
             function saveUserPreferences() {
                 console.log('saveUserPreferences fonksiyonu başladı');
                 const language = document.getElementById('user-language').value;
-                const ageGroup = document.getElementById('user-age').value;
                 
                 // Tercihleri localStorage'a kaydet
                 localStorage.setItem('user_language', language);
-                localStorage.setItem('user_age_group', ageGroup);
+                // Varsayılan yaş grubu olarak "adult" kullanılacak
+                localStorage.setItem('user_age_group', 'adult');
                 
                 // Dil tercihini HTML etiketlerine hemen uygula
                 document.documentElement.setAttribute('lang', language);
@@ -469,7 +465,7 @@
                 // Sayfadaki metinleri hemen değiştir
                 applyLanguageToUI(language);
                 
-                console.log(`Tercihler kaydedildi: Dil=${language}, Yaş Grubu=${ageGroup}`);
+                console.log(`Tercihler kaydedildi: Dil=${language}, Yaş Grubu=adult`);
                 
                 // Tercihler ekranını kapat ve login ekranını göster
                 console.log('Ekran geçişi yapılıyor...');
@@ -506,9 +502,8 @@
                         'pageTitle': 'Bilgoo - Kullanıcı Girişi',
                         'gameTitle': 'Bilgoo',
                         'preferences': 'Tercihlerinizi Ayarlayın',
-                        'preferencesDesc': 'Oyun deneyiminizi kişiselleştirmek için lütfen aşağıdaki tercihleri ayarlayın. Bu tercihler, sizin için uygun zorlukta ve dilde soruların hazırlanmasını sağlayacaktır.',
+                        'preferencesDesc': 'Oyun deneyiminizi kişiselleştirmek için lütfen tercih ettiğiniz dili seçin. Bu tercih, sizin için uygun dilde soruların hazırlanmasını sağlayacaktır.',
                         'langLabel': 'Tercih ettiğiniz dil',
-                        'ageLabel': 'Yaş Aralığınız',
                         'difficultyLabel': 'Zorluk Seviyesi',
                         'continueBtn': 'Devam Et',
                         'prefNote': 'Bu ayarları daha sonra oyun içerisindeki ayarlar menüsünden değiştirebilirsiniz.',
@@ -532,9 +527,8 @@
                         'pageTitle': 'Quiz Game - User Login',
                         'gameTitle': 'Quiz Game',
                         'preferences': 'Set Your Preferences',
-                        'preferencesDesc': 'Please set the following preferences to customize your game experience. These preferences will ensure that questions are prepared in the appropriate difficulty and language for you.',
+                        'preferencesDesc': 'Please select your preferred language to customize your game experience. This will ensure that questions are prepared in the appropriate language for you.',
                         'langLabel': 'Preferred language',
-                        'ageLabel': 'Age Range',
                         'difficultyLabel': 'Difficulty Level',
                         'continueBtn': 'Continue',
                         'prefNote': 'You can change these settings later from the settings menu in the game.',
@@ -558,9 +552,8 @@
                         'pageTitle': 'Quiz-Spiel - Benutzeranmeldung',
                         'gameTitle': 'Quiz-Spiel',
                         'preferences': 'Stellen Sie Ihre Präferenzen ein',
-                        'preferencesDesc': 'Bitte legen Sie die folgenden Präferenzen fest, um Ihr Spielerlebnis anzupassen. Diese Einstellungen stellen sicher, dass Fragen in der für Sie geeigneten Schwierigkeit und Sprache vorbereitet werden.',
+                        'preferencesDesc': 'Bitte wählen Sie Ihre bevorzugte Sprache, um Ihr Spielerlebnis anzupassen. Diese Einstellung stellt sicher, dass Fragen in der für Sie geeigneten Sprache vorbereitet werden.',
                         'langLabel': 'Bevorzugte Sprache',
-                        'ageLabel': 'Altersbereich',
                         'difficultyLabel': 'Schwierigkeitsgrad',
                         'continueBtn': 'Fortfahren',
                         'prefNote': 'Sie können diese Einstellungen später im Einstellungsmenü des Spiels ändern.',
@@ -598,16 +591,6 @@
                 
                 // Form etiketleri
                 document.querySelector('label[for="user-language"]').innerHTML = `<i class="fas fa-language"></i> ${langData.langLabel}`;
-                document.querySelector('label[for="user-age"]').innerHTML = `<i class="fas fa-user-clock"></i> ${langData.ageLabel}`;
-                
-                // Seçenek metinlerini güncelle (select options)
-                const ageSelect = document.getElementById('user-age');
-                for (let i = 0; i < ageSelect.options.length; i++) {
-                    const option = ageSelect.options[i];
-                    if (option.value === 'child') option.textContent = langData.child;
-                    if (option.value === 'teen') option.textContent = langData.teen;
-                    if (option.value === 'adult') option.textContent = langData.adult;
-                }
                 
                 // Buton ve diğer metinler
                 document.getElementById('save-preferences').textContent = langData.continueBtn;
@@ -686,45 +669,7 @@
                 applyLanguageToUI(selectedLanguage);
             });
             
-            // Yaş seçimi değiştiğinde, otomatik zorluk seçilmişse zorluğu güncelle
-            document.getElementById('user-age').addEventListener('change', function() {
-                const difficultySelect = document.getElementById('difficulty-preference');
-                if (difficultySelect.value === 'auto') {
-                    // Bilgilendirme mesajı göster
-                    const language = document.getElementById('user-language').value;
-                    const messages = {
-                        'tr': 'Zorluk seviyesi yaşınıza göre otomatik ayarlanacaktır.',
-                        'en': 'Difficulty level will be automatically adjusted based on your age.',
-                        'de': 'Der Schwierigkeitsgrad wird automatisch an Ihr Alter angepasst.'
-                    };
-                    const message = messages[language] || messages['tr'];
-                    
-                    // Flash mesajı göster
-                    const flashMsg = document.createElement('div');
-                    flashMsg.className = 'flash-message';
-                    flashMsg.textContent = message;
-                    flashMsg.style.position = 'fixed';
-                    flashMsg.style.bottom = '20px';
-                    flashMsg.style.left = '50%';
-                    flashMsg.style.transform = 'translateX(-50%)';
-                    flashMsg.style.padding = '10px 20px';
-                    flashMsg.style.backgroundColor = 'rgba(74, 20, 140, 0.8)';
-                    flashMsg.style.color = 'white';
-                    flashMsg.style.borderRadius = '5px';
-                    flashMsg.style.zIndex = '1000';
-                    
-                    document.body.appendChild(flashMsg);
-                    
-                    setTimeout(() => {
-                        flashMsg.style.opacity = '0';
-                        flashMsg.style.transition = 'opacity 0.5s';
-                        
-                        setTimeout(() => {
-                            document.body.removeChild(flashMsg);
-                        }, 500);
-                    }, 3000);
-                }
-            });
+            // Yaş seçimi kaldırıldığı için bu event listener'a gerek kalmadı
             
             // Preferences form submit işlemi
             if (preferencesForm) {
