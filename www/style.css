@@ -5438,7 +5438,8 @@ input:checked + .switch-label:before {
 }
 
 .quiz-main {
-    width: 60%;
+    width: 50%; /* Webde soru ekranı genişliği yarıya düşürüldü */
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
 }
@@ -6979,14 +6980,6 @@ body.quiz-active .main-logo-container svg {
         font-size: 1.2rem;
     }
     
-    .stat-value {
-        font-size: 1.4rem;
-    }
-    
-    .stat-label {
-        font-size: 0.8rem;
-    }
-    
     .completion-icon i {
         font-size: 50px;
     }
@@ -7074,7 +7067,7 @@ body.quiz-active .main-logo-container svg {
 @media (max-width: 360px) {
     .category-completion-content {
         padding: 12px 8px;
-        margin: 2px;  
+        margin: 2px;
         max-width: 100%;
         max-height: 98vh;
         border-radius: 10px;
