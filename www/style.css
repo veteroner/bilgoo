@@ -2493,6 +2493,20 @@ footer p {
     .achievements-list {
         grid-template-columns: 1fr;
     }
+    
+    .quiz-main {
+        width: 50%; /* Mobilde de soru ekranı genişliği yarıya düşürüldü */
+        min-width: unset;
+        max-width: 100vw;
+        margin: 0 auto;
+    }
+    .quiz-container {
+        width: 50%; /* Hem web hem mobilde soru ekranı genişliği yarıya düşürüldü */
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
 /* Can gösterimi stilleri */
@@ -5438,10 +5452,11 @@ input:checked + .switch-label:before {
 }
 
 .quiz-main {
-    width: 50%; /* Webde soru ekranı genişliği yarıya düşürüldü */
+    width: 50%; /* Hem web hem mobilde soru ekranı genişliği yarıya düşürüldü */
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .game-chat-container {
