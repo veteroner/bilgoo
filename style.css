@@ -245,16 +245,16 @@ input:checked + .slider:before {
 .main-options {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 4px;
+    gap: 0px;
     max-width: 100%;
     width: 100%;
     padding: 0 10px;
 }
 
 .main-options button, .main-options .main-btn, .main-options .btn-primary {
-    margin-bottom: 4px !important;
-    padding: 12px 0 !important;
-    border-radius: 16px !important;
+    margin-bottom: 2px !important;
+    padding: 10px 0 !important;
+    border-radius: 14px !important;
     font-size: 1.1rem !important;
 }
 
@@ -7038,7 +7038,7 @@ body.quiz-active .main-logo-container svg {
     
     .completion-btn {
         padding: 12px 25px;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
     }
 }
 
