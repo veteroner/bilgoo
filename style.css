@@ -398,6 +398,13 @@ input:checked + .slider:before {
     margin-bottom: 15px;
     flex-wrap: wrap;
     padding: 0 35px; /* Yanındaki sayılar için ekstra alan */
+    position: fixed;
+    bottom: 70px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 10001 !important;
+    background: rgba(255, 255, 255, 0.8);
 }
 
 .joker-btn {

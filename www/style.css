@@ -135,8 +135,17 @@ body.profile-active footer .company-info {
     }
     
     #jokers {
-        z-index: 10001 !important;
+        position: fixed !important;
         bottom: 70px !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        z-index: 10001 !important;
+        background: rgba(255, 255, 255, 0.8) !important;
+        padding: 5px !important;
+    }
+    .mobile-tab-bar {
+        z-index: 10000 !important;
     }
     .quiz-container {
         padding-bottom: 180px;
@@ -148,20 +157,20 @@ body.profile-active footer .company-info {
     }
     
     #question {
-        font-size: 0.95rem;
-        line-height: 1.2;
-        padding: 0.4rem;
-        margin-bottom: 0.5rem;
+        font-size: 0.85rem !important;
+        line-height: 1.1 !important;
+        padding: 0.3rem !important;
+        margin-bottom: 0.3rem !important;
     }
     .option {
-        font-size: 0.95rem;
-        padding: 0.5rem 0.7rem;
-        min-height: 38px;
-        margin-bottom: 0.5rem;
+        font-size: 0.85rem !important;
+        padding: 0.4rem 0.6rem !important;
+        min-height: 28px !important;
+        margin-bottom: 0.3rem !important;
     }
     .quiz-container {
-        min-height: 120px;
-        gap: 6px;
+        min-height: 60px !important;
+        gap: 3px !important;
     }
 }
 
@@ -3680,17 +3689,17 @@ input:checked + .switch-label:before {
     }
     
     #question {
-        font-size: 0.95rem !important;
-        line-height: 1.2 !important;
-        padding: 0.4rem !important;
-        margin-bottom: 0.5rem !important;
+        font-size: 0.85rem !important;
+        line-height: 1.1 !important;
+        padding: 0.3rem !important;
+        margin-bottom: 0.3rem !important;
     }
     
     .option {
-        font-size: 0.95rem !important;
-        padding: 0.5rem 0.7rem !important;
-        min-height: 32px !important;
-        margin-bottom: 0.5rem !important;
+        font-size: 0.85rem !important;
+        padding: 0.4rem 0.6rem !important;
+        min-height: 28px !important;
+        margin-bottom: 0.3rem !important;
     }
     
     .category-btn {
@@ -3707,8 +3716,8 @@ input:checked + .switch-label:before {
     }
     
     .quiz-container {
-        min-height: 80px !important;
-        gap: 4px !important;
+        min-height: 60px !important;
+        gap: 3px !important;
     }
     
     #high-scores-list li {
@@ -5577,12 +5586,6 @@ input:checked + .switch-label:before {
 
 .chat-consent-notice .accept-btn:hover {
     background-color: var(--secondary-color);
-}
-
-.chat-consent-notice a {
-    font-size: 12px;
-    color: var(--secondary-color);
-    text-decoration: none;
 }
 
 .chat-consent-notice a:hover {
