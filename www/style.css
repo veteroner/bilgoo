@@ -133,6 +133,16 @@ body.profile-active footer .company-info {
         overflow: hidden;
         word-wrap: break-word;
     }
+    
+    #jokers {
+        z-index: 10001 !important;
+    }
+    .quiz-container {
+        padding-bottom: 180px;
+    }
+    .quiz-main {
+        padding-bottom: 180px;
+    }
 }
 
 
@@ -1405,7 +1415,7 @@ h3 {
 
 .option:active {
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
 }
 
 .option.correct {
