@@ -7063,6 +7063,7 @@ body.quiz-active .main-logo-container svg {
     .completion-message {
         font-size: 0.85rem;
         margin: 8px 0;
+        line-height: 1.4;
     }
     
     .completion-stats {
