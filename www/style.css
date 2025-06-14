@@ -3680,17 +3680,17 @@ input:checked + .switch-label:before {
     }
     
     #question {
-        font-size: 0.95rem;
-        line-height: 1.2;
-        padding: 0.4rem;
-        margin-bottom: 0.5rem;
+        font-size: 0.95rem !important;
+        line-height: 1.2 !important;
+        padding: 0.4rem !important;
+        margin-bottom: 0.5rem !important;
     }
     
     .option {
-        font-size: 0.95rem;
-        padding: 0.5rem 0.7rem;
-        min-height: 38px;
-        margin-bottom: 0.5rem;
+        font-size: 0.95rem !important;
+        padding: 0.5rem 0.7rem !important;
+        min-height: 32px !important;
+        margin-bottom: 0.5rem !important;
     }
     
     .category-btn {
@@ -3707,8 +3707,8 @@ input:checked + .switch-label:before {
     }
     
     .quiz-container {
-        min-height: 120px; /* 500px'den 400px'e azaltıldı */
-        gap: 6px; /* 20px'den 15px'e azaltıldı */
+        min-height: 80px !important;
+        gap: 4px !important;
     }
     
     #high-scores-list li {
@@ -9280,6 +9280,7 @@ body.category-selection[data-theme="dark"] .logo {
     .stats-card, .badges-showcase, .high-scores-card, .recent-activities {
         padding: 10px;
         margin-bottom: 10px;
+        border-radius: 12px;
     }
     
     .stats-card h3, .badges-showcase h3, .high-scores-card h3, .recent-activities h3 {

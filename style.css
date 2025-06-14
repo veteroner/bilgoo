@@ -9272,6 +9272,7 @@ body.category-selection[data-theme="dark"] .logo {
     .stats-card, .badges-showcase, .high-scores-card, .recent-activities {
         padding: 10px;
         margin-bottom: 10px;
+        border-radius: 12px;
     }
     
     .stats-card h3, .badges-showcase h3, .high-scores-card h3, .recent-activities h3 {
