@@ -32,8 +32,10 @@ if "%commit_message%"=="" set commit_message=Netlify otomatik deployment setup
 git commit -m "%commit_message%"
 
 echo.
-echo 🌐 GitHub repository URL'ini girin (örnek: https://github.com/kullanici/quiz-oyunu.git)
-set /p repo_url="Repository URL: "
+REM GitHub repository URL'i sabit
+set repo_url=https://github.com/veteroner/bilgoo
+
+echo 🌐 GitHub repository URL'i: %repo_url%
 
 REM Remote repository ekleme
 git remote remove origin 2>nul
