@@ -140,6 +140,8 @@ body.profile-active footer .company-info {
     }
     .quiz-container {
         padding-bottom: 180px;
+        min-height: 200px;
+        gap: 10px;
     }
     .quiz-main {
         padding-bottom: 180px;
@@ -379,6 +381,10 @@ input:checked + .slider:before {
     margin-bottom: 15px;
     flex-wrap: wrap;
     padding: 0 35px; /* Yanındaki sayılar için ekstra alan */
+    position: fixed;
+    bottom: 70px;
+    z-index: 10001;
+    width: 100%;
 }
 
 .joker-btn {

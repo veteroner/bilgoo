@@ -140,6 +140,8 @@ body.profile-active footer .company-info {
     }
     .quiz-container {
         padding-bottom: 180px;
+        min-height: 200px;
+        gap: 10px;
     }
     .quiz-main {
         padding-bottom: 180px;
