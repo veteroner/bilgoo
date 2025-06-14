@@ -1,4 +1,13 @@
 @echo off
+REM .gitignore dosyasını oluştur/güncelle
+if not exist .gitignore (
+    echo node_modules/>>.gitignore
+    echo android/.gradle/>>.gitignore
+    echo android/build/>>.gitignore
+    echo **/build/>>.gitignore
+    echo **/.transforms/>>.gitignore
+)
+
 echo 🚀 Netlify Otomatik Deployment Setup
 echo.
 

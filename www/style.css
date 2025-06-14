@@ -2493,20 +2493,6 @@ footer p {
     .achievements-list {
         grid-template-columns: 1fr;
     }
-    
-    .quiz-main {
-        width: 50%; /* Mobilde de soru ekranı genişliği yarıya düşürüldü */
-        min-width: unset;
-        max-width: 100vw;
-        margin: 0 auto;
-    }
-    .quiz-container {
-        width: 50%; /* Hem web hem mobilde soru ekranı genişliği yarıya düşürüldü */
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
 }
 
 /* Can gösterimi stilleri */
@@ -5452,11 +5438,9 @@ input:checked + .switch-label:before {
 }
 
 .quiz-main {
-    width: 50%; /* Hem web hem mobilde soru ekranı genişliği yarıya düşürüldü */
-    margin: 0 auto;
+    width: 60%;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
 .game-chat-container {
@@ -6995,6 +6979,14 @@ body.quiz-active .main-logo-container svg {
         font-size: 1.2rem;
     }
     
+    .stat-value {
+        font-size: 1.4rem;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+    }
+    
     .completion-icon i {
         font-size: 50px;
     }
@@ -7082,7 +7074,7 @@ body.quiz-active .main-logo-container svg {
 @media (max-width: 360px) {
     .category-completion-content {
         padding: 12px 8px;
-        margin: 2px;
+        margin: 2px;  
         max-width: 100%;
         max-height: 98vh;
         border-radius: 10px;
