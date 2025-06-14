@@ -133,6 +133,17 @@ body.profile-active footer .company-info {
         overflow: hidden;
         word-wrap: break-word;
     }
+    
+    #jokers {
+        z-index: 10001 !important;
+        bottom: 70px !important;
+    }
+    .quiz-container {
+        padding-bottom: 180px;
+    }
+    .quiz-main {
+        padding-bottom: 180px;
+    }
 }
 
 
