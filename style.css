@@ -245,10 +245,17 @@ input:checked + .slider:before {
 .main-options {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 4px;
     max-width: 100%;
     width: 100%;
-    padding: 0 15px;
+    padding: 0 10px;
+}
+
+.main-options button, .main-options .main-btn, .main-options .btn-primary {
+    margin-bottom: 4px !important;
+    padding: 12px 0 !important;
+    border-radius: 16px !important;
+    font-size: 1.1rem !important;
 }
 
 .main-btn {
