@@ -402,7 +402,7 @@ input:checked + .slider:before {
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin-bottom: 0;
+    margin-bottom: 15px;
     flex-wrap: wrap;
     padding: 0 35px; /* Yanındaki sayılar için ekstra alan */
     position: fixed;
@@ -7705,7 +7705,7 @@ body.quiz-active .main-logo-container svg {
 
 /* Quiz container padding top için alan bırak */
 .quiz-container {
-    padding-top: 20px;
+    padding-top: 80px;
 }
 
 /* Joker butonları en altta */
