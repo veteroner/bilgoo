@@ -66,7 +66,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: var(--bg-gradient);
+    background: linear-gradient(135deg, #f3e7fa 0%, #e3d1f7 100%) !important;
     position: relative;
     overflow-x: hidden;
     color: var(--text-color);
@@ -402,7 +402,7 @@ input:checked + .slider:before {
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin-bottom: 15px;
+    margin-bottom: 0;
     flex-wrap: wrap;
     padding: 0 35px; /* Yanındaki sayılar için ekstra alan */
     position: fixed;
@@ -3982,7 +3982,7 @@ input:checked + .switch-label:before {
     justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
-    margin-bottom: 8px;
+    margin-bottom: 0;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 6px;
     transition: all 0.3s;
@@ -5481,6 +5481,7 @@ input:checked + .switch-label:before {
     width: 100%;
     min-height: 500px;
     gap: 20px;
+    padding-top: 60px;
 }
 
 .quiz-main {
@@ -7705,7 +7706,7 @@ body.quiz-active .main-logo-container svg {
 
 /* Quiz container padding top için alan bırak */
 .quiz-container {
-    padding-top: 80px;
+    padding-top: 20px;
 }
 
 /* Joker butonları en altta */
