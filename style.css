@@ -136,15 +136,15 @@ body.profile-active footer .company-info {
     
     #jokers {
         z-index: 10001 !important;
-        bottom: 0 !important;
+        bottom: 70px !important;
     }
     .quiz-container {
-        padding-bottom: 100px;
+        padding-bottom: 180px;
         min-height: 200px;
         gap: 10px;
     }
     .quiz-main {
-        padding-bottom: 100px;
+        padding-bottom: 180px;
     }
     
     #question {
@@ -402,11 +402,11 @@ input:checked + .slider:before {
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin-bottom: 15px;
+    margin-bottom: 0; /* Alt margin kaldırıldı */
     flex-wrap: wrap;
     padding: 0 35px; /* Yanındaki sayılar için ekstra alan */
     position: fixed;
-    bottom: 0;
+    bottom: 70px;
     left: 0;
     right: 0;
     width: 100%;
@@ -1350,7 +1350,7 @@ h3 {
     display: grid;
     grid-template-columns: 1fr;
     gap: 0.15rem; /* Daha da azaltıldı */
-    margin: 0.5rem 0 0.3rem 0; /* Marjinler daha da azaltıldı */
+    margin: 0.5rem 0 0 0; /* Alt margin kaldırıldı */
     animation: fadeInUp 0.6s ease-out;
     max-width: 100%;
 }
