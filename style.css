@@ -136,7 +136,7 @@ body.profile-active footer .company-info {
     
     #jokers {
         z-index: 10001 !important;
-        bottom: 70px !important;
+        top: 80px !important; /* Mobilde de üstte konumlandırıldı */
     }
     .quiz-container {
         padding-bottom: 180px;
@@ -406,7 +406,7 @@ input:checked + .slider:before {
     flex-wrap: wrap;
     padding: 0 35px; /* Yanındaki sayılar için ekstra alan */
     position: fixed;
-    bottom: 70px;
+    top: 80px; /* Üstte konumlandırıldı */
     left: 0;
     right: 0;
     width: 100%;
