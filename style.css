@@ -5510,9 +5510,86 @@ input:checked + .switch-label:before {
     gap: 8px;
 }
 
-/* Mobil görünüm için chat gizleme */
+/* Mobilde quiz ekranı tam ekran ve orantılı dağılım */
 @media (max-width: 768px) {
-    .quiz-container {
+  html, body {
+    height: 100vh;
+    min-height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    min-height: 100vh;
+    max-height: 100vh;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  .quiz-main {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 0 45px 0;
+    min-height: 0;
+  }
+  #question {
+    flex: 0 0 auto;
+    font-size: 1.1rem;
+    margin: 10px 0 0 0;
+    padding: 0.5rem 0.2rem 0.2rem 0.2rem;
+    text-align: center;
+  }
+  #options {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0 0.5rem;
+  }
+  .option {
+    min-height: 38px;
+    font-size: 1rem;
+    margin: 0;
+  }
+  #jokers {
+    position: fixed;
+    left: 0; right: 0; bottom: 55px;
+    height: 45px;
+    background: rgba(255,255,255,0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    z-index: 999;
+    padding: 0 10px;
+    margin: 0;
+    border-top: 1px solid #eee;
+  }
+  footer, .mobile-tab-bar {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    width: 100vw;
+    z-index: 1000;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* Ekran yüksekliği çok küçükse (örn. iPhone SE) fontları küçült */
+@media (max-width: 400px), (max-height: 650px) {
+  #question { font-size: 0.95rem; }
+  .option { font-size: 0.85rem; }
+}
+
+/* Mobil görünüm için düzenlemeler */
+@media (max-width: 768px) {
+    .waiting-room-container {
         flex-direction: column;
     }
     
@@ -7135,6 +7212,7 @@ body.quiz-active .main-logo-container svg {
     .completion-message {
         font-size: 0.8rem;
         margin: 5px 0;
+        line-height: 1.4;
     }
     
     .completion-stats {
