@@ -1349,8 +1349,8 @@ h3 {
 #options {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 0.25rem; /* 0.4rem'den 0.25rem'e azaltıldı */
-    margin: 0.8rem 0 0.5rem 0; /* Üst ve alt marjin azaltıldı */
+    gap: 0.15rem; /* Daha da azaltıldı */
+    margin: 0.5rem 0 0.3rem 0; /* Marjinler daha da azaltıldı */
     animation: fadeInUp 0.6s ease-out;
     max-width: 100%;
 }
@@ -7668,24 +7668,24 @@ body.quiz-active .main-logo-container svg {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     border-top: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 5px 20px;
+    padding: 3px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     z-index: 999;
-    height: 50px;
+    height: 45px;
     box-sizing: border-box;
 }
 
 .joker-btn, .joker-store-btn {
-    width: 55px !important;
-    height: 55px !important;
+    width: 40px !important;
+    height: 40px !important;
     border-radius: 50%;
     border: none;
     background: linear-gradient(145deg, #f0f0f0, #e0e0e0);
     color: var(--primary-color);
-    font-size: 1.3rem !important;
+    font-size: 1.1rem !important;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -7708,7 +7708,7 @@ body.quiz-active .main-logo-container svg {
 
 /* Quiz main container padding bottom için alan bırak */
 .quiz-main {
-    padding-bottom: 65px;
+    padding-bottom: 55px;
 }
 
 /* Dark theme */
@@ -7735,47 +7735,47 @@ body.quiz-active .main-logo-container svg {
 @media (max-width: 768px) {
     .game-header {
         padding: 8px 15px;
-        height: 55px;
+        height: 50px;
     }
     
     .score-display-simple {
-        gap: 10px;
-    }
-    
-    .total-score-simple, .current-score-simple {
-        font-size: 14px;
-    }
-    
-    .total-score-simple i, .current-score-simple i {
-        font-size: 16px;
-    }
-    
-    .timer-display {
-        font-size: 16px;
-    }
-    
-    .life-icon {
-        font-size: 18px;
-    }
-    
-    #jokers {
-        padding: 8px 15px;
-        height: 55px;
         gap: 8px;
     }
     
+    .total-score-simple, .current-score-simple {
+        font-size: 13px;
+    }
+    
+    .total-score-simple i, .current-score-simple i {
+        font-size: 15px;
+    }
+    
+    .timer-display {
+        font-size: 15px;
+    }
+    
+    .life-icon {
+        font-size: 16px;
+    }
+    
+    #jokers {
+        padding: 5px 15px;
+        height: 40px;
+        gap: 6px;
+    }
+    
     .joker-btn, .joker-store-btn {
-        width: 42px !important;
-        height: 42px !important;
-        font-size: 1.1rem !important;
+        width: 35px !important;
+        height: 35px !important;
+        font-size: 1rem !important;
     }
     
     .quiz-container {
-        padding-top: 70px;
+        padding-top: 60px;
     }
     
     .quiz-main {
-        padding-bottom: 70px;
+        padding-bottom: 45px;
     }
 }
 
