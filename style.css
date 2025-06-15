@@ -7176,15 +7176,47 @@ body.quiz-active .main-logo-container svg {
     body {
         padding-bottom: 0 !important;
         margin-bottom: 0 !important;
+        min-height: 95vh !important;
     }
     
     .container {
-        margin-bottom: 0 !important;
+        margin-bottom: -10px !important;
         padding-bottom: 0 !important;
+        margin-top: 0 !important;
+        padding-top: 5px !important;
     }
     
     footer {
         margin-bottom: 0 !important;
+        margin-top: -15px !important;
+        padding: 0 !important;
+    }
+    
+    #confetti-container,
+    .hint-message,
+    img[alt],
+    iframe {
+        display: none !important;
+    }
+    
+    .option {
+        margin-bottom: 0.3rem !important;
+    }
+}
+
+/* Çok küçük ekranlarda daha agresif boşluk azaltma */
+@media (max-width: 480px) {
+    body {
+        min-height: 92vh !important;
+    }
+    
+    .container {
+        margin-bottom: -20px !important;
+    }
+    
+    .option {
+        padding: 0.7rem 2rem !important;
+        margin-bottom: 0.2rem !important;
     }
 }
 
