@@ -4239,11 +4239,13 @@ input:checked + .switch-label:before {
 #toast-container {
     position: fixed;
     top: 20px;
-    right: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 9999;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    align-items: center;
 }
 
 .toast {
@@ -5472,6 +5474,20 @@ input:checked + .switch-label:before {
     background: linear-gradient(145deg, #dc3545, #c82333);
     color: #fff;
     box-shadow: var(--option-shadow);
+}
+
+/* Mobil cihazlarda doğru/yanlış butonlarının dikey uzunluğu arttırılıyor */
+@media (max-width: 768px) {
+    .true-false-option {
+        padding: clamp(1.2rem, 3vw, 1.5rem) clamp(1rem, 3vw, 1.5rem);
+        font-size: clamp(1rem, 2.5vw, 1.2rem);
+        margin: 15px auto 10px;
+    }
+    
+    .true-false-option.true, .true-false-option.false {
+        padding: clamp(1.2rem, 3vw, 1.5rem) clamp(1rem, 3vw, 1.5rem);
+        width: 90%;
+    }
 }
 
 /* Oyun sırasında görünen chat paneli stilleri */
