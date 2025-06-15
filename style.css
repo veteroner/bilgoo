@@ -66,7 +66,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, #f3e7fa 0%, #e3d1f7 100%) !important;
+    background: var(--bg-gradient);
     position: relative;
     overflow-x: hidden;
     color: var(--text-color);
@@ -402,7 +402,7 @@ input:checked + .slider:before {
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin-bottom: 0;
+    margin-bottom: 15px;
     flex-wrap: wrap;
     padding: 0 35px; /* Yanındaki sayılar için ekstra alan */
     position: fixed;
@@ -1349,8 +1349,8 @@ h3 {
 #options {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 0.15rem; /* Daha da azaltıldı */
-    margin: 0.5rem 0 0.3rem 0; /* Marjinler daha da azaltıldı */
+    gap: 0.4rem; /* 0.8rem'den 0.4rem'e azaltıldı */
+    margin: 1.5rem 0; /* 2rem'den 1.5rem'e azaltıldı */
     animation: fadeInUp 0.6s ease-out;
     max-width: 100%;
 }
@@ -3982,7 +3982,7 @@ input:checked + .switch-label:before {
     justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
-    margin-bottom: 0;
+    margin-bottom: 8px;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 6px;
     transition: all 0.3s;
@@ -5481,7 +5481,6 @@ input:checked + .switch-label:before {
     width: 100%;
     min-height: 500px;
     gap: 20px;
-    padding-top: 60px;
 }
 
 .quiz-main {
@@ -7172,55 +7171,6 @@ body.quiz-active .main-logo-container svg {
     }
 }
 
-/* Mobil cihazlarda alt boşluğu kaldır */
-@media (max-width: 768px) {
-    body {
-        padding-bottom: 0 !important;
-        margin-bottom: 0 !important;
-        min-height: 95vh !important;
-    }
-    
-    .container {
-        margin-bottom: -10px !important;
-        padding-bottom: 0 !important;
-        margin-top: 0 !important;
-        padding-top: 5px !important;
-    }
-    
-    footer {
-        margin-bottom: 0 !important;
-        margin-top: -15px !important;
-        padding: 0 !important;
-    }
-    
-    #confetti-container,
-    .hint-message,
-    img[alt],
-    iframe {
-        display: none !important;
-    }
-    
-    .option {
-        margin-bottom: 0.3rem !important;
-    }
-}
-
-/* Çok küçük ekranlarda daha agresif boşluk azaltma */
-@media (max-width: 480px) {
-    body {
-        min-height: 92vh !important;
-    }
-    
-    .container {
-        margin-bottom: -20px !important;
-    }
-    
-    .option {
-        padding: 0.7rem 2rem !important;
-        margin-bottom: 0.2rem !important;
-    }
-}
-
 /* Yanlış cevap tam ekran modalı */
 .wrong-modal {
     position: fixed;
@@ -7706,7 +7656,7 @@ body.quiz-active .main-logo-container svg {
 
 /* Quiz container padding top için alan bırak */
 .quiz-container {
-    padding-top: 20px;
+    padding-top: 80px;
 }
 
 /* Joker butonları en altta */
@@ -7718,24 +7668,24 @@ body.quiz-active .main-logo-container svg {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     border-top: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 3px 20px;
+    padding: 10px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     z-index: 999;
-    height: 45px;
+    height: 60px;
     box-sizing: border-box;
 }
 
 .joker-btn, .joker-store-btn {
-    width: 40px !important;
-    height: 40px !important;
+    width: 55px !important;
+    height: 55px !important;
     border-radius: 50%;
     border: none;
     background: linear-gradient(145deg, #f0f0f0, #e0e0e0);
     color: var(--primary-color);
-    font-size: 1.1rem !important;
+    font-size: 1.3rem !important;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -7758,7 +7708,7 @@ body.quiz-active .main-logo-container svg {
 
 /* Quiz main container padding bottom için alan bırak */
 .quiz-main {
-    padding-bottom: 55px;
+    padding-bottom: 80px;
 }
 
 /* Dark theme */
@@ -7785,47 +7735,47 @@ body.quiz-active .main-logo-container svg {
 @media (max-width: 768px) {
     .game-header {
         padding: 8px 15px;
-        height: 50px;
+        height: 55px;
     }
     
     .score-display-simple {
-        gap: 8px;
+        gap: 10px;
     }
     
     .total-score-simple, .current-score-simple {
-        font-size: 13px;
+        font-size: 14px;
     }
     
     .total-score-simple i, .current-score-simple i {
-        font-size: 15px;
-    }
-    
-    .timer-display {
-        font-size: 15px;
-    }
-    
-    .life-icon {
         font-size: 16px;
     }
     
+    .timer-display {
+        font-size: 16px;
+    }
+    
+    .life-icon {
+        font-size: 18px;
+    }
+    
     #jokers {
-        padding: 5px 15px;
-        height: 40px;
-        gap: 6px;
+        padding: 8px 15px;
+        height: 55px;
+        gap: 8px;
     }
     
     .joker-btn, .joker-store-btn {
-        width: 35px !important;
-        height: 35px !important;
-        font-size: 1rem !important;
+        width: 42px !important;
+        height: 42px !important;
+        font-size: 1.1rem !important;
     }
     
     .quiz-container {
-        padding-top: 60px;
+        padding-top: 70px;
     }
     
     .quiz-main {
-        padding-bottom: 45px;
+        padding-bottom: 70px;
     }
 }
 
