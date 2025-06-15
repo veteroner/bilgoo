@@ -7171,19 +7171,23 @@ body.quiz-active .main-logo-container svg {
     }
 }
 
-/* Mobil cihazlarda alt boşluğu kaldır */
+/* Mobil cihazlarda alt boşluğu kaldır ve ekran boyutunu optimize et */
 @media (max-width: 768px) {
     body {
         padding-bottom: 0 !important;
         margin-bottom: 0 !important;
-        min-height: 95vh !important;
+        min-height: 94vh !important;
+        font-size: 11px !important;
     }
     
     .container {
         margin-bottom: -10px !important;
         padding-bottom: 0 !important;
         margin-top: 0 !important;
-        padding-top: 5px !important;
+        padding-top: 0 !important;
+        transform: scale(0.95) !important;
+        max-width: 100% !important;
+        width: 100% !important;
     }
     
     footer {
@@ -7194,29 +7198,119 @@ body.quiz-active .main-logo-container svg {
     
     #confetti-container,
     .hint-message,
-    img[alt],
+    img[alt]:not(.joker-icon),
     iframe {
         display: none !important;
     }
     
+    /* Soru stil düzenlemeleri */
+    #question {
+        font-size: 0.9rem !important;
+        margin-bottom: 0.2rem !important;
+        padding: 0.2rem !important;
+        line-height: 1.2 !important;
+    }
+    
+    /* Seçenekler için düzenlemeler */
     .option {
-        margin-bottom: 0.3rem !important;
+        font-size: 0.9rem !important;
+        padding: 0.5rem 0.8rem !important;
+        margin-bottom: 0.25rem !important;
+        min-height: 30px !important;
+        line-height: 1.2 !important;
+        width: 94% !important;
+    }
+    
+    /* Can ve zamanlayıcı düzenlemeleri */
+    .lives-container {
+        margin: 5px 0 !important;
+    }
+    
+    .life-icon {
+        font-size: 20px !important;
+    }
+    
+    .timer-display {
+        font-size: 0.8rem !important;
+        padding: 0.1rem 0.5rem !important;
+        margin-bottom: 0.1rem !important;
+    }
+    
+    /* Joker butonları düzenlemeleri */
+    #jokers {
+        padding: 2px 20px !important;
+        bottom: 60px !important;
+        gap: 8px !important;
+    }
+    
+    .joker-btn, .joker-store-btn {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .joker-btn i, .joker-store-btn i {
+        font-size: 1rem !important;
+    }
+    
+    /* Puan gösterimi */
+    .score-display-simple {
+        font-size: 0.9rem !important;
     }
 }
 
-/* Çok küçük ekranlarda daha agresif boşluk azaltma */
+/* Çok küçük ekranlarda daha agresif küçültme ve düzenleme */
 @media (max-width: 480px) {
     body {
         min-height: 92vh !important;
+        font-size: 10px !important;
     }
     
     .container {
         margin-bottom: -20px !important;
+        transform: scale(0.9) !important;
+    }
+    
+    #question {
+        font-size: 0.85rem !important;
+        padding: 0.15rem 0.3rem !important;
+        margin: 0.1rem 0 0.2rem 0 !important;
     }
     
     .option {
-        padding: 0.7rem 2rem !important;
-        margin-bottom: 0.2rem !important;
+        padding: 0.4rem 0.6rem !important;
+        margin-bottom: 0.15rem !important;
+        font-size: 0.85rem !important;
+        min-height: 28px !important;
+        width: 92% !important;
+    }
+    
+    #options {
+        gap: 0.1rem !important;
+        margin: 0.2rem 0 !important;
+    }
+    
+    .joker-btn, .joker-store-btn {
+        width: 25px !important;
+        height: 25px !important;
+    }
+    
+    .timer-display {
+        font-size: 0.75rem !important;
+    }
+    
+    /* Ekranı dikey olarak daha verimli kullanmak için */
+    .lives-container, .timer-display, .score-display-simple {
+        display: inline-block !important;
+        vertical-align: middle !important;
+        margin: 0 3px !important;
+    }
+    
+    .game-header {
+        display: flex !important;
+        justify-content: space-around !important;
+        align-items: center !important;
+        padding: 3px !important;
     }
 }
 
