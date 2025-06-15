@@ -7171,6 +7171,23 @@ body.quiz-active .main-logo-container svg {
     }
 }
 
+/* Mobil cihazlarda alt boşluğu kaldır */
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+    }
+    
+    .container {
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+    
+    footer {
+        margin-bottom: 0 !important;
+    }
+}
+
 /* Yanlış cevap tam ekran modalı */
 .wrong-modal {
     position: fixed;
