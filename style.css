@@ -165,59 +165,7 @@ body.profile-active footer .company-info {
     }
 }
 
-/* Mobil cihazlarda alt boşluğu kaldır */
-@media (max-width: 768px) {
-    body {
-        padding-bottom: 0 !important;
-        margin-bottom: 0 !important;
-    }
-    
-    .container {
-        margin-bottom: 0 !important;
-        padding-bottom: 0 !important;
-    }
-    
-    footer {
-        margin-bottom: 0 !important;
-    }
-}
 
-/* Android cihazlar için özel düzeltmeler */
-@media screen and (-webkit-min-device-pixel-ratio: 1.5), 
-       screen and (min--moz-device-pixel-ratio: 1.5),
-       screen and (-o-min-device-pixel-ratio: 3/2),
-       screen and (min-device-pixel-ratio: 1.5) {
-    body {
-        padding-bottom: 0 !important;
-        margin-bottom: 0 !important;
-        overscroll-behavior-y: none;
-        overflow-y: auto;
-    }
-    
-    html {
-        height: 100%;
-        overflow: hidden;
-    }
-    
-    .container {
-        margin-bottom: 0 !important;
-        padding-bottom: 0 !important;
-    }
-    
-    footer {
-        margin-bottom: 0 !important;
-    }
-    
-    /* Android Chrome ve WebView için ekstra düzeltme */
-    @supports (-webkit-overflow-scrolling: touch) {
-        body {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            overflow-y: scroll;
-        }
-    }
-}
 
 /* Tema Değiştirme Düğmesi */
 .theme-switch-wrapper {
@@ -7237,43 +7185,6 @@ body.quiz-active .main-logo-container svg {
     
     footer {
         margin-bottom: 0 !important;
-    }
-}
-
-/* Android cihazlar için özel düzeltmeler */
-@media screen and (-webkit-min-device-pixel-ratio: 1.5), 
-       screen and (min--moz-device-pixel-ratio: 1.5),
-       screen and (-o-min-device-pixel-ratio: 3/2),
-       screen and (min-device-pixel-ratio: 1.5) {
-    body {
-        padding-bottom: 0 !important;
-        margin-bottom: 0 !important;
-        overscroll-behavior-y: none;
-        overflow-y: auto;
-    }
-    
-    html {
-        height: 100%;
-        overflow: hidden;
-    }
-    
-    .container {
-        margin-bottom: 0 !important;
-        padding-bottom: 0 !important;
-    }
-    
-    footer {
-        margin-bottom: 0 !important;
-    }
-    
-    /* Android Chrome ve WebView için ekstra düzeltme */
-    @supports (-webkit-overflow-scrolling: touch) {
-        body {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            overflow-y: scroll;
-        }
     }
 }
 
