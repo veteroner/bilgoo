@@ -139,12 +139,12 @@ body.profile-active footer .company-info {
         bottom: 70px !important;
     }
     .quiz-container {
-        padding-bottom: 180px;
-        min-height: 200px;
-        gap: 10px;
-    }
+    padding-bottom: 50px;
+    min-height: auto;
+    gap: 0;
+}
     .quiz-main {
-        padding-bottom: 180px;
+        padding-bottom: 30px;
     }
     
     #question {
@@ -1788,6 +1788,8 @@ footer {
     align-items: center;
     margin-top: 2rem;
     padding-top: 1rem;
+    padding-bottom: 0;
+    margin-bottom: 0;
     border-top: 1px solid var(--border-color);
     font-size: 0.9rem;
     color: var(--text-light);
@@ -7221,6 +7223,20 @@ body.quiz-active .main-logo-container svg {
         width: 94% !important;
     }
     
+    /* Quiz container ayarları - Şıkların altında boşluk olmaması için */
+    .quiz-container {
+        padding-bottom: 0 !important;
+        min-height: auto !important;
+        height: auto !important;
+        margin-bottom: 0 !important;
+    }
+    
+    /* Seçenekler listesi konteyner ayarları */
+    #options {
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+    
     /* Can ve zamanlayıcı düzenlemeleri */
     .lives-container {
         margin: 5px 0 !important;
@@ -7239,8 +7255,9 @@ body.quiz-active .main-logo-container svg {
     /* Joker butonları düzenlemeleri */
     #jokers {
         padding: 2px 20px !important;
-        bottom: 60px !important;
-        gap: 8px !important;
+        bottom: 50px !important;
+        gap: 6px !important;
+        margin-bottom: -10px !important;
     }
     
     .joker-btn, .joker-store-btn {
@@ -7287,7 +7304,15 @@ body.quiz-active .main-logo-container svg {
     
     #options {
         gap: 0.1rem !important;
-        margin: 0.2rem 0 !important;
+        margin: 0.2rem 0 0 !important;
+        padding-bottom: 0 !important;
+    }
+    
+    /* Quiz container daha da sıkıştırma */
+    .quiz-container {
+        padding-bottom: 0 !important;
+        min-height: 0 !important;
+        margin-bottom: -20px !important;
     }
     
     .joker-btn, .joker-store-btn {
@@ -7311,6 +7336,13 @@ body.quiz-active .main-logo-container svg {
         justify-content: space-around !important;
         align-items: center !important;
         padding: 3px !important;
+    }
+    
+    /* Footer ayarlamaları */
+    footer {
+        height: auto !important;
+        min-height: 0 !important;
+        margin-top: -25px !important;
     }
 }
 
