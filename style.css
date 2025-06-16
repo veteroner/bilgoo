@@ -6100,26 +6100,23 @@ input:checked + .switch-label:before {
     width: 100%;
     max-width: 500px;
     margin: 0;
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background-color: #ffffff;
     border-radius: 15px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .user-preferences-container h2 {
-    color: #fff;
+    color: var(--primary-color);
     text-align: center;
     font-size: 1.8rem;
     margin-bottom: 20px;
     font-weight: 600;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .user-preferences-container .btn-primary {
-    background-color: rgba(255, 255, 255, 0.9);
-    color: var(--primary-color);
+    background-color: var(--primary-color);
+    color: white;
     border: none;
     border-radius: 8px;
     padding: 12px 30px;
@@ -6131,20 +6128,21 @@ input:checked + .switch-label:before {
 }
 
 .user-preferences-container .btn-primary:hover {
-    background-color: #fff;
+    background-color: var(--secondary-color);
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    color: white;
 }
 
 .preferences-description {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(var(--primary-color-rgb), 0.1);
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 20px;
     font-size: 0.95rem;
     line-height: 1.5;
-    color: #fff;
-    border-left: 4px solid rgba(255, 255, 255, 0.5);
+    color: #333;
+    border-left: 4px solid var(--primary-color);
 }
 
 .language-buttons {
@@ -6154,7 +6152,7 @@ input:checked + .switch-label:before {
 }
 
 .language-label {
-    color: #fff;
+    color: #333;
     margin-bottom: 15px;
     font-size: 1.1rem;
     font-weight: 500;
@@ -6208,16 +6206,16 @@ input:checked + .switch-label:before {
 
 .preferences-note {
     font-size: 0.85rem;
-    color: #fff;
+    color: #666;
     margin-top: 20px;
     padding: 10px;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 0, 0, 0.05);
     border-radius: 8px;
     text-align: center;
 }
 
 .preferences-note i {
-    color: #fff;
+    color: var(--primary-color);
     margin-right: 5px;
 }
 
