@@ -5415,6 +5415,14 @@ input:checked + .switch-label:before {
     animation-fill-mode: both;
 }
 
+@media (max-width: 768px) {
+    .true-false-option {
+        padding: clamp(1.2rem, 3vw, 1.5rem) clamp(1.2rem, 4vw, 2rem);
+        font-size: clamp(1rem, 3vw, 1.2rem);
+        margin: 20px auto 0;
+    }
+}
+
 .true-false-option.true {
     background: linear-gradient(145deg, #28a745, #1e7e34);
     color: #fff;
@@ -5430,6 +5438,14 @@ input:checked + .switch-label:before {
     font-weight: 600;
     animation: fadeInUp 0.5s ease-out;
     width: 80%;
+}
+
+@media (max-width: 768px) {
+    .true-false-option.true, 
+    .true-false-option.false {
+        padding-top: clamp(1.4rem, 3.5vw, 1.8rem);
+        padding-bottom: clamp(1.4rem, 3.5vw, 1.8rem);
+    }
 }
 
 .true-false-option:disabled {
