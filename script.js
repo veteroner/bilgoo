@@ -1557,41 +1557,37 @@ const quizApp = {
         if (this.jokerFiftyBtn) {
             const fiftyCount = this.jokerInventory.fifty || 0;
             const used = this.jokersUsed.fifty;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${fiftyCount}${used ? '<span class=\'joker-used-text\'>✓</span>' : ''}</span>`;
             this.jokerFiftyBtn.disabled = (fiftyCount <= 0) || used || isTrueFalse || isBlankFilling;
             this.jokerFiftyBtn.style.opacity = (fiftyCount <= 0 || used || isTrueFalse || isBlankFilling) ? '0.3' : '1';
-            this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i>${badgeHtml}`;
+            this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i>`;
         }
         // İpucu jokeri
         if (this.jokerHintBtn) {
             const hintCount = this.jokerInventory.hint || 0;
             const used = this.jokersUsed.hint;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${hintCount}${used ? '<span class=\'joker-used-text\'>✓</span>' : ''}</span>`;
             this.jokerHintBtn.disabled = (hintCount <= 0) || used;
             this.jokerHintBtn.style.opacity = (hintCount <= 0 || used) ? '0.3' : '1';
-            this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i>${badgeHtml}`;
+            this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i>`;
         }
         // Süre jokeri
         if (this.jokerTimeBtn) {
             const timeCount = this.jokerInventory.time || 0;
             const used = this.jokersUsed.time;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${timeCount}${used ? '<span class=\'joker-used-text\'>✓</span>' : ''}</span>`;
             this.jokerTimeBtn.disabled = (timeCount <= 0) || used;
             this.jokerTimeBtn.style.opacity = (timeCount <= 0 || used) ? '0.3' : '1';
-            this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i>${badgeHtml}`;
+            this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i>`;
         }
         // Pas jokeri
         if (this.jokerSkipBtn) {
             const skipCount = this.jokerInventory.skip || 0;
             const used = this.jokersUsed.skip;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${skipCount}${used ? '<span class=\'joker-used-text\'>✓</span>' : ''}</span>`;
             this.jokerSkipBtn.disabled = (skipCount <= 0) || used;
             this.jokerSkipBtn.style.opacity = (skipCount <= 0 || used) ? '0.3' : '1';
-            this.jokerSkipBtn.innerHTML = `<i class="fas fa-forward"></i>${badgeHtml}`;
+            this.jokerSkipBtn.innerHTML = `<i class="fas fa-forward"></i>`;
         }
         // Joker mağazası
         if (this.jokerStoreBtn) {
-            this.jokerStoreBtn.innerHTML = '<i class="fas fa-shopping-cart"></i>';
+            this.jokerStoreBtn.innerHTML = `<i class="fas fa-store"></i>`;
         }
     },
     
@@ -4217,13 +4213,176 @@ const quizApp = {
         
         activitiesList.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Aktiviteler yükleniyor...</div>';
         
-        // Örnek aktiviteler (gerçek veritabanı bağlantısı yoksa)
+        // Firebase'den aktiviteleri yükleme
+        if (firebase.auth && firebase.firestore && this.isLoggedIn) {
+            const db = firebase.firestore();
+            db.collection('users').doc(userId)
+                .collection('activities')
+                .orderBy('timestamp', 'desc')
+                .limit(5)
+                .get()
+                .then((querySnapshot) => {
+                    // Firebase'den gelen aktiviteleri işle
+                    if (!querySnapshot.empty) {
+                        activitiesList.innerHTML = '';
+                        querySnapshot.forEach((doc) => {
+                            const activity = doc.data();
+                            this.renderActivity(activity, activitiesList);
+                        });
+                    } else {
+                        // Firebase'de aktivite yoksa localStorage'a bak
+                        this.loadLocalActivities(activitiesList, userId);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Aktiviteler yüklenirken hata oluştu:", error);
+                    // Hata durumunda localStorage'a bak
+                    this.loadLocalActivities(activitiesList, userId);
+                });
+        } else {
+            // Firebase yoksa veya kullanıcı giriş yapmamışsa localStorage'a bak
+            this.loadLocalActivities(activitiesList, userId);
+        }
+    },
+    
+    // LocalStorage'dan aktiviteleri yükle
+    loadLocalActivities: function(activitiesList, userId) {
+        try {
+            const storedActivities = localStorage.getItem(`user-activities-${userId}`);
+            const activities = storedActivities ? JSON.parse(storedActivities) : [];
+            
+            if (activities && activities.length > 0) {
+                activitiesList.innerHTML = '';
+                activities.forEach(activity => {
+                    this.renderActivity(activity, activitiesList);
+                });
+            } else {
+                this.generateSampleActivities(activitiesList);
+            }
+        } catch (error) {
+            console.error("LocalStorage aktiviteleri işlenirken hata:", error);
+            this.generateSampleActivities(activitiesList);
+        }
+    },
+    
+    // Aktivite oluştur
+    createUserActivity: function(type, title, score = null, category = null) {
+        const userId = this.getCurrentUserId();
+        const now = new Date();
+        
+        const activityData = {
+            type: type,           // 'game', 'badge', 'task', vb.
+            title: title,         // Aktivite başlığı
+            timestamp: now,       // Gerçekleşme zamanı
+            score: score,         // Varsa skor değeri
+            category: category,   // Varsa kategori
+            icon: this.getActivityIcon(type) // Tür için uygun ikon
+        };
+        
+        // Firebase'e aktiviteyi kaydet
+        if (firebase.auth && firebase.firestore && this.isLoggedIn) {
+            const db = firebase.firestore();
+            db.collection('users').doc(userId)
+                .collection('activities')
+                .add(activityData)
+                .then(() => {
+                    console.log("Aktivite Firebase'e kaydedildi:", title);
+                })
+                .catch((error) => {
+                    console.error("Aktivite kaydedilirken hata:", error);
+                    // Hata durumunda localStorage'a kaydet
+                    this.saveActivityToLocalStorage(userId, activityData);
+                });
+        } else {
+            // Firebase yoksa localStorage'a kaydet
+            this.saveActivityToLocalStorage(userId, activityData);
+        }
+    },
+    
+    // Aktiviteyi LocalStorage'a kaydet
+    saveActivityToLocalStorage: function(userId, activityData) {
+        try {
+            const storedActivities = localStorage.getItem(`user-activities-${userId}`);
+            const activities = storedActivities ? JSON.parse(storedActivities) : [];
+            
+            // Aktiviteyi ekle ve en fazla 10 aktivite sakla
+            activities.unshift(activityData);
+            if (activities.length > 10) activities.pop();
+            
+            localStorage.setItem(`user-activities-${userId}`, JSON.stringify(activities));
+            console.log("Aktivite localStorage'a kaydedildi");
+        } catch (error) {
+            console.error("Aktivite localStorage'a kaydedilirken hata:", error);
+        }
+    },
+    
+    // Aktivite tipi için uygun ikon sınıfı
+    getActivityIcon: function(type) {
+        switch(type) {
+            case 'game': return 'fas fa-gamepad';
+            case 'badge': return 'fas fa-award';
+            case 'task': return 'fas fa-tasks';
+            case 'level': return 'fas fa-level-up-alt';
+            case 'purchase': return 'fas fa-shopping-cart';
+            case 'achievement': return 'fas fa-trophy';
+            default: return 'fas fa-history';
+        }
+    },
+    
+    // Aktiviteyi HTML olarak render et
+    renderActivity: function(activity, container) {
+        const activityTime = activity.timestamp ? this.getTimeAgo(activity.timestamp) : activity.time;
+        const activityElement = document.createElement('div');
+        activityElement.className = 'activity-item';
+        activityElement.innerHTML = `
+            <div class="activity-icon"><i class="${activity.icon}"></i></div>
+            <div class="activity-details">
+                <div class="activity-title">${activity.title}</div>
+                <div class="activity-time">${activityTime}</div>
+            </div>
+            ${activity.score ? `<div class="activity-score">Skor: ${activity.score}</div>` : ''}
+        `;
+        container.appendChild(activityElement);
+    },
+    
+    // Geçen zamanı belirtilen formatı çevir (1 saat önce, 2 gün önce vb.)
+    getTimeAgo: function(timestamp) {
+        const now = new Date();
+        const activityTime = timestamp instanceof Date ? timestamp : new Date(timestamp);
+        const diffMs = now - activityTime;
+        const diffSec = Math.floor(diffMs / 1000);
+        const diffMin = Math.floor(diffSec / 60);
+        const diffHour = Math.floor(diffMin / 60);
+        const diffDay = Math.floor(diffHour / 24);
+        
+        if (diffDay > 30) {
+            return activityTime.toLocaleDateString('tr-TR');
+        } else if (diffDay > 0) {
+            return `${diffDay} gün önce`;
+        } else if (diffHour > 0) {
+            return `${diffHour} saat önce`;
+        } else if (diffMin > 0) {
+            return `${diffMin} dakika önce`;
+        } else {
+            return 'Az önce';
+        }
+    },
+    
+    // Örnek aktiviteleri göster - veri yoksa
+    generateSampleActivities: function(activitiesList) {
+        activitiesList.innerHTML = '';
+        
+        // Rastgele kategori seç
+        const categories = ['Genel Kültür', 'Tarih', 'Bilim', 'Spor', 'Sanat', 'Coğrafya'];
+        const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+        
+        // Örnek aktiviteler
         const sampleActivities = [
             {
                 icon: 'fas fa-gamepad',
-                title: 'Genel Kültür kategorisinde bir oyun oynandı',
+                title: `${randomCategory} kategorisinde bir oyun oynandı`,
                 time: '2 saat önce',
-                score: 85
+                score: Math.floor(Math.random() * 100)
             },
             {
                 icon: 'fas fa-award',
@@ -4239,22 +4398,10 @@ const quizApp = {
             }
         ];
         
-        setTimeout(() => {
-                    activitiesList.innerHTML = '';
+        // Örnek aktiviteleri render et
             sampleActivities.forEach(activity => {
-                        const activityElement = document.createElement('div');
-                        activityElement.className = 'activity-item';
-                activityElement.innerHTML = `
-                    <div class="activity-icon"><i class="${activity.icon}"></i></div>
-                    <div class="activity-details">
-                        <div class="activity-title">${activity.title}</div>
-                        <div class="activity-time">${activity.time}</div>
-                    </div>
-                    ${activity.score ? `<div class="activity-score">Skor: ${activity.score}</div>` : ''}
-                `;
-                activitiesList.appendChild(activityElement);
-            });
-        }, 1000);
+            this.renderActivity(activity, activitiesList);
+        });
     },
     
     // Profil düzenleme modalını göster
@@ -7352,7 +7499,6 @@ const quizApp = {
         // Seviye başına 100 * seviye kadar XP gerekir
         return this.userLevel * 100;
     },
-    
 
     
     // Toplam puan göstergesini güncelle
