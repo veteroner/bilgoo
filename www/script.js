@@ -3675,21 +3675,21 @@ const quizApp = {
                 const date = new Date(user.metadata.creationTime);
                 joinDate.textContent = date.toLocaleDateString('tr-TR');
             }
-        }
-        
+            }
+            
         // Firebase'den kullanıcı verilerini yükle (puan, istatistikler vs.)
         this.loadFirebaseUserStats(userId);
         
         // Gerçek istatistikleri güncelle
         this.updateRealUserStats();
             
-        // Rozetleri yükle
+            // Rozetleri yükle
         this.loadUserBadgesForProfile(userId);
             
-        // Yüksek skorları yükle
+            // Yüksek skorları yükle
         this.loadHighScoresForProfile(userId);
             
-        // Son aktiviteleri yükle
+            // Son aktiviteleri yükle
         this.loadRecentActivitiesForProfile(userId);
     },
 
@@ -4426,7 +4426,7 @@ const quizApp = {
         // Örnek aktiviteleri render et
             sampleActivities.forEach(activity => {
             this.renderActivity(activity, activitiesList);
-        });
+            });
     },
     
     // Profil düzenleme modalını göster

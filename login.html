@@ -698,9 +698,9 @@
                     
                     // Dil değişimini uygula
                     const selectedLanguage = userLanguageInput.value;
-                    document.documentElement.setAttribute('lang', selectedLanguage);
-                    document.documentElement.setAttribute('data-language', selectedLanguage);
-                    applyLanguageToUI(selectedLanguage);
+                document.documentElement.setAttribute('lang', selectedLanguage);
+                document.documentElement.setAttribute('data-language', selectedLanguage);
+                applyLanguageToUI(selectedLanguage);
                 });
             });
             
