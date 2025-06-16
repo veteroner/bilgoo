@@ -3,4 +3,20 @@
   command = ""
 
 [build.environment]
-  NODE_VERSION = "18" 
+  NODE_VERSION = "18"
+
+# Android dosyalarını hariç tut
+[build.processing.skip_processing]
+  skip_processing = true
+  
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Hariç tutulacak dosya ve klasörler
+[build.ignore]
+  command = "echo 'Android klasörleri hariç tutuldu'"
+  
+[functions]
+  directory = "netlify/functions" 
