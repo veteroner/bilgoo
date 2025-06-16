@@ -4401,7 +4401,7 @@ const quizApp = {
         // Örnek aktiviteleri render et
             sampleActivities.forEach(activity => {
             this.renderActivity(activity, activitiesList);
-        });
+            });
     },
     
     // Profil düzenleme modalını göster
