@@ -2755,9 +2755,13 @@ const quizApp = {
     // Quiz modunu aktifleştir
     activateQuizMode: function() {
         // Joker tab menüsünü göster
-        document.getElementById('joker-tab-bar').style.display = 'flex';
-        // Normal tab menüsünü gizle
-        document.getElementById('tab-bar').style.display = 'none';
+        const jokerTabBar = document.getElementById('joker-tab-bar');
+        if (jokerTabBar) jokerTabBar.style.display = 'flex';
+        
+        // Normal tab menüsünü gizle (mobile-tab-bar ID'sine sahip element kullanıldığı için düzeltildi)
+        const tabBar = document.getElementById('mobile-tab-bar');
+        if (tabBar) tabBar.style.display = 'none';
+        
         document.body.classList.add('quiz-active');
         // Quiz modunda olduğumuzu localStorage'a kaydet
         localStorage.setItem('quizModeActive', 'true');
@@ -2766,9 +2770,13 @@ const quizApp = {
     // Quiz modunu deaktive et
     deactivateQuizMode: function() {
         // Joker tab menüsünü gizle
-        document.getElementById('joker-tab-bar').style.display = 'none';
-        // Normal tab menüsünü göster
-        document.getElementById('tab-bar').style.display = 'flex';
+        const jokerTabBar = document.getElementById('joker-tab-bar');
+        if (jokerTabBar) jokerTabBar.style.display = 'none';
+        
+        // Normal tab menüsünü göster (mobile-tab-bar ID'sine sahip element kullanıldığı için düzeltildi)
+        const tabBar = document.getElementById('mobile-tab-bar');
+        if (tabBar) tabBar.style.display = 'flex';
+        
         document.body.classList.remove('quiz-active');
         // Quiz modundan çıktığımızı localStorage'a kaydet
         localStorage.removeItem('quizModeActive');
@@ -2779,59 +2787,83 @@ const quizApp = {
         const self = this;
         
         // 50:50 jokeri
-        document.getElementById('joker-tab-fifty').addEventListener('click', function() {
-            const jokerFiftyBtn = document.getElementById('joker-fifty');
-            if (jokerFiftyBtn && !jokerFiftyBtn.disabled) {
-                jokerFiftyBtn.click();
-            }
-        });
+        const jokerTabFifty = document.getElementById('joker-tab-fifty');
+        if (jokerTabFifty) {
+            jokerTabFifty.addEventListener('click', function() {
+                const jokerFiftyBtn = document.getElementById('joker-fifty');
+                if (jokerFiftyBtn && !jokerFiftyBtn.disabled) {
+                    jokerFiftyBtn.click();
+                }
+            });
+        }
 
         // İpucu jokeri
-        document.getElementById('joker-tab-hint').addEventListener('click', function() {
-            const jokerHintBtn = document.getElementById('joker-hint');
-            if (jokerHintBtn && !jokerHintBtn.disabled) {
-                jokerHintBtn.click();
-            }
-        });
+        const jokerTabHint = document.getElementById('joker-tab-hint');
+        if (jokerTabHint) {
+            jokerTabHint.addEventListener('click', function() {
+                const jokerHintBtn = document.getElementById('joker-hint');
+                if (jokerHintBtn && !jokerHintBtn.disabled) {
+                    jokerHintBtn.click();
+                }
+            });
+        }
 
         // Süre jokeri
-        document.getElementById('joker-tab-time').addEventListener('click', function() {
-            const jokerTimeBtn = document.getElementById('joker-time');
-            if (jokerTimeBtn && !jokerTimeBtn.disabled) {
-                jokerTimeBtn.click();
-            }
-        });
+        const jokerTabTime = document.getElementById('joker-tab-time');
+        if (jokerTabTime) {
+            jokerTabTime.addEventListener('click', function() {
+                const jokerTimeBtn = document.getElementById('joker-time');
+                if (jokerTimeBtn && !jokerTimeBtn.disabled) {
+                    jokerTimeBtn.click();
+                }
+            });
+        }
 
         // Pas jokeri
-        document.getElementById('joker-tab-skip').addEventListener('click', function() {
-            const jokerSkipBtn = document.getElementById('joker-skip');
-            if (jokerSkipBtn && !jokerSkipBtn.disabled) {
-                jokerSkipBtn.click();
-            }
-        });
+        const jokerTabSkip = document.getElementById('joker-tab-skip');
+        if (jokerTabSkip) {
+            jokerTabSkip.addEventListener('click', function() {
+                const jokerSkipBtn = document.getElementById('joker-skip');
+                if (jokerSkipBtn && !jokerSkipBtn.disabled) {
+                    jokerSkipBtn.click();
+                }
+            });
+        }
 
         // Joker mağazası
-        document.getElementById('joker-tab-store').addEventListener('click', function() {
-            const jokerStoreBtn = document.getElementById('joker-store');
-            if (jokerStoreBtn && !jokerStoreBtn.disabled) {
-                jokerStoreBtn.click();
-            }
-        });
+        const jokerTabStore = document.getElementById('joker-tab-store');
+        if (jokerTabStore) {
+            jokerTabStore.addEventListener('click', function() {
+                const jokerStoreBtn = document.getElementById('joker-store');
+                if (jokerStoreBtn && !jokerStoreBtn.disabled) {
+                    jokerStoreBtn.click();
+                }
+            });
+        }
 
         // Ana sayfa butonu (quiz'den çıkış)
-        document.getElementById('joker-tab-home').addEventListener('click', function() {
-            // Quiz'den çıkış için onay sor
-            if (confirm('Quiz\'den çıkmak istediğinize emin misiniz? İlerleyişiniz kaydedilecek.')) {
-                // Quiz'i gizle
-                document.getElementById('quiz').style.display = 'none';
-                // Ana menüyü göster
-                document.getElementById('main-menu').style.display = 'block';
-                // Kategori seçimini göster
-                document.getElementById('category-selection').style.display = 'none';
-                // Quiz modunu deaktive et
-                self.deactivateQuizMode();
-            }
-        });
+        const jokerTabHome = document.getElementById('joker-tab-home');
+        if (jokerTabHome) {
+            jokerTabHome.addEventListener('click', function() {
+                // Quiz'den çıkış için onay sor
+                if (confirm('Quiz\'den çıkmak istediğinize emin misiniz? İlerleyişiniz kaydedilecek.')) {
+                    // Quiz'i gizle
+                    const quizElement = document.getElementById('quiz');
+                    if (quizElement) quizElement.style.display = 'none';
+                    
+                    // Ana menüyü göster
+                    const mainMenu = document.getElementById('main-menu');
+                    if (mainMenu) mainMenu.style.display = 'block';
+                    
+                    // Kategori seçimini göster
+                    const categorySelection = document.getElementById('category-selection');
+                    if (categorySelection) categorySelection.style.display = 'none';
+                    
+                    // Quiz modunu deaktive et
+                    self.deactivateQuizMode();
+                }
+            });
+        }
     },
     
     // Quiz'i başlat

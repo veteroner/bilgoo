@@ -10453,7 +10453,7 @@ body:has(#profile-page[style*="display: block"]) footer {
     left: 0;
     width: 100%;
     background-color: var(--accent-color);
-    display: flex;
+    display: none; /* Varsayılan olarak gizli */
     justify-content: space-around;
     align-items: center;
     padding: 10px 0;
@@ -10500,9 +10500,20 @@ body.quiz-active .joker-tab-bar {
     padding: 5px 10px;
 }
 
+/* Sadece mobil cihazlarda tab-bar ve joker-tab-bar görünsün */
+@media (max-width: 767px) {
+    .mobile-tab-bar {
+        display: flex;
+    }
+    
+    body.quiz-active .joker-tab-bar {
+        display: flex;
+    }
+}
+
 @media (min-width: 768px) {
     .joker-tab-bar,
     .mobile-tab-bar {
-        display: none;
+        display: none !important; /* Tamamen gizlemek için !important kullanıldı */
     }
 }
