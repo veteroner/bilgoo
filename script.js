@@ -6556,25 +6556,17 @@ const quizApp = {
     updateLives: function() {
         const livesContainer = document.getElementById('lives-container');
         if (livesContainer) {
-            // Kalp ikonları yerine tek kalp ve yanında sayı göster
+            // Önce tüm eski ikonları temizle
             livesContainer.innerHTML = '';
             
-            if (this.lives > 0) {
-                const lifeDisplay = document.createElement('div');
-                lifeDisplay.className = 'life-display';
-                
-                // Kalp ikonu oluştur
+            // this.lives kadar aktif ikon ekle
+            for (let i = 0; i < this.lives; i++) {
+                const span = document.createElement('span');
+                span.className = 'life-icon active';
                 const icon = document.createElement('i');
                 icon.className = 'fas fa-heart';
-                
-                // Sayı gösterimi
-                const count = document.createElement('span');
-                count.className = 'life-count';
-                count.textContent = `x${this.lives}`;
-                
-                lifeDisplay.appendChild(icon);
-                lifeDisplay.appendChild(count);
-                livesContainer.appendChild(lifeDisplay);
+                span.appendChild(icon);
+                livesContainer.appendChild(span);
             }
         }
     },
