@@ -2760,6 +2760,9 @@ const quizApp = {
     
     // Quiz'i başlat
     startQuiz: function() {
+        // Quiz'in aktif olduğunu işaretleyelim (joker butonları için gerekli)
+        this.isQuizActive = true;
+        
         // Body'ye quiz aktif class'ını ekle - logo gizlemek için
         document.body.classList.add('quiz-active');
         document.body.classList.remove('category-selection');
@@ -2786,6 +2789,19 @@ const quizApp = {
         const gameChatContainer = document.getElementById('game-chat-container');
         if (gameChatContainer) {
             gameChatContainer.style.display = 'none';
+        }
+        
+        // Mobil tab bar içindeki butonları joker butonları olarak göster
+        const mobileTabBar = document.getElementById('mobile-tab-bar');
+        if (mobileTabBar) {
+            // Tab bar'ı görünür yap
+            mobileTabBar.style.display = 'flex';
+            
+            // Joker butonlarını aktif hale getir
+            const tabItems = mobileTabBar.querySelectorAll('.tab-item');
+            if (tabItems.length > 0) {
+                console.log('Mobil joker butonları hazırlandı');
+            }
         }
         
         // "Bilgisel Bilgi Yarışması" başlığını ve ikonunu gizle
@@ -5377,6 +5393,9 @@ const quizApp = {
     
     // showResult güncelleme
     showResult: function() {
+        // Quiz'in aktif olmadığını işaretleyelim (joker butonları için gerekli)
+        this.isQuizActive = false;
+        
         // Zamanlayıcıyı durdur
         this.stopTimer();
         

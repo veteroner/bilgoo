@@ -1989,21 +1989,25 @@
 
     <!-- Mobil Tab Bar (Sadece mobilde görünür) -->
     <div class="mobile-tab-bar" id="mobile-tab-bar">
-        <div class="tab-item" id="tab-home">
-            <i class="fas fa-home"></i>
-            <span>Ana Sayfa</span>
+        <div class="tab-item" id="tab-fifty">
+            <i class="fas fa-star-half-alt"></i>
+            <span>50:50</span>
         </div>
-        <div class="tab-item" id="tab-profile">
-            <i class="fas fa-user"></i>
-            <span>Profil</span>
+        <div class="tab-item" id="tab-hint">
+            <i class="fas fa-lightbulb"></i>
+            <span>İpucu</span>
         </div>
-        <div class="tab-item" id="tab-friends">
-            <i class="fas fa-user-friends"></i>
-            <span>Arkadaş</span>
+        <div class="tab-item" id="tab-time">
+            <i class="fas fa-clock"></i>
+            <span>Süre</span>
         </div>
-        <div class="tab-item" id="tab-settings">
-            <i class="fas fa-cog"></i>
-            <span>Ayarlar</span>
+        <div class="tab-item" id="tab-skip">
+            <i class="fas fa-forward"></i>
+            <span>Pas</span>
+        </div>
+        <div class="tab-item" id="tab-store">
+            <i class="fas fa-store"></i>
+            <span>Mağaza</span>
         </div>
     </div>
 
@@ -3111,27 +3115,45 @@
                     // Bu tab'ı aktif yap
                     this.classList.add('active');
                     
+                    // Quiz oyunu açık değilse işlem yapma
+                    if (!window.quizApp || !window.quizApp.isQuizActive) {
+                        alert('Lütfen önce bir quiz başlatın!');
+                        return;
+                    }
+                    
                     // Tab'a göre işlem yap
                     const tabId = this.id;
                     switch(tabId) {
-                        case 'tab-home':
-                            // Ana sayfa fonksiyonunu çağır
-                            document.getElementById('menu-home').click();
+                        case 'tab-fifty':
+                            // 50:50 jokerini kullan
+                            if (window.quizApp && window.quizApp.jokerFiftyBtn) {
+                                window.quizApp.jokerFiftyBtn.click();
+                            }
                             break;
-                        case 'tab-profile':
-                            // Profil fonksiyonunu çağır
-                            document.getElementById('menu-profile').click();
+                        case 'tab-hint':
+                            // İpucu jokerini kullan
+                            if (window.quizApp && window.quizApp.jokerHintBtn) {
+                                window.quizApp.jokerHintBtn.click();
+                            }
                             break;
-                        case 'tab-friends':
-                            // Arkadaşlar fonksiyonunu çağır
-                            document.getElementById('menu-friends').click();
+                        case 'tab-time':
+                            // Süre jokerini kullan
+                            if (window.quizApp && window.quizApp.jokerTimeBtn) {
+                                window.quizApp.jokerTimeBtn.click();
+                            }
                             break;
-                        case 'tab-settings':
-                            // Ayarlar için bottom sheet menüyü aç
-                            hamburgerMenu.classList.add('active');
-                            menuOverlay.classList.add('active');
+                        case 'tab-skip':
+                            // Pas jokerini kullan
+                            if (window.quizApp && window.quizApp.jokerSkipBtn) {
+                                window.quizApp.jokerSkipBtn.click();
+                            }
                             break;
-                    }
+                        case 'tab-store':
+                            // Joker mağazasını aç
+                            if (window.quizApp && window.quizApp.jokerStoreBtn) {
+                                window.quizApp.jokerStoreBtn.click();
+                            }
+                            break;
                 });
 
                 // Uzun basma kaldırıldı - artık direkt çıkış butonu var
