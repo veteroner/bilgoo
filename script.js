@@ -4710,9 +4710,179 @@ const quizApp = {
         // Rozet bildirimi göster
         showBadgeNotification: function(newBadges) {
             newBadges.forEach(badge => {
+                // Toast ile kısa bildirimi göster
                 quizApp.showToast(`🎉 Yeni rozet kazandınız: ${badge.name}!`, 'toast-success');
+                
+                // Tam ekran modal ile rozet bilgisini göster
+                quizApp.showBadgeEarnedModal(badge);
             });
         }
+    },
+    
+    // Rozet kazanma modalını göster (tam ekran)
+    showBadgeEarnedModal: function(badge) {
+        // Önceki badge modali varsa kapat
+        const existingModal = document.querySelector('.badge-earned-modal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+        
+        // Arka plan müziği ve ses efektleri
+        let badgeSound = null;
+        if (this.soundEnabled) {
+            badgeSound = new Audio('sounds/badge-earned.mp3');
+            badgeSound.volume = 0.6;
+            badgeSound.play();
+        }
+        
+        // Modal oluştur
+        const badgeModal = document.createElement('div');
+        badgeModal.className = 'badge-earned-modal';
+        
+        // Rozet ikon renkleri ve arkaplanları
+        let badgeColor = '#ffc107'; // Varsayılan sarı
+        let badgeBg = 'linear-gradient(135deg, #fff9c4, #ffeb3b)';
+        
+        // Rozet türüne göre renklendirme
+        if (badge.id === 'perfectScore' || badge.id === 'genius') {
+            badgeColor = '#f44336'; // Kırmızı
+            badgeBg = 'linear-gradient(135deg, #ffcdd2, #e57373)';
+        } else if (badge.id === 'explorer' || badge.id === 'dedicated') {
+            badgeColor = '#4caf50'; // Yeşil
+            badgeBg = 'linear-gradient(135deg, #c8e6c9, #81c784)';
+        } else if (badge.id === 'speedster') {
+            badgeColor = '#2196f3'; // Mavi
+            badgeBg = 'linear-gradient(135deg, #bbdefb, #64b5f6)';
+        } else if (badge.id === 'scholar') {
+            badgeColor = '#9c27b0'; // Mor
+            badgeBg = 'linear-gradient(135deg, #e1bee7, #ba68c8)';
+        }
+        
+        // Requirement text
+        const requirementText = this.getBadgeRequirementText(badge);
+        
+        badgeModal.innerHTML = `
+            <div class="badge-earned-content">
+                <div class="badge-earned-overlay"></div>
+                <div class="badge-earned-inner">
+                    <div class="badge-earned-header">
+                        <h2>🏆 Yeni Rozet Kazandınız!</h2>
+                        <p>Tebrikler! Başarınız için yeni bir rozet kazandınız.</p>
+                    </div>
+                    
+                    <div class="badge-earned-showcase" style="background: ${badgeBg};">
+                        <div class="badge-earned-icon" style="color: ${badgeColor};">
+                            <i class="${badge.icon}"></i>
+                        </div>
+                        <div class="badge-earned-info">
+                            <h3>${badge.name}</h3>
+                            <p>${badge.description}</p>
+                        </div>
+                        <div class="badge-earned-confetti">
+                            <div class="confetti"></div>
+                            <div class="confetti"></div>
+                            <div class="confetti"></div>
+                            <div class="confetti"></div>
+                            <div class="confetti"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="badge-earned-details">
+                        <div class="badge-earned-requirement">
+                            <h4><i class="fas fa-check-circle"></i> Kazanma Koşulu</h4>
+                            <p>${requirementText}</p>
+                        </div>
+                        <div class="badge-earned-date">
+                            <h4><i class="fas fa-calendar-alt"></i> Kazanılma Tarihi</h4>
+                            <p>${new Date().toLocaleDateString('tr-TR')} • ${new Date().toLocaleTimeString('tr-TR')}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="badge-earned-actions">
+                        <button class="btn-badge-close">
+                            <i class="fas fa-check"></i> Harika!
+                        </button>
+                        <button class="btn-badge-share">
+                            <i class="fas fa-share-alt"></i> Paylaş
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(badgeModal);
+        
+        // Modal efekti için kısa gecikme
+        setTimeout(() => {
+            badgeModal.classList.add('show');
+        }, 100);
+        
+        // Badge aktivite kaydet
+        this.createUserActivity('badge', `"${badge.name}" rozeti kazanıldı`);
+        
+        // Butonlara event listener ekle
+        const closeButton = badgeModal.querySelector('.btn-badge-close');
+        const shareButton = badgeModal.querySelector('.btn-badge-share');
+        
+        closeButton.addEventListener('click', () => {
+            badgeModal.classList.remove('show');
+            setTimeout(() => {
+                badgeModal.remove();
+            }, 300);
+        });
+        
+        shareButton.addEventListener('click', () => {
+            // Paylaşım fonksiyonu
+            const shareText = `🏆 Bilgoo Quiz'de "${badge.name}" rozetini kazandım! #BilgooQuiz`;
+            
+            // Paylaşım bilgisini kopyala
+            navigator.clipboard.writeText(shareText).then(() => {
+                this.showToast('Paylaşım metni kopyalandı!', 'toast-success');
+            }).catch(err => {
+                console.error('Clipboard write failed:', err);
+                this.showToast('Paylaşım metni kopyalanamadı', 'toast-error');
+            });
+        });
+        
+        // Arka plana tıklayınca da kapat
+        badgeModal.addEventListener('click', (e) => {
+            if (e.target === badgeModal || e.target.classList.contains('badge-earned-overlay')) {
+                badgeModal.classList.remove('show');
+                setTimeout(() => {
+                    badgeModal.remove();
+                }, 300);
+            }
+        });
+    },
+    
+    // Rozet gereksinimleri için açıklama metni oluştur
+    getBadgeRequirementText: function(badge) {
+        let text = "";
+        
+        switch(badge.id) {
+            case 'perfectScore':
+                text = "Bir kategoride %100 doğru cevap vererek mükemmel skor elde etmek.";
+                break;
+            case 'genius':
+                text = "Arka arkaya 10 soruyu doğru cevaplamak.";
+                break;
+            case 'explorer':
+                text = "5 farklı kategoride en az 5'er soru çözmek.";
+                break;
+            case 'dedicated':
+                text = "Toplam 100 soru çözmek.";
+                break;
+            case 'speedster':
+                text = "10 soruyu ortalama 5 saniyeden kısa sürede cevaplamak.";
+                break;
+            case 'scholar':
+                text = "Tüm kategorilerde en az %70 başarı oranı elde etmek.";
+                break;
+            default:
+                text = "Bu rozeti kazanmak için gerekli koşulları sağlamak.";
+        }
+        
+        return text;
     },
     
     // Zaman farkını hesapla (ne kadar zaman önce)

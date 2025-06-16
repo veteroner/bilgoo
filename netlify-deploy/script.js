@@ -1601,7 +1601,7 @@ const quizApp = {
         }
         // Joker mağazası
         if (this.jokerStoreBtn) {
-            this.jokerStoreBtn.innerHTML = '<i class="fas fa-shopping-cart"></i>';
+            this.jokerStoreBtn.innerHTML = '<i class="fas fa-store"></i>';
         }
     },
     
@@ -3324,7 +3324,7 @@ const quizApp = {
         console.log('Zorluk seviyelerine göre gruplandırılmış sorular:', groupedByDifficulty);
         console.log('Zorluk seviyesi 3 olan soru sayısı:', (groupedByDifficulty[3] || []).length);
         
-        // Seçilen zorluk seviyesindeki soruları kesinlikle al - karışım yok!
+        // Seçilen zorluk seviyesinden sorular al
         let levelQuestions = [];
         
         // SADECE hedef zorluk seviyesinden sorular al
@@ -3665,21 +3665,21 @@ const quizApp = {
                 const date = new Date(user.metadata.creationTime);
                 joinDate.textContent = date.toLocaleDateString('tr-TR');
             }
-            }
-            
+        }
+        
         // Firebase'den kullanıcı verilerini yükle (puan, istatistikler vs.)
         this.loadFirebaseUserStats(userId);
         
         // Gerçek istatistikleri güncelle
         this.updateRealUserStats();
             
-            // Rozetleri yükle
+        // Rozetleri yükle
         this.loadUserBadgesForProfile(userId);
             
-            // Yüksek skorları yükle
+        // Yüksek skorları yükle
         this.loadHighScoresForProfile(userId);
             
-            // Son aktiviteleri yükle
+        // Son aktiviteleri yükle
         this.loadRecentActivitiesForProfile(userId);
     },
 
@@ -4727,6 +4727,36 @@ const quizApp = {
                 quizApp.showToast(`🎉 Yeni rozet kazandınız: ${badge.name}!`, 'toast-success');
             });
         }
+    },
+    
+    // Rozet gereksinimleri için açıklama metni oluştur
+    getBadgeRequirementText: function(badge) {
+        let text = "";
+        
+        switch(badge.id) {
+            case 'perfectScore':
+                text = "Bir kategoride %100 doğru cevap vererek mükemmel skor elde etmek.";
+                break;
+            case 'genius':
+                text = "Arka arkaya 10 soruyu doğru cevaplamak.";
+                break;
+            case 'explorer':
+                text = "5 farklı kategoride en az 5'er soru çözmek.";
+                break;
+            case 'dedicated':
+                text = "Toplam 100 soru çözmek.";
+                break;
+            case 'speedster':
+                text = "10 soruyu ortalama 5 saniyeden kısa sürede cevaplamak.";
+                break;
+            case 'scholar':
+                text = "Tüm kategorilerde en az %70 başarı oranı elde etmek.";
+                break;
+            default:
+                text = "Bu rozeti kazanmak için gerekli koşulları sağlamak.";
+        }
+        
+        return text;
     },
     
     // Zaman farkını hesapla (ne kadar zaman önce)
