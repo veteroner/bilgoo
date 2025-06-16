@@ -4,9 +4,7 @@
   "description": "Bilgoo uygulaması, kullanıcıların bilgilerini çeşitli kategorilerde test edebilecekleri interaktif bir web uygulamasıdır.",
   "main": "achievements.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "echo \"No build step required\" && exit 0",
-    "deploy": "netlify deploy --prod"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -14,12 +12,9 @@
   "dependencies": {
     "@capacitor/android": "^5.6.0",
     "@capacitor/cli": "^5.6.0",
-    "@capacitor/core": "^7.0.0",
+    "@capacitor/core": "^5.6.0",
     "@capacitor/splash-screen": "^5.0.6",
     "@capacitor/status-bar": "^5.0.6",
     "@capacitor/toast": "^7.0.1"
-  },
-  "devDependencies": {
-    "netlify-cli": "^17.16.0"
   }
 }
