@@ -184,6 +184,14 @@ const quizApp = {
             // Önce kullanıcı ayarlarını yükle
             this.loadUserSettings();
             
+            // Joker tab bar'ı başlat
+            this.initJokerTabBar();
+            
+            // Kullanıcının quiz modunda olup olmadığını kontrol et (sayfa yenilemesi senaryosu için)
+            if (localStorage.getItem('quizModeActive') === 'true' && document.getElementById('quiz').style.display !== 'none') {
+                this.activateQuizMode();
+            }
+            
             // localStorage'dan skor verilerini yükle
             this.loadScoreFromLocalStorage();
             
@@ -1601,7 +1609,7 @@ const quizApp = {
         }
         // Joker mağazası
         if (this.jokerStoreBtn) {
-            this.jokerStoreBtn.innerHTML = '<i class="fas fa-shopping-cart"></i>';
+            this.jokerStoreBtn.innerHTML = `<i class="fas fa-store"></i>`;
         }
     },
     
@@ -1914,7 +1922,6 @@ const quizApp = {
                 this.showNextQuestion();
             });
         }
-        
             // Joker butonları için olay dinleyicileri
             console.log('DOM hazır, joker event listener\'ları ekleniyor...');
             this.addJokerEventListeners();
@@ -2760,12 +2767,12 @@ const quizApp = {
     
     // Quiz'i başlat
     startQuiz: function() {
-        // Quiz'in aktif olduğunu işaretleyelim (joker butonları için gerekli)
-        this.isQuizActive = true;
-        
-        // Body'ye quiz aktif class'ını ekle - logo gizlemek için
+        // Body'ye quiz aktif class'ını ekle - logo gizlemek için ve mobil tab barın yer değiştirmesi için
         document.body.classList.add('quiz-active');
         document.body.classList.remove('category-selection');
+        
+        // Quiz modunu aktifleştir
+        this.activateQuizMode();
         
         // Önce tüm ana bölümleri gizle, sadece quiz ekranını göster
         if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'none';
@@ -2789,19 +2796,6 @@ const quizApp = {
         const gameChatContainer = document.getElementById('game-chat-container');
         if (gameChatContainer) {
             gameChatContainer.style.display = 'none';
-        }
-        
-        // Mobil tab bar içindeki butonları joker butonları olarak göster
-        const mobileTabBar = document.getElementById('mobile-tab-bar');
-        if (mobileTabBar) {
-            // Tab bar'ı görünür yap
-            mobileTabBar.style.display = 'flex';
-            
-            // Joker butonlarını aktif hale getir
-            const tabItems = mobileTabBar.querySelectorAll('.tab-item');
-            if (tabItems.length > 0) {
-                console.log('Mobil joker butonları hazırlandı');
-            }
         }
         
         // "Bilgisel Bilgi Yarışması" başlığını ve ikonunu gizle
@@ -3340,7 +3334,7 @@ const quizApp = {
         console.log('Zorluk seviyelerine göre gruplandırılmış sorular:', groupedByDifficulty);
         console.log('Zorluk seviyesi 3 olan soru sayısı:', (groupedByDifficulty[3] || []).length);
         
-        // Seçilen zorluk seviyesindeki soruları kesinlikle al - karışım yok!
+        // Seçilen zorluk seviyesinden sorular al
         let levelQuestions = [];
         
         // SADECE hedef zorluk seviyesinden sorular al
@@ -3681,21 +3675,21 @@ const quizApp = {
                 const date = new Date(user.metadata.creationTime);
                 joinDate.textContent = date.toLocaleDateString('tr-TR');
             }
-            }
-            
+        }
+        
         // Firebase'den kullanıcı verilerini yükle (puan, istatistikler vs.)
         this.loadFirebaseUserStats(userId);
         
         // Gerçek istatistikleri güncelle
         this.updateRealUserStats();
             
-            // Rozetleri yükle
+        // Rozetleri yükle
         this.loadUserBadgesForProfile(userId);
             
-            // Yüksek skorları yükle
+        // Yüksek skorları yükle
         this.loadHighScoresForProfile(userId);
             
-            // Son aktiviteleri yükle
+        // Son aktiviteleri yükle
         this.loadRecentActivitiesForProfile(userId);
     },
 
@@ -3788,6 +3782,7 @@ const quizApp = {
                 this.updateProfileStats(stats);
             });
     },
+    
     
     // Skorlardan istatistikleri hesapla
     calculateStatsFromScores: function(userId) {
@@ -4429,7 +4424,7 @@ const quizApp = {
         ];
         
         // Örnek aktiviteleri render et
-        sampleActivities.forEach(activity => {
+            sampleActivities.forEach(activity => {
             this.renderActivity(activity, activitiesList);
         });
     },
@@ -4757,7 +4752,7 @@ const quizApp = {
             existingModal.remove();
         }
         
-        // Arka plan müziği ve ses efektleri
+        // Arka plan müziği ve ses efekleri
         let badgeSound = null;
         if (this.soundEnabled) {
             badgeSound = new Audio('sounds/badge-earned.mp3');
@@ -5503,11 +5498,11 @@ const quizApp = {
     
     // showResult güncelleme
     showResult: function() {
-        // Quiz'in aktif olmadığını işaretleyelim (joker butonları için gerekli)
-        this.isQuizActive = false;
-        
         // Zamanlayıcıyı durdur
         this.stopTimer();
+        
+        // Quiz modunu deaktifleştir
+        this.deactivateQuizMode();
         
         // Debug: Oyun sonu değerlerini logla
         console.log("=== OYUN SONU DEBUG ===");
