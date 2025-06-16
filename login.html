@@ -176,13 +176,14 @@
             </div>
             
             <form id="user-preferences-form">
-                <div class="form-group">
-                    <label for="user-language"><i class="fas fa-language"></i> Tercih ettiğiniz dil</label>
-                    <select id="user-language">
-                        <option value="tr">Türkçe</option>
-                        <option value="en">English</option>
-                        <option value="de">Deutsch</option>
-                    </select>
+                <div class="form-group language-buttons">
+                    <label class="language-label"><i class="fas fa-language"></i> Tercih ettiğiniz dil</label>
+                    <div class="language-options">
+                        <button type="button" class="language-btn" data-lang="tr" id="lang-tr">Türkçe</button>
+                        <button type="button" class="language-btn" data-lang="en" id="lang-en">English</button>
+                        <button type="button" class="language-btn" data-lang="de" id="lang-de">Deutsch</button>
+                    </div>
+                    <input type="hidden" id="user-language" value="tr">
                 </div>
                 
                 <div class="form-group">
@@ -607,7 +608,7 @@
                 if (preferencesDesc) preferencesDesc.textContent = langData.preferencesDesc;
                 
                 // Form etiketleri
-                document.querySelector('label[for="user-language"]').innerHTML = `<i class="fas fa-language"></i> ${langData.langLabel}`;
+                document.querySelector('.language-label').innerHTML = `<i class="fas fa-language"></i> ${langData.langLabel}`;
                 
                 // Buton ve diğer metinler
                 document.getElementById('save-preferences').textContent = langData.continueBtn;
@@ -678,12 +679,29 @@
                 }
             }
             
-            // Select değiştiğinde dili anında güncelle
-            document.getElementById('user-language').addEventListener('change', function() {
-                const selectedLanguage = this.value;
-                document.documentElement.setAttribute('lang', selectedLanguage);
-                document.documentElement.setAttribute('data-language', selectedLanguage);
-                applyLanguageToUI(selectedLanguage);
+            // Dil butonları için event listener'ları ekle
+            const langButtons = document.querySelectorAll('.language-btn');
+            const userLanguageInput = document.getElementById('user-language');
+            
+            // Varsayılan olarak Türkçe seçili olsun
+            document.getElementById('lang-tr').classList.add('selected');
+            
+            // Dil butonlarına tıklama olayı ekle
+            langButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Tüm butonlardan selected sınıfını kaldır
+                    langButtons.forEach(btn => btn.classList.remove('selected'));
+                    // Tıklanan butona selected sınıfını ekle
+                    this.classList.add('selected');
+                    // Gizli input değerini güncelle
+                    userLanguageInput.value = this.getAttribute('data-lang');
+                    
+                    // Dil değişimini uygula
+                    const selectedLanguage = userLanguageInput.value;
+                    document.documentElement.setAttribute('lang', selectedLanguage);
+                    document.documentElement.setAttribute('data-language', selectedLanguage);
+                    applyLanguageToUI(selectedLanguage);
+                });
             });
             
             // Yaş seçimi kaldırıldığı için bu event listener'a gerek kalmadı
