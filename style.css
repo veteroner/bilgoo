@@ -8743,8 +8743,8 @@ body.category-selection[data-theme="dark"] .logo {
     font-weight: 900;
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .profile-actions-secondary {
@@ -8844,8 +8844,8 @@ body.category-selection[data-theme="dark"] .logo {
     font-weight: 900;
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-text-fill-color: transparent;
     margin-bottom: 8px;
     line-height: 1;
 }
@@ -10450,7 +10450,7 @@ body:has(#profile-page[style*="display: block"]) footer {
     display: none; /* Varsayılan olarak gizli */
     justify-content: space-around;
     align-items: center;
-    padding: 10px 0;
+    padding: 5px 0;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     transform: translateY(100%);
@@ -10470,17 +10470,18 @@ body.quiz-active .joker-tab-bar {
     flex-direction: column;
     align-items: center;
     color: white;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     opacity: 0.8;
     transition: all 0.2s ease;
     cursor: pointer;
-    padding: 5px 0;
+    padding: 3px 0;
     text-align: center;
+    width: 20%;
 }
 
 .joker-tab i {
-    font-size: 1.4rem;
-    margin-bottom: 4px;
+    font-size: 1.2rem;
+    margin-bottom: 3px;
 }
 
 .joker-tab:hover {
@@ -10519,16 +10520,16 @@ body.quiz-active .joker-tab-bar {
     
 /* Web görünümünde joker butonları stilleri */
 .joker-tab {
-    font-size: 1rem;
-    padding: 6px 15px;
-    margin: 0 10px;
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    margin: 0 5px;
     border-radius: 8px;
     transition: all 0.3s ease;
 }
 
 .joker-tab i {
-    font-size: 1.8rem;
-    margin-bottom: 6px;
+    font-size: 1.5rem;
+    margin-bottom: 4px;
 }
 
 .joker-tab:hover {
