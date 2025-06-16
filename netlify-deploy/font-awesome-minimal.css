@@ -1,0 +1,269 @@
+/* Font Awesome Minimal - Sadece Kullanılan İconlar */
+@charset "UTF-8";
+
+/* Font Face - Web Fonts olmadan, Unicode karakterler kullanarak */
+.fa, .fas, .far, .fal, .fab {
+    font-family: inherit;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Temel iconlar - Unicode karakterler kullanarak */
+.fa-bars::before { content: "☰"; }
+.fa-times::before { content: "✕"; }
+.fa-user::before { content: "👤"; }
+.fa-user-circle::before { content: "👤"; }
+.fa-user-friends::before { content: "👥"; }
+.fa-user-clock::before { content: "👤🕐"; }
+.fa-lock::before { content: "🔒"; }
+.fa-envelope::before { content: "✉"; }
+.fa-key::before { content: "🔑"; }
+.fa-eye::before { content: "👁"; }
+.fa-eye-slash::before { content: "🙈"; }
+.fa-home::before { content: "🏠"; }
+.fa-cog::before { content: "⚙"; }
+.fa-settings::before { content: "⚙"; }
+.fa-sliders-h::before { content: "🎛️"; }
+.fa-question::before { content: "❓"; }
+.fa-check::before { content: "✓"; }
+.fa-check-circle::before { content: "✅"; }
+.fa-close::before { content: "✕"; }
+.fa-menu::before { content: "☰"; }
+.fa-hamburger::before { content: "☰"; }
+.fa-sign-in::before { content: "🚪"; }
+.fa-sign-in-alt::before { content: "🚪"; }
+.fa-sign-out::before { content: "🚪"; }
+.fa-sign-out-alt::before { content: "🚪"; }
+.fa-users::before { content: "👥"; }
+.fa-trophy::before { content: "🏆"; }
+.fa-star::before { content: "⭐"; }
+.fa-star-half-alt::before { content: "⭐"; }
+.fa-star-half::before { content: "⭐"; }
+.fa-heart::before { content: "❤"; }
+.fa-play::before { content: "▶"; }
+.fa-pause::before { content: "⏸"; }
+.fa-stop::before { content: "⏹"; }
+.fa-volume-up::before { content: "🔊"; }
+.fa-volume-off::before { content: "🔇"; }
+.fa-music::before { content: "🎵"; }
+.fa-gamepad::before { content: "🎮"; }
+.fa-lightbulb::before { content: "💡"; }
+.fa-fire::before { content: "🔥"; }
+.fa-rocket::before { content: "🚀"; }
+.fa-globe::before { content: "🌍"; }
+.fa-clock::before { content: "🕐"; }
+.fa-hourglass-half::before { content: "⏳"; }
+.fa-calendar::before { content: "📅"; }
+.fa-bookmark::before { content: "🔖"; }
+.fa-flag::before { content: "🏳"; }
+.fa-download::before { content: "⬇"; }
+.fa-upload::before { content: "⬆"; }
+.fa-refresh::before { content: "🔄"; }
+.fa-sync::before { content: "🔄"; }
+.fa-sync-alt::before { content: "🔃"; }
+.fa-search::before { content: "🔍"; }
+.fa-plus::before { content: "➕"; }
+.fa-plus-circle::before { content: "➕"; }
+.fa-minus::before { content: "➖"; }
+.fa-edit::before { content: "✏"; }
+.fa-trash::before { content: "🗑"; }
+.fa-save::before { content: "💾"; }
+.fa-print::before { content: "🖨"; }
+.fa-share::before { content: "📤"; }
+.fa-share-alt::before { content: "📤"; }
+.fa-link::before { content: "🔗"; }
+.fa-external-link::before { content: "🔗"; }
+.fa-info::before { content: "ℹ"; }
+.fa-info-circle::before { content: "ℹ️"; }
+.fa-warning::before { content: "⚠"; }
+.fa-exclamation::before { content: "❗"; }
+.fa-ban::before { content: "🚫"; }
+.fa-shield::before { content: "🛡"; }
+.fa-sun::before { content: "☀️"; }
+.fa-moon::before { content: "🌙"; }
+.fa-language::before { content: "🌐"; }
+.fa-arrow-left::before { content: "←"; }
+.fa-arrow-right::before { content: "→"; }
+.fa-copy::before { content: "📋"; }
+.fa-paper-plane::before { content: "✈️"; }
+.fa-comments::before { content: "💬"; }
+.fa-comment-alt::before { content: "💬"; }
+.fa-forward::before { content: "⏭️"; }
+.fa-shopping-cart::before { content: "🛒"; }
+.fa-redo::before { content: "🔃"; }
+.fa-chart-line::before { content: "📈"; }
+.fa-chart-bar::before { content: "📊"; }
+.fa-award::before { content: "🏅"; }
+.fa-medal::before { content: "🏅"; }
+.fa-history::before { content: "🕐"; }
+.fa-tasks::before { content: "📋"; }
+.fa-th-list::before { content: "📋"; }
+.fa-store::before { content: "🏪"; }
+.fa-coins::before { content: "🪙"; }
+.fa-flask::before { content: "🧪"; }
+.fa-microchip::before { content: "💽"; }
+.fa-futbol::before { content: "⚽"; }
+.fa-landmark::before { content: "🏛️"; }
+.fa-mountain::before { content: "⛰️"; }
+.fa-palette::before { content: "🎨"; }
+.fa-book::before { content: "📚"; }
+.fa-film::before { content: "🎬"; }
+.fa-utensils::before { content: "🍽️"; }
+.fa-laptop-code::before { content: "💻"; }
+.fa-calculator::before { content: "🧮"; }
+.fa-keyboard::before { content: "⌨️"; }
+.fa-question-circle::before { content: "❓"; }
+.fa-crown::before { content: "👑"; }
+.fa-times-circle::before { content: "❌"; }
+.fa-badge-check::before { content: "✅"; }
+.fa-exclamation-triangle::before { content: "⚠️"; }
+
+/* Ekstra joker ve oyun ikonları */
+.fa-check-circle-o::before { content: "✅"; }
+.fa-times-circle-o::before { content: "❌"; }
+.fa-star-o::before { content: "☆"; }
+.fa-heart-o::before { content: "♡"; }
+.fa-thumbs-up::before { content: "👍"; }
+.fa-thumbs-down::before { content: "👎"; }
+
+/* Boşluk doldurma ve kelime oyunları için */
+.fa-spell-check::before { content: "✓"; }
+.fa-font::before { content: "🔤"; }
+.fa-text-width::before { content: "↔"; }
+.fa-align-left::before { content: "≡"; }
+.fa-pencil-alt::before { content: "✏️"; }
+.fa-eraser::before { content: "🧹"; }
+
+/* Alternatif joker ikonları */
+.fa-percentage::before { content: "％"; }
+.fa-fifty-fifty::before { content: "50/50"; }
+.fa-hint::before { content: "💡"; }
+.fa-time-extension::before { content: "⏰"; }
+.fa-skip::before { content: "⏭"; }
+.fa-help::before { content: "❓"; }
+.fa-idea::before { content: "💭"; }
+.fa-timer::before { content: "⏱️"; }
+.fa-next::before { content: "⏩"; }
+.fa-shop::before { content: "🛍️"; }
+
+/* Oyun ikonları */
+.fa-gamepad2::before { content: "🎮"; }
+.fa-dice::before { content: "🎲"; }
+.fa-puzzle-piece::before { content: "🧩"; }
+.fa-brain::before { content: "🧠"; }
+.fa-target::before { content: "🎯"; }
+.fa-medal-solid::before { content: "🥇"; }
+.fa-gem::before { content: "💎"; }
+
+/* Joker simgeleri - Emoji stil */
+.fa-star-half-alt::before { content: "⭐"; }
+.fa-lightbulb::before { content: "💡"; }
+.fa-clock::before { content: "🕐"; }
+.fa-forward::before { content: "⏭️"; }
+.fa-store::before { content: "🏪"; }
+.fa-shopping-cart::before { content: "🛒"; }
+
+/* Kontrol ve Düzenleme İkonları */
+.fa-backspace::before { content: "⌫"; }
+.fa-delete::before { content: "🗑️"; }
+.fa-trash-alt::before { content: "🗑️"; }
+.fa-clear::before { content: "🧹"; }
+.fa-erase::before { content: "🧽"; }
+.fa-undo::before { content: "↶"; }
+.fa-redo-alt::before { content: "↷"; }
+.fa-reset::before { content: "🔄"; }
+
+/* Arama ve Navigasyon */
+.fa-user-plus::before { content: "👤➕"; }
+.fa-plus-square::before { content: "➕"; }
+.fa-minus-square::before { content: "➖"; }
+
+/* Form Kontrolleri */
+.fa-times-alt::before { content: "✖"; }
+.fa-close-alt::before { content: "❌"; }
+
+/* Oyun Kontrol Butonları */
+.fa-submit::before { content: "📤"; }
+.fa-confirm::before { content: "✅"; }
+.fa-cancel::before { content: "❌"; }
+.fa-restart-alt::before { content: "🔄"; }
+
+/* Ekstra İkonlar */
+.fa-question-mark::before { content: "❓"; }
+.fa-exclamation-mark::before { content: "❗"; }
+.fa-warning-triangle::before { content: "⚠️"; }
+.fa-success-circle::before { content: "✅"; }
+.fa-error-circle::before { content: "❌"; }
+.fa-info-square::before { content: "ℹ️"; }
+
+/* Durum iconları */
+.fa-spinner::before { content: "⟳"; animation: fa-spin 1s infinite linear; }
+.fa-circle-notch::before { content: "⟳"; animation: fa-spin 1s infinite linear; }
+
+/* Animasyonlar */
+@keyframes fa-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.fa-spin {
+    animation: fa-spin 1s infinite linear;
+}
+
+.fa-pulse {
+    animation: fa-pulse 1s infinite;
+}
+
+@keyframes fa-pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Boyut sınıfları */
+.fa-xs { font-size: 0.75em; }
+.fa-sm { font-size: 0.875em; }
+.fa-lg { font-size: 1.25em; }
+.fa-xl { font-size: 1.5em; }
+.fa-2x { font-size: 2em; }
+.fa-3x { font-size: 3em; }
+.fa-4x { font-size: 4em; }
+.fa-5x { font-size: 5em; }
+
+/* Ek utility sınıfları */
+.fa-fw { 
+    text-align: center; 
+    width: 1.25em; 
+    display: inline-block;
+}
+
+.fa-border {
+    border: 0.08em solid #eee;
+    border-radius: 0.1em;
+    padding: 0.2em 0.25em 0.15em;
+}
+
+.fa-pull-left {
+    float: left;
+    margin-right: 0.3em;
+}
+
+.fa-pull-right {
+    float: right;
+    margin-left: 0.3em;
+}
+
+/* Renkler */
+.fa-primary { color: #007bff; }
+.fa-success { color: #28a745; }
+.fa-warning { color: #ffc107; }
+.fa-danger { color: #dc3545; }
+.fa-info { color: #17a2b8; }
+.fa-light { color: #f8f9fa; }
+.fa-dark { color: #343a40; }
+.fa-white { color: #ffffff; }
+.fa-black { color: #000000; } 

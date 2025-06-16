@@ -1,0 +1,14 @@
+[build]
+  publish = "."
+  command = "echo 'No build step required'"
+
+[build.environment]
+  # Kapasitör paketleri için yoksay (npm warnings ve hataları önler)
+  NODE_ENV = "production"
+  SKIP_INSTALL = "true"
+  SKIP_BUILD = "true"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200 

@@ -1,0 +1,15 @@
+{
+  "name": "quiz-oyunu-web",
+  "version": "1.0.0",
+  "description": "Bilgoo uygulamasının web sürümü",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve -s"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+}
