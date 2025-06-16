@@ -6090,6 +6090,7 @@ input:checked + .switch-label:before {
     z-index: 1000;
     padding: 20px;
     animation: containerFadeIn 0.8s ease-out forwards;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
 .user-preferences-container .auth-box {
@@ -6097,6 +6098,10 @@ input:checked + .switch-label:before {
     width: 100%;
     max-width: 500px;
     margin: 0;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    border-top: 4px solid var(--primary-color);
 }
 
 .preferences-description {
@@ -6108,6 +6113,51 @@ input:checked + .switch-label:before {
     line-height: 1.5;
     color: #333;
     border-left: 4px solid #3a8dde;
+}
+
+.language-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.language-option {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 16px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #333;
+}
+
+.language-option:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border-color: #d1d9e6;
+}
+
+.language-option.selected {
+    background: linear-gradient(135deg, #4285f4 0%, #1a73e8 100%);
+    color: white;
+    border-color: #1a73e8;
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(26, 115, 232, 0.3);
+}
+
+.lang-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.lang-name {
+    font-weight: 500;
+    font-size: 16px;
 }
 
 .preferences-note {
@@ -6125,39 +6175,43 @@ input:checked + .switch-label:before {
     margin-right: 5px;
 }
 
-#user-preferences-form select {
-    width: 100%;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: white;
-    font-size: 1rem;
-    color: #333;
-    transition: border-color 0.3s;
-    -webkit-appearance: menulist; /* Webkit tarayıcıları için düzeltme */
-    -moz-appearance: menulist; /* Firefox için düzeltme */
-    appearance: menulist; /* Standart düzeltme */
-    background-image: none; /* Özel arka plan görseli temizleme */
+[data-theme="dark"] .user-preferences-container {
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
 }
 
-#user-preferences-form select:focus {
-    border-color: #3a8dde;
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(58, 141, 222, 0.2);
+[data-theme="dark"] .user-preferences-container .auth-box {
+    background: #2d3748;
+    border-top: 4px solid #4285f4;
 }
 
-[data-theme="dark"] #user-preferences-form select {
-    background-color: #333;
-    border-color: #555;
-    color: #f5f5f5;
+[data-theme="dark"] .preferences-description {
+    background-color: rgba(74, 85, 104, 0.2);
+    color: #e2e8f0;
+    border-left: 4px solid #4285f4;
 }
 
-/* Mobil cihazlar için ek düzenlemeler */
-@media (max-width: 600px) {
-    #user-preferences-form select {
-        padding: 8px 12px;
-        font-size: 0.9rem;
-    }
+[data-theme="dark"] .language-option {
+    background: #1a202c;
+    border-color: #2d3748;
+    color: #e2e8f0;
+}
+
+[data-theme="dark"] .language-option:hover {
+    border-color: #4a5568;
+}
+
+[data-theme="dark"] .language-option.selected {
+    background: linear-gradient(135deg, #3182ce 0%, #2b6cb0 100%);
+    border-color: #2b6cb0;
+}
+
+[data-theme="dark"] .preferences-note {
+    color: #a0aec0;
+    background-color: rgba(26, 32, 44, 0.5);
+}
+
+[data-theme="dark"] .preferences-note i {
+    color: #3182ce;
 }
 
 /* Quiz Splash Screen Stilleri */

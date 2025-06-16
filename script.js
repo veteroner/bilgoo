@@ -918,6 +918,16 @@ const quizApp = {
         // Toast'u ekle
         toastContainer.appendChild(toast);
         
+        // İpucu jokeri ve süre jokeri için farklı konumlandırma
+        // Toast'ı joker butonlarının hemen üzerinde göster
+        if (message.includes("İpucu jokeri kullanıldı") || message.includes("Süre jokeri kullanıldı")) {
+            toast.style.position = "fixed";
+            toast.style.bottom = "180px"; // Joker butonlarının üzerinde
+            toast.style.left = "50%";
+            toast.style.transform = "translateX(-50%)";
+            toast.style.zIndex = "10002"; // Joker butonlarından daha yüksek
+        }
+        
         // Toast'u göster
         setTimeout(() => {
             toast.classList.add('show');
@@ -1276,19 +1286,6 @@ const quizApp = {
                 
                 // Toast bildirimi göster
                 this.showToast("İpucu jokeri kullanıldı! " + hint, "toast-success");
-                
-                // Capacitor ortamını kontrol et ve native toast göster
-                if (typeof Capacitor !== 'undefined' && Capacitor.Plugins && Capacitor.Plugins.Toast) {
-                    try {
-                        Capacitor.Plugins.Toast.show({
-                            text: "İpucu jokeri kullanıldı!",
-                            duration: "long",
-                            position: "center"
-                        });
-                    } catch (e) {
-                        console.error("Native toast gösterilemedi:", e);
-                    }
-                }
             });
         }
         
@@ -1326,19 +1323,6 @@ const quizApp = {
                 
                 // Toast bildirimi göster
                 this.showToast("Süre jokeri kullanıldı! 15 saniye eklendi. Yeni süre: " + this.timeLeft + " saniye", "toast-success");
-                
-                // Capacitor ortamını kontrol et ve native toast göster
-                if (typeof Capacitor !== 'undefined' && Capacitor.Plugins && Capacitor.Plugins.Toast) {
-                    try {
-                        Capacitor.Plugins.Toast.show({
-                            text: "Süre jokeri kullanıldı! 15 saniye eklendi.",
-                            duration: "long",
-                            position: "center"
-                        });
-                    } catch (e) {
-                        console.error("Native toast gösterilemedi:", e);
-                    }
-                }
             });
         }
         

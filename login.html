@@ -176,18 +176,26 @@
             </div>
             
             <form id="user-preferences-form">
-                <div class="form-group">
-                    <label for="user-language"><i class="fas fa-language"></i> Tercih ettiğiniz dil</label>
-                    <select id="user-language">
-                        <option value="tr">Türkçe</option>
-                        <option value="en">English</option>
-                        <option value="de">Deutsch</option>
-                    </select>
+                <div class="language-buttons">
+                    <button type="button" class="language-option" data-language="tr">
+                        <div class="lang-icon"><i class="fas fa-language"></i></div>
+                        <div class="lang-name">Türkçe</div>
+                    </button>
+                    <button type="button" class="language-option" data-language="en">
+                        <div class="lang-icon"><i class="fas fa-language"></i></div>
+                        <div class="lang-name">English</div>
+                    </button>
+                    <button type="button" class="language-option" data-language="de">
+                        <div class="lang-icon"><i class="fas fa-language"></i></div>
+                        <div class="lang-name">Deutsch</div>
+                    </button>
                 </div>
                 
                 <div class="form-group">
                     <button type="submit" class="btn-primary" id="save-preferences">Devam Et</button>
                 </div>
+                
+                <input type="hidden" id="user-language" value="tr">
             </form>
             
             <div class="preferences-note">
@@ -678,47 +686,38 @@
                 }
             }
             
-            // Select değiştiğinde dili anında güncelle
-            document.getElementById('user-language').addEventListener('change', function() {
-                const selectedLanguage = this.value;
-                document.documentElement.setAttribute('lang', selectedLanguage);
-                document.documentElement.setAttribute('data-language', selectedLanguage);
-                applyLanguageToUI(selectedLanguage);
+            // Dil seçenekleri için kod
+            const languageOptions = document.querySelectorAll('.language-option');
+            const userLanguageInput = document.getElementById('user-language');
+            
+            // Sayfa ilk açıldığında Türkçe seçili olsun
+            document.querySelector('.language-option[data-language="tr"]').classList.add('selected');
+            
+            // Her bir dil butonuna tıklama olayı ekle
+            languageOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Önceden seçili olan butondan selected sınıfını kaldır
+                    document.querySelector('.language-option.selected').classList.remove('selected');
+                    
+                    // Tıklanan butona selected sınıfı ekle
+                    this.classList.add('selected');
+                    
+                    // Gizli inputa seçilen dil değerini ata
+                    userLanguageInput.value = this.getAttribute('data-language');
+                });
             });
-            
-            // Yaş seçimi kaldırıldığı için bu event listener'a gerek kalmadı
-            
-            // Preferences form submit işlemi
-            if (preferencesForm) {
-                console.log('Preferences form bulundu, event listener ekleniyor...');
-                preferencesForm.addEventListener('submit', function(e) {
-                    console.log('Form submit event tetiklendi!');
-                    e.preventDefault();
-                    console.log('Tercihler kaydediliyor...');
-                    saveUserPreferences();
-                });
-            } else {
-                console.error('Preferences form bulunamadı!');
-            }
-            
-            // Devam Et butonuna da direkt click event ekleyelim
-            const saveBtn = document.getElementById('save-preferences');
-            if (saveBtn) {
-                console.log('Devam Et butonu bulundu, click event ekleniyor...');
-                saveBtn.addEventListener('click', function(e) {
-                    console.log('Devam Et butonuna tıklandı!');
-                    // Form submit olup olmadığını kontrol et
-                    if (e.target.form) {
-                        console.log('Buton bir formun içinde, form submit tetiklenecek');
-                    } else {
-                        console.log('Buton form dışında, manuel kaydetme...');
-                        e.preventDefault();
-                        saveUserPreferences();
-                    }
-                });
-                                } else {
-                console.error('Devam Et butonu bulunamadı!');
-            }
+
+            // Tercih formu gönderildiğinde
+            document.getElementById('user-preferences-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const selectedLanguage = userLanguageInput.value;
+                
+                // Seçilen dili localStorage'a kaydet
+                localStorage.setItem('user_language', selectedLanguage);
+                
+                // Ana sayfaya yönlendir
+                window.location.href = 'index.html';
+            });
         });
     </script>
 </body>
