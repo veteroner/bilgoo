@@ -1276,6 +1276,19 @@ const quizApp = {
                 
                 // Toast bildirimi göster
                 this.showToast("İpucu jokeri kullanıldı! " + hint, "toast-success");
+                
+                // Capacitor ortamını kontrol et ve native toast göster
+                if (typeof Capacitor !== 'undefined' && Capacitor.Plugins && Capacitor.Plugins.Toast) {
+                    try {
+                        Capacitor.Plugins.Toast.show({
+                            text: "İpucu jokeri kullanıldı!",
+                            duration: "long",
+                            position: "center"
+                        });
+                    } catch (e) {
+                        console.error("Native toast gösterilemedi:", e);
+                    }
+                }
             });
         }
         
@@ -1313,6 +1326,19 @@ const quizApp = {
                 
                 // Toast bildirimi göster
                 this.showToast("Süre jokeri kullanıldı! 15 saniye eklendi. Yeni süre: " + this.timeLeft + " saniye", "toast-success");
+                
+                // Capacitor ortamını kontrol et ve native toast göster
+                if (typeof Capacitor !== 'undefined' && Capacitor.Plugins && Capacitor.Plugins.Toast) {
+                    try {
+                        Capacitor.Plugins.Toast.show({
+                            text: "Süre jokeri kullanıldı! 15 saniye eklendi.",
+                            duration: "long",
+                            position: "center"
+                        });
+                    } catch (e) {
+                        console.error("Native toast gösterilemedi:", e);
+                    }
+                }
             });
         }
         

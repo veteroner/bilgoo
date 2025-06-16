@@ -4238,33 +4238,31 @@ input:checked + .switch-label:before {
 /* Toast Bildirimleri */
 #toast-container {
     position: fixed;
-    top: 50%;
+    top: 20px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     z-index: 9999;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    pointer-events: none; /* Tıklamaları geçirir */
+    align-items: center;
 }
 
 .toast {
-    min-width: 280px;
-    max-width: 400px;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    transform: scale(0);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    min-width: 250px;
+    max-width: 350px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateX(120%);
+    transition: transform 0.3s ease;
     display: flex;
     align-items: center;
-    animation: popIn 0.4s forwards;
-    pointer-events: auto; /* Bu bildirimi tıklanabilir yapar */
-    margin: 0 auto; /* Ortalanmış görünüm */
+    animation: slideIn 0.3s forwards;
 }
 
 .toast.show {
-    transform: scale(1);
+    transform: translateX(0);
 }
 
 .toast-content {
@@ -4329,19 +4327,9 @@ input:checked + .switch-label:before {
     100% { transform: translateX(0); }
 }
 
-@keyframes popIn {
-    0% { 
-        transform: scale(0) rotate(-180deg);
-        opacity: 0;
-    }
-    50% {
-        transform: scale(1.1) rotate(-90deg);
-        opacity: 0.8;
-    }
-    100% { 
-        transform: scale(1) rotate(0deg);
-        opacity: 1;
-    }
+@keyframes slideIn {
+    from { transform: translateX(120%); }
+    to { transform: translateX(0); }
 }
 
 /* ... existing code ... */
@@ -5486,6 +5474,20 @@ input:checked + .switch-label:before {
     background: linear-gradient(145deg, #dc3545, #c82333);
     color: #fff;
     box-shadow: var(--option-shadow);
+}
+
+/* Mobil cihazlarda doğru/yanlış butonlarının dikey uzunluğu arttırılıyor */
+@media (max-width: 768px) {
+    .true-false-option {
+        padding: clamp(1.2rem, 3vw, 1.5rem) clamp(1rem, 3vw, 1.5rem);
+        font-size: clamp(1rem, 2.5vw, 1.2rem);
+        margin: 15px auto 10px;
+    }
+    
+    .true-false-option.true, .true-false-option.false {
+        padding: clamp(1.2rem, 3vw, 1.5rem) clamp(1rem, 3vw, 1.5rem);
+        width: 90%;
+    }
 }
 
 /* Oyun sırasında görünen chat paneli stilleri */

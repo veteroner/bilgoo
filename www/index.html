@@ -95,6 +95,12 @@
     <link rel="stylesheet" href="admin-pending-styles.css">
     <!-- Manifest linki direkt olarak ekle -->
     <link rel="manifest" href="manifest.json">
+    
+    <!-- Capacitor Toast Plugin -->
+    <script type="module">
+        import { Toast } from '@capacitor/toast';
+        window.CapacitorToast = Toast;
+    </script>
     <style>
         /* Genel stil */
         :root {
