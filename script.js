@@ -2752,6 +2752,88 @@ const quizApp = {
         return array;
     },
     
+    // Quiz modunu aktifleştir
+    activateQuizMode: function() {
+        // Joker tab menüsünü göster
+        document.getElementById('joker-tab-bar').style.display = 'flex';
+        // Normal tab menüsünü gizle
+        document.getElementById('tab-bar').style.display = 'none';
+        document.body.classList.add('quiz-active');
+        // Quiz modunda olduğumuzu localStorage'a kaydet
+        localStorage.setItem('quizModeActive', 'true');
+    },
+    
+    // Quiz modunu deaktive et
+    deactivateQuizMode: function() {
+        // Joker tab menüsünü gizle
+        document.getElementById('joker-tab-bar').style.display = 'none';
+        // Normal tab menüsünü göster
+        document.getElementById('tab-bar').style.display = 'flex';
+        document.body.classList.remove('quiz-active');
+        // Quiz modundan çıktığımızı localStorage'a kaydet
+        localStorage.removeItem('quizModeActive');
+    },
+    
+    // Joker tab butonlarına olay dinleyicileri ekle
+    initJokerTabBar: function() {
+        const self = this;
+        
+        // 50:50 jokeri
+        document.getElementById('joker-tab-fifty').addEventListener('click', function() {
+            const jokerFiftyBtn = document.getElementById('joker-fifty');
+            if (jokerFiftyBtn && !jokerFiftyBtn.disabled) {
+                jokerFiftyBtn.click();
+            }
+        });
+
+        // İpucu jokeri
+        document.getElementById('joker-tab-hint').addEventListener('click', function() {
+            const jokerHintBtn = document.getElementById('joker-hint');
+            if (jokerHintBtn && !jokerHintBtn.disabled) {
+                jokerHintBtn.click();
+            }
+        });
+
+        // Süre jokeri
+        document.getElementById('joker-tab-time').addEventListener('click', function() {
+            const jokerTimeBtn = document.getElementById('joker-time');
+            if (jokerTimeBtn && !jokerTimeBtn.disabled) {
+                jokerTimeBtn.click();
+            }
+        });
+
+        // Pas jokeri
+        document.getElementById('joker-tab-skip').addEventListener('click', function() {
+            const jokerSkipBtn = document.getElementById('joker-skip');
+            if (jokerSkipBtn && !jokerSkipBtn.disabled) {
+                jokerSkipBtn.click();
+            }
+        });
+
+        // Joker mağazası
+        document.getElementById('joker-tab-store').addEventListener('click', function() {
+            const jokerStoreBtn = document.getElementById('joker-store');
+            if (jokerStoreBtn && !jokerStoreBtn.disabled) {
+                jokerStoreBtn.click();
+            }
+        });
+
+        // Ana sayfa butonu (quiz'den çıkış)
+        document.getElementById('joker-tab-home').addEventListener('click', function() {
+            // Quiz'den çıkış için onay sor
+            if (confirm('Quiz\'den çıkmak istediğinize emin misiniz? İlerleyişiniz kaydedilecek.')) {
+                // Quiz'i gizle
+                document.getElementById('quiz').style.display = 'none';
+                // Ana menüyü göster
+                document.getElementById('main-menu').style.display = 'block';
+                // Kategori seçimini göster
+                document.getElementById('category-selection').style.display = 'none';
+                // Quiz modunu deaktive et
+                self.deactivateQuizMode();
+            }
+        });
+    },
+    
     // Quiz'i başlat
     startQuiz: function() {
         // Body'ye quiz aktif class'ını ekle - logo gizlemek için ve mobil tab barın yer değiştirmesi için
