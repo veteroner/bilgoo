@@ -2545,26 +2545,26 @@ footer p {
     justify-content: center;
     margin: 10px 0;
     gap: 5px;
+    align-items: center;
 }
 
-.life-icon {
-    font-size: 28px;
-    color: rgba(200, 200, 200, 0.3);
-    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.1));
-    transform-origin: center;
-    animation: heartbeat 1.5s infinite;
-    animation-play-state: paused;
+.life-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 
-.life-icon.active {
+.life-display i {
     color: #e74c3c;
+    font-size: 28px;
     filter: drop-shadow(0 0 5px rgba(231, 76, 60, 0.5));
-    animation-play-state: running;
+    animation: heartbeat 1.5s infinite;
 }
 
-.life-icon i {
-    font-size: 28px;
+.life-count {
+    font-weight: 600;
+    font-size: 20px;
 }
 
 /* Hatalı cevap verildiğinde animasyon */
@@ -2583,15 +2583,7 @@ footer p {
     100% { transform: scale(1); }
 }
 
-.life-icon.losing {
-    animation: loseLife 0.5s forwards;
-}
-
-[data-theme="dark"] .life-icon {
-    color: rgba(70, 70, 70, 0.3);
-}
-
-[data-theme="dark"] .life-icon.active {
+[data-theme="dark"] .life-display i {
     color: #ff5252;
     filter: drop-shadow(0 0 8px rgba(255, 82, 82, 0.7));
 }
@@ -6377,10 +6369,6 @@ body.quiz-active .main-logo-container svg {
     border-left: 4px solid #4CAF50;
 }
 
-[data-theme="dark"] .option:nth-child(2) {
-    border-left: 4px solid #2196F3;
-}
-
 [data-theme="dark"] .option:nth-child(3) {
     border-left: 4px solid #FF9800;
 }
@@ -7707,15 +7695,44 @@ body.quiz-active .main-logo-container svg {
     gap: 5px;
 }
 
-.life-icon {
-    font-size: 20px;
-    color: #ff4757;
-    transition: all 0.3s ease;
+.life-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 
-.life-icon.active {
-    color: #ff3838;
-    text-shadow: 0 0 10px rgba(255, 56, 56, 0.5);
+.life-display i {
+    color: #e74c3c;
+    font-size: 28px;
+    filter: drop-shadow(0 0 5px rgba(231, 76, 60, 0.5));
+    animation: heartbeat 1.5s infinite;
+}
+
+.life-count {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+/* Hatalı cevap verildiğinde animasyon */
+@keyframes loseLife {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.7; }
+    100% { transform: scale(0); opacity: 0; }
+}
+
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    5% { transform: scale(1.15); }
+    10% { transform: scale(1); }
+    15% { transform: scale(1.05); }
+    20% { transform: scale(1); }
+    100% { transform: scale(1); }
+}
+
+[data-theme="dark"] .life-display i {
+    color: #ff5252;
+    filter: drop-shadow(0 0 8px rgba(255, 82, 82, 0.7));
 }
 
 /* Zamanlayıcı */
@@ -7864,7 +7881,7 @@ body.quiz-active .main-logo-container svg {
         font-size: 15px;
     }
     
-    .life-icon {
+    .life-display i {
         font-size: 16px;
     }
     
