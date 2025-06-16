@@ -10446,7 +10446,7 @@ body:has(#profile-page[style*="display: block"]) footer {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: var(--accent-color);
+    background-color: var(--primary-color);
     display: none; /* Varsayılan olarak gizli */
     justify-content: space-around;
     align-items: center;
@@ -10493,6 +10493,12 @@ body.quiz-active .joker-tab-bar {
     background-color: var(--primary-color);
     border-radius: 4px;
     padding: 5px 10px;
+}
+
+/* Dark tema için joker tab bar */
+[data-theme="dark"] .joker-tab-bar {
+    background-color: var(--primary-color);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
 }
 
 /* Sadece mobil cihazlarda tab-bar ve joker-tab-bar görünsün */
