@@ -918,16 +918,6 @@ const quizApp = {
         // Toast'u ekle
         toastContainer.appendChild(toast);
         
-        // İpucu jokeri ve süre jokeri için farklı konumlandırma
-        // Toast'ı joker butonlarının hemen üzerinde göster
-        if (message.includes("İpucu jokeri kullanıldı") || message.includes("Süre jokeri kullanıldı")) {
-            toast.style.position = "fixed";
-            toast.style.bottom = "180px"; // Joker butonlarının üzerinde
-            toast.style.left = "50%";
-            toast.style.transform = "translateX(-50%)";
-            toast.style.zIndex = "10002"; // Joker butonlarından daha yüksek
-        }
-        
         // Toast'u göster
         setTimeout(() => {
             toast.classList.add('show');

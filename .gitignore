@@ -3,7 +3,3 @@ android/.gradle/
 android/build/
 **/build/
 **/.transforms/
-
-# Netlify dağıtımında sorun çıkaran Capacitor dosyaları
-package-lock.json
-node_modules/@capacitor/
