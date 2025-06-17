@@ -6086,7 +6086,52 @@ input:checked + .switch-label:before {
     z-index: 1000;
     padding: 20px;
     animation: containerFadeIn 0.8s ease-out forwards;
-    background: linear-gradient(145deg, var(--primary-color), var(--secondary-color));
+    background: var(--bg-gradient);
+}
+
+/* Karanlık tema için tercih ayarları */
+[data-theme="dark"] .user-preferences-container {
+    background: linear-gradient(145deg, #212121, #424242);
+}
+
+/* Tercih ayarları kutusunu karanlık tema için güncelle */
+[data-theme="dark"] .user-preferences-container .auth-box {
+    background-color: #333;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f5f5f5;
+}
+
+[data-theme="dark"] .user-preferences-container h2 {
+    color: var(--secondary-color);
+}
+
+[data-theme="dark"] .preferences-description {
+    color: #f5f5f5;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-left: 4px solid var(--secondary-color);
+}
+
+[data-theme="dark"] .language-label {
+    color: #f5f5f5;
+}
+
+[data-theme="dark"] .language-btn {
+    background-color: #424242;
+    color: #f5f5f5;
+}
+
+[data-theme="dark"] .language-btn:hover {
+    background-color: #555;
+}
+
+[data-theme="dark"] .language-btn.selected {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+[data-theme="dark"] .preferences-note {
+    color: #bbb;
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .user-preferences-container .auth-box {
