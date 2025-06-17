@@ -645,73 +645,83 @@ const friendsModule = {
         
         // Kullanıcı zaten bir odadaysa, o odanın kodunu kullan
         if (onlineGame && onlineGame.currentRoom) {
-            this.sendGameInvitation(friendId, onlineGame.roomCode);
+            this.sendGameInvitation(friendId, onlineGame.currentRoom);
             return;
         }
         
         // Kullanıcının odası yoksa, önce yeni bir oda oluştur
+        // Not: Online oyun Firebase Realtime Database kullanıyor, Firestore değil!
+        // Oda kodu oluştur
         const roomCode = this.generateRoomCode();
         
-        // Önce odayı oluştur
-        this.db.collection('gameRooms').doc(roomCode).set({
-            host: this.currentUserId,
+        // Odayı Realtime Database'de oluştur
+        const roomData = {
+            name: `${userName}'nin odası`,
+            hostId: this.currentUserId,
             hostName: userName,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             status: 'waiting',
-            players: [
-                {
-                    id: this.currentUserId,
-                    name: userName,
-                    isReady: true,
-                    isHost: true
+            maxPlayers: 4,
+            createdAt: firebase.database.ServerValue.TIMESTAMP,
+            players: {}
+        };
+        
+        // Host oyuncuyu ekle
+        roomData.players[this.currentUserId] = {
+            name: userName,
+            isHost: true,
+            score: 0,
+            ready: false,
+            lastActive: firebase.database.ServerValue.TIMESTAMP
+        };
+        
+        // Realtime Database'de odayı oluştur
+        const roomRef = firebase.database().ref('rooms/' + roomCode);
+        roomRef.set(roomData)
+            .then(() => {
+                console.log('Oda oluşturuldu (Realtime Database):', roomCode);
+                
+                if (onlineGame) {
+                    onlineGame.currentRoom = roomCode;
+                    onlineGame.roomRef = roomRef;
+                    onlineGame.isHost = true;
+                    onlineGame.showWaitingRoom(roomCode);
                 }
-            ]
-        })
-        .then(() => {
-            // Odayı oluşturan kullanıcıyı bu odaya gönder
-            console.log('Oda oluşturuldu:', roomCode);
-            
-            if (onlineGame) {
-                onlineGame.currentRoom = roomCode;
-                onlineGame.isHost = true;
-                onlineGame.showWaitingRoom(roomCode);
-            }
-            
-            // Gönderiliyor bildirimini kaldır
-            setTimeout(() => {
-                if (document.body.contains(sendingNotification)) {
-                    sendingNotification.style.opacity = '0';
-                    setTimeout(() => {
-                        if (document.body.contains(sendingNotification)) {
-                            sendingNotification.remove();
-                        }
-                    }, 300);
-                }
-            }, 1000);
-            
-            // Ardından daveti gönder
-            this.sendGameInvitation(friendId, roomCode);
-        })
-        .catch(error => {
-            console.error('Oda oluşturulurken hata:', error);
-            alert('Oyun odası oluşturulamadı. Lütfen daha sonra tekrar deneyin.');
-            
-            // Hata bildirimini göster
-            sendingNotification.className = 'notification error';
-            sendingNotification.innerHTML = `<i class="fas fa-exclamation-circle"></i> Oda oluşturulamadı!`;
-            
-            // 3 saniye sonra bildirimi kaldır
-            setTimeout(() => {
-                if (document.body.contains(sendingNotification)) {
-                    sendingNotification.style.opacity = '0';
-                    setTimeout(() => {
-                        if (document.body.contains(sendingNotification)) {
-                            sendingNotification.remove();
-                        }
-                    }, 300);
-                }
-            }, 3000);
-        });
+                
+                // Gönderiliyor bildirimini kaldır
+                setTimeout(() => {
+                    if (document.body.contains(sendingNotification)) {
+                        sendingNotification.style.opacity = '0';
+                        setTimeout(() => {
+                            if (document.body.contains(sendingNotification)) {
+                                sendingNotification.remove();
+                            }
+                        }, 300);
+                    }
+                }, 1000);
+                
+                // Ardından daveti gönder
+                this.sendGameInvitation(friendId, roomCode);
+            })
+            .catch(error => {
+                console.error('Oda oluşturulurken hata:', error);
+                alert('Oyun odası oluşturulamadı. Lütfen daha sonra tekrar deneyin.');
+                
+                // Hata bildirimini göster
+                sendingNotification.className = 'notification error';
+                sendingNotification.innerHTML = `<i class="fas fa-exclamation-circle"></i> Oda oluşturulamadı!`;
+                
+                // 3 saniye sonra bildirimi kaldır
+                setTimeout(() => {
+                    if (document.body.contains(sendingNotification)) {
+                        sendingNotification.style.opacity = '0';
+                        setTimeout(() => {
+                            if (document.body.contains(sendingNotification)) {
+                                sendingNotification.remove();
+                            }
+                        }, 300);
+                    }
+                }, 3000);
+            });
     },
     
     // Oyun daveti gönder
@@ -723,11 +733,32 @@ const friendsModule = {
             receiverId: friendId,
             roomCode: roomCode,
             status: 'pending',
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            // Odanın Realtime Database'de olduğunu belirt
+            databaseType: 'realtime'
         };
         
-        this.db.collection('gameInvites').add(inviteData)
+        console.log('Oyun daveti gönderiliyor:', {
+            receiverId: friendId,
+            roomCode: roomCode
+        });
+        
+        // Önce odanın Realtime Database'de var olup olmadığını kontrol et
+        firebase.database().ref('rooms/' + roomCode).once('value')
+            .then(snapshot => {
+                if (!snapshot.exists()) {
+                    console.error('Davet gönderilecek oda bulunamadı!', roomCode);
+                    alert('Davet gönderilecek oda bulunamadı! Yeni bir oda oluşturmanız gerekebilir.');
+                    return Promise.reject(new Error('Oda bulunamadı'));
+                }
+                
+                console.log('Oda bulundu, davet gönderiliyor:', roomCode);
+                // Oda mevcut, şimdi daveti Firestore'a ekle
+                return this.db.collection('gameInvites').add(inviteData);
+            })
             .then((docRef) => {
+                if (!docRef) return; // Oda bulunamadıysa buraya gelmez
+                
                 console.log('Oyun daveti gönderildi, ID:', docRef.id);
                 
                 // Davet durumu dinleyicisini ekle
@@ -742,13 +773,15 @@ const friendsModule = {
                 setTimeout(() => {
                     notification.style.opacity = '0';
                     setTimeout(() => {
-                        notification.remove();
+                        if (document.body.contains(notification)) {
+                            notification.remove();
+                        }
                     }, 500);
                 }, 3000);
             })
             .catch((error) => {
                 console.error('Oyun daveti gönderilirken hata:', error);
-                alert('Oyun daveti gönderilirken bir hata oluştu.');
+                alert('Oyun daveti gönderilemedi. Lütfen tekrar deneyin.');
             });
     },
     
@@ -1087,10 +1120,43 @@ const friendsModule = {
                 gameStartSound.volume = 0.5;
                 gameStartSound.play().catch(e => console.log('Ses çalma hatası:', e));
                 
-                // Oyun odasına katıl
-                if (onlineGame) {
-                    onlineGame.joinRoom(inviteData.roomCode);
-                }
+                // Log ekle
+                console.log('Katılınacak oda kodu:', inviteData.roomCode);
+                
+                // Önce odanın varlığını kontrol et
+                firebase.database().ref('rooms/' + inviteData.roomCode).once('value')
+                    .then(snapshot => {
+                        if (snapshot.exists()) {
+                            // Oda mevcut, şimdi katıl
+                            console.log('Oda bulundu, katılınıyor...');
+                            // Oyun odasına katıl
+                            if (onlineGame) {
+                                onlineGame.joinRoom(inviteData.roomCode);
+                            } else {
+                                // onlineGame henüz yüklenmemiş olabilir, 1 saniye bekleyip tekrar dene
+                                setTimeout(() => {
+                                    if (onlineGame) {
+                                        onlineGame.joinRoom(inviteData.roomCode);
+                                    } else {
+                                        alert('Oyun modülü yüklenemedi. Lütfen sayfayı yenileyin.');
+                                    }
+                                }, 1000);
+                            }
+                        } else {
+                            console.error('Oda bulunamadı:', inviteData.roomCode);
+                            alert('Oda artık mevcut değil. Arkadaşınızdan yeni bir davet göndermesini isteyin.');
+                            
+                            // Ana menüye dön
+                            document.getElementById('main-menu').style.display = 'block';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Oda kontrol hatası:', error);
+                        alert('Oda kontrol edilirken bir hata oluştu.');
+                        
+                        // Ana menüye dön
+                        document.getElementById('main-menu').style.display = 'block';
+                    });
             })
             .catch(error => {
                 console.error('Davet kabul edilirken hata:', error);
