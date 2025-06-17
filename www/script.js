@@ -926,16 +926,6 @@ const quizApp = {
         // Toast'u ekle
         toastContainer.appendChild(toast);
         
-        // İpucu jokeri ve süre jokeri için farklı konumlandırma
-        // Toast'ı joker butonlarının hemen üzerinde göster
-        if (message.includes("İpucu jokeri kullanıldı") || message.includes("Süre jokeri kullanıldı")) {
-            toast.style.position = "fixed";
-            toast.style.bottom = "180px"; // Joker butonlarının üzerinde
-            toast.style.left = "50%";
-            toast.style.transform = "translateX(-50%)";
-            toast.style.zIndex = "10002"; // Joker butonlarından daha yüksek
-        }
-        
         // Toast'u göster
         setTimeout(() => {
             toast.classList.add('show');
@@ -1575,37 +1565,33 @@ const quizApp = {
         if (this.jokerFiftyBtn) {
             const fiftyCount = this.jokerInventory.fifty || 0;
             const used = this.jokersUsed.fifty;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${fiftyCount}${used ? '<span class=\'joker-used-text\'>✓</span>' : ''}</span>`;
             this.jokerFiftyBtn.disabled = (fiftyCount <= 0) || used || isTrueFalse || isBlankFilling;
             this.jokerFiftyBtn.style.opacity = (fiftyCount <= 0 || used || isTrueFalse || isBlankFilling) ? '0.3' : '1';
-            this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i>${badgeHtml}`;
+            this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i>`;
         }
         // İpucu jokeri
         if (this.jokerHintBtn) {
             const hintCount = this.jokerInventory.hint || 0;
             const used = this.jokersUsed.hint;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${hintCount}${used ? '<span class=\'joker-used-text\'>✓</span>' : ''}</span>`;
             this.jokerHintBtn.disabled = (hintCount <= 0) || used;
             this.jokerHintBtn.style.opacity = (hintCount <= 0 || used) ? '0.3' : '1';
-            this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i>${badgeHtml}`;
+            this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i>`;
         }
         // Süre jokeri
         if (this.jokerTimeBtn) {
             const timeCount = this.jokerInventory.time || 0;
             const used = this.jokersUsed.time;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${timeCount}${used ? '<span class=\'joker-used-text\'>✓</span>' : ''}</span>`;
             this.jokerTimeBtn.disabled = (timeCount <= 0) || used;
             this.jokerTimeBtn.style.opacity = (timeCount <= 0 || used) ? '0.3' : '1';
-            this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i>${badgeHtml}`;
+            this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i>`;
         }
         // Pas jokeri
         if (this.jokerSkipBtn) {
             const skipCount = this.jokerInventory.skip || 0;
             const used = this.jokersUsed.skip;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${skipCount}${used ? '<span class=\'joker-used-text\'>✓</span>' : ''}</span>`;
             this.jokerSkipBtn.disabled = (skipCount <= 0) || used;
             this.jokerSkipBtn.style.opacity = (skipCount <= 0 || used) ? '0.3' : '1';
-            this.jokerSkipBtn.innerHTML = `<i class="fas fa-forward"></i>${badgeHtml}`;
+            this.jokerSkipBtn.innerHTML = `<i class="fas fa-forward"></i>`;
         }
         // Joker mağazası
         if (this.jokerStoreBtn) {
@@ -1922,6 +1908,7 @@ const quizApp = {
                 this.showNextQuestion();
             });
         }
+        
             // Joker butonları için olay dinleyicileri
             console.log('DOM hazır, joker event listener\'ları ekleniyor...');
             this.addJokerEventListeners();
@@ -2765,6 +2752,120 @@ const quizApp = {
         return array;
     },
     
+    // Quiz modunu aktifleştir
+    activateQuizMode: function() {
+        // Joker tab menüsünü göster
+        const jokerTabBar = document.getElementById('joker-tab-bar');
+        if (jokerTabBar) jokerTabBar.style.display = 'flex';
+        
+        // Normal tab menüsünü gizle (mobile-tab-bar ID'sine sahip element kullanıldığı için düzeltildi)
+        const tabBar = document.getElementById('mobile-tab-bar');
+        if (tabBar) tabBar.style.display = 'none';
+        
+        document.body.classList.add('quiz-active');
+        // Quiz modunda olduğumuzu localStorage'a kaydet
+        localStorage.setItem('quizModeActive', 'true');
+    },
+    
+    // Quiz modunu deaktive et
+    deactivateQuizMode: function() {
+        // Joker tab menüsünü gizle
+        const jokerTabBar = document.getElementById('joker-tab-bar');
+        if (jokerTabBar) jokerTabBar.style.display = 'none';
+        
+        // Normal tab menüsünü göster (mobile-tab-bar ID'sine sahip element kullanıldığı için düzeltildi)
+        const tabBar = document.getElementById('mobile-tab-bar');
+        if (tabBar) tabBar.style.display = 'flex';
+        
+        document.body.classList.remove('quiz-active');
+        // Quiz modundan çıktığımızı localStorage'a kaydet
+        localStorage.removeItem('quizModeActive');
+    },
+    
+    // Joker tab butonlarına olay dinleyicileri ekle
+    initJokerTabBar: function() {
+        const self = this;
+        
+        // 50:50 jokeri
+        const jokerTabFifty = document.getElementById('joker-tab-fifty');
+        if (jokerTabFifty) {
+            jokerTabFifty.addEventListener('click', function() {
+                const jokerFiftyBtn = document.getElementById('joker-fifty');
+                if (jokerFiftyBtn && !jokerFiftyBtn.disabled) {
+                    jokerFiftyBtn.click();
+                }
+            });
+        }
+
+        // İpucu jokeri
+        const jokerTabHint = document.getElementById('joker-tab-hint');
+        if (jokerTabHint) {
+            jokerTabHint.addEventListener('click', function() {
+                const jokerHintBtn = document.getElementById('joker-hint');
+                if (jokerHintBtn && !jokerHintBtn.disabled) {
+                    jokerHintBtn.click();
+                }
+            });
+        }
+
+        // Süre jokeri
+        const jokerTabTime = document.getElementById('joker-tab-time');
+        if (jokerTabTime) {
+            jokerTabTime.addEventListener('click', function() {
+                const jokerTimeBtn = document.getElementById('joker-time');
+                if (jokerTimeBtn && !jokerTimeBtn.disabled) {
+                    jokerTimeBtn.click();
+                }
+            });
+        }
+
+        // Pas jokeri
+        const jokerTabSkip = document.getElementById('joker-tab-skip');
+        if (jokerTabSkip) {
+            jokerTabSkip.addEventListener('click', function() {
+                const jokerSkipBtn = document.getElementById('joker-skip');
+                if (jokerSkipBtn && !jokerSkipBtn.disabled) {
+                    jokerSkipBtn.click();
+                }
+            });
+        }
+
+        // Joker mağazası
+        const jokerTabStore = document.getElementById('joker-tab-store');
+        if (jokerTabStore) {
+            jokerTabStore.addEventListener('click', function() {
+                const jokerStoreBtn = document.getElementById('joker-store');
+                if (jokerStoreBtn && !jokerStoreBtn.disabled) {
+                    jokerStoreBtn.click();
+                }
+            });
+        }
+
+        // Ana sayfa butonu (quiz'den çıkış)
+        const jokerTabHome = document.getElementById('joker-tab-home');
+        if (jokerTabHome) {
+            jokerTabHome.addEventListener('click', function() {
+                // Quiz'den çıkış için onay sor
+                if (confirm('Quiz\'den çıkmak istediğinize emin misiniz? İlerleyişiniz kaydedilecek.')) {
+                    // Quiz'i gizle
+                    const quizElement = document.getElementById('quiz');
+                    if (quizElement) quizElement.style.display = 'none';
+                    
+                    // Ana menüyü göster
+                    const mainMenu = document.getElementById('main-menu');
+                    if (mainMenu) mainMenu.style.display = 'block';
+                    
+                    // Kategori seçimini göster
+                    const categorySelection = document.getElementById('category-selection');
+                    if (categorySelection) categorySelection.style.display = 'none';
+                    
+                    // Quiz modunu deaktive et
+                    self.deactivateQuizMode();
+                }
+            });
+        }
+    },
+    
     // Quiz'i başlat
     startQuiz: function() {
         // Body'ye quiz aktif class'ını ekle - logo gizlemek için ve mobil tab barın yer değiştirmesi için
@@ -3334,7 +3435,7 @@ const quizApp = {
         console.log('Zorluk seviyelerine göre gruplandırılmış sorular:', groupedByDifficulty);
         console.log('Zorluk seviyesi 3 olan soru sayısı:', (groupedByDifficulty[3] || []).length);
         
-        // Seçilen zorluk seviyesinden sorular al
+        // Seçilen zorluk seviyesindeki soruları kesinlikle al - karışım yok!
         let levelQuestions = [];
         
         // SADECE hedef zorluk seviyesinden sorular al
@@ -3782,7 +3883,6 @@ const quizApp = {
                 this.updateProfileStats(stats);
             });
     },
-    
     
     // Skorlardan istatistikleri hesapla
     calculateStatsFromScores: function(userId) {
@@ -4752,7 +4852,7 @@ const quizApp = {
             existingModal.remove();
         }
         
-        // Arka plan müziği ve ses efekleri
+        // Arka plan müziği ve ses efektleri
         let badgeSound = null;
         if (this.soundEnabled) {
             badgeSound = new Audio('sounds/badge-earned.mp3');
@@ -4878,6 +4978,36 @@ const quizApp = {
                 }, 300);
             }
         });
+    },
+    
+    // Rozet gereksinimleri için açıklama metni oluştur
+    getBadgeRequirementText: function(badge) {
+        let text = "";
+        
+        switch(badge.id) {
+            case 'perfectScore':
+                text = "Bir kategoride %100 doğru cevap vererek mükemmel skor elde etmek.";
+                break;
+            case 'genius':
+                text = "Arka arkaya 10 soruyu doğru cevaplamak.";
+                break;
+            case 'explorer':
+                text = "5 farklı kategoride en az 5'er soru çözmek.";
+                break;
+            case 'dedicated':
+                text = "Toplam 100 soru çözmek.";
+                break;
+            case 'speedster':
+                text = "10 soruyu ortalama 5 saniyeden kısa sürede cevaplamak.";
+                break;
+            case 'scholar':
+                text = "Tüm kategorilerde en az %70 başarı oranı elde etmek.";
+                break;
+            default:
+                text = "Bu rozeti kazanmak için gerekli koşulları sağlamak.";
+        }
+        
+        return text;
     },
     
     // Zaman farkını hesapla (ne kadar zaman önce)
@@ -6428,6 +6558,7 @@ const quizApp = {
         if (livesContainer) {
             // Önce tüm eski ikonları temizle
             livesContainer.innerHTML = '';
+            
             // this.lives kadar aktif ikon ekle
             for (let i = 0; i < this.lives; i++) {
                 const span = document.createElement('span');
@@ -7658,7 +7789,6 @@ const quizApp = {
         // Seviye başına 100 * seviye kadar XP gerekir
         return this.userLevel * 100;
     },
-    
 
     
     // Toplam puan göstergesini güncelle
