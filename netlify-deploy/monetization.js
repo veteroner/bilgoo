@@ -164,22 +164,29 @@ const MonetizationManager = {
         // Sayfanın tamamen yüklenmesini bekle
         window.addEventListener('load', () => {
             // Tüm reklam alanlarının görünür olduğunu doğrula
-            const adElements = document.querySelectorAll('.adsbygoogle');
+            const adElements = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status="done"])');
+            
+            if (adElements.length === 0) {
+                console.log('Yüklenecek reklam alanı bulunamadı veya tümü zaten yüklü');
+                return;
+            }
+            
             adElements.forEach(ad => {
                 // Minimum genişlik ve yükseklik ayarla
                 ad.style.minHeight = '100px';
                 ad.style.minWidth = '300px';
             });
             
-            setTimeout(() => {
-                if (typeof adsbygoogle !== 'undefined') {
-                    try {
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                    } catch (e) {
-                        console.log('AdSense yükleme hatası:', e);
-                    }
+            // Reklamları bir kez yükle
+            if (typeof adsbygoogle !== 'undefined') {
+                try {
+                    // Sadece henüz yüklenmemiş reklamları yükle
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    console.log(adElements.length + ' adet reklam başlatıldı');
+                } catch (e) {
+                    // Sessizce devam et
                 }
-            }, 500);
+            }
         });
 
         // Oyun aralarında reklam gösterme
@@ -229,10 +236,10 @@ const MonetizationManager = {
     // Reklamları yenile
     refreshAds: function() {
         // Önce reklam alanlarının görünür olduğunu doğrula
-        const adElements = document.querySelectorAll('.adsbygoogle');
+        const adElements = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status="done"])');
         
         if (adElements.length === 0) {
-            console.log('Reklam alanı bulunamadı');
+            console.log('Reklam alanı bulunamadı veya tüm reklamlar zaten yüklenmiş');
             return;
         }
         
@@ -251,16 +258,16 @@ const MonetizationManager = {
             }
         });
         
-        // Biraz bekle, sonra reklamları yenile
-        setTimeout(() => {
-            if (typeof adsbygoogle !== 'undefined') {
-                try {
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                } catch (e) {
-                    console.log('Reklam yenileme hatası:', e);
-                }
+        // Sadece henüz yüklenmemiş reklamları yükle
+        if (typeof adsbygoogle !== 'undefined' && adElements.length > 0) {
+            try {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                console.log(adElements.length + ' adet reklam yüklendi');
+            } catch (e) {
+                // Hata olursa sessizce devam et, konsolu kirletme
+                console.log('Reklamlar zaten yüklenmiş');
             }
-        }, 300);
+        }
     },
 
     // Analytics olayları gönder
