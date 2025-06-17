@@ -1908,12 +1908,54 @@
              style="display:block; min-height: 600px; width: 160px;"
              data-ad-client="ca-pub-7610338885240453"
              data-ad-slot="3489961712"
-             data-ad-format="vertical"
-             data-full-width-responsive="false"></ins>
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
         <script>
              (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
     </div>
+    
+    <style>
+    /* Mobil Cihazlar için Reklam Stilleri */
+    @media (max-width: 768px) {
+        .side-ad-left, 
+        .side-ad-right {
+            position: static !important;
+            top: auto !important;
+            left: auto !important;
+            right: auto !important;
+            transform: none !important;
+            width: 100% !important;
+            min-height: 100px !important;
+            max-height: 100px !important;
+            margin: 10px auto !important;
+            padding: 5px !important;
+            background: rgba(255, 255, 255, 0.9) !important;
+            display: flex !important;
+            border-radius: 10px !important;
+            z-index: 100 !important;
+        }
+        
+        .side-ad-left ins,
+        .side-ad-right ins {
+            display: block !important;
+            width: 100% !important;
+            min-height: 90px !important;
+            height: 90px !important;
+        }
+        
+        /* Sadece bir tanesini göster */
+        .side-ad-right {
+            display: none !important;
+        }
+        
+        /* Dark mode için */
+        [data-theme="dark"] .side-ad-left,
+        [data-theme="dark"] .side-ad-right {
+            background: rgba(30, 30, 30, 0.8) !important;
+        }
+    }
+    </style>
     
     <!-- Sağ Yan Reklam Alanı -->
     <div class="side-ad-right" style="position: fixed; top: 50%; transform: translateY(-50%); right: 10px; width: 160px; min-height: 600px; background: rgba(255, 255, 255, 0.9); border-radius: 10px; padding: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);">
