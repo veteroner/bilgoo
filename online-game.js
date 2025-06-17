@@ -1903,8 +1903,24 @@ const onlineGame = {
     
     // Skor değişikliklerini dinle
     listenToScoreChanges: function() {
+        // Önceki dinleyiciyi kaldır (varsa)
+        if (this.roomRef) {
+            this.roomRef.child('players').off('value');
+        }
+        
+        // Yeni dinleyici ekle
         this.roomRef.child('players').on('value', snapshot => {
             const players = snapshot.val() || {};
+            
+            // Oyuncuların skorlarını logla
+            console.log('Oyuncu skorları değişikliği algılandı:', players);
+            
+            // Mevcut kullanıcının skorunu özel olarak logla
+            if (this.userId && players[this.userId]) {
+                console.log('Sizin skorunuz:', players[this.userId].score || 0);
+            }
+            
+            // Oyuncuları güncelle ve skorları göster
             this.players = players;
             this.updatePlayerScores();
         });
@@ -2482,6 +2498,36 @@ const onlineGame = {
             return; // Fonksiyondan çık
         }
         
+        // Eğer oda referansı varsa ve oyun yeni başlıyorsa, tüm oyuncuların skorlarını sıfırla
+        if (this.roomRef && !this.gameStarted) {
+            console.log("Oyun başlıyor - tüm oyuncu skorları sıfırlanıyor");
+            this.roomRef.child('players').once('value')
+                .then(snapshot => {
+                    const players = snapshot.val() || {};
+                    const updates = {};
+                    
+                    // Her oyuncu için skor sıfırlama
+                    Object.keys(players).forEach(playerId => {
+                        updates[`players/${playerId}/score`] = 0;
+                        // Kendi oyuncumuzun verilerini de güncelle
+                        if (playerId === this.userId) {
+                            this.players[playerId].score = 0;
+                        }
+                    });
+                    
+                    // Toplu güncelleme yap
+                    return this.roomRef.update(updates);
+                })
+                .then(() => {
+                    console.log("Tüm oyuncuların skorları başarıyla sıfırlandı");
+                    // Skorları hemen UI'da da güncelle
+                    this.updatePlayerScores();
+                })
+                .catch(error => {
+                    console.error("Skorları sıfırlarken hata oluştu:", error);
+                });
+        }
+        
         // Oyun içi chat dinleyicisini ekle
         if (this.roomRef) {
             // Önce mevcut dinleyicileri temizle
@@ -2849,10 +2895,20 @@ const onlineGame = {
                 // Doğru cevap ise skoru artır
                 if (isCorrect) {
                     currentScore += 1;
+                    console.log('Doğru cevap! Skor artırıldı:', currentScore);
                 }
                 
                 // Güncellenmiş skoru veritabanına kaydet
-                return this.roomRef.child(`players/${this.userId}/score`).set(currentScore);
+                return this.roomRef.child(`players/${this.userId}/score`).set(currentScore)
+                    .then(() => {
+                        console.log('Skor başarıyla güncellendi:', currentScore);
+                        // Skor güncellemesini doğrulamak için yeniden çek
+                        return this.roomRef.child(`players/${this.userId}`).once('value');
+                    })
+                    .then(updatedSnapshot => {
+                        const updatedPlayer = updatedSnapshot.val() || {};
+                        console.log('Güncellenmiş oyuncu verisi:', updatedPlayer);
+                    });
             })
             .catch(error => {
                 console.error('Skor kaydetme hatası:', error);
