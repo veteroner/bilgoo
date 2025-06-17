@@ -32,6 +32,8 @@ const friendsModule = {
                 // Arkadaş verilerini yükle
                 this.loadFriends();
                 this.loadFriendRequests();
+                // Davet sistemi kurulumu
+                this.setupInviteSystem();
             } else {
                 console.log("Arkadaş sistemi için oturum açılması gerekiyor.");
             }
@@ -117,6 +119,8 @@ const friendsModule = {
         // Geri butonu için olay dinleyicisi
         document.getElementById('back-from-friends').addEventListener('click', () => {
             friendsPage.style.display = 'none';
+            // Listener'ları temizle
+            this.clearListeners();
             const mainMenu = document.getElementById('main-menu');
             if (mainMenu) mainMenu.style.display = 'block';
         });
@@ -624,62 +628,163 @@ const friendsModule = {
     inviteToGame: function(friendId) {
         if (!this.currentUserId) return;
         
-        // Kullanıcı bir oda oluşturmuşsa veya odadaysa
-        if (onlineGame && onlineGame.roomCode) {
-            // Oyun davetini gönder
-            const currentUser = firebase.auth().currentUser;
-            const inviteData = {
-                senderId: this.currentUserId,
-                senderName: currentUser.displayName || 'Bir arkadaşınız',
-                receiverId: friendId,
-                roomCode: onlineGame.roomCode,
-                status: 'pending',
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            };
+        // Kullanıcı zaten bir odadaysa, o odanın kodunu kullan
+        if (onlineGame && onlineGame.currentRoom) {
+            this.sendGameInvitation(friendId, onlineGame.roomCode);
+            return;
+        }
+        
+        // Kullanıcının odası yoksa, önce yeni bir oda oluştur
+        const roomCode = this.generateRoomCode();
+        
+        // Arkadaşa gösterilecek bildirim için kullanıcı adı
+        const currentUser = firebase.auth().currentUser;
+        const userName = currentUser.displayName || currentUser.email || 'Bir arkadaşınız';
+        
+        // Önce odayı oluştur
+        this.db.collection('gameRooms').doc(roomCode).set({
+            host: this.currentUserId,
+            hostName: userName,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            status: 'waiting',
+            players: [
+                {
+                    id: this.currentUserId,
+                    name: userName,
+                    isReady: true,
+                    isHost: true
+                }
+            ]
+        })
+        .then(() => {
+            // Odayı oluşturan kullanıcıyı bu odaya gönder
+            console.log('Oda oluşturuldu:', roomCode);
             
-            this.db.collection('gameInvites').add(inviteData)
-                .then(() => {
-                    console.log('Oyun daveti gönderildi');
-                    alert('Arkadaşınıza oyun daveti gönderildi!');
-                })
-                .catch((error) => {
-                    console.error('Oyun daveti gönderilirken hata:', error);
-                    alert('Oyun daveti gönderilirken bir hata oluştu.');
-                });
-        } else {
-            // Önce oda oluşturmak gerekiyor
-            alert('Arkadaşınızı davet etmek için önce bir oda oluşturmalısınız.');
-            
-            // Geri butonu ile arkadaş sayfasından çık ve ana menüye dön
-            const backButton = document.getElementById('back-from-friends');
-            if (backButton) {
-                backButton.click();
+            if (onlineGame) {
+                onlineGame.currentRoom = roomCode;
+                onlineGame.isHost = true;
+                onlineGame.showWaitingRoom(roomCode);
             }
             
-            // Çok oyunculu menüyü açmak için event gönder
-            setTimeout(() => {
-                const multiPlayerBtn = document.getElementById('multi-player');
-                if (multiPlayerBtn) {
-                    multiPlayerBtn.click();
-                }
-            }, 500);
-        }
+            // Ardından daveti gönder
+            this.sendGameInvitation(friendId, roomCode);
+        })
+        .catch(error => {
+            console.error('Oda oluşturulurken hata:', error);
+            alert('Oyun odası oluşturulamadı. Lütfen daha sonra tekrar deneyin.');
+        });
     },
     
+    // Oyun daveti gönder
+    sendGameInvitation: function(friendId, roomCode) {
+        const currentUser = firebase.auth().currentUser;
+        const inviteData = {
+            senderId: this.currentUserId,
+            senderName: currentUser.displayName || currentUser.email || 'Bir arkadaşınız',
+            receiverId: friendId,
+            roomCode: roomCode,
+            status: 'pending',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+        
+        this.db.collection('gameInvites').add(inviteData)
+            .then((docRef) => {
+                console.log('Oyun daveti gönderildi, ID:', docRef.id);
+                
+                // Davet durumu dinleyicisini ekle
+                this.listenToInviteStatus(docRef.id);
+                
+                // Başarılı davet gönderimi bildirimi
+                const notification = document.createElement('div');
+                notification.className = 'notification success';
+                notification.innerHTML = '<i class="fas fa-check-circle"></i> Oyun daveti gönderildi';
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 500);
+                }, 3000);
+            })
+            .catch((error) => {
+                console.error('Oyun daveti gönderilirken hata:', error);
+                alert('Oyun daveti gönderilirken bir hata oluştu.');
+            });
+    },
+    
+    // Rastgele oda kodu oluştur (4 karakterli)
+    generateRoomCode: function() {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let result = '';
+        for (let i = 0; i < 4; i++) {
+            result += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return result;
+    },
+    
+    // Davet durumunu gerçek zamanlı olarak dinle
+    listenToInviteStatus: function(inviteId) {
+        return this.db.collection('gameInvites').doc(inviteId)
+            .onSnapshot((doc) => {
+                if (!doc.exists) return;
+                
+                const data = doc.data();
+                if (data.status === 'accepted') {
+                    console.log('Davet kabul edildi!');
+                    // Davet eden kişi, davet edilen kişinin odaya katıldığını bilsin
+                    const notification = document.createElement('div');
+                    notification.className = 'notification success';
+                    notification.innerHTML = `<i class="fas fa-user-check"></i> ${data.receiverName || 'Arkadaşınız'} daveti kabul etti ve odaya katıldı!`;
+                    document.body.appendChild(notification);
+                    
+                    setTimeout(() => {
+                        notification.style.opacity = '0';
+                        setTimeout(() => {
+                            notification.remove();
+                        }, 500);
+                    }, 3000);
+                } else if (data.status === 'rejected') {
+                    console.log('Davet reddedildi.');
+                    // Davet eden kişi, davet edilen kişinin reddettiğini bilsin
+                    const notification = document.createElement('div');
+                    notification.className = 'notification warning';
+                    notification.innerHTML = `<i class="fas fa-user-times"></i> ${data.receiverName || 'Arkadaşınız'} daveti reddetti.`;
+                    document.body.appendChild(notification);
+                    
+                    setTimeout(() => {
+                        notification.style.opacity = '0';
+                        setTimeout(() => {
+                            notification.remove();
+                        }, 500);
+                    }, 3000);
+                }
+            });
+    },
+
     // Oyun davetlerini kontrol et (ana sayfada düzenli olarak çağrılabilir)
     checkGameInvites: function() {
         if (!this.currentUserId) return;
         
-        this.db.collection('gameInvites')
+        // Gerçek zamanlı dinleyici ekle
+        this.unsubscribeGameInvites = this.db.collection('gameInvites')
             .where('receiverId', '==', this.currentUserId)
             .where('status', '==', 'pending')
-            .get()
-            .then((querySnapshot) => {
+            .onSnapshot((querySnapshot) => {
                 if (querySnapshot.empty) return;
                 
                 querySnapshot.forEach((doc) => {
                     const inviteData = doc.data();
                     const inviteId = doc.id;
+                    
+                    // Aynı daveti tekrar gösterme
+                    if (this.shownInvites && this.shownInvites.includes(inviteId)) {
+                        return;
+                    }
+                    
+                    // Gösterilen davetleri takip et
+                    if (!this.shownInvites) this.shownInvites = [];
+                    this.shownInvites.push(inviteId);
                     
                     // Davet bildirimini göster
                     this.showGameInvite(inviteId, inviteData);
@@ -689,9 +794,8 @@ const friendsModule = {
                         status: 'seen'
                     });
                 });
-            })
-            .catch(error => {
-                console.error('Oyun davetleri kontrol edilirken hata:', error);
+            }, (error) => {
+                console.error('Oyun davetlerini dinlerken hata:', error);
             });
     },
     
@@ -704,8 +808,8 @@ const friendsModule = {
                 <h3>Oyun Daveti</h3>
                 <p>${inviteData.senderName} sizi bir oyuna davet ediyor!</p>
                 <div class="invite-actions">
-                    <button id="accept-invite" class="btn-success" style="background: var(--btn-success); color: white;">Kabul Et</button>
-                    <button id="reject-invite" class="btn-danger" style="background: var(--wrong-color); color: white;">Reddet</button>
+                    <button id="accept-invite-${inviteId}" class="btn-success" style="background: var(--btn-success); color: white;">Kabul Et</button>
+                    <button id="reject-invite-${inviteId}" class="btn-danger" style="background: var(--wrong-color); color: white;">Reddet</button>
                 </div>
             </div>
         `;
@@ -724,18 +828,41 @@ const friendsModule = {
         document.body.appendChild(inviteBox);
         
         // Davet kabul etme butonu
-        document.getElementById('accept-invite').addEventListener('click', () => {
+        document.getElementById(`accept-invite-${inviteId}`).addEventListener('click', () => {
+            const currentUser = firebase.auth().currentUser;
+            const userName = currentUser.displayName || currentUser.email || 'Misafir';
+            
             // Daveti kabul et
             this.db.collection('gameInvites').doc(inviteId).update({
                 status: 'accepted',
-                acceptedAt: firebase.firestore.FieldValue.serverTimestamp()
+                acceptedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                receiverName: userName
             })
             .then(() => {
                 console.log('Oyun daveti kabul edildi');
+                
+                // Tüm sayfaları gizle
+                const elementsToHide = [
+                    'main-menu',
+                    'quiz',
+                    'category-selection',
+                    'result',
+                    'profile-page',
+                    'friends-page',
+                    'global-leaderboard',
+                    'admin-panel'
+                ];
+                
+                elementsToHide.forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) element.style.display = 'none';
+                });
+                
                 // Oyun odasına katıl
                 if (onlineGame) {
                     onlineGame.joinRoom(inviteData.roomCode);
                 }
+                
                 inviteBox.remove();
             })
             .catch(error => {
@@ -745,11 +872,15 @@ const friendsModule = {
         });
         
         // Davet reddetme butonu
-        document.getElementById('reject-invite').addEventListener('click', () => {
+        document.getElementById(`reject-invite-${inviteId}`).addEventListener('click', () => {
+            const currentUser = firebase.auth().currentUser;
+            const userName = currentUser.displayName || currentUser.email || 'Misafir';
+            
             // Daveti reddet
             this.db.collection('gameInvites').doc(inviteId).update({
                 status: 'rejected',
-                rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
+                rejectedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                receiverName: userName
             })
             .then(() => {
                 console.log('Oyun daveti reddedildi');
@@ -767,6 +898,22 @@ const friendsModule = {
                 inviteBox.remove();
             }
         }, 30000);
+    },
+    
+    // Firebase listener'ları temizle (sayfa değişirken)
+    clearListeners: function() {
+        if (this.unsubscribeGameInvites) {
+            this.unsubscribeGameInvites();
+        }
+    },
+
+    // Sayfa başlatma işlemi sırasında init() fonksiyonunda çağrılacak
+    setupInviteSystem: function() {
+        // Gösterilen davetlerin listesi
+        this.shownInvites = [];
+        
+        // Gerçek zamanlı davet dinleyicisi
+        this.checkGameInvites();
     },
     
     // Firebase koleksiyon alanlarını kontrol et ve düzelt

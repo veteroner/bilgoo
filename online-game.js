@@ -1274,10 +1274,12 @@ const onlineGame = {
     },
     
     // Odaya katıl
-    joinRoom: function() {
-        const roomCode = this.roomCodeInput.value.trim().toUpperCase();
-        if (roomCode.length !== 6) {
-            alert('Geçerli bir oda kodu girin (6 karakter).');
+    joinRoom: function(roomCodeParam) {
+        // Parametre olarak gelen kod varsa onu kullan, yoksa input'tan al
+        const roomCode = roomCodeParam || this.roomCodeInput.value.trim().toUpperCase();
+        
+        if (!roomCode || roomCode.length < 4) {
+            alert('Geçerli bir oda kodu girin.');
             return;
         }
         
@@ -1317,10 +1319,28 @@ const onlineGame = {
                     this.displayRoomCode.textContent = roomCode;
                     
                     // Tüm oyun ekranlarını gizle ve sadece bekleme odasını göster
-                    this.roomJoin.style.display = 'none';
-                    this.onlineOptions.style.display = 'none';
-                    const mainMenu = document.getElementById('main-menu');
-                    if (mainMenu) mainMenu.style.display = 'none';
+                    // Önce tüm sayfaları gizle
+                    const elementsToHide = [
+                        'main-menu',
+                        'quiz',
+                        'category-selection',
+                        'result',
+                        'profile-page',
+                        'friends-page',
+                        'global-leaderboard',
+                        'admin-panel',
+                        'room-join',
+                        'room-creation',
+                        'room-list-container',
+                        'online-game-options'
+                    ];
+                    
+                    elementsToHide.forEach(id => {
+                        const element = document.getElementById(id);
+                        if (element) element.style.display = 'none';
+                    });
+                    
+                    // Bekleme odasını göster
                     this.waitingRoom.style.display = 'block';
                     
                     // Önce bekleme odasını göster
@@ -3513,6 +3533,56 @@ const onlineGame = {
         
         // Bulunamazsa varsayılan metni döndür
         return defaultText || key;
+    },
+    
+    // Bekleme odasını göster
+    showWaitingRoom: function(roomCode) {
+        if (!roomCode) return;
+        
+        // Oda kodunu ayarla
+        this.currentRoom = roomCode;
+        this.displayRoomCode.textContent = roomCode;
+        
+        // Tüm ekranları gizle
+        const elementsToHide = [
+            'main-menu',
+            'quiz',
+            'category-selection',
+            'result',
+            'profile-page',
+            'friends-page',
+            'global-leaderboard',
+            'admin-panel',
+            'room-join',
+            'room-creation',
+            'room-list-container',
+            'online-game-options'
+        ];
+        
+        elementsToHide.forEach(id => {
+            const element = document.getElementById(id);
+            if (element) element.style.display = 'none';
+        });
+        
+        // Bekleme odasını göster
+        this.waitingRoom.style.display = 'block';
+        
+        // Room reference oluştur
+        this.roomRef = database.ref('rooms/' + roomCode);
+        
+        // Odayı dinlemeye başla
+        this.startListeningToRoom();
+        
+        // Bekleme animasyonu göster
+        setTimeout(() => {
+            this.showWaitingAnimation();
+            
+            if (this.isHost) {
+                this.updateWaitingMessage("Diğer oyuncular bekleniyor...", "waiting");
+            } else {
+                this.updateWaitingMessage("Oyunun başlaması için oda sahibini bekleniyor...", "waiting-host");
+            }
+        }, 100);
     }
 };
 
