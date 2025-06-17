@@ -173,7 +173,7 @@ const MonetizationManager = {
             
             adElements.forEach(ad => {
                 // Minimum genişlik ve yükseklik ayarla
-                if (!ad.style.minHeight) ad.style.minHeight = '100px';
+                if (!ad.style.minHeight) ad.style.minHeight = '60px';
                 if (!ad.style.minWidth) ad.style.minWidth = '300px';
                 
                 // Yan panel reklamları için özel stil
@@ -308,14 +308,14 @@ const MonetizationManager = {
         
         adElements.forEach(ad => {
             // Minimum genişlik ve yükseklik ayarla
-            if (!ad.style.minHeight) ad.style.minHeight = '100px';
+            if (!ad.style.minHeight) ad.style.minHeight = '60px';
             if (!ad.style.minWidth) ad.style.minWidth = '300px';
             
             // Reklam alanının görünür olduğunu doğrula
             const adContainer = ad.closest('div');
             if (adContainer) {
                 adContainer.style.display = 'flex';
-                adContainer.style.minHeight = '250px';
+                adContainer.style.minHeight = '60px';
                 adContainer.style.width = '100%';
                 adContainer.style.overflow = 'hidden';
                 
@@ -324,8 +324,8 @@ const MonetizationManager = {
                     adContainer.style.flexDirection = 'column';
                     adContainer.style.alignItems = 'center';
                     adContainer.style.justifyContent = 'center';
-                    adContainer.style.margin = '15px 10px';
-                    adContainer.style.borderRadius = '10px';
+                    adContainer.style.margin = '10px 5px';
+                    adContainer.style.borderRadius = '8px';
                     adContainer.style.background = 'rgba(255, 255, 255, 0.1)';
                 }
             }
