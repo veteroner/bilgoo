@@ -192,8 +192,7 @@ const MonetizationManager = {
                 <div class="interstitial-ad">
                     <ins class="adsbygoogle"
                          style="display:block"
-                         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-                         data-ad-slot="XXXXXXXXXX"
+                         data-ad-client="ca-pub-7610338885240453"
                          data-ad-format="auto"
                          data-full-width-responsive="true"></ins>
                     <script>
