@@ -637,13 +637,6 @@ const friendsModule = {
         const currentUser = firebase.auth().currentUser;
         const userName = currentUser.displayName || currentUser.email || 'Bir arkadaşınız';
         
-        // Online Game modülünü global scope'tan al
-        if (typeof onlineGame === 'undefined' || !onlineGame) {
-            console.error("Online Game modülü bulunamadı. Script dosyası doğru yüklenmemiş olabilir.");
-            alert("Oyun modülü başlatılamadı. Sayfayı tamamen yenilemeniz gerekebilir.");
-            return;
-        }
-        
         // Davet gönderiliyor bildirimi göster
         const sendingNotification = document.createElement('div');
         sendingNotification.className = 'notification info';
@@ -652,109 +645,56 @@ const friendsModule = {
         
         // Kullanıcı zaten bir odadaysa, o odanın kodunu kullan
         if (onlineGame && onlineGame.currentRoom) {
-            console.log("Mevcut oda kullanılıyor:", onlineGame.currentRoom);
-            this.sendGameInvitation(friendId, onlineGame.currentRoom);
-            
-            // Bildirimi kaldır
-            setTimeout(() => {
-                sendingNotification.style.opacity = '0';
-                setTimeout(() => sendingNotification.remove(), 300);
-            }, 1000);
+            this.sendGameInvitation(friendId, onlineGame.roomCode);
             return;
         }
         
-        // Yeni oda kodu oluştur
+        // Kullanıcının odası yoksa, önce yeni bir oda oluştur
         const roomCode = this.generateRoomCode();
-        console.log("Yeni oda oluşturuluyor:", roomCode);
         
-        // Başlatma sesi çal
-        const startSound = new Audio('https://assets.mixkit.co/active_storage/sfx/213/213.wav');
-        startSound.volume = 0.4;
-        startSound.play().catch(e => console.log('Ses çalma hatası:', e));
-        
-        // Realtime Database'de oda oluştur (onlineGame.js ile uyumlu)
-        const database = firebase.database();
-        const roomRef = database.ref('rooms/' + roomCode);
-        
-        roomRef.set({
+        // Önce odayı oluştur
+        this.db.collection('gameRooms').doc(roomCode).set({
             host: this.currentUserId,
             hostName: userName,
-            createdAt: firebase.database.ServerValue.TIMESTAMP,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             status: 'waiting',
-            maxPlayers: 4,
-            category: 'mixed',
-            language: 'tr',
-            players: {
-                [this.currentUserId]: {
+            players: [
+                {
+                    id: this.currentUserId,
                     name: userName,
-                    isHost: true,
-                    score: 0,
-                    ready: true,
-                    lastActive: firebase.database.ServerValue.TIMESTAMP
+                    isReady: true,
+                    isHost: true
                 }
-            }
+            ]
         })
         .then(() => {
-            console.log('Oda oluşturuldu (Realtime DB):', roomCode);
+            // Odayı oluşturan kullanıcıyı bu odaya gönder
+            console.log('Oda oluşturuldu:', roomCode);
             
-            // Daveti gönder
-            this.sendGameInvitation(friendId, roomCode);
+            if (onlineGame) {
+                onlineGame.currentRoom = roomCode;
+                onlineGame.isHost = true;
+                onlineGame.showWaitingRoom(roomCode);
+            }
             
             // Gönderiliyor bildirimini kaldır
             setTimeout(() => {
-                sendingNotification.style.opacity = '0';
-                setTimeout(() => sendingNotification.remove(), 300);
+                if (document.body.contains(sendingNotification)) {
+                    sendingNotification.style.opacity = '0';
+                    setTimeout(() => {
+                        if (document.body.contains(sendingNotification)) {
+                            sendingNotification.remove();
+                        }
+                    }, 300);
+                }
             }, 1000);
             
-            // Kullanıcıyı odaya yönlendir
-            if (onlineGame) {
-                // Tüm sayfaları gizle
-                const elementsToHide = [
-                    'main-menu',
-                    'quiz',
-                    'category-selection',
-                    'result',
-                    'profile-page',
-                    'friends-page',
-                    'global-leaderboard',
-                    'admin-panel',
-                    'room-join',
-                    'room-creation',
-                    'room-list-container',
-                    'online-game-options'
-                ];
-                
-                elementsToHide.forEach(id => {
-                    const element = document.getElementById(id);
-                    if (element) element.style.display = 'none';
-                });
-                
-                // onlineGame modülünü kullanarak oda bilgilerini ayarla
-                onlineGame.currentRoom = roomCode;
-                onlineGame.isHost = true;
-                onlineGame.roomRef = roomRef;
-                
-                // Bekleme odasını göster
-                if (onlineGame.waitingRoom) {
-                    onlineGame.waitingRoom.style.display = 'block';
-                    onlineGame.displayRoomCode.textContent = roomCode;
-                    onlineGame.showWaitingAnimation();
-                    onlineGame.startListeningToRoom();
-                } else {
-                    console.error("Bekleme odası elementi bulunamadı!");
-                    alert("Bekleme odası hazırlanamadı. Sayfayı yenileyip tekrar deneyiniz.");
-                }
-                
-                // Sistem mesajı gönder
-                if (typeof onlineGame.sendSystemMessage === 'function') {
-                    onlineGame.sendSystemMessage('Oda oluşturuldu. Arkadaşınızın katılmasını bekliyoruz...');
-                } else if (typeof onlineGame.sendLocalizedSystemMessage === 'function') {
-                    onlineGame.sendLocalizedSystemMessage('room_created_waiting');
-                }
-            }
+            // Ardından daveti gönder
+            this.sendGameInvitation(friendId, roomCode);
         })
         .catch(error => {
             console.error('Oda oluşturulurken hata:', error);
+            alert('Oyun odası oluşturulamadı. Lütfen daha sonra tekrar deneyin.');
             
             // Hata bildirimini göster
             sendingNotification.className = 'notification error';
@@ -762,11 +702,15 @@ const friendsModule = {
             
             // 3 saniye sonra bildirimi kaldır
             setTimeout(() => {
-                sendingNotification.style.opacity = '0';
-                setTimeout(() => sendingNotification.remove(), 300);
+                if (document.body.contains(sendingNotification)) {
+                    sendingNotification.style.opacity = '0';
+                    setTimeout(() => {
+                        if (document.body.contains(sendingNotification)) {
+                            sendingNotification.remove();
+                        }
+                    }, 300);
+                }
             }, 3000);
-            
-            alert('Oyun odası oluşturulamadı. Lütfen daha sonra tekrar deneyin.');
         });
     },
     
@@ -781,71 +725,6 @@ const friendsModule = {
             status: 'pending',
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
         };
-        
-        // Bildirim CSS stillerini ekle (eğer daha önce eklenmemişse)
-        if (!document.getElementById('notification-styles')) {
-            const notificationStyles = document.createElement('style');
-            notificationStyles.id = 'notification-styles';
-            notificationStyles.textContent = `
-                .notification {
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    padding: 15px 20px;
-                    background-color: #333;
-                    color: white;
-                    border-radius: 8px;
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-                    z-index: 9999;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    font-size: 16px;
-                    opacity: 1;
-                    transition: opacity 0.3s ease, transform 0.3s ease;
-                    transform: translateY(0);
-                    max-width: 90%;
-                    word-break: break-word;
-                }
-                
-                .notification.info {
-                    background-color: #2196F3;
-                }
-                
-                .notification.success {
-                    background-color: #4CAF50;
-                }
-                
-                .notification.warning {
-                    background-color: #FFC107;
-                    color: #333;
-                }
-                
-                .notification.error {
-                    background-color: #F44336;
-                }
-                
-                .notification i {
-                    font-size: 18px;
-                }
-                
-                @keyframes fadeInDown {
-                    from {
-                        opacity: 0;
-                        transform: translateY(-20px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-                
-                .notification {
-                    animation: fadeInDown 0.3s ease;
-                }
-            `;
-            document.head.appendChild(notificationStyles);
-        }
         
         this.db.collection('gameInvites').add(inviteData)
             .then((docRef) => {
@@ -1208,65 +1087,10 @@ const friendsModule = {
                 gameStartSound.volume = 0.5;
                 gameStartSound.play().catch(e => console.log('Ses çalma hatası:', e));
                 
-                // Oda kodunu al ve kaydet
-                const roomCode = inviteData.roomCode;
-                console.log('Oda kodunu kaydet ve katıl:', roomCode);
-                
-                // Odaya katılım öncesi kullanıcıya bildirme
-                const joinNotify = document.createElement('div');
-                joinNotify.className = 'notification success';
-                joinNotify.innerHTML = `<i class="fas fa-door-open"></i> "${roomCode}" odasına katılınıyor...`;
-                document.body.appendChild(joinNotify);
-                
-                // Kısa bir beklemeden sonra odaya katıl
-                setTimeout(() => {
-                    // Oyun odasına katıl - onlineGame modülüne doğrudan etkileşim
-                    try {
-                        // Global scope'dan onlineGame'i al (window.) kullanmadan
-                        if (typeof onlineGame !== 'undefined' && onlineGame) {
-                            console.log("OnlineGame modülü bulundu, katılınıyor:", roomCode);
-                            onlineGame.joinRoom(roomCode);
-                            
-                            // Odaya katılma hatası durumunda
-                            const checkRoomTimeout = setTimeout(() => {
-                                // Odaya katılma başarısız oldu - hata bildirimi
-                                const errorNotify = document.createElement('div');
-                                errorNotify.className = 'notification error';
-                                errorNotify.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Odaya katılma başarısız!`;
-                                document.body.appendChild(errorNotify);
-                                
-                                setTimeout(() => {
-                                    errorNotify.style.opacity = '0';
-                                    setTimeout(() => errorNotify.remove(), 500);
-                                    
-                                    // Ana menüye dön
-                                    const mainMenu = document.getElementById('main-menu');
-                                    if (mainMenu) mainMenu.style.display = 'block';
-                                }, 3000);
-                                
-                            }, 5000);
-                            
-                            // Odaya katılma bildirimi
-                            joinNotify.style.opacity = '0';
-                            setTimeout(() => joinNotify.remove(), 500);
-                        } else {
-                            console.error("onlineGame modülü bulunamadı!");
-                            alert("Oyun modülü yüklenemedi! Sayfayı tamamen yenileyip tekrar deneyiniz.");
-                            
-                            // Katılım sayfasına yönlendir
-                            setTimeout(() => {
-                                const mainMenu = document.getElementById('main-menu');
-                                if (mainMenu) mainMenu.style.display = 'block';
-                                
-                                // Kullanıcıya davet edildiği kodu göster
-                                alert(`Oda kodu: ${roomCode} - Bu kodu kullanarak arkadaşınızın odasına elle katılabilirsiniz.`);
-                            }, 2000);
-                        }
-                    } catch (error) {
-                        console.error("Odaya katılma hatası:", error);
-                        alert("Odaya katılırken bir hata oluştu: " + error.message);
-                    }
-                }, 1000);
+                // Oyun odasına katıl
+                if (onlineGame) {
+                    onlineGame.joinRoom(inviteData.roomCode);
+                }
             })
             .catch(error => {
                 console.error('Davet kabul edilirken hata:', error);

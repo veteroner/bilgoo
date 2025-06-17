@@ -1283,43 +1283,17 @@ const onlineGame = {
             return;
         }
         
-        console.log("Odaya katılma girişimi:", roomCode);
-        
-        // Kullanıcı ID kontrolü - Giriş yapılmış olmalı
-        if (!firebase.auth().currentUser || !this.userId) {
-            this.userId = firebase.auth().currentUser?.uid || '';
-            this.username = firebase.auth().currentUser?.displayName || 'Misafir';
-            console.log("Kullanıcı bilgileri güncellendi:", this.userId, this.username);
-        }
-        
-        // Database referansı
-        if (!database) {
-            console.error("Database bağlantısı bulunamadı!");
-            alert("Sunucu bağlantısı kurulamadı. Lütfen sayfayı yenileyip tekrar deneyin.");
-            return;
-        }
-        
         this.roomRef = database.ref('rooms/' + roomCode);
         this.roomRef.once('value')
             .then(snapshot => {
                 const roomData = snapshot.val();
                 if (!roomData) {
-                    console.error('Oda bulunamadı:', roomCode);
-                    alert(`Oda bulunamadı: "${roomCode}" \n\nLütfen oda kodunu kontrol ediniz veya arkadaşınızdan tekrar davet göndermesini isteyiniz.`);
-                    
-                    // Ana menüye dön
-                    this.showToast("Oda bulunamadı, ana menüye dönülüyor...", "error");
-                    setTimeout(() => {
-                        const mainMenu = document.getElementById('main-menu');
-                        if (mainMenu) mainMenu.style.display = 'block';
-                    }, 2000);
+                    alert('Oda bulunamadı.');
                     return;
                 }
                 
-                console.log("Oda bulundu:", roomData);
-                
                 if (roomData.status !== 'waiting') {
-                    alert('Bu oda şu anda katılıma açık değil. Muhtemelen oyun başlamış durumda.');
+                    alert('Bu oda şu anda katılıma açık değil.');
                     return;
                 }
                 
@@ -2037,30 +2011,30 @@ const onlineGame = {
                 .then(questions => {
                     if (questions.length < 5) {
                         alert('Seçilen kategoride yeterli soru bulunamadı!');
-                        return;
-                    }
-                    
+                return;
+            }
+            
                     // Soruları karıştır ve ilk 10 soruyu seç
                     const shuffledQuestions = this.shuffleArray(questions).slice(0, 10);
-                    
-                    const gameData = {
-                        category: selectedCategory,
+            
+            const gameData = {
+                category: selectedCategory,
                         questions: shuffledQuestions,
                         startedAt: firebase.database.ServerValue.TIMESTAMP,
                         hostId: this.userId
                     };
                     
                     // Oyun başlama animasyonu göster
-                    this.showGameStartingOverlay();
-                    
+            this.showGameStartingOverlay();
+            
                     // 3 saniye geri sayım
-                    let countdown = 3;
-                    const countdownInterval = setInterval(() => {
-                        this.updateGameStartCountdown(countdown);
-                        countdown--;
-                        
-                        if (countdown < 0) {
-                            clearInterval(countdownInterval);
+            let countdown = 3;
+            const countdownInterval = setInterval(() => {
+                this.updateGameStartCountdown(countdown);
+                countdown--;
+                
+                if (countdown < 0) {
+                    clearInterval(countdownInterval);
                             // Son olarak oyun başladı gösterilir
                             this.updateGameStartCountdown(0);
                             
@@ -2261,7 +2235,7 @@ const onlineGame = {
         if (window.quizApp && window.quizApp.allQuestionsData) {
             for (const category in window.quizApp.allQuestionsData) {
                 // Kategori çevirisini languages objesinden al
-                const currentLang = window.quizApp && window.quizApp.currentLanguage ? window.quizApp.currentLanguage : 'tr';
+                                            const currentLang = window.quizApp && window.quizApp.currentLanguage ? window.quizApp.currentLanguage : 'tr';
                 let translatedCategory = category;
                 if (window.languages && window.languages[currentLang] && window.languages[currentLang][category]) {
                     translatedCategory = window.languages[currentLang][category];
@@ -2444,8 +2418,8 @@ const onlineGame = {
                 this.loadCategoryQuestions(category)
                     .then(questions => {
                         resolve(questions);
-                    })
-                    .catch(error => {
+                                        })
+                                        .catch(error => {
                         console.error("Sorular yüklenirken hata:", error);
                         reject(error);
                     });
