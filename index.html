@@ -3389,8 +3389,8 @@
                             const possibleAdminIds = [
                                 user.uid, // Gerçek kullanıcı ID'si
                                 user.email?.toLowerCase().replace(/[.@]/g, '_'), // E-posta temizlenmiş
-                                user.email?.replace(/[@.]/g, '_'), // Alternatif temizleme
-                                'wet_oner_hotmail_com' // Sabit ID
+                                user.email?.replace(/[@.]/g, '_') // Alternatif temizleme
+                                // Sabit ID'yi kaldırdık çünkü her kullanıcıya admin hakkı veriyordu
                             ].filter(Boolean);
                             
                             console.log('Kontrol edilecek admin ID\'leri:', possibleAdminIds);
@@ -4158,6 +4158,13 @@
                     if (adminPanelMenuItem) {
                         adminPanelMenuItem.style.display = 'flex';
                         console.log('Admin panel başarıyla gösterildi');
+                    }
+                } else {
+                    // Eğer kullanıcı wet_oner@hotmail.com değilse, admin panelini gizle
+                    const adminPanelMenuItem = document.getElementById('menu-admin-panel');
+                    if (adminPanelMenuItem) {
+                        adminPanelMenuItem.style.display = 'none';
+                        console.log('Kullanıcı admin olmadığı için panel gizlendi:', user.email);
                     }
                 }
             } else {
