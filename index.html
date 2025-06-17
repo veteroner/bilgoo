@@ -5109,45 +5109,14 @@
         </script>
     </div>
     
-    <style>
     /* Mobil Cihazlar için Reklam Stilleri */
     @media (max-width: 768px) {
         .side-ad-left, 
         .side-ad-right {
-            position: static !important;
-            top: auto !important;
-            left: auto !important;
-            right: auto !important;
-            transform: none !important;
-            width: 100% !important;
-            min-height: 50px !important; /* 60px'den 50px'e düşürüldü */
-            max-height: 50px !important; /* 60px'den 50px'e düşürüldü */
-            margin: 5px auto !important;
-            padding: 2px !important;
-            background: rgba(255, 255, 255, 0.9) !important;
-            display: flex !important;
-            border-radius: 8px !important;
-            z-index: 100 !important;
+            display: none !important; /* Mobil cihazlarda tüm reklamları gizle */
         }
         
-        .side-ad-left ins,
-        .side-ad-right ins {
-            display: block !important;
-            width: 100% !important;
-            min-height: 50px !important;
-            height: 50px !important;
-        }
-        
-        /* Sadece bir tanesini göster */
-        .side-ad-right {
-            display: none !important;
-        }
-        
-        /* Dark mode için */
-        [data-theme="dark"] .side-ad-left,
-        [data-theme="dark"] .side-ad-right {
-            background: rgba(30, 30, 30, 0.8) !important;
-        }
+        /* Diğer stil kuralları kaldırıldı çünkü reklamlar artık gösterilmeyecek */
     }
     </style>
     
