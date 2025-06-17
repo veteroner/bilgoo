@@ -173,8 +173,21 @@ const MonetizationManager = {
             
             adElements.forEach(ad => {
                 // Minimum genişlik ve yükseklik ayarla
-                ad.style.minHeight = '100px';
-                ad.style.minWidth = '300px';
+                if (!ad.style.minHeight) ad.style.minHeight = '100px';
+                if (!ad.style.minWidth) ad.style.minWidth = '300px';
+                
+                // Yan panel reklamları için özel stil
+                const adContainer = ad.closest('div');
+                if (adContainer && adContainer.classList.contains('side-ad-container')) {
+                    adContainer.style.display = 'flex';
+                    adContainer.style.flexDirection = 'column';
+                    adContainer.style.alignItems = 'center';
+                    adContainer.style.justifyContent = 'center';
+                    adContainer.style.minHeight = '250px';
+                    adContainer.style.margin = '15px 10px';
+                    adContainer.style.borderRadius = '10px';
+                    adContainer.style.background = 'rgba(255, 255, 255, 0.1)';
+                }
             });
             
             // Reklamları bir kez yükle
@@ -185,6 +198,7 @@ const MonetizationManager = {
                     console.log(adElements.length + ' adet reklam başlatıldı');
                 } catch (e) {
                     // Sessizce devam et
+                    console.log('Reklam yükleme hatası: ', e);
                 }
             }
         });
@@ -210,26 +224,75 @@ const MonetizationManager = {
         if (this.cookiePreferences.advertising) {
             // AdSense arabulucu reklamı
             const adContainer = document.createElement('div');
+            adContainer.className = 'interstitial-ad-container';
+            adContainer.style.position = 'fixed';
+            adContainer.style.zIndex = '9999';
+            adContainer.style.top = '0';
+            adContainer.style.left = '0';
+            adContainer.style.width = '100%';
+            adContainer.style.height = '100%';
+            adContainer.style.display = 'flex';
+            adContainer.style.alignItems = 'center';
+            adContainer.style.justifyContent = 'center';
+            adContainer.style.backgroundColor = 'rgba(0,0,0,0.8)';
+            
             adContainer.innerHTML = `
-                <div class="interstitial-ad">
+                <div class="interstitial-ad" style="position: relative; width: 100%; max-width: 800px; min-height: 400px; background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+                    <div style="position: absolute; top: 10px; right: 10px; cursor: pointer; font-size: 20px; color: #666;" class="close-ad">×</div>
+                    <div style="text-align: center; margin-bottom: 15px; color: #333;"><strong>Reklam</strong> - <span class="ad-timer">5</span> saniye sonra kapatabilirsiniz</div>
                     <ins class="adsbygoogle"
-                         style="display:block; min-height: 300px; min-width: 300px;"
+                         style="display:block; min-height: 280px; width: 100%;"
                          data-ad-client="ca-pub-7610338885240453"
                          data-ad-format="auto"
                          data-full-width-responsive="true"></ins>
-                    <script>
-                         (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
                 </div>
             `;
+            
             document.body.appendChild(adContainer);
             
-            // 5 saniye sonra kaldır
+            // Reklamı yükle
+            try {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            } catch (e) {
+                console.log('Arabulucu reklam yüklenemedi', e);
+            }
+            
+            // Zamanlayıcı
+            let seconds = 5;
+            const timerEl = adContainer.querySelector('.ad-timer');
+            const closeBtn = adContainer.querySelector('.close-ad');
+            
+            // İlk 5 saniye kapat düğmesi devre dışı
+            closeBtn.style.opacity = '0.5';
+            closeBtn.style.pointerEvents = 'none';
+            
+            const timer = setInterval(() => {
+                seconds--;
+                if (timerEl) timerEl.textContent = seconds;
+                
+                if (seconds <= 0) {
+                    clearInterval(timer);
+                    closeBtn.style.opacity = '1';
+                    closeBtn.style.pointerEvents = 'auto';
+                }
+            }, 1000);
+            
+            // Kapatma düğmesine tıklama işleyicisi ekle
+            closeBtn.addEventListener('click', () => {
+                if (seconds <= 0) {
+                    if (adContainer.parentNode) {
+                        adContainer.parentNode.removeChild(adContainer);
+                    }
+                    clearInterval(timer);
+                }
+            });
+            
+            // 60 saniye sonra otomatik kapat (düğmeye basılmazsa)
             setTimeout(() => {
                 if (adContainer.parentNode) {
                     adContainer.parentNode.removeChild(adContainer);
                 }
-            }, 5000);
+            }, 60000);
         }
     },
 
@@ -251,10 +314,20 @@ const MonetizationManager = {
             // Reklam alanının görünür olduğunu doğrula
             const adContainer = ad.closest('div');
             if (adContainer) {
-                adContainer.style.display = 'block';
-                adContainer.style.minHeight = '100px';
+                adContainer.style.display = 'flex';
+                adContainer.style.minHeight = '250px';
                 adContainer.style.width = '100%';
                 adContainer.style.overflow = 'hidden';
+                
+                // Yan panel reklamları için özel stil
+                if (adContainer.classList.contains('side-ad-container')) {
+                    adContainer.style.flexDirection = 'column';
+                    adContainer.style.alignItems = 'center';
+                    adContainer.style.justifyContent = 'center';
+                    adContainer.style.margin = '15px 10px';
+                    adContainer.style.borderRadius = '10px';
+                    adContainer.style.background = 'rgba(255, 255, 255, 0.1)';
+                }
             }
         });
         
