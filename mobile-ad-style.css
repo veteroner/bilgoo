@@ -1,9 +1,0 @@
-/* Mobil Cihazlar için Reklam Stilleri */
-@media (max-width: 768px) {
-    .side-ad-left, 
-    .side-ad-right {
-        display: none !important; /* Mobil cihazlarda tüm reklamları gizle */
-    }
-    
-    /* Diğer stil kuralları kaldırıldı çünkü reklamlar artık gösterilmeyecek */
-} 

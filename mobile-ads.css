@@ -8,13 +8,13 @@
         right: auto !important;
         transform: none !important;
         width: 100% !important;
-        min-height: 60px !important;
-        max-height: 60px !important;
-        margin: 5px auto !important;
-        padding: 2px !important;
+        min-height: 100px !important;
+        max-height: 100px !important;
+        margin: 10px auto !important;
+        padding: 5px !important;
         background: rgba(255, 255, 255, 0.9) !important;
         display: flex !important;
-        border-radius: 8px !important;
+        border-radius: 10px !important;
         z-index: 100 !important;
     }
     
@@ -22,8 +22,8 @@
     .side-ad-right ins {
         display: block !important;
         width: 100% !important;
-        min-height: 50px !important;
-        height: 50px !important;
+        min-height: 90px !important;
+        height: 90px !important;
     }
     
     /* Sadece bir tanesini göster */
