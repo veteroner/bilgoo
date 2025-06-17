@@ -974,7 +974,7 @@
         /* Reklam Alanları */
         .ad-banner {
             margin: 0 0 10px 0; /* Üstteki margin kaldırıldı, sadece altta bırakıldı */
-            min-height: 250px;
+            min-height: 50px;
             text-align: center;
             background: #f5f5f5;
             border-radius: 8px;
@@ -982,14 +982,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 100%;
-        }
-        
-        /* AdSense için stiller */
-        ins.adsbygoogle {
-            min-height: 250px;
-            width: 100%;
-            display: block;
         }
 
         .interstitial-ad {
@@ -2169,7 +2161,7 @@
         <div class="ad-banner" id="top-banner-ad">
             <!-- Google AdSense Banner -->
             <ins class="adsbygoogle"
-                 style="display:block; min-height:250px; width:100%;"
+                 style="display:block; min-height: 100px; min-width: 300px;"
                  data-ad-client="ca-pub-7610338885240453"
                  data-ad-format="auto"
                  data-full-width-responsive="true"></ins>
@@ -3906,8 +3898,7 @@
         </div>
     </div>
 
-    <!-- Google AdSense -->
-    <!-- AdSense kodu zaten yukarıda eklenmiş -->
+    <!-- Bu kısım silinebilir çünkü aynı kod daha önce sayfada zaten eklenmiş -->
     
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
