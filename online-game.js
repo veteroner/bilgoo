@@ -1978,184 +1978,498 @@ const onlineGame = {
     
     // Oyunu başlat (sadece ev sahibi)
     startGame: function() {
-        if (!this.isHost || !this.currentRoom) return;
-        
-        // Sistem mesajı gönder
-        this.sendLocalizedSystemMessage('host_starting', { username: this.username });
-        
-        // Oda ayarları
-        const gameSettings = {
-            category: 'random',
-            questionCount: 10,
-            timePerQuestion: 45,
-            difficulty: 'medium'
-        };
-        
-        // Kategori seçimi
-        // DİNAMİK KATEGORİ SEÇİMİ (dil desteği için)
-        let selectedCategory;
-        const categories = Object.keys(quizApp.allQuestionsData || {});
-        if (categories.length === 0) {
-            console.error("Hiç kategori bulunamadı. Varsayılan sorular yükleniyor.");
-            quizApp.loadDefaultQuestions();
-            quizApp.allQuestionsData = quizApp.questionsData;
+        if (!this.isHost) {
+            return;
         }
         
-        // Mevcut dilde kategori bul, yoksa ilkini al
-        let categoryGeneral = 'Genel Kültür';
-        // Dil çevirisini languages objesinden al
-        const currentLang = window.quizApp && window.quizApp.currentLanguage ? window.quizApp.currentLanguage : 'tr';
-        if (window.languages && window.languages[currentLang] && window.languages[currentLang].categoryGeneral) {
-            categoryGeneral = window.languages[currentLang].categoryGeneral;
-        }
-        console.log("Aranan kategori adı:", categoryGeneral);
-        selectedCategory = categories.find(cat => cat.toLowerCase() === categoryGeneral.toLowerCase()) || categories[0];
-        console.log("Seçilen kategori:", selectedCategory);
+        // Kategori seçimini kontrol et
+        const categorySelect = document.getElementById('waiting-room-category');
+        let selectedCategory = '';
         
-        try {
-            // allQuestionsData kontrolü
-            if (!quizApp.allQuestionsData) {
-                console.error("quizApp.allQuestionsData tanımlı değil. Varsayılan soru verileri kullanılacak.");
-                quizApp.loadDefaultQuestions();
-                quizApp.allQuestionsData = quizApp.questionsData;
+        if (!categorySelect) {
+            // Kategori seçimi yoksa, kategori seçme kutusunu oluştur
+            this.showCategorySelection();
+            return;
+        } else {
+            selectedCategory = categorySelect.value;
+            if (!selectedCategory) {
+                alert('Lütfen bir kategori seçin!');
+                return;
             }
-            
-            const allCategories = Object.keys(quizApp.allQuestionsData || {});
-            console.log("Mevcut kategoriler:", allCategories);
-            
-            if (allCategories.length === 0) {
-                console.error("Hiç kategori bulunamadı. Varsayılan sorular yükleniyor.");
-                quizApp.loadDefaultQuestions();
-                quizApp.allQuestionsData = quizApp.questionsData;
-            }
-            
-            // Seçilen kategorinin varlığını kontrol et
-            if (!allCategories.includes(selectedCategory)) {
-                console.warn(`'${selectedCategory}' kategorisi bulunamadı. İlk mevcut kategori seçiliyor.`);
-                selectedCategory = allCategories[0] || 'Genel Kültür';
-            }
-            
-            // Seçilen kategoriden soru al
-            const allCategoryQuestions = quizApp.allQuestionsData[selectedCategory];
-            
-            // Kategori bilgisini veya veri yoklama offline mod kontrolü
-            if (!Array.isArray(allCategoryQuestions) || allCategoryQuestions.length === 0) {
-                console.error("Kategori seçimi hatası: Seçilen kategoride yeterli soru yok veya sorular yüklenemedi.");
-                this.showToast("Seçilen kategoride yeterli soru yok veya sorular yüklenemedi. Lütfen başka bir kategori seçin veya yöneticinize başvurun.", "error");
+        }
+        
+        // Oyuncu sayısını kontrol et
+        this.roomRef.child('players').once('value', snapshot => {
+            const players = snapshot.val();
+            if (!players || Object.keys(players).length < 2) {
+                alert('Oyunu başlatmak için en az 2 oyuncu gerekli.');
                 return;
             }
             
-            console.log(`'${selectedCategory}' kategorisinde ${allCategoryQuestions.length} soru bulundu.`);
-            
-            // Kategorinin sorularını karıştır
-            const shuffledQuestions = [...allCategoryQuestions].sort(() => Math.random() - 0.5);
-            
-            // Oyun verisini hazırla
-            const gameData = {
-                category: selectedCategory,
-                questions: shuffledQuestions.slice(0, gameSettings.questionCount), // Soru sayısını sınırla
-                startTime: firebase.database.ServerValue.TIMESTAMP,
-                settings: {
-                    timePerQuestion: gameSettings.timePerQuestion,
-                    difficulty: gameSettings.difficulty
-                }
-            };
-            
-            // Oyun başlatma ekranını göster
-            this.showGameStartingOverlay();
-            
-            // Oyun başlatmadan önce geri sayım yapma
-            let countdown = 3;
-            const countdownInterval = setInterval(() => {
-                this.updateGameStartCountdown(countdown);
-                this.sendLocalizedSystemMessage('game_starts_in', { countdown: countdown });
-                countdown--;
-                
-                if (countdown < 0) {
-                    clearInterval(countdownInterval);
-                    
-                    // Firestore/Firebase bağlantı hatası durumunda offline modda devam etmek için try-catch bloğu
-                    try {
-                        // Mevcut oyuncu puanlarını koru
-                        this.roomRef.child('players').once('value')
-                            .then(snapshot => {
-                                try {
-                                    const currentPlayers = snapshot.val() || {};
-                                    const players = {...this.players};
-                                    
-                                    // Tüm kullanıcıları hazır olmayan duruma getir ama puanlarını koru
-                                    Object.keys(players).forEach(playerId => {
-                                        players[playerId].ready = false;
-                                        // Eğer oyuncu zaten mevcutsa puanını koru, değilse 0 olarak başlat
-                                        if (currentPlayers[playerId] && currentPlayers[playerId].score !== undefined) {
-                                            players[playerId].score = currentPlayers[playerId].score;
-                                        } else {
-                                            players[playerId].score = 0;
-                                        }
-                                    });
-                                    
-                                    // Oyun verisini veritabanına kaydet
-                                    return this.roomRef.child('players').set(players)
-                                        .then(() => this.roomRef.child('gameData').set(gameData))
-                                        .then(() => {
-                                            // Oda durumunu "oynanıyor" olarak güncelle
-                                            return this.roomRef.child('status').set('playing');
-                                        })
-                                        .then(() => {
-                                            console.log('Oyun başlatıldı, kategori:', selectedCategory);
-                                            
-                                            // Kategori adının çevirisini al
-                                            let translatedCategory = selectedCategory;
-                                            const currentLang = window.quizApp && window.quizApp.currentLanguage ? window.quizApp.currentLanguage : 'tr';
-                                            if (window.languages && window.languages[currentLang] && window.languages[currentLang][selectedCategory]) {
-                                                translatedCategory = window.languages[currentLang][selectedCategory];
-                                            }
-                                            
-                                            // Son bir sistem mesajı göster
-                                            this.sendLocalizedSystemMessage('game_started', { category: translatedCategory });
-                                            
-                                            // Önce mevcut dinleyicileri temizle
-                                            this.roomRef.child('gameChat').off();
-                                            
-                                            // Oyun içi chat için sistem mesajı gönder
-                                            this.roomRef.child('gameChat').push({
-                                                text: `Oyun başladı! Seçilen kategori: ${translatedCategory}`,
-                                                timestamp: firebase.database.ServerValue.TIMESTAMP,
-                                                isSystemMessage: true
-                                            });
-                                            
-                                            // Firebase'e gönderme başarılı veya başarısız olsa da oyunu offline olarak başlat
-                                            this.startOfflineGameIfNeeded(gameData);
-                                        })
-                                        .catch(error => {
-                                            console.error('Firebase veri güncelleme hatası, offline olarak devam ediliyor:', error);
-                                            // Firebase'e yazma hatası durumunda offline olarak devam et
-                                            this.startOfflineGameIfNeeded(gameData);
-                                        });
-                                } catch (error) {
-                                    console.error('Snapshot işleme hatası, offline olarak devam ediliyor:', error);
-                                    // Firebase'den okuma hatası durumunda offline olarak başlat
-                                    this.startOfflineGameIfNeeded(gameData);
-                                    return Promise.reject(error);
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Oyuncu bilgisi alınamadı, offline olarak devam ediliyor:', error);
-                                // Firebase'den okuma hatası durumunda offline olarak başlat
-                                this.startOfflineGameIfNeeded(gameData);
-                            });
-                    } catch (error) {
-                        console.error('Firebase erişim hatası, offline olarak devam ediliyor:', error);
-                        // Firebase erişim hatası durumunda offline olarak başlat
-                        this.startOfflineGameIfNeeded(gameData);
+            // Soru verilerini yükle ve oyun verilerini hazırla
+            this.loadQuestions(selectedCategory)
+                .then(questions => {
+                    if (questions.length < 5) {
+                        alert('Seçilen kategoride yeterli soru bulunamadı!');
+                        return;
                     }
+                    
+                    // Soruları karıştır ve ilk 10 soruyu seç
+                    const shuffledQuestions = this.shuffleArray(questions).slice(0, 10);
+                    
+                    const gameData = {
+                        category: selectedCategory,
+                        questions: shuffledQuestions,
+                        startedAt: firebase.database.ServerValue.TIMESTAMP,
+                        hostId: this.userId
+                    };
+                    
+                    // Oyun başlama animasyonu göster
+                    this.showGameStartingOverlay();
+                    
+                    // 3 saniye geri sayım
+                    let countdown = 3;
+                    const countdownInterval = setInterval(() => {
+                        this.updateGameStartCountdown(countdown);
+                        countdown--;
+                        
+                        if (countdown < 0) {
+                            clearInterval(countdownInterval);
+                            // Son olarak oyun başladı gösterilir
+                            this.updateGameStartCountdown(0);
+                            
+                            // Oyun başlatma ekranını bir süre sonra kaldır ve oyunu gerçekten başlat
+                            setTimeout(() => {
+                                this.hideGameStartingOverlay();
+                                
+                                // Oyun verilerini Firebase'e kaydet ve durum değiştir
+                                this.roomRef.child('gameData').set(gameData);
+                                this.roomRef.child('status').set('playing');
+                                
+                                this.currentGameData = gameData;
+                                this.gameStarted = true;
+                                
+                                // Oyun başlatma sesi çal
+                                const gameStartSound = new Audio('https://assets.mixkit.co/active_storage/sfx/249/249.wav');
+                                gameStartSound.volume = 0.5;
+                                gameStartSound.play().catch(e => console.log('Ses çalma hatası:', e));
+                                
+                                // Bekleme odasını gizle ve oyun ekranını göster
+                                this.waitingRoom.style.display = 'none';
+                                
+                                // Quiz elementlerini hazırla
+                                this.prepareQuizElements();
+                                
+                                // Çevrimiçi göstergeleri görünür yap
+                                this.onlineIndicators.style.display = 'block';
+                                
+                                // Quiz ekranını göster ve ilk soruyu yükle
+                                const quizElement = document.getElementById('quiz');
+                                if (quizElement) quizElement.style.display = 'block';
+                                
+                                // Oyunu başlat
+                                this.loadGame(gameData);
+                                
+                                // Skor dinlemeyi başlat
+                                this.listenToScoreChanges();
+                            }, 1000);
+                        }
+                    }, 1000);
+                })
+                .catch(error => {
+                    console.error('Sorular yüklenirken hata:', error);
+                    alert('Sorular yüklenirken bir hata oluştu!');
+                });
+        });
+    },
+    
+    // Oyun başlama ekranı göster
+    showGameStartingOverlay: function() {
+        // Ekranda zaten varsa kaldır
+        let overlay = document.getElementById('game-starting-overlay');
+        if (overlay) overlay.remove();
+        
+        // Yeni overlay oluştur
+        overlay = document.createElement('div');
+        overlay.id = 'game-starting-overlay';
+        overlay.classList.add('game-starting-overlay');
+        
+        overlay.innerHTML = `
+            <div class="game-starting-content">
+                <h2>Oyun Başlıyor!</h2>
+                <div class="countdown-animation">
+                    <div class="countdown-number" id="countdown-number">3</div>
+                    <div class="countdown-pulse"></div>
+                </div>
+                <p>Hazır Olun!</p>
+            </div>
+        `;
+        
+        document.body.appendChild(overlay);
+        
+        // Stil ekle
+        const style = document.createElement('style');
+        style.textContent = `
+            .game-starting-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(135deg, rgba(74, 20, 140, 0.95), rgba(123, 31, 162, 0.95));
+                z-index: 10000;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                animation: fadeIn 0.5s ease-out;
+            }
+            
+            .game-starting-content {
+                text-align: center;
+                color: white;
+            }
+            
+            .game-starting-content h2 {
+                font-size: 32px;
+                margin-bottom: 30px;
+            }
+            
+            .game-starting-content p {
+                font-size: 20px;
+                opacity: 0.9;
+            }
+            
+            .countdown-animation {
+                position: relative;
+                width: 100px;
+                height: 100px;
+                margin: 0 auto 20px;
+            }
+            
+            .countdown-number {
+                position: relative;
+                font-size: 60px;
+                font-weight: bold;
+                text-align: center;
+                line-height: 100px;
+                z-index: 2;
+            }
+            
+            .countdown-pulse {
+                position: absolute;
+                top: -15px;
+                left: -15px;
+                width: 130px;
+                height: 130px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.3);
+                animation: pulse 1s infinite;
+                z-index: 1;
+            }
+            
+            @keyframes pulse {
+                0% {
+                    transform: scale(0.8);
+                    opacity: 0.8;
                 }
-            }, 1000);
-        } catch (error) {
-            console.error('Oyun başlatma hatası:', error);
-            this.showToast(`Oyun başlatılamadı: ${error.message}`, "error");
-            this.hideGameStartingOverlay();
+                50% {
+                    transform: scale(1);
+                    opacity: 0.4;
+                }
+                100% {
+                    transform: scale(0.8);
+                    opacity: 0.8;
+                }
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    },
+    
+    // Oyun başlama ekranını gizle
+    hideGameStartingOverlay: function() {
+        const overlay = document.getElementById('game-starting-overlay');
+        if (overlay) {
+            overlay.style.animation = 'fadeOut 0.5s ease-out';
+            setTimeout(() => {
+                overlay.remove();
+            }, 500);
         }
+    },
+    
+    // Geri sayım değerini güncelle
+    updateGameStartCountdown: function(value) {
+        const countdownElement = document.getElementById('countdown-number');
+        if (countdownElement) {
+            if (value === 0) {
+                countdownElement.textContent = 'BAŞLA!';
+                countdownElement.style.fontSize = '42px';
+            } else {
+                countdownElement.textContent = value;
+            }
+        }
+    },
+    
+    // Kategori seçim modalını göster
+    showCategorySelection: function() {
+        // Mevcut kategori seçim modalı varsa kaldır
+        const existingModal = document.querySelector('.category-selection-modal');
+        if (existingModal) existingModal.remove();
+        
+        // Kategori seçim modalı oluştur
+        const modal = document.createElement('div');
+        modal.className = 'category-selection-modal';
+        
+        let categoryOptions = '';
+        
+        // Kategorileri doldur
+        if (window.quizApp && window.quizApp.allQuestionsData) {
+            for (const category in window.quizApp.allQuestionsData) {
+                // Kategori çevirisini languages objesinden al
+                const currentLang = window.quizApp && window.quizApp.currentLanguage ? window.quizApp.currentLanguage : 'tr';
+                let translatedCategory = category;
+                if (window.languages && window.languages[currentLang] && window.languages[currentLang][category]) {
+                    translatedCategory = window.languages[currentLang][category];
+                }
+                categoryOptions += `<option value="${category}">${translatedCategory}</option>`;
+            }
+        }
+        
+        modal.innerHTML = `
+            <div class="category-selection-content">
+                <h3>Oyun Kategorisini Seçin</h3>
+                <p>Lütfen oyunun kategorisini seçin:</p>
+                
+                <div class="category-selection-field">
+                    <select id="waiting-room-category">
+                        <option value="">Kategori Seçin</option>
+                        ${categoryOptions}
+                    </select>
+                </div>
+                
+                <div class="category-selection-actions">
+                    <button id="confirm-category" class="btn-primary">Onayla ve Devam Et</button>
+                </div>
+            </div>
+        `;
+        
+        // Stil ekle
+        const style = document.createElement('style');
+        style.textContent = `
+            .category-selection-modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.7);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+            }
+            
+            .category-selection-content {
+                background: white;
+                padding: 30px;
+                border-radius: 10px;
+                width: 90%;
+                max-width: 400px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            }
+            
+            .category-selection-content h3 {
+                margin-top: 0;
+                color: #4a148c;
+            }
+            
+            .category-selection-field {
+                margin: 20px 0;
+            }
+            
+            .category-selection-field select {
+                width: 100%;
+                padding: 12px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                font-size: 16px;
+            }
+            
+            .category-selection-actions {
+                text-align: right;
+            }
+            
+            .category-selection-actions button {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                background: #4a148c;
+                color: white;
+                font-size: 16px;
+                cursor: pointer;
+            }
+            
+            .category-selection-actions button:hover {
+                background: #7b1fa2;
+            }
+        `;
+        document.head.appendChild(style);
+        document.body.appendChild(modal);
+        
+        // Kategori seçim onay butonu
+        document.getElementById('confirm-category').addEventListener('click', () => {
+            const selectedCategory = document.getElementById('waiting-room-category').value;
+            if (!selectedCategory) {
+                alert('Lütfen bir kategori seçin!');
+                return;
+            }
+            
+            // Kategoriyi bekleme odasında göster
+            this.showSelectedCategoryInWaitingRoom(selectedCategory);
+            
+            // Modalı kapat
+            modal.remove();
+            
+            // Oyunu başlat
+            this.startGame();
+        });
+    },
+    
+    // Bekleme odasında seçilen kategoriyi göster
+    showSelectedCategoryInWaitingRoom: function(category) {
+        // Mevcut kategori gösterimi varsa kaldır
+        const existingCategory = document.querySelector('.selected-category-display');
+        if (existingCategory) existingCategory.remove();
+        
+        // Kategori gösterimi oluştur
+        const categoryDisplay = document.createElement('div');
+        categoryDisplay.className = 'selected-category-display';
+        
+        // Kategori çevirisini languages objesinden al
+        const currentLang = window.quizApp && window.quizApp.currentLanguage ? window.quizApp.currentLanguage : 'tr';
+        let translatedCategory = category;
+        if (window.languages && window.languages[currentLang] && window.languages[currentLang][category]) {
+            translatedCategory = window.languages[currentLang][category];
+        }
+        
+        categoryDisplay.innerHTML = `
+            <div class="category-info">
+                <span class="category-label">Seçilen Kategori:</span>
+                <span class="category-value">${translatedCategory}</span>
+            </div>
+            <input type="hidden" id="waiting-room-category" value="${category}">
+        `;
+        
+        // Stil ekle
+        const style = document.createElement('style');
+        style.textContent = `
+            .selected-category-display {
+                margin: 15px 0;
+                padding: 10px 15px;
+                background: rgba(74, 20, 140, 0.1);
+                border-radius: 5px;
+                border-left: 4px solid #4a148c;
+            }
+            
+            .category-info {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            
+            .category-label {
+                font-weight: bold;
+                color: #555;
+            }
+            
+            .category-value {
+                color: #4a148c;
+                font-weight: bold;
+                font-size: 16px;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Bekleme odasına ekle
+        const waitingRoomHeader = document.querySelector('#waiting-room h2');
+        if (waitingRoomHeader) {
+            waitingRoomHeader.after(categoryDisplay);
+        } else {
+            this.waitingRoom.prepend(categoryDisplay);
+        }
+    },
+    
+    // Soruları yükle
+    loadQuestions: function(category) {
+        return new Promise((resolve, reject) => {
+            if (window.quizApp && window.quizApp.allQuestionsData && window.quizApp.allQuestionsData[category]) {
+                resolve(window.quizApp.allQuestionsData[category]);
+            } else {
+                // Kategoriye özel soruları yükle
+                this.loadCategoryQuestions(category)
+                    .then(questions => {
+                        resolve(questions);
+                    })
+                    .catch(error => {
+                        console.error("Sorular yüklenirken hata:", error);
+                        reject(error);
+                    });
+            }
+        });
+    },
+    
+    // Kategoriye göre soruları yükle
+    loadCategoryQuestions: function(category) {
+        return new Promise((resolve, reject) => {
+            // Önce yerel depodan kontrol et
+            const cachedData = localStorage.getItem(`questions_${category}`);
+            if (cachedData) {
+                const questions = JSON.parse(cachedData);
+                if (questions && questions.length > 0) {
+                    resolve(questions);
+                    return;
+                }
+            }
+            
+            // Dil dosyası yolunu belirle
+            const lang = window.quizApp && window.quizApp.currentLanguage ? window.quizApp.currentLanguage : 'tr';
+            const questionsPath = `languages/${lang}/questions.json`;
+            
+            fetch(questionsPath)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data[category]) {
+                        // Yerel depoya kaydet
+                        localStorage.setItem(`questions_${category}`, JSON.stringify(data[category]));
+                        resolve(data[category]);
+                    } else {
+                        reject(new Error(`${category} kategorisi için soru bulunamadı.`));
+                    }
+                })
+                .catch(error => {
+                    console.error("Sorular yüklenirken hata:", error);
+                    reject(error);
+                });
+        });
+    },
+    
+    // Dizi elemanlarını karıştır
+    shuffleArray: function(array) {
+        const newArray = [...array];
+        for (let i = newArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+        }
+        return newArray;
     },
     
     // Oyun yükleme (oyuncular için)
@@ -3573,6 +3887,9 @@ const onlineGame = {
         // Odayı dinlemeye başla
         this.startListeningToRoom();
         
+        // Arkadaşına tekrar bildirim gönder butonu ekle
+        this.addResendInvitationButton();
+        
         // Bekleme animasyonu göster
         setTimeout(() => {
             this.showWaitingAnimation();
@@ -3583,6 +3900,425 @@ const onlineGame = {
                 this.updateWaitingMessage("Oyunun başlaması için oda sahibini bekleniyor...", "waiting-host");
             }
         }, 100);
+    },
+    
+    // Arkadaşına tekrar bildirim gönder butonu ekle
+    addResendInvitationButton: function() {
+        // Mevcut butonu temizle
+        const existingButton = document.getElementById('resend-invite-button');
+        if (existingButton) {
+            existingButton.remove();
+        }
+        
+        // Butonun ekleneceği yeri belirle
+        const container = document.querySelector('#waiting-room .room-code-section') || document.querySelector('#waiting-room');
+        if (!container) return;
+        
+        // Resend button container
+        const resendContainer = document.createElement('div');
+        resendContainer.className = 'resend-invitation-container';
+        resendContainer.innerHTML = `
+            <button id="resend-invite-button" class="resend-invite-btn">
+                <i class="fas fa-paper-plane"></i> Arkadaşlarına Tekrar Davet Gönder
+            </button>
+        `;
+        
+        // Stiller ekle
+        const style = document.createElement('style');
+        style.textContent = `
+            .resend-invitation-container {
+                margin: 20px 0;
+                text-align: center;
+            }
+            
+            .resend-invite-btn {
+                padding: 12px 20px;
+                background: linear-gradient(135deg, #673ab7, #9c27b0);
+                color: white;
+                border: none;
+                border-radius: 50px;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 10px rgba(156, 39, 176, 0.3);
+                transition: all 0.2s ease;
+            }
+            
+            .resend-invite-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 15px rgba(156, 39, 176, 0.4);
+            }
+            
+            .resend-invite-btn i {
+                margin-right: 8px;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Butonu ekle
+        container.appendChild(resendContainer);
+        
+        // Butona tıklama olayını ekle
+        document.getElementById('resend-invite-button').addEventListener('click', () => {
+            this.resendInvitations();
+        });
+    },
+    
+    // Arkadaşlarına tekrar bildirim gönder
+    resendInvitations: function() {
+        if (!this.currentRoom) return;
+        
+        // Gönderiliyor bildirimi göster
+        const sendingNotification = document.createElement('div');
+        sendingNotification.className = 'notification info';
+        sendingNotification.innerHTML = `<i class="fas fa-paper-plane"></i> Davetler tekrar gönderiliyor...`;
+        document.body.appendChild(sendingNotification);
+        
+        const currentUser = firebase.auth().currentUser;
+        const userName = currentUser.displayName || currentUser.email || 'Bir arkadaşınız';
+        
+        // Firestore'dan bekleyen davetleri al
+        firebase.firestore().collection('gameInvites')
+            .where('senderId', '==', this.userId)
+            .where('roomCode', '==', this.currentRoom)
+            .where('status', 'in', ['pending', 'seen']) // Sadece bekleyen veya görülen davetleri al
+            .get()
+            .then((querySnapshot) => {
+                if (querySnapshot.empty) {
+                    // Bekleyen davet yoksa, yeni arkadaşa davet gönder modalı göster
+                    sendingNotification.style.opacity = '0';
+                    setTimeout(() => {
+                        if (document.body.contains(sendingNotification)) {
+                            sendingNotification.remove();
+                        }
+                        this.showInviteFriendsModal();
+                    }, 300);
+                    return;
+                }
+                
+                // Her bir daveti güncelle
+                const batch = firebase.firestore().batch();
+                let updateCount = 0;
+                
+                querySnapshot.forEach((doc) => {
+                    const inviteRef = firebase.firestore().collection('gameInvites').doc(doc.id);
+                    batch.update(inviteRef, {
+                        status: 'pending', // Durumu tekrar "bekliyor" olarak ayarla
+                        resent: true, // Tekrar gönderildiğini işaretle
+                        resentAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    updateCount++;
+                });
+                
+                // Batch işlemini uygula
+                return batch.commit().then(() => {
+                    console.log(`${updateCount} davet tekrar gönderildi`);
+                    
+                    // Başarılı bildirimi göster
+                    sendingNotification.className = 'notification success';
+                    sendingNotification.innerHTML = `<i class="fas fa-check-circle"></i> ${updateCount} davet tekrar gönderildi!`;
+                    
+                    // 3 saniye sonra bildirimi kaldır
+                    setTimeout(() => {
+                        if (document.body.contains(sendingNotification)) {
+                            sendingNotification.style.opacity = '0';
+                            setTimeout(() => {
+                                if (document.body.contains(sendingNotification)) {
+                                    sendingNotification.remove();
+                                }
+                            }, 300);
+                        }
+                    }, 3000);
+                });
+            })
+            .catch((error) => {
+                console.error("Davetler tekrar gönderilirken hata:", error);
+                
+                // Hata bildirimi göster
+                sendingNotification.className = 'notification error';
+                sendingNotification.innerHTML = `<i class="fas fa-exclamation-circle"></i> Davetler tekrar gönderilemedi!`;
+                
+                // 3 saniye sonra bildirimi kaldır
+                setTimeout(() => {
+                    if (document.body.contains(sendingNotification)) {
+                        sendingNotification.style.opacity = '0';
+                        setTimeout(() => {
+                            if (document.body.contains(sendingNotification)) {
+                                sendingNotification.remove();
+                            }
+                        }, 300);
+                    }
+                }, 3000);
+            });
+    },
+    
+    // Arkadaş davet etme modalı göster
+    showInviteFriendsModal: function() {
+        // Mevcut modalı temizle
+        const existingModal = document.getElementById('invite-friends-modal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+        
+        // Modal oluştur
+        const modal = document.createElement('div');
+        modal.id = 'invite-friends-modal';
+        modal.className = 'invite-friends-modal';
+        modal.innerHTML = `
+            <div class="invite-modal-content">
+                <div class="invite-modal-header">
+                    <h3>Arkadaşlarını Davet Et</h3>
+                    <button class="close-invite-modal">&times;</button>
+                </div>
+                <div class="invite-modal-body">
+                    <p>Bu odaya katılmaları için arkadaşlarını davet et:</p>
+                    <div class="room-code-display">
+                        <p>Oda Kodu: <span class="room-code-value">${this.currentRoom}</span></p>
+                        <button id="copy-room-code" class="copy-room-code-btn">
+                            <i class="fas fa-copy"></i> Kopyala
+                        </button>
+                    </div>
+                    <div class="friends-list-container">
+                        <div id="invite-friends-list" class="invite-friends-list">
+                            <p class="loading-friends"><i class="fas fa-spinner fa-spin"></i> Arkadaşlar yükleniyor...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Stil ekle
+        const style = document.createElement('style');
+        style.textContent = `
+            .invite-friends-modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.7);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+            }
+            
+            .invite-modal-content {
+                background: white;
+                width: 90%;
+                max-width: 500px;
+                max-height: 80vh;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .invite-modal-header {
+                padding: 15px 20px;
+                background: #4a148c;
+                color: white;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .invite-modal-header h3 {
+                margin: 0;
+                font-size: 18px;
+            }
+            
+            .close-invite-modal {
+                background: none;
+                border: none;
+                color: white;
+                font-size: 24px;
+                cursor: pointer;
+            }
+            
+            .invite-modal-body {
+                padding: 20px;
+                overflow-y: auto;
+            }
+            
+            .room-code-display {
+                background: rgba(74, 20, 140, 0.1);
+                border-radius: 5px;
+                padding: 15px;
+                margin-bottom: 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .room-code-value {
+                font-weight: bold;
+                font-size: 20px;
+                letter-spacing: 2px;
+                color: #4a148c;
+            }
+            
+            .copy-room-code-btn {
+                background: #4a148c;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 8px 15px;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            
+            .copy-room-code-btn:hover {
+                background: #7b1fa2;
+            }
+            
+            .invite-friends-list {
+                max-height: 300px;
+                overflow-y: auto;
+            }
+            
+            .friend-invite-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .friend-info {
+                display: flex;
+                align-items: center;
+            }
+            
+            .friend-info i {
+                margin-right: 10px;
+                font-size: 20px;
+                color: #666;
+            }
+            
+            .invite-btn {
+                background: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 8px 15px;
+                cursor: pointer;
+            }
+            
+            .invite-btn:hover {
+                background: #45a049;
+            }
+            
+            .loading-friends {
+                text-align: center;
+                color: #666;
+                padding: 20px;
+            }
+        `;
+        document.head.appendChild(style);
+        document.body.appendChild(modal);
+        
+        // Kapatma tuşuna tıklama olayı ekle
+        document.querySelector('.close-invite-modal').addEventListener('click', () => {
+            modal.remove();
+        });
+        
+        // Oda kodunu kopyalama tuşuna tıklama olayı ekle
+        document.getElementById('copy-room-code').addEventListener('click', () => {
+            const roomCode = this.currentRoom;
+            navigator.clipboard.writeText(roomCode).then(() => {
+                alert('Oda kodu panoya kopyalandı!');
+            }).catch(err => {
+                console.error('Kopyalama hatası:', err);
+            });
+        });
+        
+        // Arkadaş listesini yükle
+        this.loadFriendsForInvite();
+    },
+    
+    // Davet için arkadaş listesini yükle
+    loadFriendsForInvite: function() {
+        const friendsListContainer = document.getElementById('invite-friends-list');
+        if (!friendsListContainer) return;
+        
+        // Firestore'dan kullanıcının arkadaşlarını al
+        if (firebase.auth().currentUser) {
+            const userId = firebase.auth().currentUser.uid;
+            firebase.firestore().collection('users').doc(userId).get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        const userData = doc.data();
+                        const friendsList = userData.friends || [];
+                        
+                        if (friendsList.length === 0) {
+                            friendsListContainer.innerHTML = '<p class="no-friends">Henüz arkadaşınız yok.</p>';
+                            return;
+                        }
+                        
+                        friendsListContainer.innerHTML = '';
+                        
+                        // Tüm arkadaş bilgilerini al
+                        const friendPromises = friendsList.map(friendId => 
+                            firebase.firestore().collection('users').doc(friendId).get()
+                        );
+                        
+                        Promise.all(friendPromises)
+                            .then((friendDocs) => {
+                                friendDocs.forEach((friendDoc, index) => {
+                                    if (friendDoc.exists) {
+                                        const friendData = friendDoc.data();
+                                        const friendId = friendsList[index];
+                                        
+                                        const friendElement = document.createElement('div');
+                                        friendElement.className = 'friend-invite-item';
+                                        friendElement.innerHTML = `
+                                            <div class="friend-info">
+                                                <i class="fas fa-user-circle"></i>
+                                                <span>${friendData.displayName || friendData.email || 'Kullanıcı'}</span>
+                                            </div>
+                                            <button class="invite-btn" data-user-id="${friendId}">
+                                                <i class="fas fa-paper-plane"></i> Davet Et
+                                            </button>
+                                        `;
+                                        
+                                        friendsListContainer.appendChild(friendElement);
+                                    }
+                                });
+                                
+                                // Davet butonlarına tıklama olayları ekle
+                                const inviteButtons = document.querySelectorAll('.invite-btn');
+                                inviteButtons.forEach(button => {
+                                    button.addEventListener('click', (e) => {
+                                        const friendId = e.currentTarget.getAttribute('data-user-id');
+                                        if (friendId && window.friendsModule) {
+                                            window.friendsModule.sendGameInvitation(friendId, this.currentRoom);
+                                            button.innerHTML = '<i class="fas fa-check"></i> Gönderildi';
+                                            button.disabled = true;
+                                            button.style.background = '#777';
+                                        }
+                                    });
+                                });
+                            })
+                            .catch((error) => {
+                                console.error('Arkadaş bilgileri yüklenirken hata:', error);
+                                friendsListContainer.innerHTML = '<p class="error">Arkadaş bilgileri yüklenemedi.</p>';
+                            });
+                    } else {
+                        friendsListContainer.innerHTML = '<p class="error">Kullanıcı bilgileri alınamadı.</p>';
+                    }
+                })
+                .catch((error) => {
+                    console.error('Arkadaş listesi yüklenirken hata:', error);
+                    friendsListContainer.innerHTML = '<p class="error">Arkadaş listesi yüklenemedi.</p>';
+                });
+        } else {
+            friendsListContainer.innerHTML = '<p class="error">Giriş yapmadan arkadaş listesi yüklenemez.</p>';
+        }
     }
 };
 
