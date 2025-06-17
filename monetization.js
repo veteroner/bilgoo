@@ -158,15 +158,10 @@ const MonetizationManager = {
 
     // Reklamları başlat
     initializeAds: function() {
-        // Sayfa yüklendiğinde reklamları başlat
-        if (typeof adsbygoogle !== 'undefined') {
-            try {
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            } catch (e) {
-                console.log('AdSense yükleme hatası:', e);
-            }
-        }
-
+        // Not: Artık burada manuel olarak push yapmıyoruz
+        // çünkü HTML dosyasında zaten kendi push kodları var
+        // ve bu çift yükleme hatalarına neden oluyor
+        
         // Oyun aralarında reklam gösterme
         this.setupGameAds();
     },
@@ -186,40 +181,52 @@ const MonetizationManager = {
     // Arabulucu reklam göster
     showInterstitialAd: function() {
         if (this.cookiePreferences.advertising) {
-            // AdSense arabulucu reklamı
+            // AdSense arabulucu reklamı - standart reklam formatı
+            const adId = "ad-" + Math.floor(Math.random() * 1000000);
             const adContainer = document.createElement('div');
             adContainer.innerHTML = `
-                <div class="interstitial-ad">
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-client="ca-pub-7610338885240453"
-                         data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
-                    <script>
-                         (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
+                <div class="interstitial-ad" style="position:fixed; z-index:9999; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:flex; align-items:center; justify-content:center;">
+                    <div style="position:relative; width:90%; max-width:500px; background:#fff; padding:20px; border-radius:8px;">
+                        <div style="position:absolute; top:5px; right:10px; font-size:24px; cursor:pointer;" onclick="this.parentNode.parentNode.parentNode.remove();">&times;</div>
+                        <h3 style="margin-top:0;">Quiz oynadığınız için teşekkürler!</h3>
+                        <div style="min-height:250px; margin:15px 0;">
+                            <ins class="adsbygoogle"
+                                 id="${adId}"
+                                 style="display:block; min-height:250px; width:100%;"
+                                 data-ad-client="ca-pub-7610338885240453"
+                                 data-ad-format="auto"
+                                 data-full-width-responsive="true"></ins>
+                        </div>
+                        <button style="padding:10px 15px; background:#4a148c; color:#fff; border:none; border-radius:4px; cursor:pointer; width:100%;" onclick="this.parentNode.parentNode.parentNode.remove();">Reklamı Kapat</button>
+                    </div>
                 </div>
             `;
             document.body.appendChild(adContainer);
             
-            // 5 saniye sonra kaldır
+            // Reklamı yükle
+            try {
+                // Gecikmeli yükleme
+                setTimeout(() => {
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                }, 200);
+            } catch (e) {
+                console.log('Arabulucu reklam yükleme hatası:', e);
+            }
+            
+            // 15 saniye sonra otomatik kaldır
             setTimeout(() => {
                 if (adContainer.parentNode) {
                     adContainer.parentNode.removeChild(adContainer);
                 }
-            }, 5000);
+            }, 15000);
         }
     },
 
     // Reklamları yenile
     refreshAds: function() {
-        if (typeof adsbygoogle !== 'undefined') {
-            try {
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            } catch (e) {
-                console.log('Reklam yenileme hatası:', e);
-            }
-        }
+        // Bu metodu şimdilik devre dışı bırakıyoruz, çünkü adsense reklamlarının
+        // otomatik olarak yenilenmesi daha iyi ve çakışma riski yok
+        console.log('AdSense reklamları etkinleştirildi');
     },
 
     // Analytics olayları gönder
