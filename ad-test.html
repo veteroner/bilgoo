@@ -110,35 +110,9 @@
             text-align: center;
         }
         
-        /* Mobil cihazlarda yan reklamları banner olarak göster */
+        /* Mobil cihazlarda reklamları gizle */
         @media (max-width: 768px) {
             .side-ad-left, 
-            .side-ad-right {
-                position: static !important;
-                top: auto !important;
-                left: auto !important;
-                right: auto !important;
-                transform: none !important;
-                width: 100% !important;
-                min-height: 100px !important;
-                max-height: 100px !important;
-                margin: 10px auto !important;
-                padding: 5px !important;
-                background: rgba(255, 255, 255, 0.9) !important;
-                display: flex !important;
-                border-radius: 10px !important;
-                z-index: 100 !important;
-            }
-            
-            .side-ad-left ins,
-            .side-ad-right ins {
-                display: block !important;
-                width: 100% !important;
-                min-height: 90px !important;
-                height: 90px !important;
-            }
-            
-            /* Sadece bir tanesini göster */
             .side-ad-right {
                 display: none !important;
             }
