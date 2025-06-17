@@ -79,6 +79,9 @@ const onlineGame = {
                 this.listRooms();
             }
         });
+        
+        // Boş odaları temizle (uygulamanın başlangıcında)
+        this.cleanupEmptyRooms();
     },
     
     // Arayüz metinlerini güncelle
@@ -1137,6 +1140,7 @@ const onlineGame = {
         const playerCapacityElement = document.getElementById('room-capacity');
         const playerCount = playerCapacityElement ? parseInt(playerCapacityElement.value) : 4;
         // Oda verilerini oluştur
+        const currentTime = Date.now();
         const roomData = {
             name: roomName,
             hostId: this.userId,
@@ -1144,6 +1148,8 @@ const onlineGame = {
             status: 'waiting',
             maxPlayers: playerCount,
             createdAt: firebase.database.ServerValue.TIMESTAMP,
+            createdTimestamp: currentTime, // Kolayca kontrol edilebilen timestamp
+            lastActivity: currentTime, // Son aktivite zamanı
             category: selectedCategory,
             players: {
                 [this.userId]: {
@@ -1236,10 +1242,12 @@ const onlineGame = {
                     const roomData = roomSnapshot.val();
                     const roomCode = roomSnapshot.key;
                     
-                    // Sadece bekleyen odaları göster
-                    if (roomData.status === 'waiting') {
+                    // Sadece bekleyen odaları göster ve içinde oyuncu olan odaları kontrol et
+                    const playerCount = roomData.players ? Object.keys(roomData.players).length : 0;
+                    
+                    // Odanın durumu beklemede ise ve içinde en az bir oyuncu varsa göster
+                    if (roomData.status === 'waiting' && playerCount > 0) {
                         roomCount++;
-                        const playerCount = roomData.players ? Object.keys(roomData.players).length : 0;
                         const roomItem = document.createElement('div');
                         roomItem.className = 'room-item';
                         roomItem.innerHTML = `
@@ -1259,6 +1267,13 @@ const onlineGame = {
                             this.roomCodeInput.value = roomCode;
                             this.joinRoom();
                         });
+                    } 
+                    // Eğer odada kimse kalmadıysa, bu oda verilerini temizleyelim
+                    else if (playerCount === 0) {
+                        console.log('Boş oda tespit edildi, siliniyor:', roomCode);
+                        database.ref('rooms/' + roomCode).remove()
+                            .then(() => console.log('Boş oda silindi:', roomCode))
+                            .catch(error => console.error('Boş oda silinirken hata:', error));
                     }
                 });
                 
@@ -1950,8 +1965,27 @@ const onlineGame = {
                 // Sistem mesajı gönder
                 this.sendLocalizedSystemMessage('player_left', { username: this.username });
                 
-                // Normal oyuncu ayrılırsa, sadece kendisini kaldır
-                this.roomRef.child('players/' + this.userId).remove()
+                // Önce odadaki diğer oyuncuları kontrol et
+                this.roomRef.child('players').once('value')
+                    .then(snapshot => {
+                        const players = snapshot.val() || {};
+                        const playerIds = Object.keys(players);
+                        // Kendimizi oyuncu sayısından çıkarıyoruz, çünkü henüz silinmedik
+                        const remainingPlayerCount = playerIds.length - 1;
+                        
+                        console.log('Odadan ayrılıyor. Kalan oyuncu sayısı:', remainingPlayerCount);
+                        
+                        // Normal oyuncu ayrılırsa, sadece kendisini kaldır
+                        return this.roomRef.child('players/' + this.userId).remove()
+                            .then(() => {
+                                // Eğer odada başka oyuncu kalmadıysa, odayı tamamen sil
+                                if (remainingPlayerCount <= 0) {
+                                    console.log('Odada hiç oyuncu kalmadı, oda siliniyor...');
+                                    return this.roomRef.remove();
+                                }
+                                return Promise.resolve();
+                            });
+                    })
                     .then(() => {
                         console.log('Odadan ayrıldı.');
                         this.resetRoomState();
@@ -4375,6 +4409,55 @@ const onlineGame = {
         } else {
             friendsListContainer.innerHTML = '<p class="error">Giriş yapmadan arkadaş listesi yüklenemez.</p>';
         }
+    },
+    
+    // Boş odaları temizle
+    cleanupEmptyRooms: function() {
+        console.log('Boş odaları temizleme işlemi başlatılıyor...');
+        
+        // Firebase'den tüm odaları al
+        database.ref('rooms').once('value')
+            .then(snapshot => {
+                const rooms = snapshot.val();
+                if (!rooms) return;
+                
+                const updates = {};
+                let emptyRoomsCount = 0;
+                
+                // Her oda için içinde oyuncu olup olmadığını kontrol et
+                Object.keys(rooms).forEach(roomId => {
+                    const room = rooms[roomId];
+                    const playerCount = room.players ? Object.keys(room.players).length : 0;
+                    const currentTime = Date.now();
+                    const roomAge = room.createdTimestamp ? currentTime - room.createdTimestamp : 0;
+                    const MAX_ROOM_AGE = 24 * 60 * 60 * 1000; // 24 saat (milisaniye cinsinden)
+                    const isRoomOld = roomAge > MAX_ROOM_AGE;
+                    
+                    // Eğer odada hiç oyuncu yoksa veya oda 24 saatten eski ise
+                    if (playerCount === 0 || isRoomOld) {
+                        emptyRoomsCount++;
+                        const reason = playerCount === 0 ? "boş oda" : "eski oda";
+                        console.log(`Silinecek oda ${roomId}: ${reason}`);
+                        updates[roomId] = null; // Firebase'de null atama = silme işlemi
+                    }
+                });
+                
+                if (emptyRoomsCount > 0) {
+                    console.log(`${emptyRoomsCount} adet boş oda tespit edildi, siliniyor...`);
+                    
+                    // Toplu güncelleme ile boş odaları sil
+                    return database.ref('rooms').update(updates);
+                } else {
+                    console.log('Hiç boş oda bulunamadı.');
+                    return Promise.resolve();
+                }
+            })
+            .then(() => {
+                console.log('Boş odaları temizleme işlemi tamamlandı.');
+            })
+            .catch(error => {
+                console.error('Boş odaları temizleme sırasında hata:', error);
+            });
     }
 };
 
