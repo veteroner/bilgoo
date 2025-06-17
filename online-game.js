@@ -1283,17 +1283,43 @@ const onlineGame = {
             return;
         }
         
+        console.log("Odaya katılma girişimi:", roomCode);
+        
+        // Kullanıcı ID kontrolü - Giriş yapılmış olmalı
+        if (!firebase.auth().currentUser || !this.userId) {
+            this.userId = firebase.auth().currentUser?.uid || '';
+            this.username = firebase.auth().currentUser?.displayName || 'Misafir';
+            console.log("Kullanıcı bilgileri güncellendi:", this.userId, this.username);
+        }
+        
+        // Database referansı
+        if (!database) {
+            console.error("Database bağlantısı bulunamadı!");
+            alert("Sunucu bağlantısı kurulamadı. Lütfen sayfayı yenileyip tekrar deneyin.");
+            return;
+        }
+        
         this.roomRef = database.ref('rooms/' + roomCode);
         this.roomRef.once('value')
             .then(snapshot => {
                 const roomData = snapshot.val();
                 if (!roomData) {
-                    alert('Oda bulunamadı.');
+                    console.error('Oda bulunamadı:', roomCode);
+                    alert(`Oda bulunamadı: "${roomCode}" \n\nLütfen oda kodunu kontrol ediniz veya arkadaşınızdan tekrar davet göndermesini isteyiniz.`);
+                    
+                    // Ana menüye dön
+                    this.showToast("Oda bulunamadı, ana menüye dönülüyor...", "error");
+                    setTimeout(() => {
+                        const mainMenu = document.getElementById('main-menu');
+                        if (mainMenu) mainMenu.style.display = 'block';
+                    }, 2000);
                     return;
                 }
                 
+                console.log("Oda bulundu:", roomData);
+                
                 if (roomData.status !== 'waiting') {
-                    alert('Bu oda şu anda katılıma açık değil.');
+                    alert('Bu oda şu anda katılıma açık değil. Muhtemelen oyun başlamış durumda.');
                     return;
                 }
                 
