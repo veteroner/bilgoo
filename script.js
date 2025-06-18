@@ -1885,30 +1885,30 @@ const quizApp = {
         try {
             console.log("Event listener'lar ekleniyor...");
             
-        // Tema değiştirme butonu için olay dinleyicisi
-        if (this.themeToggle) {
-            this.themeToggle.addEventListener('change', () => {
-                const theme = this.themeToggle.checked ? 'dark' : 'light';
-                this.userSettings.theme = theme;
-                this.applyTheme(theme);
-                this.saveUserSettings();
-            });
-        }
-        
-        // Yeniden başlatma butonu için olay dinleyicisi
-        if (this.restartButton) {
-            this.restartButton.addEventListener('click', () => {
-                this.restartGame();
-            });
-        }
-        
-        // Sonraki soru butonu için olay dinleyicisi
-        if (this.nextButton) {
-            this.nextButton.addEventListener('click', () => {
-                this.showNextQuestion();
-            });
-        }
-        
+            // Tema değiştirme butonu için olay dinleyicisi
+            if (this.themeToggle) {
+                this.themeToggle.addEventListener('change', () => {
+                    const theme = this.themeToggle.checked ? 'dark' : 'light';
+                    this.userSettings.theme = theme;
+                    this.applyTheme(theme);
+                    this.saveUserSettings();
+                });
+            }
+            
+            // Yeniden başlatma butonu için olay dinleyicisi
+            if (this.restartButton) {
+                this.restartButton.addEventListener('click', () => {
+                    this.restartGame();
+                });
+            }
+            
+            // Sonraki soru butonu için olay dinleyicisi
+            if (this.nextButton) {
+                this.nextButton.addEventListener('click', () => {
+                    this.showNextQuestion();
+                });
+            }
+            
             // Joker butonları için olay dinleyicileri
             console.log('DOM hazır, joker event listener\'ları ekleniyor...');
             this.addJokerEventListeners();
@@ -1936,6 +1936,28 @@ const quizApp = {
                 });
             } else {
                 console.error("Tekli oyun butonu bulunamadı! ID: single-player-btn");
+            }
+            
+            // Soru ekle butonu
+            const addQuestionBtn = document.getElementById('add-question-button');
+            if (addQuestionBtn) {
+                addQuestionBtn.addEventListener('click', () => {
+                    // Ana menüyü gizle
+                    const mainMenu = addQuestionBtn.closest('.main-menu');
+                    if (mainMenu) {
+                        mainMenu.style.display = 'none';
+                    } else {
+                        console.error('Ana menü elementi bulunamadı.');
+                    }
+                    
+                    // Soru ekleme formunu göster
+                    const addQuestionForm = document.getElementById('add-question-form');
+                    if (addQuestionForm) {
+                        addQuestionForm.style.display = 'block';
+                    } else {
+                        console.error('Soru ekleme formu bulunamadı.');
+                    }
+                });
             }
             
             console.log("Event listener'lar başarıyla eklendi");
@@ -4493,6 +4515,7 @@ const quizApp = {
         }
     },
     
+    
     // Örnek aktiviteleri göster - veri yoksa
     generateSampleActivities: function(activitiesList) {
         activitiesList.innerHTML = '';
@@ -6787,6 +6810,7 @@ const quizApp = {
             return false;
         }
     },
+    
     
     // Oyun istatistiklerini kaydetme - Firebase ve localStorage'a
     saveGameStatistics: function() {
