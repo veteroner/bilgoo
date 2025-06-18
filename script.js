@@ -644,7 +644,32 @@ const quizApp = {
         }
         const addQuestionBtn = document.getElementById('add-question-button');
         if (addQuestionBtn) {
-            addQuestionBtn.textContent = this.getTranslation('addQuestion');
+            addQuestionBtn.addEventListener('click', () => {
+                // Ana menüyü gizle
+                const mainMenu = addQuestionBtn.closest('.main-menu');
+                if (mainMenu) {
+                    mainMenu.style.display = 'none';
+                } else {
+                    console.error('Ana menü elementi bulunamadı.');
+                }
+                
+                // Soru ekleme formunu göster
+                const addQuestionForm = document.getElementById('add-question-form');
+                if (addQuestionForm) {
+                    addQuestionForm.style.display = 'block';
+                } else {
+                    console.error('Soru ekleme formu bulunamadı.');
+                    
+                    // Form bulunamadıysa showAddQuestionModal fonksiyonunu deneyelim
+                    if (typeof showAddQuestionModal === 'function') {
+                        console.log('showAddQuestionModal fonksiyonu çağrılıyor...');
+                        showAddQuestionModal();
+                    } else {
+                        console.error('showAddQuestionModal fonksiyonu bulunamadı');
+                        alert('Soru eklemek için lütfen daha sonra tekrar deneyin veya yöneticiyle iletişime geçin.');
+                    }
+                }
+            });
         }
         // Logout butonu kaldırıldı
         
@@ -1956,6 +1981,15 @@ const quizApp = {
                         addQuestionForm.style.display = 'block';
                     } else {
                         console.error('Soru ekleme formu bulunamadı.');
+                        
+                        // Form bulunamadıysa showAddQuestionModal fonksiyonunu deneyelim
+                        if (typeof showAddQuestionModal === 'function') {
+                            console.log('showAddQuestionModal fonksiyonu çağrılıyor...');
+                            showAddQuestionModal();
+                        } else {
+                            console.error('showAddQuestionModal fonksiyonu bulunamadı');
+                            alert('Soru eklemek için lütfen daha sonra tekrar deneyin veya yöneticiyle iletişime geçin.');
+                        }
                     }
                 });
             }
