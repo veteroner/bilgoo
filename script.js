@@ -644,28 +644,7 @@ const quizApp = {
         }
         const addQuestionBtn = document.getElementById('add-question-button');
         if (addQuestionBtn) {
-            addQuestionBtn.addEventListener('click', () => {
-                console.log('Soru ekle butonuna tıklandı');
-                
-                // Ana menüyü gizle
-                const mainMenu = document.getElementById('main-menu');
-                if (mainMenu) {
-                    mainMenu.style.display = 'none';
-                }
-                
-                // showAddQuestionModal fonksiyonunu doğrudan çağır
-                if (typeof showAddQuestionModal === 'function') {
-                    showAddQuestionModal();
-                } else {
-                    console.error('showAddQuestionModal fonksiyonu bulunamadı');
-                    alert('Soru ekleme formu şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.');
-                    
-                    // Başarısız olursa ana menüyü tekrar göster
-                    if (mainMenu) {
-                        mainMenu.style.display = 'block';
-                    }
-                }
-            });
+            addQuestionBtn.textContent = this.getTranslation('addQuestion');
         }
         // Logout butonu kaldırıldı
         
@@ -1963,22 +1942,21 @@ const quizApp = {
             const addQuestionBtn = document.getElementById('add-question-button');
             if (addQuestionBtn) {
                 addQuestionBtn.addEventListener('click', () => {
-                    console.log('Soru ekle butonuna tıklandı');
-                    
                     // Ana menüyü gizle
                     const mainMenu = document.getElementById('main-menu');
                     if (mainMenu) {
                         mainMenu.style.display = 'none';
+                    } else {
+                        console.error('Ana menü elementi bulunamadı.');
+                        return;
                     }
                     
-                    // showAddQuestionModal fonksiyonunu doğrudan çağır
-                    if (typeof showAddQuestionModal === 'function') {
+                    // Doğrudan showAddQuestionModal fonksiyonunu çağır
+                    try {
                         showAddQuestionModal();
-                    } else {
-                        console.error('showAddQuestionModal fonksiyonu bulunamadı');
-                        alert('Soru ekleme formu şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.');
-                        
-                        // Başarısız olursa ana menüyü tekrar göster
+                    } catch (err) {
+                        console.error('showAddQuestionModal fonksiyonu çağrılırken hata:', err);
+                        // Hata durumunda ana menüyü tekrar göster
                         if (mainMenu) {
                             mainMenu.style.display = 'block';
                         }
@@ -2173,24 +2151,141 @@ const quizApp = {
         
         // Her 5 soruda bir bölüm geçişi göster
         if (this.currentQuestionIndex > 0 && this.currentQuestionIndex % 5 === 0 && this.currentQuestionIndex < this.questions.length) {
-            this.currentSection++; // Bölüm sayısını artır
+            // Bölüm sayısını artır
+            this.currentSection++; 
+            console.log(`🔼 Bölüm artırıldı: ${this.currentSection}`);
             
-                    // Progressive difficulty sistemi ile dinamik bölüm sayısı
+            // Progressive difficulty sistemi ile dinamik bölüm sayısı
             const maxSections = this.getMaxSectionsForCategory();
+            console.log(`📊 Bölüm kontrolü: Şu anki bölüm ${this.currentSection}, Maksimum bölüm: ${maxSections}`);
+            
+            // Yeni zorluk seviyesini hesapla ve kaydet
+            const newDifficulty = this.getProgressiveDifficulty();
+            console.log(`🚀 Bölüm ${this.currentSection} - Yeni zorluk seviyesi: ${newDifficulty === 1 ? 'Kolay' : newDifficulty === 2 ? 'Orta' : 'Zor'} (${newDifficulty})`);
+            
+            // Maksimum bölüm sayısını aşıp aşmadığını kontrol et
             if (this.currentSection > maxSections) {
+                console.log(`⚠️ Maksimum bölüm sayısı (${maxSections}) aşıldı! Kategori tamamlama ekranı gösteriliyor.`);
                 this.showCategoryCompletion();
                 return;
             }
             
-            // Eski 50 bölüm kontrolü kaldırıldı - artık dinamik sistem kullanılıyor
+            // Yeni bölüm için zorluk seviyesine göre soruları yükle
+            console.log(`⭐ Bölüm ${this.currentSection} için yeni sorular yükleniyor...`);
             
+            // Kategorinin tüm sorularını al
+            const allCategoryQuestions = [...this.questionsData[this.selectedCategory]];
+            
+            // Progressive difficulty'ye göre hedef zorluk seviyesini belirle
+            const targetDifficulty = this.getProgressiveDifficulty();
+            
+            // Soruları zorluğa göre grupla
+            const easyQuestions = allCategoryQuestions.filter(q => (q.difficulty || 2) === 1);  
+            const mediumQuestions = allCategoryQuestions.filter(q => (q.difficulty || 2) === 2);
+            const hardQuestions = allCategoryQuestions.filter(q => (q.difficulty || 2) === 3);
+            
+            // Hedef zorluk seviyesine göre soru havuzu oluştur
+            let nextSectionQuestions = [];
+            
+            if (targetDifficulty === 1 && easyQuestions.length > 0) {
+                nextSectionQuestions = this.shuffleArray([...easyQuestions]);
+                console.log(`✅ Bölüm ${this.currentSection} için kolay sorular seçildi.`);
+            }
+            else if (targetDifficulty === 2 && mediumQuestions.length > 0) {
+                nextSectionQuestions = this.shuffleArray([...mediumQuestions]);
+                console.log(`✅ Bölüm ${this.currentSection} için orta zorluktaki sorular seçildi.`);
+            }
+            else if (targetDifficulty === 3 && hardQuestions.length > 0) {
+                nextSectionQuestions = this.shuffleArray([...hardQuestions]);
+                console.log(`✅ Bölüm ${this.currentSection} için zor sorular seçildi.`);
+            }
+            else {
+                // Hedef zorluk seviyesinde soru bulunamazsa, mevcut tüm sorulardan al
+                nextSectionQuestions = this.shuffleArray([...allCategoryQuestions]);
+                console.log(`⚠️ Bölüm ${this.currentSection} için ${targetDifficulty} zorluk seviyesinde soru bulunamadı, karışık sorular seçiliyor.`);
+            }
+            
+            // İlk 5 soruyu seç (bir bölüm 5 soru içerir)
+            const newSectionQuestions = nextSectionQuestions.slice(0, 5);
+            console.log(`📝 Bölüm ${this.currentSection} için ${newSectionQuestions.length} soru seçildi.`);
+            
+            // Bu soruları mevcut sorularla birleştir
+            this.questions = [...this.questions.slice(0, this.currentQuestionIndex), ...newSectionQuestions];
+            
+            // Bölüm geçiş ekranını göster
             this.showSectionTransition();
         } else if (this.currentQuestionIndex < this.questions.length) {
             this.displayQuestion(this.questions[this.currentQuestionIndex]);
         } else {
-            // Tüm sorular cevaplandı - kategori tamamlama ekranını göster
-            console.log("Tüm sorular cevaplandı, kategori tamamlama ekranı gösteriliyor...");
+            // Tüm sorular cevaplandı - yeni bölüm için sorular yükle
+            console.log("Bölümdeki sorular tamamlandı, bir sonraki bölüm için sorular yükleniyor...");
+            
+            // Bölüm sayısını artır
+            this.currentSection++;
+            console.log(`🔼 Bölüm otomatik artırıldı: ${this.currentSection}`);
+            
+            // Yeni zorluk seviyesini hesapla ve kaydet
+            const newDifficulty = this.getProgressiveDifficulty();
+            console.log(`🚀 Bölüm ${this.currentSection} - Yeni zorluk seviyesi: ${newDifficulty === 1 ? 'Kolay' : newDifficulty === 2 ? 'Orta' : 'Zor'} (${newDifficulty})`);
+            
+            // Progressive difficulty sistemi ile dinamik bölüm sayısı
+            const maxSections = this.getMaxSectionsForCategory();
+            console.log(`📊 Bölüm kontrolü: Şu anki bölüm ${this.currentSection}, Maksimum bölüm: ${maxSections}`);
+            
+            // Maksimum bölüm sayısını aşıp aşmadığını kontrol et
+            if (this.currentSection > maxSections) {
+                console.log(`⚠️ Maksimum bölüm sayısı (${maxSections}) aşıldı! Kategori tamamlama ekranı gösteriliyor.`);
             this.showCategoryCompletion();
+                return;
+            }
+            
+            // Yeni bölüm için zorluk seviyesine göre soruları yükle
+            console.log(`⭐ Bölüm ${this.currentSection} için yeni sorular yükleniyor...`);
+            
+            // Kategorinin tüm sorularını al
+            const allCategoryQuestions = [...this.questionsData[this.selectedCategory]];
+            
+            // Progressive difficulty'ye göre hedef zorluk seviyesini belirle
+            const targetDifficulty = this.getProgressiveDifficulty();
+            
+            // Soruları zorluğa göre grupla
+            const easyQuestions = allCategoryQuestions.filter(q => (q.difficulty || 2) === 1);  
+            const mediumQuestions = allCategoryQuestions.filter(q => (q.difficulty || 2) === 2);
+            const hardQuestions = allCategoryQuestions.filter(q => (q.difficulty || 2) === 3);
+            
+            // Hedef zorluk seviyesine göre soru havuzu oluştur
+            let nextSectionQuestions = [];
+            
+            if (targetDifficulty === 1 && easyQuestions.length > 0) {
+                nextSectionQuestions = this.shuffleArray([...easyQuestions]);
+                console.log(`✅ Bölüm ${this.currentSection} için kolay sorular seçildi.`);
+            }
+            else if (targetDifficulty === 2 && mediumQuestions.length > 0) {
+                nextSectionQuestions = this.shuffleArray([...mediumQuestions]);
+                console.log(`✅ Bölüm ${this.currentSection} için orta zorluktaki sorular seçildi.`);
+            }
+            else if (targetDifficulty === 3 && hardQuestions.length > 0) {
+                nextSectionQuestions = this.shuffleArray([...hardQuestions]);
+                console.log(`✅ Bölüm ${this.currentSection} için zor sorular seçildi.`);
+            }
+            else {
+                // Hedef zorluk seviyesinde soru bulunamazsa, mevcut tüm sorulardan al
+                nextSectionQuestions = this.shuffleArray([...allCategoryQuestions]);
+                console.log(`⚠️ Bölüm ${this.currentSection} için ${targetDifficulty} zorluk seviyesinde soru bulunamadı, karışık sorular seçiliyor.`);
+            }
+            
+            // İlk 5 soruyu seç (bir bölüm 5 soru içerir)
+            const newSectionQuestions = nextSectionQuestions.slice(0, 5);
+            console.log(`📝 Bölüm ${this.currentSection} için ${newSectionQuestions.length} soru seçildi.`);
+            
+            // Bu soruları mevcut sorulara ekle
+            this.questions = newSectionQuestions;
+            
+            // Soru indeksini sıfırla
+            this.currentQuestionIndex = 0;
+            
+            // Bölüm geçiş ekranını göster
+            this.showSectionTransition();
         }
     },
     
@@ -2216,6 +2311,7 @@ const quizApp = {
             'Doğa': 17,
             'Teknoloji': 18,
             'Sağlık': 18,
+            'Genel Kültür': 15,
             
             // Zor kategoriler (18-25 bölüm)
             'Bilim': 20,
@@ -2252,12 +2348,24 @@ const quizApp = {
         const maxSections = this.getMaxSectionsForCategory();
         const currentProgress = this.currentSection / maxSections;
         
+        // Debug bilgisi ekle
+        console.log(`Progressive Difficulty Hesaplama: Bölüm ${this.currentSection}/${maxSections}, İlerleme: ${currentProgress}`);
+        
+        // Oyunun başında her zaman kolay zorluk seviyesi ile başla (bölüm ≤ 1)
+        if (this.currentSection <= 1) {
+            console.log("⭐ İlk bölüm - Kolay seviye (1) seçiliyor");
+            return 1; // Her zaman Kolay ile başla
+        }
+        
         // İlk %40'ı kolay, sonraki %40'ı orta, son %20'si zor
         if (currentProgress <= 0.4) {
+            console.log(`⭐ İlerleme: ${Math.round(currentProgress*100)}% - Kolay seviye (1) seçiliyor`);
             return 1; // Kolay
         } else if (currentProgress <= 0.8) {
+            console.log(`🔶 İlerleme: ${Math.round(currentProgress*100)}% - Orta seviye (2) seçiliyor`);
             return 2; // Orta  
         } else {
+            console.log(`🔴 İlerleme: ${Math.round(currentProgress*100)}% - Zor seviye (3) seçiliyor`);
             return 3; // Zor
         }
     },
@@ -2266,6 +2374,8 @@ const quizApp = {
     showCategoryCompletion: function() {
         // Zamanlayıcıyı durdur
         clearInterval(this.timerInterval);
+        
+        console.log(`Genel Kültür kategorisi ${this.currentSection} bölüm ile tamamlandı!`);
         
         // Kategori tamamlama modalını oluştur
         const categoryCompletionModal = document.createElement('div');
@@ -2277,7 +2387,7 @@ const quizApp = {
                         <i class="fas fa-trophy"></i>
                     </div>
                     <h2>Kategori Tamamlandı!</h2>
-                    <p class="completion-message">"${this.selectedCategory}" kategorisinin ${this.getMaxSectionsForCategory()} bölümünü başarıyla tamamladınız!</p>
+                    <p class="completion-message">"${this.selectedCategory}" kategorisinin ${this.currentSection} bölümünü başarıyla tamamladınız!</p>
                     <p class="completion-difficulty" style="font-size: 14px; color: #64748b; margin-top: 10px;">
                         ${this.getCategoryDifficultyText()} • Progressive Zorluk Sistemi
                     </p>
@@ -2289,7 +2399,7 @@ const quizApp = {
                              <i class="fas fa-layer-group"></i>
                          </div>
                          <div class="stat-content">
-                             <div class="stat-value">${this.getMaxSectionsForCategory()}</div>
+                             <div class="stat-value">${this.currentSection}</div>
                              <div class="stat-label">Bölüm Tamamlandı</div>
                          </div>
                      </div>
@@ -2704,6 +2814,8 @@ const quizApp = {
             this.answeredQuestions = 0;
             this.answerTimes = [];
             this.lives = 5;
+            this.currentSection = 1; // Bölüm numarasını sıfırla - Progressive Difficulty için önemli
+            this.sectionStats = []; // Bölüm istatistiklerini sıfırla
             
             // Her yeni oyunda jokerları yenile
             this.refreshJokersForNewGame();
@@ -2745,8 +2857,8 @@ const quizApp = {
                 // Toplam puan göstergesini başlat
                 this.updateTotalScoreDisplay();
                 
-                            // Progressive zorluk sistemini kullan ve ilk bölümden başla
-            this.loadQuestionsForCurrentLevel();
+                // Oyunu başlat
+                this.startQuiz();
             } else {
                 console.error("Kategori verileri bulunamadı:", category);
                 this.showToast(this.getTranslation('categoryLoadError') || "Seçilen kategoride soru bulunamadı. Lütfen başka bir kategori seçin.", "toast-error");
@@ -2770,22 +2882,50 @@ const quizApp = {
             return;
         }
         
-        // Kategorinin sorularını al ve karıştır
-        this.questions = this.shuffleArray([...this.questionsData[category]]);
-        
-        // Zorluk seviyesine göre sırala (isteğe bağlı)
-        // this.questions.sort((a, b) => (a.difficulty || 1) - (b.difficulty || 1));
-        
-        // İlk soruyu göster
+        // Değişkenleri sıfırla - oyun başlangıcı için önemli
         this.currentQuestionIndex = 0;
         this.score = 0;
-        this.correctAnswers = 0; // <-- EKLENDİ
-        // this.lives = 5; // BUNU SİLİYORUM
+        this.correctAnswers = 0;
         this.answeredQuestions = 0;
         this.answerTimes = [];
         this.sectionStats = []; // Bölüm istatistiklerini sıfırla
-        this.currentSection = 1; // Bölüm numarasını sıfırla
+        this.currentSection = 1; // Bölüm numarasını sıfırla - en önemlisi bu
         this.resetJokerUsage(); // Sadece kullanım durumlarını sıfırla, envanter korunsun
+        
+        console.log("🔄 Yeni oyun başlıyor! Bölüm sıfırlandı: " + this.currentSection);
+        
+        // Kategorinin tüm sorularını al
+        const allCategoryQuestions = [...this.questionsData[category]];
+        
+        // Soruları zorluğa göre grupla
+        const easyQuestions = allCategoryQuestions.filter(q => (q.difficulty || 2) === 1);  
+        const mediumQuestions = allCategoryQuestions.filter(q => (q.difficulty || 2) === 2);
+        const hardQuestions = allCategoryQuestions.filter(q => (q.difficulty || 2) === 3);
+        
+        console.log(`📊 Zorluk dağılımı - Kolay: ${easyQuestions.length}, Orta: ${mediumQuestions.length}, Zor: ${hardQuestions.length}`);
+        
+        // İlk bölüm için SADECE KOLAY sorular
+        let firstSectionQuestions = [];
+        
+        // Kolay sorular varsa sadece onları kullan
+        if (easyQuestions.length > 0) {
+            firstSectionQuestions = this.shuffleArray([...easyQuestions]);
+            console.log("✅ Oyun sadece kolay sorularla başlıyor! Kolay soru sayısı: " + easyQuestions.length);
+        }
+        // Kolay soru yoksa orta zorlukta soruları kullan
+        else if (mediumQuestions.length > 0) {
+            firstSectionQuestions = this.shuffleArray([...mediumQuestions]);
+            console.log("⚠️ Kolay soru bulunamadı! Orta zorluktaki sorularla başlıyor.");
+        }
+        // Son çare olarak tüm soruları kullan
+        else {
+            firstSectionQuestions = this.shuffleArray([...allCategoryQuestions]);
+            console.log("⚠️ Kolay ve orta soru bulunamadı! Mevcut tüm sorularla başlıyor.");
+        }
+        
+        // İlk 10 soruyu seç
+        this.questions = firstSectionQuestions.slice(0, 10);
+        console.log(`📝 İlk bölüm için ${this.questions.length} soru seçildi.`);
         
         // Quiz ekranını göster ve ilk soruyu yükle
         this.startQuiz();
@@ -2916,18 +3056,18 @@ const quizApp = {
     
     // Quiz'i başlat
     startQuiz: function() {
-        // Progressive difficulty'yi sıfırla - her oyun başlangıcında zorluk kolay olarak başlamalı
-        this.currentSection = 1;
-        
-        // Soruları zorluk seviyesine göre yükle
-        this.loadQuestionsForCurrentLevel();
-        
         // Body'ye quiz aktif class'ını ekle - logo gizlemek için ve mobil tab barın yer değiştirmesi için
         document.body.classList.add('quiz-active');
         document.body.classList.remove('category-selection');
         
         // Quiz modunu aktifleştir
         this.activateQuizMode();
+        
+        // Progressive Zorluk Sistemi - İlk başlangıç için bölümün 1 olduğundan emin ol
+        this.currentSection = 1; // Zorluk seviyesi kolay başlaması için
+        console.log('✅ startQuiz: currentSection ayarlandı:', this.currentSection);
+        
+        console.log('🚀 Quiz başlıyor - Progressive Zorluk Sistemi aktif, bölüm:', this.currentSection);
         
         // Önce tüm ana bölümleri gizle, sadece quiz ekranını göster
         if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'none';
@@ -2978,6 +3118,10 @@ const quizApp = {
         this.updateJokerButtons();
         
         // İlk soruyu göster
+        // Debug: İlk soru gösterilmeden önce zorluk seviyesini kontrol et
+        const difficulty = this.getProgressiveDifficulty();
+        console.log(`🚀 Quiz başlıyor - İlk bölüm (${this.currentSection}) zorluk: ${difficulty === 1 ? 'Kolay' : difficulty === 2 ? 'Orta' : 'Zor'}`);
+        
         this.displayQuestion(this.questions[0]);
     },
     
@@ -3464,11 +3608,12 @@ const quizApp = {
         }
         
         // Progressive difficulty sistemi: Bölüme göre otomatik zorluk belirleme
-        const targetDifficulty = this.getProgressiveDifficulty();
-        const difficultyNames = { 1: 'Kolay', 2: 'Orta', 3: 'Zor' };
-        const difficultyName = difficultyNames[targetDifficulty];
-        
-        console.log(`🎯 Progressive Difficulty: Bölüm ${this.currentSection}/${this.getMaxSectionsForCategory()} - Zorluk: ${difficultyName} (${targetDifficulty})`);
+        // İlk bölümde her zaman kolay sorular gösterildiğinden emin ol
+        if (this.currentSection <= 1) {
+            console.log("🔄 Yeni oyun/yeni bölüm başlıyor - currentSection:", this.currentSection);
+            // Eğer currentSection 1 veya daha düşük değilse, 1 olarak ayarla
+            this.currentSection = 1;
+        }
         
         // Soruları zorluklarına göre grupla
         const groupedByDifficulty = {};
@@ -3483,39 +3628,79 @@ const quizApp = {
             groupedByDifficulty[difficulty].push(question);
         });
         
-        // Debug bilgisi
-        console.log('Seçilen kategori:', this.selectedCategory);
-        console.log('Kategoride toplam soru sayısı:', categoryQuestions.length);
-        console.log('Zorluk seviyelerine göre gruplandırılmış sorular:', groupedByDifficulty);
-        console.log('Zorluk seviyesi 3 olan soru sayısı:', (groupedByDifficulty[3] || []).length);
+        // Kolay, orta ve zor soruları ayır
+        const easyQuestions = groupedByDifficulty[1] || [];
+        const mediumQuestions = groupedByDifficulty[2] || [];
+        const hardQuestions = groupedByDifficulty[3] || [];
         
-        // Seçilen zorluk seviyesindeki soruları kesinlikle al - karışım yok!
+        console.log(`🔍 Zorluk seviyesi dağılımı: Kolay: ${easyQuestions.length}, Orta: ${mediumQuestions.length}, Zor: ${hardQuestions.length}`);
+        
+        // İlk bölüm her zaman kolay sorularla başlar
         let levelQuestions = [];
         
-        // SADECE hedef zorluk seviyesinden sorular al
-        const targetQuestions = groupedByDifficulty[targetDifficulty] || [];
-        console.log(`Hedef zorluk seviyesi ${targetDifficulty} için mevcut soru sayısı:`, targetQuestions.length);
-        
-        if (targetQuestions.length > 0) {
-            const shuffled = this.shuffleArray([...targetQuestions]);
-            levelQuestions = shuffled;
-            console.log(`✅ Seçilen zorluk seviyesi (${targetDifficulty}) için ${levelQuestions.length} soru bulundu`);
-        } else {
-            console.warn(`⚠️ Seçilen zorluk seviyesi (${targetDifficulty}) için hiç soru bulunamadı!`);
+        // İlk bölüm için sadece KOLAY sorular
+        if (this.currentSection === 1) {
+            if (easyQuestions.length > 0) {
+                levelQuestions = this.shuffleArray([...easyQuestions]);
+                console.log(`✅ İlk bölüm: ${easyQuestions.length} kolay soru bulundu`);
+            } 
+            // Kolay soru yoksa orta zorluk kullan
+            else if (mediumQuestions.length > 0) {
+                levelQuestions = this.shuffleArray([...mediumQuestions]);
+                console.log(`⚠️ UYARI: Kolay soru bulunamadı! İlk bölüm için ${mediumQuestions.length} orta zorluktaki soru kullanılıyor`);
+            }
+            // Her ikisi de yoksa ne varsa kullan
+            else {
+                levelQuestions = this.shuffleArray([...categoryQuestions]);
+                console.log(`⚠️ UYARI: Kolay veya orta soru bulunamadı! İlk bölüm için tüm sorular kullanılıyor`);
+            }
+        }
+        // İkinci bölüm için ORTA sorular
+        else if (this.currentSection === 2) {
+            if (mediumQuestions.length > 0) {
+                levelQuestions = this.shuffleArray([...mediumQuestions]);
+                console.log(`✅ İkinci bölüm: ${mediumQuestions.length} orta zorlukta soru bulundu`);
+            }
+            // Orta yoksa kolay ile devam et
+            else if (easyQuestions.length > 0) {
+                levelQuestions = this.shuffleArray([...easyQuestions]);
+                console.log(`⚠️ UYARI: Orta soru bulunamadı! İkinci bölüm için kolay sorular kullanılıyor`);
+            }
+            // Kolay da yoksa ne varsa kullan
+            else {
+                levelQuestions = this.shuffleArray([...categoryQuestions]);
+                console.log(`⚠️ UYARI: Orta veya kolay soru bulunamadı! İkinci bölüm için tüm sorular kullanılıyor`);
+            }
+        }
+        // Üçüncü ve sonraki bölümler için ZOR sorular
+        else {
+            if (hardQuestions.length > 0) {
+                levelQuestions = this.shuffleArray([...hardQuestions]);
+                console.log(`✅ İleri bölüm: ${hardQuestions.length} zor soru bulundu`);
+            }
+            // Zor yoksa orta ile devam et
+            else if (mediumQuestions.length > 0) {
+                levelQuestions = this.shuffleArray([...mediumQuestions]);
+                console.log(`⚠️ UYARI: Zor soru bulunamadı! İleri bölüm için orta zorluktaki sorular kullanılıyor`);
+            }
+            // İkisi de yoksa ne varsa kullan
+            else {
+                levelQuestions = this.shuffleArray([...categoryQuestions]);
+                console.log(`⚠️ UYARI: Zor veya orta soru bulunamadı! İleri bölüm için tüm sorular kullanılıyor`);
+            }
         }
         
-        // Eğer hiç soru yoksa kullanıcıyı bilgilendir
+        // Eğer hiç soru yoksa uyarı gösterelim
         if (levelQuestions.length === 0) {
-            const difficultyName = difficultyNames[targetDifficulty] || 'Bilinmeyen';
-            
-            alert(`Bu kategoride "${difficultyName}" seviyesinde soru bulunmuyor. Lütfen başka bir kategori veya zorluk seviyesi seçin.`);
+            console.error("⛔️ Bu bölüm için hiç soru bulunamadı!");
+            alert("Bu kategoride yeterli soru bulunamadı. Lütfen başka bir kategori seçin.");
             
             // Kategori seçimine geri dön
             this.displayCategories();
             return;
         }
         
-        // En fazla 10 soru göster (kullanıcının seçtiği zorluk seviyesinden)
+        // En fazla 10 soru göster (ilgili zorluk seviyesinden) - soru sayısı yetersizse hepsini kullan
         this.questions = levelQuestions.slice(0, Math.min(10, levelQuestions.length));
         this.arrangeBlankFillingFirst();
         
@@ -3525,9 +3710,12 @@ const quizApp = {
             const diff = q.difficulty || 'undefined';
             difficultyCheck[diff] = (difficultyCheck[diff] || 0) + 1;
         });
-        console.log(`🎯 Progressive Zorluk: ${difficultyNames[targetDifficulty]} (${targetDifficulty})`);
-        console.log(`✅ Yüklenen ${this.questions.length} sorunun zorluk dağılımı:`, difficultyCheck);
-        console.log(`Bölüm ${this.currentSection} için ${this.questions.length} soru yüklendi.`);
+        
+        // Bölüm bilgisini ekrana yazdır
+        const sectionNames = { 1: 'Başlangıç (Kolay)', 2: 'Orta', 3: 'İleri (Zor)' };
+        const sectionName = sectionNames[this.currentSection] || `Bölüm ${this.currentSection}`;
+        console.log(`🎮 ${sectionName} bölümü için ${this.questions.length} soru yüklendi.`);
+        console.log(`✅ Yüklenen soruların zorluk dağılımı:`, difficultyCheck);
         
         // İlk soruyu göster
         if (this.questions.length > 0) {
