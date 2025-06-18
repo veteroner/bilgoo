@@ -14,7 +14,35 @@
     
     <!-- Google AdSense Kodu -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453"
-     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+     crossorigin="anonymous" referrerpolicy="no-referrer-when-downgrade"></script>
+    <script>
+        // AdSense için ayarları ayarla
+        (function() {
+            window.dataLayer = window.dataLayer || [];
+            if (window.adsbygoogle === undefined) {
+                window.adsbygoogle = [];
+            }
+            
+            // SameSite çerezleri için ayarlarını kontrol et
+            document.cookie = "adsense-test=test; SameSite=None; Secure";
+            
+            // AdSense başlangıç hataları için özel işleyici
+            window.addEventListener('error', function(e) {
+                if (e.target && e.target.src && e.target.src.includes('pagead2.googlesyndication.com')) {
+                    console.log('AdSense yükleme hatası yakalandı:', e);
+                    setTimeout(function() {
+                        // 5 saniye sonra yeniden yüklemeyi dene
+                        const script = document.createElement('script');
+                        script.async = true;
+                        script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453";
+                        script.crossOrigin = "anonymous";
+                        script.referrerpolicy = "no-referrer-when-downgrade";
+                        document.head.appendChild(script);
+                    }, 5000);
+                }
+            }, true);
+        })();
+    </script>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Quiz Oyunu">
