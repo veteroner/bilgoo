@@ -645,28 +645,24 @@ const quizApp = {
         const addQuestionBtn = document.getElementById('add-question-button');
         if (addQuestionBtn) {
             addQuestionBtn.addEventListener('click', () => {
+                console.log('Soru ekle butonuna tıklandı');
+                
                 // Ana menüyü gizle
-                const mainMenu = addQuestionBtn.closest('.main-menu');
+                const mainMenu = document.getElementById('main-menu');
                 if (mainMenu) {
                     mainMenu.style.display = 'none';
-                } else {
-                    console.error('Ana menü elementi bulunamadı.');
                 }
                 
-                // Soru ekleme formunu göster
-                const addQuestionForm = document.getElementById('add-question-form');
-                if (addQuestionForm) {
-                    addQuestionForm.style.display = 'block';
+                // showAddQuestionModal fonksiyonunu doğrudan çağır
+                if (typeof showAddQuestionModal === 'function') {
+                    showAddQuestionModal();
                 } else {
-                    console.error('Soru ekleme formu bulunamadı.');
+                    console.error('showAddQuestionModal fonksiyonu bulunamadı');
+                    alert('Soru ekleme formu şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.');
                     
-                    // Form bulunamadıysa showAddQuestionModal fonksiyonunu deneyelim
-                    if (typeof showAddQuestionModal === 'function') {
-                        console.log('showAddQuestionModal fonksiyonu çağrılıyor...');
-                        showAddQuestionModal();
-                    } else {
-                        console.error('showAddQuestionModal fonksiyonu bulunamadı');
-                        alert('Soru eklemek için lütfen daha sonra tekrar deneyin veya yöneticiyle iletişime geçin.');
+                    // Başarısız olursa ana menüyü tekrar göster
+                    if (mainMenu) {
+                        mainMenu.style.display = 'block';
                     }
                 }
             });
@@ -1967,28 +1963,24 @@ const quizApp = {
             const addQuestionBtn = document.getElementById('add-question-button');
             if (addQuestionBtn) {
                 addQuestionBtn.addEventListener('click', () => {
+                    console.log('Soru ekle butonuna tıklandı');
+                    
                     // Ana menüyü gizle
-                    const mainMenu = addQuestionBtn.closest('.main-menu');
+                    const mainMenu = document.getElementById('main-menu');
                     if (mainMenu) {
                         mainMenu.style.display = 'none';
-                    } else {
-                        console.error('Ana menü elementi bulunamadı.');
                     }
                     
-                    // Soru ekleme formunu göster
-                    const addQuestionForm = document.getElementById('add-question-form');
-                    if (addQuestionForm) {
-                        addQuestionForm.style.display = 'block';
+                    // showAddQuestionModal fonksiyonunu doğrudan çağır
+                    if (typeof showAddQuestionModal === 'function') {
+                        showAddQuestionModal();
                     } else {
-                        console.error('Soru ekleme formu bulunamadı.');
+                        console.error('showAddQuestionModal fonksiyonu bulunamadı');
+                        alert('Soru ekleme formu şu anda kullanılamıyor. Lütfen daha sonra tekrar deneyin.');
                         
-                        // Form bulunamadıysa showAddQuestionModal fonksiyonunu deneyelim
-                        if (typeof showAddQuestionModal === 'function') {
-                            console.log('showAddQuestionModal fonksiyonu çağrılıyor...');
-                            showAddQuestionModal();
-                        } else {
-                            console.error('showAddQuestionModal fonksiyonu bulunamadı');
-                            alert('Soru eklemek için lütfen daha sonra tekrar deneyin veya yöneticiyle iletişime geçin.');
+                        // Başarısız olursa ana menüyü tekrar göster
+                        if (mainMenu) {
+                            mainMenu.style.display = 'block';
                         }
                     }
                 });
