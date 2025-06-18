@@ -9,10 +9,12 @@
     <meta name="robots" content="index, follow">
     <meta name="language" content="Turkish">
     <meta name="theme-color" content="#3b82f6">
+    <!-- SSL güvenlik iyileştirmeleri için eklenen meta tag -->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
     <!-- Google AdSense Kodu -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453"
-     crossorigin="anonymous"></script>
+     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Quiz Oyunu">
@@ -1608,10 +1610,12 @@
     <meta name="robots" content="index, follow">
     <meta name="language" content="Turkish">
     <meta name="theme-color" content="#3b82f6">
+    <!-- SSL güvenlik iyileştirmeleri için eklenen meta tag -->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
     <!-- Google AdSense Kodu -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453"
-     crossorigin="anonymous"></script>
+     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Quiz Oyunu">
@@ -3206,7 +3210,7 @@
     
     <!-- Google AdSense Kodu -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453"
-     crossorigin="anonymous"></script>
+     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Quiz Oyunu">
@@ -11581,8 +11585,8 @@
     <!-- PWA Service Worker -->
     <script>
         if ('serviceWorker' in navigator) {
-            // Service Worker'ı hemen kaydet
-            navigator.serviceWorker.register('/sw.js', { scope: '/' })
+            // Service Worker'ı hemen kaydet - yolu düzeltildi
+            navigator.serviceWorker.register('./sw.js', { scope: '/' })
                 .then((registration) => {
                     console.log('SW registered: ', registration);
                     
@@ -11592,10 +11596,29 @@
                     }
                     
                     // Periodic sync kaydet
-                    if ('periodicSync' in window.ServiceWorkerRegistration.prototype) {
-                        registration.periodicSync.register('content-sync', {
-                            minInterval: 24 * 60 * 60 * 1000, // 24 saat
-                        });
+                    if ('periodicSync' in registration) {
+                        // Hata yönetimi ile periodic sync kaydı
+                        const attemptPeriodicSync = async () => {
+                            try {
+                                // İzin kontrolü
+                                const permissionStatus = await navigator.permissions.query({
+                                    name: 'periodic-background-sync',
+                                });
+                                
+                                if (permissionStatus.state === 'granted') {
+                                    await registration.periodicSync.register('content-sync', {
+                                        minInterval: 24 * 60 * 60 * 1000 // 24 saat
+                                    });
+                                    console.log('Periodic sync başarıyla kaydedildi');
+                                } else {
+                                    console.log('Periodic sync izni yok');
+                                }
+                            } catch (error) {
+                                console.log('Periodic sync kaydı başarısız: ', error);
+                            }
+                        };
+                        
+                        attemptPeriodicSync();
                     }
                     
                     // Update check

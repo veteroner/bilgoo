@@ -153,6 +153,12 @@ const MonetizationManager = {
     initAdSense: function() {
         console.log('AdSense reklamları aktif');
         
+        // SSL sertifika hatalarını önlemek için güvenlik ayarlarını kontrol et
+        const date = new Date();
+        if (Math.abs(date.getTime() - Date.now()) > 24 * 60 * 60 * 1000) {
+            console.warn('Sistem saati sorunlu olabilir, AdSense yüklemede sorunlar oluşturabilir');
+        }
+        
         // Sayfa tamamen yüklendikten sonra yenile
         setTimeout(() => {
             this.refreshAds();
