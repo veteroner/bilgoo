@@ -2719,8 +2719,8 @@ const quizApp = {
                 // Toplam puan göstergesini başlat
                 this.updateTotalScoreDisplay();
                 
-                // Oyunu başlat
-                this.startQuiz();
+                            // Progressive zorluk sistemini kullan ve ilk bölümden başla
+            this.loadQuestionsForCurrentLevel();
             } else {
                 console.error("Kategori verileri bulunamadı:", category);
                 this.showToast(this.getTranslation('categoryLoadError') || "Seçilen kategoride soru bulunamadı. Lütfen başka bir kategori seçin.", "toast-error");
@@ -2890,6 +2890,12 @@ const quizApp = {
     
     // Quiz'i başlat
     startQuiz: function() {
+        // Progressive difficulty'yi sıfırla - her oyun başlangıcında zorluk kolay olarak başlamalı
+        this.currentSection = 1;
+        
+        // Soruları zorluk seviyesine göre yükle
+        this.loadQuestionsForCurrentLevel();
+        
         // Body'ye quiz aktif class'ını ekle - logo gizlemek için ve mobil tab barın yer değiştirmesi için
         document.body.classList.add('quiz-active');
         document.body.classList.remove('category-selection');
