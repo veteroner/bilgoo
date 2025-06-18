@@ -167,46 +167,57 @@ const MonetizationManager = {
 
     // Reklamları başlat
     initializeAds: function() {
+        // Reklam hata işleyicisi
+        window.onerror = function(msg, url, line, col, error) {
+            if (url && url.includes('pagead')) {
+                console.log('AdSense hatası yakalandı ve bastırıldı:', msg);
+                return true; // Hatayı bastır
+            }
+        };
+        
         // Sayfanın tamamen yüklenmesini bekle
         window.addEventListener('load', () => {
-            // Tüm reklam alanlarının görünür olduğunu doğrula
-            const adElements = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status="done"])');
-            
-            if (adElements.length === 0) {
-                console.log('Yüklenecek reklam alanı bulunamadı veya tümü zaten yüklü');
-                return;
-            }
-            
-            adElements.forEach(ad => {
-                // Minimum genişlik ve yükseklik ayarla
-                if (!ad.style.minHeight) ad.style.minHeight = '100px';
-                if (!ad.style.minWidth) ad.style.minWidth = '300px';
+            // 400 hatalarının önlenmesi için reklam yükleme gecikmesi
+            setTimeout(() => {
+                // Tüm reklam alanlarının görünür olduğunu doğrula
+                const adElements = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status="done"])');
                 
-                // Yan panel reklamları için özel stil
-                const adContainer = ad.closest('div');
-                if (adContainer && adContainer.classList.contains('side-ad-container')) {
-                    adContainer.style.display = 'flex';
-                    adContainer.style.flexDirection = 'column';
-                    adContainer.style.alignItems = 'center';
-                    adContainer.style.justifyContent = 'center';
-                    adContainer.style.minHeight = '250px';
-                    adContainer.style.margin = '15px 10px';
-                    adContainer.style.borderRadius = '10px';
-                    adContainer.style.background = 'rgba(255, 255, 255, 0.1)';
+                if (adElements.length === 0) {
+                    console.log('Yüklenecek reklam alanı bulunamadı veya tümü zaten yüklü');
+                    return;
                 }
-            });
-            
-            // Reklamları bir kez yükle
-            if (typeof adsbygoogle !== 'undefined') {
-                try {
-                    // Sadece henüz yüklenmemiş reklamları yükle
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    console.log(adElements.length + ' adet reklam başlatıldı');
-                } catch (e) {
-                    // Sessizce devam et
-                    console.log('Reklam yükleme hatası: ', e);
+                
+                adElements.forEach(ad => {
+                    // Minimum genişlik ve yükseklik ayarla
+                    if (!ad.style.minHeight) ad.style.minHeight = '100px';
+                    if (!ad.style.minWidth) ad.style.minWidth = '300px';
+                    
+                    // Yan panel reklamları için özel stil
+                    const adContainer = ad.closest('div');
+                    if (adContainer && adContainer.classList.contains('side-ad-container')) {
+                        adContainer.style.display = 'flex';
+                        adContainer.style.flexDirection = 'column';
+                        adContainer.style.alignItems = 'center';
+                        adContainer.style.justifyContent = 'center';
+                        adContainer.style.minHeight = '250px';
+                        adContainer.style.margin = '15px 10px';
+                        adContainer.style.borderRadius = '10px';
+                        adContainer.style.background = 'rgba(255, 255, 255, 0.1)';
+                    }
+                });
+                
+                // Reklamları bir kez yükle
+                if (typeof adsbygoogle !== 'undefined') {
+                    try {
+                        // Sadece henüz yüklenmemiş reklamları yükle
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                        console.log(adElements.length + ' adet reklam başlatıldı');
+                    } catch (e) {
+                        // Sessizce devam et
+                        console.log('Reklam yükleme hatası: ', e);
+                    }
                 }
-            }
+            }, 1500); // 1.5 saniye gecikme
         });
 
         // Oyun aralarında reklam gösterme

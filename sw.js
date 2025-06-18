@@ -62,10 +62,23 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Firebase Auth ve Firestore isteklerini cache'leme
+  // Firebase ve diğer dış kaynakları cache'leme
   if (event.request.url.includes('firebaseapp.com') || 
       event.request.url.includes('googleapis.com') ||
-      event.request.url.includes('identitytoolkit.googleapis.com')) {
+      event.request.url.includes('identitytoolkit.googleapis.com') ||
+      event.request.url.includes('chrome-extension:') ||
+      event.request.url.startsWith('chrome-extension:')) {
+    return;
+  }
+  
+  // URL şemasını kontrol et
+  try {
+    const requestURL = new URL(event.request.url);
+    if (requestURL.protocol === 'chrome-extension:') {
+      return; // Chrome uzantısı isteklerini işleme
+    }
+  } catch (error) {
+    console.log('URL analiz hatası:', error);
     return;
   }
 
@@ -88,7 +101,15 @@ self.addEventListener('fetch', event => {
           const responseToCache = response.clone();
           caches.open(CACHE_NAME)
             .then(cache => {
-              cache.put(event.request, responseToCache);
+              try {
+                // URL şemasını kontrol et (ek güvenlik önlemi)
+                const requestURL = new URL(event.request.url);
+                if (requestURL.protocol !== 'chrome-extension:') {
+                  cache.put(event.request, responseToCache);
+                }
+              } catch (error) {
+                console.log('Cache put hatası:', error);
+              }
             });
 
           return response;

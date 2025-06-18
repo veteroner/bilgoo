@@ -11597,28 +11597,36 @@
                     
                     // Periodic sync kaydet
                     if ('periodicSync' in registration) {
-                        // Hata yönetimi ile periodic sync kaydı
-                        const attemptPeriodicSync = async () => {
-                            try {
-                                // İzin kontrolü
-                                const permissionStatus = await navigator.permissions.query({
-                                    name: 'periodic-background-sync',
-                                });
-                                
-                                if (permissionStatus.state === 'granted') {
-                                    await registration.periodicSync.register('content-sync', {
-                                        minInterval: 24 * 60 * 60 * 1000 // 24 saat
-                                    });
-                                    console.log('Periodic sync başarıyla kaydedildi');
-                                } else {
-                                    console.log('Periodic sync izni yok');
+                        // Service Worker aktifleşene kadar bekle ve sonra dene
+                        setTimeout(() => {
+                            // Hata yönetimi ile periodic sync kaydı
+                            const attemptPeriodicSync = async () => {
+                                try {
+                                    // Service Worker durumunu kontrol et
+                                    if (registration.active) {
+                                        // İzin kontrolü
+                                        const permissionStatus = await navigator.permissions.query({
+                                            name: 'periodic-background-sync',
+                                        });
+                                        
+                                        if (permissionStatus.state === 'granted') {
+                                            await registration.periodicSync.register('content-sync', {
+                                                minInterval: 24 * 60 * 60 * 1000 // 24 saat
+                                            });
+                                            console.log('Periodic sync başarıyla kaydedildi');
+                                        } else {
+                                            console.log('Periodic sync izni yok');
+                                        }
+                                    } else {
+                                        console.log('Service Worker henüz aktif değil, periodic sync kaydı yapılamadı');
+                                    }
+                                } catch (error) {
+                                    console.log('Periodic sync kaydı başarısız: ', error);
                                 }
-                            } catch (error) {
-                                console.log('Periodic sync kaydı başarısız: ', error);
-                            }
-                        };
-                        
-                        attemptPeriodicSync();
+                            };
+                            
+                            attemptPeriodicSync();
+                        }, 3000); // 3 saniye bekle
                     }
                     
                     // Update check
