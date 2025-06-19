@@ -16,6 +16,20 @@ module.exports = {
   swDest: 'service-worker.js',
   clientsClaim: true,
   skipWaiting: true,
+  navigateFallbackDenylist: [
+    /^.*googlesyndication\.com.*$/,
+    /^.*googleadservices\.com.*$/,
+    /^.*doubleclick\.net.*$/,
+    /^.*google-analytics\.com.*$/,
+    /^.*googletagmanager\.com.*$/,
+    /^.*google\.com\/adsense.*$/,
+    /^.*googletagservices\.com.*$/,
+    /^.*adservice\.google\..*$/,
+    /^.*pagead2\..*$/,
+    /^.*facebook\.com\/tr.*$/,
+    /^.*fbcdn\..*$/,
+    /^.*ads\..*$/
+  ],
   runtimeCaching: [
     {
       urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
