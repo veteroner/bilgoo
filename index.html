@@ -58,6 +58,15 @@
                          container.style.borderRadius = '8px';
                          container.style.padding = '10px';
                          
+                         // Yan reklamlar için özel boyut ayarları
+                         if (container.parentElement && (container.parentElement.classList.contains('ad-sidebar-left') || container.parentElement.classList.contains('ad-sidebar-right'))) {
+                            container.style.minHeight = '600px';
+                            container.style.width = '300px';
+                         } else {
+                            container.style.minHeight = '250px';
+                            container.style.width = '300px';
+                         }
+                         
                          // Basit "Reklam Alanı" yazısı göster
                          container.innerHTML = `
                              <div style="text-align: center;">
