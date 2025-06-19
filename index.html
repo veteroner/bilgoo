@@ -26,54 +26,100 @@
     <meta itemprop="name" content="Bilgoo - Ücretsiz Online Quiz Oyunu">
     <meta itemprop="image" content="icons/icon-192x192.png">
     
-    <!-- Google AdSense Kodu -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453"
-     crossorigin="anonymous" referrerpolicy="no-referrer-when-downgrade"></script>
+    <!-- Google AdSense Kodu - Güveli yükleme -->
     <script>
-        // AdSense için ayarları ayarla
+        // AdSense için güvenli yükleme
         (function() {
+            // Varsayılan ayarlar
             window.dataLayer = window.dataLayer || [];
             if (window.adsbygoogle === undefined) {
                 window.adsbygoogle = [];
             }
             
-            // SameSite çerezleri için ayarlarını kontrol et
+            // SameSite çerezleri için ayarlar
             document.cookie = "adsense-test=test; SameSite=None; Secure";
+            
+            // Yedek reklam gösterme fonksiyonu
+            function showBackupAds() {
+                console.log("SSL hatası nedeniyle alternatif içerik gösteriliyor");
+                
+                // Reklam alanlarını seç
+                const adContainers = document.querySelectorAll('.ad-container, .adsbygoogle');
+                
+                // Alternatif içerikleri göster
+                if(adContainers && adContainers.length > 0) {
+                    adContainers.forEach(function(container) {
+                        container.style.display = 'block';
+                        container.style.backgroundColor = '#f5f5f5';
+                        container.style.border = '1px solid #ddd';
+                        container.style.borderRadius = '8px';
+                        container.style.padding = '15px';
+                        container.style.margin = '10px 0';
+                        container.style.textAlign = 'center';
+                        container.innerHTML = `
+                            <div>
+                                <strong style="color: var(--primary-color);">Bilgoo Premium</strong>
+                                <p>Reklamları kaldırmak ve ekstra özellikler için Premium'a geçin!</p>
+                                <button onclick="showPremiumInfo()" 
+                                    style="background-color: var(--primary-color); color: white; border: none; 
+                                    padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+                                    Detaylar
+                                </button>
+                            </div>
+                        `;
+                    });
+                }
+            }
+            
+            // Premium bilgi fonksiyonu
+            window.showPremiumInfo = function() {
+                alert("Bilgoo Premium yakında hizmetinizde olacak!");
+            };
             
             // Service Worker'ı AdSense için devre dışı bırak
             if (navigator.serviceWorker && navigator.serviceWorker.controller) {
                 navigator.serviceWorker.getRegistrations().then(function(registrations) {
                     for(let registration of registrations) {
-                        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                            console.log('Geliştirme modunda Service Worker kaydı siliniyor');
-                            registration.unregister();
-                        }
+                        console.log('AdSense için Service Worker kaydı siliniyor');
+                        registration.unregister().then(function() {
+                            console.log('Service Worker kaydı silindi');
+                        });
                     }
                 });
             }
             
-            // AdSense başlangıç hataları için özel işleyici
-            let retryCount = 0;
-            const maxRetries = 3;
+            // AdSense yükleme fonksiyonu
+            function loadAdSense() {
+                try {
+                    const script = document.createElement('script');
+                    script.async = true;
+                    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453";
+                    script.crossOrigin = "anonymous";
+                    script.referrerpolicy = "no-referrer-when-downgrade";
+                    
+                    // Yükleme hatası olursa
+                    script.onerror = function(error) {
+                        console.log('AdSense yükleme hatası (onerror):', error);
+                        showBackupAds();
+                    };
+                    
+                    document.head.appendChild(script);
+                } catch(error) {
+                    console.error('AdSense yükleme hatası (try-catch):', error);
+                    showBackupAds();
+                }
+            }
             
+            // Genel hata izleme
             window.addEventListener('error', function(e) {
                 if (e.target && e.target.src && e.target.src.includes('pagead2.googlesyndication.com')) {
-                    console.log('AdSense yükleme hatası yakalandı:', e);
-                    
-                    if (retryCount < maxRetries) {
-                        retryCount++;
-                        setTimeout(function() {
-                            console.log(`AdSense yeniden yükleniyor (${retryCount}/${maxRetries})...`);
-                            const script = document.createElement('script');
-                            script.async = true;
-                            script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453";
-                            script.crossOrigin = "anonymous";
-                            script.referrerpolicy = "no-referrer-when-downgrade";
-                            document.head.appendChild(script);
-                        }, 5000 * retryCount); // Her denemede bekleme süresini artır
-                    }
+                    console.log('AdSense yükleme hatası (event):', e);
+                    showBackupAds();
                 }
             }, true);
+            
+            // AdSense yükle
+            loadAdSense();
         })();
     </script>
     
@@ -11648,8 +11694,10 @@
                             }
                         });
                         
-                        // İsteğe bağlı olarak sayfayı yenilemek için kullanıcıya bildirim göster
-                        showModalMessage('Reklam yükleme sorunu tespit edildi. En iyi deneyim için sayfayı yenileyin.');
+                        // Reklam sorunlarında kullanıcıya bilgi ver
+                        console.log('Reklam yükleme sorunu tespit edildi. Alternatif reklamlar gösterilecek.');
+                        // Alternatif içerik göster
+                        showBackupAds();
                     }
                 }
             }, true);
