@@ -247,6 +247,7 @@ const MonetizationManager = {
             }
 
             // Tüm reklam alanlarının görünür olduğunu doğrula
+            // DÜZELTME: Sadece yüklenmemiş reklamları seç (data-adsbygoogle-status="done" olmayanlar)
             const adElements = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status="done"])');
             
             if (adElements.length === 0) {
@@ -298,10 +299,15 @@ const MonetizationManager = {
                         // Her reklam arasında belirli bir gecikme ile yükleme yap
                         setTimeout(() => {
                             try {
-                                console.log(`Reklam ${index + 1} için push işlemi başlatılıyor...`);
-                                // Her reklam için ayrı bir push
-                                (adsbygoogle = window.adsbygoogle || []).push({});
-                                console.log(`Reklam ${index + 1} başlatıldı`);
+                                // Reklam hala yüklenmemiş mi kontrol et
+                                if (!ad.hasAttribute('data-adsbygoogle-status') || ad.getAttribute('data-adsbygoogle-status') !== 'done') {
+                                    console.log(`Reklam ${index + 1} için push işlemi başlatılıyor...`);
+                                    // Her reklam için ayrı bir push
+                                    (adsbygoogle = window.adsbygoogle || []).push({});
+                                    console.log(`Reklam ${index + 1} başlatıldı`);
+                                } else {
+                                    console.log(`Reklam ${index + 1} zaten yüklenmiş, işlem atlanıyor`);
+                                }
                             } catch (e) {
                                 console.error(`Reklam ${index + 1} yüklenirken hata:`, e);
                                 // Hata detaylarını günlükle
@@ -373,7 +379,11 @@ const MonetizationManager = {
             // Reklamı yükle
             try {
                 setTimeout(() => {
-                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    // Reklam elementi zaten yüklenmiş mi kontrol et
+                    const adElement = adContainer.querySelector('.adsbygoogle');
+                    if (adElement && (!adElement.hasAttribute('data-adsbygoogle-status') || adElement.getAttribute('data-adsbygoogle-status') !== 'done')) {
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    }
                 }, 500);
             } catch (e) {
                 console.log('Arabulucu reklam yüklenemedi', e);
@@ -464,7 +474,7 @@ const MonetizationManager = {
                 return;
             }
             
-            // Önce reklam alanlarının görünür olduğunu doğrula
+            // DÜZELTME: Sadece yüklenmemiş reklamları seç (data-adsbygoogle-status="done" olmayanlar)
             const adElements = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status="done"])');
             
             if (adElements.length === 0) {
@@ -519,9 +529,14 @@ const MonetizationManager = {
                 adElements.forEach((ad, index) => {
                     setTimeout(() => {
                         try {
-                            console.log(`Reklam ${index + 1} yenileniyor...`);
-                            (adsbygoogle = window.adsbygoogle || []).push({});
-                            console.log(`Reklam ${index + 1} yenilendi`);
+                            // Reklam hala yüklenmemiş mi kontrol et
+                            if (!ad.hasAttribute('data-adsbygoogle-status') || ad.getAttribute('data-adsbygoogle-status') !== 'done') {
+                                console.log(`Reklam ${index + 1} yenileniyor...`);
+                                (adsbygoogle = window.adsbygoogle || []).push({});
+                                console.log(`Reklam ${index + 1} yenilendi`);
+                            } else {
+                                console.log(`Reklam ${index + 1} zaten yüklenmiş, işlem atlanıyor`);
+                            }
                         } catch (e) {
                             console.error(`Reklam ${index + 1} yenilenirken hata:`, e);
                             // Hata durumunda temizleme işlemleri
