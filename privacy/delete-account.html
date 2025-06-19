@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="../style.css">
     <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
     <style>
+        body {
+            background: linear-gradient(135deg, #8e44ad 0%, #c0392b 100%);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -14,30 +20,33 @@
         }
         
         .delete-account-container {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
             padding: 30px;
             box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
             margin-top: 20px;
             text-align: center;
+            color: #333;
         }
         
         .warning-icon {
             font-size: 64px;
-            color: #ff5252;
+            color: #ff3838;
             margin-bottom: 20px;
         }
         
         .delete-title {
-            font-size: 24px;
+            font-size: 28px;
             margin-bottom: 20px;
-            color: #ff5252;
+            color: #ff3838;
+            font-weight: bold;
         }
         
         .delete-description {
             margin-bottom: 30px;
             line-height: 1.6;
-            color: #f0f0f0;
+            color: #444;
+            font-size: 16px;
         }
         
         .delete-form {
@@ -53,20 +62,21 @@
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 500;
+            font-weight: 600;
+            color: #333;
         }
         
         .form-group input {
             width: 100%;
             padding: 12px;
             border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+            color: #333;
         }
         
         .delete-btn {
-            background: #ff5252;
+            background: #ff3838;
             color: white;
             border: none;
             padding: 12px 20px;
@@ -75,27 +85,29 @@
             font-weight: bold;
             margin-top: 20px;
             transition: all 0.3s ease;
+            font-size: 16px;
         }
         
         .delete-btn:hover {
-            background: #ff3838;
+            background: #e61e1e;
             transform: translateY(-2px);
         }
         
         .cancel-btn {
-            background: transparent;
-            color: #ccc;
-            border: 1px solid #ccc;
+            background: #f0f0f0;
+            color: #666;
+            border: none;
             padding: 12px 20px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             margin-right: 10px;
             transition: all 0.3s ease;
+            font-size: 16px;
         }
         
         .cancel-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: #ddd;
         }
         
         .buttons {
@@ -111,7 +123,7 @@
         
         .error {
             background: rgba(255, 82, 82, 0.2);
-            color: #ff5252;
+            color: #e61e1e;
         }
         
         .success {
@@ -138,6 +150,46 @@
         .confirm-delete input {
             margin-right: 10px;
             margin-top: 5px;
+        }
+        
+        .confirm-delete label {
+            color: #444;
+        }
+        
+        /* Google Play gereksinimleri için eklenen bölüm */
+        .data-policy {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            text-align: left;
+            color: #333;
+        }
+        
+        .data-policy h2 {
+            color: #8e44ad;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        
+        .data-policy-section {
+            margin-bottom: 20px;
+        }
+        
+        .data-policy-section h3 {
+            color: #444;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .data-list {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .data-list li {
+            margin-bottom: 5px;
         }
     </style>
 </head>
@@ -178,6 +230,47 @@
                 </div>
                 
                 <div id="result-message" class="result-message"></div>
+            </div>
+        </div>
+        
+        <!-- Google Play gereksinimleri için eklenen veri politikası bölümü -->
+        <div class="data-policy">
+            <h2>Bilgoo Quiz - Hesap Silme Politikası</h2>
+            
+            <div class="data-policy-section">
+                <h3>Hesap Silme Adımları</h3>
+                <ol>
+                    <li>Bu sayfadaki formu kullanarak e-posta adresiniz ve şifrenizle giriş yapın.</li>
+                    <li>Hesap silme işlemini anladığınızı belirtmek için onay kutusunu işaretleyin.</li>
+                    <li>"Hesabımı Sil" butonuna tıklayın.</li>
+                    <li>İşlem tamamlandıktan sonra hesabınız ve tüm verileriniz tamamen silinecektir.</li>
+                </ol>
+            </div>
+            
+            <div class="data-policy-section">
+                <h3>Silinen Veriler</h3>
+                <p>Hesap silme işlemi sonucunda aşağıdaki verileriniz kalıcı olarak silinecektir:</p>
+                <ul class="data-list">
+                    <li>Kullanıcı profili (kullanıcı adı, e-posta, profil resmi)</li>
+                    <li>Oyun istatistikleri ve puanlar</li>
+                    <li>Başarılar ve rozetler</li>
+                    <li>Oyun tercih ayarları</li>
+                    <li>Arkadaş listeleri ve sosyal bağlantılar</li>
+                </ul>
+            </div>
+            
+            <div class="data-policy-section">
+                <h3>Veri Saklama</h3>
+                <p>Hesabınız silindikten sonra:</p>
+                <ul class="data-list">
+                    <li>Tüm kişisel verileriniz anında silinir.</li>
+                    <li>Yasal düzenlemeler gereği saklanması zorunlu bazı işlem kayıtları (satın alma işlemleri gibi) 3 ay süreyle isimsiz halde saklanabilir.</li>
+                    <li>Geribildirim, destek mesajları ve topluluk içeriği katkıları, anonim halde tutulabilir.</li>
+                </ul>
+            </div>
+            
+            <div class="data-policy-section">
+                <p>Sorularınız için <a href="mailto:iletisim@bilgoo.com" style="color: #8e44ad; text-decoration: underline;">iletisim@bilgoo.com</a> adresine ulaşabilirsiniz.</p>
             </div>
         </div>
     </div>
