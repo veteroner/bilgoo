@@ -10,7 +10,7 @@
     padding: 10px;
     margin: 10px 0;
     text-align: center;
-    max-width: 300px;
+    width: 300px;
     height: auto;
     min-height: 250px;
     max-height: 600px;
@@ -22,7 +22,7 @@
 /* Sayfa kenarında sabit reklam alanları */
 .ad-sidebar-left, .ad-sidebar-right {
     position: fixed;
-    width: 160px;
+    width: 300px;
     height: 600px;
     top: 50%;
     transform: translateY(-50%);
@@ -38,7 +38,7 @@
 }
 
 /* Mobil cihazlarda kenar reklamlarını gizle */
-@media (max-width: 1200px) {
+@media (max-width: 1460px) {
     .ad-sidebar-left, .ad-sidebar-right {
         display: none;
     }
