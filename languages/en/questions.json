@@ -1033,5 +1033,24 @@
                 }
             }
         }
-    ]
+    ],
+    "menu": {
+        "home": "Home",
+        "profile": "Profile",
+        "friends": "Friends",
+        "settings": "Settings",
+        "store": "Store",
+        "exit": "Exit",
+        "statistics": "Statistics",
+        "leaderboard": "Leaderboard",
+        "singleplayer": "Single Player",
+        "multiplayer": "Multiplayer",
+        "add_question": "Add Question"
+    },
+    "joker": {
+        "fifty": "50:50",
+        "hint": "Hint",
+        "time": "Time",
+        "pass": "Pass"
+    }
 } 

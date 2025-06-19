@@ -1033,5 +1033,24 @@
                 }
             }
         }
-    ]
+    ],
+    "menu": {
+        "home": "Startseite",
+        "profile": "Profil",
+        "friends": "Freunde",
+        "settings": "Einstellungen",
+        "store": "Shop",
+        "exit": "Beenden",
+        "statistics": "Statistiken",
+        "leaderboard": "Bestenliste",
+        "singleplayer": "Einzelspieler",
+        "multiplayer": "Mehrspieler",
+        "add_question": "Frage Hinzufügen"
+    },
+    "joker": {
+        "fifty": "50:50",
+        "hint": "Tipp",
+        "time": "Zeit",
+        "pass": "Passen"
+    }
 } 
