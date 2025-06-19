@@ -230,7 +230,8 @@ const languages = {
         difficultyLabel: 'Zorluk',
         selectDifficulty: 'Zorluk seçin',
         cancel: 'İptal',
-        addQuestionButton: 'Soru Ekle'
+        addQuestionButton: 'Soru Ekle',
+        register: 'Kayıt Ol'
     },
     
     en: {
@@ -501,7 +502,8 @@ const languages = {
         difficultyLabel: 'Difficulty',
         selectDifficulty: 'Select difficulty',
         cancel: 'Cancel',
-        addQuestionButton: 'Add Question'
+        addQuestionButton: 'Add Question',
+        register: 'Register'
     },
     
     de: {
@@ -726,7 +728,8 @@ const languages = {
         difficultyLabel: 'Schwierigkeit',
         selectDifficulty: 'Schwierigkeit auswählen',
         cancel: 'Abbrechen',
-        addQuestionButton: 'Frage hinzufügen'
+        addQuestionButton: 'Frage hinzufügen',
+        register: 'Registrieren'
     }
 };
 

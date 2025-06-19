@@ -5652,14 +5652,13 @@ const quizApp = {
         // Tam ekran doğru modalı
         const correctModal = document.createElement('div');
         correctModal.className = 'correct-modal';
-        correctModal.innerHTML = `
-            <div class="correct-modal-content">
-                <div class="correct-modal-icon"><i class="fas fa-crown"></i></div>
-                <div class="correct-modal-text">${this.getTranslation('correct')}</div>
-                <div class="correct-modal-score">+${Math.max(1, Math.ceil(this.timeLeft / 5))}</div>
-                <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
-            </div>
-        `;
+                    correctModal.innerHTML = `
+                <div class="correct-modal-content">
+                    <div class="correct-modal-icon"><i class="fas fa-crown"></i></div>
+                    <div class="correct-modal-text">${this.getTranslation('correct')}</div>
+                    <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
+                </div>
+            `;
         document.body.appendChild(correctModal);
         correctModal.querySelector('#next-question').onclick = () => {
             correctModal.remove();
