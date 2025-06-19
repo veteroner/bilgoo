@@ -338,6 +338,7 @@ const quizApp = {
         this.currentLanguage = language;
         localStorage.setItem(this.LANGUAGE_KEY, language);
         localStorage.setItem('quizLanguage', language); // Eski referans için uyumluluk
+        localStorage.setItem('user_language', language); // Kullanıcı dil tercihini kaydet
         
         // HTML etiketinin dil özelliklerini güncelle
         const htmlRoot = document.getElementById('html-root') || document.documentElement;
@@ -769,7 +770,8 @@ const quizApp = {
             }
         });
         
-
+        // Mobil tab bar ve joker tab bar metinlerini güncelle
+        this.updateMobileMenuTexts();
     },
     
     // Joker butonları metinlerini güncelle
@@ -800,6 +802,53 @@ const quizApp = {
         
         if (this.jokerStoreBtn) {
             this.jokerStoreBtn.innerHTML = `<i class="fas fa-store"></i>`;
+        }
+    },
+    
+    // Mobil menü ve joker menü metinlerini güncelle
+    updateMobileMenuTexts: function() {
+        try {
+            const lang = this.currentLanguage || 'tr';
+            
+            // Alt menü butonları
+            this.updateMobileTabText('tab-home', 'Ana Sayfa', 'Home', 'Startseite');
+            this.updateMobileTabText('tab-profile', 'Profil', 'Profile', 'Profil');
+            this.updateMobileTabText('tab-friends', 'Arkadaş', 'Friends', 'Freunde');
+            this.updateMobileTabText('tab-settings', 'Ayarlar', 'Settings', 'Einstellungen');
+            
+            // Joker butonları
+            this.updateMobileTabText('joker-tab-fifty', '50:50', '50:50', '50:50');
+            this.updateMobileTabText('joker-tab-hint', 'İpucu', 'Hint', 'Tipp');
+            this.updateMobileTabText('joker-tab-time', 'Süre', 'Time', 'Zeit');
+            this.updateMobileTabText('joker-tab-skip', 'Pas', 'Pass', 'Passen');
+            this.updateMobileTabText('joker-tab-store', 'Mağaza', 'Store', 'Shop');
+            this.updateMobileTabText('joker-tab-home', 'Çıkış', 'Exit', 'Beenden');
+            
+            console.log("Mobil menü ve joker menü çevirileri güncellendi. Dil:", lang);
+        } catch (error) {
+            console.error("Mobil menü çevirileri güncellenirken hata:", error);
+        }
+    },
+    
+    // Mobil tab metin güncelleme yardımcı fonksiyonu
+    updateMobileTabText: function(elementId, textTR, textEN, textDE) {
+        const element = document.getElementById(elementId);
+        if (element && element.querySelector('span')) {
+            let text = '';
+            
+            // Mevcut dile göre metni belirle
+            if (this.currentLanguage === 'tr') {
+                text = textTR;
+            } else if (this.currentLanguage === 'en') {
+                text = textEN;
+            } else if (this.currentLanguage === 'de') {
+                text = textDE;
+            }
+            
+            // Metni uygula
+            if (text) {
+                element.querySelector('span').textContent = text;
+            }
         }
     },
     
