@@ -15,22 +15,21 @@
     }
 }
 
-/* Mobil Üst Banner Reklam */
+/* Mobil Üst Banner Reklam - Ana konteyner içinde */
 .mobile-top-banner {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
+    position: relative !important;
     width: 100% !important;
     height: 60px !important;
     background: rgba(255, 255, 255, 0.95) !important;
     backdrop-filter: blur(10px) !important;
-    z-index: 9999 !important;
+    z-index: 10 !important;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    margin-bottom: 15px !important;
+    border-radius: 8px !important;
 }
 
 .mobile-top-banner .adsbygoogle {
@@ -47,21 +46,21 @@
     background: transparent !important;
 }
 
-/* Ana container'ı aşağı kaydır - Daha agresif */
+/* Ana container'ı normal konumuna getir */
 @media (max-width: 768px) {
     body {
-        padding-top: 60px !important;
+        padding-top: 0 !important;
         margin-top: 0 !important;
     }
     
     .container {
-        margin-top: 10px !important;
-        padding-top: 10px !important;
+        margin-top: 0 !important;
+        padding-top: 15px !important;
     }
     
-    /* Diğer tüm elementleri de aşağı kaydır */
+    /* Diğer elementleri normal konumuna getir */
     .main-menu, .quiz-container, .profile-container {
-        margin-top: 10px !important;
+        margin-top: 0 !important;
     }
 }
 
