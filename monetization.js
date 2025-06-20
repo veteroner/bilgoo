@@ -34,7 +34,135 @@ const MonetizationManager = {
         const banner = document.getElementById('cookie-consent');
         if (banner) {
             banner.style.display = 'block';
+            
+            // Banner'a ek bilgi ekle
+            const existingText = banner.querySelector('p');
+            if (existingText && !existingText.textContent.includes('Tracking Protection')) {
+                existingText.innerHTML += '<br><br><strong>⚠️ Önemli:</strong> Tarayıcınızda "Tracking Prevention" veya "Gizlilik Koruması" aktifse, bu siteye özel olarak devre dışı bırakmanız önerilir. Aksi takdirde reklamlar ve bazı özellikler düzgün çalışmayabilir.';
+            }
         }
+    },
+
+    // Tracking Prevention uyarısı göster
+    showTrackingPreventionWarning: function() {
+        // Eğer uyarı zaten varsa gösterme
+        if (document.getElementById('tracking-warning')) return;
+        
+        const warning = document.createElement('div');
+        warning.id = 'tracking-warning';
+        warning.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 10001;
+            max-width: 350px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        `;
+        
+        warning.innerHTML = `
+            <div style="display: flex; align-items: flex-start; gap: 10px;">
+                <div style="font-size: 1.5rem;">⚠️</div>
+                <div style="flex: 1;">
+                    <strong>Tracking Protection Algılandı</strong><br>
+                    Reklamların düzgün çalışması için tarayıcı ayarlarından bu site için tracking korumasını devre dışı bırakın.
+                </div>
+                <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; padding: 0; margin-left: 5px;">×</button>
+            </div>
+        `;
+        
+        document.body.appendChild(warning);
+        
+        // 10 saniye sonra otomatik kapat
+        setTimeout(() => {
+            if (warning.parentElement) {
+                warning.remove();
+            }
+        }, 10000);
+    },
+
+    // AdSense hata bildirimi göster
+    showAdSenseErrorNotification: function() {
+        // Eğer bildirim zaten varsa gösterme
+        if (document.getElementById('adsense-error')) return;
+        
+        const notification = document.createElement('div');
+        notification.id = 'adsense-error';
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 10002;
+            max-width: 500px;
+            text-align: center;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        `;
+        
+        notification.innerHTML = `
+            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 8px;">
+                <div style="font-size: 1.5rem;">🚫</div>
+                <strong>AdSense Reklamları Yüklenemedi</strong>
+            </div>
+            <div style="font-size: 0.8rem; opacity: 0.9;">
+                Reklamlar görünmeyebilir. Tracking Protection'ı kapatın veya ad blocker'ı devre dışı bırakın.
+            </div>
+            <button onclick="this.parentElement.remove()" style="
+                background: rgba(255,255,255,0.2); 
+                border: none; 
+                color: white; 
+                padding: 5px 10px; 
+                border-radius: 5px; 
+                cursor: pointer; 
+                margin-top: 8px;
+                font-size: 0.8rem;
+            ">Tamam</button>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // 15 saniye sonra otomatik kapat
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.remove();
+            }
+        }, 15000);
+    },
+
+    // Tüm çerezleri kabul et (Global fonksiyon)
+    acceptAllCookies: function() {
+        this.cookiePreferences = {
+            essential: true,
+            analytics: true,
+            advertising: true
+        };
+        this.saveCookiePreferences();
+        this.hideCookieBanner();
+        this.loadTracking();
+        console.log('✅ Tüm çerezler kabul edildi, reklamlar yüklenecek');
+    },
+
+    // Sadece gerekli çerezleri kabul et (Global fonksiyon)
+    acceptEssentialOnly: function() {
+        this.cookiePreferences = {
+            essential: true,
+            analytics: false,
+            advertising: false
+        };
+        this.saveCookiePreferences();
+        this.hideCookieBanner();
+        console.log('⚠️ Sadece gerekli çerezler kabul edildi, reklamlar gösterilmeyecek');
     },
 
     // Event listener'ları kur
@@ -157,6 +285,29 @@ const MonetizationManager = {
     initAdSense: function() {
         console.log('AdSense reklamları başlatılıyor...');
         
+        // Çerez onayını kontrol et
+        if (!this.cookiePreferences.advertising) {
+            console.log('⚠️ Reklam çerezleri onaylanmamış, AdSense yüklenmeyecek');
+            this.showCookieBanner();
+            return;
+        }
+        
+        // Tracking Prevention kontrolü
+        try {
+            localStorage.setItem('adsense_test', 'test');
+            localStorage.removeItem('adsense_test');
+            console.log('✅ LocalStorage erişimi normal');
+        } catch (e) {
+            console.warn('⚠️ Tracking Prevention aktif - AdSense sorunları olabilir');
+            console.log('Çözüm: Tarayıcı ayarlarından bu site için tracking korumasını devre dışı bırakın');
+            console.log('Safari: Ayarlar > Gizlilik ve Güvenlik > Çapraz Site İzlemeyi Engelle (Kapat)');
+            console.log('Chrome: Ayarlar > Gizlilik ve Güvenlik > Çerezler > Bu site için izin ver');
+            console.log('Firefox: Ayarlar > Gizlilik ve Güvenlik > Gelişmiş İzleme Koruması (Standart)');
+            
+            // Kullanıcıya bildirim göster
+            this.showTrackingPreventionWarning();
+        }
+        
         // Önce AdSense hesap durumunu kontrol et
         this.checkAdSenseStatus();
         
@@ -169,7 +320,7 @@ const MonetizationManager = {
         // Sayfa tamamen yüklendikten sonra yenile
         setTimeout(() => {
             this.refreshAds();
-        }, 5000); // 5 saniye gecikme
+        }, 8000); // 8 saniye gecikme (artırıldı)
     },
 
     // AdSense hesap durumunu kontrol et
@@ -212,23 +363,51 @@ const MonetizationManager = {
                 script.crossOrigin = "anonymous";
                 script.referrerpolicy = "no-referrer-when-downgrade";
                 
+                // İlave güvenlik ayarları
+                script.setAttribute('data-ad-client', 'ca-pub-7610338885240453');
+                script.setAttribute('data-ad-frequency-hint', '30s');
+                
                 // Script başarıyla yüklendiğinde
                 script.onload = () => {
                     console.log('✅ AdSense script başarıyla yüklendi');
-                    setTimeout(() => {
-                        this.loadAdsWhenReady();
-                    }, 3000);
+                    
+                    // AdSense'in hazır olmasını bekle
+                    const checkAdSenseReady = () => {
+                        if (typeof adsbygoogle !== 'undefined') {
+                            console.log('✅ AdSense objesi hazır');
+                            setTimeout(() => {
+                                this.loadAdsWhenReady();
+                            }, 2000);
+                        } else {
+                            console.log('AdSense objesi henüz hazır değil, tekrar kontrol ediliyor...');
+                            setTimeout(checkAdSenseReady, 1000);
+                        }
+                    };
+                    
+                    checkAdSenseReady();
                 };
                 
                 // Script yüklenemediğinde
                 script.onerror = (e) => {
                     console.error('❌ AdSense script yüklenemedi:', e);
-                    console.log('Olası nedenler:');
-                    console.log('1. İnternet bağlantısı sorunu');
-                    console.log('2. AdSense hesabı henüz aktif değil');
-                    console.log('3. Site AdSense\'de onaylanmamış');
-                    console.log('4. Ad blocker aktif');
+                    console.log('🔍 Olası nedenler:');
+                    console.log('  1. AdSense hesabı henüz aktif değil veya onay bekliyor');
+                    console.log('  2. Site AdSense\'de onaylanmamış');
+                    console.log('  3. Ad blocker veya tracking prevention aktif');
+                    console.log('  4. İnternet bağlantısı sorunu');
+                    console.log('  5. HTTPS sertifikası sorunu');
+                    
+                    // Kullanıcıya bildirim göster
+                    this.showAdSenseErrorNotification();
                 };
+                
+                // Script timeout kontrolü
+                setTimeout(() => {
+                    if (typeof adsbygoogle === 'undefined') {
+                        console.warn('⏰ AdSense script yükleme timeout - 15 saniye geçti');
+                        this.showAdSenseErrorNotification();
+                    }
+                }, 15000);
                 
                 document.head.appendChild(script);
                 return;
