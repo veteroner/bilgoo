@@ -12,10 +12,16 @@ const MonetizationManager = {
         this.checkCookieConsent();
         this.setupEventListeners();
         
+        // Mobil reklamları başlat
+        this.initMobileAds();
+        
         // AdSense init için gecikme ekle
         setTimeout(() => {
             this.initializeAds();
         }, 3000); // 3 saniye gecikme
+        
+        // Mobil banner tercihlerini kontrol et
+        this.checkMobileBannerPreferences();
     },
 
     // Çerez onayını kontrol et
@@ -856,6 +862,157 @@ const MonetizationManager = {
             }
         } catch (error) {
             console.error('refreshAds fonksiyonunda beklenmeyen hata:', error);
+        }
+    },
+
+    // Mobil reklam yönetimi
+    initMobileAds: function() {
+        // Mobil cihaz kontrolü
+        const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        if (!isMobile) {
+            console.log('Masaüstü cihaz tespit edildi, mobil reklamlar atlanıyor');
+            return;
+        }
+        
+        console.log('Mobil cihaz tespit edildi, mobil reklamlar başlatılıyor...');
+        
+        // Üst banner reklam oluştur
+        this.createMobileTopBanner();
+        
+        // Sayfa yüklendikten sonra inline reklamlar ekle
+        setTimeout(() => {
+            this.addMobileInlineAds();
+        }, 3000);
+    },
+
+    // Mobil üst banner oluştur
+    createMobileTopBanner: function() {
+        // Zaten varsa ekleme
+        if (document.querySelector('.mobile-top-banner')) {
+            return;
+        }
+        
+        const banner = document.createElement('div');
+        banner.className = 'mobile-top-banner';
+        banner.innerHTML = `
+            <ins class="adsbygoogle mobile-banner"
+                 style="display:block"
+                 data-ad-client="ca-pub-7610338885240453"
+                 data-ad-slot="1234567890"
+                 data-ad-format="banner"
+                 data-full-width-responsive="false"></ins>
+            <button class="mobile-ad-close" onclick="MonetizationManager.hideMobileBanner('top')" title="Reklamı Gizle">×</button>
+        `;
+        
+        document.body.insertBefore(banner, document.body.firstChild);
+        
+        // AdSense reklamını yükle
+        setTimeout(() => {
+            try {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                console.log('Mobil üst banner reklamı yüklendi');
+            } catch (e) {
+                console.error('Mobil üst banner yüklenemedi:', e);
+            }
+        }, 1000);
+    },
+
+    // Mobil alt banner oluştur (opsiyonel)
+    createMobileBottomBanner: function() {
+        // Zaten varsa ekleme
+        if (document.querySelector('.mobile-bottom-banner')) {
+            return;
+        }
+        
+        const banner = document.createElement('div');
+        banner.className = 'mobile-bottom-banner';
+        banner.innerHTML = `
+            <ins class="adsbygoogle mobile-banner"
+                 style="display:block"
+                 data-ad-client="ca-pub-7610338885240453"
+                 data-ad-slot="1234567891"
+                 data-ad-format="banner"
+                 data-full-width-responsive="false"></ins>
+            <button class="mobile-ad-close" onclick="MonetizationManager.hideMobileBanner('bottom')" title="Reklamı Gizle">×</button>
+        `;
+        
+        document.body.appendChild(banner);
+        
+        // AdSense reklamını yükle
+        setTimeout(() => {
+            try {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+                console.log('Mobil alt banner reklamı yüklendi');
+            } catch (e) {
+                console.error('Mobil alt banner yüklenemedi:', e);
+            }
+        }, 1500);
+    },
+
+    // Mobil inline reklamlar ekle
+    addMobileInlineAds: function() {
+        // Kategori seçimi sonrasına reklam ekle
+        const categoriesDiv = document.getElementById('categories');
+        if (categoriesDiv && !categoriesDiv.querySelector('.mobile-inline-ad')) {
+            const inlineAd = document.createElement('div');
+            inlineAd.className = 'mobile-inline-ad';
+            inlineAd.innerHTML = `
+                <ins class="adsbygoogle mobile-inline"
+                     style="display:block"
+                     data-ad-client="ca-pub-7610338885240453"
+                     data-ad-slot="1234567892"
+                     data-ad-format="rectangle"
+                     data-full-width-responsive="false"></ins>
+            `;
+            
+            categoriesDiv.appendChild(inlineAd);
+            
+            // AdSense reklamını yükle
+            setTimeout(() => {
+                try {
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    console.log('Mobil inline reklam yüklendi');
+                } catch (e) {
+                    console.error('Mobil inline reklam yüklenemedi:', e);
+                }
+            }, 500);
+        }
+    },
+
+    // Mobil banner gizle
+    hideMobileBanner: function(position) {
+        const banner = document.querySelector(`.mobile-${position}-banner`);
+        if (banner) {
+            banner.style.display = 'none';
+            
+            // Üst banner gizlenirse body padding'ini kaldır
+            if (position === 'top') {
+                document.body.style.paddingTop = '0';
+            }
+            
+            console.log(`Mobil ${position} banner gizlendi`);
+            
+            // Kullanıcı tercihini kaydet
+            localStorage.setItem(`hideMobile${position.charAt(0).toUpperCase() + position.slice(1)}Banner`, 'true');
+        }
+    },
+
+    // Mobil banner tercihlerini kontrol et
+    checkMobileBannerPreferences: function() {
+        if (localStorage.getItem('hideMobileTopBanner') === 'true') {
+            const topBanner = document.querySelector('.mobile-top-banner');
+            if (topBanner) {
+                topBanner.style.display = 'none';
+                document.body.style.paddingTop = '0';
+            }
+        }
+        
+        if (localStorage.getItem('hideMobileBottomBanner') === 'true') {
+            const bottomBanner = document.querySelector('.mobile-bottom-banner');
+            if (bottomBanner) {
+                bottomBanner.style.display = 'none';
+            }
         }
     },
 

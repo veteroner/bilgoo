@@ -1,4 +1,143 @@
 /* Version 3.0 - Firebase puan kaydetme sistemi tamamlandı */
+
+/* Mobil Reklam Stilleri */
+
+/* Mobil cihazlarda normal reklam alanlarını gizle */
+@media (max-width: 768px) {
+    .ad-container, 
+    .adsbygoogle:not(.mobile-banner):not(.mobile-inline) {
+        display: none !important;
+    }
+    
+    .ad-sidebar-left, 
+    .ad-sidebar-right {
+        display: none !important;
+    }
+}
+
+/* Mobil Üst Banner Reklam */
+.mobile-top-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-top-banner .adsbygoogle {
+    width: 320px !important;
+    height: 50px !important;
+    min-width: 320px !important;
+    max-width: 320px !important;
+    min-height: 50px !important;
+    max-height: 50px !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+/* Ana container'ı aşağı kaydır */
+@media (max-width: 768px) {
+    body {
+        padding-top: 60px;
+    }
+    
+    .container {
+        margin-top: 10px;
+    }
+}
+
+/* Mobil Inline Reklamlar */
+.mobile-inline-ad {
+    width: 100%;
+    max-width: 320px;
+    height: 100px;
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.mobile-inline-ad .adsbygoogle {
+    width: 300px !important;
+    height: 100px !important;
+    min-width: 300px !important;
+    max-width: 300px !important;
+    min-height: 100px !important;
+    max-height: 100px !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+/* Reklam Kapatma Butonu */
+.mobile-ad-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+}
+
+.mobile-ad-close:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+/* Karanlık tema desteği */
+[data-theme="dark"] .mobile-top-banner {
+    background: rgba(33, 33, 33, 0.95);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .mobile-inline-ad {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Oyun sırasında reklamları gizle */
+body.quiz-active .mobile-top-banner {
+    display: none;
+}
+
+/* Küçük ekranlar için responsive */
+@media (max-width: 360px) {
+    .mobile-top-banner .adsbygoogle {
+        width: 300px !important;
+        max-width: 300px !important;
+    }
+    
+    .mobile-inline-ad .adsbygoogle {
+        width: 280px !important;
+        max-width: 280px !important;
+    }
+}
+
 /* Temel Stil ve Sıfırlama */
 :root {
     --primary-color: #4a148c;
