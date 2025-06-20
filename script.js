@@ -1292,34 +1292,8 @@ const quizApp = {
                 
                 console.log('Oluşturulan ipucu:', hint);
                 
-                // İpucunu göster
-                const hintElement = document.createElement('div');
-                hintElement.className = 'hint-message';
-                hintElement.innerHTML = '<i class="fas fa-lightbulb"></i> ' + hint;
-                hintElement.style.cssText = `
-                    background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
-                    color: #2d3436;
-                    padding: 15px 20px;
-                    margin: 15px 0;
-                    border-radius: 10px;
-                    border-left: 4px solid #e17055;
-                    box-shadow: 0 4px 15px rgba(253, 203, 110, 0.3);
-                    animation: fadeInUp 0.5s ease;
-                    font-weight: 600;
-                    text-align: center;
-                `;
-                
-                // İpucu mesajını ekleme
-                const questionElement = document.getElementById('question');
-                if (questionElement && questionElement.parentNode) {
-                    // Eski ipucu mesajını kaldır
-                    const oldHint = document.querySelector('.hint-message');
-                    if (oldHint) oldHint.remove();
-                    
-                    // Yeni ipucunu ekle
-                    questionElement.parentNode.insertBefore(hintElement, questionElement.nextSibling);
-                    console.log('İpucu mesajı DOM\'a eklendi');
-                }
+                // İpucunu modal içinde göster
+                this.showHintModal(hint);
                 
                 // Jokeri kullan (useJoker içinde zaten envanter düşürülüyor)
                 this.useJoker('hint');
@@ -1333,7 +1307,7 @@ const quizApp = {
                 }
                 
                 // Toast bildirimi göster
-                this.showToast("İpucu jokeri kullanıldı! " + hint, "toast-success");
+                this.showToast("İpucu jokeri kullanıldı!", "toast-success");
             });
         }
         
@@ -1584,6 +1558,127 @@ const quizApp = {
                 e.stopPropagation();
                 // onclick event'i zaten çalışacak, sadece touch'u handle ediyoruz
             });
+        });
+    },
+    
+    // İpucu modalını göster
+    showHintModal: function(hint) {
+        // Modal HTML'ini oluştur
+        const modalId = 'hint-modal';
+        
+        // Eğer zaten bir modal varsa kaldır
+        let existingModal = document.getElementById(modalId);
+        if (existingModal) {
+            existingModal.remove();
+        }
+        
+        // Yeni modal oluştur
+        const modal = document.createElement('div');
+        modal.id = modalId;
+        modal.className = 'modal';
+        modal.style.cssText = `
+            display: block;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        `;
+        
+        // Modal içeriği
+        const modalContent = document.createElement('div');
+        modalContent.className = 'modal-content';
+        modalContent.style.cssText = `
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+            margin: 15% auto;
+            padding: 20px;
+            max-width: 80%;
+            width: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transform: translateY(-20px);
+            transition: transform 0.3s;
+            position: relative;
+        `;
+        
+        // Kapat butonu
+        const closeButton = document.createElement('span');
+        closeButton.className = 'close-modal';
+        closeButton.innerHTML = '&times;';
+        closeButton.style.cssText = `
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            color: #333;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        `;
+        
+        // İpucu başlığı
+        const title = document.createElement('h3');
+        title.textContent = 'İPUCU';
+        title.style.cssText = `
+            margin-top: 10px;
+            color: #2d3436;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+        `;
+        
+        // İpucu içeriği
+        const hintContent = document.createElement('div');
+        hintContent.className = 'hint-content';
+        hintContent.innerHTML = '<i class="fas fa-lightbulb" style="color: #e17055; margin-right: 8px;"></i> ' + hint;
+        hintContent.style.cssText = `
+            margin: 15px 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            color: #2d3436;
+            padding: 10px;
+        `;
+        
+        // Modal yapısını oluştur
+        modalContent.appendChild(closeButton);
+        modalContent.appendChild(title);
+        modalContent.appendChild(hintContent);
+        modal.appendChild(modalContent);
+        
+        // Modalı DOM'a ekle
+        document.body.appendChild(modal);
+        
+        // Modalı göster
+        setTimeout(() => {
+            modal.style.opacity = '1';
+            modal.style.visibility = 'visible';
+            modalContent.style.transform = 'translateY(0)';
+        }, 10);
+        
+        // Kapat butonuna tıklama olayı
+        closeButton.addEventListener('click', () => {
+            modal.style.opacity = '0';
+            modal.style.visibility = 'hidden';
+            modalContent.style.transform = 'translateY(-20px)';
+            
+            // Animasyondan sonra modalı kaldır
+            setTimeout(() => {
+                modal.remove();
+            }, 300);
+        });
+        
+        // Modal dışına tıklama olayı
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeButton.click();
+            }
         });
     },
     
@@ -2456,7 +2551,7 @@ const quizApp = {
                     
                     <div class="stat-item">
                         <div class="stat-icon">
-                            <i class="fas fa-star"></i>
+                            <i class="fas fa-coins"></i>
                         </div>
                         <div class="stat-content">
                             <div class="stat-value">${this.score}</div>
@@ -2706,7 +2801,7 @@ const quizApp = {
                 </div>
                 
                 <div class="section-stats">
-                    <p><i class="fas fa-star"></i> ${this.getTranslation('currentScore')}: ${this.score}</p>
+                    <p><i class="fas fa-coins"></i> ${this.getTranslation('currentScore')}: ${this.score}</p>
                     <p><i class="fas fa-heart"></i> ${this.getTranslation('remainingLives')}: ${this.lives}</p>
                     <p><i class="fas fa-check-circle"></i> ${this.getTranslation('correctAnswers')}: ${stats.correct}/${stats.total} (${correctPercentage}%)</p>
                     <p><i class="fas fa-chart-line"></i> Sonraki Bölüm: ${['', 'Kolay', 'Orta', 'Zor'][this.getProgressiveDifficulty()]} Seviye</p>
@@ -3020,7 +3115,7 @@ const quizApp = {
         if (tabBar) tabBar.style.display = 'none';
         
         document.body.classList.add('quiz-active');
-        // Quiz modunda olduğumuzu localStorage'a kaydet
+        // Quiz moduna girdiğimizi localStorage'a kaydet
         localStorage.setItem('quizModeActive', 'true');
     },
     
@@ -5575,7 +5670,6 @@ const quizApp = {
                 onlineGame.submitAnswer(false);
             }
         }
-        // Can kontrolü kaldırıldı - loseLife fonksiyonu kendi başına can satın alma modalını handle ediyor
         
         if (this.nextButton) {
             this.nextButton.style.display = 'block';
