@@ -1462,46 +1462,115 @@ const quizApp = {
                 console.log('Satın alma öncesi envanter:', JSON.stringify(self.jokerInventory));
                 
                 if (self.totalScore >= price) {
-                    // Toplam puanı azalt
-                    self.totalScore -= price;
-                    
-                    // PUANI FIREBASE'E KAYDET
-                    if (self.isLoggedIn) {
-                        self.delayedSaveUserData(); // Firebase'e geciktirilmiş kaydet
-                        console.log(`Joker satın alma: ${price} puan harcandı. Yeni toplam: ${self.totalScore}`);
-                    }
-                    
-                    // Jokeri envantere ekle
-                    var previousCount = self.jokerInventory[jokerType] || 0;
-                    self.jokerInventory[jokerType]++;
-                    
-                    console.log(`${jokerType} joker sayısı: ${previousCount} -> ${self.jokerInventory[jokerType]}`);
-                    
-                    // Joker envanterini kaydet
-                    self.saveJokerInventory();
-                    
-                    // Göstergeleri güncelle
-                    pointsDisplay.textContent = self.totalScore;
-                    
-                    // Joker mağazasındaki sayımları ve buton durumlarını güncelle
-                    self.updateJokerStoreDisplay(modal);
-                    
-                    // OYUN EKRANINDAKİ JOKER BUTONLARINI DA GÜNCELLE
-                    self.updateJokerButtons();
-                    
-                    // Skor gösterimini güncelle
-                    self.updateScoreDisplay();
-                    
-                    // Toast bildirimi göster
-                    var jokerName = jokerType === 'fifty' ? '50:50' : 
+                    // Joker satın alma modalı göster
+                    const jokerName = jokerType === 'fifty' ? '50:50' : 
                         jokerType === 'hint' ? 'İpucu' : 
                         jokerType === 'time' ? 'Süre' : 'Pas';
-                    self.showToast(jokerName + ' jokeri satın alındı!', "toast-success");
                     
-                    // Joker butonlarını güncelle
-                    self.updateJokerButtons();
+                    // İkon ve renk belirle
+                    let icon = jokerType === 'fifty' ? 'fa-star-half-alt' : 
+                        jokerType === 'hint' ? 'fa-lightbulb' : 
+                        jokerType === 'time' ? 'fa-clock' : 'fa-forward';
                     
-                    console.log('Satın alma sonrası envanter:', JSON.stringify(self.jokerInventory));
+                    let color = jokerType === 'fifty' ? 'linear-gradient(135deg, #56ccf2, #2f80ed)' : 
+                        jokerType === 'hint' ? 'linear-gradient(135deg, #ffeaa7, #fdcb6e)' : 
+                        jokerType === 'time' ? 'linear-gradient(135deg, #81ecec, #00cec9)' : 
+                        'linear-gradient(135deg, #a29bfe, #6c5ce7)';
+                    
+                    // Satın alma onayı için modal göster
+                    self.showJokerModal(
+                        `${jokerName} Jokeri Satın Al`, 
+                        `<div style="text-align: center; margin-bottom: 15px;">
+                            <div style="font-size: 1.1rem; margin-bottom: 10px;">
+                                <strong>${jokerName} jokeri</strong> satın almak için <strong>${price} puan</strong> harcayacaksınız.
+                            </div>
+                            <div style="font-size: 0.9rem; color: #555;">
+                                Mevcut Puanınız: ${self.totalScore}
+                            </div>
+                            <div style="margin-top: 20px;">
+                                <button id="confirm-purchase" style="background: #2ecc71; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-right: 10px;">
+                                    <i class="fas fa-check"></i> Satın Al
+                                </button>
+                                <button id="cancel-purchase" style="background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                                    <i class="fas fa-times"></i> İptal
+                                </button>
+                            </div>
+                        </div>`, 
+                        icon, 
+                        color
+                    );
+                    
+                    // Modal gösterildikten sonra butonlara event listener ekle
+                    setTimeout(() => {
+                        const confirmBtn = document.getElementById('confirm-purchase');
+                        const cancelBtn = document.getElementById('cancel-purchase');
+                        
+                        if (confirmBtn) {
+                            confirmBtn.addEventListener('click', function() {
+                                // Toplam puanı azalt
+                                self.totalScore -= price;
+                                
+                                // PUANI FIREBASE'E KAYDET
+                                if (self.isLoggedIn) {
+                                    self.delayedSaveUserData(); // Firebase'e geciktirilmiş kaydet
+                                    console.log(`Joker satın alma: ${price} puan harcandı. Yeni toplam: ${self.totalScore}`);
+                                }
+                                
+                                // Jokeri envantere ekle
+                                var previousCount = self.jokerInventory[jokerType] || 0;
+                                self.jokerInventory[jokerType]++;
+                                
+                                console.log(`${jokerType} joker sayısı: ${previousCount} -> ${self.jokerInventory[jokerType]}`);
+                                
+                                // Joker envanterini kaydet
+                                self.saveJokerInventory();
+                                
+                                // Göstergeleri güncelle
+                                pointsDisplay.textContent = self.totalScore;
+                                
+                                // Joker mağazasındaki sayımları ve buton durumlarını güncelle
+                                self.updateJokerStoreDisplay(modal);
+                                
+                                // OYUN EKRANINDAKİ JOKER BUTONLARINI DA GÜNCELLE
+                                self.updateJokerButtons();
+                                
+                                // Skor gösterimini güncelle
+                                self.updateScoreDisplay();
+                                
+                                // Joker modalını kapat
+                                const jokerModal = document.getElementById('joker-modal');
+                                if (jokerModal) {
+                                    jokerModal.style.opacity = '0';
+                                    jokerModal.style.visibility = 'hidden';
+                                    setTimeout(() => {
+                                        jokerModal.remove();
+                                    }, 300);
+                                }
+                                
+                                // Başarılı satın alma bildirimi göster
+                                self.showToast(`${jokerName} jokeri başarıyla satın alındı!`, "toast-success");
+                                
+                                console.log('Satın alma sonrası envanter:', JSON.stringify(self.jokerInventory));
+                            });
+                        }
+                        
+                        if (cancelBtn) {
+                            cancelBtn.addEventListener('click', function() {
+                                // Joker modalını kapat
+                                const jokerModal = document.getElementById('joker-modal');
+                                if (jokerModal) {
+                                    jokerModal.style.opacity = '0';
+                                    jokerModal.style.visibility = 'hidden';
+                                    setTimeout(() => {
+                                        jokerModal.remove();
+                                    }, 300);
+                                }
+                                
+                                // İptal bildirimi göster
+                                self.showToast("Satın alma işlemi iptal edildi", "toast-info");
+                            });
+                        }
+                    }, 100);
                 } else {
                     console.warn('Yeterli puan yok!');
                     self.showToast("Yeterli puanınız yok!", "toast-error");
