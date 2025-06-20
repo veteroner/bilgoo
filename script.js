@@ -1251,8 +1251,11 @@ const quizApp = {
                     });
                 }
                 
+                // Modal göster
+                this.showJokerModal('50:50 Jokeri', 'İki yanlış şık söndürüldü!', 'fa-star-half-alt', 'linear-gradient(135deg, #81ecec, #00cec9)');
+                
                 // Toast bildirimi göster
-                this.showToast("50:50 jokeri kullanıldı! İki yanlış şık söndürüldü.", "toast-success");
+                this.showToast("50:50 jokeri kullanıldı!", "toast-success");
             });
         }
         
@@ -1343,8 +1346,11 @@ const quizApp = {
                     });
                 }
                 
+                // Modal göster
+                this.showJokerModal('Süre Jokeri', '15 saniye eklendi!<br>Yeni süre: ' + this.timeLeft + ' saniye', 'fa-clock', 'linear-gradient(135deg, #74b9ff, #0984e3)');
+                
                 // Toast bildirimi göster
-                this.showToast("Süre jokeri kullanıldı! 15 saniye eklendi. Yeni süre: " + this.timeLeft + " saniye", "toast-success");
+                this.showToast("Süre jokeri kullanıldı!", "toast-success");
             });
         }
         
@@ -1377,15 +1383,18 @@ const quizApp = {
                 // Jokeri kullan (useJoker içinde zaten envanter düşürülüyor)
                 this.useJoker('skip');
                 
+                // Modal göster
+                this.showJokerModal('Pas Jokeri', 'Bu soru pas geçildi!<br>Sonraki soruya geçiliyor...', 'fa-forward', 'linear-gradient(135deg, #a29bfe, #6c5ce7)');
+                
                 // Toast bildirimi göster
-                this.showToast("Pas jokeri kullanıldı! Sonraki soruya geçiliyor.", "toast-success");
+                this.showToast("Pas jokeri kullanıldı!", "toast-success");
                 
                 console.log('Pas joker kullanım sonrası envanter:', JSON.stringify(this.jokerInventory));
                 
                 // Bir sonraki soruya geç
                 setTimeout(() => {
                     this.showNextQuestion();
-                }, 800);
+                }, 1500);
             });
         }
         
@@ -1561,16 +1570,20 @@ const quizApp = {
         });
     },
     
-    // İpucu modalını göster
-    showHintModal: function(hint) {
+    // Joker modalını göster - tüm jokerler için genel bir modal
+    showJokerModal: function(title, content, icon, color) {
         // Modal HTML'ini oluştur
-        const modalId = 'hint-modal';
+        const modalId = 'joker-modal';
         
         // Eğer zaten bir modal varsa kaldır
         let existingModal = document.getElementById(modalId);
         if (existingModal) {
             existingModal.remove();
         }
+        
+        // Varsayılan değerler
+        icon = icon || 'fa-lightbulb';
+        color = color || 'linear-gradient(135deg, #ffeaa7, #fdcb6e)';
         
         // Yeni modal oluştur
         const modal = document.createElement('div');
@@ -1595,7 +1608,7 @@ const quizApp = {
         const modalContent = document.createElement('div');
         modalContent.className = 'modal-content';
         modalContent.style.cssText = `
-            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+            background: ${color};
             margin: 15% auto;
             padding: 20px;
             max-width: 80%;
@@ -1621,10 +1634,10 @@ const quizApp = {
             cursor: pointer;
         `;
         
-        // İpucu başlığı
-        const title = document.createElement('h3');
-        title.textContent = 'İPUCU';
-        title.style.cssText = `
+        // Modal başlığı
+        const titleElement = document.createElement('h3');
+        titleElement.textContent = title.toUpperCase();
+        titleElement.style.cssText = `
             margin-top: 10px;
             color: #2d3436;
             font-size: 1.4rem;
@@ -1633,11 +1646,11 @@ const quizApp = {
             text-transform: uppercase;
         `;
         
-        // İpucu içeriği
-        const hintContent = document.createElement('div');
-        hintContent.className = 'hint-content';
-        hintContent.innerHTML = '<i class="fas fa-lightbulb" style="color: #e17055; margin-right: 8px;"></i> ' + hint;
-        hintContent.style.cssText = `
+        // Modal içeriği
+        const contentElement = document.createElement('div');
+        contentElement.className = 'joker-content';
+        contentElement.innerHTML = `<i class="fas ${icon}" style="color: #e17055; margin-right: 8px;"></i> ${content}`;
+        contentElement.style.cssText = `
             margin: 15px 0;
             font-size: 1.2rem;
             font-weight: 600;
@@ -1648,8 +1661,8 @@ const quizApp = {
         
         // Modal yapısını oluştur
         modalContent.appendChild(closeButton);
-        modalContent.appendChild(title);
-        modalContent.appendChild(hintContent);
+        modalContent.appendChild(titleElement);
+        modalContent.appendChild(contentElement);
         modal.appendChild(modalContent);
         
         // Modalı DOM'a ekle
@@ -1680,6 +1693,11 @@ const quizApp = {
                 closeButton.click();
             }
         });
+    },
+    
+    // İpucu modalını göster (geriye dönük uyumluluk için)
+    showHintModal: function(hint) {
+        this.showJokerModal('İpucu', hint, 'fa-lightbulb', 'linear-gradient(135deg, #ffeaa7, #fdcb6e)');
     },
     
     // Joker butonlarını güncelle
@@ -4176,21 +4194,21 @@ const quizApp = {
                 const date = new Date(user.metadata.creationTime);
                 joinDate.textContent = date.toLocaleDateString('tr-TR');
             }
-            }
-            
+        }
+        
         // Firebase'den kullanıcı verilerini yükle (puan, istatistikler vs.)
         this.loadFirebaseUserStats(userId);
         
         // Gerçek istatistikleri güncelle
         this.updateRealUserStats();
             
-            // Rozetleri yükle
+        // Rozetleri yükle
         this.loadUserBadgesForProfile(userId);
             
-            // Yüksek skorları yükle
+        // Yüksek skorları yükle
         this.loadHighScoresForProfile(userId);
             
-            // Son aktiviteleri yükle
+        // Son aktiviteleri yükle
         this.loadRecentActivitiesForProfile(userId);
     },
 
