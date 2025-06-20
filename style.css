@@ -7873,6 +7873,7 @@ body.quiz-active .main-logo-container svg {
 
 .current-score-simple {
     color: var(--primary-color);
+    display: none; /* Kupa ikonunun yanındaki puanı gizle */
 }
 
 .total-score-simple i, .current-score-simple i {
