@@ -499,11 +499,11 @@ const MonetizationManager = {
             <button class="mobile-ad-close" onclick="MonetizationManager.hideMobileBanner('top')" title="Reklamı Gizle">×</button>
         `;
         
-        // Container'ın başına ekle (body'nin başına değil)
+        // Container'ın hemen üstüne ekle (logo üstü)
         const container = document.querySelector('.container');
         if (container) {
-            container.insertBefore(banner, container.firstChild);
-            console.log('✅ Mobil üst banner container başına eklendi');
+            container.parentNode.insertBefore(banner, container);
+            console.log('✅ Mobil üst banner container üstüne eklendi');
         } else {
             document.body.insertBefore(banner, document.body.firstChild);
             console.log('✅ Mobil üst banner body başına eklendi');
