@@ -1438,7 +1438,9 @@ const quizApp = {
         var pointsDisplay = document.getElementById('joker-store-points-display');
         
         // Mevcut toplam puanları ve joker envanterini göster
-        pointsDisplay.textContent = this.totalScore || 0;
+        // Misafir kullanıcılar için sessionScore, giriş yapmış kullanıcılar için totalScore kullan
+        const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
+        pointsDisplay.textContent = currentPoints || 0;
         
         // Oyun ekranındaki joker butonlarını da güncelle
         this.updateJokerButtons();
@@ -1453,7 +1455,9 @@ const quizApp = {
             var price = parseInt(item.dataset.price);
             
             // Yeterli toplam puan varsa butonu etkinleştir
-            btn.disabled = this.totalScore < price;
+            // Misafir kullanıcılar için sessionScore, giriş yapmış kullanıcılar için totalScore kullan
+            const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
+            btn.disabled = currentPoints < price;
             
             // Mobil deneyim için buton stilini iyileştir
             btn.style.padding = '12px 15px';
@@ -1486,6 +1490,9 @@ const quizApp = {
                         'linear-gradient(135deg, #a29bfe, #6c5ce7)';
                     
                     // Satın alma onayı için modal göster
+                    // Misafir kullanıcılar için sessionScore, giriş yapmış kullanıcılar için totalScore kullan
+                    const currentPoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
+                    
                     self.showJokerModal(
                         `${jokerName} Jokeri Satın Al`, 
                         `<div style="text-align: center; margin-bottom: 15px;">
@@ -1493,7 +1500,7 @@ const quizApp = {
                                 <strong>${jokerName} jokeri</strong> satın almak için <strong>${price} puan</strong> harcayacaksınız.
                             </div>
                             <div style="font-size: 0.9rem; color: #555;">
-                                Mevcut Puanınız: ${self.totalScore}
+                                Mevcut Puanınız: ${currentPoints}
                             </div>
                             <div style="margin-top: 20px;">
                                 <button id="confirm-purchase" style="background: #2ecc71; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-right: 10px;">
@@ -1520,12 +1527,14 @@ const quizApp = {
                                 e.stopPropagation();
                                 
                                 // Toplam puanı azalt
-                                self.totalScore -= price;
-                                
-                                // PUANI FIREBASE'E KAYDET
                                 if (self.isLoggedIn) {
+                                    self.totalScore -= price;
                                     self.delayedSaveUserData(); // Firebase'e geciktirilmiş kaydet
                                     console.log(`Joker satın alma: ${price} puan harcandı. Yeni toplam: ${self.totalScore}`);
+                                } else {
+                                    self.sessionScore -= price;
+                                    self.saveScoreToLocalStorage(); // Misafir için localStorage'a kaydet
+                                    console.log(`Joker satın alma (misafir): ${price} puan harcandı. Yeni toplam: ${self.sessionScore}`);
                                 }
                                 
                                 // Jokeri envantere ekle
@@ -1538,12 +1547,17 @@ const quizApp = {
                                 self.saveJokerInventory();
                                 
                                 // Göstergeleri güncelle
-                                pointsDisplay.textContent = self.totalScore;
+                                const updatedPoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
+                                pointsDisplay.textContent = updatedPoints;
                                 
                                 // Joker mağazasındaki sayımları ve buton durumlarını güncelle
                                 self.updateJokerStoreDisplay(modal);
                                 
                                 // OYUN EKRANINDAKİ JOKER BUTONLARINI DA GÜNCELLE
+                                // Joker butonlarını güncellemek için önce kullanım durumlarını sıfırlayalım
+                                self.resetJokerUsage();
+                                
+                                // Yine de direkt olarak butonları güncelleyelim
                                 self.updateJokerButtons();
                                 
                                 // Skor gösterimini güncelle
@@ -1640,8 +1654,16 @@ const quizApp = {
             modal.style.opacity = '0';
             modal.classList.remove('show');
             document.body.style.overflow = ''; // Body scroll'unu restore et
+            
             // Mağaza kapandığında joker butonlarını güncelle
+            // Önce kullanım durumlarını sıfırlayalım
+            self.resetJokerUsage();
+            
+            // Sonra butonları güncelleyelim
             self.updateJokerButtons();
+            
+            // Konsola joker envanterini yazdır
+            console.log('Joker mağazası kapandıktan sonra envanter:', JSON.stringify(self.jokerInventory));
         };
         
         // Close button events (both click and touch)
@@ -1836,12 +1858,12 @@ const quizApp = {
     
     // Joker butonlarını güncelle
     updateJokerButtons: function() {
-        // Elementleri dinamik olarak al (eğer henüz null ise)
-        if (!this.jokerFiftyBtn) this.jokerFiftyBtn = document.getElementById('joker-fifty');
-        if (!this.jokerHintBtn) this.jokerHintBtn = document.getElementById('joker-hint');
-        if (!this.jokerTimeBtn) this.jokerTimeBtn = document.getElementById('joker-time');
-        if (!this.jokerSkipBtn) this.jokerSkipBtn = document.getElementById('joker-skip');
-        if (!this.jokerStoreBtn) this.jokerStoreBtn = document.getElementById('joker-store');
+        // Elementleri her zaman yeniden al (DOM'da değişiklik olmuş olabilir)
+        this.jokerFiftyBtn = document.getElementById('joker-fifty');
+        this.jokerHintBtn = document.getElementById('joker-hint');
+        this.jokerTimeBtn = document.getElementById('joker-time');
+        this.jokerSkipBtn = document.getElementById('joker-skip');
+        this.jokerStoreBtn = document.getElementById('joker-store');
         
         const currentQuestion = this.questions[this.currentQuestionIndex] || {};
         const isTrueFalse = currentQuestion.type === "DoğruYanlış" || currentQuestion.type === "TrueFalse";
@@ -1950,7 +1972,10 @@ const quizApp = {
     updateJokerStoreDisplay: function(modal) {
         console.log('Joker mağazası sayımları güncelleniyor...');
         console.log('Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
-        console.log('Mevcut toplam puan:', this.totalScore);
+        
+        // Misafir kullanıcılar için sessionScore, giriş yapmış kullanıcılar için totalScore kullan
+        const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
+        console.log('Mevcut toplam puan:', currentPoints);
         
         const ownedCountElements = modal.querySelectorAll('.joker-owned-count');
         ownedCountElements.forEach((el) => {
@@ -1965,8 +1990,8 @@ const quizApp = {
         buyButtons.forEach((btn) => {
             const item = btn.closest('.joker-store-item');
             const price = parseInt(item.dataset.price);
-            btn.disabled = this.totalScore < price;
-            console.log(`Buton durumu güncellendi: Fiyat ${price}, Toplam puan ${this.totalScore}, Aktif: ${this.totalScore >= price}`);
+            btn.disabled = currentPoints < price;
+            console.log(`Buton durumu güncellendi: Fiyat ${price}, Toplam puan ${currentPoints}, Aktif: ${currentPoints >= price}`);
         });
     },
 
@@ -1984,7 +2009,7 @@ const quizApp = {
         // Joker butonlarını güncelle
         setTimeout(() => {
             this.updateJokerButtons();
-        }, 100);
+        }, 300); // Süreyi 100ms'den 300ms'ye çıkardım
     },
 
     // Reset jokers for new game (sadece oyun başlangıcında çağrılmalı)
