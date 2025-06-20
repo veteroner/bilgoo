@@ -1438,9 +1438,7 @@ const quizApp = {
         var pointsDisplay = document.getElementById('joker-store-points-display');
         
         // Mevcut toplam puanları ve joker envanterini göster
-        // Misafir kullanıcılar için sessionScore, giriş yapmış kullanıcılar için totalScore kullan
-        const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
-        pointsDisplay.textContent = currentPoints || 0;
+        pointsDisplay.textContent = this.totalScore || 0;
         
         // Oyun ekranındaki joker butonlarını da güncelle
         this.updateJokerButtons();
@@ -1455,23 +1453,19 @@ const quizApp = {
             var price = parseInt(item.dataset.price);
             
             // Yeterli toplam puan varsa butonu etkinleştir
-            // Misafir kullanıcılar için sessionScore, giriş yapmış kullanıcılar için totalScore kullan
-            const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
-            btn.disabled = currentPoints < price;
-            
-            // Mobil deneyim için buton stilini iyileştir
-            btn.style.padding = '12px 15px';
-            btn.style.touchAction = 'manipulation';
-            btn.style.cursor = 'pointer';
-            btn.style.fontSize = '1rem';
+            btn.disabled = this.totalScore < price || (this.currentUser && this.currentUser.isAnonymous);
             
             // Satın alma olayı
             var self = this;
-            const handleBuyClick = function(e) {
-                e.preventDefault();
-                e.stopPropagation();
+            btn.onclick = function() {
                 console.log(`Joker satın alma denemesi: ${jokerType}, Fiyat: ${price}, Mevcut Toplam Puan: ${self.totalScore}`);
                 console.log('Satın alma öncesi envanter:', JSON.stringify(self.jokerInventory));
+                
+                // Misafir kullanıcı kontrolü
+                if (self.currentUser && self.currentUser.isAnonymous) {
+                    self.showToast("Misafir kullanıcılar joker satın alamaz. Lütfen üye olun.", "toast-warning");
+                    return;
+                }
                 
                 if (self.totalScore >= price) {
                     // Joker satın alma modalı göster
@@ -1490,9 +1484,6 @@ const quizApp = {
                         'linear-gradient(135deg, #a29bfe, #6c5ce7)';
                     
                     // Satın alma onayı için modal göster
-                    // Misafir kullanıcılar için sessionScore, giriş yapmış kullanıcılar için totalScore kullan
-                    const currentPoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
-                    
                     self.showJokerModal(
                         `${jokerName} Jokeri Satın Al`, 
                         `<div style="text-align: center; margin-bottom: 15px;">
@@ -1500,7 +1491,7 @@ const quizApp = {
                                 <strong>${jokerName} jokeri</strong> satın almak için <strong>${price} puan</strong> harcayacaksınız.
                             </div>
                             <div style="font-size: 0.9rem; color: #555;">
-                                Mevcut Puanınız: ${currentPoints}
+                                Mevcut Puanınız: ${self.totalScore}
                             </div>
                             <div style="margin-top: 20px;">
                                 <button id="confirm-purchase" style="background: #2ecc71; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-right: 10px;">
@@ -1521,20 +1512,14 @@ const quizApp = {
                         const cancelBtn = document.getElementById('cancel-purchase');
                         
                         if (confirmBtn) {
-                            // Tıklama ve dokunma olaylarını ekleyelim
-                            const handleConfirm = function(e) {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                
+                            confirmBtn.addEventListener('click', function() {
                                 // Toplam puanı azalt
+                                self.totalScore -= price;
+                                
+                                // PUANI FIREBASE'E KAYDET
                                 if (self.isLoggedIn) {
-                                    self.totalScore -= price;
                                     self.delayedSaveUserData(); // Firebase'e geciktirilmiş kaydet
                                     console.log(`Joker satın alma: ${price} puan harcandı. Yeni toplam: ${self.totalScore}`);
-                                } else {
-                                    self.sessionScore -= price;
-                                    self.saveScoreToLocalStorage(); // Misafir için localStorage'a kaydet
-                                    console.log(`Joker satın alma (misafir): ${price} puan harcandı. Yeni toplam: ${self.sessionScore}`);
                                 }
                                 
                                 // Jokeri envantere ekle
@@ -1547,17 +1532,12 @@ const quizApp = {
                                 self.saveJokerInventory();
                                 
                                 // Göstergeleri güncelle
-                                const updatedPoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
-                                pointsDisplay.textContent = updatedPoints;
+                                pointsDisplay.textContent = self.totalScore;
                                 
                                 // Joker mağazasındaki sayımları ve buton durumlarını güncelle
                                 self.updateJokerStoreDisplay(modal);
                                 
                                 // OYUN EKRANINDAKİ JOKER BUTONLARINI DA GÜNCELLE
-                                // Joker butonlarını güncellemek için önce kullanım durumlarını sıfırlayalım
-                                self.resetJokerUsage();
-                                
-                                // Yine de direkt olarak butonları güncelleyelim
                                 self.updateJokerButtons();
                                 
                                 // Skor gösterimini güncelle
@@ -1577,21 +1557,11 @@ const quizApp = {
                                 self.showToast(`${jokerName} jokeri başarıyla satın alındı!`, "toast-success");
                                 
                                 console.log('Satın alma sonrası envanter:', JSON.stringify(self.jokerInventory));
-                            };
-                            
-                            confirmBtn.addEventListener('click', handleConfirm);
-                            confirmBtn.addEventListener('touchend', handleConfirm);
-                            
-                            // Butonun tıklanabilir/dokunulabilir olduğunu garantileyelim
-                            confirmBtn.style.cursor = 'pointer';
-                            confirmBtn.style.touchAction = 'manipulation';
+                            });
                         }
                         
                         if (cancelBtn) {
-                            const handleCancel = function(e) {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                
+                            cancelBtn.addEventListener('click', function() {
                                 // Joker modalını kapat
                                 const jokerModal = document.getElementById('joker-modal');
                                 if (jokerModal) {
@@ -1604,28 +1574,14 @@ const quizApp = {
                                 
                                 // İptal bildirimi göster
                                 self.showToast("Satın alma işlemi iptal edildi", "toast-info");
-                            };
-                            
-                            cancelBtn.addEventListener('click', handleCancel);
-                            cancelBtn.addEventListener('touchend', handleCancel);
-                            
-                            // Butonun tıklanabilir/dokunulabilir olduğunu garantileyelim
-                            cancelBtn.style.cursor = 'pointer';
-                            cancelBtn.style.touchAction = 'manipulation';
+                            });
                         }
-                    }, 300); // Süreyi 100ms'den 300ms'ye çıkardım
+                    }, 100);
                 } else {
                     console.warn('Yeterli puan yok!');
                     self.showToast("Yeterli puanınız yok!", "toast-error");
                 }
             };
-            
-            // Click ve touch olaylarını ekle
-            btn.addEventListener('click', handleBuyClick);
-            btn.addEventListener('touchend', handleBuyClick);
-            
-            // Eski onclick işlevini kaldır
-            btn.onclick = null;
         }.bind(this));
         
         // Modalı göster
@@ -1654,16 +1610,8 @@ const quizApp = {
             modal.style.opacity = '0';
             modal.classList.remove('show');
             document.body.style.overflow = ''; // Body scroll'unu restore et
-            
             // Mağaza kapandığında joker butonlarını güncelle
-            // Önce kullanım durumlarını sıfırlayalım
-            self.resetJokerUsage();
-            
-            // Sonra butonları güncelleyelim
             self.updateJokerButtons();
-            
-            // Konsola joker envanterini yazdır
-            console.log('Joker mağazası kapandıktan sonra envanter:', JSON.stringify(self.jokerInventory));
         };
         
         // Close button events (both click and touch)
@@ -1738,7 +1686,7 @@ const quizApp = {
             background: ${color};
             margin: 15% auto;
             padding: 20px;
-            max-width: 90%;
+            max-width: 80%;
             width: auto;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
@@ -1795,28 +1743,6 @@ const quizApp = {
         // Modalı DOM'a ekle
         document.body.appendChild(modal);
         
-        // İçinde buton varsa butonları iyileştir (satın alma butonları için)
-        setTimeout(() => {
-            const confirmBtn = document.getElementById('confirm-purchase');
-            const cancelBtn = document.getElementById('cancel-purchase');
-            
-            if (confirmBtn) {
-                confirmBtn.style.cursor = 'pointer';
-                confirmBtn.style.touchAction = 'manipulation';
-                // Butonun dokunuşlara daha iyi yanıt vermesini sağla
-                confirmBtn.style.padding = '15px 25px';
-                confirmBtn.style.fontSize = '1rem';
-            }
-            
-            if (cancelBtn) {
-                cancelBtn.style.cursor = 'pointer';
-                cancelBtn.style.touchAction = 'manipulation';
-                // Butonun dokunuşlara daha iyi yanıt vermesini sağla
-                cancelBtn.style.padding = '15px 25px';
-                cancelBtn.style.fontSize = '1rem';
-            }
-        }, 50);
-        
         // Modalı göster
         setTimeout(() => {
             modal.style.opacity = '1';
@@ -1825,7 +1751,7 @@ const quizApp = {
         }, 10);
         
         // Kapat butonuna tıklama olayı
-        const closeModal = () => {
+        closeButton.addEventListener('click', () => {
             modal.style.opacity = '0';
             modal.style.visibility = 'hidden';
             modalContent.style.transform = 'translateY(-20px)';
@@ -1834,19 +1760,12 @@ const quizApp = {
             setTimeout(() => {
                 modal.remove();
             }, 300);
-        };
-        
-        closeButton.addEventListener('click', closeModal);
-        closeButton.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            closeModal();
         });
         
         // Modal dışına tıklama olayı
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
-                closeModal();
+                closeButton.click();
             }
         });
     },
@@ -1858,12 +1777,12 @@ const quizApp = {
     
     // Joker butonlarını güncelle
     updateJokerButtons: function() {
-        // Elementleri her zaman yeniden al (DOM'da değişiklik olmuş olabilir)
-        this.jokerFiftyBtn = document.getElementById('joker-fifty');
-        this.jokerHintBtn = document.getElementById('joker-hint');
-        this.jokerTimeBtn = document.getElementById('joker-time');
-        this.jokerSkipBtn = document.getElementById('joker-skip');
-        this.jokerStoreBtn = document.getElementById('joker-store');
+        // Elementleri dinamik olarak al (eğer henüz null ise)
+        if (!this.jokerFiftyBtn) this.jokerFiftyBtn = document.getElementById('joker-fifty');
+        if (!this.jokerHintBtn) this.jokerHintBtn = document.getElementById('joker-hint');
+        if (!this.jokerTimeBtn) this.jokerTimeBtn = document.getElementById('joker-time');
+        if (!this.jokerSkipBtn) this.jokerSkipBtn = document.getElementById('joker-skip');
+        if (!this.jokerStoreBtn) this.jokerStoreBtn = document.getElementById('joker-store');
         
         const currentQuestion = this.questions[this.currentQuestionIndex] || {};
         const isTrueFalse = currentQuestion.type === "DoğruYanlış" || currentQuestion.type === "TrueFalse";
@@ -1880,6 +1799,9 @@ const quizApp = {
             store: !!this.jokerStoreBtn
         });
         
+        // Joker badge'lerini güncelle
+        this.updateJokerBadges();
+        
         // 50:50 jokeri
         if (this.jokerFiftyBtn) {
             const fiftyCount = this.jokerInventory.fifty || 0;
@@ -1887,6 +1809,8 @@ const quizApp = {
             this.jokerFiftyBtn.disabled = (fiftyCount <= 0) || used || isTrueFalse || isBlankFilling;
             this.jokerFiftyBtn.style.opacity = (fiftyCount <= 0 || used || isTrueFalse || isBlankFilling) ? '0.3' : '1';
             this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i>`;
+            // Badge güncelleme
+            this.updateJokerBadge('fifty', fiftyCount, used);
         }
         // İpucu jokeri
         if (this.jokerHintBtn) {
@@ -1895,6 +1819,8 @@ const quizApp = {
             this.jokerHintBtn.disabled = (hintCount <= 0) || used;
             this.jokerHintBtn.style.opacity = (hintCount <= 0 || used) ? '0.3' : '1';
             this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i>`;
+            // Badge güncelleme
+            this.updateJokerBadge('hint', hintCount, used);
         }
         // Süre jokeri
         if (this.jokerTimeBtn) {
@@ -1903,6 +1829,8 @@ const quizApp = {
             this.jokerTimeBtn.disabled = (timeCount <= 0) || used;
             this.jokerTimeBtn.style.opacity = (timeCount <= 0 || used) ? '0.3' : '1';
             this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i>`;
+            // Badge güncelleme
+            this.updateJokerBadge('time', timeCount, used);
         }
         // Pas jokeri
         if (this.jokerSkipBtn) {
@@ -1911,11 +1839,45 @@ const quizApp = {
             this.jokerSkipBtn.disabled = (skipCount <= 0) || used;
             this.jokerSkipBtn.style.opacity = (skipCount <= 0 || used) ? '0.3' : '1';
             this.jokerSkipBtn.innerHTML = `<i class="fas fa-forward"></i>`;
+            // Badge güncelleme
+            this.updateJokerBadge('skip', skipCount, used);
         }
         // Joker mağazası
         if (this.jokerStoreBtn) {
             this.jokerStoreBtn.innerHTML = `<i class="fas fa-store"></i>`;
         }
+    },
+    
+    // Joker badge'lerini güncelle
+    updateJokerBadges: function() {
+        // Mevcut badge'leri temizle
+        const existingBadges = document.querySelectorAll('.joker-count-badge');
+        existingBadges.forEach(badge => {
+            badge.remove();
+        });
+    },
+    
+    // Belirli bir joker için badge güncelleme
+    updateJokerBadge: function(jokerType, count, used) {
+        // Badge oluştur
+        const buttonId = `joker-${jokerType}`;
+        const button = document.getElementById(buttonId);
+        
+        if (!button) return;
+        
+        // Mevcut badge'i temizle
+        const existingBadge = button.querySelector('.joker-count-badge');
+        if (existingBadge) {
+            existingBadge.remove();
+        }
+        
+        // Yeni badge oluştur
+        const badge = document.createElement('span');
+        badge.className = `joker-count-badge${used ? ' used' : ''}`;
+        badge.textContent = count;
+        
+        // Badge'i butona ekle
+        button.appendChild(badge);
     },
     
     // Joker kullanma fonksiyonu
@@ -1972,10 +1934,7 @@ const quizApp = {
     updateJokerStoreDisplay: function(modal) {
         console.log('Joker mağazası sayımları güncelleniyor...');
         console.log('Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
-        
-        // Misafir kullanıcılar için sessionScore, giriş yapmış kullanıcılar için totalScore kullan
-        const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
-        console.log('Mevcut toplam puan:', currentPoints);
+        console.log('Mevcut toplam puan:', this.totalScore);
         
         const ownedCountElements = modal.querySelectorAll('.joker-owned-count');
         ownedCountElements.forEach((el) => {
@@ -1990,8 +1949,8 @@ const quizApp = {
         buyButtons.forEach((btn) => {
             const item = btn.closest('.joker-store-item');
             const price = parseInt(item.dataset.price);
-            btn.disabled = currentPoints < price;
-            console.log(`Buton durumu güncellendi: Fiyat ${price}, Toplam puan ${currentPoints}, Aktif: ${currentPoints >= price}`);
+            btn.disabled = this.totalScore < price || (this.currentUser && this.currentUser.isAnonymous);
+            console.log(`Buton durumu güncellendi: Fiyat ${price}, Toplam puan ${this.totalScore}, Aktif: ${this.totalScore >= price && !(this.currentUser && this.currentUser.isAnonymous)}`);
         });
     },
 
@@ -2009,7 +1968,7 @@ const quizApp = {
         // Joker butonlarını güncelle
         setTimeout(() => {
             this.updateJokerButtons();
-        }, 300); // Süreyi 100ms'den 300ms'ye çıkardım
+        }, 100);
     },
 
     // Reset jokers for new game (sadece oyun başlangıcında çağrılmalı)

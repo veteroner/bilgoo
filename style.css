@@ -742,35 +742,24 @@ input:checked + .slider:before {
 }
 
 .joker-buy-btn {
-    background: linear-gradient(45deg, #4a148c, #7b1fa2);
+    background-color: var(--primary-color);
     color: white;
     border: none;
-    padding: 15px 20px;
-    border-radius: 8px;
+    padding: 8px 0;
+    border-radius: var(--border-radius);
+    cursor: pointer;
     font-weight: 600;
     margin-top: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 1rem;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    position: relative;
-    z-index: 10;
+    transition: background-color 0.2s ease;
 }
 
 .joker-buy-btn:hover {
-    background: linear-gradient(45deg, #5a1a9c, #8b2fb2);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    background-color: #3a8a3a;
 }
 
 .joker-buy-btn:disabled {
-    background-color: #7a7a7a;
-    opacity: 0.6;
+    background-color: #ccc;
     cursor: not-allowed;
-    box-shadow: none;
-    transform: none;
 }
 
 /* Lider Tablosu Stilleri */
