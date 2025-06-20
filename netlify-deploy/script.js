@@ -1474,8 +1474,11 @@ const quizApp = {
         var buyButtons = modal.querySelectorAll('.joker-buy-btn');
         var pointsDisplay = document.getElementById('joker-store-points-display');
         
-        // Mevcut toplam puanları ve joker envanterini göster
-        pointsDisplay.textContent = this.totalScore || 0;
+        // Mevcut toplam puanları ve joker envanterini göster (misafir için sessionScore kullan)
+        const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
+        pointsDisplay.textContent = currentPoints || 0;
+        console.log('🛒 Joker mağazası - Gösterilen puan: ' + currentPoints + ' (Giriş durumu: ' + (this.isLoggedIn ? 'Kayıtlı' : 'Misafir') + ')');
+        console.log('📊 Detay - totalScore: ' + this.totalScore + ', sessionScore: ' + this.sessionScore);
         
         // Oyun ekranındaki joker butonlarını da güncelle
         this.updateJokerButtons();
@@ -1489,8 +1492,9 @@ const quizApp = {
             var jokerType = item.dataset.joker;
             var price = parseInt(item.dataset.price);
             
-            // Yeterli toplam puan varsa butonu etkinleştir
-            btn.disabled = this.totalScore < price;
+            // Yeterli puan varsa butonu etkinleştir (misafir için sessionScore kullan)
+            const availablePoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
+            btn.disabled = availablePoints < price;
             
             // Satın alma fonksiyonu
             var self = this;
@@ -1498,12 +1502,17 @@ const quizApp = {
                 e.preventDefault();
                 e.stopPropagation();
                 
-                console.log(`Joker satın alma denemesi: ${jokerType}, Fiyat: ${price}, Mevcut Toplam Puan: ${self.totalScore}`);
+                const availablePoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
+                console.log('Joker satın alma denemesi: ' + jokerType + ', Fiyat: ' + price + ', Mevcut Puan: ' + availablePoints + ' (' + (self.isLoggedIn ? 'totalScore' : 'sessionScore') + ')');
                 console.log('Satın alma öncesi envanter:', JSON.stringify(self.jokerInventory));
                 
-                if (self.totalScore >= price) {
-                    // Toplam puanı azalt
-                    self.totalScore -= price;
+                if (availablePoints >= price) {
+                    // Puanı azalt (misafir için sessionScore, kayıtlı için totalScore)
+                    if (self.isLoggedIn) {
+                        self.totalScore -= price;
+                    } else {
+                        self.sessionScore -= price;
+                    }
                     
                     // PUANI FIREBASE'E KAYDET
                     if (self.isLoggedIn) {
@@ -1520,8 +1529,9 @@ const quizApp = {
                     // Joker envanterini kaydet
                     self.saveJokerInventory();
                     
-                    // Göstergeleri güncelle
-                    pointsDisplay.textContent = self.totalScore;
+                    // Göstergeleri güncelle (misafir için sessionScore kullan)
+                    const updatedPoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
+                    pointsDisplay.textContent = updatedPoints;
                     
                     // Joker mağazasındaki sayımları ve buton durumlarını güncelle
                     self.updateJokerStoreDisplay(modal);
@@ -3168,8 +3178,11 @@ const quizApp = {
         var buyButtons = modal.querySelectorAll('.joker-buy-btn');
         var pointsDisplay = document.getElementById('joker-store-points-display');
         
-        // Mevcut toplam puanları ve joker envanterini göster
-        pointsDisplay.textContent = this.totalScore || 0;
+        // Mevcut toplam puanları ve joker envanterini göster (misafir için sessionScore kullan)
+        const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
+        pointsDisplay.textContent = currentPoints || 0;
+        console.log('🛒 Joker mağazası - Gösterilen puan: ' + currentPoints + ' (Giriş durumu: ' + (this.isLoggedIn ? 'Kayıtlı' : 'Misafir') + ')');
+        console.log('📊 Detay - totalScore: ' + this.totalScore + ', sessionScore: ' + this.sessionScore);
         
         // Oyun ekranındaki joker butonlarını da güncelle
         this.updateJokerButtons();
@@ -3183,8 +3196,9 @@ const quizApp = {
             var jokerType = item.dataset.joker;
             var price = parseInt(item.dataset.price);
             
-            // Yeterli toplam puan varsa butonu etkinleştir
-            btn.disabled = this.totalScore < price;
+            // Yeterli puan varsa butonu etkinleştir (misafir için sessionScore kullan)
+            const availablePoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
+            btn.disabled = availablePoints < price;
             
             // Satın alma fonksiyonu
             var self = this;
@@ -3192,12 +3206,17 @@ const quizApp = {
                 e.preventDefault();
                 e.stopPropagation();
                 
-                console.log(`Joker satın alma denemesi: ${jokerType}, Fiyat: ${price}, Mevcut Toplam Puan: ${self.totalScore}`);
+                const availablePoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
+                console.log('Joker satın alma denemesi: ' + jokerType + ', Fiyat: ' + price + ', Mevcut Puan: ' + availablePoints + ' (' + (self.isLoggedIn ? 'totalScore' : 'sessionScore') + ')');
                 console.log('Satın alma öncesi envanter:', JSON.stringify(self.jokerInventory));
                 
-                if (self.totalScore >= price) {
-                    // Toplam puanı azalt
-                    self.totalScore -= price;
+                if (availablePoints >= price) {
+                    // Puanı azalt (misafir için sessionScore, kayıtlı için totalScore)
+                    if (self.isLoggedIn) {
+                        self.totalScore -= price;
+                    } else {
+                        self.sessionScore -= price;
+                    }
                     
                     // PUANI FIREBASE'E KAYDET
                     if (self.isLoggedIn) {
@@ -3214,8 +3233,9 @@ const quizApp = {
                     // Joker envanterini kaydet
                     self.saveJokerInventory();
                     
-                    // Göstergeleri güncelle
-                    pointsDisplay.textContent = self.totalScore;
+                    // Göstergeleri güncelle (misafir için sessionScore kullan)
+                    const updatedPoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
+                    pointsDisplay.textContent = updatedPoints;
                     
                     // Joker mağazasındaki sayımları ve buton durumlarını güncelle
                     self.updateJokerStoreDisplay(modal);
@@ -5051,8 +5071,11 @@ const quizApp = {
         var buyButtons = modal.querySelectorAll('.joker-buy-btn');
         var pointsDisplay = document.getElementById('joker-store-points-display');
         
-        // Mevcut toplam puanları ve joker envanterini göster
-        pointsDisplay.textContent = this.totalScore || 0;
+        // Mevcut toplam puanları ve joker envanterini göster (misafir için sessionScore kullan)
+        const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
+        pointsDisplay.textContent = currentPoints || 0;
+        console.log('🛒 Joker mağazası - Gösterilen puan: ' + currentPoints + ' (Giriş durumu: ' + (this.isLoggedIn ? 'Kayıtlı' : 'Misafir') + ')');
+        console.log('📊 Detay - totalScore: ' + this.totalScore + ', sessionScore: ' + this.sessionScore);
         
         // Oyun ekranındaki joker butonlarını da güncelle
         this.updateJokerButtons();
@@ -5066,18 +5089,24 @@ const quizApp = {
             var jokerType = item.dataset.joker;
             var price = parseInt(item.dataset.price);
             
-            // Yeterli toplam puan varsa butonu etkinleştir
-            btn.disabled = this.totalScore < price;
+            // Yeterli puan varsa butonu etkinleştir (misafir için sessionScore kullan)
+            const availablePoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
+            btn.disabled = availablePoints < price;
             
             // Satın alma olayı
             var self = this;
             btn.onclick = function() {
-                console.log(`Joker satın alma denemesi: ${jokerType}, Fiyat: ${price}, Mevcut Toplam Puan: ${self.totalScore}`);
+                const availablePoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
+                console.log('Joker satın alma denemesi: ' + jokerType + ', Fiyat: ' + price + ', Mevcut Puan: ' + availablePoints + ' (' + (self.isLoggedIn ? 'totalScore' : 'sessionScore') + ')');
                 console.log('Satın alma öncesi envanter:', JSON.stringify(self.jokerInventory));
                 
-                if (self.totalScore >= price) {
-                    // Toplam puanı azalt
-                    self.totalScore -= price;
+                if (availablePoints >= price) {
+                    // Puanı azalt (misafir için sessionScore, kayıtlı için totalScore)
+                    if (self.isLoggedIn) {
+                        self.totalScore -= price;
+                    } else {
+                        self.sessionScore -= price;
+                    }
                     
                     // PUANI FIREBASE'E KAYDET
                     if (self.isLoggedIn) {
@@ -5094,8 +5123,9 @@ const quizApp = {
                     // Joker envanterini kaydet
                     self.saveJokerInventory();
                     
-                    // Göstergeleri güncelle
-                    pointsDisplay.textContent = self.totalScore;
+                    // Göstergeleri güncelle (misafir için sessionScore kullan)
+                    const updatedPoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
+                    pointsDisplay.textContent = updatedPoints;
                     
                     // Joker mağazasındaki sayımları ve buton durumlarını güncelle
                     self.updateJokerStoreDisplay(modal);
@@ -9697,8 +9727,11 @@ const quizApp = {
         var buyButtons = modal.querySelectorAll('.joker-buy-btn');
         var pointsDisplay = document.getElementById('joker-store-points-display');
         
-        // Mevcut toplam puanları ve joker envanterini göster
-        pointsDisplay.textContent = this.totalScore || 0;
+        // Mevcut toplam puanları ve joker envanterini göster (misafir için sessionScore kullan)
+        const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
+        pointsDisplay.textContent = currentPoints || 0;
+        console.log('🛒 Joker mağazası - Gösterilen puan: ' + currentPoints + ' (Giriş durumu: ' + (this.isLoggedIn ? 'Kayıtlı' : 'Misafir') + ')');
+        console.log('📊 Detay - totalScore: ' + this.totalScore + ', sessionScore: ' + this.sessionScore);
         
         // Oyun ekranındaki joker butonlarını da güncelle
         this.updateJokerButtons();
@@ -9712,18 +9745,24 @@ const quizApp = {
             var jokerType = item.dataset.joker;
             var price = parseInt(item.dataset.price);
             
-            // Yeterli toplam puan varsa butonu etkinleştir
-            btn.disabled = this.totalScore < price;
+            // Yeterli puan varsa butonu etkinleştir (misafir için sessionScore kullan)
+            const availablePoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
+            btn.disabled = availablePoints < price;
             
             // Satın alma olayı
             var self = this;
             btn.onclick = function() {
-                console.log(`Joker satın alma denemesi: ${jokerType}, Fiyat: ${price}, Mevcut Toplam Puan: ${self.totalScore}`);
+                const availablePoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
+                console.log('Joker satın alma denemesi: ' + jokerType + ', Fiyat: ' + price + ', Mevcut Puan: ' + availablePoints + ' (' + (self.isLoggedIn ? 'totalScore' : 'sessionScore') + ')');
                 console.log('Satın alma öncesi envanter:', JSON.stringify(self.jokerInventory));
                 
-                if (self.totalScore >= price) {
-                    // Toplam puanı azalt
-                    self.totalScore -= price;
+                if (availablePoints >= price) {
+                    // Puanı azalt (misafir için sessionScore, kayıtlı için totalScore)
+                    if (self.isLoggedIn) {
+                        self.totalScore -= price;
+                    } else {
+                        self.sessionScore -= price;
+                    }
                     
                     // PUANI FIREBASE'E KAYDET
                     if (self.isLoggedIn) {
@@ -9740,8 +9779,9 @@ const quizApp = {
                     // Joker envanterini kaydet
                     self.saveJokerInventory();
                     
-                    // Göstergeleri güncelle
-                    pointsDisplay.textContent = self.totalScore;
+                    // Göstergeleri güncelle (misafir için sessionScore kullan)
+                    const updatedPoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
+                    pointsDisplay.textContent = updatedPoints;
                     
                     // Joker mağazasındaki sayımları ve buton durumlarını güncelle
                     self.updateJokerStoreDisplay(modal);
@@ -13688,7 +13728,7 @@ const quizApp = {
             category: this.selectedCategory,
             score: this.score,
             correctAnswers: this.correctAnswers, // <-- EKLENDİ
-            totalQuestions: this.currentQuestionIndex + 1, // <-- DÜZELTİLDİ: Gerçek cevaplanan soru sayısı
+            totalQuestions: this.questions.length, // <-- DÜZELTİLDİ: Oyunun toplam soru sayısı
             lives: this.lives,
             avgTime: this.answerTimes.length > 0 ? 
                 (this.answerTimes.reduce((a, b) => a + b, 0) / this.answerTimes.length).toFixed(1) : 0
@@ -14834,7 +14874,7 @@ const quizApp = {
             const gameStatsData = {
                 category: this.selectedCategory,
                 score: this.score,
-                totalQuestions: this.answeredQuestions,
+                totalQuestions: this.questions.length,
                 correctAnswers: this.score,
                 lives: this.lives,
                 averageTime: this.answerTimes.length > 0 ? 
@@ -14870,7 +14910,7 @@ const quizApp = {
                     
                     // İstatistikleri güncelle
                     currentStats.totalGames++;
-                    currentStats.totalQuestions += this.answeredQuestions;
+                    currentStats.totalQuestions += this.questions.length;
                     currentStats.correctAnswers += this.score;
                     
                     // Kategori bazlı istatistikler
@@ -14883,7 +14923,7 @@ const quizApp = {
                     }
                     
                     currentStats.categories[this.selectedCategory].games++;
-                    currentStats.categories[this.selectedCategory].questions += this.answeredQuestions;
+                    currentStats.categories[this.selectedCategory].questions += this.questions.length;
                     currentStats.categories[this.selectedCategory].correct += this.score;
                     
                     // Firebase'e güncelleme kaydet
@@ -14906,7 +14946,7 @@ const quizApp = {
                 const gameRecord = {
                     category: this.selectedCategory,
                     score: this.score,
-                    totalQuestions: this.answeredQuestions,
+                    totalQuestions: this.questions.length,
                     correctAnswers: this.score, // Bu örnekte score = correctAnswers
                     lives: this.lives,
                     averageTime: this.answerTimes.length > 0 ? 
@@ -14936,7 +14976,7 @@ const quizApp = {
                 
                 // İstatistikleri güncelle
                 stats.totalGames++;
-                stats.totalQuestions += this.answeredQuestions;
+                stats.totalQuestions += this.questions.length;
                 stats.correctAnswers += this.score;
                 
                 // Kategori bazlı istatistikler
@@ -14949,7 +14989,7 @@ const quizApp = {
                 }
                 
                 stats.categories[this.selectedCategory].games++;
-                stats.categories[this.selectedCategory].questions += this.answeredQuestions;
+                stats.categories[this.selectedCategory].questions += this.questions.length;
                 stats.categories[this.selectedCategory].correct += this.score;
                 
                 localStorage.setItem(statsKey, JSON.stringify(stats));
