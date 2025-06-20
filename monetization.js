@@ -450,6 +450,31 @@ const MonetizationManager = {
                 return;
             }
 
+            // Önce tüm reklam alanlarını kontrol et ve stilleri düzelt
+            const allAdElements = document.querySelectorAll('.adsbygoogle');
+            console.log(`Toplam ${allAdElements.length} reklam alanı bulundu, stiller kontrol ediliyor...`);
+            
+            allAdElements.forEach((ad, index) => {
+                // Temel stilleri zorla uygula
+                ad.style.display = 'block';
+                ad.style.width = '100%';
+                ad.style.minWidth = '320px';
+                ad.style.maxWidth = '100%';
+                ad.style.visibility = 'visible';
+                ad.style.opacity = '1';
+                
+                // Parent container'ı da kontrol et
+                const parent = ad.parentElement;
+                if (parent) {
+                    parent.style.width = '100%';
+                    parent.style.minWidth = '320px';
+                    parent.style.display = 'block';
+                    parent.style.visibility = 'visible';
+                }
+                
+                console.log(`Reklam ${index + 1} stilleri düzeltildi`);
+            });
+
             // Tüm reklam alanlarının görünür olduğunu doğrula
             // DÜZELTME: Sadece yüklenmemiş reklamları seç (data-adsbygoogle-status="done" olmayanlar)
             const adElements = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status="done"])');
@@ -505,10 +530,46 @@ const MonetizationManager = {
                             try {
                                 // Reklam hala yüklenmemiş mi kontrol et
                                 if (!ad.hasAttribute('data-adsbygoogle-status') || ad.getAttribute('data-adsbygoogle-status') !== 'done') {
-                                console.log(`Reklam ${index + 1} için push işlemi başlatılıyor...`);
-                                // Her reklam için ayrı bir push
-                                (adsbygoogle = window.adsbygoogle || []).push({});
-                                console.log(`Reklam ${index + 1} başlatıldı`);
+                                    
+                                    // Reklam alanının boyutlarını kontrol et ve düzelt
+                                    const rect = ad.getBoundingClientRect();
+                                    console.log(`Reklam ${index + 1} boyutları:`, {
+                                        width: rect.width,
+                                        height: rect.height,
+                                        visible: rect.width > 0 && rect.height > 0
+                                    });
+                                    
+                                    // Eğer genişlik 0 ise, minimum boyutları ayarla
+                                    if (rect.width === 0) {
+                                        console.log(`Reklam ${index + 1} genişliği 0, minimum boyutlar ayarlanıyor...`);
+                                        ad.style.minWidth = '320px';
+                                        ad.style.width = '100%';
+                                        ad.style.maxWidth = '100%';
+                                        ad.style.display = 'block';
+                                        
+                                        // Parent container da kontrol et
+                                        const parent = ad.parentElement;
+                                        if (parent) {
+                                            parent.style.width = '100%';
+                                            parent.style.minWidth = '320px';
+                                        }
+                                        
+                                        // Boyut düzeltmesinden sonra kısa bir bekleme
+                                        setTimeout(() => {
+                                            const newRect = ad.getBoundingClientRect();
+                                            if (newRect.width > 0) {
+                                                console.log(`Reklam ${index + 1} için push işlemi başlatılıyor... (düzeltilmiş boyut: ${newRect.width}px)`);
+                                                (adsbygoogle = window.adsbygoogle || []).push({});
+                                                console.log(`Reklam ${index + 1} başlatıldı`);
+                                            } else {
+                                                console.warn(`Reklam ${index + 1} boyut düzeltmesi başarısız, yükleme atlanıyor`);
+                                            }
+                                        }, 200);
+                                    } else {
+                                        console.log(`Reklam ${index + 1} için push işlemi başlatılıyor...`);
+                                        (adsbygoogle = window.adsbygoogle || []).push({});
+                                        console.log(`Reklam ${index + 1} başlatıldı`);
+                                    }
                                 } else {
                                     console.log(`Reklam ${index + 1} zaten yüklenmiş, işlem atlanıyor`);
                                 }
@@ -519,7 +580,7 @@ const MonetizationManager = {
                                     console.log('Hata mesajı:', e.message);
                                 }
                             }
-                        }, index * 500); // Her reklam için 500ms gecikme
+                        }, index * 800); // Gecikmeyi artırdık (800ms)
                     });
                     
                     console.log(adElements.length + ' adet reklam başlatılıyor...');
@@ -689,9 +750,40 @@ const MonetizationManager = {
             console.log(`${adElements.length} adet reklam bulundu, yenileme işlemi başlatılıyor...`);
             
             adElements.forEach((ad, index) => {
-                // Minimum genişlik ve yükseklik ayarla
-                if (!ad.style.minHeight) ad.style.minHeight = '100px';
-                if (!ad.style.minWidth) ad.style.minWidth = '300px';
+                // Reklam boyutlarını kontrol et ve düzelt
+                const rect = ad.getBoundingClientRect();
+                console.log(`Yenileme - Reklam ${index + 1} mevcut boyutları:`, {
+                    width: rect.width,
+                    height: rect.height,
+                    display: ad.style.display,
+                    visibility: ad.style.visibility
+                });
+                
+                // Boyut sorunu varsa düzelt
+                if (rect.width === 0 || rect.height === 0) {
+                    console.log(`Yenileme - Reklam ${index + 1} boyut sorunu tespit edildi, düzeltiliyor...`);
+                    
+                    // Minimum boyutları ayarla
+                    ad.style.minHeight = '100px';
+                    ad.style.minWidth = '320px';
+                    ad.style.width = '100%';
+                    ad.style.maxWidth = '100%';
+                    ad.style.display = 'block';
+                    ad.style.visibility = 'visible';
+                    
+                    // Parent container'ı da kontrol et
+                    const parent = ad.parentElement;
+                    if (parent) {
+                        parent.style.width = '100%';
+                        parent.style.minWidth = '320px';
+                        parent.style.display = 'block';
+                        parent.style.visibility = 'visible';
+                    }
+                } else {
+                    // Minimum boyutları yine de ayarla (güvenlik için)
+                    if (!ad.style.minHeight) ad.style.minHeight = '100px';
+                    if (!ad.style.minWidth) ad.style.minWidth = '320px';
+                }
                 
                 // Reklam görünür durumda mı kontrol et
                 const rect = ad.getBoundingClientRect();

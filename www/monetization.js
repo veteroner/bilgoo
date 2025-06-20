@@ -227,6 +227,31 @@ const MonetizationManager = {
     
     // Reklam elementlerini yükle
     loadAdElements: function() {
+        // Önce tüm reklam alanlarını kontrol et ve stilleri düzelt
+        const allAdElements = document.querySelectorAll('.adsbygoogle');
+        console.log(`Toplam ${allAdElements.length} reklam alanı bulundu, stiller kontrol ediliyor...`);
+        
+        allAdElements.forEach((ad, index) => {
+            // Temel stilleri zorla uygula
+            ad.style.display = 'block';
+            ad.style.width = '100%';
+            ad.style.minWidth = '320px';
+            ad.style.maxWidth = '100%';
+            ad.style.visibility = 'visible';
+            ad.style.opacity = '1';
+            
+            // Parent container'ı da kontrol et
+            const parent = ad.parentElement;
+            if (parent) {
+                parent.style.width = '100%';
+                parent.style.minWidth = '320px';
+                parent.style.display = 'block';
+                parent.style.visibility = 'visible';
+            }
+            
+            console.log(`Reklam ${index + 1} stilleri düzeltildi`);
+        });
+        
         // Tüm reklam alanlarının görünür olduğunu doğrula
         const adElements = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status="done"])');
         
@@ -238,7 +263,7 @@ const MonetizationManager = {
         adElements.forEach(ad => {
             // Minimum genişlik ve yükseklik ayarla
             if (!ad.style.minHeight) ad.style.minHeight = '100px';
-            if (!ad.style.minWidth) ad.style.minWidth = '300px';
+            if (!ad.style.minWidth) ad.style.minWidth = '320px';
             
             // Yan panel reklamları için özel stil
             const adContainer = ad.closest('div');
