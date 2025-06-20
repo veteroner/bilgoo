@@ -1492,9 +1492,12 @@ const quizApp = {
             // Yeterli toplam puan varsa butonu etkinleştir
             btn.disabled = this.totalScore < price;
             
-            // Satın alma olayı
+            // Satın alma fonksiyonu
             var self = this;
-            btn.onclick = function() {
+            const purchaseJoker = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
                 console.log(`Joker satın alma denemesi: ${jokerType}, Fiyat: ${price}, Mevcut Toplam Puan: ${self.totalScore}`);
                 console.log('Satın alma öncesi envanter:', JSON.stringify(self.jokerInventory));
                 
@@ -1547,6 +1550,14 @@ const quizApp = {
                     self.showToast("Yeterli puanınız yok!", "toast-error");
                 }
             };
+            
+            // Hem click hem de touch event'lerini ekle
+            btn.onclick = purchaseJoker;
+            btn.addEventListener('touchend', purchaseJoker);
+            
+            // Mobil cihazlar için ek optimizasyonlar
+            btn.style.touchAction = 'manipulation';
+            btn.style.webkitTapHighlightColor = 'transparent';
         }.bind(this));
         
         // Modalı göster
