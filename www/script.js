@@ -822,10 +822,6 @@ const quizApp = {
                         <div class="correct-answer-container">
                             <div class="correct-icon"><i class="fas fa-badge-check"></i></div>
                             <div class="correct-text">${this.getTranslation('correct')}</div>
-                            <div class="correct-animation">
-                                <span>+</span>
-                                <span>${Math.max(1, Math.ceil(this.timeLeft / (this.questions[this.currentQuestionIndex].type === "BlankFilling" ? 5 : 3)))}</span>
-                            </div>
                         </div>
                         <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
                     `;
@@ -2938,12 +2934,6 @@ const quizApp = {
             `;
         }
         
-        // Oyun sırasındaki puan göstergesini güncelle
-        const currentScoreElement = document.getElementById('current-score');
-        if (currentScoreElement) {
-            currentScoreElement.textContent = this.score;
-        }
-        
         // Toplam puan göstergesini güncelle
         this.updateTotalScoreDisplay();
         
@@ -3205,7 +3195,6 @@ const quizApp = {
                             <i class="fas fa-crown"></i>
                         </div>
                         <div class="correct-modal-text">${this.getTranslation('correct')}</div>
-                        <div class="correct-modal-score">+${Math.max(1, Math.ceil(this.timeLeft / 5))}</div>
                         <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
                     </div>
                 `;
@@ -3303,7 +3292,6 @@ const quizApp = {
                 <div class="correct-modal-content">
                     <div class="correct-modal-icon"><i class="fas fa-crown"></i></div>
                     <div class="correct-modal-text">${this.getTranslation('correct')}</div>
-                    <div class="correct-modal-score">+${Math.max(1, Math.ceil(this.timeLeft / 5))}</div>
                     <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
                 </div>
             `;
@@ -3612,10 +3600,6 @@ const quizApp = {
                     <div class="correct-answer-container">
                         <div class="correct-icon"><i class="fas fa-badge-check"></i></div>
                         <div class="correct-text">Doğru!</div>
-                        <div class="correct-animation">
-                            <span>+</span>
-                            <span>${Math.max(1, Math.ceil(this.timeLeft / 3))}</span>
-                        </div>
                     </div>
                     <button id="next-question" class="next-button">Sonraki Soru</button>
                 `;
@@ -5370,7 +5354,6 @@ const quizApp = {
             <div class="correct-modal-content">
                 <div class="correct-modal-icon"><i class="fas fa-crown"></i></div>
                 <div class="correct-modal-text">${this.getTranslation('correct')}</div>
-                <div class="correct-modal-score">+${Math.max(1, Math.ceil(this.timeLeft / 5))}</div>
                 <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
             </div>
         `;
