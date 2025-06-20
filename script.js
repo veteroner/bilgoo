@@ -1438,7 +1438,12 @@ const quizApp = {
         var pointsDisplay = document.getElementById('joker-store-points-display');
         
         // Mevcut toplam puanları ve joker envanterini göster
-        pointsDisplay.textContent = this.totalScore || 0;
+        // Misafir kullanıcılarda totalScore 0 olduğundan score değerini kullan
+        if (this.isLoggedIn) {
+            pointsDisplay.textContent = this.totalScore || 0;
+        } else {
+            pointsDisplay.textContent = this.score || 0;
+        }
         
         // Oyun ekranındaki joker butonlarını da güncelle
         this.updateJokerButtons();
@@ -1452,18 +1457,26 @@ const quizApp = {
             var jokerType = item.dataset.joker;
             var price = parseInt(item.dataset.price);
             
+            // Misafir kullanıcılar için score, giriş yapmış kullanıcılar için totalScore kullan
+            const userPoints = this.isLoggedIn ? this.totalScore : this.score;
+            
             // Yeterli toplam puan varsa butonu etkinleştir
-            btn.disabled = this.totalScore < price;
+            btn.disabled = userPoints < price;
             
             // Satın alma olayı
             var self = this;
             btn.onclick = function() {
-                console.log(`Joker satın alma denemesi: ${jokerType}, Fiyat: ${price}, Mevcut Toplam Puan: ${self.totalScore}`);
+                const userPoints = self.isLoggedIn ? self.totalScore : self.score;
+                console.log(`Joker satın alma denemesi: ${jokerType}, Fiyat: ${price}, Mevcut Puan: ${userPoints}`);
                 console.log('Satın alma öncesi envanter:', JSON.stringify(self.jokerInventory));
                 
-                if (self.totalScore >= price) {
-                    // Toplam puanı azalt
-                    self.totalScore -= price;
+                if (userPoints >= price) {
+                    // Puanı azalt (giriş yapan/yapmayan kullanıcıya göre)
+                    if (self.isLoggedIn) {
+                        self.totalScore -= price;
+                    } else {
+                        self.score -= price;
+                    }
                     
                     // PUANI FIREBASE'E KAYDET
                     if (self.isLoggedIn) {
@@ -1480,8 +1493,12 @@ const quizApp = {
                     // Joker envanterini kaydet
                     self.saveJokerInventory();
                     
-                    // Göstergeleri güncelle
-                    pointsDisplay.textContent = self.totalScore;
+                    // Göstergeleri güncelle - misafir veya giriş yapan kullanıcıya göre farklı değer
+                    if (self.isLoggedIn) {
+                        pointsDisplay.textContent = self.totalScore;
+                    } else {
+                        pointsDisplay.textContent = self.score;
+                    }
                     
                     // Joker mağazasındaki sayımları ve buton durumlarını güncelle
                     self.updateJokerStoreDisplay(modal);
@@ -1498,7 +1515,8 @@ const quizApp = {
                         jokerType === 'time' ? 'Süre' : 'Pas';
                     self.showToast(jokerName + ' jokeri satın alındı!', "toast-success");
                     
-                    // Joker butonlarını güncelle
+                    // Joker butonlarını güncelle ve görsel olarak "yanmış" jokerleri yenile
+                    self.resetJokerUsage();
                     self.updateJokerButtons();
                     
                     console.log('Satın alma sonrası envanter:', JSON.stringify(self.jokerInventory));
@@ -1695,11 +1713,6 @@ const quizApp = {
         });
     },
     
-    // İpucu modalını göster (geriye dönük uyumluluk için)
-    showHintModal: function(hint) {
-        this.showJokerModal('İpucu', hint, 'fa-lightbulb', 'linear-gradient(135deg, #ffeaa7, #fdcb6e)');
-    },
-    
     // Joker butonlarını güncelle
     updateJokerButtons: function() {
         // Elementleri dinamik olarak al (eğer henüz null ise)
@@ -1816,7 +1829,7 @@ const quizApp = {
     updateJokerStoreDisplay: function(modal) {
         console.log('Joker mağazası sayımları güncelleniyor...');
         console.log('Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
-        console.log('Mevcut toplam puan:', this.totalScore);
+        console.log('Mevcut toplam puan:', this.isLoggedIn ? this.totalScore : this.score);
         
         const ownedCountElements = modal.querySelectorAll('.joker-owned-count');
         ownedCountElements.forEach((el) => {
@@ -1831,8 +1844,10 @@ const quizApp = {
         buyButtons.forEach((btn) => {
             const item = btn.closest('.joker-store-item');
             const price = parseInt(item.dataset.price);
-            btn.disabled = this.totalScore < price;
-            console.log(`Buton durumu güncellendi: Fiyat ${price}, Toplam puan ${this.totalScore}, Aktif: ${this.totalScore >= price}`);
+            // Misafir kullanıcılar için score, giriş yapmış kullanıcılar için totalScore kullan
+            const userPoints = this.isLoggedIn ? this.totalScore : this.score;
+            btn.disabled = userPoints < price;
+            console.log(`Buton durumu güncellendi: Fiyat ${price}, Toplam puan ${userPoints}, Aktif: ${userPoints >= price}`);
         });
     },
 
