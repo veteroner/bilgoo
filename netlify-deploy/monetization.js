@@ -478,14 +478,35 @@ const MonetizationManager = {
     createMobileTopBanner: function() {
         // Zaten varsa ekleme
         if (document.querySelector('.mobile-top-banner')) {
+            console.log('⚠️ Mobil banner zaten mevcut');
             return;
         }
         
+        console.log('🎯 Mobil üst banner oluşturuluyor...');
+        
         const banner = document.createElement('div');
         banner.className = 'mobile-top-banner';
+        banner.style.cssText = `
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            height: 60px !important;
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px) !important;
+            z-index: 9999 !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+        `;
+        
+        // Gerçek AdSense reklamı ekle
         banner.innerHTML = `
             <ins class="adsbygoogle mobile-banner"
-                 style="display:block"
+                 style="display:block; width: 320px; height: 50px;"
                  data-ad-client="ca-pub-7610338885240453"
                  data-ad-slot="1234567890"
                  data-ad-format="banner"
@@ -494,14 +515,19 @@ const MonetizationManager = {
         `;
         
         document.body.insertBefore(banner, document.body.firstChild);
+        console.log('✅ Mobil üst banner eklendi');
+        
+        // Body'ye padding ekle
+        document.body.style.paddingTop = '60px';
+        console.log('📏 Body padding-top: 60px eklendi');
         
         // AdSense reklamını yükle
         setTimeout(() => {
             try {
                 (adsbygoogle = window.adsbygoogle || []).push({});
-                console.log('Mobil üst banner reklamı yüklendi');
+                console.log('🎯 Mobil AdSense reklamı yüklendi');
             } catch (e) {
-                console.error('Mobil üst banner yüklenemedi:', e);
+                console.error('❌ Mobil AdSense yüklenemedi:', e);
             }
         }, 1000);
     },
