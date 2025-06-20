@@ -1455,9 +1455,17 @@ const quizApp = {
             // Yeterli toplam puan varsa butonu etkinleştir
             btn.disabled = this.totalScore < price;
             
+            // Mobil deneyim için buton stilini iyileştir
+            btn.style.padding = '12px 15px';
+            btn.style.touchAction = 'manipulation';
+            btn.style.cursor = 'pointer';
+            btn.style.fontSize = '1rem';
+            
             // Satın alma olayı
             var self = this;
-            btn.onclick = function() {
+            const handleBuyClick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
                 console.log(`Joker satın alma denemesi: ${jokerType}, Fiyat: ${price}, Mevcut Toplam Puan: ${self.totalScore}`);
                 console.log('Satın alma öncesi envanter:', JSON.stringify(self.jokerInventory));
                 
@@ -1506,7 +1514,11 @@ const quizApp = {
                         const cancelBtn = document.getElementById('cancel-purchase');
                         
                         if (confirmBtn) {
-                            confirmBtn.addEventListener('click', function() {
+                            // Tıklama ve dokunma olaylarını ekleyelim
+                            const handleConfirm = function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                
                                 // Toplam puanı azalt
                                 self.totalScore -= price;
                                 
@@ -1551,11 +1563,21 @@ const quizApp = {
                                 self.showToast(`${jokerName} jokeri başarıyla satın alındı!`, "toast-success");
                                 
                                 console.log('Satın alma sonrası envanter:', JSON.stringify(self.jokerInventory));
-                            });
+                            };
+                            
+                            confirmBtn.addEventListener('click', handleConfirm);
+                            confirmBtn.addEventListener('touchend', handleConfirm);
+                            
+                            // Butonun tıklanabilir/dokunulabilir olduğunu garantileyelim
+                            confirmBtn.style.cursor = 'pointer';
+                            confirmBtn.style.touchAction = 'manipulation';
                         }
                         
                         if (cancelBtn) {
-                            cancelBtn.addEventListener('click', function() {
+                            const handleCancel = function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                
                                 // Joker modalını kapat
                                 const jokerModal = document.getElementById('joker-modal');
                                 if (jokerModal) {
@@ -1568,14 +1590,28 @@ const quizApp = {
                                 
                                 // İptal bildirimi göster
                                 self.showToast("Satın alma işlemi iptal edildi", "toast-info");
-                            });
+                            };
+                            
+                            cancelBtn.addEventListener('click', handleCancel);
+                            cancelBtn.addEventListener('touchend', handleCancel);
+                            
+                            // Butonun tıklanabilir/dokunulabilir olduğunu garantileyelim
+                            cancelBtn.style.cursor = 'pointer';
+                            cancelBtn.style.touchAction = 'manipulation';
                         }
-                    }, 100);
+                    }, 300); // Süreyi 100ms'den 300ms'ye çıkardım
                 } else {
                     console.warn('Yeterli puan yok!');
                     self.showToast("Yeterli puanınız yok!", "toast-error");
                 }
             };
+            
+            // Click ve touch olaylarını ekle
+            btn.addEventListener('click', handleBuyClick);
+            btn.addEventListener('touchend', handleBuyClick);
+            
+            // Eski onclick işlevini kaldır
+            btn.onclick = null;
         }.bind(this));
         
         // Modalı göster
@@ -1680,7 +1716,7 @@ const quizApp = {
             background: ${color};
             margin: 15% auto;
             padding: 20px;
-            max-width: 80%;
+            max-width: 90%;
             width: auto;
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
@@ -1737,6 +1773,28 @@ const quizApp = {
         // Modalı DOM'a ekle
         document.body.appendChild(modal);
         
+        // İçinde buton varsa butonları iyileştir (satın alma butonları için)
+        setTimeout(() => {
+            const confirmBtn = document.getElementById('confirm-purchase');
+            const cancelBtn = document.getElementById('cancel-purchase');
+            
+            if (confirmBtn) {
+                confirmBtn.style.cursor = 'pointer';
+                confirmBtn.style.touchAction = 'manipulation';
+                // Butonun dokunuşlara daha iyi yanıt vermesini sağla
+                confirmBtn.style.padding = '15px 25px';
+                confirmBtn.style.fontSize = '1rem';
+            }
+            
+            if (cancelBtn) {
+                cancelBtn.style.cursor = 'pointer';
+                cancelBtn.style.touchAction = 'manipulation';
+                // Butonun dokunuşlara daha iyi yanıt vermesini sağla
+                cancelBtn.style.padding = '15px 25px';
+                cancelBtn.style.fontSize = '1rem';
+            }
+        }, 50);
+        
         // Modalı göster
         setTimeout(() => {
             modal.style.opacity = '1';
@@ -1745,7 +1803,7 @@ const quizApp = {
         }, 10);
         
         // Kapat butonuna tıklama olayı
-        closeButton.addEventListener('click', () => {
+        const closeModal = () => {
             modal.style.opacity = '0';
             modal.style.visibility = 'hidden';
             modalContent.style.transform = 'translateY(-20px)';
@@ -1754,12 +1812,19 @@ const quizApp = {
             setTimeout(() => {
                 modal.remove();
             }, 300);
+        };
+        
+        closeButton.addEventListener('click', closeModal);
+        closeButton.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            closeModal();
         });
         
         // Modal dışına tıklama olayı
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
-                closeButton.click();
+                closeModal();
             }
         });
     },
@@ -1870,7 +1935,7 @@ const quizApp = {
                 iconElement.style.color = '#999';
             }
             
-            // Metin üzerinde çizgi olsun
+            // Metin üzerine çizgi olsun
             const textElement = jokerTabElement.querySelector('span');
             if (textElement) {
                 textElement.style.textDecoration = 'line-through';
