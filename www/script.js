@@ -3679,6 +3679,16 @@ const quizApp = {
         
         // En fazla 10 soru göster (kullanıcının seçtiği zorluk seviyesinden)
         this.questions = levelQuestions.slice(0, Math.min(10, levelQuestions.length));
+        
+        // Soruları zorluk seviyesine göre sırala (kolaydan zora)
+        this.questions.sort((a, b) => {
+            const difficultyA = a.difficulty || 2;
+            const difficultyB = b.difficulty || 2;
+            return difficultyA - difficultyB;
+        });
+        
+        console.log(`📊 Sorular zorluk seviyesine göre sıralandı: ${this.questions.map(q => q.difficulty || 2).join(', ')}`);
+        
         this.arrangeBlankFillingFirst();
         
         // Debug: Yüklenen soruların zorluk seviyelerini kontrol et
