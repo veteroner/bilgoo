@@ -486,22 +486,7 @@ const MonetizationManager = {
         
         const banner = document.createElement('div');
         banner.className = 'mobile-top-banner';
-        banner.style.cssText = `
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            width: 100% !important;
-            height: 60px !important;
-            background: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(10px) !important;
-            z-index: 9999 !important;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
-        `;
+        // CSS'teki stilleri kullan, JavaScript ile override etme
         
         // Gerçek AdSense reklamı ekle
         banner.innerHTML = `
@@ -514,12 +499,19 @@ const MonetizationManager = {
             <button class="mobile-ad-close" onclick="MonetizationManager.hideMobileBanner('top')" title="Reklamı Gizle">×</button>
         `;
         
-        document.body.insertBefore(banner, document.body.firstChild);
-        console.log('✅ Mobil üst banner eklendi');
+        // Container'ın başına ekle (body'nin başına değil)
+        const container = document.querySelector('.container');
+        if (container) {
+            container.insertBefore(banner, container.firstChild);
+            console.log('✅ Mobil üst banner container başına eklendi');
+        } else {
+            document.body.insertBefore(banner, document.body.firstChild);
+            console.log('✅ Mobil üst banner body başına eklendi');
+        }
         
-        // Body'ye padding ekle
-        document.body.style.paddingTop = '60px';
-        console.log('📏 Body padding-top: 60px eklendi');
+        // Body padding'i kaldır - artık gerek yok
+        document.body.style.paddingTop = '';
+        console.log('📏 Body padding kaldırıldı');
         
         // AdSense reklamını yükle
         setTimeout(() => {
@@ -568,11 +560,6 @@ const MonetizationManager = {
         if (banner) {
             banner.style.display = 'none';
             
-            // Üst banner gizlenirse body padding'ini kaldır
-            if (position === 'top') {
-                document.body.style.paddingTop = '0';
-            }
-            
             console.log(`Mobil ${position} banner gizlendi`);
             
             // Kullanıcı tercihini kaydet
@@ -586,7 +573,6 @@ const MonetizationManager = {
             const topBanner = document.querySelector('.mobile-top-banner');
             if (topBanner) {
                 topBanner.style.display = 'none';
-                document.body.style.paddingTop = '0';
             }
         }
     },
