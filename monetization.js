@@ -301,10 +301,10 @@ const MonetizationManager = {
                             try {
                                 // Reklam hala yüklenmemiş mi kontrol et
                                 if (!ad.hasAttribute('data-adsbygoogle-status') || ad.getAttribute('data-adsbygoogle-status') !== 'done') {
-                                    console.log(`Reklam ${index + 1} için push işlemi başlatılıyor...`);
-                                    // Her reklam için ayrı bir push
-                                    (adsbygoogle = window.adsbygoogle || []).push({});
-                                    console.log(`Reklam ${index + 1} başlatıldı`);
+                                console.log(`Reklam ${index + 1} için push işlemi başlatılıyor...`);
+                                // Her reklam için ayrı bir push
+                                (adsbygoogle = window.adsbygoogle || []).push({});
+                                console.log(`Reklam ${index + 1} başlatıldı`);
                                 } else {
                                     console.log(`Reklam ${index + 1} zaten yüklenmiş, işlem atlanıyor`);
                                 }
@@ -382,7 +382,7 @@ const MonetizationManager = {
                     // Reklam elementi zaten yüklenmiş mi kontrol et
                     const adElement = adContainer.querySelector('.adsbygoogle');
                     if (adElement && (!adElement.hasAttribute('data-adsbygoogle-status') || adElement.getAttribute('data-adsbygoogle-status') !== 'done')) {
-                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    (adsbygoogle = window.adsbygoogle || []).push({});
                     }
                 }, 500);
             } catch (e) {
@@ -531,9 +531,9 @@ const MonetizationManager = {
                         try {
                             // Reklam hala yüklenmemiş mi kontrol et
                             if (!ad.hasAttribute('data-adsbygoogle-status') || ad.getAttribute('data-adsbygoogle-status') !== 'done') {
-                                console.log(`Reklam ${index + 1} yenileniyor...`);
-                                (adsbygoogle = window.adsbygoogle || []).push({});
-                                console.log(`Reklam ${index + 1} yenilendi`);
+                            console.log(`Reklam ${index + 1} yenileniyor...`);
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                            console.log(`Reklam ${index + 1} yenilendi`);
                             } else {
                                 console.log(`Reklam ${index + 1} zaten yüklenmiş, işlem atlanıyor`);
                             }

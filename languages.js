@@ -11,6 +11,10 @@ const languages = {
         timeUp: 'Süre doldu!',
         correctAnswer: 'Doğru cevap',
         
+        // Login/Register
+        registerButton: 'Kayıt Ol',
+        guestLogin: 'Misafir olarak devam et',
+        
         // Çevrim içi mod
         online_mode: 'Çevrimiçi Mod',
         create_room: 'Oda Oluştur',
@@ -230,8 +234,7 @@ const languages = {
         difficultyLabel: 'Zorluk',
         selectDifficulty: 'Zorluk seçin',
         cancel: 'İptal',
-        addQuestionButton: 'Soru Ekle',
-        register: 'Kayıt Ol'
+        addQuestionButton: 'Soru Ekle'
     },
     
     en: {
@@ -245,6 +248,10 @@ const languages = {
         wrong: 'Wrong!',
         timeUp: 'Time\'s up!',
         correctAnswer: 'Correct answer',
+        
+        // Login/Register
+        registerButton: 'Register',
+        guestLogin: 'Continue as guest',
         
         // Online mode
         online_mode: 'Online Mode',
@@ -502,8 +509,7 @@ const languages = {
         difficultyLabel: 'Difficulty',
         selectDifficulty: 'Select difficulty',
         cancel: 'Cancel',
-        addQuestionButton: 'Add Question',
-        register: 'Register'
+        addQuestionButton: 'Add Question'
     },
     
     de: {
@@ -517,6 +523,10 @@ const languages = {
         wrong: 'Falsch!',
         timeUp: 'Zeit abgelaufen!',
         correctAnswer: 'Richtige Antwort',
+        
+        // Login/Register
+        registerButton: 'Registrieren',
+        guestLogin: 'Als Gast fortfahren',
         
         // Online-Modus
         online_mode: 'Online-Modus',
@@ -728,8 +738,7 @@ const languages = {
         difficultyLabel: 'Schwierigkeit',
         selectDifficulty: 'Schwierigkeit auswählen',
         cancel: 'Abbrechen',
-        addQuestionButton: 'Frage hinzufügen',
-        register: 'Registrieren'
+        addQuestionButton: 'Frage hinzufügen'
     }
 };
 
