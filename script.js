@@ -1506,6 +1506,9 @@ const quizApp = {
                     // OYUN EKRANINDAKİ JOKER BUTONLARINI DA GÜNCELLE
                     self.updateJokerButtons();
                     
+                    // MOBİL JOKER TAB BAR'I DA GÜNCELLE
+                    self.updateJokerTabBar();
+                    
                     // Skor gösterimini güncelle
                     self.updateScoreDisplay();
                     
@@ -1647,6 +1650,65 @@ const quizApp = {
         if (this.jokerStoreBtn) {
             this.jokerStoreBtn.innerHTML = `<i class="fas fa-store"></i>`;
         }
+        
+        // Mobil joker tab bar'ı da güncelle
+        this.updateJokerTabBar();
+        
+        console.log('updateJokerButtons tamamlandı');
+    },
+    
+    // Mobil joker tab bar'ını güncelle
+    updateJokerTabBar: function() {
+        const currentQuestion = this.questions[this.currentQuestionIndex] || {};
+        const isTrueFalse = currentQuestion.type === "DoğruYanlış" || currentQuestion.type === "TrueFalse";
+        const isBlankFilling = currentQuestion.type === "BlankFilling";
+        
+        // 50:50 joker tab
+        const jokerTabFifty = document.getElementById('joker-tab-fifty');
+        if (jokerTabFifty) {
+            const fiftyCount = this.jokerInventory.fifty || 0;
+            const used = this.jokersUsed.fifty;
+            const disabled = (fiftyCount <= 0) || used || isTrueFalse || isBlankFilling;
+            jokerTabFifty.style.opacity = disabled ? '0.3' : '1';
+            jokerTabFifty.style.filter = disabled ? 'grayscale(100%)' : 'none';
+        }
+        
+        // İpucu joker tab
+        const jokerTabHint = document.getElementById('joker-tab-hint');
+        if (jokerTabHint) {
+            const hintCount = this.jokerInventory.hint || 0;
+            const used = this.jokersUsed.hint;
+            const disabled = (hintCount <= 0) || used || isBlankFilling;
+            jokerTabHint.style.opacity = disabled ? '0.3' : '1';
+            jokerTabHint.style.filter = disabled ? 'grayscale(100%)' : 'none';
+        }
+        
+        // Süre joker tab
+        const jokerTabTime = document.getElementById('joker-tab-time');
+        if (jokerTabTime) {
+            const timeCount = this.jokerInventory.time || 0;
+            const used = this.jokersUsed.time;
+            const disabled = (timeCount <= 0) || used;
+            jokerTabTime.style.opacity = disabled ? '0.3' : '1';
+            jokerTabTime.style.filter = disabled ? 'grayscale(100%)' : 'none';
+        }
+        
+        // Pas joker tab
+        const jokerTabSkip = document.getElementById('joker-tab-skip');
+        if (jokerTabSkip) {
+            const skipCount = this.jokerInventory.skip || 0;
+            const used = this.jokersUsed.skip;
+            const disabled = (skipCount <= 0) || used;
+            jokerTabSkip.style.opacity = disabled ? '0.3' : '1';
+            jokerTabSkip.style.filter = disabled ? 'grayscale(100%)' : 'none';
+        }
+        
+        // Mağaza tab her zaman aktif
+        const jokerTabStore = document.getElementById('joker-tab-store');
+        if (jokerTabStore) {
+            jokerTabStore.style.opacity = '1';
+            jokerTabStore.style.filter = 'none';
+        }
     },
     
     // Joker kullanma fonksiyonu
@@ -1658,11 +1720,153 @@ const quizApp = {
             this.saveJokerInventory();
             console.log(`${jokerType} joker kullanıldı. Kalan: ${this.jokerInventory[jokerType]}`);
             
+            // Joker kullanımı için kısa modal göster
+            this.showJokerUsageModal(jokerType);
+            
             // Joker butonlarını güncelle
             this.updateJokerButtons();
         } else {
             console.warn(`${jokerType} joker envanterinde yok!`);
         }
+    },
+    
+    // Joker kullanımı için kısa süreli modal göster
+    showJokerUsageModal: function(jokerType) {
+        console.log(`${jokerType} jokeri için modal gösteriliyor...`);
+        
+        // Modal HTML yapısını oluştur
+        let modalTitle = "";
+        let modalMessage = "";
+        let modalIcon = "";
+        
+        // Joker tipine göre içeriği ayarla
+        if (jokerType === 'fifty') {
+            modalTitle = "50:50 Jokeri Kullanıldı";
+            modalMessage = "İki yanlış şık elendi!";
+            modalIcon = "fa-th-large";
+        } else if (jokerType === 'hint') {
+            modalTitle = "İpucu Jokeri Kullanıldı";
+            modalMessage = "Doğru cevap için ipuçları verildi!";
+            modalIcon = "fa-lightbulb";
+        } else if (jokerType === 'time') {
+            modalTitle = "Süre Jokeri Kullanıldı";
+            modalMessage = "+15 saniye eklendi!";
+            modalIcon = "fa-clock";
+        } else if (jokerType === 'skip') {
+            modalTitle = "Pas Jokeri Kullanıldı";
+            modalMessage = "Bu soruyu geçiyorsunuz!";
+            modalIcon = "fa-forward";
+        }
+        
+        // Modal div'ini oluştur (CSS için stil ekleyeceğiz)
+        const modalDiv = document.createElement('div');
+        modalDiv.className = `joker-usage-modal joker-usage-${jokerType}`;
+        modalDiv.innerHTML = `
+            <div class="joker-usage-content">
+                <div class="joker-usage-icon">
+                    <i class="fas ${modalIcon}"></i>
+                </div>
+                <h3>${modalTitle}</h3>
+                <p>${modalMessage}</p>
+            </div>
+        `;
+        
+        // Stil ekle
+        modalDiv.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+            text-align: center;
+            min-width: 300px;
+            animation: fadeInScale 0.3s ease-out;
+        `;
+        
+        // Joker tipine göre farklı renk şeması
+        if (jokerType === 'fifty') {
+            modalDiv.style.background = 'linear-gradient(135deg, #74b9ff, #0984e3)';
+        } else if (jokerType === 'hint') {
+            modalDiv.style.background = 'linear-gradient(135deg, #ffeaa7, #fdcb6e)';
+        } else if (jokerType === 'time') {
+            modalDiv.style.background = 'linear-gradient(135deg, #55efc4, #00b894)';
+        } else if (jokerType === 'skip') {
+            modalDiv.style.background = 'linear-gradient(135deg, #ff7675, #d63031)';
+        }
+        
+        // İçerik stilini ayarla
+        const contentDiv = modalDiv.querySelector('.joker-usage-content');
+        contentDiv.style.cssText = `
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        `;
+        
+        // İkon stilini ayarla
+        const iconDiv = modalDiv.querySelector('.joker-usage-icon');
+        iconDiv.style.cssText = `
+            font-size: 40px;
+            margin-bottom: 15px;
+            animation: pulse 1s infinite;
+        `;
+        
+        // Başlık stilini ayarla
+        const titleEl = modalDiv.querySelector('h3');
+        titleEl.style.cssText = `
+            font-size: 22px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        `;
+        
+        // Mesaj stilini ayarla
+        const messageEl = modalDiv.querySelector('p');
+        messageEl.style.cssText = `
+            font-size: 16px;
+            opacity: 0.9;
+        `;
+        
+        // Animasyonlar için stil ekle
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInScale {
+                0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+                100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            }
+            
+            @keyframes fadeOutScale {
+                0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            }
+            
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Modalı DOM'a ekle
+        document.body.appendChild(modalDiv);
+        
+        // Modalı kısa süre sonra kaldır (ip ucu jokeri için biraz daha uzun süre)
+        const displayTime = jokerType === 'hint' ? 2000 : 1500;
+        
+        setTimeout(() => {
+            modalDiv.style.animation = 'fadeOutScale 0.3s ease-out';
+            setTimeout(() => {
+                if (document.body.contains(modalDiv)) {
+                    document.body.removeChild(modalDiv);
+                }
+                
+                if (document.head.contains(style)) {
+                    document.head.removeChild(style);
+                }
+            }, 300);
+        }, displayTime);
     },
     
     // Joker mağazası sayım gösterimini güncelle
@@ -3184,7 +3388,7 @@ const quizApp = {
         this.updateScoreDisplay();
         
         // Joker butonlarını başlangıç durumuna getir
-        this.updateJokerButtons();
+            this.updateJokerButtons();
         
         // İlk soruyu göster
         // Debug: İlk soru gösterilmeden önce zorluk seviyesini kontrol et
@@ -3260,7 +3464,7 @@ const quizApp = {
             // Çevrilmiş soru kullan (eğer varsa)
             if (questionData.translations && questionData.translations[this.currentLanguage] && questionData.translations[this.currentLanguage].question) {
                 this.questionElement.textContent = questionData.translations[this.currentLanguage].question;
-            } else {
+        } else {
                 this.questionElement.textContent = questionData.question;
             }
             
@@ -8390,4 +8594,4 @@ window.debugProfile = {
     }
 };
 
- 
+    
