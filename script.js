@@ -1256,7 +1256,7 @@ const quizApp = {
             });
         }
         
-        // İpucu jokeri
+        // İpucu jokeri - Modal kullanarak göster
         if (this.jokerHintBtn) {
             this.jokerHintBtn.addEventListener('click', () => {
                 if (this.jokerHintBtn.disabled) return;
@@ -1269,7 +1269,7 @@ const quizApp = {
                 
                 // İpucu oluştur - farklı soru tiplerine göre
                 if (currentQuestion.category === "Boşluk Doldurma" || currentQuestion.type === "BlankFilling") {
-                    hint = "İpucu: Cevabın ilk harfi \"" + currentQuestion.correctAnswer.charAt(0) + "\" ";
+                    hint = "Cevabın ilk harfi \"" + currentQuestion.correctAnswer.charAt(0) + "\" ";
                     if (currentQuestion.correctAnswer.length > 3) {
                         hint += "ve son harfi \"" + currentQuestion.correctAnswer.charAt(currentQuestion.correctAnswer.length - 1) + "\"";
                     }
@@ -1277,14 +1277,14 @@ const quizApp = {
                     // Doğru/Yanlış sorular için özel ipucu
                     const correctAnswer = currentQuestion.correctAnswer.toLowerCase();
                     if (correctAnswer === 'doğru' || correctAnswer === 'true' || correctAnswer === 'evet') {
-                        hint = "İpucu: Bu ifade doğru bir bilgidir.";
+                        hint = "Bu ifade doğru bir bilgidir.";
                     } else {
-                        hint = "İpucu: Bu ifadede bir yanlışlık vardır.";
+                        hint = "Bu ifadede bir yanlışlık vardır.";
                     }
                 } else {
                     const correctAnswer = currentQuestion.correctAnswer;
                     // Cevabın ilk ve varsa son harfini ipucu olarak ver
-                    hint = "İpucu: Doğru cevabın ilk harfi \"" + correctAnswer.charAt(0) + "\" ";
+                    hint = "Doğru cevabın ilk harfi \"" + correctAnswer.charAt(0) + "\" ";
                     if (correctAnswer.length > 3) {
                         hint += "ve son harfi \"" + correctAnswer.charAt(correctAnswer.length - 1) + "\"";
                     }
@@ -1292,33 +1292,40 @@ const quizApp = {
                 
                 console.log('Oluşturulan ipucu:', hint);
                 
-                // İpucunu göster
-                const hintElement = document.createElement('div');
-                hintElement.className = 'hint-message';
-                hintElement.innerHTML = '<i class="fas fa-lightbulb"></i> ' + hint;
-                hintElement.style.cssText = `
-                    background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
-                    color: #2d3436;
-                    padding: 15px 20px;
-                    margin: 15px 0;
-                    border-radius: 10px;
-                    border-left: 4px solid #e17055;
-                    box-shadow: 0 4px 15px rgba(253, 203, 110, 0.3);
-                    animation: fadeInUp 0.5s ease;
-                    font-weight: 600;
-                    text-align: center;
-                `;
+                // İpucu modalini göster
+                const hintModal = document.getElementById('hint-modal');
+                const hintMessage = document.getElementById('hint-message');
+                const hintOkBtn = document.getElementById('hint-ok-btn');
                 
-                // İpucu mesajını ekleme
-                const questionElement = document.getElementById('question');
-                if (questionElement && questionElement.parentNode) {
-                    // Eski ipucu mesajını kaldır
-                    const oldHint = document.querySelector('.hint-message');
-                    if (oldHint) oldHint.remove();
+                if (hintModal && hintMessage) {
+                    // İpucu mesajını ayarla
+                    hintMessage.innerHTML = '<i class="fas fa-lightbulb" style="color: #fdcb6e; margin-right: 10px;"></i> ' + hint;
                     
-                    // Yeni ipucunu ekle
-                    questionElement.parentNode.insertBefore(hintElement, questionElement.nextSibling);
-                    console.log('İpucu mesajı DOM\'a eklendi');
+                    // Modalı göster
+                    hintModal.style.display = 'flex';
+                    
+                    // Modal kapatma olayı
+                    const closeModal = () => {
+                        hintModal.style.display = 'none';
+                    };
+                    
+                    // Kapatma butonu olayları
+                    const closeBtn = hintModal.querySelector('.close-modal');
+                    if (closeBtn) {
+                        closeBtn.onclick = closeModal;
+                    }
+                    
+                    // Tamam butonu olayı
+                    if (hintOkBtn) {
+                        hintOkBtn.onclick = closeModal;
+                    }
+                    
+                    // Dışarı tıklama ile kapatma
+                    window.onclick = function(event) {
+                        if (event.target === hintModal) {
+                            closeModal();
+                        }
+                    };
                 }
                 
                 // Jokeri kullan (useJoker içinde zaten envanter düşürülüyor)
@@ -1332,8 +1339,8 @@ const quizApp = {
                     });
                 }
                 
-                // Toast bildirimi göster
-                this.showToast("İpucu jokeri kullanıldı! " + hint, "toast-success");
+                // Toast bildirimi göster - daha kısa
+                this.showToast("İpucu jokeri kullanıldı!", "toast-success");
             });
         }
         
