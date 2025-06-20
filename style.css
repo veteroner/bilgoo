@@ -10572,6 +10572,22 @@ body.quiz-active .joker-tab-bar {
     width: 20%;
 }
 
+/* Kullanılan joker tab stili */
+.joker-tab.joker-used {
+    opacity: 0.3;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.joker-tab.joker-used i {
+    color: #999;
+}
+
+.joker-tab.joker-used span {
+    text-decoration: line-through;
+    color: #999;
+}
+
 .joker-tab i {
     font-size: 1.2rem;
     margin-bottom: 3px;
@@ -10579,6 +10595,11 @@ body.quiz-active .joker-tab-bar {
 
 .joker-tab:hover {
     opacity: 1;
+}
+
+/* Joker tab kullanıldığında hover efektini engelle */
+.joker-tab.joker-used:hover {
+    opacity: 0.3;
 }
 
 .joker-tab.home-tab {

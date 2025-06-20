@@ -1773,8 +1773,42 @@ const quizApp = {
             
             // Joker butonlarını güncelle
             this.updateJokerButtons();
+            
+            // Mobil joker tab menüsündeki ilgili jokeri sönükleştir
+            this.updateMobileJokerTab(jokerType);
         } else {
             console.warn(`${jokerType} joker envanterinde yok!`);
+        }
+    },
+    
+    // Mobil joker tab menüsü güncelleme
+    updateMobileJokerTab: function(jokerType) {
+        // Mobil joker tab menüsündeki ilgili jokeri bul
+        const jokerTabId = `joker-tab-${jokerType}`;
+        const jokerTabElement = document.getElementById(jokerTabId);
+        
+        if (jokerTabElement) {
+            console.log(`Mobil joker tab güncelleniyor: ${jokerTabId}`);
+            // Jokerin kullanıldığını belirten sınıfı ekle
+            jokerTabElement.classList.add('joker-used');
+            // Daha sönük göster
+            jokerTabElement.style.opacity = '0.3';
+            jokerTabElement.style.pointerEvents = 'none';
+            
+            // İkon rengini değiştir (gri yap)
+            const iconElement = jokerTabElement.querySelector('i');
+            if (iconElement) {
+                iconElement.style.color = '#999';
+            }
+            
+            // Metin üzerinde çizgi olsun
+            const textElement = jokerTabElement.querySelector('span');
+            if (textElement) {
+                textElement.style.textDecoration = 'line-through';
+                textElement.style.color = '#999';
+            }
+        } else {
+            console.warn(`Mobil joker tab bulunamadı: ${jokerTabId}`);
         }
     },
     
