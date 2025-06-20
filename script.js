@@ -120,6 +120,7 @@ const quizApp = {
     sessionScore: 0, // <-- EKLENDİ: Bu oturumdaki toplam puan
     userLevel: 1, // <-- EKLENDİ: Kullanıcı seviyesi
     levelProgress: 0, // <-- EKLENDİ: Seviye ilerlemesi (XP)
+    totalStars: 0, // <-- EKLENDİ: Toplam kazanılan yıldız sayısı
     correctAnswers: 0,
     selectedCategory: null,
     questions: [],
@@ -2717,6 +2718,25 @@ const quizApp = {
         // Mevcut ekranı gizle ve geçiş ekranını göster
         if (this.quizElement) this.quizElement.style.display = 'none';
         document.body.appendChild(sectionElement);
+        
+        // Kazanılan yıldızları kaydet
+        this.totalStars += starCount;
+        
+        // Kullanıcı giriş yapmışsa Firebase'de yıldız sayısını güncelle
+        if (this.isLoggedIn && firebase && firebase.firestore) {
+            const db = firebase.firestore();
+            db.collection('users').doc(this.currentUser.uid).update({
+                totalStars: firebase.firestore.FieldValue.increment(starCount)
+            }).catch(error => {
+                console.error("Yıldız kaydederken hata:", error);
+            });
+        }
+        
+        // Local storage'a kaydet
+        localStorage.setItem('quizTotalStars', this.totalStars);
+        
+        // Puan göstergesini güncelle
+        this.updateTotalScoreDisplay();
         
         // Sonraki bölüme geçiş butonu
         const nextSectionBtn = document.getElementById('next-section-btn');
@@ -7875,6 +7895,7 @@ const quizApp = {
             totalScore: 0,
             userLevel: 1,
             levelProgress: 0,
+            totalStars: 0,
             createdAt: new Date(),
             lastPlayed: new Date()
         };
@@ -7885,6 +7906,7 @@ const quizApp = {
                 this.totalScore = 0;
                 this.userLevel = 1;
                 this.levelProgress = 0;
+                this.totalStars = 0;
                 this.updateTotalScoreDisplay();
             })
             .catch((error) => {
@@ -7913,6 +7935,7 @@ const quizApp = {
             totalScore: this.totalScore,
             userLevel: this.userLevel,
             levelProgress: this.levelProgress,
+            totalStars: this.totalStars,
             lastPlayed: new Date()
         };
         
@@ -7968,6 +7991,7 @@ const quizApp = {
                 userLevel: this.userLevel,
                 levelProgress: this.levelProgress,
                 sessionScore: this.sessionScore,
+                totalStars: this.totalStars,
                 lastSaved: new Date().toISOString()
             };
             
@@ -7993,9 +8017,17 @@ const quizApp = {
                     this.sessionScore = parsedData.sessionScore || 0;
                     
                     console.log('Skor localStorage\'dan yüklendi:', parsedData);
-                    this.updateTotalScoreDisplay();
                 }
             }
+            
+            // Toplam yıldız sayısını yükle
+            const storedTotalStars = localStorage.getItem('quizTotalStars');
+            if (storedTotalStars) {
+                this.totalStars = parseInt(storedTotalStars);
+                console.log('Toplam yıldız sayısı yüklendi:', this.totalStars);
+            }
+            
+            this.updateTotalScoreDisplay();
         } catch (e) {
             console.error('localStorage\'dan skor yüklenirken hata:', e);
         }
@@ -8084,7 +8116,7 @@ const quizApp = {
         const totalScoreElement = document.getElementById('total-score-value');
         if (totalScoreElement) {
             const scoreValue = this.isLoggedIn ? this.totalScore : this.sessionScore;
-            totalScoreElement.textContent = scoreValue;
+            totalScoreElement.textContent = `${scoreValue} (⭐${this.totalStars})`;
         }
         
         // Profil sayfasındaki puan gösterimini güncelle
@@ -8217,6 +8249,11 @@ const quizApp = {
                     }
                     if (userData.levelProgress !== undefined) {
                         this.levelProgress = userData.levelProgress;
+                    }
+                    if (userData.totalStars !== undefined) {
+                        this.totalStars = userData.totalStars;
+                        // localStorage'a da kaydet
+                        localStorage.setItem('quizTotalStars', this.totalStars);
                     }
                     
                     // Görüntüyü güncelle
