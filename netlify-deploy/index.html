@@ -4528,71 +4528,151 @@
             console.log('İstatistik verileri yükleniyor...');
             
             try {
-                // QuizApp'den gerçek istatistikleri hesapla
                 let stats;
+                
+                // Önce QuizApp'den gerçek istatistikleri hesapla
                 if (window.quizApp && typeof window.quizApp.calculateRealStats === 'function') {
+                    console.log('QuizApp calculateRealStats fonksiyonu bulundu, hesaplama yapılıyor...');
                     stats = window.quizApp.calculateRealStats();
                     console.log('QuizApp\'den hesaplanan istatistikler:', stats);
-            } else {
-                    // Fallback: localStorage'dan doğrudan al
+                } else {
+                    console.log('QuizApp calculateRealStats fonksiyonu bulunamadı, manuel hesaplama yapılıyor...');
+                    // Manuel hesaplama
+                    stats = calculateStatsManually();
+                    console.log('Manuel hesaplanan istatistikler:', stats);
+                }
+                
+                // Eğer stats hala boş ise fallback
+                if (!stats || stats.totalGames === 0) {
+                    console.log('İstatistikler boş, localStorage\'dan kontrol ediliyor...');
                     const localStats = localStorage.getItem('userStats');
                     if (localStats) {
-                        stats = JSON.parse(localStats);
-                    } else {
-                        // Manuel hesaplama
-                        stats = calculateStatsManually();
+                        try {
+                            stats = JSON.parse(localStats);
+                            console.log('localStorage\'dan alınan istatistikler:', stats);
+                        } catch (e) {
+                            console.error('localStorage istatistikleri parse edilemedi:', e);
+                        }
+                    }
+                    
+                    // Hala boş ise gameHistory'den hesapla
+                    if (!stats || stats.totalGames === 0) {
+                        console.log('localStorage da boş, gameHistory\'den hesaplama yapılıyor...');
+                        stats = calculateStatsFromGameHistory();
+                        console.log('gameHistory\'den hesaplanan istatistikler:', stats);
                     }
                 }
                 
                 updateStatisticsUI(stats);
-                } catch (error) {
-                    console.error('İstatistikler yüklenirken hata:', error);
-                    updateStatisticsUI({
-                        totalGames: 0,
-                        totalQuestions: 0,
-                        correctAnswers: 0,
-                        highestScore: 0,
+            } catch (error) {
+                console.error('İstatistikler yüklenirken hata:', error);
+                updateStatisticsUI({
+                    totalGames: 0,
+                    totalQuestions: 0,
+                    correctAnswers: 0,
+                    highestScore: 0,
                     averageScore: 0,
                     accuracy: 0,
-                        categoryStats: {}
-                    });
-                }
+                    categoryStats: {}
+                });
             }
+        }
 
         // Manuel istatistik hesaplama (fallback)
         function calculateStatsManually() {
-            const gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
-            let totalGames = gameHistory.length;
-            let totalQuestions = 0;
-            let correctAnswers = 0;
-            let totalScore = 0;
-            let categoryStats = {};
+            console.log('calculateStatsManually çağrıldı');
+            return calculateStatsFromGameHistory();
+        }
 
-            gameHistory.forEach(game => {
-                totalQuestions += game.totalQuestions || 0;
-                correctAnswers += game.correctAnswers || 0;
-                totalScore += game.score || 0;
+        // GameHistory'den istatistik hesaplama
+        function calculateStatsFromGameHistory() {
+            console.log('calculateStatsFromGameHistory çağrıldı');
+            
+            try {
+                const gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
+                console.log('GameHistory bulundu:', gameHistory.length, 'oyun');
                 
-                if (game.category) {
-                    if (!categoryStats[game.category]) {
-                        categoryStats[game.category] = { total: 0, correct: 0, games: 0 };
-                    }
-                    categoryStats[game.category].total += game.totalQuestions || 0;
-                    categoryStats[game.category].correct += game.correctAnswers || 0;
-                    categoryStats[game.category].games++;
-                }
-            });
+                let totalGames = gameHistory.length;
+                let totalQuestions = 0;
+                let correctAnswers = 0;
+                let totalScore = 0;
+                let highestScore = 0;
+                let categoryStats = {};
 
-            return {
-                totalGames,
-                totalQuestions,
-                correctAnswers,
-                totalScore,
-                highestScore: totalScore,
-                averageScore: totalGames > 0 ? Math.round(totalScore / totalGames) : 0,
-                accuracy: totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0,
-                categoryStats
-            };
+                gameHistory.forEach(game => {
+                    totalQuestions += game.totalQuestions || 0;
+                    correctAnswers += game.correctAnswers || 0;
+                    totalScore += game.score || 0;
+                    
+                    if ((game.score || 0) > highestScore) {
+                        highestScore = game.score || 0;
+                    }
+                    
+                    if (game.category) {
+                        if (!categoryStats[game.category]) {
+                            categoryStats[game.category] = { total: 0, correct: 0, games: 0 };
+                        }
+                        categoryStats[game.category].total += game.totalQuestions || 0;
+                        categoryStats[game.category].correct += game.correctAnswers || 0;
+                        categoryStats[game.category].games++;
+                    }
+                });
+
+                // Eğer gameHistory boşsa, highScores'tan veri al
+                if (totalGames === 0) {
+                    console.log('GameHistory boş, highScores kontrol ediliyor...');
+                    const categories = ['Genel Kültür', 'Bilim', 'Teknoloji', 'Spor', 'Müzik', 'Tarih', 'Coğrafya', 'Sanat'];
+                    
+                    categories.forEach(category => {
+                        const categoryScores = JSON.parse(localStorage.getItem(`highScores_${category}`) || '[]');
+                        categoryScores.forEach(score => {
+                            if (score.score) {
+                                totalGames++;
+                                totalScore += score.score;
+                                totalQuestions += score.total || 10;
+                                correctAnswers += score.score; // Score genellikle doğru cevap sayısıdır
+                                
+                                if (score.score > highestScore) {
+                                    highestScore = score.score;
+                                }
+                                
+                                if (!categoryStats[category]) {
+                                    categoryStats[category] = { total: 0, correct: 0, games: 0 };
+                                }
+                                categoryStats[category].total += score.total || 10;
+                                categoryStats[category].correct += score.score;
+                                categoryStats[category].games++;
+                            }
+                        });
+                    });
+                }
+
+                const stats = {
+                    totalGames,
+                    totalQuestions,
+                    correctAnswers,
+                    totalScore,
+                    highestScore,
+                    averageScore: totalGames > 0 ? Math.round(totalScore / totalGames) : 0,
+                    accuracy: totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0,
+                    categoryStats
+                };
+
+                console.log('Hesaplanan final istatistikler:', stats);
+                return stats;
+            } catch (error) {
+                console.error('İstatistik hesaplama hatası:', error);
+                return {
+                    totalGames: 0,
+                    totalQuestions: 0,
+                    correctAnswers: 0,
+                    totalScore: 0,
+                    highestScore: 0,
+                    averageScore: 0,
+                    accuracy: 0,
+                    categoryStats: {}
+                };
+            }
         }
         
         // İstatistik UI'sını güncelle
@@ -4610,12 +4690,23 @@
             const averageScore = totalGames > 0 ? Math.round(highestScore / totalGames) : 0;
             
             // UI elementlerini güncelle
-            document.getElementById('total-games-stat').textContent = totalGames;
-            document.getElementById('total-questions-stat').textContent = totalQuestions;
-            document.getElementById('correct-answers-stat').textContent = correctAnswers;
-            document.getElementById('accuracy-stat').textContent = '%' + accuracy;
-            document.getElementById('highest-score-stat').textContent = highestScore;
-            document.getElementById('average-score-stat').textContent = averageScore;
+            const totalGamesEl = document.getElementById('total-games-stat');
+            const totalQuestionsEl = document.getElementById('total-questions-stat');
+            const correctAnswersEl = document.getElementById('correct-answers-stat');
+            const accuracyEl = document.getElementById('accuracy-stat');
+            const highestScoreEl = document.getElementById('highest-score-stat');
+            const averageScoreEl = document.getElementById('average-score-stat');
+            
+            if (totalGamesEl) totalGamesEl.textContent = totalGames;
+            if (totalQuestionsEl) totalQuestionsEl.textContent = totalQuestions;
+            if (correctAnswersEl) correctAnswersEl.textContent = correctAnswers;
+            if (accuracyEl) accuracyEl.textContent = '%' + accuracy;
+            if (highestScoreEl) highestScoreEl.textContent = highestScore;
+            if (averageScoreEl) averageScoreEl.textContent = averageScore;
+            
+            console.log('İstatistik UI elementleri güncellendi:', {
+                totalGames, totalQuestions, correctAnswers, accuracy, highestScore, averageScore
+            });
             
             // Kategori istatistiklerini güncelle
             updateCategoryStats(stats.categoryStats || {});
