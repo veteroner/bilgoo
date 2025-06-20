@@ -15,7 +15,7 @@ const MonetizationManager = {
         // AdSense init için gecikme ekle
         setTimeout(() => {
             this.initializeAds();
-        }, 2000);
+        }, 3000); // 3 saniye gecikme
     },
 
     // Çerez onayını kontrol et
@@ -153,9 +153,12 @@ const MonetizationManager = {
         }
     },
 
-    // AdSense'i başlat
+    // AdSense'i başlat - İyileştirilmiş versiyon
     initAdSense: function() {
-        console.log('AdSense reklamları aktif');
+        console.log('AdSense reklamları başlatılıyor...');
+        
+        // Önce AdSense hesap durumunu kontrol et
+        this.checkAdSenseStatus();
         
         // SSL sertifika hatalarını önlemek için güvenlik ayarlarını kontrol et
         const date = new Date();
@@ -166,10 +169,28 @@ const MonetizationManager = {
         // Sayfa tamamen yüklendikten sonra yenile
         setTimeout(() => {
             this.refreshAds();
-        }, 3000);
+        }, 5000); // 5 saniye gecikme
     },
 
-    // Reklamları başlat
+    // AdSense hesap durumunu kontrol et
+    checkAdSenseStatus: function() {
+        // Publisher ID kontrolü
+        const pubId = 'ca-pub-7610338885240453';
+        console.log('AdSense Publisher ID:', pubId);
+        
+        // Site URL kontrolü
+        const currentDomain = window.location.hostname;
+        console.log('Mevcut domain:', currentDomain);
+        
+        if (currentDomain === 'localhost' || currentDomain === '127.0.0.1') {
+            console.warn('⚠️ Localhost\'ta AdSense reklamları gösterilmez!');
+            return false;
+        }
+        
+        return true;
+    },
+
+    // Reklamları başlat - İyileştirilmiş versiyon
     initializeAds: function() {
         try {
             // Reklam hata işleyicisi
@@ -182,7 +203,7 @@ const MonetizationManager = {
             
             // AdSense'in yüklenmesini bekle
             if (typeof adsbygoogle === 'undefined') {
-                console.log('AdSense henüz yüklenmedi, bekleniyor...');
+                console.log('AdSense henüz yüklenmedi, script yükleniyor...');
                 
                 // AdSense script'i manuel olarak yükle
                 const script = document.createElement('script');
@@ -190,22 +211,26 @@ const MonetizationManager = {
                 script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453";
                 script.crossOrigin = "anonymous";
                 script.referrerpolicy = "no-referrer-when-downgrade";
-                document.head.appendChild(script);
                 
-                // Script yüklenene kadar bekle
+                // Script başarıyla yüklendiğinde
                 script.onload = () => {
-                    console.log('AdSense script yüklendi, reklamlar başlatılıyor');
-                    // Script yüklendiğinde 2 saniye bekle ve sonra reklamları yükle
+                    console.log('✅ AdSense script başarıyla yüklendi');
                     setTimeout(() => {
                         this.loadAdsWhenReady();
-                    }, 2000);
+                    }, 3000);
                 };
                 
+                // Script yüklenemediğinde
                 script.onerror = (e) => {
-                    console.error('AdSense script yüklenemedi:', e);
-                    console.log('Hata detayları:', e);
+                    console.error('❌ AdSense script yüklenemedi:', e);
+                    console.log('Olası nedenler:');
+                    console.log('1. İnternet bağlantısı sorunu');
+                    console.log('2. AdSense hesabı henüz aktif değil');
+                    console.log('3. Site AdSense\'de onaylanmamış');
+                    console.log('4. Ad blocker aktif');
                 };
                 
+                document.head.appendChild(script);
                 return;
             }
             
