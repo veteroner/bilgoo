@@ -6819,7 +6819,11 @@
             const editProfileBtn = document.getElementById('edit-profile-btn');
             if (editProfileBtn) {
                 editProfileBtn.addEventListener('click', function() {
-                    alert("Profil düzenleme özelliği yakında eklenecek!");
+                    if (window.quizApp && window.quizApp.showEditProfileModal) {
+                        window.quizApp.showEditProfileModal();
+                    } else {
+                        alert("Profil düzenleme özelliği yükleniyor, lütfen bekleyin...");
+                    }
                 });
             }
         });

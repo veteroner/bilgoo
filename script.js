@@ -4359,22 +4359,64 @@ const quizApp = {
         // Skorları localStorage'a kaydet
         localStorage.setItem('quiz-high-scores', JSON.stringify(testScores));
         
+        // Test oyun geçmişi oluştur
+        const testGameHistory = [
+            { category: 'Genel Kültür', score: 85, totalQuestions: 10, correctAnswers: 8, date: Date.now() - 86400000, averageTime: 12 },
+            { category: 'Bilim', score: 92, totalQuestions: 10, correctAnswers: 9, date: Date.now() - 172800000, averageTime: 8 },
+            { category: 'Tarih', score: 78, totalQuestions: 10, correctAnswers: 7, date: Date.now() - 259200000, averageTime: 15 },
+            { category: 'Spor', score: 90, totalQuestions: 10, correctAnswers: 9, date: Date.now() - 345600000, averageTime: 9 },
+            { category: 'Coğrafya', score: 100, totalQuestions: 10, correctAnswers: 10, date: Date.now() - 432000000, averageTime: 7 }
+        ];
+        
+        localStorage.setItem('gameHistory', JSON.stringify(testGameHistory));
+        
         // İstatistikleri hesapla ve kaydet
-        this.calculateRealStats();
+        const stats = this.calculateRealStats();
         
         // İlk oyun rozetini ver
-        this.badgeSystem.awardBadge(userId, this.badgeSystem.badges.firstGame);
+        if (this.badgeSystem && this.badgeSystem.awardBadge && this.badgeSystem.badges) {
+            this.badgeSystem.awardBadge(userId, this.badgeSystem.badges.firstGame);
+        }
         
-        console.log('Test verileri oluşturuldu!');
+        console.log('Test verileri oluşturuldu!', stats);
         this.showToast('Test verileri oluşturuldu! Profil sayfasını yenileyin.', 'toast-success');
+        
+        // İstatistikleri hemen güncelle
+        this.updateRealUserStats();
+        
+        return stats;
+    },
+    
+    // İstatistikleri manuel olarak yenile (debug için)
+    refreshStats: function() {
+        console.log('İstatistikler yenileniyor...');
+        const stats = this.updateRealUserStats();
+        console.log('Güncellenmiş istatistikler:', stats);
+        this.showToast('İstatistikler yenilendi!', 'toast-success');
+        return stats;
     },
     
     // Firebase'den kullanıcı istatistiklerini yükle
     loadFirebaseUserStats: function(userId) {
         if (!firebase.firestore) {
-            // Firebase yoksa localStorage'dan istatistikleri al
-            const stats = this.getStats();
+            // Firebase yoksa localStorage'dan istatistikleri al ve hesapla
+            console.log('Firebase yok, localStorage\'dan istatistikler yükleniyor...');
+            const stats = this.calculateRealStats();
             this.updateProfileStats(stats);
+            
+            // Toplam puanı da güncelle
+            const profileTotalScore = document.getElementById('profile-total-score');
+            if (profileTotalScore) {
+                profileTotalScore.textContent = this.totalScore || stats.totalScore || 0;
+            }
+            
+            // Seviyeyi güncelle
+            const profileUserLevel = document.getElementById('profile-user-level');
+            if (profileUserLevel) {
+                const totalPoints = this.totalScore || stats.totalScore || 0;
+                const level = Math.floor(totalPoints / 500) + 1;
+                profileUserLevel.textContent = level;
+            }
             return;
         }
         
@@ -4526,28 +4568,32 @@ const quizApp = {
 
         // localStorage'dan gerçek istatistikleri çek
         const realStats = this.calculateRealStats();
+        console.log('updateRealUserStats - hesaplanan istatistikler:', realStats);
         
-        // Profil sayfası açıksa istatistikleri güncelle
-        const profilePage = document.getElementById('profile-page');
-        if (profilePage && profilePage.style.display !== 'none') {
-            this.updateProfileStats(realStats);
-            
-            // Toplam puanı güncelle (Firebase'den gelen veya mevcut toplam puan)
-            const profileTotalScore = document.getElementById('profile-total-score');
-            if (profileTotalScore) {
-                profileTotalScore.textContent = this.totalScore || 0;
-            }
-            
-            // Seviyeyi güncelle (toplam puana göre)
-            const profileUserLevel = document.getElementById('profile-user-level');
-            if (profileUserLevel) {
-                const level = Math.floor((this.totalScore || 0) / 500) + 1;
-                profileUserLevel.textContent = level;
-            }
+        // Profil sayfası açık olup olmadığına bakılmaksızın istatistikleri güncelle
+        this.updateProfileStats(realStats);
+        
+        // Toplam puanı güncelle (hesaplanan istatistiklerden veya mevcut toplam puan)
+        const profileTotalScore = document.getElementById('profile-total-score');
+        if (profileTotalScore) {
+            const totalPoints = this.totalScore || realStats.totalScore || 0;
+            profileTotalScore.textContent = totalPoints;
+            console.log('Toplam puan güncellendi:', totalPoints);
+        }
+        
+        // Seviyeyi güncelle (toplam puana göre)
+        const profileUserLevel = document.getElementById('profile-user-level');
+        if (profileUserLevel) {
+            const totalPoints = this.totalScore || realStats.totalScore || 0;
+            const level = Math.floor(totalPoints / 500) + 1;
+            profileUserLevel.textContent = level;
+            console.log('Seviye güncellendi:', level);
         }
 
         // Rozet sistemini kontrol et
-        this.badgeSystem.checkAndAwardBadges(userId, realStats);
+        if (this.badgeSystem && this.badgeSystem.checkAndAwardBadges) {
+            this.badgeSystem.checkAndAwardBadges(userId, realStats);
+        }
         
         return realStats;
     },
@@ -4655,6 +4701,12 @@ const quizApp = {
             };
 
             console.log('Hesaplanan istatistikler:', stats);
+
+            // Toplam puanı this.totalScore'a ata (eğer daha büyükse)
+            if (stats.totalScore > (this.totalScore || 0)) {
+                this.totalScore = stats.totalScore;
+                console.log('Toplam puan güncellendi:', this.totalScore);
+            }
 
             // İstatistikleri localStorage'a kaydet
             localStorage.setItem('userStats', JSON.stringify(stats));
