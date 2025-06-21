@@ -159,9 +159,35 @@ const MonetizationManager = {
         }
     },
 
-    // AdSense'i başlat
+    // AdSense'i başlat - İyileştirilmiş versiyon
     initAdSense: function() {
-        console.log('AdSense reklamları aktif');
+        console.log('AdSense reklamları başlatılıyor...');
+        
+        // Çerez onayını kontrol et
+        if (!this.cookiePreferences.advertising) {
+            console.log('⚠️ Reklam çerezleri onaylanmamış, AdSense yüklenmeyecek');
+            this.showCookieBanner();
+            return;
+        }
+        
+        // Tracking Prevention kontrolü
+        try {
+            localStorage.setItem('adsense_test', 'test');
+            localStorage.removeItem('adsense_test');
+            console.log('✅ LocalStorage erişimi normal');
+        } catch (e) {
+            console.warn('⚠️ Tracking Prevention aktif - AdSense sorunları olabilir');
+            console.log('Çözüm: Tarayıcı ayarlarından bu site için tracking korumasını devre dışı bırakın');
+            console.log('Safari: Ayarlar > Gizlilik ve Güvenlik > Çapraz Site İzlemeyi Engelle (Kapat)');
+            console.log('Chrome: Ayarlar > Gizlilik ve Güvenlik > Çerezler > Bu site için izin ver');
+            console.log('Firefox: Ayarlar > Gizlilik ve Güvenlik > Gelişmiş İzleme Koruması (Standart)');
+            
+            // Kullanıcıya bildirim göster
+            this.showTrackingPreventionWarning();
+        }
+        
+        // Önce AdSense hesap durumunu kontrol et
+        this.checkAdSenseStatus();
         
         // SSL sertifika hatalarını önlemek için güvenlik ayarlarını kontrol et
         const date = new Date();
@@ -169,51 +195,54 @@ const MonetizationManager = {
             console.warn('Sistem saati sorunlu olabilir, AdSense yüklemede sorunlar oluşturabilir');
         }
         
-        // Sayfa tamamen yüklendikten sonra yenile
+        // AdSense script'i index.html'de zaten yükleniyor, sadece elementleri yükle
         setTimeout(() => {
-            this.refreshAds();
-        }, 3000);
+            this.loadAdsWhenReady();
+        }, 3000); // 3 saniye gecikme
     },
 
-    // Reklamları başlat
-    initializeAds: function() {
-        try {
-            // Reklam hata işleyicisi
-            window.onerror = function(msg, url, line, col, error) {
-                if (url && url.includes('pagead')) {
-                    console.log('AdSense hatası yakalandı ve bastırıldı:', msg);
-                    return true; // Hatayı bastır
-                }
-            };
-            
-            // AdSense'in yüklenmesini bekle
-            if (typeof adsbygoogle === 'undefined') {
-                console.log('AdSense henüz yüklenmedi, bekleniyor...');
-                
-                // AdSense script'i manuel olarak yükle
-                const script = document.createElement('script');
-                script.async = true;
-                script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453";
-                script.crossOrigin = "anonymous";
-                document.head.appendChild(script);
-                
-                // Script yüklenene kadar bekle
-                script.onload = () => {
-                    console.log('AdSense script yüklendi, reklamlar başlatılıyor');
-                    this.loadAdsWhenReady();
-                };
-                
-                script.onerror = (e) => {
-                    console.error('AdSense script yüklenemedi:', e);
-                };
-                
-                return;
-            }
-            
-            this.loadAdsWhenReady();
-        } catch (error) {
-            console.error('Reklam başlatılırken hata:', error);
+    // AdSense hesap durumunu kontrol et
+    checkAdSenseStatus: function() {
+        // Publisher ID kontrolü
+        const pubId = 'ca-pub-7610338885240453';
+        console.log('AdSense Publisher ID:', pubId);
+        
+        // Site URL kontrolü
+        const currentDomain = window.location.hostname;
+        console.log('Mevcut domain:', currentDomain);
+        
+        if (currentDomain === 'localhost' || currentDomain === '127.0.0.1') {
+            console.warn('⚠️ Localhost\'ta AdSense reklamları gösterilmez!');
+            return false;
         }
+        
+        return true;
+    },
+
+    // Reklamları başlat - Sadece reklam elementlerini yükle
+    initializeAds: function() {
+        console.log('🎯 AdSense reklamları başlatılıyor...');
+        
+        // AdSense script zaten index.html'de yüklendiği için sadece elementleri kontrol et
+        const checkAndLoadAds = () => {
+            if (typeof adsbygoogle !== 'undefined') {
+                console.log('✅ AdSense objesi hazır, reklamlar yükleniyor');
+                this.loadAdsWhenReady();
+            } else {
+                console.log('⏳ AdSense objesi henüz hazır değil, 2 saniye sonra tekrar kontrol edilecek');
+                setTimeout(checkAndLoadAds, 2000);
+            }
+        };
+        
+        // Hata yakalayıcı ekle
+        window.onerror = function(msg, url, line, col, error) {
+            if (url && url.includes('pagead')) {
+                console.log('AdSense hatası yakalandı ve bastırıldı:', msg);
+                return true; // Hatayı bastır
+            }
+        };
+        
+        checkAndLoadAds();
     },
     
     // AdSense yüklendikten sonra reklamları yükle
@@ -606,6 +635,14 @@ const MonetizationManager = {
             category: 'achievement',
             value: window.quizApp?.score || 0
         });
+    },
+
+    // Kullanıcıya bildirim göster
+    showTrackingPreventionWarning: function() {
+        // Bu fonksiyonun içeriği, kullanıcıya bildirim göstermek için kullanılabilir.
+        // Bu örnekte, bildirim iletişim kutusu gösterilir.
+        console.log('⚠️ Reklam çerezleri onaylanmamış, AdSense yüklenmeyecek');
+        console.log('⚠️ Reklam çerezleri onaylamak için tarayıcı ayarlarınızı kontrol edin');
     }
 };
 
