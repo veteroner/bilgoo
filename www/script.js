@@ -1440,7 +1440,7 @@ const quizApp = {
                 if (availablePoints >= price) {
                     // Puanı azalt (misafir için sessionScore, kayıtlı için totalScore)
                     if (self.isLoggedIn) {
-                        self.totalScore -= price;
+                    self.totalScore -= price;
                     } else {
                         self.sessionScore -= price;
                     }

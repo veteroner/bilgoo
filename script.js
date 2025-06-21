@@ -1489,7 +1489,7 @@ const quizApp = {
                 if (availablePoints >= price) {
                     // Puanı azalt (misafir için sessionScore, kayıtlı için totalScore)
                     if (self.isLoggedIn) {
-                        self.totalScore -= price;
+                    self.totalScore -= price;
                     } else {
                         self.sessionScore -= price;
                     }
@@ -3409,7 +3409,7 @@ const quizApp = {
         this.updateScoreDisplay();
         
         // Joker butonlarını başlangıç durumuna getir
-            this.updateJokerButtons();
+        this.updateJokerButtons();
         
         // İlk soruyu göster
         // Debug: İlk soru gösterilmeden önce zorluk seviyesini kontrol et
@@ -3485,7 +3485,7 @@ const quizApp = {
             // Çevrilmiş soru kullan (eğer varsa)
             if (questionData.translations && questionData.translations[this.currentLanguage] && questionData.translations[this.currentLanguage].question) {
                 this.questionElement.textContent = questionData.translations[this.currentLanguage].question;
-        } else {
+            } else {
                 this.questionElement.textContent = questionData.question;
             }
             
@@ -4289,17 +4289,29 @@ const quizApp = {
         if (editProfileBtn) {
             console.log('Profil düzenleme butonu bulundu, olay dinleyicisi ekleniyor...');
             
-            // Önceki olay dinleyicilerini temizle
-            editProfileBtn.replaceWith(editProfileBtn.cloneNode(true));
-            const newEditProfileBtn = document.getElementById('edit-profile-btn');
+            // Önceki onclick handler'ını temizle
+            editProfileBtn.onclick = null;
             
-            newEditProfileBtn.addEventListener('click', (e) => {
+            // Self referansı sakla (this context sorunu için)
+            const self = this;
+            
+            // Yeni event listener ekle
+            editProfileBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 console.log('Profil düzenleme butonuna tıklandı!');
+                console.log('Self objesi:', self);
+                console.log('showEditProfileModal fonksiyonu var mı?', typeof self.showEditProfileModal);
                 
-                if (typeof this.showEditProfileModal === 'function') {
-                    this.showEditProfileModal();
+                if (typeof self.showEditProfileModal === 'function') {
+                    try {
+                        console.log('showEditProfileModal çağrılıyor...');
+                        self.showEditProfileModal();
+                        console.log('showEditProfileModal başarıyla çağrıldı');
+                    } catch (error) {
+                        console.error('showEditProfileModal çağrılırken hata:', error);
+                        alert('Profil düzenleme modalı açılırken hata oluştu: ' + error.message);
+                    }
                 } else {
                     console.error('showEditProfileModal fonksiyonu bulunamadı!');
                     alert('Profil düzenleme özelliği şu anda kullanılamıyor.');
@@ -4307,7 +4319,7 @@ const quizApp = {
             });
             
             // Buton metnini güncelle
-            newEditProfileBtn.innerHTML = '<i class="fas fa-edit"></i> Profili Düzenle';
+            editProfileBtn.innerHTML = '<i class="fas fa-edit"></i> Profili Düzenle';
             console.log('Profil düzenleme butonu hazırlandı');
         } else {
             console.error('Profil düzenleme butonu bulunamadı!');
@@ -4394,7 +4406,8 @@ const quizApp = {
         
         // İlk oyun rozetini ver
         if (this.badgeSystem && this.badgeSystem.awardBadge && this.badgeSystem.badges) {
-            this.badgeSystem.awardBadge(userId, this.badgeSystem.badges.firstGame);
+            console.log('İlk oyun rozeti veriliyor...');
+        this.badgeSystem.awardBadge(userId, this.badgeSystem.badges.firstGame);
         }
         
         console.log('Test verileri oluşturuldu!', stats);
@@ -4431,6 +4444,16 @@ const quizApp = {
             }, 1000);
         } else {
             this.testProfileEditButton();
+        }
+    },
+    
+    // Debug: Profil düzenleme modalını direkt aç
+    openEditModal: function() {
+        console.log('Profil düzenleme modalı direkt açılıyor...');
+        if (typeof this.showEditProfileModal === 'function') {
+            this.showEditProfileModal();
+        } else {
+            console.error('showEditProfileModal fonksiyonu bulunamadı!');
         }
     },
     
@@ -4624,28 +4647,28 @@ const quizApp = {
         console.log('updateRealUserStats - hesaplanan istatistikler:', realStats);
         
         // Profil sayfası açık olup olmadığına bakılmaksızın istatistikleri güncelle
-        this.updateProfileStats(realStats);
-        
+            this.updateProfileStats(realStats);
+            
         // Toplam puanı güncelle (hesaplanan istatistiklerden veya mevcut toplam puan)
-        const profileTotalScore = document.getElementById('profile-total-score');
-        if (profileTotalScore) {
+            const profileTotalScore = document.getElementById('profile-total-score');
+            if (profileTotalScore) {
             const totalPoints = this.totalScore || realStats.totalScore || 0;
             profileTotalScore.textContent = totalPoints;
             console.log('Toplam puan güncellendi:', totalPoints);
-        }
-        
-        // Seviyeyi güncelle (toplam puana göre)
-        const profileUserLevel = document.getElementById('profile-user-level');
-        if (profileUserLevel) {
+            }
+            
+            // Seviyeyi güncelle (toplam puana göre)
+            const profileUserLevel = document.getElementById('profile-user-level');
+            if (profileUserLevel) {
             const totalPoints = this.totalScore || realStats.totalScore || 0;
             const level = Math.floor(totalPoints / 500) + 1;
-            profileUserLevel.textContent = level;
+                profileUserLevel.textContent = level;
             console.log('Seviye güncellendi:', level);
         }
 
         // Rozet sistemini kontrol et
         if (this.badgeSystem && this.badgeSystem.checkAndAwardBadges) {
-            this.badgeSystem.checkAndAwardBadges(userId, realStats);
+        this.badgeSystem.checkAndAwardBadges(userId, realStats);
         }
         
         return realStats;
@@ -4719,14 +4742,14 @@ const quizApp = {
                         if (!existsInHistory) {
                             console.log(`${category} kategorisinden skor ekleniyor:`, score);
                             totalGames++;
-                            totalScore += score.score;
+                        totalScore += score.score;
                             totalQuestions += score.totalQuestions || 10; // Varsayılan
                             correctAnswers += score.correctAnswers || Math.round(score.score / 10);
                         
-                            if (score.percentage === 100) {
-                                perfectGames++;
-                            }
-                            categoriesPlayed.add(category);
+                        if (score.percentage === 100) {
+                            perfectGames++;
+                        }
+                        categoriesPlayed.add(category);
                             
                             // Kategori istatistikleri
                             if (!categoryStats[category]) {
@@ -4991,10 +5014,11 @@ const quizApp = {
                     highScoresTable.innerHTML = '';
                     scores.slice(0, 10).forEach(scoreData => {
                         const row = document.createElement('tr');
+                        const scoreDate = this.formatScoreDate(scoreData.date);
                         row.innerHTML = `
                             <td>${scoreData.category || 'Genel'}</td>
                             <td>${scoreData.score || 0}</td>
-                            <td>${scoreData.date ? new Date(scoreData.date.toDate()).toLocaleDateString('tr-TR') : 'Bilinmiyor'}</td>
+                            <td>${scoreDate}</td>
                         `;
                         highScoresTable.appendChild(row);
                     });
@@ -5011,6 +5035,51 @@ const quizApp = {
         } else {
             // Firebase yoksa localStorage'dan al
             this.loadHighScoresFromLocalStorage(highScoresTable);
+        }
+    },
+    
+    // Tarih objesini güvenli şekilde formatla
+    formatScoreDate: function(dateValue) {
+        try {
+            if (!dateValue) {
+                return 'Bilinmiyor';
+            }
+            
+            let dateObj;
+            
+            // Firebase Timestamp objesi kontrolü
+            if (dateValue && typeof dateValue.toDate === 'function') {
+                dateObj = dateValue.toDate();
+            }
+            // Firebase Timestamp objesi (seconds ve nanoseconds ile)
+            else if (dateValue && dateValue.seconds) {
+                dateObj = new Date(dateValue.seconds * 1000);
+            }
+            // Zaten Date objesi
+            else if (dateValue instanceof Date) {
+                dateObj = dateValue;
+            }
+            // String veya number timestamp
+            else if (typeof dateValue === 'string' || typeof dateValue === 'number') {
+                dateObj = new Date(dateValue);
+            }
+            // Diğer durumlar
+            else {
+                console.warn('Bilinmeyen tarih formatı:', dateValue);
+                return 'Bilinmiyor';
+            }
+            
+            // Geçerli tarih kontrolü
+            if (isNaN(dateObj.getTime())) {
+                console.warn('Geçersiz tarih:', dateValue);
+                return 'Bilinmiyor';
+            }
+            
+            return dateObj.toLocaleDateString('tr-TR');
+            
+        } catch (error) {
+            console.error('Tarih formatlanırken hata:', error, 'Değer:', dateValue);
+            return 'Bilinmiyor';
         }
     },
     
@@ -5073,7 +5142,7 @@ const quizApp = {
             highScoresTable.innerHTML = '';
             uniqueScores.forEach(score => {
                 const row = document.createElement('tr');
-                const scoreDate = score.date ? new Date(score.date).toLocaleDateString('tr-TR') : 'Bugün';
+                const scoreDate = this.formatScoreDate(score.date);
                 row.innerHTML = `
                     <td>${score.category || 'Genel'}</td>
                     <td>${score.score || 0}</td>
@@ -5231,8 +5300,37 @@ const quizApp = {
     
     // Geçen zamanı belirtilen formatı çevir (1 saat önce, 2 gün önce vb.)
     getTimeAgo: function(timestamp) {
+        try {
+            if (!timestamp) {
+                return 'Bilinmiyor';
+            }
+            
         const now = new Date();
-        const activityTime = timestamp instanceof Date ? timestamp : new Date(timestamp);
+            let activityTime;
+            
+            // Firebase Timestamp objesi kontrolü
+            if (timestamp && typeof timestamp.toDate === 'function') {
+                activityTime = timestamp.toDate();
+            }
+            // Firebase Timestamp objesi (seconds ile)
+            else if (timestamp && timestamp.seconds) {
+                activityTime = new Date(timestamp.seconds * 1000);
+            }
+            // Zaten Date objesi
+            else if (timestamp instanceof Date) {
+                activityTime = timestamp;
+            }
+            // String veya number
+            else {
+                activityTime = new Date(timestamp);
+            }
+            
+            // Geçerli tarih kontrolü
+            if (isNaN(activityTime.getTime())) {
+                console.warn('Geçersiz timestamp:', timestamp);
+                return 'Bilinmiyor';
+            }
+            
         const diffMs = now - activityTime;
         const diffSec = Math.floor(diffMs / 1000);
         const diffMin = Math.floor(diffSec / 60);
@@ -5249,6 +5347,10 @@ const quizApp = {
             return `${diffMin} dakika önce`;
         } else {
             return 'Az önce';
+            }
+        } catch (error) {
+            console.error('Zaman hesaplanırken hata:', error, 'Timestamp:', timestamp);
+            return 'Bilinmiyor';
         }
     },
     
@@ -5291,36 +5393,124 @@ const quizApp = {
     
     // Profil düzenleme modalını göster
     showEditProfileModal: function() {
+        console.log('showEditProfileModal fonksiyonu çağrıldı');
+        
+        // Mevcut modalı kapat (varsa)
+        const existingModal = document.getElementById('edit-profile-modal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+        
         // Modal oluştur
         const modal = document.createElement('div');
-        modal.className = 'modal';
+        modal.className = 'modal show';
         modal.id = 'edit-profile-modal';
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        `;
+        
         modal.innerHTML = `
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3><i class="fas fa-edit"></i> Profili Düzenle</h3>
-                    <button class="close-modal" onclick="this.closest('.modal').remove()">
+            <div class="modal-content" style="
+                background: white;
+                border-radius: 12px;
+                padding: 20px;
+                max-width: 400px;
+                width: 90%;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            ">
+                <div class="modal-header" style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 20px;
+                ">
+                    <h3 style="margin: 0; color: #333;">
+                        <i class="fas fa-edit"></i> Profili Düzenle
+                    </h3>
+                    <button class="close-modal" style="
+                        background: none;
+                        border: none;
+                        font-size: 20px;
+                        cursor: pointer;
+                        color: #666;
+                        padding: 5px;
+                    " onclick="document.getElementById('edit-profile-modal').remove()">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="edit-display-name">Görünen Ad:</label>
-                        <input type="text" id="edit-display-name" placeholder="Adınızı girin">
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label for="edit-display-name" style="
+                            display: block;
+                            margin-bottom: 5px;
+                            font-weight: bold;
+                            color: #333;
+                        ">Görünen Ad:</label>
+                        <input type="text" id="edit-display-name" placeholder="Adınızı girin" style="
+                            width: 100%;
+                            padding: 10px;
+                            border: 2px solid #ddd;
+                            border-radius: 6px;
+                            font-size: 14px;
+                            box-sizing: border-box;
+                        ">
                     </div>
-                    <div class="form-group">
-                        <label for="edit-bio">Hakkımda:</label>
-                        <textarea id="edit-bio" placeholder="Kendiniz hakkında kısa bilgi..." rows="3"></textarea>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label for="edit-bio" style="
+                            display: block;
+                            margin-bottom: 5px;
+                            font-weight: bold;
+                            color: #333;
+                        ">Hakkımda:</label>
+                        <textarea id="edit-bio" placeholder="Kendiniz hakkında kısa bilgi..." rows="3" style="
+                            width: 100%;
+                            padding: 10px;
+                            border: 2px solid #ddd;
+                            border-radius: 6px;
+                            font-size: 14px;
+                            resize: vertical;
+                            box-sizing: border-box;
+                        "></textarea>
                     </div>
-                    <div class="modal-actions">
-                        <button class="btn-secondary" onclick="this.closest('.modal').remove()">İptal</button>
-                        <button class="btn-primary" onclick="quizApp.saveProfileChanges()">Kaydet</button>
+                    <div class="modal-actions" style="
+                        display: flex;
+                        gap: 10px;
+                        justify-content: flex-end;
+                    ">
+                        <button class="btn-secondary" onclick="document.getElementById('edit-profile-modal').remove()" style="
+                            padding: 10px 20px;
+                            border: 2px solid #ddd;
+                            background: white;
+                            color: #666;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            font-size: 14px;
+                        ">İptal</button>
+                        <button class="btn-primary" onclick="quizApp.saveProfileChanges()" style="
+                            padding: 10px 20px;
+                            border: none;
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            color: white;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            font-size: 14px;
+                        ">Kaydet</button>
                     </div>
                 </div>
             </div>
         `;
         
         document.body.appendChild(modal);
+        console.log('Modal DOM\'a eklendi');
         
         // Mevcut verileri doldur
         const displayNameInput = document.getElementById('edit-display-name');
@@ -5356,8 +5546,8 @@ const quizApp = {
             }
         }
         
-        // Modal göster
-        setTimeout(() => modal.classList.add('show'), 10);
+        // Modal göster - artık inline style ile görünür
+        console.log('Modal gösterildi');
     },
     
     // Profil değişikliklerini kaydet
@@ -5548,42 +5738,115 @@ const quizApp = {
         // Kullanıcının mevcut rozetlerini al
         getUserBadges: function(userId) {
             try {
-                const badges = localStorage.getItem(`user-badges-${userId}`);
-                return badges ? JSON.parse(badges) : {};
+                // Önce localStorage'dan al
+                const localBadges = localStorage.getItem(`user-badges-${userId}`);
+                let userBadges = localBadges ? JSON.parse(localBadges) : {};
+                
+                // Eğer localStorage'da rozet yoksa ve Firebase varsa oradan al
+                if (Object.keys(userBadges).length === 0 && firebase.firestore) {
+                    // Bu asenkron işlem, sonucu hemen döndüremeyiz
+                    // Ancak localStorage'ı güncelleyebiliriz
+                    this.syncBadgesFromFirebase(userId);
+                }
+                
+                return userBadges;
             } catch (error) {
                 console.error('Rozetler okunurken hata:', error);
                 return {};
             }
         },
+        
+        // Firebase'den rozetleri senkronize et
+        syncBadgesFromFirebase: function(userId) {
+            if (!firebase.firestore) return;
+            
+            const db = firebase.firestore();
+            db.collection('users').doc(userId).get()
+                .then(doc => {
+                    if (doc.exists && doc.data().badges) {
+                        const firebaseBadges = doc.data().badges;
+                        
+                        // Firebase'den gelen rozetleri tam rozet objelerine dönüştür
+                        const fullBadges = {};
+                        Object.keys(firebaseBadges).forEach(badgeId => {
+                            const firebaseBadge = firebaseBadges[badgeId];
+                            const fullBadgeDefinition = this.badges[badgeId];
+                            
+                            if (fullBadgeDefinition) {
+                                fullBadges[badgeId] = {
+                                    ...fullBadgeDefinition,
+                                    earnedDate: firebaseBadge.earnedDate
+                                };
+                            }
+                        });
+                        
+                        // localStorage'ı güncelle
+                        localStorage.setItem(`user-badges-${userId}`, JSON.stringify(fullBadges));
+                        console.log('Rozetler Firebase\'den senkronize edildi:', Object.keys(fullBadges));
+                    }
+                })
+                .catch(error => {
+                    console.error('Firebase\'den rozetler alınırken hata:', error);
+                });
+        },
 
         // Rozet ver
         awardBadge: function(userId, badge) {
             const userBadges = this.getUserBadges(userId);
-            const badgeData = {
+            
+            // Firebase için güvenli badge verisi oluştur (fonksiyonları hariç tut)
+            const safeBadgeData = {
+                id: badge.id,
+                name: badge.name,
+                description: badge.description,
+                icon: badge.icon,
+                earnedDate: new Date().toISOString()
+            };
+            
+            // localStorage için tam veri (fonksiyonlar dahil)
+            const fullBadgeData = {
                 ...badge,
                 earnedDate: new Date().toISOString()
             };
             
-            userBadges[badge.id] = badgeData;
+            userBadges[badge.id] = fullBadgeData;
 
             try {
-                // LocalStorage'a kaydet
+                // LocalStorage'a kaydet (tam veri ile)
                 localStorage.setItem(`user-badges-${userId}`, JSON.stringify(userBadges));
+                console.log(`Rozet localStorage'a kaydedildi: ${badge.name}`);
                 
-                // Firestore'a kaydet (varsa)
+                // Firebase için güvenli rozetler objesi oluştur
+                const safeBadgesForFirebase = {};
+                Object.keys(userBadges).forEach(badgeId => {
+                    const userBadge = userBadges[badgeId];
+                    safeBadgesForFirebase[badgeId] = {
+                        id: userBadge.id,
+                        name: userBadge.name,
+                        description: userBadge.description,
+                        icon: userBadge.icon,
+                        earnedDate: userBadge.earnedDate
+                    };
+                });
+                
+                // Firestore'a kaydet (güvenli veri ile)
                 if (firebase.firestore) {
                     const db = firebase.firestore();
                     db.collection('users').doc(userId).set({
-                        badges: userBadges,
+                        badges: safeBadgesForFirebase,
                         lastUpdated: new Date()
-                    }, { merge: true }).catch(error => {
+                    }, { merge: true }).then(() => {
+                        console.log(`Rozet Firestore'a kaydedildi: ${badge.name}`);
+                    }).catch(error => {
                         console.error('Rozet Firestore\'a kaydedilemedi:', error);
                     });
                 }
                 
-                // Firebase Realtime Database'e de kaydet (geriye uyumluluk)
+                // Firebase Realtime Database'e de kaydet (güvenli veri ile)
                 if (firebase.database) {
-                    firebase.database().ref(`users/${userId}/badges/${badge.id}`).set(badgeData).catch(error => {
+                    firebase.database().ref(`users/${userId}/badges/${badge.id}`).set(safeBadgeData).then(() => {
+                        console.log(`Rozet Realtime Database'e kaydedildi: ${badge.name}`);
+                    }).catch(error => {
                         console.error('Rozet Firebase Realtime\'a kaydedilemedi:', error);
                     });
                 }
@@ -8844,4 +9107,4 @@ window.debugProfile = {
     }
 };
 
-    
+ 

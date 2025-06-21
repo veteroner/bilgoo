@@ -363,13 +363,13 @@ const MonetizationManager = {
         };
         
         // Hata yakalayıcı ekle
-        window.onerror = function(msg, url, line, col, error) {
-            if (url && url.includes('pagead')) {
-                console.log('AdSense hatası yakalandı ve bastırıldı:', msg);
-                return true; // Hatayı bastır
-            }
-        };
-        
+            window.onerror = function(msg, url, line, col, error) {
+                if (url && url.includes('pagead')) {
+                    console.log('AdSense hatası yakalandı ve bastırıldı:', msg);
+                    return true; // Hatayı bastır
+                }
+            };
+            
         checkAndLoadAds();
     },
     
@@ -429,18 +429,18 @@ const MonetizationManager = {
             });
             
             // Reklamları yükle (tek seferde tümü)
-            adElements.forEach((ad, index) => {
-                setTimeout(() => {
-                    try {
+                    adElements.forEach((ad, index) => {
+                        setTimeout(() => {
+                            try {
                         // Son bir kez kontrol et
                         if (!ad.hasAttribute('data-adsbygoogle-status') || ad.getAttribute('data-adsbygoogle-status') !== 'done') {
                             console.log(`🚀 Reklam ${index + 1} yükleniyor...`);
-                            (adsbygoogle = window.adsbygoogle || []).push({});
+                                (adsbygoogle = window.adsbygoogle || []).push({});
                             console.log(`✅ Reklam ${index + 1} yüklendi`);
                         } else {
                             console.log(`⚠️ Reklam ${index + 1} zaten yüklenmiş, atlanıyor`);
                         }
-                    } catch (e) {
+                } catch (e) {
                         console.error(`❌ Reklam ${index + 1} yüklenirken hata:`, e);
                     }
                 }, index * 1000); // Her reklam için 1 saniye gecikme
@@ -560,9 +560,9 @@ const MonetizationManager = {
             // AdSense'in yüklü olduğundan emin ol (script index.html'de yükleniyor)
             if (typeof adsbygoogle === 'undefined') {
                 console.log('⚠️ AdSense objesi tanımlı değil, 3 saniye sonra tekrar denenecek');
-                setTimeout(() => {
-                    this.refreshAds();
-                }, 3000);
+                    setTimeout(() => {
+                        this.refreshAds();
+                    }, 3000);
                 return;
             }
             
@@ -641,9 +641,9 @@ const MonetizationManager = {
                         try {
                             // Reklam hala yüklenmemiş mi kontrol et
                             if (!ad.hasAttribute('data-adsbygoogle-status') || ad.getAttribute('data-adsbygoogle-status') !== 'done') {
-                                console.log(`Reklam ${index + 1} yenileniyor...`);
-                                (adsbygoogle = window.adsbygoogle || []).push({});
-                                console.log(`Reklam ${index + 1} yenilendi`);
+                            console.log(`Reklam ${index + 1} yenileniyor...`);
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                            console.log(`Reklam ${index + 1} yenilendi`);
                             } else {
                                 console.log(`Reklam ${index + 1} zaten yüklenmiş, işlem atlanıyor`);
                             }

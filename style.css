@@ -8336,7 +8336,7 @@ body.quiz-active .main-logo-container svg {
     left: 0;
     width: 100%;
     height: 100%;
-    background: #f5f6fa;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     overflow-y: auto;
     z-index: 1000;
     display: none;
@@ -8344,57 +8344,97 @@ body.quiz-active .main-logo-container svg {
 }
 
 .friends-container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 30px 20px;
+    max-width: none;
+    width: 100%;
+    padding: 20px 40px;
     min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr 1fr;
+    gap: 30px;
+    grid-template-areas: 
+        "header header"
+        "search requests"
+        "friends friends";
 }
 
 .friends-header {
+    grid-area: header;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
-    padding: 0 10px;
+    margin-bottom: 0;
+    padding: 20px 30px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .friends-header h1 {
     color: #2c3e50;
     margin: 0;
-    font-size: 2.5rem;
-    font-weight: 700;
-    letter-spacing: -0.5px;
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .friends-header button {
-    background: #34495e;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 14px;
+    padding: 15px 30px;
+    border-radius: 12px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
-    transition: all 0.2s ease;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
 .friends-header button:hover {
-    background: #2c3e50;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
 }
 
-.search-section,
-.friend-requests-section,
-.friends-list-section {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+.search-section {
+    grid-area: search;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     padding: 30px;
-    margin-bottom: 30px;
-    border: 1px solid #e1e8ed;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    height: fit-content;
+}
+
+.friend-requests-section {
+    grid-area: requests;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    height: fit-content;
+}
+
+.friends-list-section {
+    grid-area: friends;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .search-section h2,
@@ -8402,76 +8442,83 @@ body.quiz-active .main-logo-container svg {
 .friends-list-section h2 {
     color: #2c3e50;
     margin: 0 0 25px 0;
-    font-size: 1.4rem;
-    font-weight: 600;
+    font-size: 1.8rem;
+    font-weight: 700;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .search-section h2::before {
     content: "🔍";
-    font-size: 1.2rem;
+    font-size: 1.4rem;
 }
 
 .friend-requests-section h2::before {
     content: "👥";
-    font-size: 1.2rem;
+    font-size: 1.4rem;
 }
 
 .friends-list-section h2::before {
     content: "👬";
-    font-size: 1.2rem;
+    font-size: 1.4rem;
 }
 
 .search-box {
     display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: 15px;
+    margin-bottom: 25px;
 }
 
 .search-box input {
     flex: 1;
-    padding: 14px 18px;
-    border: 2px solid #e1e8ed;
-    border-radius: 10px;
+    padding: 16px 20px;
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    border-radius: 12px;
     font-size: 16px;
     outline: none;
-    transition: all 0.2s ease;
-    background: #f8f9fa;
+    transition: all 0.3s ease;
+    background: rgba(248, 249, 250, 0.8);
+    backdrop-filter: blur(5px);
 }
 
 .search-box input:focus {
-    border-color: #3498db;
-    background: white;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    border-color: #667eea;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    transform: translateY(-1px);
 }
 
 .search-box button {
-    padding: 14px 20px;
-    background: #3498db;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
 .search-box button:hover {
-    background: #2980b9;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
 }
 
 .search-results,
 .friend-requests,
 .friends-list {
-    min-height: 60px;
-    max-height: 350px;
+    min-height: 80px;
+    max-height: 400px;
     overflow-y: auto;
 }
 
@@ -8481,21 +8528,22 @@ body.quiz-active .main-logo-container svg {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 20px;
-    border: 1px solid #e1e8ed;
-    border-radius: 10px;
-    margin-bottom: 12px;
-    transition: all 0.2s ease;
-    background: #f8f9fa;
+    padding: 20px 24px;
+    border: 2px solid rgba(102, 126, 234, 0.1);
+    border-radius: 16px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+    background: rgba(248, 249, 250, 0.6);
+    backdrop-filter: blur(5px);
 }
 
 .user-item:hover,
 .request-item:hover,
 .friend-item:hover {
-    background: #ecf0f1;
-    border-color: #bdc3c7;
-    transform: translateY(-1px);
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(102, 126, 234, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 .user-info,
@@ -8503,97 +8551,124 @@ body.quiz-active .main-logo-container svg {
 .friend-info {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 18px;
 }
 
 .user-info i,
 .sender-info i,
 .friend-info i {
-    font-size: 20px;
-    color: #7f8c8d;
-    width: 40px;
-    height: 40px;
-    background: #ecf0f1;
+    font-size: 24px;
+    color: #667eea;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 2px solid rgba(102, 126, 234, 0.2);
 }
 
 .user-info span,
 .sender-info span,
 .friend-info span {
-    font-weight: 600;
+    font-weight: 700;
     color: #2c3e50;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .user-actions,
 .request-actions,
 .friend-actions {
     display: flex;
-    gap: 8px;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .btn-small {
-    padding: 8px 16px;
-    font-size: 13px;
-    border-radius: 6px;
+    padding: 10px 18px;
+    font-size: 14px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 4px;
-    transition: all 0.2s ease;
+    gap: 6px;
+    transition: all 0.3s ease;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-small:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.btn-small::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-small:hover::before {
+    left: 100%;
 }
 
 .btn-small i {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .btn-primary {
-    background: #3498db;
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
     color: white;
 }
 
 .btn-primary:hover {
-    background: #2980b9;
-    transform: translateY(-1px);
+    background: linear-gradient(135deg, #2980b9 0%, #1f618d 100%);
 }
 
 .btn-success {
-    background: #27ae60;
+    background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
     color: white;
 }
 
 .btn-success:hover {
-    background: #229954;
+    background: linear-gradient(135deg, #229954 0%, #1e8449 100%);
 }
 
 .btn-danger {
-    background: #e74c3c;
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
     color: white;
 }
 
 .btn-danger:hover {
-    background: #c0392b;
+    background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
 }
 
 .btn-info {
-    background: #17a2b8;
+    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
     color: white;
 }
 
+.btn-info:hover {
+    background: linear-gradient(135deg, #138496 0%, #117a8b 100%);
+}
+
 .btn-secondary {
-    background: #95a5a6;
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
     color: white;
 }
 
 .btn-secondary:hover {
-    background: #7f8c8d;
+    background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
 }
 
 .empty-message {
@@ -8641,56 +8716,86 @@ body.quiz-active .main-logo-container svg {
 
 /* Dark theme için arkadaşlar sayfası */
 [data-theme="dark"] #friends-page {
-    background: #1a1a1a;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+}
+
+[data-theme="dark"] .friends-header {
+    background: rgba(52, 73, 94, 0.95);
+    border-color: rgba(74, 95, 122, 0.3);
 }
 
 [data-theme="dark"] .friends-header h1 {
-    color: #ecf0f1;
+    background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 [data-theme="dark"] .friends-header button {
-    background: #34495e;
+    background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+
+[data-theme="dark"] .friends-header button:hover {
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.6);
 }
 
 [data-theme="dark"] .search-section,
 [data-theme="dark"] .friend-requests-section,
 [data-theme="dark"] .friends-list-section {
-    background: #2c3e50;
-    border-color: #34495e;
+    background: rgba(52, 73, 94, 0.95);
+    border-color: rgba(74, 95, 122, 0.3);
 }
 
 [data-theme="dark"] .search-section h2,
 [data-theme="dark"] .friend-requests-section h2,
 [data-theme="dark"] .friends-list-section h2 {
-    color: #ecf0f1;
+    background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 [data-theme="dark"] .search-box input {
-    background: #34495e;
-    border-color: #4a5f7a;
+    background: rgba(74, 95, 122, 0.6);
+    border-color: rgba(52, 152, 219, 0.3);
     color: #ecf0f1;
+    backdrop-filter: blur(5px);
 }
 
 [data-theme="dark"] .search-box input:focus {
-    background: #4a5f7a;
+    background: rgba(74, 95, 122, 0.8);
     border-color: #3498db;
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2);
 }
 
 [data-theme="dark"] .search-box input::placeholder {
-    color: #95a5a6;
+    color: #bdc3c7;
+}
+
+[data-theme="dark"] .search-box button {
+    background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+
+[data-theme="dark"] .search-box button:hover {
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.6);
 }
 
 [data-theme="dark"] .user-item,
 [data-theme="dark"] .request-item,
 [data-theme="dark"] .friend-item {
-    background: #34495e;
-    border-color: #4a5f7a;
+    background: rgba(74, 95, 122, 0.6);
+    border-color: rgba(52, 152, 219, 0.2);
+    backdrop-filter: blur(5px);
 }
 
 [data-theme="dark"] .user-item:hover,
 [data-theme="dark"] .request-item:hover,
 [data-theme="dark"] .friend-item:hover {
-    background: #4a5f7a;
+    background: rgba(74, 95, 122, 0.8);
+    border-color: rgba(52, 152, 219, 0.4);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] .user-info span,
@@ -8702,40 +8807,124 @@ body.quiz-active .main-logo-container svg {
 [data-theme="dark"] .user-info i,
 [data-theme="dark"] .sender-info i,
 [data-theme="dark"] .friend-info i {
-    background: #4a5f7a;
-    color: #95a5a6;
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.2) 0%, rgba(155, 89, 182, 0.2) 100%);
+    color: #3498db;
+    border-color: rgba(52, 152, 219, 0.3);
 }
 
 [data-theme="dark"] .empty-message {
-    background: #34495e;
-    color: #95a5a6;
-    border-color: #4a5f7a;
+    background: rgba(52, 73, 94, 0.8);
+    color: #bdc3c7;
+    border-color: rgba(74, 95, 122, 0.4);
 }
 
 [data-theme="dark"] .error {
-    background: #4a2c2a;
-    border-color: #6b3936;
+    background: rgba(231, 76, 60, 0.2);
+    border-color: rgba(231, 76, 60, 0.4);
+    color: #e74c3c;
+}
+
+[data-theme="dark"] .btn-small {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .btn-small:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .btn-primary {
+    background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
+}
+
+[data-theme="dark"] .btn-primary:hover {
+    background: linear-gradient(135deg, #2980b9 0%, #8e44ad 100%);
+}
+
+[data-theme="dark"] .btn-success {
+    background: linear-gradient(135deg, #27ae60 0%, #16a085 100%);
+}
+
+[data-theme="dark"] .btn-success:hover {
+    background: linear-gradient(135deg, #229954 0%, #138d75 100%);
+}
+
+[data-theme="dark"] .btn-danger {
+    background: linear-gradient(135deg, #e74c3c 0%, #e67e22 100%);
+}
+
+[data-theme="dark"] .btn-danger:hover {
+    background: linear-gradient(135deg, #c0392b 0%, #d35400 100%);
+}
+
+[data-theme="dark"] .btn-info {
+    background: linear-gradient(135deg, #17a2b8 0%, #3498db 100%);
+}
+
+[data-theme="dark"] .btn-info:hover {
+    background: linear-gradient(135deg, #138496 0%, #2980b9 100%);
+}
+
+[data-theme="dark"] .btn-secondary {
+    background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+    background: linear-gradient(135deg, #7f8c8d 0%, #6c7b7d 100%);
 }
 
 /* Responsive tasarım */
+@media (max-width: 1200px) {
+    .friends-container {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "header"
+            "search"
+            "requests"
+            "friends";
+        padding: 20px 30px;
+    }
+}
+
 @media (max-width: 768px) {
     .friends-container {
-        padding: 20px 15px;
+        padding: 15px 20px;
+        gap: 20px;
     }
     
     .friends-header {
         flex-direction: column;
         gap: 20px;
         text-align: center;
+        padding: 20px;
     }
     
     .friends-header h1 {
-        font-size: 2rem;
+        font-size: 2.2rem;
+    }
+    
+    .friends-header button {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .search-section h2,
+    .friend-requests-section h2,
+    .friends-list-section h2 {
+        font-size: 1.5rem;
     }
     
     .search-box {
         flex-direction: column;
-        gap: 15px;
+        gap: 12px;
+    }
+    
+    .search-box input {
+        margin-bottom: 0;
+    }
+    
+    .search-box button {
+        width: 100%;
+        justify-content: center;
     }
     
     .user-item,
@@ -8747,18 +8936,59 @@ body.quiz-active .main-logo-container svg {
         padding: 20px;
     }
     
+    .user-info,
+    .sender-info,
+    .friend-info {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
     .user-actions,
     .request-actions,
     .friend-actions {
+        width: 100%;
         justify-content: center;
-        flex-wrap: wrap;
-        gap: 12px;
+        gap: 10px;
     }
     
     .search-section,
     .friend-requests-section,
     .friends-list-section {
-        padding: 20px;
+        padding: 25px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .friends-container {
+        padding: 10px 15px;
+    }
+    
+    .friends-header {
+        padding: 15px;
+    }
+    
+    .friends-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .search-section,
+    .friend-requests-section,
+    .friends-list-section {
+        padding: 20px 15px;
+    }
+    
+    .user-info i,
+    .sender-info i,
+    .friend-info i {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
+    
+    .user-info span,
+    .sender-info span,
+    .friend-info span {
+        font-size: 16px;
     }
 }
 
