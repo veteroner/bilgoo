@@ -5423,6 +5423,8 @@ input:checked + .switch-label:before {
     justify-content: center;
     margin: 2rem auto;
     max-width: 700px;
+    z-index: 1500;
+    position: relative;
 }
 
 .menu-title {
@@ -8338,7 +8340,7 @@ body.quiz-active .main-logo-container svg {
     height: 100%;
     background: var(--bg-color);
     overflow-y: auto;
-    z-index: 1000;
+    z-index: 500;
     display: none;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
@@ -8347,7 +8349,6 @@ body.quiz-active .main-logo-container svg {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    background: linear-gradient(135deg, var(--bg-color) 0%, rgba(123, 67, 151, 0.1) 100%);
     min-height: 100vh;
 }
 
@@ -11004,4 +11005,34 @@ body.quiz-active .joker-tab-bar {
 /* Web görünümünde quiz alanına alt padding ekle */
 body.quiz-active .quiz-main {
     padding-bottom: 70px;
+}
+
+/* Arkadaşlar sayfasında mobil tab menü gözüksün */
+@media (max-width: 767px) {
+    body.friends-active .mobile-tab-bar {
+        display: flex !important;
+        z-index: 1500;
+    }
+    
+    /* Mobilde arkadaşlar sayfasında hamburger toggle göster */
+    body.friends-active .hamburger-toggle {
+        display: flex !important;
+        z-index: 1500;
+    }
+}
+
+/* Hamburger menü arkadaşlar sayfasında da çalışsın */
+.main-menu {
+    z-index: 1500 !important;
+}
+
+/* Hamburger toggle arkadaşlar sayfasında görünsün */
+body.friends-active .hamburger-toggle {
+    z-index: 1500 !important;
+    display: flex !important;
+}
+
+/* Hamburger menü arkadaşlar sayfasında görünsün */
+body.friends-active .hamburger-menu {
+    z-index: 1500 !important;
 }
