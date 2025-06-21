@@ -8336,7 +8336,7 @@ body.quiz-active .main-logo-container svg {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: var(--bg-color);
     overflow-y: auto;
     z-index: 1000;
     display: none;
@@ -8344,174 +8344,144 @@ body.quiz-active .main-logo-container svg {
 }
 
 .friends-container {
-    max-width: none;
-    width: 100%;
-    padding: 20px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: linear-gradient(135deg, var(--bg-color) 0%, rgba(123, 67, 151, 0.1) 100%);
     min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto 1fr 1fr;
-    gap: 30px;
-    grid-template-areas: 
-        "header header"
-        "search requests"
-        "friends friends";
 }
 
 .friends-header {
-    grid-area: header;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0;
-    padding: 20px 30px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 8px 25px rgba(123, 67, 151, 0.3);
 }
 
 .friends-header h1 {
-    color: #2c3e50;
     margin: 0;
-    font-size: 3rem;
-    font-weight: 800;
-    letter-spacing: -1px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white !important;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
 .friends-header button {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    margin-top: 15px;
+    padding: 12px 25px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 25px;
     color: white;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 12px;
-    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
 .friends-header button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+    box-shadow: 0 6px 20px rgba(255,255,255,0.2);
 }
 
-.search-section {
-    grid-area: search;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    height: fit-content;
-}
-
-.friend-requests-section {
-    grid-area: requests;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    height: fit-content;
-}
-
+.search-section,
+.friend-requests-section,
 .friends-list-section {
-    grid-area: friends;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    background: linear-gradient(135deg, white 0%, #f8f9fa 100%);
     border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 1px solid rgba(123, 67, 151, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.search-section::before,
+.friend-requests-section::before,
+.friends-list-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
 }
 
 .search-section h2,
 .friend-requests-section h2,
 .friends-list-section h2 {
-    color: #2c3e50;
-    margin: 0 0 25px 0;
-    font-size: 1.8rem;
+    margin: 0 0 20px 0;
+    color: var(--primary-color);
+    font-size: 1.5rem;
     font-weight: 700;
     display: flex;
     align-items: center;
-    gap: 12px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    border-bottom: 2px solid rgba(123, 67, 151, 0.1);
+    padding-bottom: 15px;
 }
 
 .search-section h2::before {
     content: "🔍";
-    font-size: 1.4rem;
+    margin-right: 10px;
+    color: var(--secondary-color);
 }
 
 .friend-requests-section h2::before {
-    content: "👥";
-    font-size: 1.4rem;
+    content: "📩";
+    margin-right: 10px;
+    color: var(--secondary-color);
 }
 
 .friends-list-section h2::before {
-    content: "👬";
-    font-size: 1.4rem;
+    content: "👥";
+    margin-right: 10px;
+    color: var(--secondary-color);
 }
 
 .search-box {
     display: flex;
     gap: 15px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .search-box input {
     flex: 1;
-    padding: 16px 20px;
-    border: 2px solid rgba(102, 126, 234, 0.2);
-    border-radius: 12px;
+    padding: 15px 20px;
+    border: 2px solid rgba(123, 67, 151, 0.2);
+    border-radius: 15px;
     font-size: 16px;
     outline: none;
     transition: all 0.3s ease;
-    background: rgba(248, 249, 250, 0.8);
-    backdrop-filter: blur(5px);
+    background: linear-gradient(135deg, rgba(123, 67, 151, 0.05), rgba(233, 30, 99, 0.05));
 }
 
 .search-box input:focus {
-    border-color: #667eea;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    border-color: var(--primary-color);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(123, 67, 151, 0.1);
     transform: translateY(-1px);
 }
 
 .search-box button {
-    padding: 16px 24px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 15px 25px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
     border: none;
-    border-radius: 12px;
+    border-radius: 15px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 15px rgba(123, 67, 151, 0.3);
 }
 
 .search-box button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+    box-shadow: 0 6px 20px rgba(123, 67, 151, 0.4);
 }
 
 .search-results,
@@ -8528,8 +8498,8 @@ body.quiz-active .main-logo-container svg {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 24px;
-    border: 2px solid rgba(102, 126, 234, 0.1);
+    padding: 20px;
+    border: 2px solid rgba(123, 67, 151, 0.1);
     border-radius: 16px;
     margin-bottom: 15px;
     transition: all 0.3s ease;
@@ -8627,12 +8597,12 @@ body.quiz-active .main-logo-container svg {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, #2980b9 0%, #1f618d 100%);
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
 }
 
 .btn-success {
@@ -8654,12 +8624,12 @@ body.quiz-active .main-logo-container svg {
 }
 
 .btn-info {
-    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
 }
 
 .btn-info:hover {
-    background: linear-gradient(135deg, #138496 0%, #117a8b 100%);
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
 }
 
 .btn-secondary {
@@ -8743,30 +8713,27 @@ body.quiz-active .main-logo-container svg {
 [data-theme="dark"] .search-section,
 [data-theme="dark"] .friend-requests-section,
 [data-theme="dark"] .friends-list-section {
-    background: rgba(52, 73, 94, 0.95);
-    border-color: rgba(74, 95, 122, 0.3);
+    background: linear-gradient(135deg, var(--card-bg-dark) 0%, rgba(52, 73, 94, 0.9) 100%);
+    border-color: rgba(123, 67, 151, 0.3);
 }
 
 [data-theme="dark"] .search-section h2,
 [data-theme="dark"] .friend-requests-section h2,
 [data-theme="dark"] .friends-list-section h2 {
-    background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-color);
+    border-bottom-color: rgba(123, 67, 151, 0.3);
 }
 
 [data-theme="dark"] .search-box input {
-    background: rgba(74, 95, 122, 0.6);
-    border-color: rgba(52, 152, 219, 0.3);
+    background: linear-gradient(135deg, rgba(123, 67, 151, 0.1), rgba(233, 30, 99, 0.1));
+    border-color: rgba(123, 67, 151, 0.3);
     color: #ecf0f1;
-    backdrop-filter: blur(5px);
 }
 
 [data-theme="dark"] .search-box input:focus {
-    background: rgba(74, 95, 122, 0.8);
-    border-color: #3498db;
-    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2);
+    background: rgba(52, 73, 94, 0.8);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(123, 67, 151, 0.2);
 }
 
 [data-theme="dark"] .search-box input::placeholder {
@@ -8774,27 +8741,26 @@ body.quiz-active .main-logo-container svg {
 }
 
 [data-theme="dark"] .search-box button {
-    background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
-    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    box-shadow: 0 4px 15px rgba(123, 67, 151, 0.4);
 }
 
 [data-theme="dark"] .search-box button:hover {
-    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.6);
+    box-shadow: 0 6px 20px rgba(123, 67, 151, 0.6);
 }
 
 [data-theme="dark"] .user-item,
 [data-theme="dark"] .request-item,
 [data-theme="dark"] .friend-item {
-    background: rgba(74, 95, 122, 0.6);
-    border-color: rgba(52, 152, 219, 0.2);
-    backdrop-filter: blur(5px);
+    background: linear-gradient(135deg, rgba(52, 73, 94, 0.8), rgba(44, 62, 80, 0.8));
+    border-color: rgba(123, 67, 151, 0.2);
 }
 
 [data-theme="dark"] .user-item:hover,
 [data-theme="dark"] .request-item:hover,
 [data-theme="dark"] .friend-item:hover {
-    background: rgba(74, 95, 122, 0.8);
-    border-color: rgba(52, 152, 219, 0.4);
+    background: linear-gradient(135deg, rgba(52, 73, 94, 0.9), rgba(44, 62, 80, 0.9));
+    border-color: rgba(123, 67, 151, 0.4);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
@@ -8833,11 +8799,11 @@ body.quiz-active .main-logo-container svg {
 }
 
 [data-theme="dark"] .btn-primary {
-    background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
 }
 
 [data-theme="dark"] .btn-primary:hover {
-    background: linear-gradient(135deg, #2980b9 0%, #8e44ad 100%);
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
 }
 
 [data-theme="dark"] .btn-success {
@@ -8857,11 +8823,11 @@ body.quiz-active .main-logo-container svg {
 }
 
 [data-theme="dark"] .btn-info {
-    background: linear-gradient(135deg, #17a2b8 0%, #3498db 100%);
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
 }
 
 [data-theme="dark"] .btn-info:hover {
-    background: linear-gradient(135deg, #138496 0%, #2980b9 100%);
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
 }
 
 [data-theme="dark"] .btn-secondary {
