@@ -7918,6 +7918,16 @@
                 };
 
                 console.log('Hesaplanan final istatistikler:', stats);
+                
+                // İstatistikleri localStorage'a kaydet
+                try {
+                    localStorage.setItem('userStats', JSON.stringify(stats));
+                    localStorage.setItem('quiz-user-stats', JSON.stringify(stats));
+                    console.log('İstatistikler localStorage\'a kaydedildi');
+                } catch (e) {
+                    console.error('İstatistikler localStorage\'a kaydedilemedi:', e);
+                }
+                
                 return stats;
             } catch (error) {
                 console.error('İstatistik hesaplama hatası:', error);
@@ -7937,6 +7947,13 @@
         // İstatistik UI'sını güncelle
         function updateStatisticsUI(stats) {
             console.log('İstatistik UI güncelleniyor:', stats);
+            
+            // Debug: Tüm mevcut verileri logla
+            console.log('=== İSTATİSTİK DEBUG ===');
+            console.log('LocalStorage gameHistory:', JSON.parse(localStorage.getItem('gameHistory') || '[]'));
+            console.log('LocalStorage userStats:', JSON.parse(localStorage.getItem('userStats') || '{}'));
+            console.log('Gelen stats parametresi:', stats);
+            console.log('========================');
             
             // Genel istatistikler
             const totalGames = stats.totalGames || 0;

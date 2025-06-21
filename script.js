@@ -3,6 +3,370 @@
 // Bu dosya JavaScript'tir, TypeScript değildir.
 // Script Version 3.0 - Firebase puan kaydetme sistemi tamamlandı
 
+// Global debug fonksiyonları - İstatistik sorunlarını çözmek için
+window.testProfileStats = function() {
+    console.log('=== PROFİL İSTATİSTİK TEST ===');
+    
+    // Mevcut verileri kontrol et
+    const gameHistory = JSON.parse(localStorage.getItem('gameHistory') || '[]');
+    const userStats = JSON.parse(localStorage.getItem('userStats') || '{}');
+    
+    console.log('GameHistory:', gameHistory);
+    console.log('UserStats:', userStats);
+    
+    // İstatistikleri yeniden hesapla
+    const calculatedStats = quizApp.calculateRealStats();
+    console.log('Hesaplanan istatistikler:', calculatedStats);
+    
+    // Profil kutularını güncelle
+    quizApp.updateProfileStats(calculatedStats);
+    
+    // Elementleri kontrol et
+    const elements = {
+        'stats-total-games': document.getElementById('stats-total-games'),
+        'stats-total-questions': document.getElementById('stats-total-questions'),
+        'stats-correct-answers': document.getElementById('stats-correct-answers'),
+        'stats-accuracy': document.getElementById('stats-accuracy'),
+        'total-games-stat': document.getElementById('total-games-stat'),
+        'total-questions-stat': document.getElementById('total-questions-stat'),
+        'correct-answers-stat': document.getElementById('correct-answers-stat'),
+        'accuracy-stat': document.getElementById('accuracy-stat'),
+        'highest-score-stat': document.getElementById('highest-score-stat')
+    };
+    
+    console.log('Bulunan elementler:');
+    Object.entries(elements).forEach(([id, element]) => {
+        if (element) {
+            console.log(`${id}: ${element.textContent} (bulundu)`);
+        } else {
+            console.log(`${id}: element bulunamadı`);
+        }
+    });
+    
+    console.log('=== TEST TAMAMLANDI ===');
+    return calculatedStats;
+};
+
+window.forceUpdateStats = function() {
+    console.log('İstatistikler zorla güncelleniyor...');
+    
+    // Test verisi oluştur
+    const testStats = {
+        totalGames: 5,
+        totalQuestions: 50,
+        correctAnswers: 35,
+        totalScore: 350,
+        highestScore: 90,
+        accuracy: 70,
+        categoryStats: {}
+    };
+    
+    // Tüm istatistik elementlerini güncelle
+    const updateElement = (id, value) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = value;
+            console.log(`${id} güncellendi: ${value}`);
+            return true;
+        } else {
+            console.log(`${id} elementi bulunamadı`);
+            return false;
+        }
+    };
+    
+    // Profil sayfası kutuları
+    updateElement('stats-total-games', testStats.totalGames);
+    updateElement('stats-total-questions', testStats.totalQuestions);
+    updateElement('stats-correct-answers', testStats.correctAnswers);
+    updateElement('stats-accuracy', `%${testStats.accuracy}`);
+    
+    // İstatistik sayfası kutuları
+    updateElement('total-games-stat', testStats.totalGames);
+    updateElement('total-questions-stat', testStats.totalQuestions);
+    updateElement('correct-answers-stat', testStats.correctAnswers);
+    updateElement('accuracy-stat', `%${testStats.accuracy}`);
+    updateElement('highest-score-stat', testStats.highestScore);
+    
+    console.log('Zorla güncelleme tamamlandı!');
+    return testStats;
+};
+
+window.debugStats = function() {
+    console.log('=== İSTATİSTİK DEBUG ===');
+    console.log('gameHistory:', JSON.parse(localStorage.getItem('gameHistory') || '[]'));
+    console.log('userStats:', JSON.parse(localStorage.getItem('userStats') || '{}'));
+    console.log('quiz-user-stats:', JSON.parse(localStorage.getItem('quiz-user-stats') || '{}'));
+    
+    // Tüm high scores
+    const categories = ['Genel Kültür', 'Bilim', 'Teknoloji', 'Spor', 'Müzik', 'Tarih', 'Coğrafya', 'Sanat'];
+    categories.forEach(cat => {
+        const scores = JSON.parse(localStorage.getItem(`highScores_${cat}`) || '[]');
+        if (scores.length > 0) {
+            console.log(`highScores_${cat}:`, scores);
+        }
+    });
+    console.log('========================');
+};
+
+window.fixStats = function() {
+    console.log('İstatistikler düzeltiliyor...');
+    
+    // QuizApp'den gerçek istatistikleri hesapla
+    if (window.quizApp && typeof window.quizApp.calculateRealStats === 'function') {
+        const stats = window.quizApp.calculateRealStats();
+        console.log('Düzeltilen istatistikler:', stats);
+        
+        // UI'yi güncelle
+        if (typeof updateStatisticsUI === 'function') {
+            updateStatisticsUI(stats);
+        }
+        
+        return stats;
+    } else {
+        console.error('QuizApp.calculateRealStats fonksiyonu bulunamadı');
+        return null;
+    }
+};
+
+window.createTestStats = function() {
+    console.log('Test istatistikleri oluşturuluyor...');
+    
+    // Test oyun verisi oluştur
+    const testGameHistory = [
+        {
+            category: 'Genel Kültür',
+            score: 8,
+            totalQuestions: 10,
+            correctAnswers: 8,
+            lives: 3,
+            averageTime: 15.5,
+            date: new Date().toISOString(),
+            timestamp: Date.now()
+        },
+        {
+            category: 'Bilim',
+            score: 6,
+            totalQuestions: 10,
+            correctAnswers: 6,
+            lives: 2,
+            averageTime: 18.2,
+            date: new Date().toISOString(),
+            timestamp: Date.now()
+        },
+        {
+            category: 'Teknoloji',
+            score: 9,
+            totalQuestions: 10,
+            correctAnswers: 9,
+            lives: 4,
+            averageTime: 12.8,
+            date: new Date().toISOString(),
+            timestamp: Date.now()
+        }
+    ];
+    
+    // Test istatistikleri hesapla
+    const testStats = {
+        totalGames: 3,
+        totalQuestions: 30,
+        correctAnswers: 23,
+        totalScore: 23,
+        highestScore: 9,
+        averageScore: Math.round(23 / 3),
+        accuracy: Math.round((23 / 30) * 100),
+        categoryStats: {
+            'Genel Kültür': { total: 10, correct: 8, games: 1 },
+            'Bilim': { total: 10, correct: 6, games: 1 },
+            'Teknoloji': { total: 10, correct: 9, games: 1 }
+        }
+    };
+    
+    // localStorage'a kaydet
+    localStorage.setItem('gameHistory', JSON.stringify(testGameHistory));
+    localStorage.setItem('userStats', JSON.stringify(testStats));
+    localStorage.setItem('quiz-user-stats', JSON.stringify(testStats));
+    
+    console.log('Test verileri kaydedildi:', testStats);
+    
+    // UI'yi güncelle
+    if (typeof updateStatisticsUI === 'function') {
+        updateStatisticsUI(testStats);
+    } else if (typeof loadStatisticsData === 'function') {
+        loadStatisticsData();
+    }
+    
+    return testStats;
+};
+
+window.clearAllStats = function() {
+    if (confirm('Tüm istatistikleri silmek istediğinizden emin misiniz?')) {
+        localStorage.removeItem('gameHistory');
+        localStorage.removeItem('userStats');
+        localStorage.removeItem('quiz-user-stats');
+        
+        const categories = ['Genel Kültür', 'Bilim', 'Teknoloji', 'Spor', 'Müzik', 'Tarih', 'Coğrafya', 'Sanat'];
+        categories.forEach(cat => {
+            localStorage.removeItem(`highScores_${cat}`);
+        });
+        
+        console.log('Tüm istatistikler silindi');
+        location.reload();
+    }
+};
+
+// İstatistik kutularını test et
+window.testStatsBoxes = function() {
+    console.log('İstatistik kutuları test ediliyor...');
+    
+    // Test verileri oluştur
+    createTestStats();
+    
+    // Önce tüm mögliche element ID'lerini kontrol et
+    const possibleIds = [
+        'total-games-stat', 'total-games', 'totalGames',
+        'total-questions-stat', 'total-questions', 'totalQuestions', 
+        'correct-answers-stat', 'correct-answers', 'correctAnswers',
+        'accuracy-stat', 'accuracy', 'dogruluk-orani'
+    ];
+    
+    console.log('Mevcut elementleri kontrol ediliyor...');
+    possibleIds.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            console.log(`✅ Element bulundu: ${id} = "${element.textContent}"`);
+        }
+    });
+    
+    // Tüm istatistik içeren elementleri bul
+    const allStatsElements = document.querySelectorAll('[id*="stat"], [class*="stat"]');
+    console.log('Tüm istatistik elementleri:', Array.from(allStatsElements).map(el => ({
+        id: el.id,
+        className: el.className,
+        textContent: el.textContent
+    })));
+    
+    // Kutuları zorla güncelle
+    setTimeout(() => {
+        forceUpdateUI();
+        
+        // Manuel olarak tüm olası elementleri güncelle
+        const stats = JSON.parse(localStorage.getItem('userStats') || '{}');
+        console.log('Manuel güncelleme için stats:', stats);
+        
+        // Farklı ID kombinasyonları dene
+        const idVariants = [
+            ['total-games-stat', 'total-games', 'totalGames'],
+            ['total-questions-stat', 'total-questions', 'totalQuestions'],
+            ['correct-answers-stat', 'correct-answers', 'correctAnswers'],
+            ['accuracy-stat', 'accuracy', 'dogruluk-orani']
+        ];
+        
+        const values = [
+            stats.totalGames || 0,
+            stats.totalQuestions || 0, 
+            stats.correctAnswers || 0,
+            '%' + (stats.accuracy || 0)
+        ];
+        
+        idVariants.forEach((variants, index) => {
+            variants.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = values[index];
+                    console.log(`✅ ${id} güncellendi: ${values[index]}`);
+                }
+            });
+        });
+        
+        // 2 saniye sonra sonuçları kontrol et
+        setTimeout(() => {
+            const boxes = {
+                totalGames: document.getElementById('total-games-stat')?.textContent,
+                totalQuestions: document.getElementById('total-questions-stat')?.textContent,
+                correctAnswers: document.getElementById('correct-answers-stat')?.textContent,
+                accuracy: document.getElementById('accuracy-stat')?.textContent
+            };
+            
+            console.log('İstatistik kutularının güncel değerleri:', boxes);
+            
+            if (boxes.totalGames === '3' && boxes.totalQuestions === '30') {
+                console.log('✅ İstatistik kutuları başarıyla güncellendi!');
+            } else {
+                console.log('❌ İstatistik kutuları güncellenemedi');
+                console.log('🔍 Element ID\'lerini kontrol edin');
+            }
+        }, 2000);
+    }, 1000);
+};
+
+window.forceUpdateUI = function() {
+    console.log('UI zorla güncelleniyor...');
+    
+    // İstatistik elementlerini bul ve manuel güncelle
+    const stats = JSON.parse(localStorage.getItem('userStats') || '{}');
+    console.log('Manuel UI güncellemesi için stats:', stats);
+    
+    // Elementleri bul
+    const totalGamesEl = document.getElementById('total-games-stat');
+    const totalQuestionsEl = document.getElementById('total-questions-stat');
+    const correctAnswersEl = document.getElementById('correct-answers-stat');
+    const accuracyEl = document.getElementById('accuracy-stat');
+    
+    console.log('Bulunan elementler:', {
+        totalGamesEl: !!totalGamesEl,
+        totalQuestionsEl: !!totalQuestionsEl,
+        correctAnswersEl: !!correctAnswersEl,
+        accuracyEl: !!accuracyEl
+    });
+    
+    if (totalGamesEl) {
+        totalGamesEl.textContent = stats.totalGames || 0;
+        console.log('totalGames güncellendi:', stats.totalGames || 0);
+    }
+    if (totalQuestionsEl) {
+        totalQuestionsEl.textContent = stats.totalQuestions || 0;
+        console.log('totalQuestions güncellendi:', stats.totalQuestions || 0);
+    }
+    if (correctAnswersEl) {
+        correctAnswersEl.textContent = stats.correctAnswers || 0;
+        console.log('correctAnswers güncellendi:', stats.correctAnswers || 0);
+    }
+    if (accuracyEl) {
+        const accuracy = stats.accuracy || 0;
+        accuracyEl.textContent = '%' + accuracy;
+        console.log('accuracy güncellendi:', accuracy);
+    }
+    
+    // İstatistikler sayfasının yüklenmesini tetikle (grafik olmadan)
+    if (typeof updateStatisticsUI === 'function') {
+        console.log('updateStatisticsUI çağrılıyor...');
+        // Grafik çizmeden sadece UI güncelle
+        const simpleUpdateUI = function(stats) {
+            const totalGames = stats.totalGames || 0;
+            const totalQuestions = stats.totalQuestions || 0;
+            const correctAnswers = stats.correctAnswers || 0;
+            const accuracy = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+            
+            if (document.getElementById('total-games-stat')) {
+                document.getElementById('total-games-stat').textContent = totalGames;
+            }
+            if (document.getElementById('total-questions-stat')) {
+                document.getElementById('total-questions-stat').textContent = totalQuestions;
+            }
+            if (document.getElementById('correct-answers-stat')) {
+                document.getElementById('correct-answers-stat').textContent = correctAnswers;
+            }
+            if (document.getElementById('accuracy-stat')) {
+                document.getElementById('accuracy-stat').textContent = '%' + accuracy;
+            }
+            
+            console.log('İstatistik kutuları güncellendi:', {totalGames, totalQuestions, correctAnswers, accuracy});
+        };
+        
+        simpleUpdateUI(stats);
+    }
+};
+
 // Tam Ekran Modunu Ayarla
 function initFullscreenMode() {
     // PWA tam ekran modunu etkinleştir
@@ -4354,6 +4718,13 @@ const quizApp = {
         
         // Gerçek istatistikleri güncelle
         this.updateRealUserStats();
+        
+        // İstatistikleri hemen yeniden hesapla ve güncelle
+        setTimeout(() => {
+            const latestStats = this.calculateRealStats();
+            console.log('Profil açıldığında hesaplanan son istatistikler:', latestStats);
+            this.updateProfileStats(latestStats);
+        }, 100);
             
             // Rozetleri yükle
         this.loadUserBadgesForProfile(userId);
@@ -4608,22 +4979,29 @@ const quizApp = {
     updateProfileStats: function(stats) {
         console.log('updateProfileStats çağrıldı, stats:', stats);
         
+        // Profil sayfasındaki istatistik kutuları
         const totalGames = document.getElementById('stats-total-games');
         if (totalGames) {
             totalGames.textContent = stats.totalGames || 0;
-            console.log('Toplam oyun güncellendi:', stats.totalGames || 0);
+            console.log('Profil - Toplam oyun güncellendi:', stats.totalGames || 0);
+        } else {
+            console.log('stats-total-games elementi bulunamadı');
         }
         
         const totalQuestions = document.getElementById('stats-total-questions');
         if (totalQuestions) {
             totalQuestions.textContent = stats.totalQuestions || 0;
-            console.log('Toplam soru güncellendi:', stats.totalQuestions || 0);
+            console.log('Profil - Toplam soru güncellendi:', stats.totalQuestions || 0);
+        } else {
+            console.log('stats-total-questions elementi bulunamadı');
         }
         
         const correctAnswers = document.getElementById('stats-correct-answers');
         if (correctAnswers) {
             correctAnswers.textContent = stats.correctAnswers || 0;
-            console.log('Doğru cevap güncellendi:', stats.correctAnswers || 0);
+            console.log('Profil - Doğru cevap güncellendi:', stats.correctAnswers || 0);
+        } else {
+            console.log('stats-correct-answers elementi bulunamadı');
         }
         
         // Doğruluk oranı
@@ -4633,7 +5011,43 @@ const quizApp = {
                 ? Math.round((stats.correctAnswers / stats.totalQuestions) * 100) 
                 : 0;
             accuracy.textContent = `%${accuracyValue}`;
-            console.log('Doğruluk oranı güncellendi:', accuracyValue);
+            console.log('Profil - Doğruluk oranı güncellendi:', accuracyValue);
+        } else {
+            console.log('stats-accuracy elementi bulunamadı');
+        }
+        
+        // İstatistik sayfasındaki kutular da varsa onları da güncelle
+        const totalGamesStat = document.getElementById('total-games-stat');
+        if (totalGamesStat) {
+            totalGamesStat.textContent = stats.totalGames || 0;
+            console.log('İstatistik sayfası - Toplam oyun güncellendi:', stats.totalGames || 0);
+        }
+        
+        const totalQuestionsStat = document.getElementById('total-questions-stat');
+        if (totalQuestionsStat) {
+            totalQuestionsStat.textContent = stats.totalQuestions || 0;
+            console.log('İstatistik sayfası - Toplam soru güncellendi:', stats.totalQuestions || 0);
+        }
+        
+        const correctAnswersStat = document.getElementById('correct-answers-stat');
+        if (correctAnswersStat) {
+            correctAnswersStat.textContent = stats.correctAnswers || 0;
+            console.log('İstatistik sayfası - Doğru cevap güncellendi:', stats.correctAnswers || 0);
+        }
+        
+        const accuracyStat = document.getElementById('accuracy-stat');
+        if (accuracyStat) {
+            const accuracyValue = stats.totalQuestions > 0 
+                ? Math.round((stats.correctAnswers / stats.totalQuestions) * 100) 
+                : 0;
+            accuracyStat.textContent = `%${accuracyValue}`;
+            console.log('İstatistik sayfası - Doğruluk oranı güncellendi:', accuracyValue);
+        }
+        
+        const highestScoreStat = document.getElementById('highest-score-stat');
+        if (highestScoreStat) {
+            highestScoreStat.textContent = stats.highestScore || 0;
+            console.log('İstatistik sayfası - En yüksek skor güncellendi:', stats.highestScore || 0);
         }
     },
 
@@ -6684,6 +7098,13 @@ const quizApp = {
         this.saveGameStatistics();
         this.addNewHighScore(finalStats.category, finalStats.score, finalStats.totalQuestions);
         
+        // İstatistikleri hemen güncelle
+        setTimeout(() => {
+            const updatedStats = this.calculateRealStats();
+            console.log('Oyun sonu güncellenmiş istatistikler:', updatedStats);
+            this.updateProfileStats(updatedStats);
+        }, 200);
+        
         // PUANLARI KULLANICI HESABINA KAYDET
         if (this.isLoggedIn) {
             this.totalScore += this.score;
@@ -7909,6 +8330,15 @@ const quizApp = {
                 
                 localStorage.setItem('gameHistory', JSON.stringify(gameHistory));
                 console.log('Oyun geçmişine eklendi:', gameRecord);
+                
+                // İstatistikleri yeniden hesapla ve kaydet
+                const updatedStats = this.calculateRealStats();
+                localStorage.setItem('userStats', JSON.stringify(updatedStats));
+                localStorage.setItem('quiz-user-stats', JSON.stringify(updatedStats));
+                console.log('İstatistikler güncellendi:', updatedStats);
+                
+                // Profil sayfası istatistiklerini hemen güncelle
+                this.updateProfileStats(updatedStats);
                 
                 // Eski format istatistikler (uyumluluk için)
                 const statsKey = 'gameStats';
