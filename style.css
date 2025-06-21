@@ -20,14 +20,14 @@
     position: relative !important;
     width: 100% !important;
     height: 60px !important;
-    background: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: blur(10px) !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
     z-index: 10 !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border: none !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: none !important;
     margin-bottom: 15px !important;
     border-radius: 8px !important;
 }
@@ -117,8 +117,8 @@
 
 /* Karanlık tema desteği */
 [data-theme="dark"] .mobile-top-banner {
-    background: rgba(33, 33, 33, 0.95) !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
+    background: transparent !important;
+    border: none !important;
 }
 
 [data-theme="dark"] .mobile-inline-ad {
