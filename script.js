@@ -447,37 +447,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Tam ekran modunu başlat
     initFullscreenMode();
     
-    // Splash screen kontrolü - eğer quiz splash screen varsa ana içeriği gizle
-    const splashScreen = document.querySelector('.quiz-splash-screen');
+    // Ana içeriği görünür yap
     const container = document.querySelector('.container');
-    
-    if (splashScreen) {
-        // Splash screen varsa ana içeriği gizlenmiş tutuyoruz
-        if (container) {
-            container.style.visibility = 'hidden';
-            container.style.opacity = '0';
-        }
-        
-        // Splash screen'den ana içeriğe geçiş fonksiyonu
-        window.showMainContent = function() {
-            if (container) {
-                container.style.visibility = 'visible';
-                container.style.opacity = '1';
-                container.classList.add('fade-in');
-            }
-            if (splashScreen) {
-                splashScreen.classList.add('fade-out');
-                setTimeout(() => {
-                    splashScreen.style.display = 'none';
-                }, 500);
-            }
-        };
-    } else {
-        // Splash screen yoksa ana içeriği hemen göster
-        if (container) {
-            container.style.visibility = 'visible';
-            container.classList.add('fade-in');
-        }
+    if (container) {
+        container.style.visibility = 'visible';
+        container.classList.add('fade-in');
     }
 });
 
