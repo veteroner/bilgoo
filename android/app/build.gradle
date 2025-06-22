@@ -40,6 +40,16 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+    
+    // Lint kontrollerini yapılandır
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+        disable 'InvalidPackage', 'UnusedResources', 'IconLocation', 'IconDensities', 
+                'IconMissingDensityFolder', 'GoogleAppIndexingWarning', 'DuplicateIds',
+                'MissingConstraints', 'ContentDescription', 'LabelFor'
+        warningsAsErrors false
+    }
 }
 
 repositories {

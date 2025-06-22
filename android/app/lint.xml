@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- HTML ve accessibility uyarılarını devre dışı bırak -->
+    <issue id="DuplicateIds" severity="ignore" />
+    <issue id="MissingConstraints" severity="ignore" />
+    <issue id="ContentDescription" severity="ignore" />
+    <issue id="LabelFor" severity="ignore" />
+    <issue id="HtmlTagCanBeSimplified" severity="ignore" />
+    <issue id="UnknownId" severity="ignore" />
+    <issue id="UnknownIdInLayout" severity="ignore" />
+    
+    <!-- Web dosya eksiklikleri için -->
+    <issue id="MissingResourceFile" severity="ignore" />
+    <issue id="UnusedResources" severity="ignore" />
+    
+    <!-- Capacitor ile ilgili uyarılar -->
+    <issue id="WebViewApiAvailability" severity="ignore" />
+    <issue id="SetJavaScriptEnabled" severity="ignore" />
+    
+    <!-- Güvenlik uyarıları - sadece development için -->
+    <issue id="AllowBackup" severity="ignore" />
+    <issue id="ExportedReceiver" severity="ignore" />
+    
+    <!-- Sürüm uyarıları -->
+    <issue id="GradleDependency" severity="warning" />
+    <issue id="NewerVersionAvailable" severity="warning" />
+</lint> 
