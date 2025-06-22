@@ -117,6 +117,9 @@ const friendsModule = {
         
         friendsPage.style.display = 'block';
         
+        // Body'ye friends-active class'ını ekle
+        document.body.classList.add('friends-active');
+        
         // DOM referanslarını ayarla
         this.friendsContainer = document.getElementById('friends-list');
         this.searchResultsContainer = document.getElementById('search-results');
@@ -125,6 +128,8 @@ const friendsModule = {
         // Geri butonu için olay dinleyicisi
         document.getElementById('back-from-friends').addEventListener('click', () => {
             friendsPage.style.display = 'none';
+            // Body'den friends-active class'ını kaldır
+            document.body.classList.remove('friends-active');
             // Listener'ları temizle
             this.clearListeners();
             const mainMenu = document.getElementById('main-menu');

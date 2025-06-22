@@ -11,6 +11,10 @@ const languages = {
         timeUp: 'Süre doldu!',
         correctAnswer: 'Doğru cevap',
         
+        // Login/Register
+        registerButton: 'Kayıt Ol',
+        guestLogin: 'Misafir olarak devam et',
+        
         // Çevrim içi mod
         online_mode: 'Çevrimiçi Mod',
         create_room: 'Oda Oluştur',
@@ -244,6 +248,10 @@ const languages = {
         wrong: 'Wrong!',
         timeUp: 'Time\'s up!',
         correctAnswer: 'Correct answer',
+        
+        // Login/Register
+        registerButton: 'Register',
+        guestLogin: 'Continue as guest',
         
         // Online mode
         online_mode: 'Online Mode',
@@ -515,6 +523,10 @@ const languages = {
         wrong: 'Falsch!',
         timeUp: 'Zeit abgelaufen!',
         correctAnswer: 'Richtige Antwort',
+        
+        // Login/Register
+        registerButton: 'Registrieren',
+        guestLogin: 'Als Gast fortfahren',
         
         // Online-Modus
         online_mode: 'Online-Modus',

@@ -20,14 +20,14 @@
     position: relative !important;
     width: 100% !important;
     height: 60px !important;
-    background: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: blur(10px) !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
     z-index: 10 !important;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border: none !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: none !important;
     margin-bottom: 15px !important;
     border-radius: 8px !important;
 }
@@ -108,7 +108,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1001;
+    z-index: 10001;
 }
 
 .mobile-ad-close:hover {
@@ -117,8 +117,8 @@
 
 /* Karanlık tema desteği */
 [data-theme="dark"] .mobile-top-banner {
-    background: rgba(33, 33, 33, 0.95);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: transparent !important;
+    border: none !important;
 }
 
 [data-theme="dark"] .mobile-inline-ad {
@@ -128,7 +128,7 @@
 
 /* Oyun sırasında reklamları gizle */
 body.quiz-active .mobile-top-banner {
-    display: none;
+    display: none !important;
 }
 
 /* Küçük ekranlar için responsive */
@@ -145,6 +145,80 @@ body.quiz-active .mobile-top-banner {
 }
 
 /* Temel Stil ve Sıfırlama */
+
+/* Reklam Alanları Stilleri */
+.ad-container, .adsbygoogle {
+    display: block !important;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px 0;
+    text-align: center;
+    width: 100% !important;
+    min-width: 320px !important;
+    max-width: 100% !important;
+    height: auto;
+    min-height: 250px;
+    max-height: 600px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Sayfa kenarında sabit reklam alanları */
+.ad-sidebar-left, .ad-sidebar-right {
+    position: fixed;
+    width: 320px !important;
+    min-width: 320px !important;
+    height: 600px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    display: block !important;
+    visibility: visible !important;
+}
+
+.ad-sidebar-left {
+    left: 10px;
+}
+
+.ad-sidebar-right {
+    right: 10px;
+}
+
+/* Reklam container'ları için ek stiller */
+.side-ad-container {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100% !important;
+    min-width: 320px !important;
+    min-height: 250px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin: 15px 10px;
+    padding: 10px;
+    visibility: visible !important;
+}
+
+/* Mobil cihazlarda kenar reklamlarını gizle */
+@media (max-width: 1460px) {
+    .ad-sidebar-left, .ad-sidebar-right {
+        display: none;
+    }
+}
+
+/* Karanlık tema için reklam stilleri */
+[data-theme="dark"] .ad-container, 
+[data-theme="dark"] .adsbygoogle {
+    background-color: #333;
+    border-color: #444;
+    color: #ccc;
+}
 :root {
     --primary-color: #4a148c;
     --secondary-color: #e91e63;
@@ -5349,6 +5423,8 @@ input:checked + .switch-label:before {
     justify-content: center;
     margin: 2rem auto;
     max-width: 700px;
+    z-index: 1500;
+    position: relative;
 }
 
 .menu-title {
@@ -7962,11 +8038,12 @@ body.quiz-active .main-logo-container svg {
 }
 
 .total-score-simple {
-    color: #f39c12;
+    color: #ffd700; /* Altın rengi */
 }
 
 .current-score-simple {
     color: var(--primary-color);
+    display: none; /* Kupa ikonunun yanındaki puanı gizle */
 }
 
 .total-score-simple i, .current-score-simple i {
@@ -8261,142 +8338,158 @@ body.quiz-active .main-logo-container svg {
     left: 0;
     width: 100%;
     height: 100%;
-    background: #f5f6fa;
+    background: var(--bg-color);
     overflow-y: auto;
-    z-index: 1000;
+    z-index: 500;
     display: none;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .friends-container {
-    max-width: 900px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 30px 20px;
+    padding: 20px;
     min-height: 100vh;
 }
 
 .friends-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 40px;
-    padding: 0 10px;
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 8px 25px rgba(123, 67, 151, 0.3);
 }
 
 .friends-header h1 {
-    color: #2c3e50;
     margin: 0;
     font-size: 2.5rem;
     font-weight: 700;
-    letter-spacing: -0.5px;
+    color: white !important;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
 .friends-header button {
-    background: #34495e;
+    margin-top: 15px;
+    padding: 12px 25px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 25px;
     color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .friends-header button:hover {
-    background: #2c3e50;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,255,255,0.2);
 }
 
 .search-section,
 .friend-requests-section,
 .friends-list-section {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    padding: 30px;
-    margin-bottom: 30px;
-    border: 1px solid #e1e8ed;
+    background: linear-gradient(135deg, white 0%, #f8f9fa 100%);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 1px solid rgba(123, 67, 151, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.search-section::before,
+.friend-requests-section::before,
+.friends-list-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
 }
 
 .search-section h2,
 .friend-requests-section h2,
 .friends-list-section h2 {
-    color: #2c3e50;
-    margin: 0 0 25px 0;
-    font-size: 1.4rem;
-    font-weight: 600;
+    margin: 0 0 20px 0;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: 700;
     display: flex;
     align-items: center;
-    gap: 10px;
+    border-bottom: 2px solid rgba(123, 67, 151, 0.1);
+    padding-bottom: 15px;
 }
 
 .search-section h2::before {
     content: "🔍";
-    font-size: 1.2rem;
+    margin-right: 10px;
+    color: var(--secondary-color);
 }
 
 .friend-requests-section h2::before {
-    content: "👥";
-    font-size: 1.2rem;
+    content: "📩";
+    margin-right: 10px;
+    color: var(--secondary-color);
 }
 
 .friends-list-section h2::before {
-    content: "👬";
-    font-size: 1.2rem;
+    content: "👥";
+    margin-right: 10px;
+    color: var(--secondary-color);
 }
 
 .search-box {
     display: flex;
-    gap: 12px;
+    gap: 15px;
     margin-bottom: 20px;
 }
 
 .search-box input {
     flex: 1;
-    padding: 14px 18px;
-    border: 2px solid #e1e8ed;
-    border-radius: 10px;
+    padding: 15px 20px;
+    border: 2px solid rgba(123, 67, 151, 0.2);
+    border-radius: 15px;
     font-size: 16px;
     outline: none;
-    transition: all 0.2s ease;
-    background: #f8f9fa;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, rgba(123, 67, 151, 0.05), rgba(233, 30, 99, 0.05));
 }
 
 .search-box input:focus {
-    border-color: #3498db;
+    border-color: var(--primary-color);
     background: white;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    box-shadow: 0 0 0 4px rgba(123, 67, 151, 0.1);
+    transform: translateY(-1px);
 }
 
 .search-box button {
-    padding: 14px 20px;
-    background: #3498db;
+    padding: 15px 25px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 15px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(123, 67, 151, 0.3);
 }
 
 .search-box button:hover {
-    background: #2980b9;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(123, 67, 151, 0.4);
 }
 
 .search-results,
 .friend-requests,
 .friends-list {
-    min-height: 60px;
-    max-height: 350px;
+    min-height: 80px;
+    max-height: 400px;
     overflow-y: auto;
 }
 
@@ -8406,21 +8499,22 @@ body.quiz-active .main-logo-container svg {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 20px;
-    border: 1px solid #e1e8ed;
-    border-radius: 10px;
-    margin-bottom: 12px;
-    transition: all 0.2s ease;
-    background: #f8f9fa;
+    padding: 20px;
+    border: 2px solid rgba(123, 67, 151, 0.1);
+    border-radius: 16px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+    background: rgba(248, 249, 250, 0.6);
+    backdrop-filter: blur(5px);
 }
 
 .user-item:hover,
 .request-item:hover,
 .friend-item:hover {
-    background: #ecf0f1;
-    border-color: #bdc3c7;
-    transform: translateY(-1px);
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(102, 126, 234, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 .user-info,
@@ -8428,97 +8522,124 @@ body.quiz-active .main-logo-container svg {
 .friend-info {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 18px;
 }
 
 .user-info i,
 .sender-info i,
 .friend-info i {
-    font-size: 20px;
-    color: #7f8c8d;
-    width: 40px;
-    height: 40px;
-    background: #ecf0f1;
+    font-size: 24px;
+    color: #667eea;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 2px solid rgba(102, 126, 234, 0.2);
 }
 
 .user-info span,
 .sender-info span,
 .friend-info span {
-    font-weight: 600;
+    font-weight: 700;
     color: #2c3e50;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .user-actions,
 .request-actions,
 .friend-actions {
     display: flex;
-    gap: 8px;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .btn-small {
-    padding: 8px 16px;
-    font-size: 13px;
-    border-radius: 6px;
+    padding: 10px 18px;
+    font-size: 14px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 4px;
-    transition: all 0.2s ease;
+    gap: 6px;
+    transition: all 0.3s ease;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-small:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.btn-small::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-small:hover::before {
+    left: 100%;
 }
 
 .btn-small i {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .btn-primary {
-    background: #3498db;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
 }
 
 .btn-primary:hover {
-    background: #2980b9;
-    transform: translateY(-1px);
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
 }
 
 .btn-success {
-    background: #27ae60;
+    background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
     color: white;
 }
 
 .btn-success:hover {
-    background: #229954;
+    background: linear-gradient(135deg, #229954 0%, #1e8449 100%);
 }
 
 .btn-danger {
-    background: #e74c3c;
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
     color: white;
 }
 
 .btn-danger:hover {
-    background: #c0392b;
+    background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
 }
 
 .btn-info {
-    background: #17a2b8;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
 }
 
+.btn-info:hover {
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+}
+
 .btn-secondary {
-    background: #95a5a6;
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
     color: white;
 }
 
 .btn-secondary:hover {
-    background: #7f8c8d;
+    background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
 }
 
 .empty-message {
@@ -8566,56 +8687,82 @@ body.quiz-active .main-logo-container svg {
 
 /* Dark theme için arkadaşlar sayfası */
 [data-theme="dark"] #friends-page {
-    background: #1a1a1a;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+}
+
+[data-theme="dark"] .friends-header {
+    background: rgba(52, 73, 94, 0.95);
+    border-color: rgba(74, 95, 122, 0.3);
 }
 
 [data-theme="dark"] .friends-header h1 {
-    color: #ecf0f1;
+    background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 [data-theme="dark"] .friends-header button {
-    background: #34495e;
+    background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+}
+
+[data-theme="dark"] .friends-header button:hover {
+    box-shadow: 0 8px 25px rgba(52, 152, 219, 0.6);
 }
 
 [data-theme="dark"] .search-section,
 [data-theme="dark"] .friend-requests-section,
 [data-theme="dark"] .friends-list-section {
-    background: #2c3e50;
-    border-color: #34495e;
+    background: linear-gradient(135deg, var(--card-bg-dark) 0%, rgba(52, 73, 94, 0.9) 100%);
+    border-color: rgba(123, 67, 151, 0.3);
 }
 
 [data-theme="dark"] .search-section h2,
 [data-theme="dark"] .friend-requests-section h2,
 [data-theme="dark"] .friends-list-section h2 {
-    color: #ecf0f1;
+    color: var(--primary-color);
+    border-bottom-color: rgba(123, 67, 151, 0.3);
 }
 
 [data-theme="dark"] .search-box input {
-    background: #34495e;
-    border-color: #4a5f7a;
+    background: linear-gradient(135deg, rgba(123, 67, 151, 0.1), rgba(233, 30, 99, 0.1));
+    border-color: rgba(123, 67, 151, 0.3);
     color: #ecf0f1;
 }
 
 [data-theme="dark"] .search-box input:focus {
-    background: #4a5f7a;
-    border-color: #3498db;
+    background: rgba(52, 73, 94, 0.8);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(123, 67, 151, 0.2);
 }
 
 [data-theme="dark"] .search-box input::placeholder {
-    color: #95a5a6;
+    color: #bdc3c7;
+}
+
+[data-theme="dark"] .search-box button {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    box-shadow: 0 4px 15px rgba(123, 67, 151, 0.4);
+}
+
+[data-theme="dark"] .search-box button:hover {
+    box-shadow: 0 6px 20px rgba(123, 67, 151, 0.6);
 }
 
 [data-theme="dark"] .user-item,
 [data-theme="dark"] .request-item,
 [data-theme="dark"] .friend-item {
-    background: #34495e;
-    border-color: #4a5f7a;
+    background: linear-gradient(135deg, rgba(52, 73, 94, 0.8), rgba(44, 62, 80, 0.8));
+    border-color: rgba(123, 67, 151, 0.2);
 }
 
 [data-theme="dark"] .user-item:hover,
 [data-theme="dark"] .request-item:hover,
 [data-theme="dark"] .friend-item:hover {
-    background: #4a5f7a;
+    background: linear-gradient(135deg, rgba(52, 73, 94, 0.9), rgba(44, 62, 80, 0.9));
+    border-color: rgba(123, 67, 151, 0.4);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] .user-info span,
@@ -8627,40 +8774,124 @@ body.quiz-active .main-logo-container svg {
 [data-theme="dark"] .user-info i,
 [data-theme="dark"] .sender-info i,
 [data-theme="dark"] .friend-info i {
-    background: #4a5f7a;
-    color: #95a5a6;
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.2) 0%, rgba(155, 89, 182, 0.2) 100%);
+    color: #3498db;
+    border-color: rgba(52, 152, 219, 0.3);
 }
 
 [data-theme="dark"] .empty-message {
-    background: #34495e;
-    color: #95a5a6;
-    border-color: #4a5f7a;
+    background: rgba(52, 73, 94, 0.8);
+    color: #bdc3c7;
+    border-color: rgba(74, 95, 122, 0.4);
 }
 
 [data-theme="dark"] .error {
-    background: #4a2c2a;
-    border-color: #6b3936;
+    background: rgba(231, 76, 60, 0.2);
+    border-color: rgba(231, 76, 60, 0.4);
+    color: #e74c3c;
+}
+
+[data-theme="dark"] .btn-small {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .btn-small:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+}
+
+[data-theme="dark"] .btn-primary:hover {
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+}
+
+[data-theme="dark"] .btn-success {
+    background: linear-gradient(135deg, #27ae60 0%, #16a085 100%);
+}
+
+[data-theme="dark"] .btn-success:hover {
+    background: linear-gradient(135deg, #229954 0%, #138d75 100%);
+}
+
+[data-theme="dark"] .btn-danger {
+    background: linear-gradient(135deg, #e74c3c 0%, #e67e22 100%);
+}
+
+[data-theme="dark"] .btn-danger:hover {
+    background: linear-gradient(135deg, #c0392b 0%, #d35400 100%);
+}
+
+[data-theme="dark"] .btn-info {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+}
+
+[data-theme="dark"] .btn-info:hover {
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+}
+
+[data-theme="dark"] .btn-secondary {
+    background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+    background: linear-gradient(135deg, #7f8c8d 0%, #6c7b7d 100%);
 }
 
 /* Responsive tasarım */
+@media (max-width: 1200px) {
+    .friends-container {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "header"
+            "search"
+            "requests"
+            "friends";
+        padding: 20px 30px;
+    }
+}
+
 @media (max-width: 768px) {
     .friends-container {
-        padding: 20px 15px;
+        padding: 15px 20px;
+        gap: 20px;
     }
     
     .friends-header {
         flex-direction: column;
         gap: 20px;
         text-align: center;
+        padding: 20px;
     }
     
     .friends-header h1 {
-        font-size: 2rem;
+        font-size: 2.2rem;
+    }
+    
+    .friends-header button {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .search-section h2,
+    .friend-requests-section h2,
+    .friends-list-section h2 {
+        font-size: 1.5rem;
     }
     
     .search-box {
         flex-direction: column;
-        gap: 15px;
+        gap: 12px;
+    }
+    
+    .search-box input {
+        margin-bottom: 0;
+    }
+    
+    .search-box button {
+        width: 100%;
+        justify-content: center;
     }
     
     .user-item,
@@ -8672,18 +8903,59 @@ body.quiz-active .main-logo-container svg {
         padding: 20px;
     }
     
+    .user-info,
+    .sender-info,
+    .friend-info {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
     .user-actions,
     .request-actions,
     .friend-actions {
+        width: 100%;
         justify-content: center;
-        flex-wrap: wrap;
-        gap: 12px;
+        gap: 10px;
     }
     
     .search-section,
     .friend-requests-section,
     .friends-list-section {
-        padding: 20px;
+        padding: 25px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .friends-container {
+        padding: 10px 15px;
+    }
+    
+    .friends-header {
+        padding: 15px;
+    }
+    
+    .friends-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .search-section,
+    .friend-requests-section,
+    .friends-list-section {
+        padding: 20px 15px;
+    }
+    
+    .user-info i,
+    .sender-info i,
+    .friend-info i {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
+    
+    .user-info span,
+    .sender-info span,
+    .friend-info span {
+        font-size: 16px;
     }
 }
 
@@ -10733,4 +11005,34 @@ body.quiz-active .joker-tab-bar {
 /* Web görünümünde quiz alanına alt padding ekle */
 body.quiz-active .quiz-main {
     padding-bottom: 70px;
+}
+
+/* Arkadaşlar sayfasında mobil tab menü gözüksün */
+@media (max-width: 767px) {
+    body.friends-active .mobile-tab-bar {
+        display: flex !important;
+        z-index: 1500;
+    }
+    
+    /* Mobilde arkadaşlar sayfasında hamburger toggle göster */
+    body.friends-active .hamburger-toggle {
+        display: flex !important;
+        z-index: 1500;
+    }
+}
+
+/* Hamburger menü arkadaşlar sayfasında da çalışsın */
+.main-menu {
+    z-index: 1500 !important;
+}
+
+/* Hamburger toggle arkadaşlar sayfasında görünsün */
+body.friends-active .hamburger-toggle {
+    z-index: 1500 !important;
+    display: flex !important;
+}
+
+/* Hamburger menü arkadaşlar sayfasında görünsün */
+body.friends-active .hamburger-menu {
+    z-index: 1500 !important;
 }
