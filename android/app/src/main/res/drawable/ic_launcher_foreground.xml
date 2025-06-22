@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108"
+    android:tint="#FFFFFF">
+    
+    <group android:scaleX="0.5"
+           android:scaleY="0.5"
+           android:pivotX="54"
+           android:pivotY="54">
+        
+        <!-- Quiz ikon path -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M80,24L68,36L80,48L72,56L60,44L48,56L40,48L52,36L40,24L48,16L60,28L72,16L80,24Z" />
+            
+        <!-- Alt kısımda nokta (path olarak) -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M54,76a4,4 0,1 1,0 8a4,4 0,1 1,0 -8Z" />
+    </group>
+</vector> 
