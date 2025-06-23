@@ -4055,12 +4055,14 @@ const quizApp = {
                 // Tam ekran doğru modalı
                 const correctModal = document.createElement('div');
                 correctModal.className = 'correct-modal';
+                const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
                 correctModal.innerHTML = `
                     <div class="correct-modal-content">
                         <div class="correct-modal-icon">
                             <i class="fas fa-crown"></i>
                         </div>
                         <div class="correct-modal-text">${this.getTranslation('correct')}</div>
+                        <div class="correct-modal-score">+${scoreForQuestion}</div>
                         <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
                     </div>
                 `;
@@ -4079,7 +4081,6 @@ const quizApp = {
                 this.resultElement.innerHTML = '';
                 this.resultElement.className = 'result';
                 // Puanı artır
-                const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
                 this.addScore(scoreForQuestion);
                 this.correctAnswers++;
                 // Ses efekti çal
@@ -4154,10 +4155,12 @@ const quizApp = {
             // DOĞRU MODAL
             const correctModal = document.createElement('div');
             correctModal.className = 'correct-modal';
+            const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
             correctModal.innerHTML = `
                 <div class="correct-modal-content">
                     <div class="correct-modal-icon"><i class="fas fa-crown"></i></div>
                     <div class="correct-modal-text">${this.getTranslation('correct')}</div>
+                    <div class="correct-modal-score">+${scoreForQuestion}</div>
                     <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
                 </div>
             `;
@@ -4170,7 +4173,6 @@ const quizApp = {
                 if (e.target === correctModal) correctModal.remove();
             };
             // Puanı artır
-            const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
             this.addScore(scoreForQuestion);
             this.correctAnswers++;
             if (this.soundEnabled) {

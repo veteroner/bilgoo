@@ -6803,11 +6803,12 @@ const quizApp = {
         // Tam ekran doğru modalı
         const correctModal = document.createElement('div');
         correctModal.className = 'correct-modal';
+        const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
         correctModal.innerHTML = `
             <div class="correct-modal-content">
                 <div class="correct-modal-icon"><i class="fas fa-crown"></i></div>
                 <div class="correct-modal-text">${this.getTranslation('correct')}</div>
-                <div class="correct-modal-score">+${Math.max(1, Math.ceil(this.timeLeft / 5))}</div>
+                <div class="correct-modal-score">+${scoreForQuestion}</div>
                 <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
             </div>
         `;
