@@ -553,33 +553,32 @@ const MonetizationManager = {
         }, 1000);
     },
 
-    // Mobil inline reklamlar ekle
+    // Mobil inline reklamlar ekle - DEVRE DIŞI
     addMobileInlineAds: function() {
-        // Kategori seçimi sonrasına reklam ekle
+        // Kategori içindeki inline reklamlar kaldırıldı
+        // Sadece üst banner reklamı aktif kalacak
+        console.log('Kategori inline reklamlar devre dışı bırakıldı');
+        
+        // Mevcut inline reklamları temizle
+        this.removeExistingInlineAds();
+    },
+    
+    // Mevcut inline reklamları kaldır
+    removeExistingInlineAds: function() {
+        const existingInlineAds = document.querySelectorAll('.mobile-inline-ad');
+        existingInlineAds.forEach(ad => {
+            console.log('Mevcut inline reklam kaldırılıyor:', ad);
+            ad.remove();
+        });
+        
+        // Kategoriler container'ında kalan herhangi bir adsense elemanını temizle
         const categoriesDiv = document.getElementById('categories');
-        if (categoriesDiv && !categoriesDiv.querySelector('.mobile-inline-ad')) {
-            const inlineAd = document.createElement('div');
-            inlineAd.className = 'mobile-inline-ad';
-            inlineAd.innerHTML = `
-                <ins class="adsbygoogle mobile-inline"
-                     style="display:block"
-                     data-ad-client="ca-pub-7610338885240453"
-                     data-ad-slot="1234567892"
-                     data-ad-format="rectangle"
-                     data-full-width-responsive="false"></ins>
-            `;
-            
-            categoriesDiv.appendChild(inlineAd);
-            
-            // AdSense reklamını yükle
-            setTimeout(() => {
-                try {
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                    console.log('Mobil inline reklam yüklendi');
-                } catch (e) {
-                    console.error('Mobil inline reklam yüklenemedi:', e);
-                }
-            }, 500);
+        if (categoriesDiv) {
+            const inlineAdsenseElements = categoriesDiv.querySelectorAll('.adsbygoogle.mobile-inline');
+            inlineAdsenseElements.forEach(ad => {
+                console.log('Kategoriler içindeki AdSense elemanı kaldırılıyor:', ad);
+                ad.parentElement?.remove();
+            });
         }
     },
 
