@@ -7083,9 +7083,20 @@ const quizApp = {
         
         // FİNAL SKORU ve istatistikleri saklayalım
         // Doğru cevap sayısını gerçek verilerden hesapla
-        const actualCorrectAnswers = this.sectionStats ? Object.values(this.sectionStats).reduce((total, section) => total + (section.correct || 0), 0) : this.correctAnswers;
+        // Debug: Oyun sonu değerlerini kontrol et
+        console.log("=== OYUN SONU DEBUG ===");
+        console.log("currentQuestionIndex:", this.currentQuestionIndex);
+        console.log("this.correctAnswers:", this.correctAnswers);
+        console.log("questions.length:", this.questions.length);
+        
+        // Doğru cevap sayısını toplam soruya eşit veya daha az olacak şekilde sınırla
+        const actualCorrectAnswers = Math.min(this.correctAnswers, this.currentQuestionIndex + 1);
         // Toplam soru sayısı: mevcut soru indeksi + 1 (çünkü 0'dan başlar) ama maksimum 10
         const actualTotalQuestions = Math.min(this.currentQuestionIndex + 1, 10);
+        
+        console.log("actualCorrectAnswers:", actualCorrectAnswers);
+        console.log("actualTotalQuestions:", actualTotalQuestions);
+        console.log("===================");
         
         const finalStats = {
             category: this.selectedCategory,
