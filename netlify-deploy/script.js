@@ -14539,7 +14539,7 @@ const quizApp = {
                 console.log(`${category} kategorisi için sorular hazırlanıyor...`);
                 
                 // Kategori için soru sayısı belirleme
-                const totalQuestionsCount = this.QUESTIONS_PER_GAME;
+                const totalQuestionsCount = 10;
                 
                 // Normal soruların sayısı
                 const normalQuestionsCount = Math.floor(totalQuestionsCount * 0.8); // %80'i normal sorular
