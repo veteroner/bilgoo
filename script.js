@@ -4516,10 +4516,16 @@ const quizApp = {
         // Sonucu göster
         if (this.resultElement) {
             if (isCorrect) {
+                // Puanı artır - kalan süreye göre puan ver (min 1, max 5)
+                const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 3));
+                this.addScore(scoreForQuestion);
+                
+                // Modalı puanla birlikte güncelle
                 this.resultElement.innerHTML = `
                     <div class="correct-answer-container">
                         <div class="correct-icon"><i class="fas fa-badge-check"></i></div>
                         <div class="correct-text">Doğru!</div>
+                        <div class="earned-points">+${scoreForQuestion} puan kazandınız!</div>
                     </div>
                     <button id="next-question" class="next-button">Sonraki Soru</button>
                 `;
@@ -4530,10 +4536,6 @@ const quizApp = {
                 if (nextBtn) {
                     nextBtn.addEventListener('click', () => this.showNextQuestion());
                 }
-                
-                // Puanı artır - kalan süreye göre puan ver (min 1, max 5)
-                const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 3));
-                this.addScore(scoreForQuestion);
                 
                 // Ses efekti çal
                 if (this.soundEnabled) {
