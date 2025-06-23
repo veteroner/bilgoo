@@ -6770,7 +6770,6 @@ const quizApp = {
                 onlineGame.submitAnswer(false);
             }
         }
-        // Can kontrolü kaldırıldı - loseLife fonksiyonu kendi başına can satın alma modalını handle ediyor
         
         if (this.nextButton) {
             this.nextButton.style.display = 'block';
@@ -6806,13 +6805,17 @@ const quizApp = {
         const optionButtons = this.optionsElement.querySelectorAll('.option');
         optionButtons.forEach(btn => btn.disabled = true);
         
+        // Cevabı kaydet
+        const isCorrect = selectedOption === currentQuestion.correctAnswer;
+        this.recordAnswer(isCorrect);
+        
         // Doğru/yanlış kontrolü
-        if (selectedOption === currentQuestion.correctAnswer) {
+        if (isCorrect) {
             button.classList.add('correct');
             
             // Skoru güncelle
             this.score++;
-            // this.correctAnswers++; // <-- KALDIRILDI: Tekrar eden kod
+            this.correctAnswers++;
             this.updateScoreDisplay();
             
             // Seviye ilerleme kontrolü
@@ -6844,8 +6847,6 @@ const quizApp = {
             if (onlineGame && onlineGame.gameStarted) {
                 onlineGame.submitAnswer(false);
             }
-            
-            // Can kontrolü kaldırıldı - loseLife fonksiyonu kendi başına can satın alma modalını handle ediyor
         }
         
         // Bir sonraki soruya geç
@@ -6889,7 +6890,6 @@ const quizApp = {
         this.answeredQuestions++;
         const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
         this.addScore(scoreForQuestion);
-        // this.correctAnswers++; // <-- KALDIRILDI: Tekrar eden kod, zaten checkBlankFillingAnswer içinde sayılıyor
         if (this.soundEnabled) {
             const correctSound = document.getElementById('sound-correct');
             if (correctSound) correctSound.play().catch(e => {});
@@ -6933,7 +6933,6 @@ const quizApp = {
         if (typeof onlineGame !== 'undefined' && onlineGame && onlineGame.gameStarted) {
             onlineGame.submitAnswer(false);
         }
-        // Can kontrolü kaldırıldı - loseLife fonksiyonu kendi başına can satın alma modalını handle ediyor
     },
     
     // Load question işlevini güncelle
@@ -6949,8 +6948,6 @@ const quizApp = {
             if (correctMessageElement) {
                 correctMessageElement.remove();
             }
-            
-            // Can kontrolü kaldırıldı - canlar bittiyse loseLife fonksiyonu zaten can satın alma modalını açıyor
             
             // Mevcut soru indeksi kontrolü
             if (this.currentQuestionIndex >= this.questions.length) {
@@ -7145,11 +7142,15 @@ const quizApp = {
         console.log("answerTimes length:", this.answerTimes.length);
         
         // FİNAL SKORU ve istatistikleri saklayalım
+        // Doğru cevap sayısını gerçek verilerden hesapla
+        const actualCorrectAnswers = this.sectionStats ? Object.values(this.sectionStats).reduce((total, section) => total + (section.correct || 0), 0) : this.correctAnswers;
+        const actualTotalQuestions = this.answeredQuestions || this.currentQuestionIndex;
+        
         const finalStats = {
             category: this.selectedCategory,
             score: this.score,
-            correctAnswers: this.correctAnswers, // <-- EKLENDİ
-            totalQuestions: this.questions.length, // <-- DÜZELTİLDİ: Oyunun toplam soru sayısı
+            correctAnswers: actualCorrectAnswers, // <-- DÜZELTİLDİ: Gerçek verilerden hesapla
+            totalQuestions: Math.min(actualTotalQuestions, this.questions.length), // <-- DÜZELTİLDİ: Gerçekte cevaplanan soru sayısı
             lives: this.lives,
             avgTime: this.answerTimes.length > 0 ? 
                 (this.answerTimes.reduce((a, b) => a + b, 0) / this.answerTimes.length).toFixed(1) : 0
