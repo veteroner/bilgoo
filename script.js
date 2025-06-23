@@ -1816,11 +1816,20 @@ const quizApp = {
         var modal = document.getElementById('joker-store-modal');
         var closeBtn = modal.querySelector('.close-modal');
         var buyButtons = modal.querySelectorAll('.joker-buy-btn');
+        var livesBuyBtn = modal.querySelector('.lives-buy-btn');
         var pointsDisplay = document.getElementById('joker-store-points-display');
+        var starsDisplay = document.getElementById('joker-store-stars-display');
+        var livesCountDisplay = modal.querySelector('.lives-count');
         
         // Mevcut toplam puanları ve joker envanterini göster (misafir için sessionScore kullan)
         const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
         pointsDisplay.textContent = currentPoints || 0;
+        
+        // Yıldız sayısını göster
+        starsDisplay.textContent = this.totalStars || 0;
+        
+        // Can sayısını göster
+        livesCountDisplay.textContent = this.lives || 3;
         console.log(`🛒 Joker mağazası - Gösterilen puan: ${currentPoints} (Giriş durumu: ${this.isLoggedIn ? 'Kayıtlı' : 'Misafir'})`);
         console.log(`📊 Detay - totalScore: ${this.totalScore}, sessionScore: ${this.sessionScore}`);
         
@@ -1913,6 +1922,59 @@ const quizApp = {
             btn.style.touchAction = 'manipulation';
             btn.style.webkitTapHighlightColor = 'transparent';
         }.bind(this));
+        
+        // Can satın alma fonksiyonu
+        if (livesBuyBtn) {
+            const livesPrice = 15; // 15 yıldız = 3 can
+            
+            // Yeterli yıldız varsa butonu etkinleştir
+            livesBuyBtn.disabled = (this.totalStars || 0) < livesPrice;
+            
+            const purchaseLives = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const availableStars = this.totalStars || 0;
+                console.log(`Can satın alma denemesi: Fiyat: ${livesPrice} yıldız, Mevcut Yıldız: ${availableStars}`);
+                
+                if (availableStars >= livesPrice) {
+                    // Yıldızları azalt
+                    this.totalStars = Math.max(0, this.totalStars - livesPrice);
+                    
+                    // 3 can ekle (maksimum 5 can)
+                    this.lives = Math.min(5, this.lives + 3);
+                    
+                    // Verileri kaydet
+                    if (this.isLoggedIn) {
+                        this.delayedSaveUserData();
+                    }
+                    
+                    // Göstergeleri güncelle
+                    starsDisplay.textContent = this.totalStars;
+                    livesCountDisplay.textContent = this.lives;
+                    
+                    // Can gösterimini güncelle
+                    this.updateLivesDisplay();
+                    
+                    // Buton durumunu güncelle
+                    livesBuyBtn.disabled = this.totalStars < livesPrice;
+                    
+                    // Toast bildirimi göster
+                    this.showToast("3 can satın alındı! ❤️❤️❤️", "toast-success");
+                    
+                    console.log(`Can satın alma başarılı: ${livesPrice} yıldız harcandı. Yeni yıldız: ${this.totalStars}, Yeni can: ${this.lives}`);
+                } else {
+                    console.warn('Yeterli yıldız yok!');
+                    this.showToast("Yeterli yıldızınız yok! (15 yıldız gerekli)", "toast-error");
+                }
+            };
+            
+            // Event listeners ekle
+            livesBuyBtn.onclick = purchaseLives;
+            livesBuyBtn.addEventListener('touchend', purchaseLives);
+            livesBuyBtn.style.touchAction = 'manipulation';
+            livesBuyBtn.style.webkitTapHighlightColor = 'transparent';
+        }
         
         // Modalı göster
         modal.style.display = 'block';
@@ -9277,7 +9339,7 @@ const quizApp = {
         const totalScoreElement = document.getElementById('total-score-value');
         if (totalScoreElement) {
             const scoreValue = this.isLoggedIn ? this.totalScore : this.sessionScore;
-            totalScoreElement.textContent = `${scoreValue} (⭐${this.totalStars})`;
+            totalScoreElement.innerHTML = `${scoreValue} <span class="star-icon">⭐${this.totalStars}</span>`;
         }
         
         // Profil sayfasındaki puan gösterimini güncelle

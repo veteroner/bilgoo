@@ -9264,7 +9264,7 @@ const quizApp = {
         const totalScoreElement = document.getElementById('total-score-value');
         if (totalScoreElement) {
             const scoreValue = this.isLoggedIn ? this.totalScore : this.sessionScore;
-            totalScoreElement.textContent = `${scoreValue} (⭐${this.totalStars})`;
+            totalScoreElement.innerHTML = `${scoreValue} <span class="star-icon">⭐${this.totalStars}</span>`;
         }
         
         // Profil sayfasındaki puan gösterimini güncelle

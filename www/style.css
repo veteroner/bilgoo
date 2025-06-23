@@ -8050,6 +8050,103 @@ body.quiz-active .main-logo-container svg {
     font-size: 32px;
 }
 
+/* Yıldız iconunun rengini maviye değiştir ve coin iconuyla ayrıştır */
+.star-icon {
+    color: #3498db !important; /* Mavi renk */
+    font-weight: bold;
+    margin-left: 5px;
+    filter: drop-shadow(0 0 3px rgba(52, 152, 219, 0.5));
+    animation: starGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes starGlow {
+    0% { filter: drop-shadow(0 0 3px rgba(52, 152, 219, 0.5)); }
+    100% { filter: drop-shadow(0 0 8px rgba(52, 152, 219, 0.8)); }
+}
+
+/* Dark theme için yıldız rengi */
+[data-theme="dark"] .star-icon {
+    color: #5dade2 !important; /* Açık mavi */
+    filter: drop-shadow(0 0 5px rgba(93, 173, 226, 0.7));
+}
+
+/* Joker mağazası yıldız ve puan gösterimi */
+.joker-store-points {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 10px;
+    border: 2px solid #dee2e6;
+}
+
+[data-theme="dark"] .joker-store-points {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    border-color: #4a5568;
+}
+
+.points-display, .stars-display {
+    font-size: 16px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+[data-theme="dark"] .points-display,
+[data-theme="dark"] .stars-display {
+    color: #ecf0f1;
+}
+
+/* Can satın alma öğesi özel stilleri */
+.lives-item {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a52) !important;
+    border: 2px solid #ff5252 !important;
+    color: white !important;
+}
+
+.lives-item .joker-icon {
+    color: #fff !important;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    animation: heartBeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+    0% { transform: scale(1); }
+    14% { transform: scale(1.1); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.1); }
+    70% { transform: scale(1); }
+}
+
+.lives-item .joker-info h3,
+.lives-item .joker-info p,
+.lives-item .joker-count {
+    color: white !important;
+}
+
+.lives-buy-btn {
+    background: #fff !important;
+    color: #ff5252 !important;
+    border: 2px solid #fff !important;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.lives-buy-btn:hover:not(:disabled) {
+    background: #ff5252 !important;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 82, 82, 0.4);
+}
+
+.lives-buy-btn:disabled {
+    background: rgba(255, 255, 255, 0.3) !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    cursor: not-allowed;
+}
+
 /* Quiz container padding top için alan bırak */
 .quiz-container {
     padding-top: 80px;
