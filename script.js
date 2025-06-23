@@ -444,9 +444,6 @@ function initFullscreenMode() {
 
 // Sayfa Yükleme İşlemleri
 document.addEventListener('DOMContentLoaded', () => {
-    // Splash screen kontrolü
-    initSplashScreen();
-    
     // Tam ekran modunu başlat
     initFullscreenMode();
     
@@ -457,40 +454,6 @@ document.addEventListener('DOMContentLoaded', () => {
         container.classList.add('fade-in');
     }
 });
-
-// Splash Screen Fonksiyonu
-function initSplashScreen() {
-    const splashScreen = document.getElementById('splash-screen');
-    
-    if (!splashScreen) {
-        console.log('Splash screen bulunamadı');
-        return;
-    }
-    
-    console.log('Splash screen başlatılıyor...');
-    
-    // Splash screen'i göster
-    splashScreen.style.display = 'flex';
-    
-    // Ana içeriği gizle
-    document.body.classList.remove('splash-hidden');
-    
-    // 3 saniye sonra splash screen'i gizle
-    setTimeout(() => {
-        console.log('Splash screen gizleniyor...');
-        
-        // Fade out animasyonu
-        splashScreen.classList.add('fade-out');
-        
-        // Animasyon bitince splash screen'i tamamen gizle
-        setTimeout(() => {
-            splashScreen.style.display = 'none';
-            document.body.classList.add('splash-hidden');
-            console.log('Splash screen gizlendi');
-        }, 500);
-        
-    }, 3000);
-}
 
 const quizApp = {
     // DOM Elements
