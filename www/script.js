@@ -1820,7 +1820,10 @@ const quizApp = {
         
         // Mevcut toplam puanları ve joker envanterini göster (misafir için sessionScore kullan)
         const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
-        pointsDisplay.textContent = currentPoints || 0;
+        pointsDisplay.textContent = this.formatNumber(currentPoints || 0);
+        
+        // Tooltip'leri ekle
+        this.createTooltip(pointsDisplay.parentElement, `Coin: ${(currentPoints || 0).toLocaleString()}`);
         console.log(`🛒 Joker mağazası - Gösterilen puan: ${currentPoints} (Giriş durumu: ${this.isLoggedIn ? 'Kayıtlı' : 'Misafir'})`);
         console.log(`📊 Detay - totalScore: ${this.totalScore}, sessionScore: ${this.sessionScore}`);
         
@@ -1875,7 +1878,7 @@ const quizApp = {
                     
                     // Göstergeleri güncelle (misafir için sessionScore kullan)
                     const updatedPoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
-                    pointsDisplay.textContent = updatedPoints;
+                    pointsDisplay.textContent = self.formatNumber(updatedPoints);
                     
                     // Joker mağazasındaki sayımları ve buton durumlarını güncelle
                     self.updateJokerStoreDisplay(modal);
@@ -9274,13 +9277,89 @@ const quizApp = {
     },
 
     
+    // Sayıları kısaltma fonksiyonu
+    formatNumber: function(num) {
+        if (num >= 1000000) {
+            return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+        }
+        if (num >= 1000) {
+            return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+        }
+        return num.toString();
+    },
+
+    // Tooltip oluşturma fonksiyonu
+    createTooltip: function(element, text) {
+        element.setAttribute('title', text);
+        element.style.cursor = 'pointer';
+        
+        // Mobil cihazlar için touch event
+        element.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            const existingTooltip = document.querySelector('.custom-tooltip');
+            if (existingTooltip) {
+                existingTooltip.remove();
+            }
+            
+            const tooltip = document.createElement('div');
+            tooltip.className = 'custom-tooltip';
+            tooltip.textContent = text;
+            tooltip.style.cssText = `
+                position: absolute;
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 8px 12px;
+                border-radius: 6px;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 10000;
+                pointer-events: none;
+                white-space: nowrap;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            `;
+            
+            document.body.appendChild(tooltip);
+            
+            const rect = element.getBoundingClientRect();
+            tooltip.style.left = (rect.left + rect.width / 2 - tooltip.offsetWidth / 2) + 'px';
+            tooltip.style.top = (rect.top - tooltip.offsetHeight - 8) + 'px';
+            
+            setTimeout(() => {
+                if (tooltip.parentNode) {
+                    tooltip.remove();
+                }
+            }, 2000);
+        });
+    },
+
     // Toplam puan göstergesini güncelle
     updateTotalScoreDisplay: function() {
         // Yeni sadeleştirilmiş puan gösterimi
         const totalScoreElement = document.getElementById('total-score-value');
         if (totalScoreElement) {
             const scoreValue = this.isLoggedIn ? this.totalScore : this.sessionScore;
-            totalScoreElement.innerHTML = `${scoreValue} <span class="star-icon">⭐${this.totalStars}</span>`;
+            const formattedScore = this.formatNumber(scoreValue);
+            const formattedStars = this.formatNumber(this.totalStars);
+            
+            totalScoreElement.innerHTML = `
+                <span class="coin-display" data-full-value="${scoreValue}">
+                    <i class="fas fa-coins"></i> ${formattedScore}
+                </span>
+                <span class="star-display" data-full-value="${this.totalStars}">
+                    <span class="star-icon">⭐</span> ${formattedStars}
+                </span>
+            `;
+            
+            // Tooltip'leri ekle
+            const coinDisplay = totalScoreElement.querySelector('.coin-display');
+            const starDisplay = totalScoreElement.querySelector('.star-display');
+            
+            if (coinDisplay) {
+                this.createTooltip(coinDisplay, `Coin: ${scoreValue.toLocaleString()}`);
+            }
+            if (starDisplay) {
+                this.createTooltip(starDisplay, `Yıldız: ${this.totalStars.toLocaleString()}`);
+            }
         }
         
         // Profil sayfasındaki puan gösterimini güncelle

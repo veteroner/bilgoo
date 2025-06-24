@@ -10106,7 +10106,6 @@ body:has(#profile-page[style*="display: block"]) footer {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-fill-color: transparent;
 }
 
 .badge-earned-header p {

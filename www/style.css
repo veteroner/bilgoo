@@ -8050,12 +8050,33 @@ body.quiz-active .main-logo-container svg {
     font-size: 32px;
 }
 
+/* Coin ve Yıldız Gösterimi */
+.coin-display, .star-display {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.coin-display:hover, .star-display:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+.coin-display i {
+    font-size: 32px;
+    color: #ffd700;
+}
+
 /* Yıldız iconunun rengini turuncu yap */
 .star-icon {
     color: #FF8C00 !important; /* Turuncu renk */
     font-size: 32px !important; /* Coin ile aynı büyüklük */
     font-weight: bold;
-    margin-left: 5px;
     filter: drop-shadow(0 0 3px rgba(255, 140, 0, 0.5));
     animation: starGlow 2s ease-in-out infinite alternate;
 }
@@ -8069,6 +8090,33 @@ body.quiz-active .main-logo-container svg {
 [data-theme="dark"] .star-icon {
     color: #FF8C00 !important; /* Turuncu renk */
     filter: drop-shadow(0 0 5px rgba(255, 140, 0, 0.7));
+}
+
+/* Custom Tooltip Stilleri */
+.custom-tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 10000;
+    pointer-events: none;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    animation: tooltipFadeIn 0.2s ease forwards;
+}
+
+@keyframes tooltipFadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+[data-theme="dark"] .custom-tooltip {
+    background: rgba(50, 50, 50, 0.95);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 /* Joker mağazası yıldız ve puan gösterimi */
@@ -8244,9 +8292,18 @@ body.quiz-active .main-logo-container svg {
         font-size: 22px;
     }
     
-    /* Mobile'da yıldız ikonu büyüklüğü */
+    /* Mobile'da icon büyüklükleri */
     .star-icon {
         font-size: 22px !important;
+    }
+    
+    .coin-display i {
+        font-size: 22px;
+    }
+    
+    .coin-display, .star-display {
+        font-size: 14px;
+        margin: 0 4px;
     }
     
     .timer-display {
