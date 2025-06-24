@@ -7997,6 +7997,11 @@ body.quiz-active .main-logo-container svg {
 
 .total-score-simple i, .current-score-simple i {
     font-size: 32px;
+    margin-right: 5px;
+}
+
+.total-score-simple .fa-coins {
+    color: #ffd700;
 }
 
 /* Coin ve Yıldız Gösterimi */
@@ -8016,9 +8021,8 @@ body.quiz-active .main-logo-container svg {
     filter: brightness(1.1);
 }
 
-.coin-display i {
-    font-size: 32px;
-    color: #ffd700;
+.coin-display {
+    margin-left: 5px;
 }
 
 /* Yıldız iconunun rengini turuncu yap */
@@ -8244,10 +8248,6 @@ body.quiz-active .main-logo-container svg {
     /* Mobile'da icon büyüklükleri */
     .star-icon {
         font-size: 22px !important;
-    }
-    
-    .coin-display i {
-        font-size: 22px;
     }
     
     .coin-display, .star-display {

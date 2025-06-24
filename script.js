@@ -9419,7 +9419,7 @@ const quizApp = {
             
             totalScoreElement.innerHTML = `
                 <span class="coin-display" data-full-value="${scoreValue}">
-                    <i class="fas fa-coins"></i> ${formattedScore}
+                    ${formattedScore}
                 </span>
                 <span class="star-display" data-full-value="${this.totalStars}">
                     <span class="star-icon">⭐</span> ${formattedStars}
