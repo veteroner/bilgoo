@@ -3487,39 +3487,13 @@ const quizApp = {
             // Aktif soru verilerini al (çevrilmiş veya orijinal)
             const activeQuestionData = this.currentLanguage === 'tr' ? this.questionsData : this.translatedQuestions;
             
-            // Seçilen kategorideki soruları karıştır
+            // Seçilen kategori için özel soru yükleme algoritmasını kullan
             if (activeQuestionData && activeQuestionData[category]) {
-                this.questions = this.shuffleArray([...activeQuestionData[category]]);
-                this.arrangeBlankFillingFirst();
-                console.log("Soru sayısı:", this.questions.length);
+                console.log(`🎯 Kategori seçildi: ${category}`);
                 console.log("Aktif dil:", this.currentLanguage);
                 
-                // Maksimum soru sayısını dinamik olarak hesapla
-                const maxSections = this.getMaxSectionsForCategory();
-                const maxQuestions = maxSections * 5; // Her bölümde 5 soru
-                
-                console.log(`Kategori: ${this.selectedCategory}`);
-                console.log(`Maksimum bölüm: ${maxSections}`);
-                console.log(`Maksimum soru: ${maxQuestions}`);
-                
-                if (this.questions.length > maxQuestions) {
-                    this.questions = this.questions.slice(0, maxQuestions);
-                    console.log("Sorular", maxQuestions, "ile sınırlandırıldı (dinamik sistem)");
-                } else if (this.questions.length < maxQuestions) {
-                    // Eğer yeterli soru yoksa mevcut soruları tekrarla
-                    const originalQuestions = [...this.questions];
-                    while (this.questions.length < maxQuestions) {
-                        this.questions = this.questions.concat(this.shuffleArray([...originalQuestions]));
-                    }
-                    this.questions = this.questions.slice(0, maxQuestions);
-                    console.log("Yetersiz soru! Sorular tekrarlanarak", maxQuestions, "soraya çıkarıldı");
-                }
-                
-                // Toplam puan göstergesini başlat
-                this.updateTotalScoreDisplay();
-                
-                // Oyunu başlat
-                this.startQuiz();
+                // Doğru soru seçim algoritmasını kullan
+                this.loadQuestionsForCategory(category);
             } else {
                 console.error("Kategori verileri bulunamadı:", category);
                 this.showToast(this.getTranslation('categoryLoadError') || "Seçilen kategoride soru bulunamadı. Lütfen başka bir kategori seçin.", "toast-error");
@@ -3565,6 +3539,12 @@ const quizApp = {
         
         console.log(`📊 Zorluk dağılımı - Kolay: ${easyQuestions.length}, Orta: ${mediumQuestions.length}, Zor: ${hardQuestions.length}`);
         
+        // Debug: İlk 5 sorunun zorluk seviyelerini kontrol et
+        console.log("🔍 İlk 5 sorunun zorluk seviyeleri:");
+        allCategoryQuestions.slice(0, 5).forEach((q, i) => {
+            console.log(`  Soru ${i+1}: "${q.question}" - Zorluk: ${q.difficulty || 'undefined'}`);
+        });
+        
         // İlk bölüm için SADECE KOLAY sorular
         let firstSectionQuestions = [];
         
@@ -3572,6 +3552,12 @@ const quizApp = {
         if (easyQuestions.length > 0) {
             firstSectionQuestions = this.shuffleArray([...easyQuestions]);
             console.log("✅ Oyun sadece kolay sorularla başlıyor! Kolay soru sayısı: " + easyQuestions.length);
+            
+            // Debug: Seçilen kolay soruları kontrol et
+            console.log("🔍 Seçilen kolay sorular:");
+            firstSectionQuestions.slice(0, 3).forEach((q, i) => {
+                console.log(`  Kolay Soru ${i+1}: "${q.question}" - Zorluk: ${q.difficulty}`);
+            });
         }
         // Kolay soru yoksa orta zorlukta soruları kullan
         else if (mediumQuestions.length > 0) {
@@ -3587,6 +3573,12 @@ const quizApp = {
         // İlk 10 soruyu seç
         this.questions = firstSectionQuestions.slice(0, 10);
         console.log(`📝 İlk bölüm için ${this.questions.length} soru seçildi.`);
+        
+        // Debug: Final seçilen soruların zorluk seviyelerini kontrol et
+        console.log("🔍 Final seçilen soruların zorluk seviyeleri:");
+        this.questions.forEach((q, i) => {
+            console.log(`  Final Soru ${i+1}: "${q.question}" - Zorluk: ${q.difficulty || 'undefined'}`);
+        });
         
         // Quiz ekranını göster ve ilk soruyu yükle
         this.startQuiz();
