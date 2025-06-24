@@ -172,7 +172,7 @@ body.quiz-active .mobile-top-banner {
 .ad-sidebar-left, .ad-sidebar-right {
     position: fixed;
     width: 320px !important;
-    min-width: 320px !important;
+    min-width: 320px !important;  
     height: 600px;
     top: 50%;
     transform: translateY(-50%);
