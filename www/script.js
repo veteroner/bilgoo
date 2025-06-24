@@ -3902,7 +3902,9 @@ const quizApp = {
                 const allOptions = [questionData.correctAnswer, ...wrongOptions];
                 this.displayOptions(this.shuffleArray(allOptions));
             } else {
-                this.displayOptions(displayOptions);
+                // Çoktan seçmeli soruların şıklarını karıştır (doğru cevap rastgele konumda olsun)
+                const shuffledOptions = this.shuffleArray([...displayOptions]);
+                this.displayOptions(shuffledOptions);
             }
         }
         
@@ -7146,8 +7148,16 @@ const quizApp = {
         
         try {
             // TAM SAYFA SONUÇ EKRANI İÇİN SAYFAYI TEMİZLE
-            // Body içeriğini tamamen siliyoruz!
-            document.body.innerHTML = '';
+            // Mevcut oyun elementlerini gizle
+            const quizContainer = document.getElementById('quiz-container');
+            if (quizContainer) quizContainer.style.display = 'none';
+            
+            const categorySelection = document.getElementById('category-selection');
+            if (categorySelection) categorySelection.style.display = 'none';
+            
+            // Mevcut result screen varsa kaldır
+            const existingResult = document.getElementById('fullscreen-result');
+            if (existingResult) existingResult.remove();
             
             // CLEAN SONUÇ EKRANI
             const resultScreen = document.createElement('div');
