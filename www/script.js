@@ -7427,10 +7427,16 @@ const quizApp = {
     
     // Ana menüyü göster
     showMainMenu: function() {
-        // Oyun ekranını gizle
-        const quizScreen = document.getElementById('quiz-screen');
-        if (quizScreen) {
-            quizScreen.style.display = 'none';
+        // Oyun ekranlarını gizle
+        const quizElement = document.getElementById('quiz');
+        if (quizElement) {
+            quizElement.style.display = 'none';
+        }
+        
+        // Kategori seçim ekranını da gizle
+        const categoryScreen = document.getElementById('category-screen');
+        if (categoryScreen) {
+            categoryScreen.style.display = 'none';
         }
         
         // Ana menüyü göster
@@ -7438,6 +7444,9 @@ const quizApp = {
         if (mainMenu) {
             mainMenu.style.display = 'block';
         }
+        
+        // Body'yi scroll'u etkinleştir (oyun sırasında kapatılmış olabilir)
+        document.body.style.overflow = '';
         
         // Oyun durumunu sıfırla
         this.score = 0;
@@ -7452,6 +7461,8 @@ const quizApp = {
         
         // Zamanlayıcıyı durdur
         this.stopTimer();
+        
+        console.log('Ana menüye dönüldü. Quiz gizlendi, ana menü gösterildi.');
     },
     
     // Sesi güvenli şekilde çal

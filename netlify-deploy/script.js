@@ -13938,8 +13938,10 @@ const quizApp = {
             `;
             
             mainMenuBtn.addEventListener('click', () => {
-                // Sayfay� yeniden y�kle ve ana sayfaya d�n
-                window.location.reload();
+                // Overlay'i kaldır ve ana sayfaya dön
+                resultScreen.remove();
+                // Ana menüyü göster
+                this.showMainMenu();
             });
             
             // Payla� butonu
@@ -14051,6 +14053,46 @@ const quizApp = {
         this.answerTimes = [];
         this.currentSection = 1;
         this.resetJokerUsage(); // Sadece kullan�m durumlar�n� s�f�rla, envanter korunsun
+    },
+    
+    // Ana menüyü göster
+    showMainMenu: function() {
+        // Oyun ekranlarını gizle
+        const quizElement = document.getElementById('quiz');
+        if (quizElement) {
+            quizElement.style.display = 'none';
+        }
+        
+        // Kategori seçim ekranını da gizle
+        const categoryScreen = document.getElementById('category-screen');
+        if (categoryScreen) {
+            categoryScreen.style.display = 'none';
+        }
+        
+        // Ana menüyü göster
+        const mainMenu = document.getElementById('main-menu');
+        if (mainMenu) {
+            mainMenu.style.display = 'block';
+        }
+        
+        // Body'yi scroll'u etkinleştir (oyun sırasında kapatılmış olabilir)
+        document.body.style.overflow = '';
+        
+        // Oyun durumunu sıfırla
+        this.score = 0;
+        this.currentQuestionIndex = 0;
+        this.answeredQuestions = 0;
+        this.answerTimes = [];
+        this.currentSection = 1;
+        this.resetJokerUsage();
+        
+        // Quiz modunu deaktifleştir
+        this.deactivateQuizMode();
+        
+        // Zamanlayıcıyı durdur
+        this.stopTimer();
+        
+        console.log('Ana menüye dönüldü. Quiz gizlendi, ana menü gösterildi.');
     },
     
     // Sesi g�venli �ekilde �al
