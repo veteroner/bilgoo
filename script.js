@@ -6688,10 +6688,10 @@ const quizApp = {
     
     // Cevabı kaydet - bölüm istatistiklerini takip etmek için
     recordAnswer: function(isCorrect) {
-        // Mevcut bölüm numarası (0-tabanlı)
-        const sectionIndex = Math.floor(this.currentQuestionIndex / 5);
+        // Mevcut bölüm numarası (0-tabanlı) - currentSection kullan
+        const sectionIndex = this.currentSection - 1; // currentSection 1'den başladığı için -1
         
-        console.log(`Cevap kaydediliyor: Soru: ${this.currentQuestionIndex+1}, Bölüm: ${sectionIndex+1}, Doğru mu: ${isCorrect}`);
+        console.log(`Cevap kaydediliyor: Soru: ${this.currentQuestionIndex+1}, Bölüm: ${this.currentSection}, Doğru mu: ${isCorrect}`);
         
         // Eğer bu bölüm için henüz istatistik oluşturulmadıysa, yeni oluştur
         if (!this.sectionStats[sectionIndex]) {
@@ -6706,7 +6706,7 @@ const quizApp = {
             this.sectionStats[sectionIndex].correct++;
         }
         
-        console.log(`Bölüm ${sectionIndex+1} istatistikleri güncellendi: Doğru: ${this.sectionStats[sectionIndex].correct}, Toplam: ${this.sectionStats[sectionIndex].total}`);
+        console.log(`Bölüm ${this.currentSection} istatistikleri güncellendi: Doğru: ${this.sectionStats[sectionIndex].correct}, Toplam: ${this.sectionStats[sectionIndex].total}`);
         console.log('Tüm bölüm istatistikleri:', JSON.stringify(this.sectionStats));
     },
     
