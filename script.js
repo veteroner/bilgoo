@@ -7211,29 +7211,19 @@ const quizApp = {
         }
         
         try {
-            // OVERLAY SONUÇ EKRANI (GÜVENLİ YAKLAŞIM)
-            // Body içeriğini silmek yerine overlay kullanıyoruz
+            // TAM SAYFA SONUÇ EKRANI İÇİN SAYFAYI TEMİZLE
+            // Body içeriğini tamamen siliyoruz!
+            document.body.innerHTML = '';
             
-            // Mevcut overlay'i temizle
-            const existingOverlay = document.getElementById('fullscreen-result-overlay');
-            if (existingOverlay) {
-                existingOverlay.remove();
-            }
-            
-            // OVERLAY CONTAINER
+            // CLEAN SONUÇ EKRANI
             const resultScreen = document.createElement('div');
-            resultScreen.id = 'fullscreen-result-overlay';
-            resultScreen.className = 'result-overlay';
+            resultScreen.id = 'fullscreen-result';
+            resultScreen.className = 'result-screen';
             
-            // Overlay CSS Stilleri
+            // CSS Stilleri
             resultScreen.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
                 background: linear-gradient(45deg, #4a148c, #e91e63);
-                z-index: 10000;
+                min-height: 100vh;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -7243,7 +7233,6 @@ const quizApp = {
                 color: white;
                 box-sizing: border-box;
                 text-align: center;
-                overflow-y: auto;
             `;
             
             // Dil seçimine göre başlık ve sonuç metinleri
@@ -7373,10 +7362,8 @@ const quizApp = {
             `;
             
             mainMenuBtn.addEventListener('click', () => {
-                // Overlay'i kaldır ve ana sayfaya dön
-                resultScreen.remove();
-                // Ana menüyü göster
-                this.showMainMenu();
+                // Sayfayı yeniden yükle ve ana sayfaya dön
+                window.location.reload();
             });
             
             // Paylaş butonu
@@ -7475,10 +7462,9 @@ const quizApp = {
             }
             
         } catch (error) {
-            console.error("Sonuç overlay'i oluşturulurken hata:", error);
+            console.error("Sonuç ekranı oluşturulurken hata:", error);
             alert("Sonuç ekranı oluşturulurken bir hata oluştu. Lütfen sayfayı yenileyiniz.");
-            // Hata durumunda ana menüyü göster
-            this.showMainMenu();
+            window.location.reload();
         }
         
         // Oyun durumunu sıfırla
@@ -7489,46 +7475,6 @@ const quizApp = {
         this.answerTimes = [];
         this.currentSection = 1;
         this.resetJokerUsage(); // Sadece kullanım durumlarını sıfırla, envanter korunsun
-    },
-    
-    // Ana menüyü göster
-    showMainMenu: function() {
-        // Oyun ekranlarını gizle
-        const quizElement = document.getElementById('quiz');
-        if (quizElement) {
-            quizElement.style.display = 'none';
-        }
-        
-        // Kategori seçim ekranını da gizle
-        const categoryScreen = document.getElementById('category-screen');
-        if (categoryScreen) {
-            categoryScreen.style.display = 'none';
-        }
-        
-        // Ana menüyü göster
-        const mainMenu = document.getElementById('main-menu');
-        if (mainMenu) {
-            mainMenu.style.display = 'block';
-        }
-        
-        // Body'yi scroll'u etkinleştir (oyun sırasında kapatılmış olabilir)
-        document.body.style.overflow = '';
-        
-        // Oyun durumunu sıfırla
-        this.score = 0;
-        this.currentQuestionIndex = 0;
-        this.answeredQuestions = 0;
-        this.answerTimes = [];
-        this.currentSection = 1;
-        this.resetJokerUsage();
-        
-        // Quiz modunu deaktifleştir
-        this.deactivateQuizMode();
-        
-        // Zamanlayıcıyı durdur
-        this.stopTimer();
-        
-        console.log('Ana menüye dönüldü. Quiz gizlendi, ana menü gösterildi.');
     },
     
     // Sesi güvenli şekilde çal
@@ -9461,7 +9407,7 @@ const quizApp = {
             }, 2000);
         });
     },
-
+    
     // Toplam puan göstergesini güncelle
     updateTotalScoreDisplay: function() {
         // Yeni sadeleştirilmiş puan gösterimi

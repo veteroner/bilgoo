@@ -1391,10 +1391,10 @@
     {
       "question": "Hangi felsefe akımının kurucusu Herakleitos'tur ve 'Her şey akar' ilkesi ile bilinir?",
       "options": [
-        "Sofist",
-        "Herakleitik",
         "Stoik",
-        "Dialektik"
+        "Dialektik",
+        "Herakleitik",
+        "Sofist"
       ],
       "correctAnswer": "Herakleitik",
       "difficulty": 3,
@@ -1424,10 +1424,10 @@
     {
       "question": "Kant'ın 'Kategorik İmperatif' kavramı hangi eserde detaylı olarak ele alınmıştır?",
       "options": [
-        "Yargı Gücünün Eleştirisi",
         "Saf Aklın Eleştirisi",
-        "Prolegomena",
-        "Pratik Aklın Eleştirisi"
+        "Pratik Aklın Eleştirisi",
+        "Yargı Gücünün Eleştirisi",
+        "Prolegomena"
       ],
       "correctAnswer": "Pratik Aklın Eleştirisi",
       "difficulty": 3,
@@ -1458,9 +1458,9 @@
       "question": "Antik Yunan'da 'Arete' kavramı neyi ifade eder?",
       "options": [
         "Erdem/Mükemmellik",
-        "Bilgelik",
+        "Adalet",
         "Cesaret",
-        "Adalet"
+        "Bilgelik"
       ],
       "correctAnswer": "Erdem/Mükemmellik",
       "difficulty": 3,
@@ -1490,8 +1490,8 @@
     {
       "question": "Hangi UNESCO Dünya Mirası alanı Türkiye'de bulunur ve 'peri bacaları' ile ünlüdür?",
       "options": [
-        "Kapadokya",
         "Pamukkale",
+        "Kapadokya",
         "Hierapolis",
         "Efes"
       ],
@@ -1523,10 +1523,10 @@
     {
       "question": "Fenomenolojinin kurucusu olan Edmund Husserl'in temel kavramı 'Epoché' neyi ifade eder?",
       "options": [
-        "Bilinç akışı",
-        "Intersubjektivite",
         "Paranteze alma",
-        "İntentionality"
+        "Bilinç akışı",
+        "İntentionality",
+        "Intersubjektivite"
       ],
       "correctAnswer": "Paranteze alma",
       "difficulty": 3,
@@ -1556,9 +1556,9 @@
     {
       "question": "Heidegger'in 'Dasein' kavramı hangi felsefi akımın temel konseptidir?",
       "options": [
-        "Hermenötik",
-        "Fenomenoloji",
         "Egzistansiyalizm",
+        "Fenomenoloji",
+        "Hermenötik",
         "Ontoloji"
       ],
       "correctAnswer": "Egzistansiyalizm",
@@ -1589,10 +1589,10 @@
     {
       "question": "Wittgenstein'ın 'Tractus Logico-Philosophicus' eserinin son önermesi nedir?",
       "options": [
-        "Logic is not a theory but a reflection",
-        "Philosophy is a battle against language",
         "Whereof one cannot speak, thereof one must be silent",
-        "The world is everything that is the case"
+        "The world is everything that is the case",
+        "Logic is not a theory but a reflection",
+        "Philosophy is a battle against language"
       ],
       "correctAnswer": "Whereof one cannot speak, thereof one must be silent",
       "difficulty": 3,
@@ -1622,10 +1622,10 @@
     {
       "question": "Simone de Beauvoir'ın 'İkinci Cins' eserinde kadının 'Öteki' olma durumu hangi kavramla açıklanır?",
       "options": [
-        "Authenticity",
         "Immanence",
         "Transcendence",
-        "Bad faith"
+        "Bad faith",
+        "Authenticity"
       ],
       "correctAnswer": "Immanence",
       "difficulty": 3,
@@ -1655,10 +1655,10 @@
     {
       "question": "Adorno ve Horkheimer'ın 'Aydınlanmanın Diyalektiği' eserinde eleştirilen 'araçsal akıl' kavramı neyi ifade eder?",
       "options": [
-        "Pozitivist bilim anlayışı",
-        "Kültür endüstrisi",
         "Aklın sadece araç olarak kullanılması",
-        "Teknolojik determinizm"
+        "Teknolojik determinizm",
+        "Kültür endüstrisi",
+        "Pozitivist bilim anlayışı"
       ],
       "correctAnswer": "Aklın sadece araç olarak kullanılması",
       "difficulty": 3,
@@ -1689,8 +1689,8 @@
       "question": "Nietzsche'nin 'Übermensch' kavramı hangi eserinde detaylı olarak ele alınmıştır?",
       "options": [
         "Böyle Söyledi Zerdüşt",
-        "Güç İstenci",
         "İyinin ve Kötünün Ötesinde",
+        "Güç İstenci",
         "Ahlakın Soykütüğü"
       ],
       "correctAnswer": "Böyle Söyledi Zerdüşt",
@@ -1699,10 +1699,10 @@
     {
       "question": "Derrida'nın 'Deconstruction' kavramının temelinde hangi felsefe yatar?",
       "options": [
-        "Egzistansiyalizm",
-        "Hermenötik",
+        "Yapısalcılık eleştirisi",
         "Fenomenoloji",
-        "Yapısalcılık eleştirisi"
+        "Hermenötik",
+        "Egzistansiyalizm"
       ],
       "correctAnswer": "Yapısalcılık eleştirisi",
       "difficulty": 3
@@ -1721,10 +1721,10 @@
     {
       "question": "Levinas'ın 'Öteki'nin Yüzü' kavramı hangi etik anlayışını temsil eder?",
       "options": [
-        "Deontolojik etik",
+        "Sonsuz sorumluluk etiği",
         "Faydacı etik",
-        "Erdem etiği",
-        "Sonsuz sorumluluk etiği"
+        "Deontolojik etik",
+        "Erdem etiği"
       ],
       "correctAnswer": "Sonsuz sorumluluk etiği",
       "difficulty": 3
@@ -1733,9 +1733,9 @@
       "question": "Benjamin'in 'Aura' kavramı sanat eserinin hangi özelliğini ifade eder?",
       "options": [
         "Teknik yeniden üretilemeyen özgünlük",
-        "Tarihsel önemi",
+        "Estetik değer",
         "Sanatsal ustalık",
-        "Estetik değer"
+        "Tarihsel önemi"
       ],
       "correctAnswer": "Teknik yeniden üretilemeyen özgünlük",
       "difficulty": 3
@@ -1743,10 +1743,10 @@
     {
       "question": "Habermas'ın 'İdeal Konuşma Durumu' teorisi hangi felsefe alanına aittir?",
       "options": [
-        "Fenomenoloji",
+        "İletişimsel eylem teorisi",
         "Sistem teorisi",
-        "Hermenötik",
-        "İletişimsel eylem teorisi"
+        "Fenomenoloji",
+        "Hermenötik"
       ],
       "correctAnswer": "İletişimsel eylem teorisi",
       "difficulty": 3
@@ -1756,8 +1756,8 @@
       "options": [
         "Anlama sürecindeki tarihsel diyalog",
         "Fenomenolojik indirgeme",
-        "Mantıksal analiz",
-        "Yapısal çözümleme"
+        "Yapısal çözümleme",
+        "Mantıksal analiz"
       ],
       "correctAnswer": "Anlama sürecindeki tarihsel diyalog",
       "difficulty": 3
@@ -1765,8 +1765,8 @@
     {
       "question": "Sartre'ın 'Kötü Niyet' kavramı insanın hangi durumunu açıklar?",
       "options": [
-        "Otantik olmama",
         "Özgürlüğünden kaçma",
+        "Otantik olmama",
         "Başkalarını aldatma",
         "Kendini aldatma"
       ],
@@ -2730,8 +2730,8 @@
     {
       "question": "Schrödinger denklemine göre, bir parçacığın dalga fonksiyonu Ψ(x,t) hangi fiziksel büyüklüğü temsil eder?",
       "options": [
-        "Enerji",
         "Olasılık yoğunluğu",
+        "Enerji",
         "Momentum",
         "Spin"
       ],
@@ -2763,10 +2763,10 @@
     {
       "question": "Hangisi bir amino asidin temel yapı taşlarından değildir?",
       "options": [
-        "Fosfat grubu (-PO4)",
-        "Karboksil grubu (-COOH)",
         "Amino grubu (-NH2)",
-        "R grubu (yan zincir)"
+        "Karboksil grubu (-COOH)",
+        "R grubu (yan zincir)",
+        "Fosfat grubu (-PO4)"
       ],
       "correctAnswer": "Fosfat grubu (-PO4)",
       "difficulty": 3,
@@ -2796,10 +2796,10 @@
     {
       "question": "Einstein'ın Genel Görelilik Teorisi'ne göre, uzay-zaman eğriliği neyin sonucudur?",
       "options": [
+        "Kütle ve enerji",
         "Işık hızı",
-        "Karanlık madde",
         "Graviton parçacıkları",
-        "Kütle ve enerji"
+        "Karanlık madde"
       ],
       "correctAnswer": "Kütle ve enerji",
       "difficulty": 3,
@@ -2829,10 +2829,10 @@
     {
       "question": "PCR (Polimeraz Zincir Reaksiyonu) sürecinde hangi enzim kullanılır?",
       "options": [
-        "Helikaz",
         "DNA Ligaz",
         "Taq Polimeraz",
-        "Reverse Transkriptaz"
+        "Reverse Transkriptaz",
+        "Helikaz"
       ],
       "correctAnswer": "Taq Polimeraz",
       "difficulty": 3,
@@ -2864,8 +2864,8 @@
       "options": [
         "Tamamen kesin",
         "Planck sabiti sınırı",
-        "Sonsuz kesinlik",
-        "Işık hızı sınırı"
+        "Işık hızı sınırı",
+        "Sonsuz kesinlik"
       ],
       "correctAnswer": "Planck sabiti sınırı",
       "difficulty": 3,
@@ -2895,10 +2895,10 @@
     {
       "question": "CRISPR-Cas9 gen düzenleme teknolojisinde 'PAM sequence' (Protospacer Adjacent Motif) ne işe yarar?",
       "options": [
-        "Hücre içine girişi kolaylaştırır",
+        "Cas9'un DNA'ya bağlanmasını sağlar",
         "Guide RNA'nın hedefi bulmasını sağlar",
         "DNA kesim yerini belirler",
-        "Cas9'un DNA'ya bağlanmasını sağlar"
+        "Hücre içine girişi kolaylaştırır"
       ],
       "correctAnswer": "Cas9'un DNA'ya bağlanmasını sağlar",
       "difficulty": 3,
@@ -2930,8 +2930,8 @@
       "options": [
         "Galaksi rotasyon eğrileri",
         "Cosmic microwave background",
-        "Supernova Type Ia",
-        "Gravitational lensing"
+        "Gravitational lensing",
+        "Supernova Type Ia"
       ],
       "correctAnswer": "Galaksi rotasyon eğrileri",
       "difficulty": 3,
@@ -2962,9 +2962,9 @@
       "question": "Protein folding sürecinde 'Levinthal Paradox' neyi ifade eder?",
       "options": [
         "Proteinlerin astronomik zaman alması gereken katlama süreci",
-        "Amino asit sırasının önemi",
         "Yanlış katlanmış proteinlerin birikimi",
-        "Şaperon proteinlerin gerekliliği"
+        "Şaperon proteinlerin gerekliliği",
+        "Amino asit sırasının önemi"
       ],
       "correctAnswer": "Proteinlerin astronomik zaman alması gereken katlama süreci",
       "difficulty": 3,
@@ -2994,10 +2994,10 @@
     {
       "question": "Thermodynamiğin ikinci yasasına göre entropi her zaman artar. Bu durumda canlı organizmalar nasıl düzen yaratabilir?",
       "options": [
-        "Enerji dönüşümü yapmayarak",
-        "Kapalı sistem olarak çalışarak",
         "Açık sistem olarak çevrelerine entropi ihraç ederek",
-        "Entropi yasasını ihlal ederek"
+        "Entropi yasasını ihlal ederek",
+        "Enerji dönüşümü yapmayarak",
+        "Kapalı sistem olarak çalışarak"
       ],
       "correctAnswer": "Açık sistem olarak çevrelerine entropi ihraç ederek",
       "difficulty": 3,
@@ -3027,8 +3027,8 @@
     {
       "question": "Higgs bozonunun keşfi neden Standart Model için kritikti?",
       "options": [
-        "Güçlü kuvveti açıkladı",
         "Kütle mekanizmasını doğruladı",
+        "Güçlü kuvveti açıkladı",
         "Antimaddeyi keşfetti",
         "Karanlık enerjiyi doğruladı"
       ],
@@ -3060,10 +3060,10 @@
     {
       "question": "Telomer enzimi hangi hücre tiplerinde aktiftir ve yaşlanmayı nasıl etkiler?",
       "options": [
-        "Sadece kas hücrelerinde - yaşlanmayı hızlandırır",
         "Kök hücre ve kanser hücrelerinde - yaşlanmayı durdurur",
         "Tüm hücrelerde - yaşlanmayı hızlandırır",
-        "Sadece sinir hücrelerinde - yaşlanmayı yavaşlatır"
+        "Sadece sinir hücrelerinde - yaşlanmayı yavaşlatır",
+        "Sadece kas hücrelerinde - yaşlanmayı hızlandırır"
       ],
       "correctAnswer": "Kök hücre ve kanser hücrelerinde - yaşlanmayı durdurur",
       "difficulty": 3
@@ -3071,10 +3071,10 @@
     {
       "question": "Quantum entanglement fenomeninde 'spooky action at a distance' terimi neyi ifade eder?",
       "options": [
-        "Elektromanyetik alan",
         "Anlık uzaktan korelasyon",
         "Işık hızında etkileşim",
-        "Gravitasyonel çekim"
+        "Gravitasyonel çekim",
+        "Elektromanyetik alan"
       ],
       "correctAnswer": "Anlık uzaktan korelasyon",
       "difficulty": 3
@@ -3094,8 +3094,8 @@
       "question": "Hawking radyasyonu teorisine göre kara delikler nasıl buharlaşır?",
       "options": [
         "Sanal parçacık çiftlerinin ayrılması",
-        "Enerji kaybı",
         "Gravitasyonel çöküş",
+        "Enerji kaybı",
         "Quantum tünelleme"
       ],
       "correctAnswer": "Sanal parçacık çiftlerinin ayrılması",
@@ -3105,9 +3105,9 @@
       "question": "Autophagy sürecinde 'ULK1 kompleksi' ne işe yarar?",
       "options": [
         "Autophagosome başlatma",
-        "Mitokondri temizliği",
+        "Lizozomal füzyon",
         "Protein degradasyonu",
-        "Lizozomal füzyon"
+        "Mitokondri temizliği"
       ],
       "correctAnswer": "Autophagosome başlatma",
       "difficulty": 3
@@ -3115,10 +3115,10 @@
     {
       "question": "String teorisinde 'Compactification' kavramı neyi açıklar?",
       "options": [
-        "Space-time curvature",
         "Extra boyutların küçülmesi",
+        "Parçacık oscillasyonu",
         "Quantum fluctuation",
-        "Parçacık oscillasyonu"
+        "Space-time curvature"
       ],
       "correctAnswer": "Extra boyutların küçülmesi",
       "difficulty": 3
@@ -3128,8 +3128,8 @@
       "options": [
         "Sitozin-Guanin yoğun bölgeler",
         "Protein kodlayan genler",
-        "Telomer uçları",
-        "Intron bölgeleri"
+        "Intron bölgeleri",
+        "Telomer uçları"
       ],
       "correctAnswer": "Sitozin-Guanin yoğun bölgeler",
       "difficulty": 3
@@ -3137,10 +3137,10 @@
     {
       "question": "Superconductivity'de 'Cooper pair' oluşumu hangi teoriyle açıklanır?",
       "options": [
-        "Relativity theory",
+        "BCS teorisi",
         "Quantum field theory",
-        "Statistical mechanics",
-        "BCS teorisi"
+        "Relativity theory",
+        "Statistical mechanics"
       ],
       "correctAnswer": "BCS teorisi",
       "difficulty": 3
@@ -4077,10 +4077,10 @@
     {
       "question": "Blockchain teknolojisinde 'Proof of Work' konsensüs mekanizması ilk olarak hangi kripto para biriminde kullanılmıştır?",
       "options": [
-        "Ripple",
-        "Litecoin",
         "Ethereum",
-        "Bitcoin"
+        "Bitcoin",
+        "Litecoin",
+        "Ripple"
       ],
       "correctAnswer": "Bitcoin",
       "difficulty": 3,
@@ -4110,10 +4110,10 @@
     {
       "question": "OSI 7 katman modelinde 'Session Layer' hangi katmandır ve neyi yönetir?",
       "options": [
+        "5. katman - Oturum yönetimi",
         "4. katman - Veri transferi",
         "6. katman - Veri şifreleme",
-        "3. katman - Yönlendirme",
-        "5. katman - Oturum yönetimi"
+        "3. katman - Yönlendirme"
       ],
       "correctAnswer": "5. katman - Oturum yönetimi",
       "difficulty": 3,
@@ -4143,8 +4143,8 @@
     {
       "question": "Quantum Computing'de 'Quantum Supremacy' terimi ne anlama gelir?",
       "options": [
-        "Kuantum parçacıkların süperposition hali",
         "Kuantum bilgisayarların klasik bilgisayarları geçmesi",
+        "Kuantum parçacıkların süperposition hali",
         "Qubit'lerin entanglement durumu",
         "Kuantum algoritmaların optimizasyonu"
       ],
@@ -4176,9 +4176,9 @@
     {
       "question": "RISC-V mimarisi neden açık kaynak dünyasında devrim yaratmıştır?",
       "options": [
-        "En düşük güç tüketimi",
         "Lisans gerektirmeyen açık ISA",
         "En hızlı işlemci mimarisi",
+        "En düşük güç tüketimi",
         "En küçük transistör boyutu"
       ],
       "correctAnswer": "Lisans gerektirmeyen açık ISA",
@@ -4210,8 +4210,8 @@
       "question": "Merkle Tree veri yapısı blockchain teknolojisinde hangi problemi çözer?",
       "options": [
         "Veri bütünlüğü doğrulama",
-        "Consensus algoritması",
         "Proof of Work hesaplama",
+        "Consensus algoritması",
         "Private key güvenliği"
       ],
       "correctAnswer": "Veri bütünlüğü doğrulama",
@@ -4242,10 +4242,10 @@
     {
       "question": "WebAssembly (WASM) teknolojisinin temel avantajı nedir?",
       "options": [
-        "Smaller file sizes",
-        "Better security",
         "Near-native performance web'de",
-        "JavaScript replacement"
+        "JavaScript replacement",
+        "Better security",
+        "Smaller file sizes"
       ],
       "correctAnswer": "Near-native performance web'de",
       "difficulty": 3,
@@ -4275,10 +4275,10 @@
     {
       "question": "Diffie-Hellman anahtar değişimi algoritmasının güvenliği hangi matematiksel probleme dayanır?",
       "options": [
-        "Elliptic Curve",
-        "Hash Function",
+        "Discrete Logarithm Problem",
         "Integer Factorization",
-        "Discrete Logarithm Problem"
+        "Elliptic Curve",
+        "Hash Function"
       ],
       "correctAnswer": "Discrete Logarithm Problem",
       "difficulty": 3,
@@ -4309,9 +4309,9 @@
       "question": "Kubernetes'te 'etcd' bileşeni ne işe yarar?",
       "options": [
         "Distributed key-value store",
-        "Service mesh",
+        "Container runtime",
         "Load balancer",
-        "Container runtime"
+        "Service mesh"
       ],
       "correctAnswer": "Distributed key-value store",
       "difficulty": 3,
@@ -4341,10 +4341,10 @@
     {
       "question": "Zero-Knowledge Proof sisteminde 'zk-SNARK' teknolojisinin temel avantajı nedir?",
       "options": [
+        "Succinct verification",
         "Quantum resistance",
-        "Perfect privacy",
         "Unlimited scalability",
-        "Succinct verification"
+        "Perfect privacy"
       ],
       "correctAnswer": "Succinct verification",
       "difficulty": 3
@@ -4352,10 +4352,10 @@
     {
       "question": "Homomorphic encryption hangi hesaplama türüne olanak sağlar?",
       "options": [
-        "Perfect forward secrecy",
-        "Secure multiparty computation",
+        "Şifreli veri üzerinde hesaplama",
         "Quantum key distribution",
-        "Şifreli veri üzerinde hesaplama"
+        "Perfect forward secrecy",
+        "Secure multiparty computation"
       ],
       "correctAnswer": "Şifreli veri üzerinde hesaplama",
       "difficulty": 3
@@ -4385,9 +4385,9 @@
     {
       "question": "TensorFlow'da 'Gradient Tape' mekanizması neyi sağlar?",
       "options": [
-        "Distributed training",
-        "Model compression",
         "Automatic differentiation",
+        "Model compression",
+        "Distributed training",
         "Hyperparameter tuning"
       ],
       "correctAnswer": "Automatic differentiation",
@@ -4396,9 +4396,9 @@
     {
       "question": "5G Network Slicing teknolojisi neyi mümkün kılar?",
       "options": [
-        "Latency azaltımı",
         "Sanal network izolasyonu",
         "Bandwidth artırımı",
+        "Latency azaltımı",
         "Coverage genişletme"
       ],
       "correctAnswer": "Sanal network izolasyonu",
@@ -4409,8 +4409,8 @@
       "options": [
         "3f+1 (f: faulty node)",
         "2f+1",
-        "4f+1",
-        "f+1"
+        "f+1",
+        "4f+1"
       ],
       "correctAnswer": "3f+1 (f: faulty node)",
       "difficulty": 3
@@ -5429,9 +5429,9 @@
       "question": "Olimpiyatlarda hangi spor dalında 'Perfect 10' skoru ilk kez Nadia Comăneci tarafından alınmıştır?",
       "options": [
         "Artistik jimnastik",
+        "Ritmik jimnastik",
         "Trampling",
-        "Aerobik jimnastik",
-        "Ritmik jimnastik"
+        "Aerobik jimnastik"
       ],
       "correctAnswer": "Artistik jimnastik",
       "difficulty": 3,
@@ -5461,10 +5461,10 @@
     {
       "question": "Formula 1'de hangi pilot en çok pole position rekoruna sahiptir?",
       "options": [
-        "Sebastian Vettel",
+        "Ayrton Senna",
         "Lewis Hamilton",
         "Michael Schumacher",
-        "Ayrton Senna"
+        "Sebastian Vettel"
       ],
       "correctAnswer": "Lewis Hamilton",
       "difficulty": 3,
@@ -5495,9 +5495,9 @@
       "question": "Hangi Türk sporcu Olimpiyatlarda altın madalya kazanan ilk kadın atletimizdir?",
       "options": [
         "Sureyya Ayhan",
+        "Elvan Abeylegesse",
         "Gamze Bulut",
-        "Yasemin Can",
-        "Elvan Abeylegesse"
+        "Yasemin Can"
       ],
       "correctAnswer": "Sureyya Ayhan",
       "difficulty": 3,
@@ -5527,10 +5527,10 @@
     {
       "question": "Chess'te 'Zugzwang' terimi neyi ifade eder?",
       "options": [
-        "Şahın tehdit altında olması",
         "Hamle yapma zorunluluğu dezavantajı",
-        "Rokada bulunma",
-        "Piyon terfi ettirme"
+        "Şahın tehdit altında olması",
+        "Piyon terfi ettirme",
+        "Rokada bulunma"
       ],
       "correctAnswer": "Hamle yapma zorunluluğu dezavantajı",
       "difficulty": 3,
@@ -5560,10 +5560,10 @@
     {
       "question": "Hangi Türk güreşçi, Olimpiyatlarda altın madalya kazanan ilk serbest stil güreşçimizdir?",
       "options": [
-        "Adil Atan",
-        "Hamit Kaplan",
         "Yaşar Doğu",
-        "Nasuh Akar"
+        "Nasuh Akar",
+        "Hamit Kaplan",
+        "Adil Atan"
       ],
       "correctAnswer": "Yaşar Doğu",
       "difficulty": 3,
@@ -5593,8 +5593,8 @@
     {
       "question": "Futbolda 'Offside trap' taktiği ilk kez hangi takım tarafından sistematik olarak kullanılmıştır?",
       "options": [
-        "Ajax (1970'ler)",
         "Arsenal (1980'ler)",
+        "Ajax (1970'ler)",
         "AC Milan (1990'lar)",
         "Barcelona (2000'ler)"
       ],
@@ -5626,10 +5626,10 @@
     {
       "question": "Tennis'te 'Grand Slam' terimini ilk kullanan kişi kimdir?",
       "options": [
-        "Bill Tilden",
-        "Jack Kramer",
         "Allison Danzig",
-        "Don Budge"
+        "Don Budge",
+        "Bill Tilden",
+        "Jack Kramer"
       ],
       "correctAnswer": "Allison Danzig",
       "difficulty": 3,
@@ -5660,8 +5660,8 @@
       "question": "Basketbolda 'Pick and Roll' taktiğinin mucidi kimdir?",
       "options": [
         "Red Auerbach",
-        "Phil Jackson",
         "John Wooden",
+        "Phil Jackson",
         "Gregg Popovich"
       ],
       "correctAnswer": "Red Auerbach",
@@ -5692,9 +5692,9 @@
     {
       "question": "Hangi Türk sporcu olimpiyatlarda ilk altın madalyayı kazanmıştır?",
       "options": [
+        "Yaşar Erkan (Güreş - 1936)",
         "Nasuh Akar (Güreş - 1928)",
         "Ahmet Kireççi (Halter - 1928)",
-        "Yaşar Erkan (Güreş - 1936)",
         "Mustafa Dağıstanlı (Güreş - 1956)"
       ],
       "correctAnswer": "Yaşar Erkan (Güreş - 1936)",
@@ -5703,9 +5703,9 @@
     {
       "question": "Futbolda 'Catenaccio' taktik sistemini geliştiren İtalyan koç kimdir?",
       "options": [
-        "Giovanni Trapattoni",
         "Helenio Herrera",
         "Nereo Rocco",
+        "Giovanni Trapattoni",
         "Arrigo Sacchi"
       ],
       "correctAnswer": "Helenio Herrera",
@@ -5714,9 +5714,9 @@
     {
       "question": "Tennis'te 'Golden Set' ne demektir?",
       "options": [
-        "Break point kurtarma",
         "6-0 skor ile set kazanma",
         "Hiç sayı kaybetmeden set kazanma",
+        "Break point kurtarma",
         "Consecutive ace servis"
       ],
       "correctAnswer": "Hiç sayı kaybetmeden set kazanma",
@@ -5726,9 +5726,9 @@
       "question": "Atletizmde 'Fosbury Flop' tekniği hangi branşta devrim yaratmıştır?",
       "options": [
         "Yüksek atlama",
-        "Üç adım atlama",
         "Sırıkla atlama",
-        "Uzun atlama"
+        "Uzun atlama",
+        "Üç adım atlama"
       ],
       "correctAnswer": "Yüksek atlama",
       "difficulty": 3
@@ -5736,8 +5736,8 @@
     {
       "question": "Golf'te 'Albatross' skoru neyi ifade eder?",
       "options": [
-        "Par'dan 2 vuruş az",
         "Par'dan 3 vuruş az",
+        "Par'dan 2 vuruş az",
         "Par'dan 1 vuruş az",
         "Hole-in-one"
       ],
@@ -5747,9 +5747,9 @@
     {
       "question": "Basketbolda 'Triangle Offense' sistemini mükemmelleştiren koç kimdir?",
       "options": [
-        "John Wooden",
-        "Red Auerbach",
         "Phil Jackson",
+        "Red Auerbach",
+        "John Wooden",
         "Pat Riley"
       ],
       "correctAnswer": "Phil Jackson",
@@ -5758,9 +5758,9 @@
     {
       "question": "Yüzmede 'Dolphin Kick' tekniği hangi stil için geliştirilmiştir?",
       "options": [
-        "Sırtüstü",
         "Kelebek",
         "Serbest",
+        "Sırtüstü",
         "Kurbağalama"
       ],
       "correctAnswer": "Kelebek",
@@ -6691,8 +6691,8 @@
       "question": "Bizans İmparatorluğu'nun son imparatoru Konstantinos XI Palaiologos hangi savaşta öldü?",
       "options": [
         "İstanbul'un Fethi (1453)",
-        "Ankara Savaşı (1402)",
         "Kosova Savaşı (1389)",
+        "Ankara Savaşı (1402)",
         "Varna Savaşı (1444)"
       ],
       "correctAnswer": "İstanbul'un Fethi (1453)",
@@ -6723,10 +6723,10 @@
     {
       "question": "Hangi antik medeniyette 'Cuneiform' (çivi yazısı) writing sistemi geliştirilmiştir?",
       "options": [
-        "Hitit",
         "Sümer",
-        "Pers",
-        "Mısır"
+        "Mısır",
+        "Hitit",
+        "Pers"
       ],
       "correctAnswer": "Sümer",
       "difficulty": 3,
@@ -6756,10 +6756,10 @@
     {
       "question": "Osmanlı İmparatorluğu'nda 'Tanzimat Fermanı' kim tarafından ve hangi yılda ilan edilmiştir?",
       "options": [
-        "Sultan Abdülaziz - 1861",
-        "Sultan Abdülhamit II - 1876",
+        "Sultan Abdülmecit - 1839",
         "Sultan Mahmut II - 1826",
-        "Sultan Abdülmecit - 1839"
+        "Sultan Abdülaziz - 1861",
+        "Sultan Abdülhamit II - 1876"
       ],
       "correctAnswer": "Sultan Abdülmecit - 1839",
       "difficulty": 3,
@@ -6789,10 +6789,10 @@
     {
       "question": "Hangi Roma İmparatoru Hristiyanlığı resmi din ilan etmiş ve Konstantinopolis'i kurmuştur?",
       "options": [
-        "Augustus",
+        "Konstantin I",
         "Theodosius I",
         "Diocletianus",
-        "Konstantin I"
+        "Augustus"
       ],
       "correctAnswer": "Konstantin I",
       "difficulty": 3,
@@ -6822,10 +6822,10 @@
     {
       "question": "Bizans İmparatorluğu'nda 'Ikonoklasm' (İkon Kırıcılık) dönemi hangi imparatorlar döneminde yaşanmıştır?",
       "options": [
-        "I. Konstantinos ve Theodora",
         "III. Leo ve V. Konstantinos",
-        "Basilios I ve II",
-        "I. Justinian ve II. Justinian"
+        "I. Justinian ve II. Justinian",
+        "I. Konstantinos ve Theodora",
+        "Basilios I ve II"
       ],
       "correctAnswer": "III. Leo ve V. Konstantinos",
       "difficulty": 3,
@@ -6855,10 +6855,10 @@
     {
       "question": "Osmanlı İmparatorluğu'nda 'Devşirme' sistemi hangi padişah döneminde kurumsal hale gelmiştir?",
       "options": [
-        "Orhan Gazi",
-        "I. Mehmed",
+        "I. Murad",
         "I. Bayezid",
-        "I. Murad"
+        "I. Mehmed",
+        "Orhan Gazi"
       ],
       "correctAnswer": "I. Murad",
       "difficulty": 3,
@@ -6888,10 +6888,10 @@
     {
       "question": "Moğol İmparatorluğu'nun 'Yassa' kanun sistemi kim tarafından oluşturulmuştur?",
       "options": [
-        "Kublai Han",
-        "Ögedei Han",
         "Cengiz Han",
-        "Möngke Han"
+        "Ögedei Han",
+        "Möngke Han",
+        "Kublai Han"
       ],
       "correctAnswer": "Cengiz Han",
       "difficulty": 3,
@@ -6922,9 +6922,9 @@
       "question": "Hangi antik medeniyette 'Hammurabi Kanunları' oluşturulmuş ve bu kanunların temel prensibi neydi?",
       "options": [
         "Babil - Talion Yasası (misilleme)",
-        "Hitit - Eşitlik yasası",
         "Sümer - Totem yasası",
-        "Asur - Hiyerarşi yasası"
+        "Asur - Hiyerarşi yasası",
+        "Hitit - Eşitlik yasası"
       ],
       "correctAnswer": "Babil - Talion Yasası (misilleme)",
       "difficulty": 3,
@@ -6955,9 +6955,9 @@
       "question": "Akkad İmparatorluğu'nun kurucusu Sargon hangi yıllarda yaşamıştır?",
       "options": [
         "M.Ö. 2334-2279",
-        "M.Ö. 2000-1900",
         "M.Ö. 2500-2400",
-        "M.Ö. 3000-2900"
+        "M.Ö. 3000-2900",
+        "M.Ö. 2000-1900"
       ],
       "correctAnswer": "M.Ö. 2334-2279",
       "difficulty": 3
@@ -6965,10 +6965,10 @@
     {
       "question": "Orta Çağ'da 'Investiture Controversy' hangi iki güç arasındaki çatışmayı ifade eder?",
       "options": [
-        "Kilise vs Üniversite",
-        "Feodal Lord vs Köylü",
+        "Papa vs Holy Roman Emperor",
         "Kral vs Parlamento",
-        "Papa vs Holy Roman Emperor"
+        "Kilise vs Üniversite",
+        "Feodal Lord vs Köylü"
       ],
       "correctAnswer": "Papa vs Holy Roman Emperor",
       "difficulty": 3
@@ -6976,10 +6976,10 @@
     {
       "question": "Abbasi Devleti'nde 'Beit-ül Hikme' (Bilgelik Evi) hangi halife döneminde kurulmuştur?",
       "options": [
-        "Mansur",
-        "Mehdi",
+        "Harun er-Reşid",
         "Memun",
-        "Harun er-Reşid"
+        "Mansur",
+        "Mehdi"
       ],
       "correctAnswer": "Harun er-Reşid",
       "difficulty": 3
@@ -6987,10 +6987,10 @@
     {
       "question": "Çin'de 'Mandate of Heaven' (Cennet Buyruğu) kavramı hangi hanedanlık döneminde geliştirilmiştir?",
       "options": [
+        "Zhou Hanedanlığı",
         "Shang Hanedanlığı",
-        "Han Hanedanlığı",
         "Qin Hanedanlığı",
-        "Zhou Hanedanlığı"
+        "Han Hanedanlığı"
       ],
       "correctAnswer": "Zhou Hanedanlığı",
       "difficulty": 3
@@ -6998,10 +6998,10 @@
     {
       "question": "Avrupa'da 'Peace of Westphalia' (1648) hangi savaşı sonlandırmıştır?",
       "options": [
+        "Otuz Yıl Savaşları",
         "Yüz Yıl Savaşları",
         "Yedi Yıl Savaşı",
-        "İspanyol Veraset Savaşı",
-        "Otuz Yıl Savaşları"
+        "İspanyol Veraset Savaşı"
       ],
       "correctAnswer": "Otuz Yıl Savaşları",
       "difficulty": 3
@@ -7009,10 +7009,10 @@
     {
       "question": "Maya medeniyetinde 'Long Count Calendar' sistemi hangi tarihte başlar?",
       "options": [
+        "M.Ö. 3114 (11 Ağustos)",
         "M.Ö. 3000 (1 Ocak)",
-        "M.Ö. 3500 (15 Mayıs)",
         "M.Ö. 2500 (21 Aralık)",
-        "M.Ö. 3114 (11 Ağustos)"
+        "M.Ö. 3500 (15 Mayıs)"
       ],
       "correctAnswer": "M.Ö. 3114 (11 Ağustos)",
       "difficulty": 3
@@ -7020,10 +7020,10 @@
     {
       "question": "Osmanlı'da 'Köprülü Ailesi' hangi dönemde sadrazamlık yapmıştır?",
       "options": [
-        "18. yüzyıl",
-        "15. yüzyıl",
         "17. yüzyıl ikinci yarısı",
-        "16. yüzyıl birinci yarısı"
+        "16. yüzyıl birinci yarısı",
+        "18. yüzyıl",
+        "15. yüzyıl"
       ],
       "correctAnswer": "17. yüzyıl ikinci yarısı",
       "difficulty": 3
@@ -8033,10 +8033,10 @@
     {
       "question": "Dünya'daki en derin okyanus çukuru olan Mariana Çukuru hangi okyanusta yer alır ve derinliği kaç metredir?",
       "options": [
+        "Pasifik - 11.034 m",
         "Atlantik - 9.219 m",
-        "Arktik - 5.502 m",
         "Hint - 8.047 m",
-        "Pasifik - 11.034 m"
+        "Arktik - 5.502 m"
       ],
       "correctAnswer": "Pasifik - 11.034 m",
       "difficulty": 3,
@@ -8099,10 +8099,10 @@
     {
       "question": "Dünya'nın en büyük tatlı su gölü olan Superior Gölü hangi iki ülke arasında yer alır?",
       "options": [
-        "Rusya - Kazakistan",
-        "Çin - Moğolistan",
         "ABD - Kanada",
-        "Brezilya - Arjantin"
+        "Rusya - Kazakistan",
+        "Brezilya - Arjantin",
+        "Çin - Moğolistan"
       ],
       "correctAnswer": "ABD - Kanada",
       "difficulty": 3,
@@ -8132,10 +8132,10 @@
     {
       "question": "Pangaea süperk continent ne zaman parçalanmaya başlamıştır?",
       "options": [
-        "300 milyon yıl önce",
         "200 milyon yıl önce",
-        "100 milyon yıl önce",
-        "150 milyon yıl önce"
+        "150 milyon yıl önce",
+        "300 milyon yıl önce",
+        "100 milyon yıl önce"
       ],
       "correctAnswer": "200 milyon yıl önce",
       "difficulty": 3,
@@ -8165,10 +8165,10 @@
     {
       "question": "Tektonic plakaların hareket yönlerini belirleyen 'Triple Junction' noktaları nerededir?",
       "options": [
-        "Transform fay hattı",
-        "Subdüksiyon zonu girişleri",
+        "Üç plağın kesiştiği noktalar",
         "Okyanus ortası sırtları",
-        "Üç plağın kesiştiği noktalar"
+        "Subdüksiyon zonu girişleri",
+        "Transform fay hattı"
       ],
       "correctAnswer": "Üç plağın kesiştiği noktalar",
       "difficulty": 3,
@@ -8198,8 +8198,8 @@
     {
       "question": "Antarktika'nın altında bulunan 'Lake Vostok' neden bilimsel açıdan önemlidir?",
       "options": [
-        "En derin tatlı su gölü",
         "Milyonlarca yıl izole olmuş ekosistem",
+        "En derin tatlı su gölü",
         "Petrol rezervleri",
         "Manyetik anomali"
       ],
@@ -8231,10 +8231,10 @@
     {
       "question": "Dünya'nın manyetik kutupları gerçek kutuplardan farklı konumlardadır. Manyetik kuzey kutbu şu anda hangi ülke yakınlarındadır?",
       "options": [
+        "Kanada",
         "Rusya",
-        "Alaska",
         "Grönland",
-        "Kanada"
+        "Alaska"
       ],
       "correctAnswer": "Kanada",
       "difficulty": 3,
@@ -8264,10 +8264,10 @@
     {
       "question": "Sahara Çölü'nün güneyindeki 'Sahel' bölgesi hangi iklim özelliği gösterir?",
       "options": [
-        "Step iklimi",
+        "Semi-arid geçiş kuşağı",
         "Tropikal yağmur ormanı",
         "Akdeniz iklimi",
-        "Semi-arid geçiş kuşağı"
+        "Step iklimi"
       ],
       "correctAnswer": "Semi-arid geçiş kuşağı",
       "difficulty": 3,
@@ -8297,10 +8297,10 @@
     {
       "question": "Dünya'nın en derin kara çukuru olan 'Bentley Subglacial Trench' nerede bulunur?",
       "options": [
+        "Antarktika",
         "Grönland",
-        "Alaska",
         "Sibirya",
-        "Antarktika"
+        "Alaska"
       ],
       "correctAnswer": "Antarktika",
       "difficulty": 3
@@ -8310,8 +8310,8 @@
       "options": [
         "Pasifik",
         "Atlantik",
-        "Arktik",
-        "Hint"
+        "Hint",
+        "Arktik"
       ],
       "correctAnswer": "Pasifik",
       "difficulty": 3
@@ -8319,10 +8319,10 @@
     {
       "question": "Atmosferde 'Ozone Hole' oluşumu hangi kimyasal bileşiklerden kaynaklanır?",
       "options": [
-        "NOx",
-        "CO2",
         "CFCs (Chlorofluorocarbons)",
-        "CH4"
+        "CO2",
+        "CH4",
+        "NOx"
       ],
       "correctAnswer": "CFCs (Chlorofluorocarbons)",
       "difficulty": 3
@@ -8330,10 +8330,10 @@
     {
       "question": "'Wallace Line' biogeografik sınır hangi iki biyom arasındadır?",
       "options": [
-        "Avrupa - Asya",
-        "Kuzey - Güney Amerika",
+        "Asya - Avustralya",
         "Afrika - Avrupa",
-        "Asya - Avustralya"
+        "Kuzey - Güney Amerika",
+        "Avrupa - Asya"
       ],
       "correctAnswer": "Asya - Avustralya",
       "difficulty": 3
@@ -8341,10 +8341,10 @@
     {
       "question": "Jeotermal enerji üretiminde dünya lideri ülke hangisidir?",
       "options": [
-        "ABD",
-        "İtalya",
+        "İzlanda",
         "Yeni Zelanda",
-        "İzlanda"
+        "İtalya",
+        "ABD"
       ],
       "correctAnswer": "İzlanda",
       "difficulty": 3
@@ -8352,8 +8352,8 @@
     {
       "question": "'Thermohaline Circulation' okyanuslarda neye bağlı olarak oluşur?",
       "options": [
-        "Rüzgar sistemleri",
         "Sıcaklık ve tuzluluk farkları",
+        "Rüzgar sistemleri",
         "Ay'ın çekim kuvveti",
         "Güneş radyasyonu"
       ],
@@ -8363,9 +8363,9 @@
     {
       "question": "Dünya'nın en büyük delta sistemi hangi nehirde bulunur?",
       "options": [
-        "Nil",
-        "Amazon",
         "Ganj-Brahmaputra",
+        "Amazon",
+        "Nil",
         "Mississippi"
       ],
       "correctAnswer": "Ganj-Brahmaputra",
@@ -8667,8 +8667,8 @@
       "question": "Bach'ın 'Die Kunst der Fuge' (Füg Sanatı) eseri hangi müzik formunda yazılmıştır?",
       "options": [
         "Kontrapunkt",
-        "Konçerto",
         "Sonat",
+        "Konçerto",
         "Senfoni"
       ],
       "correctAnswer": "Kontrapunkt",
@@ -8699,10 +8699,10 @@
     {
       "question": "Hangi besteci 'Twelve-tone technique' (12-ton sistemi) müzik teorisini geliştirmiştir?",
       "options": [
-        "Béla Bartók",
         "Arnold Schoenberg",
         "Igor Stravinsky",
-        "Claude Debussy"
+        "Claude Debussy",
+        "Béla Bartók"
       ],
       "correctAnswer": "Arnold Schoenberg",
       "difficulty": 3,
@@ -8732,10 +8732,10 @@
     {
       "question": "Türk müziğinde 'Rast makamı' hangi perde dizilimini kullanır?",
       "options": [
-        "Hüzzam-Dugah-Segah-Çargah-Neva-Hisar-Evç-Gerdaniye",
-        "Uşşak-Dugah-Kurdi-Çargah-Neva-Hüseyni-Acem-Gerdaniye",
+        "Rast-Dugah-Segah-Çargah-Neva-Hüseyni-Evç-Gerdaniye",
         "Hicaz-Dugah-Kurdi-Çargah-Neva-Uzzal-Saba-Gerdaniye",
-        "Rast-Dugah-Segah-Çargah-Neva-Hüseyni-Evç-Gerdaniye"
+        "Uşşak-Dugah-Kurdi-Çargah-Neva-Hüseyni-Acem-Gerdaniye",
+        "Hüzzam-Dugah-Segah-Çargah-Neva-Hisar-Evç-Gerdaniye"
       ],
       "correctAnswer": "Rast-Dugah-Segah-Çargah-Neva-Hüseyni-Evç-Gerdaniye",
       "difficulty": 3,
@@ -8766,9 +8766,9 @@
       "question": "Alban Berg'in 'Wozzeck' operası hangi kompozisyon tekniği ile yazılmıştır?",
       "options": [
         "Atonality",
+        "Twelve-tone",
         "Serialism",
-        "Minimalism",
-        "Twelve-tone"
+        "Minimalism"
       ],
       "correctAnswer": "Atonality",
       "difficulty": 3,
@@ -8798,10 +8798,10 @@
     {
       "question": "John Cage'in '4'33\"' eseri hangi konsepti temsil eder?",
       "options": [
-        "Hazır yapım sanat",
-        "Minimalist kompozisyon",
         "Sessizliğin müzik olması",
-        "Elektronik müzik"
+        "Minimalist kompozisyon",
+        "Elektronik müzik",
+        "Hazır yapım sanat"
       ],
       "correctAnswer": "Sessizliğin müzik olması",
       "difficulty": 3,
@@ -8831,10 +8831,10 @@
     {
       "question": "Türk müziğinde 'Usul' kavramı neyi ifade eder?",
       "options": [
-        "Çalgı tekniği",
-        "Makam sistemi",
         "Ritim kalıbı",
-        "Ses aralığı"
+        "Makam sistemi",
+        "Ses aralığı",
+        "Çalgı tekniği"
       ],
       "correctAnswer": "Ritim kalıbı",
       "difficulty": 3,
@@ -8865,9 +8865,9 @@
       "question": "Stockhausen'ın 'Elektronische Musik' akımındaki ilk eseri hangisidir?",
       "options": [
         "Studie I",
+        "Gesang der Jünglinge",
         "Kontakte",
-        "Mikrophonie I",
-        "Gesang der Jünglinge"
+        "Mikrophonie I"
       ],
       "correctAnswer": "Studie I",
       "difficulty": 3
@@ -8876,9 +8876,9 @@
       "question": "Türk müziğinde 'Peşrev' formu hangi makamsal yapıya sahiptir?",
       "options": [
         "Serbest ritmik yapı",
-        "Sabit usul",
         "Usulsüz form",
-        "Değişken makam"
+        "Değişken makam",
+        "Sabit usul"
       ],
       "correctAnswer": "Serbest ritmik yapı",
       "difficulty": 3
@@ -8886,10 +8886,10 @@
     {
       "question": "Cage'in hazırlıklı piyano tekniğinde ne tür objeler kullanılır?",
       "options": [
+        "Metal, lastik, kağıt",
         "Sadece metal",
-        "Sadece plastik",
         "Sadece ahşap",
-        "Metal, lastik, kağıt"
+        "Sadece plastik"
       ],
       "correctAnswer": "Metal, lastik, kağıt",
       "difficulty": 3
@@ -8897,10 +8897,10 @@
     {
       "question": "Bach'ın 'Goldberg Variations' kaç variasyondan oluşur?",
       "options": [
-        "48",
+        "30",
         "24",
-        "32",
-        "30"
+        "48",
+        "32"
       ],
       "correctAnswer": "30",
       "difficulty": 3
@@ -8908,8 +8908,8 @@
     {
       "question": "Spectral music akımının öncü bestecisi kimdir?",
       "options": [
-        "Pierre Boulez",
         "Gérard Grisey",
+        "Pierre Boulez",
         "Luigi Nono",
         "Karlheinz Stockhausen"
       ],
@@ -9390,9 +9390,9 @@
     {
       "question": "James Joyce'un 'Ulysses' romanında kullandığı anlatım tekniği hangisidir?",
       "options": [
+        "Bilinç akışı",
         "Objektif anlatım",
         "Çok bakış açılı anlatım",
-        "Bilinç akışı",
         "Epistoler anlatım"
       ],
       "correctAnswer": "Bilinç akışı",
@@ -9423,10 +9423,10 @@
     {
       "question": "Türk edebiyatında 'Garib-nâme' eseri kim tarafından yazılmıştır?",
       "options": [
-        "Mevlâna",
-        "Yunus Emre",
         "Âşık Paşa",
-        "Ahmed Yesevi"
+        "Yunus Emre",
+        "Ahmed Yesevi",
+        "Mevlâna"
       ],
       "correctAnswer": "Âşık Paşa",
       "difficulty": 3,
@@ -9457,9 +9457,9 @@
       "question": "Dante'nin 'Divina Commedia'sında hangi vezin kullanılmıştır?",
       "options": [
         "Terza rima",
+        "Sonnet",
         "Ottava rima",
-        "Blank verse",
-        "Sonnet"
+        "Blank verse"
       ],
       "correctAnswer": "Terza rima",
       "difficulty": 3,
@@ -9557,8 +9557,8 @@
       "options": [
         "Impressionistic narration",
         "Stream of consciousness",
-        "Free association",
-        "Interior monologue"
+        "Interior monologue",
+        "Free association"
       ],
       "correctAnswer": "Impressionistic narration",
       "difficulty": 3,
@@ -9589,9 +9589,9 @@
       "question": "Proust'un 'Kayıp Zamanın İzinde' eserinde 'Madeleine kurabiyesi' hangi kavramı temsil eder?",
       "options": [
         "Unwillkürliche Erinnerung",
-        "Tarihsel Bellek",
         "Bewusste Erinnerung",
-        "Kollektive Erinnerung"
+        "Kollektive Erinnerung",
+        "Tarihsel Bellek"
       ],
       "correctAnswer": "Unwillkürliche Erinnerung",
       "difficulty": 3
@@ -9599,10 +9599,10 @@
     {
       "question": "Calvino'nun 'Görünmeyen Şehirler' eserindeki anlatım tekniği hangisidir?",
       "options": [
-        "Nouveau roman",
-        "Stream of consciousness",
         "Meta-fictional narrative",
-        "Magical realism"
+        "Magical realism",
+        "Stream of consciousness",
+        "Nouveau roman"
       ],
       "correctAnswer": "Meta-fictional narrative",
       "difficulty": 3
@@ -9610,10 +9610,10 @@
     {
       "question": "Türk edebiyatında 'Divan-ı Kebir' eseri kime aittir?",
       "options": [
-        "Yunus Emre",
-        "Baki",
         "Mevlana",
-        "Fuzuli"
+        "Yunus Emre",
+        "Fuzuli",
+        "Baki"
       ],
       "correctAnswer": "Mevlana",
       "difficulty": 3
@@ -9621,10 +9621,10 @@
     {
       "question": "Bakhtin'in 'Polyphonic Novel' teorisi hangi yazarın eserlerinden geliştirilmiştir?",
       "options": [
-        "Gogol",
-        "Çehov",
         "Dostoyevski",
-        "Tolstoy"
+        "Tolstoy",
+        "Gogol",
+        "Çehov"
       ],
       "correctAnswer": "Dostoyevski",
       "difficulty": 3
@@ -9634,8 +9634,8 @@
       "options": [
         "Yüce güzellik korkusu",
         "Doğal güzellik",
-        "İdealist güzellik",
-        "Sanatsal mükemmellik"
+        "Sanatsal mükemmellik",
+        "İdealist güzellik"
       ],
       "correctAnswer": "Yüce güzellik korkusu",
       "difficulty": 3
@@ -9643,10 +9643,10 @@
     {
       "question": "Eco'nun 'Açık Yapıt' teorisi hangi estetik yaklaşımı savunur?",
       "options": [
-        "Metin merkezli anlam",
+        "Okuyucu merkezli anlam",
         "Yazar merkezli anlam",
-        "Tarihsel bağlam",
-        "Okuyucu merkezli anlam"
+        "Metin merkezli anlam",
+        "Tarihsel bağlam"
       ],
       "correctAnswer": "Okuyucu merkezli anlam",
       "difficulty": 3
