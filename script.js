@@ -6886,6 +6886,10 @@ const quizApp = {
         this.answeredQuestions++;
         const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
         this.addScore(scoreForQuestion);
+        
+        // Cevabı kaydet - İSTATİSTİKLER İÇİN ÖNEMLİ!
+        this.recordAnswer(true);
+        
         if (this.soundEnabled) {
             const correctSound = document.getElementById('sound-correct');
             if (correctSound) correctSound.play().catch(e => {});
@@ -6922,6 +6926,10 @@ const quizApp = {
         const timeSpent = this.TIME_PER_BLANK_FILLING_QUESTION - this.timeLeft;
         this.answerTimes.push(timeSpent);
         this.answeredQuestions++;
+        
+        // Cevabı kaydet - İSTATİSTİKLER İÇİN ÖNEMLİ!
+        this.recordAnswer(false);
+        
         if (this.soundEnabled) {
             const wrongSound = document.getElementById('sound-wrong');
             if (wrongSound) wrongSound.play().catch(e => {});
