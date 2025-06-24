@@ -1,4 +1,4 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 /* eslint-disable */
 // Bu dosya JavaScript'tir, TypeScript değildir.
 // Script Version 3.0 - Firebase puan kaydetme sistemi tamamlandı
@@ -3902,9 +3902,7 @@ const quizApp = {
                 const allOptions = [questionData.correctAnswer, ...wrongOptions];
                 this.displayOptions(this.shuffleArray(allOptions));
             } else {
-                // Çoktan seçmeli soruların şıklarını karıştır (doğru cevap rastgele konumda olsun)
-                const shuffledOptions = this.shuffleArray([...displayOptions]);
-                this.displayOptions(shuffledOptions);
+                this.displayOptions(displayOptions);
             }
         }
         
@@ -7147,27 +7145,29 @@ const quizApp = {
         }
         
         try {
-            // TAM SAYFA SONUÇ EKRANI İÇİN SAYFAYI TEMİZLE
-            // Mevcut oyun elementlerini gizle
-            const quizContainer = document.getElementById('quiz-container');
-            if (quizContainer) quizContainer.style.display = 'none';
+            // OVERLAY SONUÇ EKRANI (GÜVENLİ YAKLAŞIM)
+            // Body içeriğini silmek yerine overlay kullanıyoruz
             
-            const categorySelection = document.getElementById('category-selection');
-            if (categorySelection) categorySelection.style.display = 'none';
+            // Mevcut overlay'i temizle
+            const existingOverlay = document.getElementById('fullscreen-result-overlay');
+            if (existingOverlay) {
+                existingOverlay.remove();
+            }
             
-            // Mevcut result screen varsa kaldır
-            const existingResult = document.getElementById('fullscreen-result');
-            if (existingResult) existingResult.remove();
-            
-            // CLEAN SONUÇ EKRANI
+            // OVERLAY CONTAINER
             const resultScreen = document.createElement('div');
-            resultScreen.id = 'fullscreen-result';
-            resultScreen.className = 'result-screen';
+            resultScreen.id = 'fullscreen-result-overlay';
+            resultScreen.className = 'result-overlay';
             
-            // CSS Stilleri
+            // Overlay CSS Stilleri
             resultScreen.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
                 background: linear-gradient(45deg, #4a148c, #e91e63);
-                min-height: 100vh;
+                z-index: 10000;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -7177,6 +7177,7 @@ const quizApp = {
                 color: white;
                 box-sizing: border-box;
                 text-align: center;
+                overflow-y: auto;
             `;
             
             // Dil seçimine göre başlık ve sonuç metinleri
@@ -7306,8 +7307,10 @@ const quizApp = {
             `;
             
             mainMenuBtn.addEventListener('click', () => {
-                // Sayfayı yeniden yükle ve ana sayfaya dön
-                window.location.reload();
+                // Overlay'i kaldır ve ana sayfaya dön
+                resultScreen.remove();
+                // Ana menüyü göster
+                this.showMainMenu();
             });
             
             // Paylaş butonu
@@ -7406,9 +7409,10 @@ const quizApp = {
             }
             
         } catch (error) {
-            console.error("Sonuç ekranı oluşturulurken hata:", error);
+            console.error("Sonuç overlay'i oluşturulurken hata:", error);
             alert("Sonuç ekranı oluşturulurken bir hata oluştu. Lütfen sayfayı yenileyiniz.");
-            window.location.reload();
+            // Hata durumunda ana menüyü göster
+            this.showMainMenu();
         }
         
         // Oyun durumunu sıfırla
@@ -7419,6 +7423,35 @@ const quizApp = {
         this.answerTimes = [];
         this.currentSection = 1;
         this.resetJokerUsage(); // Sadece kullanım durumlarını sıfırla, envanter korunsun
+    },
+    
+    // Ana menüyü göster
+    showMainMenu: function() {
+        // Oyun ekranını gizle
+        const quizScreen = document.getElementById('quiz-screen');
+        if (quizScreen) {
+            quizScreen.style.display = 'none';
+        }
+        
+        // Ana menüyü göster
+        const mainMenu = document.getElementById('main-menu');
+        if (mainMenu) {
+            mainMenu.style.display = 'block';
+        }
+        
+        // Oyun durumunu sıfırla
+        this.score = 0;
+        this.currentQuestionIndex = 0;
+        this.answeredQuestions = 0;
+        this.answerTimes = [];
+        this.currentSection = 1;
+        this.resetJokerUsage();
+        
+        // Quiz modunu deaktifleştir
+        this.deactivateQuizMode();
+        
+        // Zamanlayıcıyı durdur
+        this.stopTimer();
     },
     
     // Sesi güvenli şekilde çal

@@ -1391,10 +1391,10 @@
     {
       "question": "Hangi felsefe akımının kurucusu Herakleitos'tur ve 'Her şey akar' ilkesi ile bilinir?",
       "options": [
-        "Stoik",
+        "Sofist",
         "Dialektik",
-        "Herakleitik",
-        "Sofist"
+        "Stoik",
+        "Herakleitik"
       ],
       "correctAnswer": "Herakleitik",
       "difficulty": 3,
@@ -1402,20 +1402,20 @@
         "en": {
           "question": "Which philosophical movement was founded by Heraclitus and is known for the principle 'everything flows'?",
           "options": [
-            "Stoic",
+            "Sophist",
             "Dialectic",
-            "Heraclitean",
-            "Sophist"
+            "Stoic",
+            "Heraclitean"
           ],
           "correctAnswer": "Heraclitean"
         },
         "de": {
           "question": "Welche philosophische Bewegung wurde von Heraklit gegründet und ist für das Prinzip 'alles fließt' bekannt?",
           "options": [
-            "Stoisch",
+            "Sophist",
             "Dialektisch",
-            "Heraklitisch",
-            "Sophist"
+            "Stoisch",
+            "Heraklitisch"
           ],
           "correctAnswer": "Heraklitisch"
         }
@@ -1424,8 +1424,8 @@
     {
       "question": "Kant'ın 'Kategorik İmperatif' kavramı hangi eserde detaylı olarak ele alınmıştır?",
       "options": [
-        "Saf Aklın Eleştirisi",
         "Pratik Aklın Eleştirisi",
+        "Saf Aklın Eleştirisi",
         "Yargı Gücünün Eleştirisi",
         "Prolegomena"
       ],
@@ -1435,8 +1435,8 @@
         "en": {
           "question": "In which work is Kant's concept of 'Categorical Imperative' discussed in detail?",
           "options": [
-            "Critique of Pure Reason",
             "Critique of Practical Reason",
+            "Critique of Pure Reason",
             "Critique of Judgment",
             "Prolegomena"
           ],
@@ -1445,8 +1445,8 @@
         "de": {
           "question": "In welchem Werk wird Kants Begriff des 'Kategorischen Imperativs' ausführlich behandelt?",
           "options": [
-            "Kritik der reinen Vernunft",
             "Kritik der praktischen Vernunft",
+            "Kritik der reinen Vernunft",
             "Kritik der Urteilskraft",
             "Prolegomena"
           ],
@@ -1457,8 +1457,8 @@
     {
       "question": "Antik Yunan'da 'Arete' kavramı neyi ifade eder?",
       "options": [
-        "Erdem/Mükemmellik",
         "Adalet",
+        "Erdem/Mükemmellik",
         "Cesaret",
         "Bilgelik"
       ],
@@ -1468,8 +1468,8 @@
         "en": {
           "question": "What does the concept of 'Arete' represent in Ancient Greece?",
           "options": [
-            "Virtue/Excellence",
             "Justice",
+            "Virtue/Excellence",
             "Courage",
             "Wisdom"
           ],
@@ -1478,8 +1478,8 @@
         "de": {
           "question": "Was stellt der Begriff 'Arete' im antiken Griechenland dar?",
           "options": [
-            "Tugend/Exzellenz",
             "Gerechtigkeit",
+            "Tugend/Exzellenz",
             "Mut",
             "Weisheit"
           ],
@@ -1490,9 +1490,9 @@
     {
       "question": "Hangi UNESCO Dünya Mirası alanı Türkiye'de bulunur ve 'peri bacaları' ile ünlüdür?",
       "options": [
-        "Pamukkale",
         "Kapadokya",
         "Hierapolis",
+        "Pamukkale",
         "Efes"
       ],
       "correctAnswer": "Kapadokya",
@@ -1501,9 +1501,9 @@
         "en": {
           "question": "Which UNESCO World Heritage site is located in Turkey and famous for 'fairy chimneys'?",
           "options": [
-            "Pamukkale",
             "Cappadocia",
             "Hierapolis",
+            "Pamukkale",
             "Ephesus"
           ],
           "correctAnswer": "Cappadocia"
@@ -1511,9 +1511,9 @@
         "de": {
           "question": "Welche UNESCO-Welterbestätte befindet sich in der Türkei und ist für 'Feenschornsteine' berühmt?",
           "options": [
-            "Pamukkale",
             "Kappadokien",
             "Hierapolis",
+            "Pamukkale",
             "Ephesus"
           ],
           "correctAnswer": "Kappadokien"
@@ -1523,8 +1523,8 @@
     {
       "question": "Fenomenolojinin kurucusu olan Edmund Husserl'in temel kavramı 'Epoché' neyi ifade eder?",
       "options": [
-        "Paranteze alma",
         "Bilinç akışı",
+        "Paranteze alma",
         "İntentionality",
         "Intersubjektivite"
       ],
@@ -1534,8 +1534,8 @@
         "en": {
           "question": "What does Edmund Husserl's fundamental concept 'Epoché' represent in phenomenology?",
           "options": [
-            "Bracketing",
             "Stream of consciousness",
+            "Bracketing",
             "Intentionality",
             "Intersubjectivity"
           ],
@@ -1544,8 +1544,8 @@
         "de": {
           "question": "Was stellt Edmund Husserls grundlegendes Konzept 'Epoché' in der Phänomenologie dar?",
           "options": [
-            "Einklammerung",
             "Bewusstseinsstrom",
+            "Einklammerung",
             "Intentionalität",
             "Intersubjektivität"
           ],
@@ -1556,9 +1556,9 @@
     {
       "question": "Heidegger'in 'Dasein' kavramı hangi felsefi akımın temel konseptidir?",
       "options": [
-        "Egzistansiyalizm",
-        "Fenomenoloji",
         "Hermenötik",
+        "Fenomenoloji",
+        "Egzistansiyalizm",
         "Ontoloji"
       ],
       "correctAnswer": "Egzistansiyalizm",
@@ -1567,9 +1567,9 @@
         "en": {
           "question": "Heidegger's concept of 'Dasein' is a fundamental concept of which philosophical movement?",
           "options": [
-            "Existentialism",
-            "Phenomenology",
             "Hermeneutics",
+            "Phenomenology",
+            "Existentialism",
             "Ontology"
           ],
           "correctAnswer": "Existentialism"
@@ -1577,9 +1577,9 @@
         "de": {
           "question": "Heideggers Begriff 'Dasein' ist ein Grundkonzept welcher philosophischen Bewegung?",
           "options": [
-            "Existentialismus",
-            "Phänomenologie",
             "Hermeneutik",
+            "Phänomenologie",
+            "Existentialismus",
             "Ontologie"
           ],
           "correctAnswer": "Existentialismus"
@@ -1622,10 +1622,10 @@
     {
       "question": "Simone de Beauvoir'ın 'İkinci Cins' eserinde kadının 'Öteki' olma durumu hangi kavramla açıklanır?",
       "options": [
-        "Immanence",
+        "Authenticity",
         "Transcendence",
         "Bad faith",
-        "Authenticity"
+        "Immanence"
       ],
       "correctAnswer": "Immanence",
       "difficulty": 3,
@@ -1633,20 +1633,20 @@
         "en": {
           "question": "In Simone de Beauvoir's 'The Second Sex', the woman's condition of being 'the Other' is explained by which concept?",
           "options": [
-            "Immanence",
+            "Authenticity",
             "Transcendence",
             "Bad faith",
-            "Authenticity"
+            "Immanence"
           ],
           "correctAnswer": "Immanence"
         },
         "de": {
           "question": "In Simone de Beauvoirs 'Das andere Geschlecht' wird die Bedingung der Frau, 'die Andere' zu sein, durch welches Konzept erklärt?",
           "options": [
-            "Immanenz",
+            "Authentizität",
             "Transzendenz",
             "Schlechter Glaube",
-            "Authentizität"
+            "Immanenz"
           ],
           "correctAnswer": "Immanenz"
         }
@@ -1699,10 +1699,10 @@
     {
       "question": "Derrida'nın 'Deconstruction' kavramının temelinde hangi felsefe yatar?",
       "options": [
-        "Yapısalcılık eleştirisi",
         "Fenomenoloji",
+        "Egzistansiyalizm",
         "Hermenötik",
-        "Egzistansiyalizm"
+        "Yapısalcılık eleştirisi"
       ],
       "correctAnswer": "Yapısalcılık eleştirisi",
       "difficulty": 3
@@ -1710,10 +1710,10 @@
     {
       "question": "Foucault'nun 'Panopticon' kavramı hangi sosyal kontrol mekanizmasını açıklar?",
       "options": [
-        "Sürekli gözetim disiplini",
-        "Hapishane reformu",
         "Eğitim sistemi",
-        "Sağlık politikaları"
+        "Hapishane reformu",
+        "Sağlık politikaları",
+        "Sürekli gözetim disiplini"
       ],
       "correctAnswer": "Sürekli gözetim disiplini",
       "difficulty": 3
@@ -1732,10 +1732,10 @@
     {
       "question": "Benjamin'in 'Aura' kavramı sanat eserinin hangi özelliğini ifade eder?",
       "options": [
-        "Teknik yeniden üretilemeyen özgünlük",
+        "Tarihsel önemi",
         "Estetik değer",
-        "Sanatsal ustalık",
-        "Tarihsel önemi"
+        "Teknik yeniden üretilemeyen özgünlük",
+        "Sanatsal ustalık"
       ],
       "correctAnswer": "Teknik yeniden üretilemeyen özgünlük",
       "difficulty": 3
@@ -1743,8 +1743,8 @@
     {
       "question": "Habermas'ın 'İdeal Konuşma Durumu' teorisi hangi felsefe alanına aittir?",
       "options": [
-        "İletişimsel eylem teorisi",
         "Sistem teorisi",
+        "İletişimsel eylem teorisi",
         "Fenomenoloji",
         "Hermenötik"
       ],
@@ -1754,10 +1754,10 @@
     {
       "question": "Gadamer'in 'Ufukların Kaynaşması' kavramı neyi ifade eder?",
       "options": [
+        "Mantıksal analiz",
         "Anlama sürecindeki tarihsel diyalog",
-        "Fenomenolojik indirgeme",
         "Yapısal çözümleme",
-        "Mantıksal analiz"
+        "Fenomenolojik indirgeme"
       ],
       "correctAnswer": "Anlama sürecindeki tarihsel diyalog",
       "difficulty": 3
@@ -1765,10 +1765,10 @@
     {
       "question": "Sartre'ın 'Kötü Niyet' kavramı insanın hangi durumunu açıklar?",
       "options": [
-        "Özgürlüğünden kaçma",
+        "Kendini aldatma",
         "Otantik olmama",
         "Başkalarını aldatma",
-        "Kendini aldatma"
+        "Özgürlüğünden kaçma"
       ],
       "correctAnswer": "Özgürlüğünden kaçma",
       "difficulty": 3
@@ -2730,10 +2730,10 @@
     {
       "question": "Schrödinger denklemine göre, bir parçacığın dalga fonksiyonu Ψ(x,t) hangi fiziksel büyüklüğü temsil eder?",
       "options": [
-        "Olasılık yoğunluğu",
+        "Spin",
         "Enerji",
-        "Momentum",
-        "Spin"
+        "Olasılık yoğunluğu",
+        "Momentum"
       ],
       "correctAnswer": "Olasılık yoğunluğu",
       "difficulty": 3,
@@ -2741,20 +2741,20 @@
         "en": {
           "question": "According to Schrödinger's equation, what physical quantity does the wave function Ψ(x,t) represent?",
           "options": [
-            "Probability density",
+            "Spin",
             "Energy",
-            "Momentum",
-            "Spin"
+            "Probability density",
+            "Momentum"
           ],
           "correctAnswer": "Probability density"
         },
         "de": {
           "question": "Welche physikalische Größe repräsentiert die Wellenfunktion Ψ(x,t) nach der Schrödinger-Gleichung?",
           "options": [
-            "Wahrscheinlichkeitsdichte",
+            "Spin",
             "Energie",
-            "Impuls",
-            "Spin"
+            "Wahrscheinlichkeitsdichte",
+            "Impuls"
           ],
           "correctAnswer": "Wahrscheinlichkeitsdichte"
         }
@@ -2764,9 +2764,9 @@
       "question": "Hangisi bir amino asidin temel yapı taşlarından değildir?",
       "options": [
         "Amino grubu (-NH2)",
+        "Fosfat grubu (-PO4)",
         "Karboksil grubu (-COOH)",
-        "R grubu (yan zincir)",
-        "Fosfat grubu (-PO4)"
+        "R grubu (yan zincir)"
       ],
       "correctAnswer": "Fosfat grubu (-PO4)",
       "difficulty": 3,
@@ -2775,9 +2775,9 @@
           "question": "Which is not a basic structural component of an amino acid?",
           "options": [
             "Amino group (-NH2)",
+            "Phosphate group (-PO4)",
             "Carboxyl group (-COOH)",
-            "R group (side chain)",
-            "Phosphate group (-PO4)"
+            "R group (side chain)"
           ],
           "correctAnswer": "Phosphate group (-PO4)"
         },
@@ -2785,9 +2785,9 @@
           "question": "Was ist kein grundlegender Strukturbestandteil einer Aminosäure?",
           "options": [
             "Aminogruppe (-NH2)",
+            "Phosphatgruppe (-PO4)",
             "Carboxylgruppe (-COOH)",
-            "R-Gruppe (Seitenkette)",
-            "Phosphatgruppe (-PO4)"
+            "R-Gruppe (Seitenkette)"
           ],
           "correctAnswer": "Phosphatgruppe (-PO4)"
         }
@@ -2796,10 +2796,10 @@
     {
       "question": "Einstein'ın Genel Görelilik Teorisi'ne göre, uzay-zaman eğriliği neyin sonucudur?",
       "options": [
-        "Kütle ve enerji",
-        "Işık hızı",
         "Graviton parçacıkları",
-        "Karanlık madde"
+        "Işık hızı",
+        "Karanlık madde",
+        "Kütle ve enerji"
       ],
       "correctAnswer": "Kütle ve enerji",
       "difficulty": 3,
@@ -2807,20 +2807,20 @@
         "en": {
           "question": "According to Einstein's General Theory of Relativity, space-time curvature is the result of what?",
           "options": [
-            "Mass and energy",
-            "Speed of light",
             "Graviton particles",
-            "Dark matter"
+            "Speed of light",
+            "Dark matter",
+            "Mass and energy"
           ],
           "correctAnswer": "Mass and energy"
         },
         "de": {
           "question": "Was ist nach Einsteins Allgemeiner Relativitätstheorie die Ursache der Raumzeit-Krümmung?",
           "options": [
-            "Masse und Energie",
-            "Lichtgeschwindigkeit",
             "Graviton-Teilchen",
-            "Dunkle Materie"
+            "Lichtgeschwindigkeit",
+            "Dunkle Materie",
+            "Masse und Energie"
           ],
           "correctAnswer": "Masse und Energie"
         }
@@ -2863,8 +2863,8 @@
       "question": "Heisenberg Belirsizlik İlkesi'ne göre, bir parçacığın konumu ve momentumu aynı anda ne kadar kesin ölçülebilir?",
       "options": [
         "Tamamen kesin",
-        "Planck sabiti sınırı",
         "Işık hızı sınırı",
+        "Planck sabiti sınırı",
         "Sonsuz kesinlik"
       ],
       "correctAnswer": "Planck sabiti sınırı",
@@ -2874,8 +2874,8 @@
           "question": "According to Heisenberg's Uncertainty Principle, how precisely can a particle's position and momentum be measured simultaneously?",
           "options": [
             "Completely precise",
-            "Planck constant limit",
             "Speed of light limit",
+            "Planck constant limit",
             "Infinite precision"
           ],
           "correctAnswer": "Planck constant limit"
@@ -2884,8 +2884,8 @@
           "question": "Wie genau können Position und Impuls eines Teilchens nach Heisenbergs Unschärferelation gleichzeitig gemessen werden?",
           "options": [
             "Völlig genau",
-            "Planck-Konstanten-Grenze",
             "Lichtgeschwindigkeits-Grenze",
+            "Planck-Konstanten-Grenze",
             "Unendliche Genauigkeit"
           ],
           "correctAnswer": "Planck-Konstanten-Grenze"
@@ -2895,9 +2895,9 @@
     {
       "question": "CRISPR-Cas9 gen düzenleme teknolojisinde 'PAM sequence' (Protospacer Adjacent Motif) ne işe yarar?",
       "options": [
+        "DNA kesim yerini belirler",
         "Cas9'un DNA'ya bağlanmasını sağlar",
         "Guide RNA'nın hedefi bulmasını sağlar",
-        "DNA kesim yerini belirler",
         "Hücre içine girişi kolaylaştırır"
       ],
       "correctAnswer": "Cas9'un DNA'ya bağlanmasını sağlar",
@@ -2906,9 +2906,9 @@
         "en": {
           "question": "What is the function of 'PAM sequence' (Protospacer Adjacent Motif) in CRISPR-Cas9 gene editing technology?",
           "options": [
+            "Determines DNA cutting site",
             "Enables Cas9 binding to DNA",
             "Helps guide RNA find the target",
-            "Determines DNA cutting site",
             "Facilitates cellular entry"
           ],
           "correctAnswer": "Enables Cas9 binding to DNA"
@@ -2916,9 +2916,9 @@
         "de": {
           "question": "Was ist die Funktion der 'PAM-Sequenz' (Protospacer Adjacent Motif) in der CRISPR-Cas9-Genbearbeitungstechnologie?",
           "options": [
+            "Bestimmt DNA-Schnittstelle",
             "Ermöglicht Cas9-Bindung an DNA",
             "Hilft guide RNA das Ziel zu finden",
-            "Bestimmt DNA-Schnittstelle",
             "Erleichtert zelluläre Aufnahme"
           ],
           "correctAnswer": "Ermöglicht Cas9-Bindung an DNA"
@@ -2928,9 +2928,9 @@
     {
       "question": "Karanlık maddenin varlığını gösteren ilk astronomik kanıt hangisidir?",
       "options": [
-        "Galaksi rotasyon eğrileri",
-        "Cosmic microwave background",
         "Gravitational lensing",
+        "Cosmic microwave background",
+        "Galaksi rotasyon eğrileri",
         "Supernova Type Ia"
       ],
       "correctAnswer": "Galaksi rotasyon eğrileri",
@@ -2939,9 +2939,9 @@
         "en": {
           "question": "What was the first astronomical evidence for the existence of dark matter?",
           "options": [
-            "Galaxy rotation curves",
-            "Cosmic microwave background",
             "Gravitational lensing",
+            "Cosmic microwave background",
+            "Galaxy rotation curves",
             "Supernova Type Ia"
           ],
           "correctAnswer": "Galaxy rotation curves"
@@ -2949,9 +2949,9 @@
         "de": {
           "question": "Was war der erste astronomische Beweis für die Existenz dunkler Materie?",
           "options": [
-            "Galaxienrotationskurven",
-            "Kosmische Mikrowellenhintergrundstrahlung",
             "Gravitationslinseneffekt",
+            "Kosmische Mikrowellenhintergrundstrahlung",
+            "Galaxienrotationskurven",
             "Supernova Typ Ia"
           ],
           "correctAnswer": "Galaxienrotationskurven"
@@ -2961,8 +2961,8 @@
     {
       "question": "Protein folding sürecinde 'Levinthal Paradox' neyi ifade eder?",
       "options": [
-        "Proteinlerin astronomik zaman alması gereken katlama süreci",
         "Yanlış katlanmış proteinlerin birikimi",
+        "Proteinlerin astronomik zaman alması gereken katlama süreci",
         "Şaperon proteinlerin gerekliliği",
         "Amino asit sırasının önemi"
       ],
@@ -2972,8 +2972,8 @@
         "en": {
           "question": "What does the 'Levinthal Paradox' refer to in protein folding?",
           "options": [
-            "Astronomical time proteins should take to fold",
             "Accumulation of misfolded proteins",
+            "Astronomical time proteins should take to fold",
             "Necessity of chaperone proteins",
             "Importance of amino acid sequence"
           ],
@@ -2982,8 +2982,8 @@
         "de": {
           "question": "Was bezeichnet das 'Levinthal-Paradox' bei der Proteinfaltung?",
           "options": [
-            "Astronomische Zeit, die Proteine zum Falten brauchen sollten",
             "Ansammlung fehlgefalteter Proteine",
+            "Astronomische Zeit, die Proteine zum Falten brauchen sollten",
             "Notwendigkeit von Chaperon-Proteinen",
             "Wichtigkeit der Aminosäuresequenz"
           ],
@@ -2994,10 +2994,10 @@
     {
       "question": "Thermodynamiğin ikinci yasasına göre entropi her zaman artar. Bu durumda canlı organizmalar nasıl düzen yaratabilir?",
       "options": [
+        "Kapalı sistem olarak çalışarak",
         "Açık sistem olarak çevrelerine entropi ihraç ederek",
-        "Entropi yasasını ihlal ederek",
         "Enerji dönüşümü yapmayarak",
-        "Kapalı sistem olarak çalışarak"
+        "Entropi yasasını ihlal ederek"
       ],
       "correctAnswer": "Açık sistem olarak çevrelerine entropi ihraç ederek",
       "difficulty": 3,
@@ -3005,20 +3005,20 @@
         "en": {
           "question": "According to the second law of thermodynamics, entropy always increases. How can living organisms create order?",
           "options": [
+            "By working as closed systems",
             "By exporting entropy to their environment as open systems",
-            "By violating the entropy law",
             "By not performing energy conversion",
-            "By working as closed systems"
+            "By violating the entropy law"
           ],
           "correctAnswer": "By exporting entropy to their environment as open systems"
         },
         "de": {
           "question": "Nach dem zweiten Hauptsatz der Thermodynamik nimmt die Entropie immer zu. Wie können lebende Organismen Ordnung schaffen?",
           "options": [
+            "Durch Arbeiten als geschlossene Systeme",
             "Durch Export von Entropie in ihre Umgebung als offene Systeme",
-            "Durch Verletzung des Entropie-Gesetzes",
             "Durch Vermeidung von Energieumwandlung",
-            "Durch Arbeiten als geschlossene Systeme"
+            "Durch Verletzung des Entropie-Gesetzes"
           ],
           "correctAnswer": "Durch Export von Entropie in ihre Umgebung als offene Systeme"
         }
@@ -3027,10 +3027,10 @@
     {
       "question": "Higgs bozonunun keşfi neden Standart Model için kritikti?",
       "options": [
-        "Kütle mekanizmasını doğruladı",
+        "Karanlık enerjiyi doğruladı",
         "Güçlü kuvveti açıkladı",
         "Antimaddeyi keşfetti",
-        "Karanlık enerjiyi doğruladı"
+        "Kütle mekanizmasını doğruladı"
       ],
       "correctAnswer": "Kütle mekanizmasını doğruladı",
       "difficulty": 3,
@@ -3038,20 +3038,20 @@
         "en": {
           "question": "Why was the discovery of the Higgs boson critical for the Standard Model?",
           "options": [
-            "It confirmed the mass mechanism",
+            "It confirmed dark energy",
             "It explained the strong force",
             "It discovered antimatter",
-            "It confirmed dark energy"
+            "It confirmed the mass mechanism"
           ],
           "correctAnswer": "It confirmed the mass mechanism"
         },
         "de": {
           "question": "Warum war die Entdeckung des Higgs-Bosons für das Standardmodell kritisch?",
           "options": [
-            "Es bestätigte den Massenmechanismus",
+            "Es bestätigte dunkle Energie",
             "Es erklärte die starke Kraft",
             "Es entdeckte Antimaterie",
-            "Es bestätigte dunkle Energie"
+            "Es bestätigte den Massenmechanismus"
           ],
           "correctAnswer": "Es bestätigte den Massenmechanismus"
         }
@@ -3060,8 +3060,8 @@
     {
       "question": "Telomer enzimi hangi hücre tiplerinde aktiftir ve yaşlanmayı nasıl etkiler?",
       "options": [
-        "Kök hücre ve kanser hücrelerinde - yaşlanmayı durdurur",
         "Tüm hücrelerde - yaşlanmayı hızlandırır",
+        "Kök hücre ve kanser hücrelerinde - yaşlanmayı durdurur",
         "Sadece sinir hücrelerinde - yaşlanmayı yavaşlatır",
         "Sadece kas hücrelerinde - yaşlanmayı hızlandırır"
       ],
@@ -3071,10 +3071,10 @@
     {
       "question": "Quantum entanglement fenomeninde 'spooky action at a distance' terimi neyi ifade eder?",
       "options": [
+        "Elektromanyetik alan",
         "Anlık uzaktan korelasyon",
-        "Işık hızında etkileşim",
         "Gravitasyonel çekim",
-        "Elektromanyetik alan"
+        "Işık hızında etkileşim"
       ],
       "correctAnswer": "Anlık uzaktan korelasyon",
       "difficulty": 3
@@ -3082,9 +3082,9 @@
     {
       "question": "BRCA1 ve BRCA2 genleri hangi DNA tamiri mekanizmasında rol oynar?",
       "options": [
-        "Homologous recombination",
         "Non-homologous end joining",
         "Base excision repair",
+        "Homologous recombination",
         "Nucleotide excision repair"
       ],
       "correctAnswer": "Homologous recombination",
@@ -3093,10 +3093,10 @@
     {
       "question": "Hawking radyasyonu teorisine göre kara delikler nasıl buharlaşır?",
       "options": [
-        "Sanal parçacık çiftlerinin ayrılması",
+        "Quantum tünelleme",
         "Gravitasyonel çöküş",
         "Enerji kaybı",
-        "Quantum tünelleme"
+        "Sanal parçacık çiftlerinin ayrılması"
       ],
       "correctAnswer": "Sanal parçacık çiftlerinin ayrılması",
       "difficulty": 3
@@ -3104,10 +3104,10 @@
     {
       "question": "Autophagy sürecinde 'ULK1 kompleksi' ne işe yarar?",
       "options": [
-        "Autophagosome başlatma",
+        "Mitokondri temizliği",
         "Lizozomal füzyon",
         "Protein degradasyonu",
-        "Mitokondri temizliği"
+        "Autophagosome başlatma"
       ],
       "correctAnswer": "Autophagosome başlatma",
       "difficulty": 3
@@ -3126,10 +3126,10 @@
     {
       "question": "Epigenetik modifikasyonlarda 'CpG island' nedir?",
       "options": [
-        "Sitozin-Guanin yoğun bölgeler",
-        "Protein kodlayan genler",
         "Intron bölgeleri",
-        "Telomer uçları"
+        "Protein kodlayan genler",
+        "Telomer uçları",
+        "Sitozin-Guanin yoğun bölgeler"
       ],
       "correctAnswer": "Sitozin-Guanin yoğun bölgeler",
       "difficulty": 3
@@ -3137,9 +3137,9 @@
     {
       "question": "Superconductivity'de 'Cooper pair' oluşumu hangi teoriyle açıklanır?",
       "options": [
-        "BCS teorisi",
         "Quantum field theory",
         "Relativity theory",
+        "BCS teorisi",
         "Statistical mechanics"
       ],
       "correctAnswer": "BCS teorisi",
@@ -4077,8 +4077,8 @@
     {
       "question": "Blockchain teknolojisinde 'Proof of Work' konsensüs mekanizması ilk olarak hangi kripto para biriminde kullanılmıştır?",
       "options": [
-        "Ethereum",
         "Bitcoin",
+        "Ethereum",
         "Litecoin",
         "Ripple"
       ],
@@ -4088,8 +4088,8 @@
         "en": {
           "question": "In which cryptocurrency was the 'Proof of Work' consensus mechanism first used in blockchain technology?",
           "options": [
-            "Ethereum",
             "Bitcoin",
+            "Ethereum",
             "Litecoin",
             "Ripple"
           ],
@@ -4098,8 +4098,8 @@
         "de": {
           "question": "In welcher Kryptowährung wurde der 'Proof of Work' Konsensmechanismus erstmals in der Blockchain-Technologie verwendet?",
           "options": [
-            "Ethereum",
             "Bitcoin",
+            "Ethereum",
             "Litecoin",
             "Ripple"
           ],
@@ -4110,9 +4110,9 @@
     {
       "question": "OSI 7 katman modelinde 'Session Layer' hangi katmandır ve neyi yönetir?",
       "options": [
+        "6. katman - Veri şifreleme",
         "5. katman - Oturum yönetimi",
         "4. katman - Veri transferi",
-        "6. katman - Veri şifreleme",
         "3. katman - Yönlendirme"
       ],
       "correctAnswer": "5. katman - Oturum yönetimi",
@@ -4121,9 +4121,9 @@
         "en": {
           "question": "In the OSI 7-layer model, which layer is the 'Session Layer' and what does it manage?",
           "options": [
+            "6th layer - Data encryption",
             "5th layer - Session management",
             "4th layer - Data transfer",
-            "6th layer - Data encryption",
             "3rd layer - Routing"
           ],
           "correctAnswer": "5th layer - Session management"
@@ -4131,9 +4131,9 @@
         "de": {
           "question": "Welche Schicht ist die 'Session Layer' im OSI 7-Schichten-Modell und was verwaltet sie?",
           "options": [
+            "6. Schicht - Datenverschlüsselung",
             "5. Schicht - Session-Verwaltung",
             "4. Schicht - Datenübertragung",
-            "6. Schicht - Datenverschlüsselung",
             "3. Schicht - Routing"
           ],
           "correctAnswer": "5. Schicht - Session-Verwaltung"
@@ -4143,10 +4143,10 @@
     {
       "question": "Quantum Computing'de 'Quantum Supremacy' terimi ne anlama gelir?",
       "options": [
-        "Kuantum bilgisayarların klasik bilgisayarları geçmesi",
+        "Kuantum algoritmaların optimizasyonu",
         "Kuantum parçacıkların süperposition hali",
         "Qubit'lerin entanglement durumu",
-        "Kuantum algoritmaların optimizasyonu"
+        "Kuantum bilgisayarların klasik bilgisayarları geçmesi"
       ],
       "correctAnswer": "Kuantum bilgisayarların klasik bilgisayarları geçmesi",
       "difficulty": 3,
@@ -4154,20 +4154,20 @@
         "en": {
           "question": "What does the term 'Quantum Supremacy' mean in Quantum Computing?",
           "options": [
-            "Quantum computers surpassing classical computers",
+            "Optimization of quantum algorithms",
             "Superposition state of quantum particles",
             "Entanglement state of qubits",
-            "Optimization of quantum algorithms"
+            "Quantum computers surpassing classical computers"
           ],
           "correctAnswer": "Quantum computers surpassing classical computers"
         },
         "de": {
           "question": "Was bedeutet der Begriff 'Quantum Supremacy' im Quantum Computing?",
           "options": [
-            "Quantencomputer übertreffen klassische Computer",
+            "Optimierung von Quantenalgorithmen",
             "Superposition-Zustand von Quantenteilchen",
             "Verschränkungszustand von Qubits",
-            "Optimierung von Quantenalgorithmen"
+            "Quantencomputer übertreffen klassische Computer"
           ],
           "correctAnswer": "Quantencomputer übertreffen klassische Computer"
         }
@@ -4176,10 +4176,10 @@
     {
       "question": "RISC-V mimarisi neden açık kaynak dünyasında devrim yaratmıştır?",
       "options": [
-        "Lisans gerektirmeyen açık ISA",
+        "En küçük transistör boyutu",
         "En hızlı işlemci mimarisi",
         "En düşük güç tüketimi",
-        "En küçük transistör boyutu"
+        "Lisans gerektirmeyen açık ISA"
       ],
       "correctAnswer": "Lisans gerektirmeyen açık ISA",
       "difficulty": 3,
@@ -4187,20 +4187,20 @@
         "en": {
           "question": "Why has RISC-V architecture revolutionized the open source world?",
           "options": [
-            "Open ISA requiring no license",
+            "Smallest transistor size",
             "Fastest processor architecture",
             "Lowest power consumption",
-            "Smallest transistor size"
+            "Open ISA requiring no license"
           ],
           "correctAnswer": "Open ISA requiring no license"
         },
         "de": {
           "question": "Warum hat die RISC-V-Architektur die Open-Source-Welt revolutioniert?",
           "options": [
-            "Offene ISA ohne Lizenzanforderung",
+            "Kleinste Transistorgröße",
             "Schnellste Prozessorarchitektur",
             "Niedrigster Stromverbrauch",
-            "Kleinste Transistorgröße"
+            "Offene ISA ohne Lizenzanforderung"
           ],
           "correctAnswer": "Offene ISA ohne Lizenzanforderung"
         }
@@ -4209,10 +4209,10 @@
     {
       "question": "Merkle Tree veri yapısı blockchain teknolojisinde hangi problemi çözer?",
       "options": [
-        "Veri bütünlüğü doğrulama",
-        "Proof of Work hesaplama",
         "Consensus algoritması",
-        "Private key güvenliği"
+        "Proof of Work hesaplama",
+        "Private key güvenliği",
+        "Veri bütünlüğü doğrulama"
       ],
       "correctAnswer": "Veri bütünlüğü doğrulama",
       "difficulty": 3,
@@ -4220,20 +4220,20 @@
         "en": {
           "question": "What problem does the Merkle Tree data structure solve in blockchain technology?",
           "options": [
-            "Data integrity verification",
-            "Proof of Work calculation",
             "Consensus algorithm",
-            "Private key security"
+            "Proof of Work calculation",
+            "Private key security",
+            "Data integrity verification"
           ],
           "correctAnswer": "Data integrity verification"
         },
         "de": {
           "question": "Welches Problem löst die Merkle-Tree-Datenstruktur in der Blockchain-Technologie?",
           "options": [
-            "Datenintegritätsverifikation",
-            "Proof-of-Work-Berechnung",
             "Konsens-Algorithmus",
-            "Private-Key-Sicherheit"
+            "Proof-of-Work-Berechnung",
+            "Private-Key-Sicherheit",
+            "Datenintegritätsverifikation"
           ],
           "correctAnswer": "Datenintegritätsverifikation"
         }
@@ -4275,8 +4275,8 @@
     {
       "question": "Diffie-Hellman anahtar değişimi algoritmasının güvenliği hangi matematiksel probleme dayanır?",
       "options": [
-        "Discrete Logarithm Problem",
         "Integer Factorization",
+        "Discrete Logarithm Problem",
         "Elliptic Curve",
         "Hash Function"
       ],
@@ -4286,8 +4286,8 @@
         "en": {
           "question": "The security of the Diffie-Hellman key exchange algorithm is based on which mathematical problem?",
           "options": [
-            "Discrete Logarithm Problem",
             "Integer Factorization",
+            "Discrete Logarithm Problem",
             "Elliptic Curve",
             "Hash Function"
           ],
@@ -4296,8 +4296,8 @@
         "de": {
           "question": "Die Sicherheit des Diffie-Hellman-Schlüsselaustauschalgorithmus basiert auf welchem mathematischen Problem?",
           "options": [
-            "Diskretes Logarithmus-Problem",
             "Ganzzahlfaktorisierung",
+            "Diskretes Logarithmus-Problem",
             "Elliptische Kurve",
             "Hash-Funktion"
           ],
@@ -4308,9 +4308,9 @@
     {
       "question": "Kubernetes'te 'etcd' bileşeni ne işe yarar?",
       "options": [
-        "Distributed key-value store",
-        "Container runtime",
         "Load balancer",
+        "Container runtime",
+        "Distributed key-value store",
         "Service mesh"
       ],
       "correctAnswer": "Distributed key-value store",
@@ -4319,9 +4319,9 @@
         "en": {
           "question": "What is the function of the 'etcd' component in Kubernetes?",
           "options": [
-            "Distributed key-value store",
-            "Container runtime",
             "Load balancer",
+            "Container runtime",
+            "Distributed key-value store",
             "Service mesh"
           ],
           "correctAnswer": "Distributed key-value store"
@@ -4329,9 +4329,9 @@
         "de": {
           "question": "Was ist die Funktion der 'etcd'-Komponente in Kubernetes?",
           "options": [
-            "Verteilter Schlüssel-Wert-Speicher",
-            "Container-Laufzeit",
             "Load Balancer",
+            "Container-Laufzeit",
+            "Verteilter Schlüssel-Wert-Speicher",
             "Service Mesh"
           ],
           "correctAnswer": "Verteilter Schlüssel-Wert-Speicher"
@@ -4341,10 +4341,10 @@
     {
       "question": "Zero-Knowledge Proof sisteminde 'zk-SNARK' teknolojisinin temel avantajı nedir?",
       "options": [
-        "Succinct verification",
-        "Quantum resistance",
         "Unlimited scalability",
-        "Perfect privacy"
+        "Quantum resistance",
+        "Perfect privacy",
+        "Succinct verification"
       ],
       "correctAnswer": "Succinct verification",
       "difficulty": 3
@@ -4352,9 +4352,9 @@
     {
       "question": "Homomorphic encryption hangi hesaplama türüne olanak sağlar?",
       "options": [
-        "Şifreli veri üzerinde hesaplama",
         "Quantum key distribution",
         "Perfect forward secrecy",
+        "Şifreli veri üzerinde hesaplama",
         "Secure multiparty computation"
       ],
       "correctAnswer": "Şifreli veri üzerinde hesaplama",
@@ -4363,10 +4363,10 @@
     {
       "question": "Apache Spark'ta 'RDD (Resilient Distributed Dataset)' neden fault-tolerant'tır?",
       "options": [
-        "Lineage graph sayesinde",
+        "Backup storage",
         "Replication mechanism",
         "Checkpointing",
-        "Backup storage"
+        "Lineage graph sayesinde"
       ],
       "correctAnswer": "Lineage graph sayesinde",
       "difficulty": 3
@@ -4374,10 +4374,10 @@
     {
       "question": "Microservices mimarisinde 'Circuit Breaker Pattern' hangi problemi çözer?",
       "options": [
-        "Cascade failure prevention",
+        "Data consistency",
         "Load balancing",
         "Service discovery",
-        "Data consistency"
+        "Cascade failure prevention"
       ],
       "correctAnswer": "Cascade failure prevention",
       "difficulty": 3
@@ -4396,10 +4396,10 @@
     {
       "question": "5G Network Slicing teknolojisi neyi mümkün kılar?",
       "options": [
+        "Coverage genişletme",
         "Sanal network izolasyonu",
-        "Bandwidth artırımı",
         "Latency azaltımı",
-        "Coverage genişletme"
+        "Bandwidth artırımı"
       ],
       "correctAnswer": "Sanal network izolasyonu",
       "difficulty": 3
@@ -5428,10 +5428,10 @@
     {
       "question": "Olimpiyatlarda hangi spor dalında 'Perfect 10' skoru ilk kez Nadia Comăneci tarafından alınmıştır?",
       "options": [
-        "Artistik jimnastik",
+        "Aerobik jimnastik",
         "Ritmik jimnastik",
         "Trampling",
-        "Aerobik jimnastik"
+        "Artistik jimnastik"
       ],
       "correctAnswer": "Artistik jimnastik",
       "difficulty": 3,
@@ -5439,20 +5439,20 @@
         "en": {
           "question": "In which sport did Nadia Comăneci first receive a 'Perfect 10' score at the Olympics?",
           "options": [
-            "Artistic gymnastics",
+            "Aerobic gymnastics",
             "Rhythmic gymnastics",
             "Trampolining",
-            "Aerobic gymnastics"
+            "Artistic gymnastics"
           ],
           "correctAnswer": "Artistic gymnastics"
         },
         "de": {
           "question": "In welcher Sportart erhielt Nadia Comăneci bei den Olympischen Spielen erstmals eine 'Perfect 10'-Bewertung?",
           "options": [
-            "Kunstturnen",
+            "Aerobic-Gymnastik",
             "Rhythmische Gymnastik",
             "Trampolinturnen",
-            "Aerobic-Gymnastik"
+            "Kunstturnen"
           ],
           "correctAnswer": "Kunstturnen"
         }
@@ -5462,8 +5462,8 @@
       "question": "Formula 1'de hangi pilot en çok pole position rekoruna sahiptir?",
       "options": [
         "Ayrton Senna",
-        "Lewis Hamilton",
         "Michael Schumacher",
+        "Lewis Hamilton",
         "Sebastian Vettel"
       ],
       "correctAnswer": "Lewis Hamilton",
@@ -5473,8 +5473,8 @@
           "question": "Which driver holds the record for most pole positions in Formula 1?",
           "options": [
             "Ayrton Senna",
-            "Lewis Hamilton",
             "Michael Schumacher",
+            "Lewis Hamilton",
             "Sebastian Vettel"
           ],
           "correctAnswer": "Lewis Hamilton"
@@ -5483,8 +5483,8 @@
           "question": "Welcher Fahrer hält den Rekord für die meisten Pole-Positionen in der Formel 1?",
           "options": [
             "Ayrton Senna",
-            "Lewis Hamilton",
             "Michael Schumacher",
+            "Lewis Hamilton",
             "Sebastian Vettel"
           ],
           "correctAnswer": "Lewis Hamilton"
@@ -5494,8 +5494,8 @@
     {
       "question": "Hangi Türk sporcu Olimpiyatlarda altın madalya kazanan ilk kadın atletimizdir?",
       "options": [
-        "Sureyya Ayhan",
         "Elvan Abeylegesse",
+        "Sureyya Ayhan",
         "Gamze Bulut",
         "Yasemin Can"
       ],
@@ -5505,8 +5505,8 @@
         "en": {
           "question": "Which Turkish athlete was the first Turkish woman to win an Olympic gold medal in athletics?",
           "options": [
-            "Sureyya Ayhan",
             "Elvan Abeylegesse",
+            "Sureyya Ayhan",
             "Gamze Bulut",
             "Yasemin Can"
           ],
@@ -5515,8 +5515,8 @@
         "de": {
           "question": "Welche türkische Athletin war die erste türkische Frau, die eine olympische Goldmedaille in der Leichtathletik gewann?",
           "options": [
-            "Sureyya Ayhan",
             "Elvan Abeylegesse",
+            "Sureyya Ayhan",
             "Gamze Bulut",
             "Yasemin Can"
           ],
@@ -5527,10 +5527,10 @@
     {
       "question": "Chess'te 'Zugzwang' terimi neyi ifade eder?",
       "options": [
-        "Hamle yapma zorunluluğu dezavantajı",
-        "Şahın tehdit altında olması",
         "Piyon terfi ettirme",
-        "Rokada bulunma"
+        "Şahın tehdit altında olması",
+        "Rokada bulunma",
+        "Hamle yapma zorunluluğu dezavantajı"
       ],
       "correctAnswer": "Hamle yapma zorunluluğu dezavantajı",
       "difficulty": 3,
@@ -5538,20 +5538,20 @@
         "en": {
           "question": "What does the term 'Zugzwang' mean in chess?",
           "options": [
-            "Disadvantage of being compelled to move",
-            "King being under threat",
             "Pawn promotion",
-            "Castling"
+            "King being under threat",
+            "Castling",
+            "Disadvantage of being compelled to move"
           ],
           "correctAnswer": "Disadvantage of being compelled to move"
         },
         "de": {
           "question": "Was bedeutet der Begriff 'Zugzwang' im Schach?",
           "options": [
-            "Nachteil des Zugzwangs",
-            "König unter Bedrohung",
             "Bauernumwandlung",
-            "Rochade"
+            "König unter Bedrohung",
+            "Rochade",
+            "Nachteil des Zugzwangs"
           ],
           "correctAnswer": "Nachteil des Zugzwangs"
         }
@@ -5626,10 +5626,10 @@
     {
       "question": "Tennis'te 'Grand Slam' terimini ilk kullanan kişi kimdir?",
       "options": [
-        "Allison Danzig",
+        "Jack Kramer",
         "Don Budge",
-        "Bill Tilden",
-        "Jack Kramer"
+        "Allison Danzig",
+        "Bill Tilden"
       ],
       "correctAnswer": "Allison Danzig",
       "difficulty": 3,
@@ -5637,20 +5637,20 @@
         "en": {
           "question": "Who first used the term 'Grand Slam' in tennis?",
           "options": [
-            "Allison Danzig",
+            "Jack Kramer",
             "Don Budge",
-            "Bill Tilden",
-            "Jack Kramer"
+            "Allison Danzig",
+            "Bill Tilden"
           ],
           "correctAnswer": "Allison Danzig"
         },
         "de": {
           "question": "Wer verwendete den Begriff 'Grand Slam' im Tennis zum ersten Mal?",
           "options": [
-            "Allison Danzig",
+            "Jack Kramer",
             "Don Budge",
-            "Bill Tilden",
-            "Jack Kramer"
+            "Allison Danzig",
+            "Bill Tilden"
           ],
           "correctAnswer": "Allison Danzig"
         }
@@ -5659,9 +5659,9 @@
     {
       "question": "Basketbolda 'Pick and Roll' taktiğinin mucidi kimdir?",
       "options": [
+        "Phil Jackson",
         "Red Auerbach",
         "John Wooden",
-        "Phil Jackson",
         "Gregg Popovich"
       ],
       "correctAnswer": "Red Auerbach",
@@ -5670,9 +5670,9 @@
         "en": {
           "question": "Who is the inventor of the 'Pick and Roll' tactic in basketball?",
           "options": [
+            "Phil Jackson",
             "Red Auerbach",
             "John Wooden",
-            "Phil Jackson",
             "Gregg Popovich"
           ],
           "correctAnswer": "Red Auerbach"
@@ -5680,9 +5680,9 @@
         "de": {
           "question": "Wer ist der Erfinder der 'Pick and Roll' Taktik im Basketball?",
           "options": [
+            "Phil Jackson",
             "Red Auerbach",
             "John Wooden",
-            "Phil Jackson",
             "Gregg Popovich"
           ],
           "correctAnswer": "Red Auerbach"
@@ -5692,9 +5692,9 @@
     {
       "question": "Hangi Türk sporcu olimpiyatlarda ilk altın madalyayı kazanmıştır?",
       "options": [
-        "Yaşar Erkan (Güreş - 1936)",
-        "Nasuh Akar (Güreş - 1928)",
         "Ahmet Kireççi (Halter - 1928)",
+        "Nasuh Akar (Güreş - 1928)",
+        "Yaşar Erkan (Güreş - 1936)",
         "Mustafa Dağıstanlı (Güreş - 1956)"
       ],
       "correctAnswer": "Yaşar Erkan (Güreş - 1936)",
@@ -5703,10 +5703,10 @@
     {
       "question": "Futbolda 'Catenaccio' taktik sistemini geliştiren İtalyan koç kimdir?",
       "options": [
+        "Arrigo Sacchi",
         "Helenio Herrera",
-        "Nereo Rocco",
         "Giovanni Trapattoni",
-        "Arrigo Sacchi"
+        "Nereo Rocco"
       ],
       "correctAnswer": "Helenio Herrera",
       "difficulty": 3
@@ -5715,9 +5715,9 @@
       "question": "Tennis'te 'Golden Set' ne demektir?",
       "options": [
         "6-0 skor ile set kazanma",
-        "Hiç sayı kaybetmeden set kazanma",
+        "Consecutive ace servis",
         "Break point kurtarma",
-        "Consecutive ace servis"
+        "Hiç sayı kaybetmeden set kazanma"
       ],
       "correctAnswer": "Hiç sayı kaybetmeden set kazanma",
       "difficulty": 3
@@ -5725,9 +5725,9 @@
     {
       "question": "Atletizmde 'Fosbury Flop' tekniği hangi branşta devrim yaratmıştır?",
       "options": [
-        "Yüksek atlama",
         "Sırıkla atlama",
         "Uzun atlama",
+        "Yüksek atlama",
         "Üç adım atlama"
       ],
       "correctAnswer": "Yüksek atlama",
@@ -5736,9 +5736,9 @@
     {
       "question": "Golf'te 'Albatross' skoru neyi ifade eder?",
       "options": [
-        "Par'dan 3 vuruş az",
-        "Par'dan 2 vuruş az",
         "Par'dan 1 vuruş az",
+        "Par'dan 2 vuruş az",
+        "Par'dan 3 vuruş az",
         "Hole-in-one"
       ],
       "correctAnswer": "Par'dan 3 vuruş az",
@@ -5758,9 +5758,9 @@
     {
       "question": "Yüzmede 'Dolphin Kick' tekniği hangi stil için geliştirilmiştir?",
       "options": [
+        "Sırtüstü",
         "Kelebek",
         "Serbest",
-        "Sırtüstü",
         "Kurbağalama"
       ],
       "correctAnswer": "Kelebek",
@@ -6723,10 +6723,10 @@
     {
       "question": "Hangi antik medeniyette 'Cuneiform' (çivi yazısı) writing sistemi geliştirilmiştir?",
       "options": [
-        "Sümer",
+        "Pers",
         "Mısır",
         "Hitit",
-        "Pers"
+        "Sümer"
       ],
       "correctAnswer": "Sümer",
       "difficulty": 3,
@@ -6734,20 +6734,20 @@
         "en": {
           "question": "In which ancient civilization was the 'Cuneiform' writing system developed?",
           "options": [
-            "Sumerian",
+            "Persian",
             "Egyptian",
             "Hittite",
-            "Persian"
+            "Sumerian"
           ],
           "correctAnswer": "Sumerian"
         },
         "de": {
           "question": "In welcher antiken Zivilisation wurde das 'Keilschrift'-Schreibsystem entwickelt?",
           "options": [
-            "Sumerisch",
+            "Persisch",
             "Ägyptisch",
             "Hethitisch",
-            "Persisch"
+            "Sumerisch"
           ],
           "correctAnswer": "Sumerisch"
         }
@@ -6756,10 +6756,10 @@
     {
       "question": "Osmanlı İmparatorluğu'nda 'Tanzimat Fermanı' kim tarafından ve hangi yılda ilan edilmiştir?",
       "options": [
-        "Sultan Abdülmecit - 1839",
+        "Sultan Abdülhamit II - 1876",
         "Sultan Mahmut II - 1826",
         "Sultan Abdülaziz - 1861",
-        "Sultan Abdülhamit II - 1876"
+        "Sultan Abdülmecit - 1839"
       ],
       "correctAnswer": "Sultan Abdülmecit - 1839",
       "difficulty": 3,
@@ -6767,20 +6767,20 @@
         "en": {
           "question": "By whom and in which year was the 'Tanzimat Edict' proclaimed in the Ottoman Empire?",
           "options": [
-            "Sultan Abdülmecit - 1839",
+            "Sultan Abdülhamit II - 1876",
             "Sultan Mahmut II - 1826",
             "Sultan Abdülaziz - 1861",
-            "Sultan Abdülhamit II - 1876"
+            "Sultan Abdülmecit - 1839"
           ],
           "correctAnswer": "Sultan Abdülmecit - 1839"
         },
         "de": {
           "question": "Von wem und in welchem Jahr wurde das 'Tanzimat-Edikt' im Osmanischen Reich verkündet?",
           "options": [
-            "Sultan Abdülmecit - 1839",
+            "Sultan Abdülhamit II - 1876",
             "Sultan Mahmut II - 1826",
             "Sultan Abdülaziz - 1861",
-            "Sultan Abdülhamit II - 1876"
+            "Sultan Abdülmecit - 1839"
           ],
           "correctAnswer": "Sultan Abdülmecit - 1839"
         }
@@ -6789,10 +6789,10 @@
     {
       "question": "Hangi Roma İmparatoru Hristiyanlığı resmi din ilan etmiş ve Konstantinopolis'i kurmuştur?",
       "options": [
+        "Augustus",
         "Konstantin I",
-        "Theodosius I",
         "Diocletianus",
-        "Augustus"
+        "Theodosius I"
       ],
       "correctAnswer": "Konstantin I",
       "difficulty": 3,
@@ -6800,20 +6800,20 @@
         "en": {
           "question": "Which Roman Emperor declared Christianity as the official religion and founded Constantinople?",
           "options": [
+            "Augustus",
             "Constantine I",
-            "Theodosius I",
             "Diocletian",
-            "Augustus"
+            "Theodosius I"
           ],
           "correctAnswer": "Constantine I"
         },
         "de": {
           "question": "Welcher römische Kaiser erklärte das Christentum zur offiziellen Religion und gründete Konstantinopel?",
           "options": [
+            "Augustus",
             "Konstantin I",
-            "Theodosius I",
             "Diokletian",
-            "Augustus"
+            "Theodosius I"
           ],
           "correctAnswer": "Konstantin I"
         }
@@ -6822,9 +6822,9 @@
     {
       "question": "Bizans İmparatorluğu'nda 'Ikonoklasm' (İkon Kırıcılık) dönemi hangi imparatorlar döneminde yaşanmıştır?",
       "options": [
-        "III. Leo ve V. Konstantinos",
-        "I. Justinian ve II. Justinian",
         "I. Konstantinos ve Theodora",
+        "I. Justinian ve II. Justinian",
+        "III. Leo ve V. Konstantinos",
         "Basilios I ve II"
       ],
       "correctAnswer": "III. Leo ve V. Konstantinos",
@@ -6833,9 +6833,9 @@
         "en": {
           "question": "During which emperors' reign did the 'Iconoclasm' period occur in the Byzantine Empire?",
           "options": [
-            "Leo III and Constantine V",
-            "Justinian I and Justinian II",
             "Constantine I and Theodora",
+            "Justinian I and Justinian II",
+            "Leo III and Constantine V",
             "Basil I and II"
           ],
           "correctAnswer": "Leo III and Constantine V"
@@ -6843,9 +6843,9 @@
         "de": {
           "question": "Unter welchen Kaisern fand die 'Bilderstürmer'-Periode im Byzantinischen Reich statt?",
           "options": [
-            "Leo III. und Konstantin V.",
-            "Justinian I. und Justinian II.",
             "Konstantin I. und Theodora",
+            "Justinian I. und Justinian II.",
+            "Leo III. und Konstantin V.",
             "Basilius I. und II."
           ],
           "correctAnswer": "Leo III. und Konstantin V."
@@ -6921,8 +6921,8 @@
     {
       "question": "Hangi antik medeniyette 'Hammurabi Kanunları' oluşturulmuş ve bu kanunların temel prensibi neydi?",
       "options": [
-        "Babil - Talion Yasası (misilleme)",
         "Sümer - Totem yasası",
+        "Babil - Talion Yasası (misilleme)",
         "Asur - Hiyerarşi yasası",
         "Hitit - Eşitlik yasası"
       ],
@@ -6932,8 +6932,8 @@
         "en": {
           "question": "In which ancient civilization were the 'Code of Hammurabi' created and what was its basic principle?",
           "options": [
-            "Babylon - Law of Talion (retaliation)",
             "Sumer - Totem law",
+            "Babylon - Law of Talion (retaliation)",
             "Assyria - Hierarchy law",
             "Hittite - Equality law"
           ],
@@ -6942,8 +6942,8 @@
         "de": {
           "question": "In welcher antiken Zivilisation wurde der 'Codex Hammurabi' geschaffen und was war sein Grundprinzip?",
           "options": [
-            "Babylon - Talionsgesetz (Vergeltung)",
             "Sumer - Totemgesetz",
+            "Babylon - Talionsgesetz (Vergeltung)",
             "Assyrien - Hierarchiegesetz",
             "Hethiter - Gleichheitsgesetz"
           ],
@@ -6954,9 +6954,9 @@
     {
       "question": "Akkad İmparatorluğu'nun kurucusu Sargon hangi yıllarda yaşamıştır?",
       "options": [
+        "M.Ö. 3000-2900",
         "M.Ö. 2334-2279",
         "M.Ö. 2500-2400",
-        "M.Ö. 3000-2900",
         "M.Ö. 2000-1900"
       ],
       "correctAnswer": "M.Ö. 2334-2279",
@@ -6965,10 +6965,10 @@
     {
       "question": "Orta Çağ'da 'Investiture Controversy' hangi iki güç arasındaki çatışmayı ifade eder?",
       "options": [
-        "Papa vs Holy Roman Emperor",
+        "Feodal Lord vs Köylü",
         "Kral vs Parlamento",
         "Kilise vs Üniversite",
-        "Feodal Lord vs Köylü"
+        "Papa vs Holy Roman Emperor"
       ],
       "correctAnswer": "Papa vs Holy Roman Emperor",
       "difficulty": 3
@@ -6987,10 +6987,10 @@
     {
       "question": "Çin'de 'Mandate of Heaven' (Cennet Buyruğu) kavramı hangi hanedanlık döneminde geliştirilmiştir?",
       "options": [
-        "Zhou Hanedanlığı",
         "Shang Hanedanlığı",
+        "Han Hanedanlığı",
         "Qin Hanedanlığı",
-        "Han Hanedanlığı"
+        "Zhou Hanedanlığı"
       ],
       "correctAnswer": "Zhou Hanedanlığı",
       "difficulty": 3
@@ -6998,10 +6998,10 @@
     {
       "question": "Avrupa'da 'Peace of Westphalia' (1648) hangi savaşı sonlandırmıştır?",
       "options": [
-        "Otuz Yıl Savaşları",
+        "İspanyol Veraset Savaşı",
         "Yüz Yıl Savaşları",
         "Yedi Yıl Savaşı",
-        "İspanyol Veraset Savaşı"
+        "Otuz Yıl Savaşları"
       ],
       "correctAnswer": "Otuz Yıl Savaşları",
       "difficulty": 3
@@ -7009,10 +7009,10 @@
     {
       "question": "Maya medeniyetinde 'Long Count Calendar' sistemi hangi tarihte başlar?",
       "options": [
-        "M.Ö. 3114 (11 Ağustos)",
-        "M.Ö. 3000 (1 Ocak)",
         "M.Ö. 2500 (21 Aralık)",
-        "M.Ö. 3500 (15 Mayıs)"
+        "M.Ö. 3000 (1 Ocak)",
+        "M.Ö. 3500 (15 Mayıs)",
+        "M.Ö. 3114 (11 Ağustos)"
       ],
       "correctAnswer": "M.Ö. 3114 (11 Ağustos)",
       "difficulty": 3
@@ -7020,10 +7020,10 @@
     {
       "question": "Osmanlı'da 'Köprülü Ailesi' hangi dönemde sadrazamlık yapmıştır?",
       "options": [
-        "17. yüzyıl ikinci yarısı",
-        "16. yüzyıl birinci yarısı",
         "18. yüzyıl",
-        "15. yüzyıl"
+        "16. yüzyıl birinci yarısı",
+        "15. yüzyıl",
+        "17. yüzyıl ikinci yarısı"
       ],
       "correctAnswer": "17. yüzyıl ikinci yarısı",
       "difficulty": 3
@@ -8033,9 +8033,9 @@
     {
       "question": "Dünya'daki en derin okyanus çukuru olan Mariana Çukuru hangi okyanusta yer alır ve derinliği kaç metredir?",
       "options": [
-        "Pasifik - 11.034 m",
-        "Atlantik - 9.219 m",
         "Hint - 8.047 m",
+        "Atlantik - 9.219 m",
+        "Pasifik - 11.034 m",
         "Arktik - 5.502 m"
       ],
       "correctAnswer": "Pasifik - 11.034 m",
@@ -8044,9 +8044,9 @@
         "en": {
           "question": "In which ocean is the Mariana Trench, the deepest ocean trench in the world, located and what is its depth?",
           "options": [
-            "Pacific - 11,034 m",
-            "Atlantic - 9,219 m",
             "Indian - 8,047 m",
+            "Atlantic - 9,219 m",
+            "Pacific - 11,034 m",
             "Arctic - 5,502 m"
           ],
           "correctAnswer": "Pacific - 11,034 m"
@@ -8054,9 +8054,9 @@
         "de": {
           "question": "In welchem Ozean befindet sich der Marianengraben, der tiefste Ozeangraben der Welt, und wie tief ist er?",
           "options": [
-            "Pazifik - 11.034 m",
-            "Atlantik - 9.219 m",
             "Indisch - 8.047 m",
+            "Atlantik - 9.219 m",
+            "Pazifik - 11.034 m",
             "Arktis - 5.502 m"
           ],
           "correctAnswer": "Pazifik - 11.034 m"
@@ -8099,9 +8099,9 @@
     {
       "question": "Dünya'nın en büyük tatlı su gölü olan Superior Gölü hangi iki ülke arasında yer alır?",
       "options": [
-        "ABD - Kanada",
-        "Rusya - Kazakistan",
         "Brezilya - Arjantin",
+        "Rusya - Kazakistan",
+        "ABD - Kanada",
         "Çin - Moğolistan"
       ],
       "correctAnswer": "ABD - Kanada",
@@ -8110,9 +8110,9 @@
         "en": {
           "question": "Between which two countries is Lake Superior, the world's largest freshwater lake, located?",
           "options": [
-            "USA - Canada",
-            "Russia - Kazakhstan",
             "Brazil - Argentina",
+            "Russia - Kazakhstan",
+            "USA - Canada",
             "China - Mongolia"
           ],
           "correctAnswer": "USA - Canada"
@@ -8120,9 +8120,9 @@
         "de": {
           "question": "Zwischen welchen beiden Ländern liegt der Obere See, der größte Süßwassersee der Welt?",
           "options": [
-            "USA - Kanada",
-            "Russland - Kasachstan",
             "Brasilien - Argentinien",
+            "Russland - Kasachstan",
+            "USA - Kanada",
             "China - Mongolei"
           ],
           "correctAnswer": "USA - Kanada"
@@ -8165,8 +8165,8 @@
     {
       "question": "Tektonic plakaların hareket yönlerini belirleyen 'Triple Junction' noktaları nerededir?",
       "options": [
-        "Üç plağın kesiştiği noktalar",
         "Okyanus ortası sırtları",
+        "Üç plağın kesiştiği noktalar",
         "Subdüksiyon zonu girişleri",
         "Transform fay hattı"
       ],
@@ -8176,8 +8176,8 @@
         "en": {
           "question": "Where are the 'Triple Junction' points that determine the movement directions of tectonic plates?",
           "options": [
-            "Points where three plates intersect",
             "Mid-ocean ridges",
+            "Points where three plates intersect",
             "Subduction zone entrances",
             "Transform fault lines"
           ],
@@ -8186,8 +8186,8 @@
         "de": {
           "question": "Wo befinden sich die 'Triple Junction'-Punkte, die die Bewegungsrichtungen tektonischer Platten bestimmen?",
           "options": [
-            "Punkte, wo drei Platten sich schneiden",
             "Mittelozeanische Rücken",
+            "Punkte, wo drei Platten sich schneiden",
             "Subduktionszonen-Eingänge",
             "Transform-Verwerfungslinien"
           ],
@@ -8231,10 +8231,10 @@
     {
       "question": "Dünya'nın manyetik kutupları gerçek kutuplardan farklı konumlardadır. Manyetik kuzey kutbu şu anda hangi ülke yakınlarındadır?",
       "options": [
-        "Kanada",
+        "Alaska",
         "Rusya",
         "Grönland",
-        "Alaska"
+        "Kanada"
       ],
       "correctAnswer": "Kanada",
       "difficulty": 3,
@@ -8242,20 +8242,20 @@
         "en": {
           "question": "Earth's magnetic poles are in different positions from the true poles. Near which country is the magnetic north pole currently located?",
           "options": [
-            "Canada",
+            "Alaska",
             "Russia",
             "Greenland",
-            "Alaska"
+            "Canada"
           ],
           "correctAnswer": "Canada"
         },
         "de": {
           "question": "Die magnetischen Pole der Erde befinden sich an anderen Positionen als die wahren Pole. In der Nähe welches Landes befindet sich der magnetische Nordpol derzeit?",
           "options": [
-            "Kanada",
+            "Alaska",
             "Russland",
             "Grönland",
-            "Alaska"
+            "Kanada"
           ],
           "correctAnswer": "Kanada"
         }
@@ -8264,9 +8264,9 @@
     {
       "question": "Sahara Çölü'nün güneyindeki 'Sahel' bölgesi hangi iklim özelliği gösterir?",
       "options": [
-        "Semi-arid geçiş kuşağı",
-        "Tropikal yağmur ormanı",
         "Akdeniz iklimi",
+        "Tropikal yağmur ormanı",
+        "Semi-arid geçiş kuşağı",
         "Step iklimi"
       ],
       "correctAnswer": "Semi-arid geçiş kuşağı",
@@ -8275,9 +8275,9 @@
         "en": {
           "question": "What climate characteristic does the 'Sahel' region south of the Sahara Desert show?",
           "options": [
-            "Semi-arid transition zone",
-            "Tropical rainforest",
             "Mediterranean climate",
+            "Tropical rainforest",
+            "Semi-arid transition zone",
             "Steppe climate"
           ],
           "correctAnswer": "Semi-arid transition zone"
@@ -8285,9 +8285,9 @@
         "de": {
           "question": "Welche Klimaeigenschaft zeigt die 'Sahel'-Region südlich der Sahara-Wüste?",
           "options": [
-            "Semi-aride Übergangszone",
-            "Tropischer Regenwald",
             "Mittelmeerklima",
+            "Tropischer Regenwald",
+            "Semi-aride Übergangszone",
             "Steppenklima"
           ],
           "correctAnswer": "Semi-aride Übergangszone"
@@ -8297,8 +8297,8 @@
     {
       "question": "Dünya'nın en derin kara çukuru olan 'Bentley Subglacial Trench' nerede bulunur?",
       "options": [
-        "Antarktika",
         "Grönland",
+        "Antarktika",
         "Sibirya",
         "Alaska"
       ],
@@ -8308,10 +8308,10 @@
     {
       "question": "'Ring of Fire' (Ateş Çemberi) hangi okyanus havzasını çevreler?",
       "options": [
-        "Pasifik",
+        "Arktik",
         "Atlantik",
         "Hint",
-        "Arktik"
+        "Pasifik"
       ],
       "correctAnswer": "Pasifik",
       "difficulty": 3
@@ -8319,9 +8319,9 @@
     {
       "question": "Atmosferde 'Ozone Hole' oluşumu hangi kimyasal bileşiklerden kaynaklanır?",
       "options": [
-        "CFCs (Chlorofluorocarbons)",
         "CO2",
         "CH4",
+        "CFCs (Chlorofluorocarbons)",
         "NOx"
       ],
       "correctAnswer": "CFCs (Chlorofluorocarbons)",
@@ -8341,9 +8341,9 @@
     {
       "question": "Jeotermal enerji üretiminde dünya lideri ülke hangisidir?",
       "options": [
+        "İtalya",
         "İzlanda",
         "Yeni Zelanda",
-        "İtalya",
         "ABD"
       ],
       "correctAnswer": "İzlanda",
@@ -8352,9 +8352,9 @@
     {
       "question": "'Thermohaline Circulation' okyanuslarda neye bağlı olarak oluşur?",
       "options": [
+        "Ay'ın çekim kuvveti",
         "Sıcaklık ve tuzluluk farkları",
         "Rüzgar sistemleri",
-        "Ay'ın çekim kuvveti",
         "Güneş radyasyonu"
       ],
       "correctAnswer": "Sıcaklık ve tuzluluk farkları",
@@ -8363,10 +8363,10 @@
     {
       "question": "Dünya'nın en büyük delta sistemi hangi nehirde bulunur?",
       "options": [
-        "Ganj-Brahmaputra",
-        "Amazon",
         "Nil",
-        "Mississippi"
+        "Amazon",
+        "Mississippi",
+        "Ganj-Brahmaputra"
       ],
       "correctAnswer": "Ganj-Brahmaputra",
       "difficulty": 3
@@ -8666,10 +8666,10 @@
     {
       "question": "Bach'ın 'Die Kunst der Fuge' (Füg Sanatı) eseri hangi müzik formunda yazılmıştır?",
       "options": [
-        "Kontrapunkt",
         "Sonat",
+        "Senfoni",
         "Konçerto",
-        "Senfoni"
+        "Kontrapunkt"
       ],
       "correctAnswer": "Kontrapunkt",
       "difficulty": 3,
@@ -8677,20 +8677,20 @@
         "en": {
           "question": "In which musical form was Bach's 'The Art of Fugue' written?",
           "options": [
-            "Counterpoint",
             "Sonata",
+            "Symphony",
             "Concerto",
-            "Symphony"
+            "Counterpoint"
           ],
           "correctAnswer": "Counterpoint"
         },
         "de": {
           "question": "In welcher musikalischen Form wurde Bachs 'Die Kunst der Fuge' geschrieben?",
           "options": [
-            "Kontrapunkt",
             "Sonate",
+            "Sinfonie",
             "Konzert",
-            "Sinfonie"
+            "Kontrapunkt"
           ],
           "correctAnswer": "Kontrapunkt"
         }
@@ -8699,10 +8699,10 @@
     {
       "question": "Hangi besteci 'Twelve-tone technique' (12-ton sistemi) müzik teorisini geliştirmiştir?",
       "options": [
-        "Arnold Schoenberg",
+        "Béla Bartók",
         "Igor Stravinsky",
-        "Claude Debussy",
-        "Béla Bartók"
+        "Arnold Schoenberg",
+        "Claude Debussy"
       ],
       "correctAnswer": "Arnold Schoenberg",
       "difficulty": 3,
@@ -8710,20 +8710,20 @@
         "en": {
           "question": "Which composer developed the 'Twelve-tone technique' music theory?",
           "options": [
-            "Arnold Schoenberg",
+            "Béla Bartók",
             "Igor Stravinsky",
-            "Claude Debussy",
-            "Béla Bartók"
+            "Arnold Schoenberg",
+            "Claude Debussy"
           ],
           "correctAnswer": "Arnold Schoenberg"
         },
         "de": {
           "question": "Welcher Komponist entwickelte die 'Zwölftontechnik' in der Musiktheorie?",
           "options": [
-            "Arnold Schönberg",
+            "Béla Bartók",
             "Igor Strawinsky",
-            "Claude Debussy",
-            "Béla Bartók"
+            "Arnold Schönberg",
+            "Claude Debussy"
           ],
           "correctAnswer": "Arnold Schönberg"
         }
@@ -8765,8 +8765,8 @@
     {
       "question": "Alban Berg'in 'Wozzeck' operası hangi kompozisyon tekniği ile yazılmıştır?",
       "options": [
-        "Atonality",
         "Twelve-tone",
+        "Atonality",
         "Serialism",
         "Minimalism"
       ],
@@ -8776,8 +8776,8 @@
         "en": {
           "question": "Which compositional technique was used to write Alban Berg's opera 'Wozzeck'?",
           "options": [
-            "Atonality",
             "Twelve-tone",
+            "Atonality",
             "Serialism",
             "Minimalism"
           ],
@@ -8786,8 +8786,8 @@
         "de": {
           "question": "Welche Kompositionstechnik wurde verwendet, um Alban Bergs Oper 'Wozzeck' zu schreiben?",
           "options": [
-            "Atonalität",
             "Zwölfton",
+            "Atonalität",
             "Serialismus",
             "Minimalismus"
           ],
@@ -8798,10 +8798,10 @@
     {
       "question": "John Cage'in '4'33\"' eseri hangi konsepti temsil eder?",
       "options": [
-        "Sessizliğin müzik olması",
+        "Hazır yapım sanat",
         "Minimalist kompozisyon",
-        "Elektronik müzik",
-        "Hazır yapım sanat"
+        "Sessizliğin müzik olması",
+        "Elektronik müzik"
       ],
       "correctAnswer": "Sessizliğin müzik olması",
       "difficulty": 3,
@@ -8809,20 +8809,20 @@
         "en": {
           "question": "What concept does John Cage's '4'33\"' represent?",
           "options": [
-            "Silence as music",
+            "Ready-made art",
             "Minimalist composition",
-            "Electronic music",
-            "Ready-made art"
+            "Silence as music",
+            "Electronic music"
           ],
           "correctAnswer": "Silence as music"
         },
         "de": {
           "question": "Welches Konzept repräsentiert John Cages '4'33\"'?",
           "options": [
-            "Stille als Musik",
+            "Ready-made-Kunst",
             "Minimalistische Komposition",
-            "Elektronische Musik",
-            "Ready-made-Kunst"
+            "Stille als Musik",
+            "Elektronische Musik"
           ],
           "correctAnswer": "Stille als Musik"
         }
@@ -8864,8 +8864,8 @@
     {
       "question": "Stockhausen'ın 'Elektronische Musik' akımındaki ilk eseri hangisidir?",
       "options": [
-        "Studie I",
         "Gesang der Jünglinge",
+        "Studie I",
         "Kontakte",
         "Mikrophonie I"
       ],
@@ -8875,10 +8875,10 @@
     {
       "question": "Türk müziğinde 'Peşrev' formu hangi makamsal yapıya sahiptir?",
       "options": [
-        "Serbest ritmik yapı",
+        "Sabit usul",
         "Usulsüz form",
         "Değişken makam",
-        "Sabit usul"
+        "Serbest ritmik yapı"
       ],
       "correctAnswer": "Serbest ritmik yapı",
       "difficulty": 3
@@ -8886,10 +8886,10 @@
     {
       "question": "Cage'in hazırlıklı piyano tekniğinde ne tür objeler kullanılır?",
       "options": [
-        "Metal, lastik, kağıt",
         "Sadece metal",
+        "Sadece plastik",
         "Sadece ahşap",
-        "Sadece plastik"
+        "Metal, lastik, kağıt"
       ],
       "correctAnswer": "Metal, lastik, kağıt",
       "difficulty": 3
@@ -8897,9 +8897,9 @@
     {
       "question": "Bach'ın 'Goldberg Variations' kaç variasyondan oluşur?",
       "options": [
-        "30",
-        "24",
         "48",
+        "24",
+        "30",
         "32"
       ],
       "correctAnswer": "30",
@@ -8908,10 +8908,10 @@
     {
       "question": "Spectral music akımının öncü bestecisi kimdir?",
       "options": [
-        "Gérard Grisey",
+        "Karlheinz Stockhausen",
         "Pierre Boulez",
         "Luigi Nono",
-        "Karlheinz Stockhausen"
+        "Gérard Grisey"
       ],
       "correctAnswer": "Gérard Grisey",
       "difficulty": 3
@@ -9390,9 +9390,9 @@
     {
       "question": "James Joyce'un 'Ulysses' romanında kullandığı anlatım tekniği hangisidir?",
       "options": [
-        "Bilinç akışı",
         "Objektif anlatım",
         "Çok bakış açılı anlatım",
+        "Bilinç akışı",
         "Epistoler anlatım"
       ],
       "correctAnswer": "Bilinç akışı",
@@ -9401,9 +9401,9 @@
         "en": {
           "question": "What narrative technique does James Joyce use in his novel 'Ulysses'?",
           "options": [
-            "Stream of consciousness",
             "Objective narration",
             "Multiple perspective narration",
+            "Stream of consciousness",
             "Epistolary narration"
           ],
           "correctAnswer": "Stream of consciousness"
@@ -9411,9 +9411,9 @@
         "de": {
           "question": "Welche Erzähltechnik verwendet James Joyce in seinem Roman 'Ulysses'?",
           "options": [
-            "Bewusstseinsstrom",
             "Objektive Erzählung",
             "Mehrperspektivische Erzählung",
+            "Bewusstseinsstrom",
             "Briefroman"
           ],
           "correctAnswer": "Bewusstseinsstrom"
@@ -9423,9 +9423,9 @@
     {
       "question": "Türk edebiyatında 'Garib-nâme' eseri kim tarafından yazılmıştır?",
       "options": [
+        "Ahmed Yesevi",
         "Âşık Paşa",
         "Yunus Emre",
-        "Ahmed Yesevi",
         "Mevlâna"
       ],
       "correctAnswer": "Âşık Paşa",
@@ -9434,9 +9434,9 @@
         "en": {
           "question": "Who wrote the work 'Garib-nâme' in Turkish literature?",
           "options": [
+            "Ahmed Yesevi",
             "Âşık Paşa",
             "Yunus Emre",
-            "Ahmed Yesevi",
             "Mevlâna"
           ],
           "correctAnswer": "Âşık Paşa"
@@ -9444,9 +9444,9 @@
         "de": {
           "question": "Wer schrieb das Werk 'Garib-nâme' in der türkischen Literatur?",
           "options": [
+            "Ahmed Yesevi",
             "Âşık Paşa",
             "Yunus Emre",
-            "Ahmed Yesevi",
             "Mevlâna"
           ],
           "correctAnswer": "Âşık Paşa"
@@ -9456,10 +9456,10 @@
     {
       "question": "Dante'nin 'Divina Commedia'sında hangi vezin kullanılmıştır?",
       "options": [
-        "Terza rima",
         "Sonnet",
+        "Blank verse",
         "Ottava rima",
-        "Blank verse"
+        "Terza rima"
       ],
       "correctAnswer": "Terza rima",
       "difficulty": 3,
@@ -9467,20 +9467,20 @@
         "en": {
           "question": "Which meter is used in Dante's 'Divine Comedy'?",
           "options": [
-            "Terza rima",
             "Sonnet",
+            "Blank verse",
             "Ottava rima",
-            "Blank verse"
+            "Terza rima"
           ],
           "correctAnswer": "Terza rima"
         },
         "de": {
           "question": "Welches Versmaß wird in Dantes 'Göttlicher Komödie' verwendet?",
           "options": [
-            "Terza rima",
             "Sonett",
+            "Blankvers",
             "Ottava rima",
-            "Blankvers"
+            "Terza rima"
           ],
           "correctAnswer": "Terza rima"
         }
@@ -9489,8 +9489,8 @@
     {
       "question": "Jorge Luis Borges'in 'Labirentler' teması hangi postmodern kavramı temsil eder?",
       "options": [
-        "Metafiction",
         "Intertextuality",
+        "Metafiction",
         "Deconstruction",
         "Pastiche"
       ],
@@ -9500,8 +9500,8 @@
         "en": {
           "question": "Which postmodern concept does Jorge Luis Borges' theme of 'Labyrinths' represent?",
           "options": [
-            "Metafiction",
             "Intertextuality",
+            "Metafiction",
             "Deconstruction",
             "Pastiche"
           ],
@@ -9510,8 +9510,8 @@
         "de": {
           "question": "Welches postmoderne Konzept repräsentiert Jorge Luis Borges' Thema der 'Labyrinthe'?",
           "options": [
-            "Metafiktion",
             "Intertextualität",
+            "Metafiktion",
             "Dekonstruktion",
             "Pastiche"
           ],
@@ -9522,9 +9522,9 @@
     {
       "question": "Divan edebiyatında 'Tezkire' türü neyi ifade eder?",
       "options": [
-        "Şair biyografileri",
-        "Aşk şiirleri",
         "Dini destanlar",
+        "Aşk şiirleri",
+        "Şair biyografileri",
         "Tarih yazıları"
       ],
       "correctAnswer": "Şair biyografileri",
@@ -9533,9 +9533,9 @@
         "en": {
           "question": "What does the 'Tezkire' genre refer to in Divan literature?",
           "options": [
-            "Poet biographies",
-            "Love poems",
             "Religious epics",
+            "Love poems",
+            "Poet biographies",
             "Historical writings"
           ],
           "correctAnswer": "Poet biographies"
@@ -9543,9 +9543,9 @@
         "de": {
           "question": "Was bezeichnet das 'Tezkire'-Genre in der Divan-Literatur?",
           "options": [
-            "Dichterbiographien",
-            "Liebesgedichte",
             "Religiöse Epen",
+            "Liebesgedichte",
+            "Dichterbiographien",
             "Geschichtsschreibungen"
           ],
           "correctAnswer": "Dichterbiographien"
@@ -9588,10 +9588,10 @@
     {
       "question": "Proust'un 'Kayıp Zamanın İzinde' eserinde 'Madeleine kurabiyesi' hangi kavramı temsil eder?",
       "options": [
-        "Unwillkürliche Erinnerung",
         "Bewusste Erinnerung",
+        "Tarihsel Bellek",
         "Kollektive Erinnerung",
-        "Tarihsel Bellek"
+        "Unwillkürliche Erinnerung"
       ],
       "correctAnswer": "Unwillkürliche Erinnerung",
       "difficulty": 3
@@ -9599,10 +9599,10 @@
     {
       "question": "Calvino'nun 'Görünmeyen Şehirler' eserindeki anlatım tekniği hangisidir?",
       "options": [
-        "Meta-fictional narrative",
+        "Nouveau roman",
         "Magical realism",
-        "Stream of consciousness",
-        "Nouveau roman"
+        "Meta-fictional narrative",
+        "Stream of consciousness"
       ],
       "correctAnswer": "Meta-fictional narrative",
       "difficulty": 3
@@ -9610,10 +9610,10 @@
     {
       "question": "Türk edebiyatında 'Divan-ı Kebir' eseri kime aittir?",
       "options": [
-        "Mevlana",
+        "Baki",
         "Yunus Emre",
-        "Fuzuli",
-        "Baki"
+        "Mevlana",
+        "Fuzuli"
       ],
       "correctAnswer": "Mevlana",
       "difficulty": 3
@@ -9621,10 +9621,10 @@
     {
       "question": "Bakhtin'in 'Polyphonic Novel' teorisi hangi yazarın eserlerinden geliştirilmiştir?",
       "options": [
-        "Dostoyevski",
+        "Çehov",
         "Tolstoy",
         "Gogol",
-        "Çehov"
+        "Dostoyevski"
       ],
       "correctAnswer": "Dostoyevski",
       "difficulty": 3
@@ -9632,8 +9632,8 @@
     {
       "question": "Romantizm akımında 'Sublime' kavramı neyi ifade eder?",
       "options": [
-        "Yüce güzellik korkusu",
         "Doğal güzellik",
+        "Yüce güzellik korkusu",
         "Sanatsal mükemmellik",
         "İdealist güzellik"
       ],
@@ -9643,9 +9643,9 @@
     {
       "question": "Eco'nun 'Açık Yapıt' teorisi hangi estetik yaklaşımı savunur?",
       "options": [
+        "Metin merkezli anlam",
         "Okuyucu merkezli anlam",
         "Yazar merkezli anlam",
-        "Metin merkezli anlam",
         "Tarihsel bağlam"
       ],
       "correctAnswer": "Okuyucu merkezli anlam",

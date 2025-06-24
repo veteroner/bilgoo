@@ -13776,17 +13776,29 @@ const quizApp = {
         try {
             // TAM SAYFA SONU� EKRANI ���N SAYFAYI TEM�ZLE
             // Body i�eri�ini tamamen siliyoruz!
-            document.body.innerHTML = '';
+            // OVERLAY SONUÇ EKRANI (GÜVENLİ YAKLAŞIM)
+            // Body içeriğini silmek yerine overlay kullanıyoruz
             
-            // CLEAN SONU� EKRANI
+            // Mevcut overlay'i temizle
+            const existingOverlay = document.getElementById('fullscreen-result-overlay');
+            if (existingOverlay) {
+                existingOverlay.remove();
+            }
+            
+            // OVERLAY CONTAINER
             const resultScreen = document.createElement('div');
-            resultScreen.id = 'fullscreen-result';
-            resultScreen.className = 'result-screen';
+            resultScreen.id = 'fullscreen-result-overlay';
+            resultScreen.className = 'result-overlay';
             
-            // CSS Stilleri
+            // Overlay CSS Stilleri
             resultScreen.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
                 background: linear-gradient(45deg, #4a148c, #e91e63);
-                min-height: 100vh;
+                z-index: 10000;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -13796,6 +13808,7 @@ const quizApp = {
                 color: white;
                 box-sizing: border-box;
                 text-align: center;
+                overflow-y: auto;
             `;
             
             // Dil se�imine g�re ba�l�k ve sonu� metinleri
