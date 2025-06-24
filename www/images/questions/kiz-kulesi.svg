@@ -1,0 +1,57 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B0E0E6;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="sun" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFA500;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Gökyüzü -->
+  <rect width="400" height="200" fill="url(#sky)"/>
+  
+  <!-- Güneş -->
+  <circle cx="350" cy="50" r="25" fill="url(#sun)"/>
+  
+  <!-- Deniz -->
+  <rect y="200" width="400" height="100" fill="#4682B4"/>
+  
+  <!-- Deniz dalgaları -->
+  <path d="M0 220 Q50 210 100 220 T200 220 T300 220 T400 220 L400 300 L0 300 Z" fill="#5F9EA0"/>
+  
+  <!-- Kule temeli (kayalar) -->
+  <ellipse cx="200" cy="240" rx="40" ry="20" fill="#696969"/>
+  <ellipse cx="200" cy="235" rx="35" ry="15" fill="#778899"/>
+  
+  <!-- Ana kule -->
+  <rect x="180" y="160" width="40" height="80" fill="#D2B48C" stroke="#8B4513" stroke-width="2"/>
+  
+  <!-- Kule üst kısmı -->
+  <rect x="175" y="140" width="50" height="25" fill="#D2B48C" stroke="#8B4513" stroke-width="2"/>
+  
+  <!-- Çatı -->
+  <polygon points="175,140 200,120 225,140" fill="#8B4513"/>
+  
+  <!-- Pencereler -->
+  <rect x="185" y="170" width="6" height="8" fill="#000080"/>
+  <rect x="209" y="170" width="6" height="8" fill="#000080"/>
+  <rect x="185" y="190" width="6" height="8" fill="#000080"/>
+  <rect x="209" y="190" width="6" height="8" fill="#000080"/>
+  <rect x="197" y="210" width="6" height="8" fill="#000080"/>
+  
+  <!-- Üst pencere -->
+  <rect x="192" y="150" width="8" height="10" fill="#000080"/>
+  
+  <!-- Kapı -->
+  <rect x="195" y="220" width="10" height="20" fill="#8B4513"/>
+  
+  <!-- Bayrak -->
+  <line x1="200" y1="120" x2="200" y2="100" stroke="#8B4513" stroke-width="2"/>
+  <rect x="200" y="100" width="15" height="10" fill="#FF0000"/>
+  
+  <!-- Yazı -->
+  <text x="200" y="290" font-family="Arial, sans-serif" font-size="16" font-weight="bold" text-anchor="middle" fill="white">KIZ KULESİ</text>
+</svg> 

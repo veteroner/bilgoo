@@ -298,7 +298,7 @@
       }
     },
     {
-      "question": "Hangisi UNESCO Dünya Mirası Listesi'nde yer alan Türkiye'deki bir alandır?",
+      "question": "Hangisi UNESCO Dünya Mirası Listesi'nde yer alan Türkiye'deki bir alandır?.",
       "options": [
         "Pamukkale",
         "Abant Gölü",
@@ -452,7 +452,7 @@
       "difficulty": 1
     },
     {
-      "question": "Hangisi Türkiye'nin en eski üniversitesidir?",
+      "question": "Hangisi Türkiye'nin en eski üniversitesidir?.",
       "options": [
         "İstanbul Üniversitesi",
         "Ankara Üniversitesi",
@@ -584,7 +584,7 @@
       "difficulty": 2
     },
     {
-      "question": "Hangi ülkenin iki başkenti vardır?",
+      "question": "Hangi ülkenin iki başkenti vardır?.",
       "options": [
         "Güney Afrika",
         "Avustralya",
@@ -650,7 +650,7 @@
       "difficulty": 1
     },
     {
-      "question": "Türkiye'de bulunan en eski medeniyet izleri hangi bölgededir?",
+      "question": "Türkiye'de bulunan en eski medeniyet izleri hangi bölgededir?.",
       "options": [
         "Göbeklitepe",
         "Çatalhöyük",
@@ -694,7 +694,7 @@
       "difficulty": 2
     },
     {
-      "question": "Geleneksel Türk evlerinde bulunan çıkma şeklindeki balkonlara ne ad verilir?",
+      "question": "Geleneksel Türk evlerinde bulunan çıkma şeklindeki balkonlara ne ad verilir?.",
       "options": [
         "Cumba",
         "Sofa",
@@ -749,7 +749,7 @@
       "difficulty": 1
     },
     {
-      "question": "Dünyadaki en yaygın din hangisidir?",
+      "question": "Dünyadaki en yaygın din hangisidir?.",
       "options": [
         "Hristiyanlık",
         "İslam",
@@ -999,7 +999,7 @@
       "difficulty": 2
     },
     {
-      "question": "Türkiye'nin en büyük gölü  _____ gölüdür.",
+      "question": "Türkiye'nin en büyük gölü _____ gölüdür.",
       "correctAnswer": "VAN",
       "choices": [
         "V",
@@ -1357,7 +1357,7 @@
       "difficulty": 2
     },
     {
-      "question": "Şiir türünde _____ ölçüsü kullanılır.",
+      "question": "Bu kişi ir türünde _____ ölçüsü kullanılır.",
       "correctAnswer": "HECE",
       "choices": [
         "H",
@@ -1842,7 +1842,7 @@
       "difficulty": 2
     },
     {
-      "question": "İnsan vücudundaki en büyük organ hangisidir?",
+      "question": "İnsan vücudundaki en büyük organ hangisidir?.",
       "options": [
         "Karaciğer",
         "Kalp",
@@ -2139,7 +2139,7 @@
       "difficulty": 1
     },
     {
-      "question": "İnsan vücudundaki en büyük iç organ hangisidir?",
+      "question": "İnsan vücudundaki en büyük iç organ hangisidir?.",
       "options": [
         "Kalp",
         "Beyin",
@@ -2205,7 +2205,7 @@
       "difficulty": 2
     },
     {
-      "question": "Sesin havadaki yayılma hızı yaklaşık olarak saniyede kaç metredir?",
+      "question": "Sesin havadaki yayılma hızı yaklaşık olarak saniyede kaç metredir?.",
       "options": [
         "150 m/s",
         "250 m/s",
@@ -2249,7 +2249,7 @@
       "difficulty": 1
     },
     {
-      "question": "Hangisi bir bileşik değildir?",
+      "question": "Hangisi bir bileşik değildir?.",
       "options": [
         "H2O",
         "CO2",
@@ -2260,7 +2260,7 @@
       "difficulty": 1
     },
     {
-      "question": "İnsan beynindeki nöron sayısı yaklaşık olarak kaçtır?",
+      "question": "İnsan beynindeki nöron sayısı yaklaşık olarak kaçtır?.",
       "options": [
         "10 milyon",
         "100 milyon",
@@ -2337,7 +2337,7 @@
       "difficulty": 1
     },
     {
-      "question": "Güneş sistemindeki en sıcak gezegen hangisidir?",
+      "question": "Güneş sistemindeki en sıcak gezegen hangisidir?.",
       "options": [
         "Merkür",
         "Venüs",
@@ -2359,7 +2359,7 @@
       "difficulty": 1
     },
     {
-      "question": "Hangi vitamin eksikliği raşitizme neden olur?",
+      "question": "Hangi vitamin eksikliği raşitizme neden olur?.",
       "options": [
         "A vitamini",
         "B vitamini",
@@ -2436,7 +2436,7 @@
       "difficulty": 2
     },
     {
-      "question": "Bilim insanları gök cisimleri arasındaki mesafeleri hangi birimle ölçer?",
+      "question": "Bilim insanları gök cisimleri arasındaki mesafeleri hangi birimle ölçer?.",
       "options": [
         "Kilometre",
         "Mil",
@@ -2469,7 +2469,7 @@
       "difficulty": 2
     },
     {
-      "question": "Periyodik tablodaki ilk element hangisidir?",
+      "question": "Periyodik tablodaki ilk element hangisidir?.",
       "options": [
         "Oksijen",
         "Karbon",
@@ -2568,11 +2568,18 @@
       "difficulty": 2
     },
     {
-      "question": "Bu görselde bir atom modeli görülmektedir. Atomun merkezi çekirdeğinde protonlar ve nötronlar bulunur.",
+      "question": "Atomun merkezi çekirdeğinde protonlar ve nötronlar bulunur.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Bohr-atom-PAR.svg/800px-Bohr-atom-PAR.svg.png",
-      "difficulty": 2
+      "difficulty": 2,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ]
     },
     {
       "question": "Bu görseldeki gezegen Jüpiter'dir.",
@@ -3214,7 +3221,7 @@
       "difficulty": 2
     },
     {
-      "question": "Hangi şirket Windows işletim sistemini geliştirmiştir?",
+      "question": "Hangi şirket Windows işletim sistemini geliştirmiştir?.",
       "options": [
         "Apple",
         "Microsoft",
@@ -3313,7 +3320,7 @@
       "difficulty": 1
     },
     {
-      "question": "İlk kişisel bilgisayarı hangi şirket üretti?",
+      "question": "İlk kişisel bilgisayarı hangi şirket üretti?.",
       "options": [
         "IBM",
         "Apple",
@@ -3489,7 +3496,7 @@
       "difficulty": 1
     },
     {
-      "question": "Bilgisayarlarda 1 Gigabayt kaç Megabayt'a eşittir?",
+      "question": "Bilgisayarlarda 1 Gigabayt kaç Megabayt'a eşittir?.",
       "options": [
         "10 MB",
         "100 MB",
@@ -3511,7 +3518,7 @@
       "difficulty": 1
     },
     {
-      "question": "PNG dosya formatındaki 'P' harfi neyi temsil eder?",
+      "question": "PNG dosya formatındaki 'P' harfi neyi temsil eder?.",
       "options": [
         "Pixel",
         "Portable",
@@ -3533,7 +3540,7 @@
       "difficulty": 1
     },
     {
-      "question": "Hangi şirket Android işletim sistemini geliştirmiştir?",
+      "question": "Hangi şirket Android işletim sistemini geliştirmiştir?.",
       "options": [
         "Apple",
         "Microsoft",
@@ -3544,7 +3551,7 @@
       "difficulty": 2
     },
     {
-      "question": "İnternetteki IP adresindeki 'IP' neyin kısaltmasıdır?",
+      "question": "İnternetteki IP adresindeki 'IP' neyin kısaltmasıdır?.",
       "options": [
         "Internet Protocol",
         "Internet Provider",
@@ -3555,7 +3562,7 @@
       "difficulty": 2
     },
     {
-      "question": "Wi-Fi terimindeki 'Wi' neyin kısaltmasıdır?",
+      "question": "Wi-Fi terimindeki 'Wi' neyin kısaltmasıdır?.",
       "options": [
         "Wireless",
         "Width",
@@ -3621,7 +3628,7 @@
       "difficulty": 1
     },
     {
-      "question": "Bitcoin'in yaratıcısı olarak bilinen kişi veya grup kimdir?",
+      "question": "Bitcoin'in yaratıcısı olarak bilinen kişi veya grup kimdir?.",
       "options": [
         "Vitalik Buterin",
         "Satoshi Nakamoto",
@@ -3753,7 +3760,7 @@
       "difficulty": 2
     },
     {
-      "question": "Hangi şirket Java programlama dilini geliştirmiştir?",
+      "question": "Hangi şirket Java programlama dilini geliştirmiştir?.",
       "options": [
         "Microsoft",
         "Apple",
@@ -3841,7 +3848,7 @@
       "difficulty": 1
     },
     {
-      "question": "Gmail hangi şirkete aittir?",
+      "question": "Gmail hangi şirkete aittir?.",
       "options": [
         "Microsoft",
         "Apple",
@@ -3907,7 +3914,7 @@
       "difficulty": 1
     },
     {
-      "question": "Bulut bilişimde 'SaaS' neyi ifade eder?",
+      "question": "Bulut bilişimde 'SaaS' neyi ifade eder?.",
       "options": [
         "Storage as a Service",
         "Software as a Service",
@@ -3961,22 +3968,36 @@
       "question": "Bu görseldeki, Windows işletim sisteminin ilk sürümüdür.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/5/55/Windows_1.0_screenshot.png",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/4/4e/Windows1.0.png",
       "difficulty": 1
     },
     {
-      "question": "Bu görseldeki, ilk kişisel bilgisayarlardan biri olan Apple II modelidir.",
+      "question": "Ki, ilk kişisel bilgisayarlardan biri olan Apple II modelidir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Apple_II_IMG_4212.jpg/800px-Apple_II_IMG_4212.jpg",
-      "difficulty": 1
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ]
     },
     {
-      "question": "Bu görseldeki, Microsoft'un ürettiği bir bilgisayardır.",
+      "question": "Ki, Microsoft'un ürettiği bir bilgisayardır.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Surface_Pro_4.png/800px-Surface_Pro_4.png",
-      "difficulty": 1
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ]
     },
     {
       "question": "PNG dosya formatı, sıkıştırma için kullanılmayan bir format türüdür.",
@@ -4273,7 +4294,7 @@
       }
     },
     {
-      "question": "Diffie-Hellman anahtar değişimi algoritmasının güvenliği hangi matematiksel probleme dayanır?",
+      "question": "Diffie-Hellman anahtar değişimi algoritmasının güvenliği hangi matematiksel probleme dayanır?.",
       "options": [
         "Elliptic Curve",
         "Hash Function",
@@ -4682,7 +4703,7 @@
       "difficulty": 1
     },
     {
-      "question": "Beşiktaş'ın stadyumunun adı nedir?",
+      "question": "Beşiktaş'ın stadyumunun adı nedir?.",
       "options": [
         "Türk Telekom Stadyumu",
         "Ülker Stadyumu",
@@ -4814,7 +4835,7 @@
       "difficulty": 2
     },
     {
-      "question": "Beşiktaş'ın kuruluş yılı nedir?",
+      "question": "Beşiktaş'ın kuruluş yılı nedir?.",
       "options": [
         "1903",
         "1905",
@@ -4858,7 +4879,7 @@
       "difficulty": 1
     },
     {
-      "question": "Gollerin kaleci direkleri arasındaki mesafe kaç metredir?",
+      "question": "Gollerin kaleci direkleri arasındaki mesafe kaç metredir?.",
       "options": [
         "5.5 metre",
         "7.32 metre",
@@ -5624,7 +5645,7 @@
       }
     },
     {
-      "question": "Tennis'te 'Grand Slam' terimini ilk kullanan kişi kimdir?",
+      "question": "Tennis'te 'Grand Slam' terimini ilk kullanan kişi kimdir?.",
       "options": [
         "Bill Tilden",
         "Jack Kramer",
@@ -6000,7 +6021,7 @@
       "difficulty": 1
     },
     {
-      "question": "Amerika Birleşik Devletleri'nin kaçıncı başkanı Barack Obama'dır?",
+      "question": "Amerika Birleşik Devletleri'nin kaçıncı başkanı Barack Obama'dır?.",
       "options": [
         "42.",
         "44.",
@@ -6242,7 +6263,7 @@
       "difficulty": 2
     },
     {
-      "question": "Kurtuluş Savaşı'nda 'Ya İstiklal Ya Ölüm' sözünü söyleyen kişi kimdir?",
+      "question": "Kurtuluş Savaşı'nda 'Ya İstiklal Ya Ölüm' sözünü söyleyen kişi kimdir?.",
       "options": [
         "İsmet İnönü",
         "Kazım Karabekir",
@@ -6319,7 +6340,7 @@
       "difficulty": 2
     },
     {
-      "question": "Hangi savaş sonunda Osmanlı İmparatorluğu Avrupa'daki topraklarının çoğunu kaybetmiştir?",
+      "question": "Hangi savaş sonunda Osmanlı İmparatorluğu Avrupa'daki topraklarının çoğunu kaybetmiştir?.",
       "options": [
         "I. Dünya Savaşı",
         "93 Harbi",
@@ -6330,7 +6351,7 @@
       "difficulty": 2
     },
     {
-      "question": "Amerika Birleşik Devletleri'nin ilk başkanı kimdir?",
+      "question": "Amerika Birleşik Devletleri'nin ilk başkanı kimdir?.",
       "options": [
         "Thomas Jefferson",
         "Abraham Lincoln",
@@ -6480,18 +6501,32 @@
       "difficulty": 1
     },
     {
-      "question": "Bu görselde görülen İstanbul'un fethi sırasında kullanılan toplar.",
+      "question": "İstanbul'un fethinde büyük toplar kullanılmıştır.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/The_Dardanelles_Gun_Turkish_Bronze_15c.jpg/800px-The_Dardanelles_Gun_Turkish_Bronze_15c.jpg",
-      "difficulty": 1
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ]
     },
     {
-      "question": "Bu görseldeki yapı TBMM'nin ilk binasıdır.",
+      "question": "TBMM'nin ilk binası görülmektedir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/The_First_Building_of_Turkish_Grand_National_Assembly.jpg/800px-The_First_Building_of_Turkish_Grand_National_Assembly.jpg",
-      "difficulty": 1
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ]
     },
     {
       "question": "İstiklal Marşı'nın yazarı Yahya Kemal Beyatlı'dır.",
@@ -6501,18 +6536,32 @@
       "difficulty": 1
     },
     {
-      "question": "Bu görseldeki savaş alanı Çanakkale Cephesi'dir.",
+      "question": "Çanakkale Cephesi görülmektedir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Trenches_at_Lone_Pine_after_the_battle_August_1915_%28AWM_G00587%29.jpg/800px-Trenches_at_Lone_Pine_after_the_battle_August_1915_%28AWM_G00587%29.jpg",
-      "difficulty": 1
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ]
     },
     {
       "question": "Cumhuriyet 29 Ekim 1923'te ilan edilmiştir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Atat%C3%BCrk-October_29%2C_1923.jpg/800px-Atat%C3%BCrk-October_29%2C_1923.jpg",
-      "difficulty": 1
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ]
     },
     {
       "question": "Bu görseldeki antik kent Efes'tir.",
@@ -6853,7 +6902,7 @@
       }
     },
     {
-      "question": "Osmanlı İmparatorluğu'nda 'Devşirme' sistemi hangi padişah döneminde kurumsal hale gelmiştir?",
+      "question": "Osmanlı İmparatorluğu'nda 'Devşirme' sistemi hangi padişah döneminde kurumsal hale gelmiştir?.",
       "options": [
         "Orhan Gazi",
         "I. Mehmed",
@@ -6963,7 +7012,7 @@
       "difficulty": 3
     },
     {
-      "question": "Orta Çağ'da 'Investiture Controversy' hangi iki güç arasındaki çatışmayı ifade eder?",
+      "question": "Orta Çağ'da 'Investiture Controversy' hangi iki güç arasındaki çatışmayı ifade eder?.",
       "options": [
         "Kilise vs Üniversite",
         "Feodal Lord vs Köylü",
@@ -7212,7 +7261,7 @@
       "difficulty": 1
     },
     {
-      "question": "Hangi ülke iki kıtada birden yer alır?",
+      "question": "Hangi ülke iki kıtada birden yer alır?.",
       "options": [
         "Rusya",
         "Mısır",
@@ -7289,7 +7338,7 @@
       "difficulty": 1
     },
     {
-      "question": "Türkiye'nin en doğusundaki il hangisidir?",
+      "question": "Türkiye'nin en doğusundaki il hangisidir?.",
       "options": [
         "Kars",
         "Ardahan",
@@ -7487,7 +7536,7 @@
       "difficulty": 1
     },
     {
-      "question": "Türkiye'deki en büyük ova hangisidir?",
+      "question": "Türkiye'deki en büyük ova hangisidir?.",
       "options": [
         "Konya Ovası",
         "Çukurova",
@@ -7520,7 +7569,7 @@
       "difficulty": 2
     },
     {
-      "question": "Türkiye'nin doğu-batı doğrultusundaki en uzun mesafesi kaç kilometredir?",
+      "question": "Türkiye'nin doğu-batı doğrultusundaki en uzun mesafesi kaç kilometredir?.",
       "options": [
         "1300 km",
         "1565 km",
@@ -7718,16 +7767,20 @@
       "difficulty": 1
     },
     {
-      "question": "Bu görselde hangi nehir görülmektedir?",
+      "question": "Nil Nehri görülmektedir.",
       "options": [
         "Nil Nehri",
         "Amazon Nehri",
         "Tuna Nehri",
         "Fırat Nehri"
       ],
-      "correctAnswer": "Nil Nehri",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Nile_River_and_delta_from_orbit.jpg/800px-Nile_River_and_delta_from_orbit.jpg",
-      "difficulty": 1
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "type": "DoğruYanlış",
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ]
     },
     {
       "question": "Bu görselde hangi doğa harikası görülmektedir?",
@@ -7738,7 +7791,7 @@
         "Everest Dağı"
       ],
       "correctAnswer": "Grand Canyon",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Grand_Canyon_view_from_Pima_Point_2010.jpg/800px-Grand_Canyon_view_from_Pima_Point_2010.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Dawn_on_the_S_rim_of_the_Grand_Canyon_%288645178272%29.jpg/400px-Dawn_on_the_S_rim_of_the_Grand_Canyon_%288645178272%29.jpg",
       "difficulty": 1
     },
     {
@@ -7768,35 +7821,56 @@
       "question": "Bu görselde Alaska bölgesi görülmektedir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Denali_Mt_McKinley.jpg/800px-Denali_Mt_McKinley.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Wonder_Lake_and_Denali.jpg/400px-Wonder_Lake_and_Denali.jpg",
       "difficulty": 1
     },
     {
-      "question": "Bu görseldeki volkan Vezüv Yanardağı'dır.",
+      "question": "Vezüv Yanardağı görülmektedir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Italy_-_Vesuvio_01.jpg/800px-Italy_-_Vesuvio_01.jpg",
-      "difficulty": 1
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ]
     },
     {
-      "question": "Bu görseldeki şehir İstanbul'dur.",
+      "question": "İstanbul şehri görülmektedir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Istanbul_panorama_and_skyline.jpg/800px-Istanbul_panorama_and_skyline.jpg",
-      "difficulty": 1
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ]
     },
     {
-      "question": "Bu görseldeki doğa harikası Peri Bacaları Nevşehir'dedir.",
+      "question": "Peri Bacaları Nevşehir'de bulunur.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Cappadocia_Ballon.jpg/800px-Cappadocia_Ballon.jpg",
-      "difficulty": 1
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ]
     },
     {
       "question": "Bu görseldeki ülke Japonya'dır.",
       "type": "DoğruYanlış",
       "correctAnswer": "YANLIŞ",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_map_of_South_Korea.svg/800px-Flag_map_of_South_Korea.svg.png",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/400px-Flag_of_South_Korea.svg.png",
       "difficulty": 1
     },
     {
@@ -7956,7 +8030,7 @@
       "difficulty": 2
     },
     {
-      "question": "Hangisi Türkiye'nin en eski üniversitesidir?",
+      "question": "Hangisi Türkiye'nin en eski üniversitesidir?.",
       "options": [
         "İstanbul Üniversitesi",
         "Ankara Üniversitesi",
@@ -8031,7 +8105,7 @@
       "difficulty": 2
     },
     {
-      "question": "Dünya'daki en derin okyanus çukuru olan Mariana Çukuru hangi okyanusta yer alır ve derinliği kaç metredir?",
+      "question": "Dünya'daki en derin okyanus çukuru olan Mariana Çukuru hangi okyanusta yer alır ve derinliği kaç metredir?.",
       "options": [
         "Atlantik - 9.219 m",
         "Arktik - 5.502 m",
@@ -8097,7 +8171,7 @@
       }
     },
     {
-      "question": "Dünya'nın en büyük tatlı su gölü olan Superior Gölü hangi iki ülke arasında yer alır?",
+      "question": "Dünya'nın en büyük tatlı su gölü olan Superior Gölü hangi iki ülke arasında yer alır?.",
       "options": [
         "Rusya - Kazakistan",
         "Çin - Moğolistan",
@@ -8262,7 +8336,7 @@
       }
     },
     {
-      "question": "Sahara Çölü'nün güneyindeki 'Sahel' bölgesi hangi iklim özelliği gösterir?",
+      "question": "Sahara Çölü'nün güneyindeki 'Sahel' bölgesi hangi iklim özelliği gösterir?.",
       "options": [
         "Step iklimi",
         "Tropikal yağmur ormanı",
@@ -8317,7 +8391,7 @@
       "difficulty": 3
     },
     {
-      "question": "Atmosferde 'Ozone Hole' oluşumu hangi kimyasal bileşiklerden kaynaklanır?",
+      "question": "Atmosferde 'Ozone Hole' oluşumu hangi kimyasal bileşiklerden kaynaklanır?.",
       "options": [
         "NOx",
         "CO2",
@@ -8328,7 +8402,7 @@
       "difficulty": 3
     },
     {
-      "question": "'Wallace Line' biogeografik sınır hangi iki biyom arasındadır?",
+      "question": "'Wallace Line' biogeografik sınır hangi iki biyom arasındadır?.",
       "options": [
         "Avrupa - Asya",
         "Kuzey - Güney Amerika",
@@ -8429,7 +8503,7 @@
       "difficulty": 1
     },
     {
-      "question": "Beethoven'ın 9. Senfonisi'nin son bölümü hangi şiirden esinlenmiştir?",
+      "question": "Beethoven'ın 9. Senfonisi'nin son bölümü hangi şiirden esinlenmiştir?.",
       "options": [
         "Neşeye Övgü",
         "Aşka Övgü",
@@ -8539,25 +8613,46 @@
       "difficulty": 2
     },
     {
-      "question": "Bu görseldeki müzik aleti bir kanundur.",
+      "question": "Kanun bir müzik aletidir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Istanbul_-_Kanun.jpg/800px-Istanbul_-_Kanun.jpg",
-      "difficulty": 1
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ]
     },
     {
-      "question": "Bu görseldeki müzik aleti bir kemençedir.",
+      "question": "Kemençe bir müzik aletidir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Kemen%C3%A7e_%28Turkish_Instrument%29.jpg/800px-Kemen%C3%A7e_%28Turkish_Instrument%29.jpg",
-      "difficulty": 1
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ]
     },
     {
-      "question": "Bu görseldeki kişi, dünyaca ünlü tenor Luciano Pavarotti'dir.",
+      "question": "Bu kişi dünyaca ünlü tenor Luciano Pavarotti'dir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Luciano_Pavarotti_%281984%29.jpg/800px-Luciano_Pavarotti_%281984%29.jpg",
-      "difficulty": 1
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ]
     },
     {
       "question": "Bu görseldeki kişi, ünlü besteci Wolfgang Amadeus Mozart'tır.",
@@ -8567,11 +8662,18 @@
       "difficulty": 1
     },
     {
-      "question": "Bu görseldeki enstrüman bir baglama/saz'dır.",
+      "question": "Baglama/Saz bir müzik enstrümanıdır.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Saz_bosnian_instrument.jpg/800px-Saz_bosnian_instrument.jpg",
-      "difficulty": 1
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ]
     },
     {
       "question": "Klasik bir gitarda standart olarak 7 tel vardır.",
@@ -8862,7 +8964,7 @@
       }
     },
     {
-      "question": "Stockhausen'ın 'Elektronische Musik' akımındaki ilk eseri hangisidir?",
+      "question": "Stockhausen'ın 'Elektronische Musik' akımındaki ilk eseri hangisidir?.",
       "options": [
         "Studie I",
         "Kontakte",
@@ -9073,7 +9175,7 @@
       "difficulty": 1
     },
     {
-      "question": "Tevfik Fikret'in 'Sis' şiiri hangi şehri anlatır?",
+      "question": "Tevfik Fikret'in 'Sis' şiiri hangi şehri anlatır?.",
       "options": [
         "Ankara",
         "İzmir",
@@ -9095,11 +9197,18 @@
       "difficulty": 2
     },
     {
-      "question": "Bu görseldeki kişi Dostoyevski'dir.",
+      "question": "Bu kişi Dostoyevski'dir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Dostoevsky_1872.jpg/800px-Dostoevsky_1872.jpg",
-      "difficulty": 1
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ]
     },
     {
       "question": "Bu görseldeki kişi William Shakespeare'dir.",
@@ -9116,18 +9225,32 @@
       "difficulty": 1
     },
     {
-      "question": "Aşağıdaki görseldeki kişi, Muhammed Fuzuli'dir.",
+      "question": "Kişi, Muhammed Fuzuli'dir.",
       "type": "DoğruYanlış",
       "correctAnswer": "YANLIŞ",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Portrait_of_Yunus_Emre_%281838%29.jpg/800px-Portrait_of_Yunus_Emre_%281838%29.jpg",
-      "difficulty": 1
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ]
     },
     {
-      "question": "Bu görseldeki yazar, 'Suç ve Ceza' eserinin yazarıdır.",
+      "question": "Dostoyevski 'Suç ve Ceza' eserinin yazarıdır.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Dostoevsky_1872.jpg/800px-Dostoevsky_1872.jpg",
-      "difficulty": 1
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ]
     },
     {
       "question": "Türk Edebiyatı'nda 'Çalıkuşu' romanı Reşat Nuri Güntekin'e aittir.",
@@ -9597,7 +9720,7 @@
       "difficulty": 3
     },
     {
-      "question": "Calvino'nun 'Görünmeyen Şehirler' eserindeki anlatım tekniği hangisidir?",
+      "question": "Calvino'nun 'Görünmeyen Şehirler' eserindeki anlatım tekniği hangisidir?.",
       "options": [
         "Nouveau roman",
         "Stream of consciousness",
