@@ -10595,25 +10595,25 @@ body.quiz-active .joker-tab-bar {
     }
 }
 
-/* Yıldız iconunun rengini altın sarısı yapmak ve coin iconuyla aynı büyüklükte yapmak */
+/* Yıldız iconunun rengini turuncu yap */
 .star-icon {
-    color: #FFD700 !important; /* Altın sarısı renk */
+    color: #FF8C00 !important; /* Turuncu renk */
     font-size: 32px !important; /* Coin ile aynı büyüklük */
     font-weight: bold;
     margin-left: 5px;
-    filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.5));
+    filter: drop-shadow(0 0 3px rgba(255, 140, 0, 0.5));
     animation: starGlow 2s ease-in-out infinite alternate;
 }
 
 @keyframes starGlow {
-    0% { filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.5)); }
-    100% { filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8)); }
+    0% { filter: drop-shadow(0 0 3px rgba(255, 140, 0, 0.5)); }
+    100% { filter: drop-shadow(0 0 8px rgba(255, 140, 0, 0.8)); }
 }
 
 /* Dark theme için yıldız rengi */
 [data-theme="dark"] .star-icon {
-    color: #FFA500 !important; /* Turuncu altın rengi */
-    filter: drop-shadow(0 0 5px rgba(255, 165, 0, 0.7));
+    color: #FF8C00 !important; /* Turuncu renk */
+    filter: drop-shadow(0 0 5px rgba(255, 140, 0, 0.7));
 }
 
 /* Mobile versiyonda da yıldız icon büyüklüğü */
