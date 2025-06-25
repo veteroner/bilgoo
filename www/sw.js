@@ -1,4 +1,4 @@
-const CACHE_NAME = 'quiz-oyunu-v1.5.0';
+const CACHE_NAME = 'quiz-oyunu-v1.5.1';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -55,17 +55,75 @@ self.addEventListener('activate', event => {
   );
 });
 
+// Reklam servislerini kontrol eden fonksiyon
+function isAdService(url) {
+  const adDomains = [
+    'googlesyndication.com',
+    'googleadservices.com', 
+    'doubleclick.net',
+    'google-analytics.com',
+    'googletagmanager.com',
+    'google.com/adsense',
+    'googletagservices.com',
+    'adservice.google.',
+    'pagead2.',
+    'securepubads.g.doubleclick.net',
+    'facebook.com/tr',
+    'facebook.net',
+    'fbcdn.',
+    'analytics',
+    'ads.',
+    'advert'
+  ];
+  
+  return adDomains.some(domain => url.includes(domain));
+}
+
 // Network istekleri yakalama
 self.addEventListener('fetch', event => {
   // Sadece GET isteklerini yakala
   if (event.request.method !== 'GET') {
     return;
   }
+  
+  // Google AdSense ve reklam istekleri için Service Worker'ı araya sokma
+  const adDomains = [
+    'googlesyndication.com',
+    'googleadservices.com', 
+    'doubleclick.net',
+    'google-analytics.com',
+    'googletagmanager.com',
+    'google.com/adsense',
+    'googletagservices.com',
+    'adservice.google.',
+    'pagead2.',
+    'facebook.com/tr',
+    'facebook.net'
+  ];
+  
+  // Reklam servislerini kontrol et ve service worker'ı araya sokma
+  if (adDomains.some(domain => event.request.url.includes(domain))) {
+    return;
+  }
 
-  // Firebase Auth ve Firestore isteklerini cache'leme
-  if (event.request.url.includes('firebaseapp.com') || 
-      event.request.url.includes('googleapis.com') ||
-      event.request.url.includes('identitytoolkit.googleapis.com')) {
+  try {
+    const requestURL = new URL(event.request.url);
+    
+    // Chrome uzantısı, Firebase, Google API ve reklam isteklerini atlama
+    if (requestURL.protocol === 'chrome-extension:' || 
+        event.request.url.includes('firebaseapp.com') || 
+        event.request.url.includes('googleapis.com') ||
+        event.request.url.includes('identitytoolkit.googleapis.com') ||
+        isAdService(event.request.url)) {
+      return; // Bu isteklerde Service Worker araya girme
+    }
+    
+    // HTTPS olmayan istekleri de atla
+    if (requestURL.protocol !== 'https:' && requestURL.hostname !== 'localhost' && !requestURL.hostname.includes('127.0.0.1')) {
+      return;
+    }
+  } catch (error) {
+    console.log('URL analiz hatası:', error);
     return;
   }
 
@@ -88,7 +146,15 @@ self.addEventListener('fetch', event => {
           const responseToCache = response.clone();
           caches.open(CACHE_NAME)
             .then(cache => {
-              cache.put(event.request, responseToCache);
+              try {
+                // URL şemasını kontrol et (ek güvenlik önlemi)
+                const requestURL = new URL(event.request.url);
+                if (requestURL.protocol !== 'chrome-extension:' && !isAdService(event.request.url)) {
+                  cache.put(event.request, responseToCache);
+                }
+              } catch (error) {
+                console.log('Cache put hatası:', error);
+              }
             });
 
           return response;

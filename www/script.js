@@ -1816,14 +1816,24 @@ const quizApp = {
         var modal = document.getElementById('joker-store-modal');
         var closeBtn = modal.querySelector('.close-modal');
         var buyButtons = modal.querySelectorAll('.joker-buy-btn');
+        var livesBuyBtn = modal.querySelector('.lives-buy-btn');
         var pointsDisplay = document.getElementById('joker-store-points-display');
+        var starsDisplay = document.getElementById('joker-store-stars-display');
+        var livesCountDisplay = modal.querySelector('.lives-count');
         
         // Mevcut toplam puanları ve joker envanterini göster (misafir için sessionScore kullan)
         const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
         pointsDisplay.textContent = this.formatNumber(currentPoints || 0);
         
+        // Yıldız sayısını göster
+        starsDisplay.textContent = this.formatNumber(this.totalStars || 0);
+        
         // Tooltip'leri ekle
         this.createTooltip(pointsDisplay.parentElement, `Coin: ${(currentPoints || 0).toLocaleString()}`);
+        this.createTooltip(starsDisplay.parentElement, `Yıldız: ${(this.totalStars || 0).toLocaleString()}`);
+        
+        // Can sayısını göster
+        livesCountDisplay.textContent = this.lives || 3;
         console.log(`🛒 Joker mağazası - Gösterilen puan: ${currentPoints} (Giriş durumu: ${this.isLoggedIn ? 'Kayıtlı' : 'Misafir'})`);
         console.log(`📊 Detay - totalScore: ${this.totalScore}, sessionScore: ${this.sessionScore}`);
         
@@ -1916,6 +1926,59 @@ const quizApp = {
             btn.style.touchAction = 'manipulation';
             btn.style.webkitTapHighlightColor = 'transparent';
         }.bind(this));
+        
+        // Can satın alma fonksiyonu
+        if (livesBuyBtn) {
+            const livesPrice = 15; // 15 yıldız = 3 can
+            
+            // Yeterli yıldız varsa butonu etkinleştir
+            livesBuyBtn.disabled = (this.totalStars || 0) < livesPrice;
+            
+            const purchaseLives = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const availableStars = this.totalStars || 0;
+                console.log(`Can satın alma denemesi: Fiyat: ${livesPrice} yıldız, Mevcut Yıldız: ${availableStars}`);
+                
+                if (availableStars >= livesPrice) {
+                    // Yıldızları azalt
+                    this.totalStars = Math.max(0, this.totalStars - livesPrice);
+                    
+                    // 3 can ekle (maksimum 5 can)
+                    this.lives = Math.min(5, this.lives + 3);
+                    
+                    // Verileri kaydet
+                    if (this.isLoggedIn) {
+                        this.delayedSaveUserData();
+                    }
+                    
+                    // Göstergeleri güncelle
+                    starsDisplay.textContent = this.formatNumber(this.totalStars);
+                    livesCountDisplay.textContent = this.lives;
+                    
+                    // Can gösterimini güncelle
+                    this.updateLivesDisplay();
+                    
+                    // Buton durumunu güncelle
+                    livesBuyBtn.disabled = this.totalStars < livesPrice;
+                    
+                    // Toast bildirimi göster
+                    this.showToast("3 can satın alındı! ❤️❤️❤️", "toast-success");
+                    
+                    console.log(`Can satın alma başarılı: ${livesPrice} yıldız harcandı. Yeni yıldız: ${this.totalStars}, Yeni can: ${this.lives}`);
+                } else {
+                    console.warn('Yeterli yıldız yok!');
+                    this.showToast("Yeterli yıldızınız yok! (15 yıldız gerekli)", "toast-error");
+                }
+            };
+            
+            // Event listeners ekle
+            livesBuyBtn.onclick = purchaseLives;
+            livesBuyBtn.addEventListener('touchend', purchaseLives);
+            livesBuyBtn.style.touchAction = 'manipulation';
+            livesBuyBtn.style.webkitTapHighlightColor = 'transparent';
+        }
         
         // Modalı göster
         modal.style.display = 'block';
@@ -4050,12 +4113,14 @@ const quizApp = {
                 // Tam ekran doğru modalı
                 const correctModal = document.createElement('div');
                 correctModal.className = 'correct-modal';
+                const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
                 correctModal.innerHTML = `
                     <div class="correct-modal-content">
                         <div class="correct-modal-icon">
                             <i class="fas fa-crown"></i>
                         </div>
                         <div class="correct-modal-text">${this.getTranslation('correct')}</div>
+                        <div class="correct-modal-score">+${scoreForQuestion}</div>
                         <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
                     </div>
                 `;
@@ -4074,7 +4139,6 @@ const quizApp = {
                 this.resultElement.innerHTML = '';
                 this.resultElement.className = 'result';
                 // Puanı artır
-                const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
                 this.addScore(scoreForQuestion);
                 this.correctAnswers++;
                 // Ses efekti çal
@@ -4149,10 +4213,12 @@ const quizApp = {
             // DOĞRU MODAL
             const correctModal = document.createElement('div');
             correctModal.className = 'correct-modal';
+            const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
             correctModal.innerHTML = `
                 <div class="correct-modal-content">
                     <div class="correct-modal-icon"><i class="fas fa-crown"></i></div>
                     <div class="correct-modal-text">${this.getTranslation('correct')}</div>
+                    <div class="correct-modal-score">+${scoreForQuestion}</div>
                     <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
                 </div>
             `;
@@ -4165,7 +4231,6 @@ const quizApp = {
                 if (e.target === correctModal) correctModal.remove();
             };
             // Puanı artır
-            const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
             this.addScore(scoreForQuestion);
             this.correctAnswers++;
             if (this.soundEnabled) {
@@ -6701,7 +6766,6 @@ const quizApp = {
                 onlineGame.submitAnswer(false);
             }
         }
-        // Can kontrolü kaldırıldı - loseLife fonksiyonu kendi başına can satın alma modalını handle ediyor
         
         if (this.nextButton) {
             this.nextButton.style.display = 'block';
@@ -6737,13 +6801,17 @@ const quizApp = {
         const optionButtons = this.optionsElement.querySelectorAll('.option');
         optionButtons.forEach(btn => btn.disabled = true);
         
+        // Cevabı kaydet
+        const isCorrect = selectedOption === currentQuestion.correctAnswer;
+        this.recordAnswer(isCorrect);
+        
         // Doğru/yanlış kontrolü
-        if (selectedOption === currentQuestion.correctAnswer) {
+        if (isCorrect) {
             button.classList.add('correct');
             
             // Skoru güncelle
             this.score++;
-            // this.correctAnswers++; // <-- KALDIRILDI: Tekrar eden kod
+            this.correctAnswers++;
             this.updateScoreDisplay();
             
             // Seviye ilerleme kontrolü
@@ -6775,8 +6843,6 @@ const quizApp = {
             if (onlineGame && onlineGame.gameStarted) {
                 onlineGame.submitAnswer(false);
             }
-            
-            // Can kontrolü kaldırıldı - loseLife fonksiyonu kendi başına can satın alma modalını handle ediyor
         }
         
         // Bir sonraki soruya geç
@@ -6798,12 +6864,11 @@ const quizApp = {
         // Tam ekran doğru modalı
         const correctModal = document.createElement('div');
         correctModal.className = 'correct-modal';
-        const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
         correctModal.innerHTML = `
             <div class="correct-modal-content">
                 <div class="correct-modal-icon"><i class="fas fa-crown"></i></div>
                 <div class="correct-modal-text">${this.getTranslation('correct')}</div>
-                <div class="correct-modal-score">+${scoreForQuestion}</div>
+                <div class="correct-modal-score">+${Math.max(1, Math.ceil(this.timeLeft / 5))}</div>
                 <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
             </div>
         `;
@@ -6819,6 +6884,7 @@ const quizApp = {
         const timeSpent = this.TIME_PER_BLANK_FILLING_QUESTION - this.timeLeft;
         this.answerTimes.push(timeSpent);
         this.answeredQuestions++;
+        const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
         this.addScore(scoreForQuestion);
         
         // Cevabı kaydet - İSTATİSTİKLER İÇİN ÖNEMLİ!
@@ -6871,7 +6937,6 @@ const quizApp = {
         if (typeof onlineGame !== 'undefined' && onlineGame && onlineGame.gameStarted) {
             onlineGame.submitAnswer(false);
         }
-        // Can kontrolü kaldırıldı - loseLife fonksiyonu kendi başına can satın alma modalını handle ediyor
     },
     
     // Load question işlevini güncelle
@@ -6887,8 +6952,6 @@ const quizApp = {
             if (correctMessageElement) {
                 correctMessageElement.remove();
             }
-            
-            // Can kontrolü kaldırıldı - canlar bittiyse loseLife fonksiyonu zaten can satın alma modalını açıyor
             
             // Mevcut soru indeksi kontrolü
             if (this.currentQuestionIndex >= this.questions.length) {
@@ -7083,7 +7146,11 @@ const quizApp = {
         console.log("answerTimes length:", this.answerTimes.length);
         
         // FİNAL SKORU ve istatistikleri saklayalım
-        // Doğru cevap sayısını gerçek verilerden hesapla
+        // Doğru cevap sayısını hesapla - debug bilgisi ile
+        console.log("DEBUG - Oyun Sonu Değerleri:");
+        console.log("- currentQuestionIndex:", this.currentQuestionIndex);
+        console.log("- correctAnswers:", this.correctAnswers);
+        console.log("- questions.length:", this.questions.length);
         // Debug: Oyun sonu değerlerini kontrol et
         console.log("=== OYUN SONU DEBUG ===");
         console.log("currentQuestionIndex:", this.currentQuestionIndex);
@@ -7092,7 +7159,6 @@ const quizApp = {
         
         // Doğru cevap sayısını toplam soruya eşit veya daha az olacak şekilde sınırla
         const actualCorrectAnswers = Math.min(this.correctAnswers, this.currentQuestionIndex + 1);
-        // Toplam soru sayısı: mevcut soru indeksi + 1 (çünkü 0'dan başlar) ama maksimum 10
         const actualTotalQuestions = Math.min(this.currentQuestionIndex + 1, 10);
         
         console.log("actualCorrectAnswers:", actualCorrectAnswers);
@@ -8797,6 +8863,12 @@ const quizApp = {
                             console.error("mainMenu elementi null!");
                         }
                         
+                        // Logo container'ını da göster
+                        const logoContainer = document.querySelector('.main-logo-container');
+                        if (logoContainer) {
+                            logoContainer.style.display = 'block';
+                        }
+                        
                         // Kullanıcı verilerini yükle ve Firebase'den senkronize et
                         this.loadUserData(user.uid);
                         this.syncUserStatsFromFirebase();
@@ -8830,6 +8902,12 @@ const quizApp = {
                 this.isLoggedIn = false;
                 if (this.mainMenu) {
                     this.mainMenu.style.display = 'block';
+                }
+                
+                // Logo container'ını da göster
+                const logoContainer = document.querySelector('.main-logo-container');
+                if (logoContainer) {
+                    logoContainer.style.display = 'block';
                 }
             }
         } catch (error) {
