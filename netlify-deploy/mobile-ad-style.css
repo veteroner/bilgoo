@@ -1,6 +1,5 @@
 /* Mobil Cihazlar için Reklam Stilleri */
-/* 7 inç ve 10 inç tabletlerde de mobil görünüm uygula (1280px'e kadar) */
-@media (max-width: 1280px) {
+@media (max-width: 768px) {
     .side-ad-left, 
     .side-ad-right {
         display: none !important; /* Mobil cihazlarda tüm reklamları gizle */

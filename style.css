@@ -3,8 +3,7 @@
 /* Mobil Reklam Stilleri */
 
 /* Mobil cihazlarda normal reklam alanlarını gizle */
-/* 7 inç ve 10 inç tabletlerde de mobil görünüm uygula (1280px'e kadar) */
-@media (max-width: 1280px) {
+@media (max-width: 768px) {
     .ad-container, 
     .adsbygoogle:not(.mobile-banner):not(.mobile-inline) {
         display: none !important;
@@ -48,8 +47,7 @@
 }
 
 /* Ana container'ı normal konumuna getir */
-/* 7 inç ve 10 inç tabletlerde de mobil görünüm uygula (1280px'e kadar) */
-@media (max-width: 1280px) {
+@media (max-width: 768px) {
     body {
         padding-top: 0 !important;
         margin-top: 0 !important;
@@ -208,8 +206,7 @@ body.quiz-active .mobile-top-banner {
 }
 
 /* Mobil cihazlarda kenar reklamlarını gizle */
-/* 7 inç ve 10 inç tabletlerde de kenar reklamlarını gizle (1280px'e kadar) */
-@media (max-width: 1280px) {
+@media (max-width: 1460px) {
     .ad-sidebar-left, .ad-sidebar-right {
         display: none;
     }
