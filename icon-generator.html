@@ -112,6 +112,7 @@
         
         <div class="controls">
             <button onclick="generateAllIcons()">Seçili Tasarımla İkonları Oluştur</button>
+            <button onclick="generateFeatureGraphic()">Özellik Grafiği Oluştur (1024x500)</button>
             <button onclick="downloadAll()">Hepsini İndir</button>
         </div>
         
@@ -121,6 +122,7 @@
 
     <script>
         const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        const featureGraphicSize = {width: 1024, height: 500};
         let canvases = [];
         let selectedDesign = 'q-letter';
 
@@ -230,6 +232,155 @@
             return canvas;
         }
 
+        function createFeatureGraphic(design = selectedDesign) {
+            const canvas = document.createElement('canvas');
+            canvas.width = featureGraphicSize.width;
+            canvas.height = featureGraphicSize.height;
+            const ctx = canvas.getContext('2d');
+
+            // Gradient background
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#3b82f6');
+            gradient.addColorStop(0.5, '#1e40af');
+            gradient.addColorStop(1, '#1e3a8a');
+            
+            // Fill background
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Add geometric shapes for visual appeal
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            // Large circle
+            ctx.beginPath();
+            ctx.arc(canvas.width * 0.8, canvas.height * 0.3, 120, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Small circles
+            ctx.beginPath();
+            ctx.arc(canvas.width * 0.15, canvas.height * 0.8, 60, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.arc(canvas.width * 0.9, canvas.height * 0.7, 40, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Main content area
+            const contentX = canvas.width * 0.05;
+            const contentY = canvas.height * 0.2;
+            const contentWidth = canvas.width * 0.6;
+
+            // App name
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 72px Arial';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+            ctx.fillText('BILGOO', contentX, contentY);
+
+            // Subtitle
+            ctx.font = '36px Arial';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.fillText('Bilgi Yarışması Oyunu', contentX, contentY + 80);
+
+            // Features
+            ctx.font = '24px Arial';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            const features = [
+                '🧠 Binlerce Soru',
+                '🏆 Arkadaşlarla Yarış',
+                '⚡ Hızlı ve Eğlenceli'
+            ];
+            
+            features.forEach((feature, index) => {
+                ctx.fillText(feature, contentX, contentY + 140 + (index * 35));
+            });
+
+            // Icon on the right
+            const iconSize = 200;
+            const iconX = canvas.width - iconSize - 80;
+            const iconY = (canvas.height - iconSize) / 2;
+
+            // Create large icon
+            ctx.save();
+            ctx.translate(iconX + iconSize/2, iconY + iconSize/2);
+            
+            // Icon background circle
+            const iconGradient = ctx.createLinearGradient(-iconSize/2, -iconSize/2, iconSize/2, iconSize/2);
+            iconGradient.addColorStop(0, '#ffffff');
+            iconGradient.addColorStop(1, '#f1f5f9');
+            
+            ctx.beginPath();
+            ctx.arc(0, 0, iconSize/2 - 10, 0, 2 * Math.PI);
+            ctx.fillStyle = iconGradient;
+            ctx.fill();
+            
+            // Icon border
+            ctx.lineWidth = 6;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.stroke();
+
+            // Icon content
+            ctx.fillStyle = '#3b82f6';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            switch(design) {
+                case 'question':
+                    ctx.font = `bold ${iconSize * 0.55}px Arial`;
+                    ctx.fillText('?', 0, 0);
+                    break;
+                    
+                case 'q-letter':
+                    ctx.font = `bold ${iconSize * 0.6}px Arial`;
+                    ctx.fillText('Q', 0, 0);
+                    // Q tail
+                    ctx.lineWidth = 8;
+                    ctx.strokeStyle = '#3b82f6';
+                    ctx.beginPath();
+                    ctx.moveTo(iconSize * 0.15, iconSize * 0.15);
+                    ctx.lineTo(iconSize * 0.25, iconSize * 0.25);
+                    ctx.stroke();
+                    break;
+                    
+                case 'brain':
+                    ctx.font = `${iconSize * 0.4}px Arial`;
+                    ctx.fillText('🧠', 0, 0);
+                    break;
+                    
+                case 'book':
+                    ctx.fillStyle = '#3b82f6';
+                    const bookWidth = iconSize * 0.4;
+                    const bookHeight = iconSize * 0.3;
+                    ctx.fillRect(-bookWidth/2, -bookHeight/2, bookWidth, bookHeight);
+                    
+                    ctx.strokeStyle = '#1e40af';
+                    ctx.lineWidth = 4;
+                    for(let i = 0; i < 3; i++) {
+                        ctx.beginPath();
+                        ctx.moveTo(-bookWidth/2 + 20, -bookHeight/2 + 20 + i*20);
+                        ctx.lineTo(bookWidth/2 - 20, -bookHeight/2 + 20 + i*20);
+                        ctx.stroke();
+                    }
+                    break;
+                    
+                case 'bilgoo':
+                    ctx.font = `bold ${iconSize * 0.15}px Arial`;
+                    ctx.fillText('BILGOO', 0, -20);
+                    ctx.font = `${iconSize * 0.12}px Arial`;
+                    ctx.fillText('QUIZ', 0, 20);
+                    break;
+            }
+
+            ctx.restore();
+
+            // Turkish flag reference
+            ctx.fillStyle = '#e11d48';
+            ctx.beginPath();
+            ctx.arc(canvas.width - 40, 40, 15, 0, 2 * Math.PI);
+            ctx.fill();
+
+            return canvas;
+        }
+
         function generateAllIcons() {
             const preview = document.getElementById('preview');
             preview.innerHTML = '';
@@ -261,6 +412,67 @@
                 
                 canvases.push({canvas, size});
             });
+        }
+
+        function generateFeatureGraphic() {
+            const preview = document.getElementById('preview');
+            
+            // Add feature graphic section
+            let featureSection = document.getElementById('feature-graphic-section');
+            if (!featureSection) {
+                featureSection = document.createElement('div');
+                featureSection.id = 'feature-graphic-section';
+                featureSection.style.borderTop = '2px solid #ddd';
+                featureSection.style.marginTop = '20px';
+                featureSection.style.paddingTop = '20px';
+                
+                const title = document.createElement('h3');
+                title.textContent = 'Özellik Grafiği (1024x500)';
+                title.style.textAlign = 'center';
+                featureSection.appendChild(title);
+                
+                preview.appendChild(featureSection);
+            }
+
+            const canvas = createFeatureGraphic();
+            canvas.style.maxWidth = '100%';
+            canvas.style.height = 'auto';
+            canvas.style.border = '1px solid #ddd';
+            canvas.style.borderRadius = '8px';
+            canvas.title = '1024x500 Özellik Grafiği';
+            
+            const container = document.createElement('div');
+            container.style.textAlign = 'center';
+            container.style.margin = '10px';
+            
+            const label = document.createElement('div');
+            label.textContent = '1024x500 - Google Play Özellik Grafiği';
+            label.style.fontSize = '14px';
+            label.style.marginTop = '10px';
+            label.style.fontWeight = 'bold';
+            
+            const downloadBtn = document.createElement('button');
+            downloadBtn.textContent = 'Özellik Grafiğini İndir';
+            downloadBtn.onclick = () => downloadFeatureGraphic(canvas);
+            
+            container.appendChild(canvas);
+            container.appendChild(label);
+            container.appendChild(downloadBtn);
+            
+            // Clear previous feature graphic and add new one
+            featureSection.innerHTML = '';
+            const title = document.createElement('h3');
+            title.textContent = 'Özellik Grafiği (1024x500)';
+            title.style.textAlign = 'center';
+            featureSection.appendChild(title);
+            featureSection.appendChild(container);
+        }
+
+        function downloadFeatureGraphic(canvas) {
+            const link = document.createElement('a');
+            link.download = 'feature-graphic-1024x500.png';
+            link.href = canvas.toDataURL();
+            link.click();
         }
 
         function downloadIcon(canvas, size) {
