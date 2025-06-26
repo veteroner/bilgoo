@@ -26,103 +26,7 @@
     <meta itemprop="name" content="Bilgoo - Ücretsiz Online Quiz Oyunu">
     <meta itemprop="image" content="icons/icon-192x192.png">
     
-    <!-- Google AdSense Kodu - Güveli yükleme -->
-    <script>
-        // AdSense için güvenli yükleme
-        (function() {
-            // Varsayılan ayarlar
-            window.dataLayer = window.dataLayer || [];
-            if (window.adsbygoogle === undefined) {
-                window.adsbygoogle = [];
-            }
-            
-            // SameSite çerezleri için ayarlar
-            document.cookie = "adsense-test=test; SameSite=None; Secure";
-            
-                         // Yedek reklam gösterme fonksiyonu
-             function showBackupAds() {
-                 console.log("SSL hatası nedeniyle basit reklam alanları gösteriliyor");
-                 
-                 // Reklam alanlarını seç
-                 const adContainers = document.querySelectorAll('.ad-container, .adsbygoogle');
-                 
-                 // Alternatif içerikleri göster
-                 if(adContainers && adContainers.length > 0) {
-                     adContainers.forEach(function(container) {
-                         // Reklam containerı için sadece temel stiller uygula
-                         container.style.display = 'flex';
-                         container.style.alignItems = 'center';
-                         container.style.justifyContent = 'center';
-                         container.style.backgroundColor = '#f5f5f5';
-                         container.style.border = '1px solid #ddd';
-                         container.style.borderRadius = '8px';
-                         container.style.padding = '10px';
-                         
-                         // Yan reklamlar için özel boyut ayarları
-                         if (container.parentElement && (container.parentElement.classList.contains('ad-sidebar-left') || container.parentElement.classList.contains('ad-sidebar-right'))) {
-                            container.style.minHeight = '600px';
-                            container.style.width = '300px';
-                         } else {
-                            container.style.minHeight = '250px';
-                            container.style.width = '300px';
-                         }
-                         
-                         // Basit "Reklam Alanı" yazısı göster
-                         container.innerHTML = `
-                             <div style="text-align: center;">
-                                 <span>Reklam Alanı</span>
-                             </div>
-                         `;
-                     });
-                 }
-             }
-            
-            // Service Worker'ı AdSense için devre dışı bırak
-            if (navigator.serviceWorker && navigator.serviceWorker.controller) {
-                navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                    for(let registration of registrations) {
-                        console.log('AdSense için Service Worker kaydı siliniyor');
-                        registration.unregister().then(function() {
-                            console.log('Service Worker kaydı silindi');
-                        });
-                    }
-                });
-            }
-            
-            // AdSense yükleme fonksiyonu
-            function loadAdSense() {
-                try {
-                    const script = document.createElement('script');
-                    script.async = true;
-                    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453";
-                    script.crossOrigin = "anonymous";
-                    script.referrerpolicy = "no-referrer-when-downgrade";
-                    
-                    // Yükleme hatası olursa
-                    script.onerror = function(error) {
-                        console.log('AdSense yükleme hatası (onerror):', error);
-                        showBackupAds();
-                    };
-                    
-                    document.head.appendChild(script);
-                } catch(error) {
-                    console.error('AdSense yükleme hatası (try-catch):', error);
-                    showBackupAds();
-                }
-            }
-            
-            // Genel hata izleme
-            window.addEventListener('error', function(e) {
-                if (e.target && e.target.src && e.target.src.includes('pagead2.googlesyndication.com')) {
-                    console.log('AdSense yükleme hatası (event):', e);
-                    showBackupAds();
-                }
-            }, true);
-            
-            // AdSense yükle
-            loadAdSense();
-        })();
-    </script>
+
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Quiz Oyunu">
@@ -1711,9 +1615,7 @@
     <!-- SSL güvenlik iyileştirmeleri için eklenen meta tag -->
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
-    <!-- Google AdSense Kodu -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453"
-     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Quiz Oyunu">
@@ -3306,9 +3208,7 @@
         </style>
     <meta name="theme-color" content="#3b82f6">
     
-    <!-- Google AdSense Kodu -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453"
-     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Quiz Oyunu">
@@ -5197,34 +5097,7 @@
 </head>
 <body>
     <!-- Sol Yan Reklam Alanı -->
-    <div class="ad-sidebar-left">
 
-        <!-- Google AdSense Yan Panel Reklam -->
-        <ins class="adsbygoogle"
-             style="display:block; min-height: 600px; width: 160px;"
-             data-ad-client="ca-pub-7610338885240453"
-             data-ad-slot="3489961712"
-             data-ad-format="vertical"
-             data-full-width-responsive="false"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-    
-    <!-- Sağ Yan Reklam Alanı -->
-    <div class="ad-sidebar-right">
-
-        <!-- Google AdSense Yan Panel Reklam -->
-        <ins class="adsbygoogle"
-             style="display:block; min-height: 600px; width: 160px;"
-             data-ad-client="ca-pub-7610338885240453"
-             data-ad-slot="3489961712"
-             data-ad-format="vertical"
-             data-full-width-responsive="false"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
     <!-- Ana İçerik -->
     <!-- Ses efektleri için audio elementleri -->
     <audio id="sound-correct" src="https://assets.mixkit.co/active_storage/sfx/951/951.wav" preload="auto"></audio>
@@ -6190,7 +6063,7 @@
     <script src="progress-chart.js"></script>
     <script src="feedback.js"></script>
     <script src="admin-pending-questions.js"></script>
-    <script src="monetization.js"></script>
+
     
     <!-- Cookie Consent Banner -->
     <div id="cookie-consent" class="cookie-consent" style="display: none;">

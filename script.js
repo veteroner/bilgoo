@@ -4844,7 +4844,7 @@ const quizApp = {
                             location.reload();
                         } else {
                             // Web'de normal yönlendirme
-                            window.location.href = 'login.html';
+                        window.location.href = 'login.html';
                         }
                     }).catch(error => {
                         console.error("Çıkış yapılırken hata oluştu:", error);
