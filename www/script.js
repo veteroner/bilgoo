@@ -442,8 +442,70 @@ function initFullscreenMode() {
     document.head.appendChild(styleSheet);
 }
 
+// Platform Tespiti Fonksiyonu
+function detectPlatform() {
+    console.log('🔍 Platform tespiti başlatılıyor...');
+    
+    // Capacitor ortamında mı?
+    const isCapacitor = window.Capacitor || document.referrer.includes('android-app://') || 
+                        window.navigator.userAgent.includes('wv') || 
+                        window.location.protocol === 'capacitor:';
+    
+    // Cordova ortamında mı?
+    const isCordova = window.cordova || document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1;
+    
+    // Android cihaz mı?
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    
+    console.log('Platform bilgileri:', {
+        isCapacitor,
+        isCordova,
+        isAndroid,
+        userAgent: navigator.userAgent,
+        location: window.location.href,
+        referrer: document.referrer
+    });
+    
+    // Platform sınıflarını ekle
+    if (isCapacitor || (isAndroid && (isCordova || window.location.protocol === 'file:'))) {
+        document.body.classList.add('platform-capacitor');
+        document.documentElement.classList.add('platform-capacitor');
+        console.log('✅ Platform sınıfı eklendi: platform-capacitor');
+        
+        // Mobile tab bar'ı göster
+        const mobileTabBar = document.querySelector('.mobile-tab-bar');
+        if (mobileTabBar) {
+            mobileTabBar.style.display = 'flex';
+            mobileTabBar.style.visibility = 'visible';
+            console.log('✅ Mobile tab bar gösterildi');
+        }
+        
+        // Hamburger menu'yu gizle
+        const hamburgerToggle = document.querySelector('.hamburger-toggle');
+        if (hamburgerToggle) {
+            hamburgerToggle.style.display = 'none';
+            console.log('✅ Hamburger menu gizlendi');
+        }
+        
+        return 'capacitor';
+    } else if (isCordova) {
+        document.body.classList.add('platform-cordova');
+        document.documentElement.classList.add('platform-cordova');
+        console.log('✅ Platform sınıfı eklendi: platform-cordova');
+        return 'cordova';
+    } else {
+        document.body.classList.add('platform-web');
+        console.log('✅ Platform sınıfı eklendi: platform-web');
+        return 'web';
+    }
+}
+
 // Sayfa Yükleme İşlemleri
 document.addEventListener('DOMContentLoaded', () => {
+    // Platform tespitini hemen yap
+    const platform = detectPlatform();
+    console.log('🎯 Tespit edilen platform:', platform);
+    
     // Tam ekran modunu başlat
     initFullscreenMode();
     
@@ -452,6 +514,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (container) {
         container.style.visibility = 'visible';
         container.classList.add('fade-in');
+    }
+    
+    // Android'de 1 saniye sonra tekrar kontrol et
+    if (platform === 'capacitor') {
+        setTimeout(() => {
+            const mobileTabBar = document.querySelector('.mobile-tab-bar');
+            if (mobileTabBar && mobileTabBar.style.display === 'none') {
+                mobileTabBar.style.display = 'flex !important';
+                mobileTabBar.style.visibility = 'visible !important';
+                console.log('🔄 Mobile tab bar tekrar gösterildi');
+            }
+        }, 1000);
     }
 });
 
