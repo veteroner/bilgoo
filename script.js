@@ -457,35 +457,69 @@ function detectPlatform() {
     // Android cihaz mı?
     const isAndroid = /Android/i.test(navigator.userAgent);
     
+    // WebView kontrolü
+    const isWebView = window.navigator.userAgent.includes('wv') || 
+                      window.navigator.userAgent.includes('Version/') && window.navigator.userAgent.includes('Mobile');
+    
     console.log('Platform bilgileri:', {
         isCapacitor,
         isCordova,
         isAndroid,
+        isWebView,
         userAgent: navigator.userAgent,
         location: window.location.href,
-        referrer: document.referrer
+        referrer: document.referrer,
+        protocol: window.location.protocol
     });
     
+    // Android WebView veya Capacitor tespiti
+    const isAndroidApp = isAndroid && (isCapacitor || isCordova || isWebView || 
+                          window.location.protocol === 'file:' || 
+                          window.location.protocol === 'capacitor:' ||
+                          document.URL.includes('localhost') ||
+                          document.URL.includes('127.0.0.1'));
+    
+    console.log('🎯 Android App tespiti:', isAndroidApp);
+    
     // Platform sınıflarını ekle
-    if (isCapacitor || (isAndroid && (isCordova || window.location.protocol === 'file:'))) {
-        document.body.classList.add('platform-capacitor');
-        document.documentElement.classList.add('platform-capacitor');
-        console.log('✅ Platform sınıfı eklendi: platform-capacitor');
+    if (isAndroidApp) {
+        document.body.classList.add('platform-capacitor', 'platform-android');
+        document.documentElement.classList.add('platform-capacitor', 'platform-android');
+        console.log('✅ Platform sınıfları eklendi: platform-capacitor, platform-android');
         
-        // Mobile tab bar'ı göster
-        const mobileTabBar = document.querySelector('.mobile-tab-bar');
-        if (mobileTabBar) {
-            mobileTabBar.style.display = 'flex';
-            mobileTabBar.style.visibility = 'visible';
-            console.log('✅ Mobile tab bar gösterildi');
-        }
-        
-        // Hamburger menu'yu gizle
-        const hamburgerToggle = document.querySelector('.hamburger-toggle');
-        if (hamburgerToggle) {
-            hamburgerToggle.style.display = 'none';
-            console.log('✅ Hamburger menu gizlendi');
-        }
+        // Zorla mobile tab bar göster
+        setTimeout(() => {
+            const mobileTabBar = document.querySelector('.mobile-tab-bar');
+            const hamburgerToggle = document.querySelector('.hamburger-toggle');
+            
+            if (mobileTabBar) {
+                mobileTabBar.style.display = 'flex !important';
+                mobileTabBar.style.visibility = 'visible !important';
+                mobileTabBar.style.position = 'fixed !important';
+                mobileTabBar.style.bottom = '0 !important';
+                mobileTabBar.style.left = '0 !important';
+                mobileTabBar.style.right = '0 !important';
+                mobileTabBar.style.zIndex = '9999 !important';
+                mobileTabBar.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important';
+                mobileTabBar.style.height = '70px !important';
+                console.log('✅ Mobile tab bar zorla gösterildi');
+            } else {
+                console.error('❌ Mobile tab bar bulunamadı!');
+            }
+            
+            if (hamburgerToggle) {
+                hamburgerToggle.style.display = 'none !important';
+                hamburgerToggle.style.visibility = 'hidden !important';
+                console.log('✅ Hamburger menu gizlendi');
+            }
+            
+            // Container'ı ayarla
+            const container = document.querySelector('.container');
+            if (container) {
+                container.style.paddingBottom = '80px !important';
+                console.log('✅ Container alt boşluk eklendi');
+            }
+        }, 100);
         
         return 'capacitor';
     } else if (isCordova) {
