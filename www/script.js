@@ -477,9 +477,21 @@ function detectPlatform() {
                           window.location.protocol === 'file:' || 
                           window.location.protocol === 'capacitor:' ||
                           document.URL.includes('localhost') ||
-                          document.URL.includes('127.0.0.1'));
+                          document.URL.includes('127.0.0.1') ||
+                          window.location.href.includes('localhost') ||
+                          document.referrer === '' && isAndroid);
     
     console.log('🎯 Android App tespiti:', isAndroidApp);
+    console.log('🔍 Detaylı kontrol:', {
+        isAndroid,
+        isCapacitor,
+        isCordova,
+        isWebView,
+        protocol: window.location.protocol,
+        url: document.URL,
+        href: window.location.href,
+        referrer: document.referrer
+    });
     
     // Platform sınıflarını ekle
     if (isAndroidApp) {
