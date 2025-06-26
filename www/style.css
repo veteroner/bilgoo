@@ -10523,13 +10523,17 @@ body.category-selection[data-theme="dark"] .logo {
 
 /* Android uygulamasında hamburger menüyü gizle, tab menüyü göster */
 .platform-capacitor .hamburger-toggle,
-body.platform-capacitor .hamburger-toggle {
+body.platform-capacitor .hamburger-toggle,
+.platform-android .hamburger-toggle,
+body.platform-android .hamburger-toggle {
     display: none !important;
     visibility: hidden !important;
 }
 
 .platform-capacitor .mobile-tab-bar,
-body.platform-capacitor .mobile-tab-bar {
+body.platform-capacitor .mobile-tab-bar,
+.platform-android .mobile-tab-bar,
+body.platform-android .mobile-tab-bar {
     display: flex !important;
     visibility: visible !important;
     position: fixed !important;
@@ -10537,6 +10541,35 @@ body.platform-capacitor .mobile-tab-bar {
     left: 0 !important;
     right: 0 !important;
     z-index: 9999 !important;
+}
+
+/* TABLET ZORLA MOBİL GÖRÜNÜM - Android 600px+ */
+@media screen and (min-width: 600px) {
+    .platform-android .hamburger-toggle,
+    body.platform-android .hamburger-toggle {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    
+    .platform-android .mobile-tab-bar,
+    body.platform-android .mobile-tab-bar {
+        display: flex !important;
+        visibility: visible !important;
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 9999 !important;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        height: 70px !important;
+        border-top: 1px solid rgba(255,255,255,0.1) !important;
+    }
+    
+    .platform-android .container,
+    body.platform-android .container {
+        padding-bottom: 80px !important;
+        height: calc(100vh - 80px) !important;
+    }
 }
 
 /* Android WebView için ekstra kontrol */

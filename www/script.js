@@ -472,13 +472,24 @@ function detectPlatform() {
         protocol: window.location.protocol
     });
     
-    // Android WebView veya Capacitor tespiti
-    const isAndroidApp = isAndroid && (isCapacitor || isCordova || isWebView || 
+    // Emülatör tespiti - Android Studio emülatörü için
+    const isEmulator = navigator.userAgent.includes('Android') && 
+                       (navigator.userAgent.includes('sdk_gphone') || 
+                        navigator.userAgent.includes('Emulator') ||
+                        navigator.userAgent.includes('generic') ||
+                        window.location.href.includes('10.0.2.2'));
+    
+    // TABLET ZORLA TESPİTİ - 600px üzeri Android cihazlar için
+    const isTablet = isAndroid && window.innerWidth >= 600;
+    
+    // Android WebView veya Capacitor tespiti - TABLET İÇİN ÖZEL
+    const isAndroidApp = isAndroid && (isCapacitor || isCordova || isWebView || isEmulator || isTablet ||
                           window.location.protocol === 'file:' || 
                           window.location.protocol === 'capacitor:' ||
                           document.URL.includes('localhost') ||
                           document.URL.includes('127.0.0.1') ||
                           window.location.href.includes('localhost') ||
+                          window.location.href.includes('10.0.2.2') ||
                           document.referrer === '' && isAndroid);
     
     console.log('🎯 Android App tespiti:', isAndroidApp);
@@ -487,10 +498,15 @@ function detectPlatform() {
         isCapacitor,
         isCordova,
         isWebView,
+        isEmulator,
+        isTablet,
+        screenWidth: window.innerWidth,
+        screenHeight: window.innerHeight,
         protocol: window.location.protocol,
         url: document.URL,
         href: window.location.href,
-        referrer: document.referrer
+        referrer: document.referrer,
+        userAgent: navigator.userAgent
     });
     
     // Platform sınıflarını ekle
