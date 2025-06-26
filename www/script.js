@@ -482,15 +482,17 @@ function detectPlatform() {
     // TABLET ZORLA TESPİTİ - 600px üzeri Android cihazlar için
     const isTablet = isAndroid && window.innerWidth >= 600;
     
-    // Android WebView veya Capacitor tespiti - TABLET İÇİN ÖZEL
-    const isAndroidApp = isAndroid && (isCapacitor || isCordova || isWebView || isEmulator || isTablet ||
+    // ZORLA ANDROID APP TESPİTİ - HER ANDROID CİHAZ İÇİN
+    // Bu satır her Android cihazda mobile tab bar'ı aktif hale getirir
+    const isAndroidApp = isAndroid || // ZORLA: Her Android için aktif
+                         (isAndroid && (isCapacitor || isCordova || isWebView || isEmulator || isTablet ||
                           window.location.protocol === 'file:' || 
                           window.location.protocol === 'capacitor:' ||
                           document.URL.includes('localhost') ||
                           document.URL.includes('127.0.0.1') ||
                           window.location.href.includes('localhost') ||
                           window.location.href.includes('10.0.2.2') ||
-                          document.referrer === '' && isAndroid);
+                          document.referrer === '' && isAndroid));
     
     console.log('🎯 Android App tespiti:', isAndroidApp);
     console.log('🔍 Detaylı kontrol:', {
@@ -4835,7 +4837,15 @@ const quizApp = {
                 // Firebase ile çıkış yap
                 if (firebase.auth) {
                     firebase.auth().signOut().then(() => {
-                        window.location.href = 'login.html';
+                        // Android Capacitor'da login sayfasına yönlendirme
+                        if (document.body.classList.contains('platform-capacitor') || 
+                            document.body.classList.contains('platform-android')) {
+                            // Android'de aynı sayfada login göster
+                            location.reload();
+                        } else {
+                            // Web'de normal yönlendirme
+                            window.location.href = 'login.html';
+                        }
                     }).catch(error => {
                         console.error("Çıkış yapılırken hata oluştu:", error);
                         this.showToast("Çıkış yapılırken bir hata oluştu", "toast-error");
