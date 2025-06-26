@@ -10522,12 +10522,14 @@ body.category-selection[data-theme="dark"] .logo {
 }
 
 /* Android uygulamasında hamburger menüyü gizle, tab menüyü göster */
-.platform-capacitor .hamburger-toggle {
+.platform-capacitor .hamburger-toggle,
+body.platform-capacitor .hamburger-toggle {
     display: none !important;
     visibility: hidden !important;
 }
 
-.platform-capacitor .mobile-tab-bar {
+.platform-capacitor .mobile-tab-bar,
+body.platform-capacitor .mobile-tab-bar {
     display: flex !important;
     visibility: visible !important;
     position: fixed !important;
@@ -10535,6 +10537,22 @@ body.category-selection[data-theme="dark"] .logo {
     left: 0 !important;
     right: 0 !important;
     z-index: 9999 !important;
+}
+
+/* Android WebView için ekstra kontrol */
+body[class*="android"] .mobile-tab-bar,
+body[data-platform="android"] .mobile-tab-bar,
+html.platform-capacitor .mobile-tab-bar {
+    display: flex !important;
+    visibility: visible !important;
+}
+
+/* Android için hamburger menu gizleme */
+body[class*="android"] .hamburger-toggle,
+body[data-platform="android"] .hamburger-toggle,
+html.platform-capacitor .hamburger-toggle {
+    display: none !important;
+    visibility: hidden !important;
 }
 
 /* Android/Cordova platformunda tab bar'ı kesin göster */
