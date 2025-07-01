@@ -17,7 +17,7 @@ Disallow: /functions/
 
 # İzin verilen dosyalar
 Allow: /icons/
-Allow: /favicon.ico
+Allow: /favicon.ico 
 Allow: /privacy-policy.html
 Allow: /terms-of-service.html
 Allow: /robots.txt
