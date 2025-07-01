@@ -7,7 +7,7 @@
     <!-- Ana Sayfa -->
     <url>
         <loc>https://bilgoo.com/</loc>
-        <lastmod>2024-01-10</lastmod>
+        <lastmod>2025-07-01</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
     </url>
@@ -15,7 +15,7 @@
     <!-- Hakkımızda Sayfası -->
     <url>
         <loc>https://bilgoo.com/about.html</loc>
-        <lastmod>2024-01-10</lastmod>
+        <lastmod>2025-01-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
@@ -23,7 +23,7 @@
     <!-- İletişim Sayfası -->
     <url>
         <loc>https://bilgoo.com/contact.html</loc>
-        <lastmod>2024-01-10</lastmod>
+        <lastmod>2025-01-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
@@ -31,7 +31,7 @@
     <!-- Gizlilik Politikası -->
     <url>
         <loc>https://bilgoo.com/privacy-policy.html</loc>
-        <lastmod>2024-01-10</lastmod>
+        <lastmod>2025-01-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
@@ -39,7 +39,7 @@
     <!-- Giriş Sayfası -->
     <url>
         <loc>https://bilgoo.com/login.html</loc>
-        <lastmod>2024-01-10</lastmod>
+        <lastmod>2025-01-10</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
