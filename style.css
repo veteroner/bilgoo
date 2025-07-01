@@ -20,6 +20,44 @@
     }
 }
 
+/* Masaüstü reklam alanları için boyut ayarları */
+@media (min-width: 1281px) {
+    .ad-sidebar-left, 
+    .ad-sidebar-right {
+        width: 300px !important;
+        min-width: 300px !important;
+        max-width: 300px !important;
+        height: 600px !important;
+        min-height: 600px !important;
+        max-height: 600px !important;
+    }
+    
+    .ad-container, .adsbygoogle {
+        width: 300px !important;
+        min-width: 300px !important;
+        max-width: 300px !important;
+        height: 250px !important;
+        min-height: 250px !important;
+        max-height: 600px !important;
+    }
+    
+    /* Ana konteyner için margin ayarları */
+    .container {
+        margin: 0 auto !important;
+        max-width: 1200px !important;
+        padding: 0 20px !important;
+    }
+    
+    /* Footer genişlik ayarı */
+    footer {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 30px 0 !important;
+        box-sizing: border-box !important;
+    }
+}
+
 /* Mobil Üst Banner Reklam - Ana konteyner içinde */
 .mobile-top-banner {
     position: relative !important;
@@ -10523,25 +10561,17 @@ body.category-selection[data-theme="dark"] .logo {
 
 /* Android uygulamasında hamburger menüyü gizle, tab menüyü göster */
 .platform-capacitor .hamburger-toggle,
-<<<<<<< HEAD
 body.platform-capacitor .hamburger-toggle,
 .platform-android .hamburger-toggle,
 body.platform-android .hamburger-toggle {
-=======
-body.platform-capacitor .hamburger-toggle {
->>>>>>> 6359ef4c76fbf10b7f80b1d565e8dfc59d6044f9
     display: none !important;
     visibility: hidden !important;
 }
 
 .platform-capacitor .mobile-tab-bar,
-<<<<<<< HEAD
 body.platform-capacitor .mobile-tab-bar,
 .platform-android .mobile-tab-bar,
 body.platform-android .mobile-tab-bar {
-=======
-body.platform-capacitor .mobile-tab-bar {
->>>>>>> 6359ef4c76fbf10b7f80b1d565e8dfc59d6044f9
     display: flex !important;
     visibility: visible !important;
     position: fixed !important;
@@ -10551,7 +10581,6 @@ body.platform-capacitor .mobile-tab-bar {
     z-index: 9999 !important;
 }
 
-<<<<<<< HEAD
 /* TABLET ZORLA MOBİL GÖRÜNÜM - Android 600px+ */
 @media screen and (min-width: 600px) {
     .platform-android .hamburger-toggle,
@@ -10580,9 +10609,6 @@ body.platform-capacitor .mobile-tab-bar {
         height: calc(100vh - 80px) !important;
     }
 }
-
-=======
->>>>>>> 6359ef4c76fbf10b7f80b1d565e8dfc59d6044f9
 /* Android WebView için ekstra kontrol */
 body[class*="android"] .mobile-tab-bar,
 body[data-platform="android"] .mobile-tab-bar,

@@ -297,6 +297,9 @@ body {
     overflow-x: hidden;
     color: var(--text-color);
     transition: all 0.3s ease;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Animasyonlu Arka Plan Deseni */
@@ -10571,6 +10574,7 @@ body.platform-android .mobile-tab-bar {
         height: calc(100vh - 80px) !important;
     }
 }
+
 /* Android WebView için ekstra kontrol */
 body[class*="android"] .mobile-tab-bar,
 body[data-platform="android"] .mobile-tab-bar,

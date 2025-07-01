@@ -11,7 +11,7 @@
     <meta name="language" content="Turkish">
     <meta name="theme-color" content="#3b82f6">
     <!-- SSL güvenlik ayarları - AdSense uyumlu -->
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; frame-ancestors 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://googleads.g.doubleclick.net">
+    <!-- CSP frame-ancestors meta tag ile desteklenmez, HTTP header ile yapılmalı -->
     
     <!-- Favicon tanımlamaları - Google arama sonuçlarında görünmesi için -->
     <link rel="icon" href="favicon.ico" sizes="any">
@@ -7243,7 +7243,7 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', 'YOUR_PIXEL_ID');
+            // fbq('init', 'YOUR_PIXEL_ID'); // Meta Pixel ID henüz ayarlanmadı
     fbq('track', 'PageView');
     </script>
     <noscript><img height="1" width="1" style="display:none"
