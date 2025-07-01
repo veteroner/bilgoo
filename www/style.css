@@ -297,9 +297,6 @@ body {
     overflow-x: hidden;
     color: var(--text-color);
     transition: all 0.3s ease;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
 }
 
 /* Animasyonlu Arka Plan Deseni */
@@ -2017,8 +2014,8 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 1rem; /* azaltıldı */
-    padding-top: 0.3rem; /* azaltıldı */
+    margin-top: 2rem;
+    padding-top: 1rem;
     border-top: 1px solid var(--border-color);
     font-size: 0.9rem;
     color: var(--text-light);

@@ -2,23 +2,6 @@ User-agent: *
 Allow: /
 Sitemap: https://bilgoo.com/sitemap.xml
 
-# Test sayfalarını engelle
-Disallow: /icon-generator.html
-Disallow: /www/
-Disallow: /netlify-deploy/
-Disallow: /android/
-Disallow: /*.bat
-Disallow: /*.py
-
-# Geliştirici dosyalarını engelle
-Disallow: /config/
-Disallow: /backup-questions/
-Disallow: /functions/
-
-# İzin verilen dosyalar
+# Images and icons
 Allow: /icons/
 Allow: /favicon.ico 
-Allow: /privacy-policy.html
-Allow: /terms-of-service.html
-Allow: /robots.txt
-Allow: /ads.txt 

@@ -10,8 +10,8 @@
     <meta name="robots" content="index, follow">
     <meta name="language" content="Turkish">
     <meta name="theme-color" content="#3b82f6">
-    <!-- SSL güvenlik ayarları - AdSense uyumlu -->
-    <!-- CSP frame-ancestors meta tag ile desteklenmez, HTTP header ile yapılmalı -->
+    <!-- SSL güvenlik iyileştirmeleri için eklenen meta tag -->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
     <!-- Favicon tanımlamaları - Google arama sonuçlarında görünmesi için -->
     <link rel="icon" href="favicon.ico" sizes="any">
@@ -26,96 +26,7 @@
     <meta itemprop="name" content="Bilgoo - Ücretsiz Online Quiz Oyunu">
     <meta itemprop="image" content="icons/icon-192x192.png">
     
-    <!-- Google AdSense Kodu - Güveli yükleme -->
-    <script>
-        // AdSense için güvenli yükleme
-        (function() {
-            // Varsayılan ayarlar
-            window.dataLayer = window.dataLayer || [];
-            if (window.adsbygoogle === undefined) {
-                window.adsbygoogle = [];
-            }
-            
-            // SameSite çerezleri için ayarlar
-            document.cookie = "adsense-test=test; SameSite=None; Secure";
-            
-                         // Yedek reklam gösterme fonksiyonu
-             function showBackupAds() {
-                 console.log("SSL hatası nedeniyle basit reklam alanları gösteriliyor");
-                 
-                 // Reklam alanlarını seç
-                 const adContainers = document.querySelectorAll('.ad-container, .adsbygoogle');
-                 
-                 // Alternatif içerikleri göster
-                 if(adContainers && adContainers.length > 0) {
-                     adContainers.forEach(function(container) {
-                         // Reklam containerı için sadece temel stiller uygula
-                         container.style.display = 'flex';
-                         container.style.alignItems = 'center';
-                         container.style.justifyContent = 'center';
-                         container.style.backgroundColor = '#f5f5f5';
-                         container.style.border = '1px solid #ddd';
-                         container.style.borderRadius = '8px';
-                         container.style.padding = '10px';
-                         
-                         // Yan reklamlar için özel boyut ayarları
-                         if (container.parentElement && (container.parentElement.classList.contains('ad-sidebar-left') || container.parentElement.classList.contains('ad-sidebar-right'))) {
-                            container.style.minHeight = '600px';
-                            container.style.width = '300px';
-                         } else {
-                            container.style.minHeight = '250px';
-                            container.style.width = '300px';
-                         }
-                         
-                         // Basit "Reklam Alanı" yazısı göster
-                         container.innerHTML = `
-                             <div style="text-align: center;">
-                                 <span>Reklam Alanı</span>
-                             </div>
-                         `;
-                     });
-                 }
-             }
-            
-            // Service Worker kontrolü - AdSense uyumluluğu için
-            if (navigator.serviceWorker && navigator.serviceWorker.controller) {
-                console.log('Service Worker mevcut - AdSense ile uyumlu çalışıyor');
-            }
-            
-            // AdSense yükleme fonksiyonu
-            function loadAdSense() {
-                try {
-                    const script = document.createElement('script');
-                    script.async = true;
-                    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453";
-                    script.crossOrigin = "anonymous";
-                    script.referrerpolicy = "no-referrer-when-downgrade";
-                    
-                    // Yükleme hatası olursa
-                    script.onerror = function(error) {
-                        console.log('AdSense yükleme hatası (onerror):', error);
-                        showBackupAds();
-                    };
-                    
-                    document.head.appendChild(script);
-                } catch(error) {
-                    console.error('AdSense yükleme hatası (try-catch):', error);
-                    showBackupAds();
-                }
-            }
-            
-            // Genel hata izleme
-            window.addEventListener('error', function(e) {
-                if (e.target && e.target.src && e.target.src.includes('pagead2.googlesyndication.com')) {
-                    console.log('AdSense yükleme hatası (event):', e);
-                    showBackupAds();
-                }
-            }, true);
-            
-            // AdSense yükle
-            loadAdSense();
-        })();
-    </script>
+
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Quiz Oyunu">
@@ -1704,9 +1615,7 @@
     <!-- SSL güvenlik iyileştirmeleri için eklenen meta tag -->
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
-    <!-- Google AdSense Kodu -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453"
-     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Quiz Oyunu">
@@ -3299,9 +3208,7 @@
         </style>
     <meta name="theme-color" content="#3b82f6">
     
-    <!-- Google AdSense Kodu -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453"
-     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Quiz Oyunu">
@@ -5188,36 +5095,9 @@
         }
     </style>
 </head>
-<body style="min-height: 100vh; display: flex; flex-direction: column;">
+<body>
     <!-- Sol Yan Reklam Alanı -->
-    <div class="ad-sidebar-left">
 
-        <!-- Google AdSense Yan Panel Reklam -->
-        <ins class="adsbygoogle"
-             style="display:block; min-height: 600px; width: 160px;"
-             data-ad-client="ca-pub-7610338885240453"
-             data-ad-slot="3489961712"
-             data-ad-format="vertical"
-             data-full-width-responsive="false"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
-    
-    <!-- Sağ Yan Reklam Alanı -->
-    <div class="ad-sidebar-right">
-
-        <!-- Google AdSense Yan Panel Reklam -->
-        <ins class="adsbygoogle"
-             style="display:block; min-height: 600px; width: 160px;"
-             data-ad-client="ca-pub-7610338885240453"
-             data-ad-slot="3489961712"
-             data-ad-format="vertical"
-             data-full-width-responsive="false"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
-    </div>
     <!-- Ana İçerik -->
     <!-- Ses efektleri için audio elementleri -->
     <audio id="sound-correct" src="https://assets.mixkit.co/active_storage/sfx/951/951.wav" preload="auto"></audio>
@@ -5358,35 +5238,35 @@
                     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
                         <feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="rgba(0,0,0,0.2)"/>
                     </filter>
-                                            <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#5b21b6;stop-opacity:1" />
+                    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#4285f4;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#1a73e8;stop-opacity:1" />
                     </linearGradient>
-                        <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" style="stop-color:#f97316;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#ea580c;stop-opacity:1" />
+                    <linearGradient id="redGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#ea4335;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#d93025;stop-opacity:1" />
                     </linearGradient>
-                        <linearGradient id="tealGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" style="stop-color:#0d9488;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#0f766e;stop-opacity:1" />
+                    <linearGradient id="yellowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#fbbc04;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#f9ab00;stop-opacity:1" />
                     </linearGradient>
-                        <linearGradient id="indigoGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#3730a3;stop-opacity:1" />
+                    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style="stop-color:#34a853;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#137333;stop-opacity:1" />
                     </linearGradient>
                 </defs>
                 <text x="60" y="100" font-family="Arial, sans-serif" font-size="100" font-weight="bold" 
-                          fill="url(#purpleGrad)" filter="url(#shadow)">B</text>
+                      fill="url(#blueGrad)" filter="url(#shadow)">B</text>
                 <text x="135" y="100" font-family="Arial, sans-serif" font-size="100" font-weight="bold" 
-                          fill="url(#orangeGrad)" filter="url(#shadow)">i</text>
+                      fill="url(#redGrad)" filter="url(#shadow)">i</text>
                 <text x="170" y="100" font-family="Arial, sans-serif" font-size="100" font-weight="bold" 
-                          fill="url(#tealGrad)" filter="url(#shadow)">l</text>
+                      fill="url(#yellowGrad)" filter="url(#shadow)">l</text>
                 <text x="205" y="100" font-family="Arial, sans-serif" font-size="100" font-weight="bold" 
-                          fill="url(#indigoGrad)" filter="url(#shadow)">g</text>
+                      fill="url(#blueGrad)" filter="url(#shadow)">g</text>
                 <text x="275" y="100" font-family="Arial, sans-serif" font-size="100" font-weight="bold" 
-                          fill="url(#purpleGrad)" filter="url(#shadow)">o</text>
+                      fill="url(#greenGrad)" filter="url(#shadow)">o</text>
                 <text x="345" y="100" font-family="Arial, sans-serif" font-size="100" font-weight="bold" 
-                          fill="url(#orangeGrad)" filter="url(#shadow)">o</text>
+                      fill="url(#redGrad)" filter="url(#shadow)">o</text>
             </svg>
         </div>
 
@@ -6183,7 +6063,7 @@
     <script src="progress-chart.js"></script>
     <script src="feedback.js"></script>
     <script src="admin-pending-questions.js"></script>
-    <script src="monetization.js"></script>
+
     
     <!-- Cookie Consent Banner -->
     <div id="cookie-consent" class="cookie-consent" style="display: none;">
@@ -7243,7 +7123,7 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-            // fbq('init', 'YOUR_PIXEL_ID'); // Meta Pixel ID henüz ayarlanmadı
+    fbq('init', 'YOUR_PIXEL_ID');
     fbq('track', 'PageView');
     </script>
     <noscript><img height="1" width="1" style="display:none"
@@ -12023,42 +11903,5 @@
         `;
         document.head.appendChild(style);
     </script>
-    
-    <!-- Footer -->
-    <footer style="
-        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-        color: white;
-        text-align: center;
-        padding: 10px 10px;
-        margin-top: auto;
-        font-family: 'Poppins', sans-serif;
-        width: 100%;
-        margin-left: 0;
-        margin-right: 0;
-    ">
-        <div style="width: 100%; padding: 0 20px; box-sizing: border-box;">
-            <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; flex-wrap: wrap;">
-                <a href="about.html" style="color: white; text-decoration: none; font-size: 0.9rem; opacity: 0.9;">
-                    <i class="fas fa-info-circle" style="margin-right: 5px;"></i>Hakkımızda
-                </a>
-                <a href="privacy-policy.html" style="color: white; text-decoration: none; font-size: 0.9rem; opacity: 0.9;">
-                    <i class="fas fa-shield-alt" style="margin-right: 5px;"></i>Gizlilik Politikası
-                </a>
-                <a href="terms-of-service.html" style="color: white; text-decoration: none; font-size: 0.9rem; opacity: 0.9;">
-                    <i class="fas fa-file-contract" style="margin-right: 5px;"></i>Kullanım Koşulları
-                </a>
-                <a href="mailto:bilgoo.quiz@gmail.com" style="color: white; text-decoration: none; font-size: 0.9rem; opacity: 0.9;">
-                    <i class="fas fa-envelope" style="margin-right: 5px;"></i>İletişim
-                </a>
-            </div>
-            
-            <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; opacity: 0.8;">
-                <p style="margin: 0; font-size: 0.8rem;">
-                    © 2025 Bilgoo Quiz Oyunu. Tüm hakları saklıdır.<br>
-                    Bu site 13+ yaş grubuna yöneliktir. Ebeveyn gözetimi önerilir.
-                </p>
-            </div>
-        </div>
-    </footer>
 </body>
 </html>
