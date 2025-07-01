@@ -457,14 +457,18 @@ function detectPlatform() {
     // Android cihaz mı?
     const isAndroid = /Android/i.test(navigator.userAgent);
     
+<<<<<<< HEAD
     // WebView kontrolü
     const isWebView = window.navigator.userAgent.includes('wv') || 
                       window.navigator.userAgent.includes('Version/') && window.navigator.userAgent.includes('Mobile');
     
+=======
+>>>>>>> 6359ef4c76fbf10b7f80b1d565e8dfc59d6044f9
     console.log('Platform bilgileri:', {
         isCapacitor,
         isCordova,
         isAndroid,
+<<<<<<< HEAD
         isWebView,
         userAgent: navigator.userAgent,
         location: window.location.href,
@@ -550,6 +554,33 @@ function detectPlatform() {
                 console.log('✅ Container alt boşluk eklendi');
             }
         }, 100);
+=======
+        userAgent: navigator.userAgent,
+        location: window.location.href,
+        referrer: document.referrer
+    });
+    
+    // Platform sınıflarını ekle
+    if (isCapacitor || (isAndroid && (isCordova || window.location.protocol === 'file:'))) {
+        document.body.classList.add('platform-capacitor');
+        document.documentElement.classList.add('platform-capacitor');
+        console.log('✅ Platform sınıfı eklendi: platform-capacitor');
+        
+        // Mobile tab bar'ı göster
+        const mobileTabBar = document.querySelector('.mobile-tab-bar');
+        if (mobileTabBar) {
+            mobileTabBar.style.display = 'flex';
+            mobileTabBar.style.visibility = 'visible';
+            console.log('✅ Mobile tab bar gösterildi');
+        }
+        
+        // Hamburger menu'yu gizle
+        const hamburgerToggle = document.querySelector('.hamburger-toggle');
+        if (hamburgerToggle) {
+            hamburgerToggle.style.display = 'none';
+            console.log('✅ Hamburger menu gizlendi');
+        }
+>>>>>>> 6359ef4c76fbf10b7f80b1d565e8dfc59d6044f9
         
         return 'capacitor';
     } else if (isCordova) {
