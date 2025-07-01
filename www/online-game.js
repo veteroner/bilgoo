@@ -63,8 +63,19 @@ const onlineGame = {
         // Buton event listenerları
         this.addEventListeners();
         
-        // Kategori seçeneklerini doldur
-        this.populateCategoryOptions();
+        // Kategori seçeneklerini doldur - önce window.quizApp.allQuestionsData'nın yüklenmesini bekle
+        if (window.quizApp && window.quizApp.allQuestionsData) {
+            this.populateCategoryOptions();
+        } else {
+            // allQuestionsData henüz yüklenmemişse, kısa bir süre bekle
+            setTimeout(() => {
+                if (window.quizApp && window.quizApp.allQuestionsData) {
+                    this.populateCategoryOptions();
+                } else {
+                    console.warn('allQuestionsData hala yüklenmedi, kategori seçenekleri boş kalacak');
+                }
+            }, 1000);
+        }
         
         // Chat kuralları ve moderasyon ayarlarını yükle
         this.initChatModeration();
