@@ -178,7 +178,7 @@ body.quiz-active .mobile-top-banner {
 .ad-sidebar-left, .ad-sidebar-right {
     position: fixed;
     width: 320px !important;
-    min-width: 320px !important;  
+    min-width: 320px !important;
     height: 600px;
     top: 50%;
     transform: translateY(-50%);
@@ -11179,7 +11179,7 @@ body:has(#profile-page[style*="display: block"]) footer {
     transition: all 0.2s ease;
     cursor: pointer;
     padding: 5px 0;
-    width: 25%;
+    width: 20%;
     text-align: center;
 }
 

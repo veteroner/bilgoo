@@ -1317,8 +1317,8 @@ const quizApp = {
             this.updateMobileTabText('tab-home', 'Ana Sayfa', 'Home', 'Startseite');
             this.updateMobileTabText('tab-profile', 'Profil', 'Profile', 'Profil');
             this.updateMobileTabText('tab-friends', 'Arkadaş', 'Friends', 'Freunde');
-            this.updateMobileTabText('tab-logout', 'Çıkış', 'Logout', 'Abmelden');
             this.updateMobileTabText('tab-settings', 'Ayarlar', 'Settings', 'Einstellungen');
+            this.updateMobileTabText('tab-logout', 'Çıkış', 'Logout', 'Abmelden');
             
             // Joker butonları
             this.updateMobileTabText('joker-tab-fifty', '50:50', '50:50', '50:50');
