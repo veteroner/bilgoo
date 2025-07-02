@@ -2250,6 +2250,7 @@
             border-radius: 12px;
             transition: all 0.3s ease;
             min-width: 60px;
+            width: 20%;
         }
 
         .tab-item i {
@@ -2591,10 +2592,6 @@
             padding: 10px;
             border-radius: 50%;
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.2);
-        }
-
-        .user-info-menu {
-            flex: 1;
         }
 
         .user-info-menu p {
@@ -3845,6 +3842,7 @@
             border-radius: 12px;
             transition: all 0.3s ease;
             min-width: 60px;
+            width: 20%;
         }
 
         .tab-item i {
@@ -5331,7 +5329,7 @@
         </div>
         <div class="tab-item" id="tab-logout">
             <i class="fas fa-sign-out-alt"></i>
-            <span>Çıkış</span>
+            <span data-i18n="logout">Çıkış</span>
         </div>
     </div>
 
@@ -6865,8 +6863,6 @@
                     }
                 });
             }
-            
-            // Çıkış butonu kaldırıldı
             
             // Profil düzenleme butonu için olay dinleyici
             const editProfileBtn = document.getElementById('edit-profile-btn');
