@@ -155,18 +155,18 @@ body.quiz-active .mobile-top-banner {
 /* Reklam Alanları Stilleri */
 .ad-container, .adsbygoogle {
     display: block !important;
-    background-color: transparent !important; /* Şeffaf arka plan */
-    border: 1px solid rgba(221, 221, 221, 0.3) !important; /* Hafif şeffaf border */
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 5px !important; /* Padding'i 10px'den 5px'e düşür */
-    margin: 5px 0 !important; /* Margin'i azalt */
+    padding: 10px;
+    margin: 10px 0;
     text-align: center;
     width: 100% !important;
     min-width: 320px !important;
     max-width: 100% !important;
     height: auto;
-    min-height: 150px !important; /* Min yüksekliği 250px'den 150px'e düşür */
-    max-height: 400px !important; /* Max yüksekliği 600px'den 400px'e düşür */
+    min-height: 250px;
+    max-height: 600px;
     overflow: hidden;
     position: relative;
     z-index: 1;
@@ -174,41 +174,59 @@ body.quiz-active .mobile-top-banner {
     opacity: 1 !important;
 }
 
-/* Sayfa kenarında sabit reklam alanları */
+/* Sayfa kenarında sabit reklam alanları - Tamamen şeffaf */
 .ad-sidebar-left, .ad-sidebar-right {
     position: fixed;
-    width: 320px !important;
-    min-width: 320px !important;
-    height: 600px;
+    width: 180px !important;
+    min-width: 180px !important;
+    height: 400px !important;
     top: 50%;
     transform: translateY(-50%);
     z-index: 10;
     display: block !important;
     visibility: visible !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 10px;
+}
+
+/* Karanlık tema için şeffaf yan reklam alanları */
+[data-theme="dark"] .ad-sidebar-left,
+[data-theme="dark"] .ad-sidebar-right {
+    background: transparent !important;
+    border: none !important;
+}
+
+[data-theme="dark"] .side-ad-container {
+    background: transparent !important;
+    border: none !important;
 }
 
 .ad-sidebar-left {
-    left: 10px;
+    left: 15px;
 }
 
 .ad-sidebar-right {
-    right: 10px;
+    right: 15px;
 }
 
-/* Reklam container'ları için ek stiller */
+/* Reklam container'ları için ek stiller - Şeffaf tasarım */
 .side-ad-container {
     display: flex !important;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100% !important;
-    min-width: 320px !important;
-    min-height: 180px !important; /* Min yüksekliği 250px'den 180px'e düşür */
-    background: transparent !important; /* Şeffaf arka plan */
-    border-radius: 10px;
-    margin: 10px 5px !important; /* Margin'i azalt */
-    padding: 5px !important; /* Padding'i azalt */
+    min-width: 160px !important;
+    min-height: 200px !important;
+    background: transparent !important;
+    border-radius: 12px;
+    margin: 5px;
+    padding: 8px;
     visibility: visible !important;
+    box-shadow: none !important;
+    border: none !important;
 }
 
 /* Mobil cihazlarda kenar reklamlarını gizle */
@@ -219,17 +237,14 @@ body.quiz-active .mobile-top-banner {
     }
 }
 
-/* Karanlık tema için reklam stilleri */
+/* Karanlık tema için reklam stilleri - Tamamen şeffaf */
 [data-theme="dark"] .ad-container, 
 [data-theme="dark"] .adsbygoogle {
-    background-color: transparent !important;
-    border-color: rgba(68, 68, 68, 0.3) !important;
-}
-
-[data-theme="dark"] .side-ad-container {
     background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    color: #ccc;
 }
-
 :root {
     --primary-color: #4a148c;
     --secondary-color: #e91e63;
@@ -2013,28 +2028,32 @@ button:disabled {
     color: var(--text-color);
 }
 
-/* Footer Stilleri */
+/* Footer Stilleri - Minimal yükseklik */
 footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 1rem !important; /* 2rem'den 1rem'e düşür */
-    padding-top: 0.5rem !important; /* 1rem'den 0.5rem'e düşür */
-    padding-bottom: 0.5rem !important; /* Alt padding ekle */
+    margin-top: 20rem;
+    padding: 0.3rem 0;
     border-top: 1px solid var(--border-color);
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     color: var(--text-light);
+    position: relative;
+    bottom: -200px;
+    line-height: 1.1;
+    min-height: auto;
 }
 
 footer p {
     margin: 0;
 }
 
-/* TEKNOVA şirket bilgisi ve logo stilleri */
+/* TEKNOVA şirket bilgisi ve logo stilleri - Küçültülmüş */
 .company-info {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 4px;
+    font-size: 0.7rem;
 }
 
 .company-info .logo {
@@ -2043,12 +2062,14 @@ footer p {
 }
 
 .company-info .logo svg {
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-    transition: transform 0.3s ease;
+    width: 12px !important;
+    height: 12px !important;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+    transition: transform 0.2s ease;
 }
 
 .company-info .logo svg:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .difficulty-select {
@@ -3886,31 +3907,6 @@ input:checked + .switch-label:before {
 
 .rotating {
     animation: rotate 1s linear;
-}
-
-/* Mobil cihazlarda hamburger menu tab menünün üstünde açılsın */
-@media (max-width: 768px) {
-    .hamburger-menu {
-        bottom: 70px !important; /* Tab bar yüksekliği kadar yukarı taşı */
-        z-index: 1002 !important; /* Tab bar'ın üstünde */
-        max-height: calc(100vh - 140px) !important; /* Ekran yüksekliğinden tab bar ve güvenlik mesafesi düş */
-    }
-    
-    .hamburger-menu.active {
-        bottom: 70px !important; /* Aktif durumda da tab bar'ın üstünde kal */
-    }
-    
-    /* Menü overlay varsa onun da z-index'ini ayarla */
-    .menu-overlay {
-        z-index: 1001 !important;
-    }
-    
-    /* Hamburger menu için sabit yükseklik ayarlaması - mobilde daha kompakt */
-    .hamburger-menu {
-        height: 320px !important; /* Biraz daha yüksek yap, ama tab bar'a değmesin */
-        max-height: 320px !important;
-        min-height: 320px !important;
-    }
 }
 
 /* Mobil cihazlar için font boyutlarını küçültme */
@@ -11364,29 +11360,4 @@ body.friends-active .hamburger-toggle {
 /* Hamburger menü arkadaşlar sayfasında görünsün */
 body.friends-active .hamburger-menu {
     z-index: 1500 !important;
-}
-
-/* Mobil cihazlarda hamburger menu tab menünün üstünde açılsın */
-@media (max-width: 768px) {
-    .hamburger-menu {
-        bottom: 70px !important; /* Tab bar yüksekliği kadar yukarı taşı */
-        z-index: 1002 !important; /* Tab bar'ın üstünde */
-        max-height: calc(100vh - 140px) !important; /* Ekran yüksekliğinden tab bar ve güvenlik mesafesi düş */
-    }
-    
-    .hamburger-menu.active {
-        bottom: 70px !important; /* Aktif durumda da tab bar'ın üstünde kal */
-    }
-    
-    /* Menü overlay varsa onun da z-index'ini ayarla */
-    .menu-overlay {
-        z-index: 1001 !important;
-    }
-    
-    /* Hamburger menu için sabit yükseklik ayarlaması - mobilde daha kompakt */
-    .hamburger-menu {
-        height: 320px !important; /* Biraz daha yüksek yap, ama tab bar'a değmesin */
-        max-height: 320px !important;
-        min-height: 320px !important;
-    }
 }

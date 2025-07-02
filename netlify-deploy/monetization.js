@@ -376,7 +376,8 @@ const MonetizationManager = {
                          style="display:block; min-height: 280px; width: 100%;"
                          data-ad-client="ca-pub-7610338885240453"
                          data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
+                         data-full-width-responsive="true"
+                         data-child-safe-ads-targeting="enabled"></ins>
                 </div>
             `;
             
@@ -385,7 +386,9 @@ const MonetizationManager = {
             // Reklamı yükle
             try {
                 setTimeout(() => {
-                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    (adsbygoogle = window.adsbygoogle || []).push({
+                        child_safe_ads_targeting: 'enabled'
+                    });
                 }, 500);
             } catch (e) {
                 console.log('Arabulucu reklam yüklenemedi', e);
@@ -459,9 +462,9 @@ const MonetizationManager = {
                         adContainer.style.flexDirection = 'column';
                         adContainer.style.alignItems = 'center';
                         adContainer.style.justifyContent = 'center';
-                        adContainer.style.margin = '15px 10px';
-                        adContainer.style.borderRadius = '10px';
-                        adContainer.style.background = 'rgba(255, 255, 255, 0.1)';
+                        adContainer.style.margin = '5px';
+                        adContainer.style.borderRadius = '12px';
+                        adContainer.style.background = 'transparent';
                     }
                 }
             });
@@ -471,7 +474,9 @@ const MonetizationManager = {
                 adElements.forEach((ad, index) => {
                     setTimeout(() => {
                         try {
-                            (adsbygoogle = window.adsbygoogle || []).push({});
+                            (adsbygoogle = window.adsbygoogle || []).push({
+                                child_safe_ads_targeting: 'enabled'
+                            });
                             console.log(`Reklam ${index + 1} yenilendi`);
                         } catch (e) {
                             console.log(`Reklam ${index + 1} yenilenirken hata:`, e);
@@ -524,7 +529,8 @@ const MonetizationManager = {
                  data-ad-client="ca-pub-7610338885240453"
                  data-ad-slot="1234567890"
                  data-ad-format="banner"
-                 data-full-width-responsive="false"></ins>
+                 data-full-width-responsive="false"
+                 data-child-safe-ads-targeting="enabled"></ins>
             <button class="mobile-ad-close" onclick="MonetizationManager.hideMobileBanner('top')" title="Reklamı Gizle">×</button>
         `;
         
@@ -545,7 +551,9 @@ const MonetizationManager = {
         // AdSense reklamını yükle
         setTimeout(() => {
             try {
-                (adsbygoogle = window.adsbygoogle || []).push({});
+                (adsbygoogle = window.adsbygoogle || []).push({
+                    child_safe_ads_targeting: 'enabled'
+                });
                 console.log('🎯 Mobil AdSense reklamı yüklendi');
             } catch (e) {
                 console.error('❌ Mobil AdSense yüklenemedi:', e);

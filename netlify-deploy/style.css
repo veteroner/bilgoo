@@ -1937,22 +1937,27 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 2rem;
-    padding-top: 1rem;
+    margin-top: 20rem;
+    padding: 0.3rem 0;
     border-top: 1px solid var(--border-color);
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     color: var(--text-light);
+    position: relative;
+    bottom: -200px;
+    line-height: 1.1;
+    min-height: auto;
 }
 
 footer p {
     margin: 0;
 }
 
-/* TEKNOVA şirket bilgisi ve logo stilleri */
+/* TEKNOVA şirket bilgisi ve logo stilleri - Küçültülmüş */
 .company-info {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 4px;
+    font-size: 0.7rem;
 }
 
 .company-info .logo {
@@ -1961,12 +1966,14 @@ footer p {
 }
 
 .company-info .logo svg {
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-    transition: transform 0.3s ease;
+    width: 12px !important;
+    height: 12px !important;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+    transition: transform 0.2s ease;
 }
 
 .company-info .logo svg:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .difficulty-select {

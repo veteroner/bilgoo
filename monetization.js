@@ -435,7 +435,9 @@ const MonetizationManager = {
                         // Son bir kez kontrol et
                         if (!ad.hasAttribute('data-adsbygoogle-status') || ad.getAttribute('data-adsbygoogle-status') !== 'done') {
                             console.log(`🚀 Reklam ${index + 1} yükleniyor...`);
-                                (adsbygoogle = window.adsbygoogle || []).push({});
+                                (adsbygoogle = window.adsbygoogle || []).push({
+                                    child_safe_ads_targeting: 'enabled'
+                                });
                             console.log(`✅ Reklam ${index + 1} yüklendi`);
                         } else {
                             console.log(`⚠️ Reklam ${index + 1} zaten yüklenmiş, atlanıyor`);
@@ -488,7 +490,8 @@ const MonetizationManager = {
                          style="display:block; min-height: 280px; width: 100%;"
                          data-ad-client="ca-pub-7610338885240453"
                          data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
+                         data-full-width-responsive="true"
+                         data-child-safe-ads-targeting="enabled"></ins>
                 </div>
             `;
             
@@ -500,7 +503,9 @@ const MonetizationManager = {
                     // Reklam elementi zaten yüklenmiş mi kontrol et
                     const adElement = adContainer.querySelector('.adsbygoogle');
                     if (adElement && (!adElement.hasAttribute('data-adsbygoogle-status') || adElement.getAttribute('data-adsbygoogle-status') !== 'done')) {
-                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    (adsbygoogle = window.adsbygoogle || []).push({
+                        child_safe_ads_targeting: 'enabled'
+                    });
                     }
                 }, 500);
             } catch (e) {
@@ -625,11 +630,11 @@ const MonetizationManager = {
                         adContainer.style.flexDirection = 'column';
                         adContainer.style.alignItems = 'center';
                         adContainer.style.justifyContent = 'center';
-                        adContainer.style.minHeight = '600px';
-                        adContainer.style.width = '300px';
-                        adContainer.style.margin = '15px 10px';
-                        adContainer.style.borderRadius = '10px';
-                        adContainer.style.background = 'rgba(255, 255, 255, 0.1)';
+                        adContainer.style.minHeight = '350px';
+                        adContainer.style.width = '180px';
+                        adContainer.style.margin = '5px';
+                        adContainer.style.borderRadius = '12px';
+                        adContainer.style.background = 'transparent';
                     }
                 }
             });
@@ -642,7 +647,9 @@ const MonetizationManager = {
                             // Reklam hala yüklenmemiş mi kontrol et
                             if (!ad.hasAttribute('data-adsbygoogle-status') || ad.getAttribute('data-adsbygoogle-status') !== 'done') {
                             console.log(`Reklam ${index + 1} yenileniyor...`);
-                            (adsbygoogle = window.adsbygoogle || []).push({});
+                            (adsbygoogle = window.adsbygoogle || []).push({
+                                child_safe_ads_targeting: 'enabled'
+                            });
                             console.log(`Reklam ${index + 1} yenilendi`);
                             } else {
                                 console.log(`Reklam ${index + 1} zaten yüklenmiş, işlem atlanıyor`);
@@ -656,7 +663,9 @@ const MonetizationManager = {
                                 // Bir süre sonra tekrar deneyelim
                                 setTimeout(() => {
                                     try {
-                                        (adsbygoogle = window.adsbygoogle || []).push({});
+                                        (adsbygoogle = window.adsbygoogle || []).push({
+                                            child_safe_ads_targeting: 'enabled'
+                                        });
                                     } catch (innerError) {
                                         console.error('İkinci deneme başarısız:', innerError);
                                     }
@@ -715,7 +724,8 @@ const MonetizationManager = {
                  data-ad-client="ca-pub-7610338885240453"
                  data-ad-slot="1234567890"
                  data-ad-format="banner"
-                 data-full-width-responsive="false"></ins>
+                 data-full-width-responsive="false"
+                 data-child-safe-ads-targeting="enabled"></ins>
             <button class="mobile-ad-close" onclick="MonetizationManager.hideMobileBanner('top')" title="Reklamı Gizle">×</button>
         `;
         
@@ -736,7 +746,9 @@ const MonetizationManager = {
         // AdSense reklamını yükle
         setTimeout(() => {
             try {
-                (adsbygoogle = window.adsbygoogle || []).push({});
+                (adsbygoogle = window.adsbygoogle || []).push({
+                    child_safe_ads_targeting: 'enabled'
+                });
                 console.log('🎯 Mobil AdSense reklamı yüklendi');
             } catch (e) {
                 console.error('❌ Mobil AdSense yüklenemedi:', e);
@@ -759,7 +771,8 @@ const MonetizationManager = {
                  data-ad-client="ca-pub-7610338885240453"
                  data-ad-slot="1234567891"
                  data-ad-format="banner"
-                 data-full-width-responsive="false"></ins>
+                 data-full-width-responsive="false"
+                 data-child-safe-ads-targeting="enabled"></ins>
             <button class="mobile-ad-close" onclick="MonetizationManager.hideMobileBanner('bottom')" title="Reklamı Gizle">×</button>
         `;
         
@@ -768,7 +781,9 @@ const MonetizationManager = {
         // AdSense reklamını yükle
         setTimeout(() => {
             try {
-                (adsbygoogle = window.adsbygoogle || []).push({});
+                (adsbygoogle = window.adsbygoogle || []).push({
+                    child_safe_ads_targeting: 'enabled'
+                });
                 console.log('Mobil alt banner reklamı yüklendi');
             } catch (e) {
                 console.error('Mobil alt banner yüklenemedi:', e);

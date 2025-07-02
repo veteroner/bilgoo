@@ -152,14 +152,14 @@ body.quiz-active .mobile-top-banner {
 
 /* Temel Stil ve Sıfırlama */
 
-/* Reklam Alanları Stilleri */
+/* Reklam Alanları Stilleri - Tamamen şeffaf */
 .ad-container, .adsbygoogle {
     display: block !important;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 10px;
-    margin: 10px 0;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
     text-align: center;
     width: 100% !important;
     min-width: 320px !important;
@@ -174,41 +174,60 @@ body.quiz-active .mobile-top-banner {
     opacity: 1 !important;
 }
 
-/* Sayfa kenarında sabit reklam alanları */
+/* Sayfa kenarında sabit reklam alanları - Tamamen şeffaf */
 .ad-sidebar-left, .ad-sidebar-right {
     position: fixed;
-    width: 320px !important;
-    min-width: 320px !important;
-    height: 600px;
+    width: 180px !important;
+    min-width: 180px !important;
+    height: 400px !important;
     top: 50%;
     transform: translateY(-50%);
     z-index: 10;
     display: block !important;
     visibility: visible !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    outline: none !important;
+    padding: 0;
+}
+
+/* Karanlık tema için şeffaf yan reklam alanları */
+[data-theme="dark"] .ad-sidebar-left,
+[data-theme="dark"] .ad-sidebar-right {
+    background: transparent !important;
+    border: none !important;
+}
+
+[data-theme="dark"] .side-ad-container {
+    background: transparent !important;
+    border: none !important;
 }
 
 .ad-sidebar-left {
-    left: 10px;
+    left: 15px;
 }
 
 .ad-sidebar-right {
-    right: 10px;
+    right: 15px;
 }
 
-/* Reklam container'ları için ek stiller */
+/* Reklam container'ları için ek stiller - Tamamen şeffaf */
 .side-ad-container {
     display: flex !important;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100% !important;
-    min-width: 320px !important;
-    min-height: 250px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    margin: 15px 10px;
-    padding: 10px;
+    min-width: 160px !important;
+    min-height: 200px !important;
+    background: transparent !important;
+    margin: 0;
+    padding: 0;
     visibility: visible !important;
+    box-shadow: none !important;
+    border: none !important;
+    outline: none !important;
 }
 
 /* Mobil cihazlarda kenar reklamlarını gizle */
@@ -219,11 +238,12 @@ body.quiz-active .mobile-top-banner {
     }
 }
 
-/* Karanlık tema için reklam stilleri */
+/* Karanlık tema için reklam stilleri - Tamamen şeffaf */
 [data-theme="dark"] .ad-container, 
 [data-theme="dark"] .adsbygoogle {
-    background-color: #333;
-    border-color: #444;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
     color: #ccc;
 }
 :root {
@@ -2009,27 +2029,32 @@ button:disabled {
     color: var(--text-color);
 }
 
-/* Footer Stilleri */
+/* Footer Stilleri - Minimal yükseklik */
 footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 2rem;
-    padding-top: 1rem;
+    margin-top: 20rem;
+    padding: 0.3rem 0;
     border-top: 1px solid var(--border-color);
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     color: var(--text-light);
+    position: relative;
+    bottom: -200px;
+    line-height: 1.1;
+    min-height: auto;
 }
 
 footer p {
     margin: 0;
 }
 
-/* TEKNOVA şirket bilgisi ve logo stilleri */
+/* TEKNOVA şirket bilgisi ve logo stilleri - Küçültülmüş */
 .company-info {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 4px;
+    font-size: 0.7rem;
 }
 
 .company-info .logo {
@@ -2038,12 +2063,14 @@ footer p {
 }
 
 .company-info .logo svg {
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-    transition: transform 0.3s ease;
+    width: 12px !important;
+    height: 12px !important;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+    transition: transform 0.2s ease;
 }
 
 .company-info .logo svg:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 .difficulty-select {
@@ -9382,8 +9409,6 @@ body.category-selection[data-theme="dark"] .logo {
     height: 4px;
     background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
 }
-
-
 
 .profile-details {
     flex: 1;
