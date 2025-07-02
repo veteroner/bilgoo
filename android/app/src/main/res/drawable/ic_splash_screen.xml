@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="192dp"
-    android:height="192dp"
-    android:viewportWidth="192"
-    android:viewportHeight="192">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Arka plan rengi -->
+    <item android:drawable="@color/ic_launcher_background" />
     
-    <!-- Arka plan circle -->
-    <path
-        android:fillColor="#3b82f6"
-        android:pathData="M96,96m-96,0a96,96 0,1 1,192 0a96,96 0,1 1,-192 0" />
-    
-    <!-- Ana ikon (beyaz X işareti) -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M144,48L108,84L144,120L120,144L84,108L48,144L24,120L60,84L24,48L48,24L84,60L120,24L144,48Z"
-        android:strokeWidth="2" />
-</vector> 
+    <!-- Ana ikon -->
+    <item android:gravity="center">
+        <bitmap android:src="@drawable/splash" 
+                android:gravity="center" />
+    </item>
+</layer-list> 
