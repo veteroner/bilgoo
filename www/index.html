@@ -708,6 +708,17 @@
                 padding-bottom: 80px;
             }
             
+            /* Hamburger menu tab menünün üstünde açılsın */
+            .hamburger-menu {
+                bottom: 70px !important; /* Tab bar yüksekliği kadar yukarı taşı */
+                z-index: 1002 !important; /* Tab bar'ın üstünde */
+                max-height: calc(100vh - 140px) !important; /* Ekran yüksekliğinden ayarlamalar */
+            }
+            
+            .hamburger-menu.active {
+                bottom: 70px !important; /* Aktif durumda da tab bar'ın üstünde kal */
+            }
+            
             /* Mobilde gereksiz menü öğelerini gizle */
             .hamburger-menu #menu-home,
             .hamburger-menu #menu-profile,

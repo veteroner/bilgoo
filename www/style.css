@@ -3883,6 +3883,31 @@ input:checked + .switch-label:before {
     animation: rotate 1s linear;
 }
 
+/* Mobil cihazlarda hamburger menu tab menünün üstünde açılsın */
+@media (max-width: 768px) {
+    .hamburger-menu {
+        bottom: 70px !important; /* Tab bar yüksekliği kadar yukarı taşı */
+        z-index: 1002 !important; /* Tab bar'ın üstünde */
+        max-height: calc(100vh - 140px) !important; /* Ekran yüksekliğinden tab bar ve güvenlik mesafesi düş */
+    }
+    
+    .hamburger-menu.active {
+        bottom: 70px !important; /* Aktif durumda da tab bar'ın üstünde kal */
+    }
+    
+    /* Menü overlay varsa onun da z-index'ini ayarla */
+    .menu-overlay {
+        z-index: 1001 !important;
+    }
+    
+    /* Hamburger menu için sabit yükseklik ayarlaması - mobilde daha kompakt */
+    .hamburger-menu {
+        height: 320px !important; /* Biraz daha yüksek yap, ama tab bar'a değmesin */
+        max-height: 320px !important;
+        min-height: 320px !important;
+    }
+}
+
 /* Mobil cihazlar için font boyutlarını küçültme */
 @media (max-width: 768px) {
     body {
@@ -11334,4 +11359,29 @@ body.friends-active .hamburger-toggle {
 /* Hamburger menü arkadaşlar sayfasında görünsün */
 body.friends-active .hamburger-menu {
     z-index: 1500 !important;
+}
+
+/* Mobil cihazlarda hamburger menu tab menünün üstünde açılsın */
+@media (max-width: 768px) {
+    .hamburger-menu {
+        bottom: 70px !important; /* Tab bar yüksekliği kadar yukarı taşı */
+        z-index: 1002 !important; /* Tab bar'ın üstünde */
+        max-height: calc(100vh - 140px) !important; /* Ekran yüksekliğinden tab bar ve güvenlik mesafesi düş */
+    }
+    
+    .hamburger-menu.active {
+        bottom: 70px !important; /* Aktif durumda da tab bar'ın üstünde kal */
+    }
+    
+    /* Menü overlay varsa onun da z-index'ini ayarla */
+    .menu-overlay {
+        z-index: 1001 !important;
+    }
+    
+    /* Hamburger menu için sabit yükseklik ayarlaması - mobilde daha kompakt */
+    .hamburger-menu {
+        height: 320px !important; /* Biraz daha yüksek yap, ama tab bar'a değmesin */
+        max-height: 320px !important;
+        min-height: 320px !important;
+    }
 }
