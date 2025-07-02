@@ -155,18 +155,18 @@ body.quiz-active .mobile-top-banner {
 /* Reklam Alanları Stilleri */
 .ad-container, .adsbygoogle {
     display: block !important;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
+    background-color: transparent !important; /* Şeffaf arka plan */
+    border: 1px solid rgba(221, 221, 221, 0.3) !important; /* Hafif şeffaf border */
     border-radius: 8px;
-    padding: 10px;
-    margin: 10px 0;
+    padding: 5px !important; /* Padding'i 10px'den 5px'e düşür */
+    margin: 5px 0 !important; /* Margin'i azalt */
     text-align: center;
     width: 100% !important;
     min-width: 320px !important;
     max-width: 100% !important;
     height: auto;
-    min-height: 250px;
-    max-height: 600px;
+    min-height: 150px !important; /* Min yüksekliği 250px'den 150px'e düşür */
+    max-height: 400px !important; /* Max yüksekliği 600px'den 400px'e düşür */
     overflow: hidden;
     position: relative;
     z-index: 1;
@@ -203,11 +203,11 @@ body.quiz-active .mobile-top-banner {
     justify-content: center;
     width: 100% !important;
     min-width: 320px !important;
-    min-height: 250px;
-    background: rgba(255, 255, 255, 0.1);
+    min-height: 180px !important; /* Min yüksekliği 250px'den 180px'e düşür */
+    background: transparent !important; /* Şeffaf arka plan */
     border-radius: 10px;
-    margin: 15px 10px;
-    padding: 10px;
+    margin: 10px 5px !important; /* Margin'i azalt */
+    padding: 5px !important; /* Padding'i azalt */
     visibility: visible !important;
 }
 
@@ -222,10 +222,14 @@ body.quiz-active .mobile-top-banner {
 /* Karanlık tema için reklam stilleri */
 [data-theme="dark"] .ad-container, 
 [data-theme="dark"] .adsbygoogle {
-    background-color: #333;
-    border-color: #444;
-    color: #ccc;
+    background-color: transparent !important;
+    border-color: rgba(68, 68, 68, 0.3) !important;
 }
+
+[data-theme="dark"] .side-ad-container {
+    background: transparent !important;
+}
+
 :root {
     --primary-color: #4a148c;
     --secondary-color: #e91e63;
@@ -2014,8 +2018,9 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 2rem;
-    padding-top: 1rem;
+    margin-top: 1rem !important; /* 2rem'den 1rem'e düşür */
+    padding-top: 0.5rem !important; /* 1rem'den 0.5rem'e düşür */
+    padding-bottom: 0.5rem !important; /* Alt padding ekle */
     border-top: 1px solid var(--border-color);
     font-size: 0.9rem;
     color: var(--text-light);
