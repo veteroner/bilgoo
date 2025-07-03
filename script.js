@@ -7370,6 +7370,12 @@ const quizApp = {
             const updatedStats = this.calculateRealStats();
             console.log('Oyun sonu güncellenmiş istatistikler:', updatedStats);
             this.updateProfileStats(updatedStats);
+            
+            // Oyun bitişinde rozetleri kontrol et ve güncelle
+            if (this.isLoggedIn && this.currentUser) {
+                console.log('Oyun bitişinde rozetler kontrol ediliyor...');
+                this.checkAndUpdateBadges(this.currentUser.uid);
+            }
         }, 200);
         
         // PUANLARI KULLANICI HESABINA KAYDET
@@ -9811,10 +9817,43 @@ const quizApp = {
         } else {
             console.log('7. Test kayıt atlandı - gerekli şartlar sağlanmadı');
         }
-    }
+        }
 };
 
-// Bu modülü başlat
+// Console'da kullanım kılavuzu
+console.log(`
+🎮 === Quiz App Test Sistemleri Hazır! ===
+
+📖 KULLANIM KILAVUZU:
+
+🏆 ROZET SİSTEMİ TESTLERİ:
+• testBadgeSystem.testAll() - Tüm rozet sistemini kontrol et
+• testBadgeSystem.checkBadges() - Manuel rozet kontrolü yap
+• testBadgeSystem.giveTestBadge() - Test rozeti ver
+
+🔥 FIREBASE TESTLERİ:
+• testFirebase.testConnection() - Firebase bağlantısını test et
+• testFirebase.testStatistics() - İstatistikleri Firebase'den yükle
+
+👤 PROFİL TESTLERİ:
+• debugProfile.getUserStats() - Kullanıcı istatistiklerini göster
+• debugProfile.getBadges() - Kullanıcı rozetlerini göster
+• debugProfile.createTestData() - Test verileri oluştur
+
+🔧 GENEL TESTLER:
+• debugFirebase() - Firebase durumunu kontrol et
+• showUserData() - Kullanıcı verilerini göster
+
+📊 İSTATİSTİKLER SAYFASINDAKİ SORUNLARI TEST ETMEK İÇİN:
+1. Giriş yapın
+2. testFirebase.testStatistics() çalıştırın
+3. İstatistikler sayfasını açın
+4. Console'daki hata mesajlarını kontrol edin
+
+Örnek kullanım: testBadgeSystem.testAll()
+`);
+
+ // Bu modülü başlat
 quizApp.init(); 
 
 // QuizApp modülünü global olarak erişilebilir yap
@@ -9836,6 +9875,114 @@ window.showUserData = function() {
     console.log('Toplam puan:', quizApp.totalScore);
     console.log('Seviye:', quizApp.userLevel);
     console.log('Mevcut kullanıcı:', quizApp.currentUser ? quizApp.currentUser.uid : 'YOK');
+};
+
+// Rozet sistemi test fonksiyonları
+window.testBadgeSystem = {
+    // Tüm rozet sistemini test et
+    testAll: function() {
+        console.log('🏆 === Rozet Sistemi Test ===');
+        console.log('1. Badge system mevcut:', quizApp.badgeSystem ? 'VAR' : 'YOK');
+        
+        if (!quizApp.badgeSystem) {
+            console.error('❌ Badge sistemi bulunamadı!');
+            return;
+        }
+        
+        console.log('2. Tanımlı rozetler:', Object.keys(quizApp.badgeSystem.badges));
+        
+        const userId = quizApp.getCurrentUserId();
+        if (!userId) {
+            console.warn('⚠️ Kullanıcı giriş yapmamış - rozet sistemi çalışmaz');
+            return;
+        }
+        
+        console.log('3. Mevcut kullanıcı:', userId);
+        
+        const userBadges = quizApp.badgeSystem.getUserBadges(userId);
+        console.log('4. Kullanıcının mevcut rozetleri:', Object.keys(userBadges));
+        
+        const currentStats = quizApp.calculateRealStats();
+        console.log('5. Mevcut istatistikler:', currentStats);
+        
+        console.log('6. Rozet koşulları kontrol ediliyor...');
+        Object.values(quizApp.badgeSystem.badges).forEach(badge => {
+            const hasCondition = typeof badge.condition === 'function';
+            const meetsCondition = hasCondition && badge.condition(currentStats);
+            const hasAlready = userBadges[badge.id];
+            
+            console.log(`   - ${badge.name}: Koşul var: ${hasCondition}, Karşılıyor: ${meetsCondition}, Zaten var: ${!!hasAlready}`);
+        });
+        
+        console.log('✅ Rozet sistemi test tamamlandı!');
+    },
+    
+    // Manuel rozet ver
+    giveTestBadge: function() {
+        const userId = quizApp.getCurrentUserId();
+        if (!userId) {
+            console.warn('⚠️ Giriş yapmanız gerekiyor');
+            return;
+        }
+        
+        const firstGameBadge = quizApp.badgeSystem.badges.firstGame;
+        if (firstGameBadge) {
+            quizApp.badgeSystem.awardBadge(userId, firstGameBadge);
+            console.log('🎉 Test rozeti verildi: İlk Oyun');
+        }
+    },
+    
+    // Rozet kontrolü yap
+    checkBadges: function() {
+        const userId = quizApp.getCurrentUserId();
+        if (!userId) {
+            console.warn('⚠️ Giriş yapmanız gerekiyor');
+            return;
+        }
+        
+        console.log('🔍 Manuel rozet kontrolü başlatılıyor...');
+        const currentStats = quizApp.calculateRealStats();
+        const newBadges = quizApp.badgeSystem.checkAndAwardBadges(userId, currentStats);
+        
+        if (newBadges && newBadges.length > 0) {
+            console.log('🎉 Yeni rozetler kazanıldı:', newBadges.map(b => b.name));
+        } else {
+            console.log('ℹ️ Yeni rozet kazanılmadı');
+        }
+    }
+};
+
+// Firebase test fonksiyonları
+window.testFirebase = {
+    // Firebase bağlantısını test et
+    testConnection: function() {
+        console.log('🔥 === Firebase Bağlantı Testi ===');
+        console.log('1. Firebase nesnesi:', typeof firebase !== 'undefined');
+        console.log('2. Realtime Database:', firebase && firebase.database ? true : false);
+        console.log('3. Firestore:', firebase && firebase.firestore ? true : false);
+        console.log('4. Auth:', firebase && firebase.auth ? true : false);
+        
+        if (firebase && firebase.auth) {
+            const currentUser = firebase.auth().currentUser;
+            console.log('5. Mevcut kullanıcı:', currentUser ? currentUser.uid : 'Giriş yapılmamış');
+        }
+        
+        console.log('✅ Firebase bağlantı testi tamamlandı');
+    },
+    
+    // İstatistikleri Firebase'den yükle
+    testStatistics: function() {
+        console.log('📊 === Firebase İstatistik Testi ===');
+        const userId = quizApp.getCurrentUserId();
+        
+        if (!userId) {
+            console.warn('⚠️ Giriş yapmanız gerekiyor');
+            return;
+        }
+        
+        console.log('Firebase\'den istatistikler yükleniyor...');
+        quizApp.loadFirebaseStatistics(userId);
+    }
 };
 
 // Profil için debug fonksiyonları

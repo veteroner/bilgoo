@@ -27,12 +27,6 @@ const progressChart = {
     
     // Grafikleri güncelle
     updateCharts: function() {
-        // window.quizApp ve getStats metodunun varlığını kontrol et
-        if (!window.quizApp || typeof window.quizApp.getStats !== 'function') {
-            console.warn('quizApp veya getStats metodu henüz hazır değil');
-            return;
-        }
-        
         const stats = window.quizApp.getStats();
         
         if (this.categoryChartCanvas) {

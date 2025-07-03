@@ -8,6 +8,123 @@
     position: relative;
 }
 
+/* Page Header Stilleri */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+}
+
+.page-header h2 {
+    font-size: 1.6rem;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.page-header h2 i {
+    margin-right: 8px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.4rem;
+}
+
+.page-header .btn-secondary {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.page-header .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-1px);
+}
+
+/* Statistics Container */
+.statistics-container {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* Yükleme göstergesi */
+.stats-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    background: var(--card-bg);
+    border-radius: 15px;
+    margin: 20px 0;
+    box-shadow: var(--card-shadow);
+}
+
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.loading-spinner i {
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+.loading-spinner span {
+    font-size: 1.1rem;
+    color: var(--text-color);
+}
+
+.loading-text {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+/* Boş mesaj stilleri */
+.empty-message {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-light);
+    font-style: italic;
+    background: var(--card-bg);
+    border-radius: 10px;
+    border: 2px dashed var(--border-color);
+}
+
+.empty-message i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    display: block;
+}
+
+/* Hata mesajı stilleri */
+.error-message {
+    text-align: center;
+    padding: 20px;
+    color: #dc3545;
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
 .statistics-header {
     text-align: center;
     margin-bottom: 40px;
@@ -29,9 +146,90 @@
     opacity: 0.9;
 }
 
+/* Genel istatistikler grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--primary-color);
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+.stat-icon {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    color: white;
+    font-size: 1.2rem;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 3px;
+    display: block;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+/* İstatistikler bölümü */
+.stats-section {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--card-shadow);
+}
+
+.stats-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 18px;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 12px;
+}
+
+.stats-section h3 i {
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+}
+
 .statistics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     margin-bottom: 40px;
 }
@@ -156,45 +354,197 @@
     transform: translateY(-2px);
 }
 
-/* Rozetler ve Aktiviteler Stilleri */
-.badges-grid {
+/* Kategori istatistikleri */
+.category-stats {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: 15px;
-    margin-top: 15px;
+}
+
+.category-stat-item {
+    display: flex;
+    align-items: center;
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border-left: 4px solid var(--secondary-color);
+    transition: all 0.3s ease;
+}
+
+.category-stat-item:hover {
+    transform: translateX(3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.category-info h4 {
+    margin: 0 0 5px 0;
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+.category-details {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.category-details .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.category-details .stat-item i {
+    color: var(--primary-color);
+}
+
+.category-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 120px;
+}
+
+.progress-bar {
+    width: 100px;
+    height: 8px;
+    background: var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-weight: 600;
+    color: var(--primary-color);
+    min-width: 40px;
+}
+
+/* Son oyunlar */
+.recent-games {
+    display: grid;
+    gap: 12px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.recent-game-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid var(--secondary-color);
+    transition: all 0.3s ease;
+}
+
+.recent-game-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.recent-game-item .game-info h4 {
+    margin: 0 0 5px 0;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.recent-game-item .game-info h4 i {
+    margin-right: 8px;
+    color: var(--secondary-color);
+}
+
+.recent-game-item .game-date {
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.recent-game-item .game-date i {
+    margin-right: 5px;
+}
+
+.recent-game-item .game-results {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.recent-game-item .game-results span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    padding: 4px 8px;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.recent-game-item .game-results .accuracy.good {
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+}
+
+.recent-game-item .game-results .accuracy.average {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+}
+
+.recent-game-item .game-results .accuracy.poor {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+/* Rozetler */
+.user-badges {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
 }
 
 .badge-item {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    background-color: #f5f5f5;
-    padding: 15px 10px;
-    border-radius: 5px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid var(--secondary-color);
+    transition: all 0.3s ease;
 }
 
 .badge-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 .badge-icon {
-    font-size: 28px;
-    color: var(--primary-color);
-    margin-bottom: 10px;
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin-right: 12px;
 }
 
-.badge-name {
-    font-weight: bold;
-    font-size: 14px;
-    text-align: center;
-    margin-bottom: 5px;
+.badge-info h4 {
+    margin: 0 0 3px 0;
+    color: var(--primary-color);
+    font-size: 0.95rem;
+}
+
+.badge-info p {
+    margin: 0 0 3px 0;
+    color: var(--text-color);
+    font-size: 0.8rem;
 }
 
 .badge-date {
-    font-size: 12px;
-    color: #666;
+    font-size: 0.7rem;
+    color: var(--text-light);
 }
 
 .badge-placeholder {
@@ -255,15 +605,65 @@
 /* Responsive Design */
 @media (max-width: 768px) {
     #statistics-page {
-        padding: 10px;
+        padding: 15px 10px;
+    }
+    
+    .page-header {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .page-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .page-header .btn-secondary {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+    
+    .statistics-container {
+        padding: 0 5px;
     }
     
     .statistics-header {
-        padding: 20px;
+        padding: 20px 15px;
+        margin-bottom: 25px;
     }
     
     .statistics-header h1 {
         font-size: 2rem;
+    }
+    
+    .statistics-header p {
+        font-size: 1rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+    }
+    
+    .stat-card {
+        padding: 20px 15px;
+    }
+    
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        margin-right: 15px;
+        font-size: 1.2rem;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
     }
     
     .statistics-grid {
@@ -272,11 +672,323 @@
     }
     
     .statistics-card {
-        padding: 20px;
+        padding: 20px 15px;
     }
     
-    .game-stats {
+    .stats-section {
+        padding: 20px 15px;
+        margin-bottom: 20px;
+    }
+    
+    .stats-section h3 {
+        font-size: 1.3rem;
+    }
+    
+    .category-stat-item {
+        padding: 15px;
+    }
+    
+    .user-badges {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 12px;
+    }
+    
+    .badge-item {
+        padding: 15px;
+    }
+    
+    .badge-icon {
+        font-size: 1.5rem;
+        margin-right: 12px;
+    }
+    
+    .recent-game-item {
+        padding: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .recent-game-item .game-results {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        gap: 10px;
+    }
+    
+    .recent-game-item .game-results span {
+        font-size: 0.8rem;
+        padding: 3px 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    #statistics-page {
+        padding: 10px 5px;
+    }
+    
+    .page-header {
+        padding: 12px;
+        margin-bottom: 15px;
+    }
+    
+    .page-header h2 {
+        font-size: 1.6rem;
+    }
+    
+    .page-header .btn-secondary {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .statistics-container {
+        padding: 0 2px;
+    }
+    
+    .statistics-header {
+        padding: 15px 10px;
+        margin-bottom: 20px;
+    }
+    
+    .statistics-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .statistics-header p {
+        font-size: 0.9rem;
+    }
+    
+    .stats-grid {
         grid-template-columns: 1fr;
-        gap: 5px;
+        gap: 12px;
+    }
+    
+    .stat-card {
+        padding: 15px 10px;
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        margin-right: 0;
+        margin-bottom: 10px;
+        font-size: 1rem;
+    }
+    
+    .stat-value {
+        font-size: 1.3rem;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+    }
+    
+    .statistics-card {
+        padding: 15px 10px;
+    }
+    
+    .stats-section {
+        padding: 15px 10px;
+        margin-bottom: 15px;
+    }
+    
+    .stats-section h3 {
+        font-size: 1.2rem;
+        padding-bottom: 10px;
+    }
+    
+    .category-stat-item {
+        padding: 12px;
+    }
+    
+    .category-info h4 {
+        font-size: 1rem;
+    }
+    
+    .user-badges {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .badge-item {
+        padding: 12px;
+    }
+    
+    .badge-icon {
+        font-size: 1.3rem;
+        margin-right: 10px;
+    }
+    
+    .badge-info h4 {
+        font-size: 1rem;
+    }
+    
+    .badge-info p {
+        font-size: 0.8rem;
+    }
+    
+    .recent-game-item {
+        padding: 10px;
+    }
+    
+    .recent-game-item .game-info h4 {
+        font-size: 1rem;
+    }
+    
+    .recent-game-item .game-date {
+        font-size: 0.8rem;
+    }
+    
+    .recent-game-item .game-results {
+        gap: 8px;
+    }
+    
+    .recent-game-item .game-results span {
+        font-size: 0.7rem;
+        padding: 2px 4px;
+    }
+}
+
+@media (max-width: 360px) {
+    #statistics-page {
+        padding: 8px 3px;
+    }
+    
+    .page-header {
+        padding: 10px;
+        margin-bottom: 12px;
+    }
+    
+    .page-header h2 {
+        font-size: 1.4rem;
+    }
+    
+    .page-header .btn-secondary {
+        padding: 5px 10px;
+        font-size: 0.7rem;
+    }
+    
+    .statistics-container {
+        padding: 0 1px;
+    }
+    
+    .statistics-header {
+        padding: 12px 8px;
+        margin-bottom: 15px;
+    }
+    
+    .statistics-header h1 {
+        font-size: 1.6rem;
+    }
+    
+    .statistics-header p {
+        font-size: 0.8rem;
+    }
+    
+    .stats-grid {
+        gap: 8px;
+    }
+    
+    .stat-card {
+        padding: 12px 8px;
+    }
+    
+    .stat-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+    
+    .stat-value {
+        font-size: 1.2rem;
+    }
+    
+    .stat-label {
+        font-size: 0.7rem;
+    }
+    
+    .statistics-card {
+        padding: 12px 8px;
+    }
+    
+    .stats-section {
+        padding: 12px 8px;
+        margin-bottom: 12px;
+    }
+    
+    .stats-section h3 {
+        font-size: 1.1rem;
+    }
+    
+    .category-stat-item {
+        padding: 10px;
+    }
+    
+    .category-info h4 {
+        font-size: 0.9rem;
+    }
+    
+    .badge-item {
+        padding: 10px;
+    }
+    
+    .badge-icon {
+        font-size: 1.2rem;
+        margin-right: 8px;
+    }
+    
+    .badge-info h4 {
+        font-size: 0.9rem;
+    }
+    
+    .badge-info p {
+        font-size: 0.7rem;
+    }
+    
+    .recent-game-item {
+        padding: 8px;
+    }
+    
+    .recent-game-item .game-info h4 {
+        font-size: 0.9rem;
+    }
+    
+    .recent-game-item .game-date {
+        font-size: 0.7rem;
+    }
+    
+    .recent-game-item .game-results span {
+        font-size: 0.6rem;
+        padding: 2px 3px;
+    }
+}
+
+/* Özel mobil orientasyon düzenlemeleri */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+    .page-header {
+        flex-direction: row;
+        padding: 10px 15px;
+    }
+    
+    .page-header h2 {
+        font-size: 1.6rem;
+    }
+    
+    .statistics-header {
+        padding: 15px;
+    }
+    
+    .statistics-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+    
+    .stat-card {
+        padding: 15px;
     }
 } 
