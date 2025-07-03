@@ -5277,6 +5277,9 @@
             <div class="menu-item" id="menu-friends">
                 <i class="fas fa-user-friends"></i> <span id="menu-friends-text">Arkadaşlarım</span>
             </div>
+            <div class="menu-item" id="menu-privacy-settings">
+                <i class="fas fa-shield-alt"></i> <span id="menu-privacy-text">Gizlilik Ayarları</span>
+            </div>
             <div class="menu-item" id="menu-admin-panel" style="display: none;">
                 <i class="fas fa-shield-alt"></i> <span id="menu-admin-text">Yönetici Paneli</span>
             </div>
@@ -6313,6 +6316,8 @@
     <script src="feedback.js"></script>
     <script src="admin-pending-questions.js"></script>
     <script src="monetization.js"></script>
+    <script src="data-retention.js"></script>
+    <script src="audit-log.js"></script>
     
     <!-- Cookie Consent Banner -->
     <div id="cookie-consent" class="cookie-consent" style="display: none;">
@@ -6697,6 +6702,22 @@
                         alert('Yönetici paneli şu anda kullanılamıyor.');
                     }
                 }
+                
+                // Hamburger menü ikonunu bars'a geri çevir
+                const icon = hamburgerToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+            // Gizlilik ayarları menü öğesi
+            document.getElementById('menu-privacy-settings').addEventListener('click', function() {
+                hamburgerMenu.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                
+                // Gizlilik ayarları sayfasına yönlendir
+                window.location.href = 'privacy/privacy-settings.html';
                 
                 // Hamburger menü ikonunu bars'a geri çevir
                 const icon = hamburgerToggle.querySelector('i');

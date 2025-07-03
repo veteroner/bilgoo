@@ -157,6 +157,13 @@ const MonetizationManager = {
         this.hideCookieBanner();
         this.loadTracking();
         console.log('✅ Tüm çerezler kabul edildi, reklamlar yüklenecek');
+        
+        // Audit log'a kaydet
+        if (window.AuditLogger) {
+            window.AuditLogger.logConsentEvent('cookies_accepted', 'all_cookies', true, {
+                method: 'banner_accept_all'
+            });
+        }
     },
 
     // Sadece gerekli çerezleri kabul et (Global fonksiyon)
