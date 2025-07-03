@@ -152,14 +152,14 @@ body.quiz-active .mobile-top-banner {
 
 /* Temel Stil ve Sıfırlama */
 
-/* Reklam Alanları Stilleri */
+/* Reklam Alanları Stilleri - Tamamen şeffaf */
 .ad-container, .adsbygoogle {
     display: block !important;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 10px;
-    margin: 10px 0;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
     text-align: center;
     width: 100% !important;
     min-width: 320px !important;
@@ -188,7 +188,8 @@ body.quiz-active .mobile-top-banner {
     background: transparent !important;
     box-shadow: none !important;
     border: none !important;
-    padding: 10px;
+    outline: none !important;
+    padding: 0;
 }
 
 /* Karanlık tema için şeffaf yan reklam alanları */
@@ -211,7 +212,7 @@ body.quiz-active .mobile-top-banner {
     right: 15px;
 }
 
-/* Reklam container'ları için ek stiller - Şeffaf tasarım */
+/* Reklam container'ları için ek stiller - Tamamen şeffaf */
 .side-ad-container {
     display: flex !important;
     flex-direction: column;
@@ -221,12 +222,12 @@ body.quiz-active .mobile-top-banner {
     min-width: 160px !important;
     min-height: 200px !important;
     background: transparent !important;
-    border-radius: 12px;
-    margin: 5px;
-    padding: 8px;
+    margin: 0;
+    padding: 0;
     visibility: visible !important;
     box-shadow: none !important;
     border: none !important;
+    outline: none !important;
 }
 
 /* Mobil cihazlarda kenar reklamlarını gizle */
@@ -9408,8 +9409,6 @@ body.category-selection[data-theme="dark"] .logo {
     height: 4px;
     background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
 }
-
-
 
 .profile-details {
     flex: 1;

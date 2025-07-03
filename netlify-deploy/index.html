@@ -2032,12 +2032,7 @@
             </div>
         </div>
         
-        <!-- Çıkış Bölümü -->
-        <div class="menu-section">
-            <div class="menu-item" id="menu-logout">
-                <i class="fas fa-sign-out-alt"></i> <span id="menu-logout-text">Çıkış Yap</span>
-            </div>
-        </div>
+
     </div>
 
     <!-- Mobil Tab Bar (Sadece mobilde görünür) -->
@@ -3147,24 +3142,7 @@
             });
             
 
-            document.getElementById('menu-logout').addEventListener('click', function() {
-                hamburgerMenu.classList.remove('active');
-                menuOverlay.classList.remove('active');
-                
-                // Çıkış yap
-                if (firebase.auth) {
-                    firebase.auth().signOut().then(() => {
-                        window.location.href = 'login.html';
-                    });
-                }
-                
-                // Hamburger menü ikonunu bars'a geri çevir
-                const icon = hamburgerToggle.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            });
+
             
             // Mobil Tab Bar işlevleri
             const tabItems = document.querySelectorAll('.tab-item');
