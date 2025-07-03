@@ -2031,7 +2031,7 @@ button:disabled {
 
 /* Footer Stilleri - Minimal yükseklik */
 footer {
-    display: flex;
+    display: none !important; /* Footer artık gizli - Hakkımızda bölümüne taşındı */
     justify-content: space-between;
     align-items: center;
     margin-top: 20rem;
@@ -11359,4 +11359,165 @@ body.friends-active .hamburger-toggle {
 /* Hamburger menü arkadaşlar sayfasında görünsün */
 body.friends-active .hamburger-menu {
     z-index: 1500 !important;
+}
+
+/* Hakkımızda Bölümü Stilleri */
+#about-page {
+    display: none;
+    padding: 2rem 0;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.about-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.about-section {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+}
+
+.about-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.about-section h3 i {
+    font-size: 1.2rem;
+    color: var(--accent-color);
+}
+
+.about-section p {
+    color: var(--text-color);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.about-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.about-section ul li {
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+.about-section ul li i {
+    color: var(--accent-color);
+    font-size: 1rem;
+    width: 16px;
+    text-align: center;
+}
+
+.developer-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(76, 175, 80, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.developer-info .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 50%;
+    padding: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.developer-info .logo svg {
+    width: 32px !important;
+    height: 32px !important;
+}
+
+.company-text {
+    flex: 1;
+}
+
+.company-text h4 {
+    color: var(--primary-color);
+    margin: 0 0 0.25rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.company-text p {
+    color: var(--text-light);
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.about-navigation {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.about-navigation .menu-button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.about-navigation .menu-button:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.about-navigation .menu-button i {
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    #about-page {
+        padding: 1rem;
+    }
+    
+    .about-section {
+        padding: 1.25rem;
+    }
+    
+    .about-section h3 {
+        font-size: 1.2rem;
+    }
+    
+    .developer-info {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+    }
+    
+    .company-text h4 {
+        font-size: 1rem;
+    }
 }

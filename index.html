@@ -5495,6 +5495,7 @@
                 <button id="view-global-leaderboard" class="menu-button">Küresel Skor Tablosu</button>
                 <button id="show-stats" class="menu-button">İstatistikler</button>
                 <button id="add-question-button" class="menu-button">Soru Ekle</button>
+                <button id="about-button" class="menu-button">Hakkımızda</button>
             </div>
         </div>
 
@@ -5502,6 +5503,86 @@
         <div id="category-selection" style="display: none;">
             <h2><i class="fas fa-th-list"></i> <span data-i18n="select_category">Kategori Seçin</span></h2>
             <div id="categories"></div>
+        </div>
+
+        <!-- Hakkımızda Bölümü -->
+        <div id="about-page" style="display: none;">
+            <h2><i class="fas fa-info-circle"></i> Hakkımızda</h2>
+            <div class="about-content">
+                <div class="about-section">
+                    <h3><i class="fas fa-gamepad"></i> Bilgoo Quiz Oyunu</h3>
+                    <p>Bilgoo, eğlenceli ve eğitici bir quiz oyunu platformudur. Binlerce soru ile bilginizi test edin, arkadaşlarınızla yarışın ve yeni şeyler öğrenin!</p>
+                </div>
+                
+                <div class="about-section">
+                    <h3><i class="fas fa-star"></i> Özellikler</h3>
+                    <ul>
+                        <li><i class="fas fa-user"></i> Tekli oyun modu</li>
+                        <li><i class="fas fa-users"></i> Çok oyunculu online yarışmalar</li>
+                        <li><i class="fas fa-trophy"></i> Küresel skor tablosu</li>
+                        <li><i class="fas fa-chart-line"></i> Detaylı istatistikler</li>
+                        <li><i class="fas fa-plus-circle"></i> Soru ekleme özelliği</li>
+                        <li><i class="fas fa-magic"></i> Joker kartları</li>
+                    </ul>
+                </div>
+                
+                <div class="about-section">
+                    <h3><i class="fas fa-code"></i> Geliştirici</h3>
+                    <div class="developer-info">
+                        <div class="logo">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="32" height="32">
+                                <!-- Yaprak şekli -->
+                                <path d="M25,2 C22,5 12,12 8,18 C4,24 5,36 12,40 C19,44 28,45 35,40 C42,35 43,28 42,22 C41,16 35,10 30,6 C27,4 25,2 25,2 Z" fill="#4CAF50"/>
+                                
+                                <!-- Devre yolları olarak yaprak damarları -->
+                                <path d="M25,2 C25,15 25,28 25,40" stroke="white" stroke-width="1.2" fill="none"/>
+                                <circle cx="25" cy="2" r="1" fill="white"/>
+                                <circle cx="25" cy="15" r="1" fill="white"/>
+                                <circle cx="25" cy="28" r="1" fill="white"/>
+                                <circle cx="25" cy="40" r="1" fill="white"/>
+                                
+                                <path d="M10,18 C20,20 30,18 40,20" stroke="white" stroke-width="1.2" fill="none"/>
+                                <circle cx="10" cy="18" r="1" fill="white"/>
+                                <circle cx="20" cy="20" r="1" fill="white"/>
+                                <circle cx="30" cy="18" r="1" fill="white"/>
+                                <circle cx="40" cy="20" r="1" fill="white"/>
+                                
+                                <path d="M12,32 C20,34 30,32 38,30" stroke="white" stroke-width="1.2" fill="none"/>
+                                <circle cx="12" cy="32" r="1" fill="white"/>
+                                <circle cx="20" cy="34" r="1" fill="white"/>
+                                <circle cx="30" cy="32" r="1" fill="white"/>
+                                <circle cx="38" cy="30" r="1" fill="white"/>
+                                
+                                <!-- Diğer devre yolları -->
+                                <path d="M15,10 L35,10 L35,20 L30,20 L30,25 L35,25 L35,30 L25,30 L25,35 L15,35 L15,25 L20,25 L20,20 L15,20 Z" 
+                                      stroke="white" stroke-width="1.2" fill="none"/>
+                                <circle cx="15" cy="10" r="1" fill="white"/>
+                                <circle cx="35" cy="10" r="1" fill="white"/>
+                                <circle cx="35" cy="20" r="1" fill="white"/>
+                                <circle cx="30" cy="20" r="1" fill="white"/>
+                                <circle cx="30" cy="25" r="1" fill="white"/>
+                                <circle cx="35" cy="25" r="1" fill="white"/>
+                                <circle cx="35" cy="30" r="1" fill="white"/>
+                                <circle cx="25" cy="30" r="1" fill="white"/>
+                                <circle cx="25" cy="35" r="1" fill="white"/>
+                                <circle cx="15" cy="35" r="1" fill="white"/>
+                                <circle cx="15" cy="25" r="1" fill="white"/>
+                                <circle cx="20" cy="25" r="1" fill="white"/>
+                                <circle cx="20" cy="20" r="1" fill="white"/>
+                                <circle cx="15" cy="20" r="1" fill="white"/>
+                            </svg>
+                        </div>
+                        <div class="company-text">
+                            <h4>TEKNOVA BİLİŞİM</h4>
+                            <p>&copy; 2025 Tüm hakları saklıdır.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-navigation">
+                    <button id="back-to-main-about" class="menu-button"><i class="fas fa-arrow-left"></i> Ana Menüye Dön</button>
+                </div>
+            </div>
         </div>
 
         <div id="quiz" style="display: none;"> <!-- Başlangıçta gizli -->

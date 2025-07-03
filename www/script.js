@@ -2808,6 +2808,42 @@ const quizApp = {
                 });
             }
             
+            // Hakkımızda butonu
+            const aboutBtn = document.getElementById('about-button');
+            if (aboutBtn) {
+                aboutBtn.addEventListener('click', () => {
+                    // Ana menüyü gizle
+                    const mainMenu = document.getElementById('main-menu');
+                    if (mainMenu) {
+                        mainMenu.style.display = 'none';
+                    }
+                    
+                    // Hakkımızda sayfasını göster
+                    const aboutPage = document.getElementById('about-page');
+                    if (aboutPage) {
+                        aboutPage.style.display = 'block';
+                    }
+                });
+            }
+            
+            // Hakkımızda sayfasından ana menüye dön butonu
+            const backToMainAbout = document.getElementById('back-to-main-about');
+            if (backToMainAbout) {
+                backToMainAbout.addEventListener('click', () => {
+                    // Hakkımızda sayfasını gizle
+                    const aboutPage = document.getElementById('about-page');
+                    if (aboutPage) {
+                        aboutPage.style.display = 'none';
+                    }
+                    
+                    // Ana menüyü göster
+                    const mainMenu = document.getElementById('main-menu');
+                    if (mainMenu) {
+                        mainMenu.style.display = 'block';
+                    }
+                });
+            }
+            
             console.log("Event listener'lar başarıyla eklendi");
         } catch (error) {
             console.error("addEventListeners fonksiyonunda hata:", error);
