@@ -7370,6 +7370,12 @@ const quizApp = {
             const updatedStats = this.calculateRealStats();
             console.log('Oyun sonu güncellenmiş istatistikler:', updatedStats);
             this.updateProfileStats(updatedStats);
+            
+            // Oyun bitişinde rozetleri kontrol et ve güncelle
+            if (this.isLoggedIn && this.currentUser) {
+                console.log('Oyun bitişinde rozetler kontrol ediliyor...');
+                this.checkAndUpdateBadges(this.currentUser.uid);
+            }
         }, 200);
         
         // PUANLARI KULLANICI HESABINA KAYDET
