@@ -1150,6 +1150,10 @@ const quizApp = {
         if (addQuestionBtn) {
             addQuestionBtn.textContent = this.getTranslation('addQuestion');
         }
+        const aboutBtnLabel = document.getElementById('about-button');
+        if (aboutBtnLabel) {
+            aboutBtnLabel.textContent = this.getTranslation('aboutMenu');
+        }
         // Logout butonu kaldırıldı
         
         // Kategori başlığı
@@ -8305,8 +8309,8 @@ const quizApp = {
                     <div class="lives-out-icon">
                         <i class="fas fa-heart-broken"></i>
                     </div>
-                    <h2>Canlarınız Bitti!</h2>
-                    <p class="lives-out-message">Oyuna devam etmek için can satın alabilirsiniz.</p>
+                    <h2>${this.getTranslation('modalLivesEndedTitle')}</h2>
+                    <p class="lives-out-message">${this.getTranslation('modalLivesEndedMessage')}</p>
                 </div>
                 
                 <div class="buy-lives-offer">
@@ -8317,8 +8321,8 @@ const quizApp = {
                             <i class="fas fa-heart"></i>
                         </div>
                         <div class="package-details">
-                            <h3>3 Can Paketi</h3>
-                            <p class="package-description">Oyuna 3 canla devam edin!</p>
+                            <h3>${this.getTranslation('modalLivesPackageTitle')}</h3>
+                            <p class="package-description">${this.getTranslation('modalLivesPackageDescription')}</p>
                             <div class="package-price">
                                 <span class="price-amount">${LIVES_PRICE}</span>
                                 <i class="fas fa-coins"></i>
@@ -8328,7 +8332,7 @@ const quizApp = {
                     
                     <div class="current-points">
                         <i class="fas fa-wallet"></i>
-                        <span>Mevcut Puanınız: ${currentPoints}</span>
+                        <span>${this.getTranslation('modalCurrentPoints')}: ${currentPoints}</span>
                     </div>
                 </div>
                 
@@ -8336,16 +8340,16 @@ const quizApp = {
                     ${currentPoints >= LIVES_PRICE ? 
                         `<button id="confirm-buy-lives" class="btn-buy-lives">
                             <i class="fas fa-shopping-cart"></i>
-                            3 Can Satın Al (${LIVES_PRICE} Puan)
+                            ${this.getTranslation('modalBuyLivesButton').replace('{price}', LIVES_PRICE)}
                         </button>` : 
                         `<button class="btn-buy-lives disabled" disabled>
                             <i class="fas fa-times"></i>
-                            Yetersiz Puan (${LIVES_PRICE} Gerekli)
+                            ${this.getTranslation('modalInsufficientPoints').replace('{price}', LIVES_PRICE)}
                         </button>`
                     }
                     <button id="decline-buy-lives" class="btn-decline-lives">
                         <i class="fas fa-flag-checkered"></i>
-                        Oyunu Bitir
+                        ${this.getTranslation('modalFinishGame')}
                     </button>
                 </div>
             </div>

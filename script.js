@@ -1150,6 +1150,10 @@ const quizApp = {
         if (addQuestionBtn) {
             addQuestionBtn.textContent = this.getTranslation('addQuestion');
         }
+        const aboutBtnLabel = document.getElementById('about-button');
+        if (aboutBtnLabel) {
+            aboutBtnLabel.textContent = this.getTranslation('aboutMenu');
+        }
         // Logout butonu kaldırıldı
         
         // Kategori başlığı

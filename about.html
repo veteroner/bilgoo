@@ -379,5 +379,166 @@
             Ana Sayfaya Dön
         </a>
     </div>
+    <script src="languages.js"></script>
+    <script>
+    (function() {
+        /* Dil belirleme */
+        function getLang() {
+            const saved = localStorage.getItem('language');
+            if (saved && window.languages && window.languages[saved]) return saved;
+            const browser = navigator.language ? navigator.language.slice(0,2) : 'tr';
+            return (window.languages && window.languages[browser]) ? browser : 'tr';
+        }
+
+        const lang = getLang();
+        const t = window.languages && window.languages[lang] && window.languages[lang].about ? window.languages[lang].about : null;
+        if (!t) return;
+
+        const setText = (selector, key, withIcon = false) => {
+            const el = document.querySelector(selector);
+            if (!el || !t[key]) return;
+            if (withIcon) {
+                const icon = el.querySelector('i');
+                const iconHTML = icon ? icon.outerHTML + ' ' : '';
+                el.innerHTML = iconHTML + t[key];
+            } else {
+                el.textContent = t[key];
+            }
+        };
+
+        /* Başlık ve alt başlık */
+        setText('.header h1', 'title');
+        setText('.header .subtitle', 'subtitle');
+
+        /* Misyon */
+        setText('.highlight h3', 'missionTitle', true);
+        setText('.highlight p', 'missionText');
+
+        /* Bilgoo Nedir */
+        const rocketHeading = document.querySelector('h2 i.fas.fa-rocket');
+        if (rocketHeading) {
+            const parent = rocketHeading.parentElement;
+            parent.innerHTML = rocketHeading.outerHTML + ' ' + t.whatIsTitle;
+            const nxt = parent.nextElementSibling;
+            if (nxt) nxt.textContent = t.whatIsText;
+        }
+
+        /* İstatistik etiketleri */
+        const statLabels = document.querySelectorAll('.stat-label');
+        if (statLabels.length >= 4) {
+            statLabels[0].textContent = t.statsActiveUsers;
+            statLabels[1].textContent = t.statsQuestionPool;
+            statLabels[2].textContent = t.statsCategories;
+            statLabels[3].textContent = t.statsQuizSolved;
+        }
+
+        /* Özellikler */
+        const starHeading = document.querySelector('h2 i.fas.fa-star');
+        if (starHeading) {
+            starHeading.parentElement.innerHTML = starHeading.outerHTML + ' ' + t.featuresTitle;
+        }
+        const featTitles = [
+            'featurePoolTitle','featureSocialTitle','featureProgressTitle',
+            'featureAchievementsTitle','featureMultiTitle','featureSecurityTitle'
+        ];
+        const featTexts = [
+            'featurePoolText','featureSocialText','featureProgressText',
+            'featureAchievementsText','featureMultiText','featureSecurityText'
+        ];
+        const featureH3s = document.querySelectorAll('.features .feature h3');
+        const featurePs = document.querySelectorAll('.features .feature p');
+        featureH3s.forEach((el, idx) => { if (t[featTitles[idx]]) el.textContent = t[featTitles[idx]]; });
+        featurePs.forEach((el, idx) => { if (t[featTexts[idx]]) el.textContent = t[featTexts[idx]]; });
+
+        /* Vizyon */
+        const eyeHeading = document.querySelector('h2 i.fas.fa-eye');
+        if (eyeHeading) {
+            eyeHeading.parentElement.innerHTML = eyeHeading.outerHTML + ' ' + t.visionTitle;
+            const vp = eyeHeading.parentElement.nextElementSibling;
+            if (vp) vp.textContent = t.visionText;
+        }
+
+        /* Hedefler */
+        const bullHeading = document.querySelector('h2 i.fas.fa-bullseye');
+        if (bullHeading) {
+            bullHeading.parentElement.innerHTML = bullHeading.outerHTML + ' ' + t.goalsTitle;
+            const ul = bullHeading.parentElement.nextElementSibling;
+            if (ul && ul.tagName === 'UL') {
+                ul.innerHTML = '';
+                for (let i = 1; i <= 6; i++) {
+                    const li = document.createElement('li');
+                    li.textContent = t['goal'+i];
+                    ul.appendChild(li);
+                }
+            }
+        }
+
+        /* Ekip bilgisi */
+        const teamHeading = document.querySelector('.team-info h3');
+        if (teamHeading) {
+            const icon = teamHeading.querySelector('i');
+            teamHeading.innerHTML = (icon ? icon.outerHTML + ' ' : '') + t.teamTitle;
+            const p1 = document.querySelector('.team-info p:first-of-type');
+            const p2 = document.querySelector('.team-info p:nth-of-type(2)');
+            if (p1) p1.innerHTML = t.teamText1;
+            if (p2) p2.innerHTML = t.teamText2;
+        }
+
+        /* Kalite */
+        const awardHeading = document.querySelector('h2 i.fas.fa-award');
+        if (awardHeading) {
+            awardHeading.parentElement.innerHTML = awardHeading.outerHTML + ' ' + t.qualityTitle;
+            const introP = awardHeading.parentElement.nextElementSibling;
+            if (introP) introP.textContent = t.qualityIntro;
+            const ul = introP ? introP.nextElementSibling : null;
+            if (ul && ul.tagName === 'UL') {
+                ul.innerHTML = '';
+                for (let i = 1; i <= 5; i++) {
+                    const li = document.createElement('li');
+                    li.textContent = t['quality'+i];
+                    ul.appendChild(li);
+                }
+            }
+        }
+
+        /* Sosyal sorumluluk */
+        const leafHeading = document.querySelector('h2 i.fas.fa-leaf');
+        if (leafHeading) {
+            leafHeading.parentElement.innerHTML = leafHeading.outerHTML + ' ' + t.socialTitle;
+            const introP = leafHeading.parentElement.nextElementSibling;
+            if (introP) introP.textContent = t.socialIntro;
+            const ul = introP ? introP.nextElementSibling : null;
+            if (ul && ul.tagName === 'UL') {
+                ul.innerHTML = '';
+                for (let i = 1; i <= 4; i++) {
+                    const li = document.createElement('li');
+                    li.textContent = t['social'+i];
+                    ul.appendChild(li);
+                }
+            }
+        }
+
+        /* İletişim */
+        const contactHeading = document.querySelector('.contact-info h3');
+        if (contactHeading) {
+            const icon = contactHeading.querySelector('i');
+            contactHeading.innerHTML = (icon ? icon.outerHTML + ' ' : '') + t.contactTitle;
+            const txtP = document.querySelector('.contact-info p');
+            if (txtP) txtP.textContent = t.contactText;
+            const strongs = document.querySelectorAll('.contact-info p strong');
+            if (strongs.length >= 3) {
+                strongs[0].textContent = t.contactEmailLabel + ':';
+                strongs[1].textContent = t.contactWebLabel + ':';
+                strongs[2].textContent = t.contactSupportLabel + ':';
+            }
+        }
+
+        /* Geri dön butonu */
+        const backLink = document.querySelector('.back-link');
+        if (backLink) {
+            backLink.innerHTML = '<i class="fas fa-arrow-left"></i> ' + t.backLink;
+        }
+    })();
+    </script>
 </body>
 </html> 

@@ -379,5 +379,36 @@
             Ana Sayfaya Dön
         </a>
     </div>
-</body>
+    <script src="languages.js"></script>
+    <script>
+    (function() {
+        function getLang() {
+            const saved = localStorage.getItem('language');
+            if (saved && window.languages && window.languages[saved]) return saved;
+            const browser = navigator.language ? navigator.language.slice(0,2) : 'tr';
+            return (window.languages && window.languages[browser]) ? browser : 'tr';
+        }
+        const lang = getLang();
+        const t = window.languages && window.languages[lang] && window.languages[lang].about ? window.languages[lang].about : null;
+        if (!t) return;
+        const setText = (sel,key,icon=false)=>{const el=document.querySelector(sel);if(!el||!t[key])return;if(icon){const i=el.querySelector('i');el.innerHTML=(i?i.outerHTML+' ':'')+t[key];}else{el.textContent=t[key];}};
+        setText('.header h1','title');
+        setText('.header .subtitle','subtitle');
+        setText('.highlight h3','missionTitle',true);
+        setText('.highlight p','missionText');
+        const rocket=document.querySelector('h2 i.fas.fa-rocket');if(rocket){rocket.parentElement.innerHTML=rocket.outerHTML+' '+t.whatIsTitle;const p=rocket.parentElement.nextElementSibling;if(p)p.textContent=t.whatIsText;}
+        const labels=document.querySelectorAll('.stat-label');if(labels.length>=4){labels[0].textContent=t.statsActiveUsers;labels[1].textContent=t.statsQuestionPool;labels[2].textContent=t.statsCategories;labels[3].textContent=t.statsQuizSolved;}
+        const star=document.querySelector('h2 i.fas.fa-star');if(star)star.parentElement.innerHTML=star.outerHTML+' '+t.featuresTitle;
+        const featKeys=['featurePool','featureSocial','featureProgress','featureAchievements','featureMulti','featureSecurity'];
+        document.querySelectorAll('.features .feature').forEach((f,idx)=>{const h=f.querySelector('h3');const p=f.querySelector('p');h.textContent=t[featKeys[idx]+'Title'];p.textContent=t[featKeys[idx]+'Text'];});
+        const eye=document.querySelector('h2 i.fas.fa-eye');if(eye){eye.parentElement.innerHTML=eye.outerHTML+' '+t.visionTitle;const p=eye.parentElement.nextElementSibling;if(p)p.textContent=t.visionText;}
+        const bull=document.querySelector('h2 i.fas.fa-bullseye');if(bull){bull.parentElement.innerHTML=bull.outerHTML+' '+t.goalsTitle;const ul=bull.parentElement.nextElementSibling;if(ul){ul.innerHTML='';for(let i=1;i<=6;i++){const li=document.createElement('li');li.textContent=t['goal'+i];ul.appendChild(li);}}}
+        const team=document.querySelector('.team-info h3');if(team){const ic=team.querySelector('i');team.innerHTML=(ic?ic.outerHTML+' ':'')+t.teamTitle;const p1=document.querySelector('.team-info p:first-of-type');const p2=document.querySelector('.team-info p:nth-of-type(2)');if(p1)p1.innerHTML=t.teamText1;if(p2)p2.innerHTML=t.teamText2;}
+        const award=document.querySelector('h2 i.fas.fa-award');if(award){award.parentElement.innerHTML=award.outerHTML+' '+t.qualityTitle;const intro=award.parentElement.nextElementSibling;if(intro)intro.textContent=t.qualityIntro;const ul=intro?intro.nextElementSibling:null;if(ul){ul.innerHTML='';for(let i=1;i<=5;i++){const li=document.createElement('li');li.textContent=t['quality'+i];ul.appendChild(li);}}}
+        const leaf=document.querySelector('h2 i.fas.fa-leaf');if(leaf){leaf.parentElement.innerHTML=leaf.outerHTML+' '+t.socialTitle;const intro=leaf.parentElement.nextElementSibling;if(intro)intro.textContent=t.socialIntro;const ul=intro?intro.nextElementSibling:null;if(ul){ul.innerHTML='';for(let i=1;i<=4;i++){const li=document.createElement('li');li.textContent=t['social'+i];ul.appendChild(li);}}}
+        const contact=document.querySelector('.contact-info h3');if(contact){const ic=contact.querySelector('i');contact.innerHTML=(ic?ic.outerHTML+' ':'')+t.contactTitle;const txt=document.querySelector('.contact-info p');if(txt)txt.textContent=t.contactText;const str=document.querySelectorAll('.contact-info p strong');if(str.length>=3){str[0].textContent=t.contactEmailLabel+':';str[1].textContent=t.contactWebLabel+':';str[2].textContent=t.contactSupportLabel+':';}}
+        const back=document.querySelector('.back-link');if(back){back.innerHTML='<i class="fas fa-arrow-left"></i> '+t.backLink;}
+    })();
+    </script>
+  </body>
 </html> 
