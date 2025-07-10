@@ -1,25 +1,389 @@
-// @ts-nocheck
+﻿// @ts-nocheck
 /* eslint-disable */
-// Bu dosya JavaScript'tir, TypeScript de�ildir.
-// Script Version 3.0 - Firebase puan kaydetme sistemi tamamland�
+// Bu dosya JavaScript'tir, TypeScript değildir.
+// Script Version 3.0 - Firebase puan kaydetme sistemi tamamlandı
+
+// Global debug fonksiyonları - İstatistik sorunlarını çözmek için
+window.testProfileStats = function() {
+    console.log('=== PROFİL İSTATİSTİK TEST ===');
+    
+    // Mevcut verileri kontrol et
+    const gameHistory = JSON.parse(localStorage.getItem('gameHistory') || '[]');
+    const userStats = JSON.parse(localStorage.getItem('userStats') || '{}');
+    
+    console.log('GameHistory:', gameHistory);
+    console.log('UserStats:', userStats);
+    
+    // İstatistikleri yeniden hesapla
+    const calculatedStats = quizApp.calculateRealStats();
+    console.log('Hesaplanan istatistikler:', calculatedStats);
+    
+    // Profil kutularını güncelle
+    quizApp.updateProfileStats(calculatedStats);
+    
+    // Elementleri kontrol et
+    const elements = {
+        'stats-total-games': document.getElementById('stats-total-games'),
+        'stats-total-questions': document.getElementById('stats-total-questions'),
+        'stats-correct-answers': document.getElementById('stats-correct-answers'),
+        'stats-accuracy': document.getElementById('stats-accuracy'),
+        'total-games-stat': document.getElementById('total-games-stat'),
+        'total-questions-stat': document.getElementById('total-questions-stat'),
+        'correct-answers-stat': document.getElementById('correct-answers-stat'),
+        'accuracy-stat': document.getElementById('accuracy-stat'),
+        'highest-score-stat': document.getElementById('highest-score-stat')
+    };
+    
+    console.log('Bulunan elementler:');
+    Object.entries(elements).forEach(([id, element]) => {
+        if (element) {
+            console.log(`${id}: ${element.textContent} (bulundu)`);
+        } else {
+            console.log(`${id}: element bulunamadı`);
+        }
+    });
+    
+    console.log('=== TEST TAMAMLANDI ===');
+    return calculatedStats;
+};
+
+window.forceUpdateStats = function() {
+    console.log('İstatistikler zorla güncelleniyor...');
+    
+    // Test verisi oluştur
+    const testStats = {
+        totalGames: 5,
+        totalQuestions: 50,
+        correctAnswers: 35,
+        totalScore: 350,
+        highestScore: 90,
+        accuracy: 70,
+        categoryStats: {}
+    };
+    
+    // Tüm istatistik elementlerini güncelle
+    const updateElement = (id, value) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = value;
+            console.log(`${id} güncellendi: ${value}`);
+            return true;
+        } else {
+            console.log(`${id} elementi bulunamadı`);
+            return false;
+        }
+    };
+    
+    // Profil sayfası kutuları
+    updateElement('stats-total-games', testStats.totalGames);
+    updateElement('stats-total-questions', testStats.totalQuestions);
+    updateElement('stats-correct-answers', testStats.correctAnswers);
+    updateElement('stats-accuracy', `%${testStats.accuracy}`);
+    
+    // İstatistik sayfası kutuları
+    updateElement('total-games-stat', testStats.totalGames);
+    updateElement('total-questions-stat', testStats.totalQuestions);
+    updateElement('correct-answers-stat', testStats.correctAnswers);
+    updateElement('accuracy-stat', `%${testStats.accuracy}`);
+    updateElement('highest-score-stat', testStats.highestScore);
+    
+    console.log('Zorla güncelleme tamamlandı!');
+    return testStats;
+};
+
+window.debugStats = function() {
+    console.log('=== İSTATİSTİK DEBUG ===');
+    console.log('gameHistory:', JSON.parse(localStorage.getItem('gameHistory') || '[]'));
+    console.log('userStats:', JSON.parse(localStorage.getItem('userStats') || '{}'));
+    console.log('quiz-user-stats:', JSON.parse(localStorage.getItem('quiz-user-stats') || '{}'));
+    
+    // Tüm high scores
+    const categories = ['Genel Kültür', 'Bilim', 'Teknoloji', 'Spor', 'Müzik', 'Tarih', 'Coğrafya', 'Sanat'];
+    categories.forEach(cat => {
+        const scores = JSON.parse(localStorage.getItem(`highScores_${cat}`) || '[]');
+        if (scores.length > 0) {
+            console.log(`highScores_${cat}:`, scores);
+        }
+    });
+    console.log('========================');
+};
+
+window.fixStats = function() {
+    console.log('İstatistikler düzeltiliyor...');
+    
+    // QuizApp'den gerçek istatistikleri hesapla
+    if (window.quizApp && typeof window.quizApp.calculateRealStats === 'function') {
+        const stats = window.quizApp.calculateRealStats();
+        console.log('Düzeltilen istatistikler:', stats);
+        
+        // UI'yi güncelle
+        if (typeof updateStatisticsUI === 'function') {
+            updateStatisticsUI(stats);
+        }
+        
+        return stats;
+    } else {
+        console.error('QuizApp.calculateRealStats fonksiyonu bulunamadı');
+        return null;
+    }
+};
+
+window.createTestStats = function() {
+    console.log('Test istatistikleri oluşturuluyor...');
+    
+    // Test oyun verisi oluştur
+    const testGameHistory = [
+        {
+            category: 'Genel Kültür',
+            score: 8,
+            totalQuestions: 10,
+            correctAnswers: 8,
+            lives: 3,
+            averageTime: 15.5,
+            date: new Date().toISOString(),
+            timestamp: Date.now()
+        },
+        {
+            category: 'Bilim',
+            score: 6,
+            totalQuestions: 10,
+            correctAnswers: 6,
+            lives: 2,
+            averageTime: 18.2,
+            date: new Date().toISOString(),
+            timestamp: Date.now()
+        },
+        {
+            category: 'Teknoloji',
+            score: 9,
+            totalQuestions: 10,
+            correctAnswers: 9,
+            lives: 4,
+            averageTime: 12.8,
+            date: new Date().toISOString(),
+            timestamp: Date.now()
+        }
+    ];
+    
+    // Test istatistikleri hesapla
+    const testStats = {
+        totalGames: 3,
+        totalQuestions: 30,
+        correctAnswers: 23,
+        totalScore: 23,
+        highestScore: 9,
+        averageScore: Math.round(23 / 3),
+        accuracy: Math.round((23 / 30) * 100),
+        categoryStats: {
+            'Genel Kültür': { total: 10, correct: 8, games: 1 },
+            'Bilim': { total: 10, correct: 6, games: 1 },
+            'Teknoloji': { total: 10, correct: 9, games: 1 }
+        }
+    };
+    
+    // localStorage'a kaydet
+    localStorage.setItem('gameHistory', JSON.stringify(testGameHistory));
+    localStorage.setItem('userStats', JSON.stringify(testStats));
+    localStorage.setItem('quiz-user-stats', JSON.stringify(testStats));
+    
+    console.log('Test verileri kaydedildi:', testStats);
+    
+    // UI'yi güncelle
+    if (typeof updateStatisticsUI === 'function') {
+        updateStatisticsUI(testStats);
+    } else if (typeof loadStatisticsData === 'function') {
+        loadStatisticsData();
+    }
+    
+    return testStats;
+};
+
+window.clearAllStats = function() {
+    if (confirm('Tüm istatistikleri silmek istediğinizden emin misiniz?')) {
+        localStorage.removeItem('gameHistory');
+        localStorage.removeItem('userStats');
+        localStorage.removeItem('quiz-user-stats');
+        
+        const categories = ['Genel Kültür', 'Bilim', 'Teknoloji', 'Spor', 'Müzik', 'Tarih', 'Coğrafya', 'Sanat'];
+        categories.forEach(cat => {
+            localStorage.removeItem(`highScores_${cat}`);
+        });
+        
+        console.log('Tüm istatistikler silindi');
+        location.reload();
+    }
+};
+
+// İstatistik kutularını test et
+window.testStatsBoxes = function() {
+    console.log('İstatistik kutuları test ediliyor...');
+    
+    // Test verileri oluştur
+    createTestStats();
+    
+    // Önce tüm mögliche element ID'lerini kontrol et
+    const possibleIds = [
+        'total-games-stat', 'total-games', 'totalGames',
+        'total-questions-stat', 'total-questions', 'totalQuestions', 
+        'correct-answers-stat', 'correct-answers', 'correctAnswers',
+        'accuracy-stat', 'accuracy', 'dogruluk-orani'
+    ];
+    
+    console.log('Mevcut elementleri kontrol ediliyor...');
+    possibleIds.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            console.log(`✅ Element bulundu: ${id} = "${element.textContent}"`);
+        }
+    });
+    
+    // Tüm istatistik içeren elementleri bul
+    const allStatsElements = document.querySelectorAll('[id*="stat"], [class*="stat"]');
+    console.log('Tüm istatistik elementleri:', Array.from(allStatsElements).map(el => ({
+        id: el.id,
+        className: el.className,
+        textContent: el.textContent
+    })));
+    
+    // Kutuları zorla güncelle
+    setTimeout(() => {
+        forceUpdateUI();
+        
+        // Manuel olarak tüm olası elementleri güncelle
+        const stats = JSON.parse(localStorage.getItem('userStats') || '{}');
+        console.log('Manuel güncelleme için stats:', stats);
+        
+        // Farklı ID kombinasyonları dene
+        const idVariants = [
+            ['total-games-stat', 'total-games', 'totalGames'],
+            ['total-questions-stat', 'total-questions', 'totalQuestions'],
+            ['correct-answers-stat', 'correct-answers', 'correctAnswers'],
+            ['accuracy-stat', 'accuracy', 'dogruluk-orani']
+        ];
+        
+        const values = [
+            stats.totalGames || 0,
+            stats.totalQuestions || 0, 
+            stats.correctAnswers || 0,
+            '%' + (stats.accuracy || 0)
+        ];
+        
+        idVariants.forEach((variants, index) => {
+            variants.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = values[index];
+                    console.log(`✅ ${id} güncellendi: ${values[index]}`);
+                }
+            });
+        });
+        
+        // 2 saniye sonra sonuçları kontrol et
+        setTimeout(() => {
+            const boxes = {
+                totalGames: document.getElementById('total-games-stat')?.textContent,
+                totalQuestions: document.getElementById('total-questions-stat')?.textContent,
+                correctAnswers: document.getElementById('correct-answers-stat')?.textContent,
+                accuracy: document.getElementById('accuracy-stat')?.textContent
+            };
+            
+            console.log('İstatistik kutularının güncel değerleri:', boxes);
+            
+            if (boxes.totalGames === '3' && boxes.totalQuestions === '30') {
+                console.log('✅ İstatistik kutuları başarıyla güncellendi!');
+            } else {
+                console.log('❌ İstatistik kutuları güncellenemedi');
+                console.log('🔍 Element ID\'lerini kontrol edin');
+            }
+        }, 2000);
+    }, 1000);
+};
+
+window.forceUpdateUI = function() {
+    console.log('UI zorla güncelleniyor...');
+    
+    // İstatistik elementlerini bul ve manuel güncelle
+    const stats = JSON.parse(localStorage.getItem('userStats') || '{}');
+    console.log('Manuel UI güncellemesi için stats:', stats);
+    
+    // Elementleri bul
+    const totalGamesEl = document.getElementById('total-games-stat');
+    const totalQuestionsEl = document.getElementById('total-questions-stat');
+    const correctAnswersEl = document.getElementById('correct-answers-stat');
+    const accuracyEl = document.getElementById('accuracy-stat');
+    
+    console.log('Bulunan elementler:', {
+        totalGamesEl: !!totalGamesEl,
+        totalQuestionsEl: !!totalQuestionsEl,
+        correctAnswersEl: !!correctAnswersEl,
+        accuracyEl: !!accuracyEl
+    });
+    
+    if (totalGamesEl) {
+        totalGamesEl.textContent = stats.totalGames || 0;
+        console.log('totalGames güncellendi:', stats.totalGames || 0);
+    }
+    if (totalQuestionsEl) {
+        totalQuestionsEl.textContent = stats.totalQuestions || 0;
+        console.log('totalQuestions güncellendi:', stats.totalQuestions || 0);
+    }
+    if (correctAnswersEl) {
+        correctAnswersEl.textContent = stats.correctAnswers || 0;
+        console.log('correctAnswers güncellendi:', stats.correctAnswers || 0);
+    }
+    if (accuracyEl) {
+        const accuracy = stats.accuracy || 0;
+        accuracyEl.textContent = '%' + accuracy;
+        console.log('accuracy güncellendi:', accuracy);
+    }
+    
+    // İstatistikler sayfasının yüklenmesini tetikle (grafik olmadan)
+    if (typeof updateStatisticsUI === 'function') {
+        console.log('updateStatisticsUI çağrılıyor...');
+        // Grafik çizmeden sadece UI güncelle
+        const simpleUpdateUI = function(stats) {
+            const totalGames = stats.totalGames || 0;
+            const totalQuestions = stats.totalQuestions || 0;
+            const correctAnswers = stats.correctAnswers || 0;
+            const accuracy = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+            
+            if (document.getElementById('total-games-stat')) {
+                document.getElementById('total-games-stat').textContent = totalGames;
+            }
+            if (document.getElementById('total-questions-stat')) {
+                document.getElementById('total-questions-stat').textContent = totalQuestions;
+            }
+            if (document.getElementById('correct-answers-stat')) {
+                document.getElementById('correct-answers-stat').textContent = correctAnswers;
+            }
+            if (document.getElementById('accuracy-stat')) {
+                document.getElementById('accuracy-stat').textContent = '%' + accuracy;
+            }
+            
+            console.log('İstatistik kutuları güncellendi:', {totalGames, totalQuestions, correctAnswers, accuracy});
+        };
+        
+        simpleUpdateUI(stats);
+    }
+};
 
 // Tam Ekran Modunu Ayarla
 function initFullscreenMode() {
-    // PWA tam ekran modunu etkinle�tir
+    // PWA tam ekran modunu etkinleştir
     if ('serviceWorker' in navigator) {
-        // PWA modunda �al���yor mu kontrol et
+        // PWA modunda çalışıyor mu kontrol et
         const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
                            window.navigator.standalone ||
                            document.referrer.includes('android-app://');
         
         if (isStandalone) {
-            console.log('? PWA standalone modunda �al���yor');
+            console.log('✅ PWA standalone modunda çalışıyor');
             
-            // Tam ekran i�in CSS s�n�flar� ekle
+            // Tam ekran için CSS sınıfları ekle
             document.body.classList.add('pwa-fullscreen');
             document.documentElement.classList.add('pwa-fullscreen');
             
-            // Viewport meta tag g�ncelle
+            // Viewport meta tag güncelle
             const viewport = document.querySelector('meta[name="viewport"]');
             if (viewport) {
                 viewport.setAttribute('content', 
@@ -32,7 +396,7 @@ function initFullscreenMode() {
                 themeColor.setAttribute('content', '#1e40af');
             }
         } else {
-            console.log('?? PWA standalone modunda �al��m�yor - taray�c� modunda');
+            console.log('⚠️ PWA standalone modunda çalışmıyor - tarayıcı modunda');
         }
     }
     
@@ -53,7 +417,7 @@ function initFullscreenMode() {
             overflow-y: auto !important;
         }
         
-        /* Safe area i�in padding ekle */
+        /* Safe area için padding ekle */
         @supports (padding: max(0px)) {
             .pwa-fullscreen .container {
                 padding-top: max(env(safe-area-inset-top), 0px) !important;
@@ -63,7 +427,7 @@ function initFullscreenMode() {
             }
         }
         
-        /* Capacitor/Cordova i�in */
+        /* Capacitor/Cordova için */
         .platform-cordova .pwa-fullscreen,
         .platform-capacitor .pwa-fullscreen {
             height: 100vh !important;
@@ -78,16 +442,154 @@ function initFullscreenMode() {
     document.head.appendChild(styleSheet);
 }
 
-// Sayfa Y�kleme ��lemleri
+// Platform Tespiti Fonksiyonu
+function detectPlatform() {
+    console.log('🔍 Platform tespiti başlatılıyor...');
+    
+    // Capacitor ortamında mı?
+    const isCapacitor = window.Capacitor || document.referrer.includes('android-app://') || 
+                        window.navigator.userAgent.includes('wv') || 
+                        window.location.protocol === 'capacitor:';
+    
+    // Cordova ortamında mı?
+    const isCordova = window.cordova || document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1;
+    
+    // Android cihaz mı?
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    
+    // WebView kontrolü
+    const isWebView = window.navigator.userAgent.includes('wv') || 
+                      window.navigator.userAgent.includes('Version/') && window.navigator.userAgent.includes('Mobile');
+    
+    console.log('Platform bilgileri:', {
+        isCapacitor,
+        isCordova,
+        isAndroid,
+        isWebView,
+        userAgent: navigator.userAgent,
+        location: window.location.href,
+        referrer: document.referrer,
+        protocol: window.location.protocol
+    });
+    
+    // Emülatör tespiti - Android Studio emülatörü için
+    const isEmulator = navigator.userAgent.includes('Android') && 
+                       (navigator.userAgent.includes('sdk_gphone') || 
+                        navigator.userAgent.includes('Emulator') ||
+                        navigator.userAgent.includes('generic') ||
+                        window.location.href.includes('10.0.2.2'));
+    
+    // TABLET ZORLA TESPİTİ - 600px üzeri Android cihazlar için
+    const isTablet = isAndroid && window.innerWidth >= 600;
+    
+    // ZORLA ANDROID APP TESPİTİ - HER ANDROID CİHAZ İÇİN
+    // Bu satır her Android cihazda mobile tab bar'ı aktif hale getirir
+    const isAndroidApp = isAndroid || // ZORLA: Her Android için aktif
+                         (isAndroid && (isCapacitor || isCordova || isWebView || isEmulator || isTablet ||
+                          window.location.protocol === 'file:' || 
+                          window.location.protocol === 'capacitor:' ||
+                          document.URL.includes('localhost') ||
+                          document.URL.includes('127.0.0.1') ||
+                          window.location.href.includes('localhost') ||
+                          window.location.href.includes('10.0.2.2') ||
+                          document.referrer === '' && isAndroid));
+    
+    console.log('🎯 Android App tespiti:', isAndroidApp);
+    console.log('🔍 Detaylı kontrol:', {
+        isAndroid,
+        isCapacitor,
+        isCordova,
+        isWebView,
+        isEmulator,
+        isTablet,
+        screenWidth: window.innerWidth,
+        screenHeight: window.innerHeight,
+        protocol: window.location.protocol,
+        url: document.URL,
+        href: window.location.href,
+        referrer: document.referrer,
+        userAgent: navigator.userAgent
+    });
+    
+    // Platform sınıflarını ekle
+    if (isAndroidApp) {
+        document.body.classList.add('platform-capacitor', 'platform-android');
+        document.documentElement.classList.add('platform-capacitor', 'platform-android');
+        console.log('✅ Platform sınıfları eklendi: platform-capacitor, platform-android');
+        
+        // Zorla mobile tab bar göster
+        setTimeout(() => {
+            const mobileTabBar = document.querySelector('.mobile-tab-bar');
+            const hamburgerToggle = document.querySelector('.hamburger-toggle');
+            
+            if (mobileTabBar) {
+                mobileTabBar.style.display = 'flex !important';
+                mobileTabBar.style.visibility = 'visible !important';
+                mobileTabBar.style.position = 'fixed !important';
+                mobileTabBar.style.bottom = '0 !important';
+                mobileTabBar.style.left = '0 !important';
+                mobileTabBar.style.right = '0 !important';
+                mobileTabBar.style.zIndex = '9999 !important';
+                mobileTabBar.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important';
+                mobileTabBar.style.height = '70px !important';
+                console.log('✅ Mobile tab bar zorla gösterildi');
+            } else {
+                console.error('❌ Mobile tab bar bulunamadı!');
+            }
+            
+            if (hamburgerToggle) {
+                hamburgerToggle.style.display = 'none !important';
+                hamburgerToggle.style.visibility = 'hidden !important';
+                console.log('✅ Hamburger menu gizlendi');
+            }
+            
+            // Container'ı ayarla
+            const container = document.querySelector('.container');
+            if (container) {
+                container.style.paddingBottom = '80px !important';
+                console.log('✅ Container alt boşluk eklendi');
+            }
+        }, 100);
+        
+        return 'capacitor';
+    } else if (isCordova) {
+        document.body.classList.add('platform-cordova');
+        document.documentElement.classList.add('platform-cordova');
+        console.log('✅ Platform sınıfı eklendi: platform-cordova');
+        return 'cordova';
+    } else {
+        document.body.classList.add('platform-web');
+        console.log('✅ Platform sınıfı eklendi: platform-web');
+        return 'web';
+    }
+}
+
+// Sayfa Yükleme İşlemleri
 document.addEventListener('DOMContentLoaded', () => {
-    // Tam ekran modunu ba�lat
+    // Platform tespitini hemen yap
+    const platform = detectPlatform();
+    console.log('🎯 Tespit edilen platform:', platform);
+    
+    // Tam ekran modunu başlat
     initFullscreenMode();
     
-    // Ana i�eri�i g�r�n�r yap
+    // Ana içeriği görünür yap
     const container = document.querySelector('.container');
     if (container) {
         container.style.visibility = 'visible';
         container.classList.add('fade-in');
+    }
+    
+    // Android'de 1 saniye sonra tekrar kontrol et
+    if (platform === 'capacitor') {
+        setTimeout(() => {
+            const mobileTabBar = document.querySelector('.mobile-tab-bar');
+            if (mobileTabBar && mobileTabBar.style.display === 'none') {
+                mobileTabBar.style.display = 'flex !important';
+                mobileTabBar.style.visibility = 'visible !important';
+                console.log('🔄 Mobile tab bar tekrar gösterildi');
+            }
+        }, 1000);
     }
 });
 
@@ -116,10 +618,11 @@ const quizApp = {
     // State Variables
     currentQuestionIndex: 0,
     score: 0,
-    totalScore: 0, // <-- EKLEND�: Toplam birikmi� puan
-    sessionScore: 0, // <-- EKLEND�: Bu oturumdaki toplam puan
-    userLevel: 1, // <-- EKLEND�: Kullan�c� seviyesi
-    levelProgress: 0, // <-- EKLEND�: Seviye ilerlemesi (XP)
+    totalScore: 0, // <-- EKLENDİ: Toplam birikmiş puan
+    sessionScore: 0, // <-- EKLENDİ: Bu oturumdaki toplam puan
+    userLevel: 1, // <-- EKLENDİ: Kullanıcı seviyesi
+    levelProgress: 0, // <-- EKLENDİ: Seviye ilerlemesi (XP)
+    totalStars: 0, // <-- EKLENDİ: Toplam kazanılan yıldız sayısı
     correctAnswers: 0,
     selectedCategory: null,
     questions: [],
@@ -136,19 +639,18 @@ const quizApp = {
     currentLevel: 1,
     levelProgress: 0,
     skipJokerActive: false,
-    currentSection: 1, // �u anki b�l�m numaras�
-    totalSections: 50, // Toplam b�l�m say�s�
-    sectionStats: [], // Her b�l�m i�in do�ru/yanl�� cevap istatistiklerini saklayacak dizi
-    currentLanguage: 'tr', // Varsay�lan dil
-    translatedQuestions: {}, // �evrilmi� sorular
-    isLoggedIn: false, // <-- EKLEND�: Kullan�c� giri� durumu
-    currentUser: null, // <-- EKLEND�: Mevcut kullan�c�
-    userSettings: {}, // <-- EKLEND�: Kullan�c� ayarlar�
-    totalScore: 0, // <-- EKLEND�: Toplam puan
-    sessionScore: 0, // <-- EKLEND�: Oturum puan�
-    userLevel: 1, // <-- EKLEND�: Kullan�c� seviyesi
-    levelProgress: 0, // <-- EKLEND�: Seviye ilerlemesi
-    totalStars: 0, // <-- EKLEND�: Toplam y�ld�z say�s�
+    currentSection: 1, // Şu anki bölüm numarası
+    totalSections: 50, // Toplam bölüm sayısı
+    sectionStats: [], // Her bölüm için doğru/yanlış cevap istatistiklerini saklayacak dizi
+    currentLanguage: 'tr', // Varsayılan dil
+    translatedQuestions: {}, // Çevrilmiş sorular
+    isLoggedIn: false, // <-- EKLENDİ: Kullanıcı giriş durumu
+    currentUser: null, // <-- EKLENDİ: Mevcut kullanıcı
+    userSettings: {}, // <-- EKLENDİ: Kullanıcı ayarları
+    totalScore: 0, // <-- EKLENDİ: Toplam puan
+    sessionScore: 0, // <-- EKLENDİ: Oturum puanı
+    userLevel: 1, // <-- EKLENDİ: Kullanıcı seviyesi
+    levelProgress: 0, // <-- EKLENDİ: Seviye ilerlemesi
     
     // Constants
     HIGH_SCORES_KEY: 'quizHighScores',
@@ -156,108 +658,108 @@ const quizApp = {
     TIME_PER_QUESTION: 45,
     TIME_PER_BLANK_FILLING_QUESTION: 60,
     SEEN_QUESTIONS_KEY: 'quizSeenQuestions',
-    QUESTIONS_PER_GAME: 'dynamic', // Art�k kategoriye g�re dinamik
+    QUESTIONS_PER_GAME: 'dynamic', // Artık kategoriye göre dinamik
     STATS_KEY: 'quizStats',
     USER_SETTINGS_KEY: 'quizSettings',
     JOKER_INVENTORY_KEY: 'quizJokerInventory',
     LANGUAGE_KEY: 'quizLanguage',
     
-    // Ba�lang��
+    // Başlangıç
     init: function() {
-        console.log("Quiz Uygulamas� Ba�lat�l�yor...");
+        console.log("Quiz Uygulaması Başlatılıyor...");
         
-        // �lk Firebase durumu kontrol�
-        console.log('?? Firebase �lk Durum Kontrol�:');
+        // İlk Firebase durumu kontrolü
+        console.log('🔥 Firebase İlk Durum Kontrolü:');
         console.log('- Firebase nesnesi:', typeof firebase !== 'undefined' ? 'VAR' : 'YOK');
         console.log('- Firebase.auth:', firebase && firebase.auth ? 'VAR' : 'YOK');
         console.log('- Firebase.firestore:', firebase && firebase.firestore ? 'VAR' : 'YOK');
         
-        // Taray�c� �zelliklerini kontrol et
+        // Tarayıcı özelliklerini kontrol et
         this.checkBrowserSupport();
         
         try {
-            // �nce dil ayarlar�n� y�kle
+            // Önce dil ayarlarını yükle
             this.loadLanguageSettings();
             
-            // Kullan�c� aray�z�n� haz�rla
+            // Kullanıcı arayüzünü hazırla
             this.initUI();
             
-            // �nce kullan�c� ayarlar�n� y�kle
+            // Önce kullanıcı ayarlarını yükle
             this.loadUserSettings();
             
-            // Joker tab bar'� ba�lat
+            // Joker tab bar'ı başlat
             this.initJokerTabBar();
             
-            // Kullan�c�n�n quiz modunda olup olmad���n� kontrol et (sayfa yenilemesi senaryosu i�in)
+            // Kullanıcının quiz modunda olup olmadığını kontrol et (sayfa yenilemesi senaryosu için)
             if (localStorage.getItem('quizModeActive') === 'true' && document.getElementById('quiz').style.display !== 'none') {
                 this.activateQuizMode();
             }
             
-            // localStorage'dan skor verilerini y�kle
+            // localStorage'dan skor verilerini yükle
             this.loadScoreFromLocalStorage();
             
-            // Soru verilerini y�kle
+            // Soru verilerini yükle
             this.loadQuestionsData()
                 .then(() => {
-                    console.log("T�m veriler ba�ar�yla y�klendi.");
+                    console.log("Tüm veriler başarıyla yüklendi.");
                     
-                    // Soru verilerinin y�klenip y�klenmedi�ini kontrol et
+                    // Soru verilerinin yüklenip yüklenmediğini kontrol et
                     if (!this.questionsData || Object.keys(this.questionsData).length === 0) {
-                        console.error("Soru verileri y�klenemedi veya bo�!");
+                        console.error("Soru verileri yüklenemedi veya boş!");
                         
-                        // Tekrar y�klemeyi dene
+                        // Tekrar yüklemeyi dene
                         this.loadQuestionsData()
                             .then(() => {
-                                console.log("�kinci deneme: Soru verileri y�klendi");
+                                console.log("İkinci deneme: Soru verileri yüklendi");
                             })
                             .catch(err => {
-                                console.error("�kinci deneme ba�ar�s�z:", err);
+                                console.error("İkinci deneme başarısız:", err);
                                 this.showAlert(this.getTranslation('questionLoadError'));
                             });
                     }
                     
-                    // Sorular� �evir
+                    // Soruları çevir
                     this.translateQuestions();
                 })
                 .catch(error => {
-                    console.error("Soru verileri y�klenirken hata olu�tu:", error);
+                    console.error("Soru verileri yüklenirken hata oluştu:", error);
                 });
         } catch (error) {
-            console.error("Ba�latma s�ras�nda kritik hata:", error);
+            console.error("Başlatma sırasında kritik hata:", error);
         }
     },
     
-    // Mevcut dil i�in metni getir
+    // Mevcut dil için metni getir
     getTranslation: function(key) {
         try {
-            // Dil dosyas� import edilmi� mi kontrol et
+            // Dil dosyası import edilmiş mi kontrol et
             if (typeof languages === 'undefined') {
-                console.warn('Dil dosyas� y�klenemedi. Varsay�lan metin g�steriliyor.');
+                console.warn('Dil dosyası yüklenemedi. Varsayılan metin gösteriliyor.');
                 return this.getDefaultTranslation(key);
             }
             
-            // Mevcut dil i�in �eviri var m�?
+            // Mevcut dil için çeviri var mı?
             if (languages[this.currentLanguage] && languages[this.currentLanguage][key] !== undefined) {
                 return languages[this.currentLanguage][key];
             }
             
-            // T�rk�e varsay�lan dil olarak kullan�l�r
+            // Türkçe varsayılan dil olarak kullanılır
             if (languages.tr && languages.tr[key] !== undefined) {
                 return languages.tr[key];
             }
             
-            // �eviri bulunamazsa, anahtar� d�nd�r
-            console.warn(`'${key}' i�in �eviri bulunamad�.`);
+            // Çeviri bulunamazsa, anahtarı döndür
+            console.warn(`'${key}' için çeviri bulunamadı.`);
             return key;
         } catch (error) {
-            console.error('�eviri al�n�rken hata olu�tu:', error);
+            console.error('Çeviri alınırken hata oluştu:', error);
             return this.getDefaultTranslation(key);
         }
     },
     
-    // Varsay�lan �evirileri d�nd�r
+    // Varsayılan çevirileri döndür
     getDefaultTranslation: function(key) {
-        // S�k kullan�lan metinler i�in varsay�lan de�erler
+        // Sık kullanılan metinler için varsayılan değerler
         const defaults = {
             'appName': 'Quiz Game',
             'loading': 'Loading...',
@@ -276,27 +778,27 @@ const quizApp = {
         return defaults[key] || key;
     },
     
-    // Dil ayarlar�n� y�kle
+    // Dil ayarlarını yükle
     loadLanguageSettings: function() {
         try {
-            // Local storage'dan tercihler ekran�nda se�ilen dili kontrol et
+            // Local storage'dan tercihler ekranında seçilen dili kontrol et
             const userLanguage = localStorage.getItem('user_language');
             
             if (userLanguage && ['tr', 'en', 'de'].includes(userLanguage)) {
                 this.currentLanguage = userLanguage;
-                console.log(`Kullan�c� tercih etti�i dil: ${this.currentLanguage}`);
+                console.log(`Kullanıcı tercih ettiği dil: ${this.currentLanguage}`);
                 
-                // HTML dil etiketini g�ncelle
+                // HTML dil etiketini güncelle
                 document.documentElement.setAttribute('lang', this.currentLanguage);
                 document.documentElement.setAttribute('data-language', this.currentLanguage);
             } else {
-                // Kaydedilmi� dil ayar� varsa y�kle
+                // Kaydedilmiş dil ayarı varsa yükle
                 const savedLanguage = localStorage.getItem(this.LANGUAGE_KEY);
                 if (savedLanguage && ['tr', 'en', 'de'].includes(savedLanguage)) {
                     this.currentLanguage = savedLanguage;
-                    console.log(`Kaydedilmi� dil ayar�: ${this.currentLanguage}`);
+                    console.log(`Kaydedilmiş dil ayarı: ${this.currentLanguage}`);
                 } else {
-                    // Taray�c� dilini kontrol et
+                    // Tarayıcı dilini kontrol et
                     const browserLang = navigator.language || navigator.userLanguage;
                     if (browserLang) {
                         const lang = browserLang.substring(0, 2).toLowerCase();
@@ -305,140 +807,141 @@ const quizApp = {
                         if (['tr', 'en', 'de'].includes(lang)) {
                             this.currentLanguage = lang;
                         } else {
-                            // Desteklenmeyen dil durumunda varsay�lan olarak �ngilizce
+                            // Desteklenmeyen dil durumunda varsayılan olarak İngilizce
                             this.currentLanguage = 'en';
                         }
                         
-                        console.log(`Taray�c� dili: ${browserLang}, Uygulama dili: ${this.currentLanguage}`);
+                        console.log(`Tarayıcı dili: ${browserLang}, Uygulama dili: ${this.currentLanguage}`);
                     }
                 }
             }
             
-            // Dil de�i�tirme elementini olu�tur
+            // Dil değiştirme elementini oluştur
             this.createLanguageSelector();
         } catch (e) {
-            console.error("Dil ayarlar� y�klenirken hata:", e);
-            this.currentLanguage = 'tr'; // Hata durumunda varsay�lan dil
+            console.error("Dil ayarları yüklenirken hata:", e);
+            this.currentLanguage = 'tr'; // Hata durumunda varsayılan dil
         }
     },
     
-    // Dil se�ici olu�tur
+    // Dil seçici oluştur
     createLanguageSelector: function() {
-        // Men�de zaten bir dil se�ici oldu�u i�in sayfa �zerinde ekstra bir dil se�ici olu�turmuyoruz
-        console.log("Men�de zaten dil se�im alan� bulundu�u i�in ek bir dil se�ici olu�turulmad�");
+        // Menüde zaten bir dil seçici olduğu için sayfa üzerinde ekstra bir dil seçici oluşturmuyoruz
+        console.log("Menüde zaten dil seçim alanı bulunduğu için ek bir dil seçici oluşturulmadı");
         return;
     },
     
-    // Dili de�i�tir
+    // Dili değiştir
     switchLanguage: function(language) {
         if (this.currentLanguage === language) return;
         
-        console.log(`Dil de�i�tiriliyor: ${this.currentLanguage} -> ${language}`);
+        console.log(`Dil değiştiriliyor: ${this.currentLanguage} -> ${language}`);
         
         // Dili kaydet
         this.currentLanguage = language;
         localStorage.setItem(this.LANGUAGE_KEY, language);
-        localStorage.setItem('quizLanguage', language); // Eski referans i�in uyumluluk
+        localStorage.setItem('quizLanguage', language); // Eski referans için uyumluluk
+        localStorage.setItem('user_language', language); // Kullanıcı dil tercihini kaydet
         
-        // HTML etiketinin dil �zelliklerini g�ncelle
+        // HTML etiketinin dil özelliklerini güncelle
         const htmlRoot = document.getElementById('html-root') || document.documentElement;
         htmlRoot.setAttribute('lang', language);
         htmlRoot.setAttribute('data-language', language);
         
-        // Soru verilerini yeniden y�kle
+        // Soru verilerini yeniden yükle
         this.loadQuestionsData()
             .then(() => {
-                console.log("Dil de�i�ikli�i sonras� yeni soru verileri y�klendi");
+                console.log("Dil değişikliği sonrası yeni soru verileri yüklendi");
                 
-                // UI metinlerini g�ncelle
+                // UI metinlerini güncelle
                 this.updateUITexts();
                 
-                // Dil de�i�ikli�i olay�n� tetikle - bu, di�er mod�llerin �evirilerini g�ncellemesini sa�lar
+                // Dil değişikliği olayını tetikle - bu, diğer modüllerin çevirilerini güncellemesini sağlar
                 document.dispatchEvent(new Event('languageChanged'));
                 
-                // E�er aktif bir kategori varsa ve sorular g�steriliyorsa, sorular� g�ncelle
+                // Eğer aktif bir kategori varsa ve sorular gösteriliyorsa, soruları güncelle
                 if (this.selectedCategory && this.quizElement && this.quizElement.style.display !== 'none') {
-                    // Kategorileri yeniden g�ster (mevcut dildeki kategorileri g�stermek i�in)
+                    // Kategorileri yeniden göster (mevcut dildeki kategorileri göstermek için)
                     this.displayCategories();
                     
-                    // Se�ili kategori ad�n� kontrol et ve mevcut dildeki kar��l���n� bul
+                    // Seçili kategori adını kontrol et ve mevcut dildeki karşılığını bul
                     const translatedCategoryName = this.getCurrentCategoryName(this.selectedCategory);
                     
                     if (this.questionsData[translatedCategoryName]) {
-                        // Kategori mevcut dildeki sorularla g�ncellenir
+                        // Kategori mevcut dildeki sorularla güncellenir
                         this.selectedCategory = translatedCategoryName;
                         
-                        // Sorular� g�ncelle
+                        // Soruları güncelle
                         this.questions = this.shuffleArray([...this.questionsData[this.selectedCategory]]);
                         this.arrangeBlankFillingFirst();
                         
-                        // Mevcut soruyu s�f�rla ve ilk soruyu g�ster
+                        // Mevcut soruyu sıfırla ve ilk soruyu göster
                         this.currentQuestionIndex = 0;
                         this.displayQuestion(this.questions[0]);
                     }
                 }
                 
-                // Mevcut g�sterilen i�eri�i g�ncelle
+                // Mevcut gösterilen içeriği güncelle
                 this.updateCurrentContent();
                 
-                // Dil de�i�ikli�ini kullan�c�ya bildir
+                // Dil değişikliğini kullanıcıya bildir
                 this.showToast(this.getTranslation('languageChanged'), 'toast-success');
                 this.updateResultAndWarningTexts();
             })
             .catch(error => {
-                console.error("Dil de�i�ikli�i sonras� soru verileri y�klenirken hata:", error);
-                this.showToast("Sorular y�klenirken bir hata olu�tu", "toast-error");
+                console.error("Dil değişikliği sonrası soru verileri yüklenirken hata:", error);
+                this.showToast("Sorular yüklenirken bir hata oluştu", "toast-error");
             });
     },
     
-    // Sorular� �evir
+    // Soruları çevir
     translateQuestions: function() {
         if (!this.questionsData || Object.keys(this.questionsData).length === 0) {
-            console.warn('�evrilecek soru verisi bulunamad�.');
+            console.warn('Çevrilecek soru verisi bulunamadı.');
             return;
         }
         
         if (this.currentLanguage === 'tr') {
-            // T�rk�e i�in �eviriye gerek yok, orijinal sorular� kullan
+            // Türkçe için çeviriye gerek yok, orijinal soruları kullan
             this.translatedQuestions = this.cloneObject(this.questionsData);
-            // Mevcut sorular� g�ncelle
+            // Mevcut soruları güncelle
             this.updateCurrentQuestionsWithTranslations();
             return;
         }
         
-        // �evrilmi� sorular zaten varsa ve ge�erli dilde ise tekrar �evirme
+        // Çevrilmiş sorular zaten varsa ve geçerli dilde ise tekrar çevirme
         if (this.hasTranslatedQuestions(this.currentLanguage)) {
-            console.log(`${this.currentLanguage} dilinde �evrilmi� sorular zaten mevcut, tekrar �evirme i�lemi yap�lmayacak.`);
+            console.log(`${this.currentLanguage} dilinde çevrilmiş sorular zaten mevcut, tekrar çevirme işlemi yapılmayacak.`);
             
-            // Mevcut sorular� g�ncelle
+            // Mevcut soruları güncelle
             this.updateCurrentQuestionsWithTranslations();
             return;
         }
         
-        console.log(`Sorular ${this.currentLanguage} diline �evriliyor...`);
+        console.log(`Sorular ${this.currentLanguage} diline çevriliyor...`);
         
-        // Bo� �eviri nesnesini olu�tur
+        // Boş çeviri nesnesini oluştur
         this.translatedQuestions = {};
         
-        // Her kategori i�in
+        // Her kategori için
         Object.keys(this.questionsData).forEach(categoryTR => {
-            // Kategori ad�n� �evir
+            // Kategori adını çevir
             const translatedCategoryName = this.getTranslatedCategoryName(categoryTR, this.currentLanguage);
             this.translatedQuestions[translatedCategoryName] = [];
             
-            // Kategorideki her soru i�in
+            // Kategorideki her soru için
             this.questionsData[categoryTR].forEach(questionObj => {
-                // Soru nesnesinin kopyas�n� olu�tur
+                // Soru nesnesinin kopyasını oluştur
                 const translatedQuestion = this.cloneObject(questionObj);
                 
-                // Translations �zelli�i varsa ve istenen dilde �eviri varsa kullan
+                // Translations özelliği varsa ve istenen dilde çeviri varsa kullan
                 if (questionObj.translations && questionObj.translations[this.currentLanguage]) {
                     const translation = questionObj.translations[this.currentLanguage];
                     if (translation.question) translatedQuestion.question = translation.question;
                     if (translation.options) translatedQuestion.options = translation.options;
                     if (translation.correctAnswer) translatedQuestion.correctAnswer = translation.correctAnswer;
                 } else {
-                    // Soru metnini ve ��klar� �evir (otomatik �eviri yerine �zelle�tirilmi� metin)
+                    // Soru metnini ve şıkları çevir (otomatik çeviri yerine özelleştirilmiş metin)
                     if (this.currentLanguage === 'en') {
                         translatedQuestion.question = this.translateToEnglish(questionObj.question);
                         
@@ -452,11 +955,11 @@ const quizApp = {
                             translatedQuestion.correctAnswer = this.translateToEnglish(questionObj.correctAnswer);
                         }
                         
-                        // Do�ru/Yanl�� sorular� i�in
-                        if (translatedQuestion.type === "Do�ruYanl��" || translatedQuestion.type === "TrueFalse") {
+                        // Doğru/Yanlış soruları için
+                        if (translatedQuestion.type === "DoğruYanlış" || translatedQuestion.type === "TrueFalse") {
                             translatedQuestion.type = "TrueFalse";
                             
-                            if (translatedQuestion.correctAnswer === "DO�RU" || translatedQuestion.correctAnswer === "YANLI�") {
+                            if (translatedQuestion.correctAnswer === "DOĞRU" || translatedQuestion.correctAnswer === "YANLIŞ") {
                                 translatedQuestion.correctAnswer = trueFalseMapping[translatedQuestion.correctAnswer].en;
                             }
                         }
@@ -473,65 +976,65 @@ const quizApp = {
                             translatedQuestion.correctAnswer = this.translateToGerman(questionObj.correctAnswer);
                         }
                         
-                        // Do�ru/Yanl�� sorular� i�in
-                        if (translatedQuestion.type === "Do�ruYanl��" || translatedQuestion.type === "TrueFalse") {
+                        // Doğru/Yanlış soruları için
+                        if (translatedQuestion.type === "DoğruYanlış" || translatedQuestion.type === "TrueFalse") {
                             translatedQuestion.type = "TrueFalse";
                             
-                            if (translatedQuestion.correctAnswer === "DO�RU" || translatedQuestion.correctAnswer === "YANLI�") {
+                            if (translatedQuestion.correctAnswer === "DOĞRU" || translatedQuestion.correctAnswer === "YANLIŞ") {
                                 translatedQuestion.correctAnswer = trueFalseMapping[translatedQuestion.correctAnswer].de;
                             }
                         }
                     }
                 }
                 
-                // Kategori ad�n� g�ncelle
+                // Kategori adını güncelle
                 translatedQuestion.category = translatedCategoryName;
                 
-                // Bo�luk doldurma sorular� i�in
+                // Boşluk doldurma soruları için
                 if (translatedQuestion.type === "BlankFilling" && translatedQuestion.choices) {
-                    // Harfleri �evir (�rne�in Almanca'da �, � gibi harfler i�in)
+                    // Harfleri çevir (örneğin Almanca'da ö, ü gibi harfler için)
                     translatedQuestion.choices = this.translateChoices(questionObj.choices, this.currentLanguage);
                 }
                 
-                // �evrilmi� soruyu kategoriye ekle
+                // Çevrilmiş soruyu kategoriye ekle
                 this.translatedQuestions[translatedCategoryName].push(translatedQuestion);
             });
         });
         
-        console.log(`Soru �evirisi tamamland�. ${Object.keys(this.translatedQuestions).length} kategori �evrildi.`);
+        console.log(`Soru çevirisi tamamlandı. ${Object.keys(this.translatedQuestions).length} kategori çevrildi.`);
         
-        // Mevcut sorular� g�ncelle
+        // Mevcut soruları güncelle
         this.updateCurrentQuestionsWithTranslations();
     },
     
-    // �evrilmi� sorular var m� kontrol et
+    // Çevrilmiş sorular var mı kontrol et
     hasTranslatedQuestions: function(language) {
-        // �evrilmi� sorular bo�sa veya dil T�rk�e ise kontrol etmeye gerek yok
+        // Çevrilmiş sorular boşsa veya dil Türkçe ise kontrol etmeye gerek yok
         if (language === 'tr' || !this.translatedQuestions) {
             return false;
         }
         
-        // �evrilmi� sorular�n i�inde en az bir kategori var m�?
+        // Çevrilmiş soruların içinde en az bir kategori var mı?
         const hasCategories = Object.keys(this.translatedQuestions).length > 0;
         
         if (hasCategories) {
-            // Rastgele bir kategori se�
+            // Rastgele bir kategori seç
             const sampleCategory = Object.keys(this.translatedQuestions)[0];
             
-            // Bu kategoride soru var m�?
+            // Bu kategoride soru var mı?
             const hasQuestions = this.translatedQuestions[sampleCategory] && 
                                 this.translatedQuestions[sampleCategory].length > 0;
             
             if (hasQuestions) {
-                // Rastgele bir soru se�
+                // Rastgele bir soru seç
                 const sampleQuestion = this.translatedQuestions[sampleCategory][0];
                 
-                // Bu soru �evrilmi� mi? (Kategori ad�n� kontrol et)
-                // T�rk�e kategorinin �evrilmi� ad�n� bul
-                const originalCategoryName = Object.keys(this.questionsData)[0]; // �lk T�rk�e kategori
+                // Bu soru çevrilmiş mi? (Kategori adını kontrol et)
+                // Türkçe kategorinin çevrilmiş adını bul
+                const originalCategoryName = Object.keys(this.questionsData)[0]; // İlk Türkçe kategori
                 const expectedTranslatedName = this.getTranslatedCategoryName(originalCategoryName, language);
                 
-                // �evirinin do�ru dilde olup olmad���n� kontrol et
+                // Çevirinin doğru dilde olup olmadığını kontrol et
                 return sampleCategory === expectedTranslatedName;
             }
         }
@@ -539,35 +1042,35 @@ const quizApp = {
         return false;
     },
     
-    // Mevcut sorular� �evirilerle g�ncelle
+    // Mevcut soruları çevirilerle güncelle
     updateCurrentQuestionsWithTranslations: function() {
-        // E�er bir kategori se�ilmi�se ve sorular y�klenmi�se, mevcut sorular� da g�ncelle
+        // Eğer bir kategori seçilmişse ve sorular yüklenmişse, mevcut soruları da güncelle
         if (this.selectedCategory && this.questions.length > 0) {
-            console.log(`Se�ili kategori: ${this.selectedCategory}`);
+            console.log(`Seçili kategori: ${this.selectedCategory}`);
             
-            // Mevcut sorular dil de�i�iminden sonra g�ncellenecek
+            // Mevcut sorular dil değişiminden sonra güncellenecek
             const translatedCategoryName = this.getCurrentCategoryName(this.selectedCategory);
             
-            console.log(`Se�ili kategori: ${this.selectedCategory}, �evrilmi� ad�: ${translatedCategoryName}`);
+            console.log(`Seçili kategori: ${this.selectedCategory}, Çevrilmiş adı: ${translatedCategoryName}`);
             
-            // �evrilmi� kategorideki sorular� al
+            // Çevrilmiş kategorideki soruları al
             const translatedCategoryQuestions = this.currentLanguage === 'tr' ? 
                 this.questionsData[translatedCategoryName] : 
                 this.translatedQuestions[translatedCategoryName];
             
             if (translatedCategoryQuestions) {
-                console.log(`${translatedCategoryName} kategorisinde ${translatedCategoryQuestions.length} �evrilmi� soru bulundu.`);
+                console.log(`${translatedCategoryName} kategorisinde ${translatedCategoryQuestions.length} çevrilmiş soru bulundu.`);
                 
-                // Sorular� g�ncelle
+                // Soruları güncelle
                 this.questions = this.shuffleArray([...translatedCategoryQuestions]);
                 this.arrangeBlankFillingFirst();
                 
-                // Mevcut soruyu g�ncelle
+                // Mevcut soruyu güncelle
                 if (this.currentQuestionIndex < this.questions.length) {
                     this.displayQuestion(this.questions[this.currentQuestionIndex]);
                 }
             } else {
-                console.warn(`${translatedCategoryName} kategorisinde �evrilmi� soru bulunamad�!`);
+                console.warn(`${translatedCategoryName} kategorisinde çevrilmiş soru bulunamadı!`);
             }
         }
     },
@@ -577,22 +1080,22 @@ const quizApp = {
         return JSON.parse(JSON.stringify(obj));
     },
     
-    // Kategori ad�n� �evir
+    // Kategori adını çevir
     getTranslatedCategoryName: function(categoryTR, targetLang) {
         if (categoryMappings[categoryTR] && categoryMappings[categoryTR][targetLang]) {
             return categoryMappings[categoryTR][targetLang];
         }
         
-        // E�le�me yoksa orijinal kategori ad�n� d�nd�r
+        // Eşleşme yoksa orijinal kategori adını döndür
         return categoryTR;
     },
     
-    // UI elemanlar�n� g�ncelle
+    // UI elemanlarını güncelle
     updateUITexts: function() {
-        // Ba�l�k
+        // Başlık
         document.title = this.getTranslation('appName');
         
-        // Navbar ba�l���
+        // Navbar başlığı
         const navbarTitle = document.querySelector('.navbar-title');
         if (navbarTitle) navbarTitle.textContent = this.getTranslation('appName');
         const appTitle = document.querySelector('.app-title');
@@ -600,7 +1103,7 @@ const quizApp = {
         const mainTitle = document.querySelector('.main-title');
         if (mainTitle) mainTitle.textContent = this.getTranslation('appName');
         
-        // Yan men� (sidebar) metinleri
+        // Yan menü (sidebar) metinleri
         const sidebarHome = document.querySelector('.sidebar-home');
         if (sidebarHome) sidebarHome.textContent = this.getTranslation('home');
         const sidebarFriends = document.querySelector('.sidebar-friends');
@@ -608,21 +1111,21 @@ const quizApp = {
         const sidebarLeaderboard = document.querySelector('.sidebar-leaderboard');
         if (sidebarLeaderboard) sidebarLeaderboard.textContent = this.getTranslation('leaderboardMenu');
         
-        // Ana men� ba�l���
+        // Ana menü başlığı
         const menuTitle = document.querySelector('.menu-title');
         if (menuTitle) {
             menuTitle.textContent = this.getTranslation('quiz');
         }
         
-        // Quiz ba�l��� (soru ekran� �st�)
+        // Quiz başlığı (soru ekranı üstü)
         const quizHeader = document.querySelector('#quiz h2');
         if (quizHeader) {
             quizHeader.textContent = this.getTranslation('quiz');
         }
         
-        // ��k�� butonu kald�r�ld�
+        // Çıkış butonu kaldırıldı
         
-        // Ana men� butonlar�
+        // Ana menü butonları
         const singlePlayerBtn = document.getElementById('single-player-btn');
         if (singlePlayerBtn) {
             singlePlayerBtn.textContent = this.getTranslation('singlePlayer');
@@ -647,9 +1150,13 @@ const quizApp = {
         if (addQuestionBtn) {
             addQuestionBtn.textContent = this.getTranslation('addQuestion');
         }
-        // Logout butonu kald�r�ld�
+        const aboutBtnLabel = document.getElementById('about-button');
+        if (aboutBtnLabel) {
+            aboutBtnLabel.textContent = this.getTranslation('aboutMenu');
+        }
+        // Logout butonu kaldırıldı
         
-        // Kategori ba�l���
+        // Kategori başlığı
         const categoryTitle = document.querySelector('#category-selection h2 span');
         if (categoryTitle) {
             categoryTitle.textContent = this.getTranslation('categories');
@@ -673,12 +1180,12 @@ const quizApp = {
             }
         }
         
-        // Yeniden ba�lat butonu
+        // Yeniden başlat butonu
         if (this.restartButton) {
             this.restartButton.textContent = this.getTranslation('restart');
         }
         
-        // Joker butonlar�
+        // Joker butonları
         this.updateJokerButtonsText();
         
         // Dil etiketi
@@ -687,7 +1194,7 @@ const quizApp = {
             langLabel.textContent = this.getTranslation('language') + ':';
         }
         
-        // Hamburger men� ��eleri - Yeni ID'ler ile g�ncelleme
+        // Hamburger menü öğeleri - Yeni ID'ler ile güncelleme
         const appTitleElement = document.getElementById('menu-app-title');
         if (appTitleElement) {
             appTitleElement.textContent = this.getTranslation('app');
@@ -698,7 +1205,7 @@ const quizApp = {
             settingsTitleElement.textContent = this.getTranslation('settings');
         }
         
-        // Men� ��eleri metinleri
+        // Menü öğeleri metinleri
         const homeText = document.getElementById('menu-home-text');
         if (homeText) {
             homeText.textContent = this.getTranslation('home');
@@ -745,6 +1252,12 @@ const quizApp = {
             logoutText.textContent = this.getTranslation('logout');
         }
         
+        // Gizlilik ayarları
+        const privacyText = document.getElementById('menu-privacy-text');
+        if (privacyText) {
+            privacyText.textContent = this.getTranslation('privacySettings');
+        }
+        
         // Zorluk seviyeleri
         const difficultySelect = document.getElementById('difficulty-level');
         if (difficultySelect) {
@@ -761,7 +1274,7 @@ const quizApp = {
             }
         }
         
-        // data-i18n �zniteli�i olan t�m elemanlar� g�ncelle
+        // data-i18n özniteliği olan tüm elemanları güncelle
         const i18nElements = document.querySelectorAll('[data-i18n]');
         i18nElements.forEach(element => {
             const key = element.getAttribute('data-i18n');
@@ -770,10 +1283,20 @@ const quizApp = {
             }
         });
         
-
+        // data-i18n-title özniteliği olan tüm elemanların title'larını güncelle
+        const i18nTitleElements = document.querySelectorAll('[data-i18n-title]');
+        i18nTitleElements.forEach(element => {
+            const key = element.getAttribute('data-i18n-title');
+            if (key && languages[this.currentLanguage] && languages[this.currentLanguage][key]) {
+                element.title = languages[this.currentLanguage][key];
+            }
+        });
+        
+        // Mobil tab bar ve joker tab bar metinlerini güncelle
+        this.updateMobileMenuTexts();
     },
     
-    // Joker butonlar� metinlerini g�ncelle
+    // Joker butonları metinlerini güncelle
     updateJokerButtonsText: function() {
         if (this.jokerFiftyBtn && !this.jokersUsed.fifty) {
             this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i>`;
@@ -802,80 +1325,69 @@ const quizApp = {
         if (this.jokerStoreBtn) {
             this.jokerStoreBtn.innerHTML = `<i class="fas fa-store"></i>`;
         }
-        
-        // Mobil joker tab bar'� da g�ncelle
-        this.updateJokerTabBar();
-        
-        console.log('updateJokerButtons tamamland�');
     },
     
-    // Mobil joker tab bar'�n� g�ncelle
-    updateJokerTabBar: function() {
-        const currentQuestion = this.questions[this.currentQuestionIndex] || {};
-        const isTrueFalse = currentQuestion.type === "Do�ruYanl��" || currentQuestion.type === "TrueFalse";
-        const isBlankFilling = currentQuestion.type === "BlankFilling";
-        
-        // 50:50 joker tab
-        const jokerTabFifty = document.getElementById('joker-tab-fifty');
-        if (jokerTabFifty) {
-            const fiftyCount = this.jokerInventory.fifty || 0;
-            const used = this.jokersUsed.fifty;
-            const disabled = (fiftyCount <= 0) || used || isTrueFalse || isBlankFilling;
-            jokerTabFifty.style.opacity = disabled ? '0.3' : '1';
-            jokerTabFifty.style.filter = disabled ? 'grayscale(100%)' : 'none';
-        }
-        
-        // �pucu joker tab
-        const jokerTabHint = document.getElementById('joker-tab-hint');
-        if (jokerTabHint) {
-            const hintCount = this.jokerInventory.hint || 0;
-            const used = this.jokersUsed.hint;
-            const disabled = (hintCount <= 0) || used || isBlankFilling;
-            jokerTabHint.style.opacity = disabled ? '0.3' : '1';
-            jokerTabHint.style.filter = disabled ? 'grayscale(100%)' : 'none';
-        }
-        
-        // S�re joker tab
-        const jokerTabTime = document.getElementById('joker-tab-time');
-        if (jokerTabTime) {
-            const timeCount = this.jokerInventory.time || 0;
-            const used = this.jokersUsed.time;
-            const disabled = (timeCount <= 0) || used;
-            jokerTabTime.style.opacity = disabled ? '0.3' : '1';
-            jokerTabTime.style.filter = disabled ? 'grayscale(100%)' : 'none';
-        }
-        
-        // Pas joker tab
-        const jokerTabSkip = document.getElementById('joker-tab-skip');
-        if (jokerTabSkip) {
-            const skipCount = this.jokerInventory.skip || 0;
-            const used = this.jokersUsed.skip;
-            const disabled = (skipCount <= 0) || used;
-            jokerTabSkip.style.opacity = disabled ? '0.3' : '1';
-            jokerTabSkip.style.filter = disabled ? 'grayscale(100%)' : 'none';
-        }
-        
-        // Ma�aza tab her zaman aktif
-        const jokerTabStore = document.getElementById('joker-tab-store');
-        if (jokerTabStore) {
-            jokerTabStore.style.opacity = '1';
-            jokerTabStore.style.filter = 'none';
+    // Mobil menü ve joker menü metinlerini güncelle
+    updateMobileMenuTexts: function() {
+        try {
+            const lang = this.currentLanguage || 'tr';
+            
+            // Alt menü butonları
+            this.updateMobileTabText('tab-home', 'Ana Sayfa', 'Home', 'Startseite');
+            this.updateMobileTabText('tab-profile', 'Profil', 'Profile', 'Profil');
+            this.updateMobileTabText('tab-friends', 'Arkadaş', 'Friends', 'Freunde');
+            this.updateMobileTabText('tab-logout', 'Çıkış', 'Logout', 'Abmelden');
+            this.updateMobileTabText('tab-settings', 'Ayarlar', 'Settings', 'Einstellungen');
+            
+            // Joker butonları
+            this.updateMobileTabText('joker-tab-fifty', '50:50', '50:50', '50:50');
+            this.updateMobileTabText('joker-tab-hint', 'İpucu', 'Hint', 'Tipp');
+            this.updateMobileTabText('joker-tab-time', 'Süre', 'Time', 'Zeit');
+            this.updateMobileTabText('joker-tab-skip', 'Pas', 'Pass', 'Passen');
+            this.updateMobileTabText('joker-tab-store', 'Mağaza', 'Store', 'Shop');
+            this.updateMobileTabText('joker-tab-home', 'Çıkış', 'Exit', 'Beenden');
+            
+            console.log("Mobil menü ve joker menü çevirileri güncellendi. Dil:", lang);
+        } catch (error) {
+            console.error("Mobil menü çevirileri güncellenirken hata:", error);
         }
     },
     
-    // Mevcut i�eri�i g�ncelle
+    // Mobil tab metin güncelleme yardımcı fonksiyonu
+    updateMobileTabText: function(elementId, textTR, textEN, textDE) {
+        const element = document.getElementById(elementId);
+        if (element && element.querySelector('span')) {
+            let text = '';
+            
+            // Mevcut dile göre metni belirle
+            if (this.currentLanguage === 'tr') {
+                text = textTR;
+            } else if (this.currentLanguage === 'en') {
+                text = textEN;
+            } else if (this.currentLanguage === 'de') {
+                text = textDE;
+            }
+            
+            // Metni uygula
+            if (text) {
+                element.querySelector('span').textContent = text;
+            }
+        }
+    },
+    
+    // Mevcut içeriği güncelle
     updateCurrentContent: function() {
-        // Ana men� butonlar� ve di�er UI elemanlar�n� g�ncelle
+        // Ana menü butonları ve diğer UI elemanlarını güncelle
         this.updateUITexts();
         
-        // Hangi sayfa g�r�n�rse onu g�ncelle
+        // Hangi sayfa görünürse onu güncelle
         if (this.categorySelectionElement && this.categorySelectionElement.style.display !== 'none') {
-            // Kategori se�im ekran� g�r�n�yorsa
+            // Kategori seçim ekranı görünüyorsa
             this.displayCategories();
         } else if (this.quizElement && this.quizElement.style.display !== 'none' && this.questions.length > 0) {
-            // Quiz ekran� g�r�n�yorsa
+            // Quiz ekranı görünüyorsa
             if (this.resultElement && this.resultElement.style.display !== 'none') {
-                // Sonu� g�steriliyorsa sonu� metnini g�ncelle
+                // Sonuç gösteriliyorsa sonuç metnini güncelle
                 const correctAnswer = this.questions[this.currentQuestionIndex].correctAnswer;
                 if (this.resultElement.classList.contains('correct')) {
                     this.resultElement.innerHTML = `
@@ -894,70 +1406,70 @@ const quizApp = {
                         <button id="next-question" class="next-button">${this.getTranslation('next')}</button>`;
                 }
             } else {
-                // Aktif soru varsa yeniden y�kle
+                // Aktif soru varsa yeniden yükle
                 this.displayQuestion(this.questions[this.currentQuestionIndex]);
             }
         }
         this.updateResultAndWarningTexts();
     },
     
-    // Basit �eviri fonksiyonlar� (ger�ek bir projede daha profesyonel bir ��z�m kullan�lmal�d�r)
+    // Basit çeviri fonksiyonları (gerçek bir projede daha profesyonel bir çözüm kullanılmalıdır)
     translateToEnglish: function(text) {
-        // Bo� metin kontrol�
+        // Boş metin kontrolü
         if (!text) return '';
         
-        // Bu sadece basit bir �rnektir - ger�ek projede buraya �zelle�tirilmi� �eviri eklenebilir
-        // Not: Ger�ek bir uygulamada burada �nceden haz�rlanm�� �eviriler veya API kullan�labilir
-        return text; // �u an i�in orijinal metni koruyoruz
+        // Bu sadece basit bir örnektir - gerçek projede buraya özelleştirilmiş çeviri eklenebilir
+        // Not: Gerçek bir uygulamada burada önceden hazırlanmış çeviriler veya API kullanılabilir
+        return text; // Şu an için orijinal metni koruyoruz
     },
     
     translateToGerman: function(text) {
-        // Bo� metin kontrol�
+        // Boş metin kontrolü
         if (!text) return '';
         
-        // Almanca �eviri - bu basit bir �rnek
-        return text; // �u an i�in orijinal metni koruyoruz
+        // Almanca çeviri - bu basit bir örnek
+        return text; // Şu an için orijinal metni koruyoruz
     },
     
-    // Bo�luk doldurma i�in harfleri �evir
+    // Boşluk doldurma için harfleri çevir
     translateChoices: function(choices, targetLang) {
         if (!choices) return [];
         
-        // Bu fonksiyon �zellikle Almanca gibi dillerde �, �, � gibi harfler i�in kullan�labilir
-        // �u an i�in orijinal harfleri koruyoruz
+        // Bu fonksiyon özellikle Almanca gibi dillerde ö, ü, ß gibi harfler için kullanılabilir
+        // Şu an için orijinal harfleri koruyoruz
         return choices;
     },
     
-    // Mevcut dil i�in ge�erli kategori ad�n� al
+    // Mevcut dil için geçerli kategori adını al
     getCurrentCategoryName: function(originalCategory) {
         if (this.currentLanguage === 'tr') return originalCategory;
         
-        // T�rk�e kategori ad� m� kontrol et
+        // Türkçe kategori adı mı kontrol et
         if (categoryMappings[originalCategory] && categoryMappings[originalCategory][this.currentLanguage]) {
             return categoryMappings[originalCategory][this.currentLanguage];
         }
         
-        // Bu kategori ad� zaten �evrilmi� bir isim mi kontrol et
+        // Bu kategori adı zaten çevrilmiş bir isim mi kontrol et
         if (reverseCategoryMappings[originalCategory] && 
             reverseCategoryMappings[originalCategory]['tr']) {
-            return originalCategory; // Zaten �evrilmi� durumda, aynen d�nd�r
+            return originalCategory; // Zaten çevrilmiş durumda, aynen döndür
         }
         
-        // Burada e�er kategori �evrilmi� bir isimse, mevcut dilde do�ru versiyonunu bul
+        // Burada eğer kategori çevrilmiş bir isimse, mevcut dilde doğru versiyonunu bul
         for (const [sourceCat, translations] of Object.entries(reverseCategoryMappings)) {
-            // E�er bu bir yabanc� kategori ad�ysa ve bizim istedi�imiz dilde bir kar��l��� varsa
+            // Eğer bu bir yabancı kategori adıysa ve bizim istediğimiz dilde bir karşılığı varsa
             if (sourceCat === originalCategory && translations[this.currentLanguage]) {
                 return translations[this.currentLanguage];
             }
         }
         
-        // Hi�bir e�le�me bulunamazsa orijinal kategori ad�n� d�nd�r
+        // Hiçbir eşleşme bulunamazsa orijinal kategori adını döndür
         return originalCategory;
     },
     
-    // Toast mesaj� g�ster
+    // Toast mesajı göster
     showToast: function(message, type = 'toast-info') {
-        // Toast container'� kontrol et veya olu�tur
+        // Toast container'ı kontrol et veya oluştur
         let toastContainer = document.getElementById('toast-container');
         if (!toastContainer) {
             toastContainer = document.createElement('div');
@@ -965,17 +1477,17 @@ const quizApp = {
             document.body.appendChild(toastContainer);
         }
         
-        // Yeni toast olu�tur
+        // Yeni toast oluştur
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
         
-        // �kon ekle
+        // İkon ekle
         let icon = '<i class="fas fa-info-circle"></i>';
         if (type === 'toast-success') icon = '<i class="fas fa-check-circle"></i>';
         if (type === 'toast-warning') icon = '<i class="fas fa-exclamation-triangle"></i>';
         if (type === 'toast-error') icon = '<i class="fas fa-times-circle"></i>';
         
-        // Toast i�eri�i
+        // Toast içeriği
         toast.innerHTML = `
             <div class="toast-content">
                 ${icon}
@@ -986,22 +1498,12 @@ const quizApp = {
         // Toast'u ekle
         toastContainer.appendChild(toast);
         
-        // �pucu jokeri ve s�re jokeri i�in farkl� konumland�rma
-        // Toast'� joker butonlar�n�n hemen �zerinde g�ster
-        if (message.includes("�pucu jokeri kullan�ld�") || message.includes("S�re jokeri kullan�ld�")) {
-            toast.style.position = "fixed";
-            toast.style.bottom = "180px"; // Joker butonlar�n�n �zerinde
-            toast.style.left = "50%";
-            toast.style.transform = "translateX(-50%)";
-            toast.style.zIndex = "10002"; // Joker butonlar�ndan daha y�ksek
-        }
-        
-        // Toast'u g�ster
+        // Toast'u göster
         setTimeout(() => {
             toast.classList.add('show');
         }, 10);
         
-        // Toast'u belirli bir s�re sonra kald�r
+        // Toast'u belirli bir süre sonra kaldır
         setTimeout(() => {
             toast.classList.remove('show');
             setTimeout(() => {
@@ -1010,11 +1512,11 @@ const quizApp = {
         }, 3000);
     },
     
-    // Taray�c� deste�ini kontrol et
+    // Tarayıcı desteğini kontrol et
     checkBrowserSupport: function() {
-        console.log("Taray�c� �zellikleri kontrol ediliyor...");
+        console.log("Tarayıcı özellikleri kontrol ediliyor...");
         
-        // localStorage deste�i
+        // localStorage desteği
         let hasLocalStorage = false;
         try {
             hasLocalStorage = 'localStorage' in window && window.localStorage !== null;
@@ -1027,26 +1529,26 @@ const quizApp = {
                 console.warn("localStorage desteklenmiyor");
             }
         } catch (e) {
-            console.error("localStorage eri�ilemez:", e);
+            console.error("localStorage erişilemez:", e);
             hasLocalStorage = false;
         }
         
-        // Fetch API deste�i
+        // Fetch API desteği
         const hasFetch = 'fetch' in window;
-        console.log("Fetch API deste�i:", hasFetch);
+        console.log("Fetch API desteği:", hasFetch);
         
-        // Firebase SDK varl���
+        // Firebase SDK varlığı
         const hasFirebase = typeof firebase !== 'undefined' && firebase.app;
-        console.log("Firebase SDK durumu:", hasFirebase ? "Y�kl�" : "Y�kl� de�il");
+        console.log("Firebase SDK durumu:", hasFirebase ? "Yüklü" : "Yüklü değil");
         
-        // JSON i�leme deste�i
+        // JSON işleme desteği
         const hasJSON = typeof JSON !== 'undefined' && typeof JSON.parse === 'function';
-        console.log("JSON deste�i:", hasJSON);
+        console.log("JSON desteği:", hasJSON);
         
-        // Eksik �zellikler varsa kullan�c�y� bilgilendir
+        // Eksik özellikler varsa kullanıcıyı bilgilendir
         if (!hasLocalStorage || !hasFetch || !hasJSON) {
-            console.warn("Baz� taray�c� �zellikleri eksik, uygulama s�n�rl� �al��abilir");
-            // Uyar� mesaj� g�ster
+            console.warn("Bazı tarayıcı özellikleri eksik, uygulama sınırlı çalışabilir");
+            // Uyarı mesajı göster
             const warningDiv = document.createElement('div');
             warningDiv.className = 'browser-warning';
             warningDiv.innerHTML = `
@@ -1058,7 +1560,7 @@ const quizApp = {
             `;
             document.body.appendChild(warningDiv);
             
-            // Kapat butonuna t�klama olay�
+            // Kapat butonuna tıklama olayı
             const closeBtn = warningDiv.querySelector('.close-warning');
             if (closeBtn) {
                 closeBtn.addEventListener('click', () => {
@@ -1075,19 +1577,19 @@ const quizApp = {
         };
     },
     
-    // Joker envanterini y�kle
+    // Joker envanterini yükle
     loadJokerInventory: function() {
-        console.log('Joker envanteri y�kleniyor...');
-        console.log('localStorage anahtar�:', this.JOKER_INVENTORY_KEY);
+        console.log('Joker envanteri yükleniyor...');
+        console.log('localStorage anahtarı:', this.JOKER_INVENTORY_KEY);
         
         var inventoryJSON = localStorage.getItem(this.JOKER_INVENTORY_KEY);
-        console.log('localStorage\'dan al�nan veri:', inventoryJSON);
+        console.log('localStorage\'dan alınan veri:', inventoryJSON);
         
         if (inventoryJSON && inventoryJSON !== 'null' && inventoryJSON !== 'undefined') {
             try {
                 const parsed = JSON.parse(inventoryJSON);
                 
-                // Ge�erli bir obje ve t�m joker t�rleri var m� kontrol et
+                // Geçerli bir obje ve tüm joker türleri var mı kontrol et
                 if (parsed && typeof parsed === 'object' && 
                     parsed.hasOwnProperty('fifty') && 
                     parsed.hasOwnProperty('hint') && 
@@ -1095,26 +1597,26 @@ const quizApp = {
                     parsed.hasOwnProperty('skip')) {
                     
                     this.jokerInventory = parsed;
-                    console.log("Joker envanteri ba�ar�yla y�klendi:", this.jokerInventory);
+                    console.log("Joker envanteri başarıyla yüklendi:", this.jokerInventory);
                 } else {
-                    console.warn("Ge�ersiz joker envanteri format�, varsay�lan envanter atan�yor");
+                    console.warn("Geçersiz joker envanteri formatı, varsayılan envanter atanıyor");
                     this.jokerInventory = {fifty: 1, hint: 1, time: 1, skip: 1};
                     this.saveJokerInventory();
                 }
             } catch (e) {
-                console.error("Joker envanteri y�klenirken hata olu�tu:", e);
+                console.error("Joker envanteri yüklenirken hata oluştu:", e);
                 this.jokerInventory = {fifty: 1, hint: 1, time: 1, skip: 1};
                 this.saveJokerInventory();
-                console.log("Varsay�lan envanter atand�:", this.jokerInventory);
+                console.log("Varsayılan envanter atandı:", this.jokerInventory);
             }
         } else {
-            // �lk kez �al��t�r�l�yorsa veya ge�ersiz veri varsa her joker t�r�nden birer tane ver
-            console.log("�lk kez �al��t�r�l�yor veya ge�ersiz veri, varsay�lan envanter olu�turuluyor...");
+            // İlk kez çalıştırılıyorsa veya geçersiz veri varsa her joker türünden birer tane ver
+            console.log("İlk kez çalıştırılıyor veya geçersiz veri, varsayılan envanter oluşturuluyor...");
             this.jokerInventory = {fifty: 1, hint: 1, time: 1, skip: 1};
             this.saveJokerInventory();
         }
         
-        // Negatif de�erleri �nle
+        // Negatif değerleri önle
         Object.keys(this.jokerInventory).forEach(key => {
             if (this.jokerInventory[key] < 0) {
                 this.jokerInventory[key] = 0;
@@ -1122,7 +1624,7 @@ const quizApp = {
         });
         
         // Final kontrol
-        console.log('loadJokerInventory tamamland�, final envanter:', this.jokerInventory);
+        console.log('loadJokerInventory tamamlandı, final envanter:', this.jokerInventory);
     },
     
     // Joker envanterini kaydet
@@ -1131,22 +1633,22 @@ const quizApp = {
             localStorage.setItem(this.JOKER_INVENTORY_KEY, JSON.stringify(this.jokerInventory));
             console.log("Joker envanteri kaydedildi:", this.jokerInventory);
             
-            // Kaydetmenin ba�ar�l� olup olmad���n� kontrol et
+            // Kaydetmenin başarılı olup olmadığını kontrol et
             var saved = localStorage.getItem(this.JOKER_INVENTORY_KEY);
             if (saved) {
                 var parsedSaved = JSON.parse(saved);
-                console.log("Kaydedilen veri do�ruland�:", parsedSaved);
+                console.log("Kaydedilen veri doğrulandı:", parsedSaved);
             } else {
                 console.error("Joker envanteri kaydedilemedi!");
             }
         } catch (e) {
-            console.error("Joker envanteri kaydedilirken hata olu�tu:", e);
+            console.error("Joker envanteri kaydedilirken hata oluştu:", e);
         }
     },
     
-    // Joker butonlar�na olay dinleyicileri ekle
+    // Joker butonlarına olay dinleyicileri ekle
     addJokerEventListeners: function() {
-        console.log('addJokerEventListeners �a�r�ld�...');
+        console.log('addJokerEventListeners çağrıldı...');
         
         // Elementleri dinamik olarak al
         this.jokerFiftyBtn = document.getElementById('joker-fifty');
@@ -1161,11 +1663,11 @@ const quizApp = {
         console.log('jokerSkipBtn:', this.jokerSkipBtn);
         console.log('jokerStoreBtn:', this.jokerStoreBtn);
         
-        // Mobil debug i�in
+        // Mobil debug için
         console.log('Mobile device check:', /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
         console.log('Touch events supported:', 'ontouchstart' in window);
         
-        // Joker store modal element kontrol�
+        // Joker store modal element kontrolü
         const jokerStoreModal = document.getElementById('joker-store-modal');
         console.log('Joker store modal element:', jokerStoreModal);
         
@@ -1174,65 +1676,65 @@ const quizApp = {
             this.jokerFiftyBtn.addEventListener('click', () => {
                 if (this.jokerFiftyBtn.disabled) return;
                 
-                console.log('50:50 joker kullan�l�yor...');
+                console.log('50:50 joker kullanılıyor...');
                 
-                // Mevcut sorunun do�ru cevab�n� al
+                // Mevcut sorunun doğru cevabını al
                 const currentQuestion = this.questions[this.currentQuestionIndex];
                 const correctAnswer = currentQuestion.correctAnswer;
                 
-                // BlankFilling sorular�nda 50:50 joker kullan�lamaz
+                // BlankFilling sorularında 50:50 joker kullanılamaz
                 if (currentQuestion.type === "BlankFilling") {
-                    console.warn('BlankFilling sorular�nda 50:50 joker kullan�lamaz');
-                    this.showToast("Bo�luk doldurma sorular�nda 50:50 joker kullan�lamaz!", "toast-warning");
+                    console.warn('BlankFilling sorularında 50:50 joker kullanılamaz');
+                    this.showToast("Boşluk doldurma sorularında 50:50 joker kullanılamaz!", "toast-warning");
                     return;
                 }
                 
-                // Do�ruYanl�� sorular�nda da 50:50 joker kullan�lamaz
-                if (currentQuestion.type === "Do�ruYanl��" || currentQuestion.type === "TrueFalse") {
-                    console.warn('Do�ru/Yanl�� sorular�nda 50:50 joker kullan�lamaz');
-                    this.showToast("Do�ru/Yanl�� sorular�nda 50:50 joker kullan�lamaz!", "toast-warning");
+                // DoğruYanlış sorularında da 50:50 joker kullanılamaz
+                if (currentQuestion.type === "DoğruYanlış" || currentQuestion.type === "TrueFalse") {
+                    console.warn('Doğru/Yanlış sorularında 50:50 joker kullanılamaz');
+                    this.showToast("Doğru/Yanlış sorularında 50:50 joker kullanılamaz!", "toast-warning");
                     return;
                 }
                 
-                console.log('Do�ru cevap:', correctAnswer);
+                console.log('Doğru cevap:', correctAnswer);
                 
-                // Sadece aktif quiz container'daki se�enekleri al
+                // Sadece aktif quiz container'daki seçenekleri al
                 const optionsContainer = document.getElementById('options');
                 const options = optionsContainer ? optionsContainer.querySelectorAll('.option') : document.querySelectorAll('#options .option');
-                console.log('Bulunan se�enekler:', options.length);
+                console.log('Bulunan seçenekler:', options.length);
                 console.log('Options container:', optionsContainer);
                 
                 if (options.length < 3) {
-                    console.warn('Yeterli se�enek yok, 50:50 joker kullan�lamaz');
-                    this.showToast("Bu soru tipinde 50:50 joker kullan�lamaz!", "toast-warning");
+                    console.warn('Yeterli seçenek yok, 50:50 joker kullanılamaz');
+                    this.showToast("Bu soru tipinde 50:50 joker kullanılamaz!", "toast-warning");
                     return;
                 }
                 
-                // Yanl�� ��klar� bul - case insensitive kar��la�t�rma
+                // Yanlış şıkları bul - case insensitive karşılaştırma
                 const wrongOptions = Array.from(options).filter((option, index) => {
                     const optionText = option.textContent.trim();
                     const isCorrect = optionText.toLowerCase() === correctAnswer.toLowerCase();
-                    console.log(`Se�enek ${index + 1}: "${optionText}" | Do�ru cevap: "${correctAnswer}" | E�it mi: ${isCorrect}`);
+                    console.log(`Seçenek ${index + 1}: "${optionText}" | Doğru cevap: "${correctAnswer}" | Eşit mi: ${isCorrect}`);
                     return !isCorrect;
                 });
                 
-                console.log('Toplam se�enek say�s�:', options.length);
-                console.log('Yanl�� se�enek say�s�:', wrongOptions.length);
-                console.log('Do�ru se�enek say�s�:', options.length - wrongOptions.length);
+                console.log('Toplam seçenek sayısı:', options.length);
+                console.log('Yanlış seçenek sayısı:', wrongOptions.length);
+                console.log('Doğru seçenek sayısı:', options.length - wrongOptions.length);
                 
                 if (wrongOptions.length < 2) {
-                    console.warn('Yeterli yanl�� se�enek yok');
-                    this.showToast("Bu soruda yeterli yanl�� se�enek yok!", "toast-warning");
+                    console.warn('Yeterli yanlış seçenek yok');
+                    this.showToast("Bu soruda yeterli yanlış seçenek yok!", "toast-warning");
                     return;
                 }
                 
-                // �ki yanl�� ��kk� rastgele se�
+                // İki yanlış şıkkı rastgele seç
                 const shuffledWrong = this.shuffleArray([...wrongOptions]);
                 const toHide = shuffledWrong.slice(0, 2);
                 
-                console.log('S�nd�r�lecek se�enekler:', toHide.length);
+                console.log('Söndürülecek seçenekler:', toHide.length);
                 
-                // Se�ili ��klar� s�nd�r
+                // Seçili şıkları söndür
                 toHide.forEach(option => {
                     option.style.opacity = '0.3';
                     option.style.pointerEvents = 'none';
@@ -1245,9 +1747,9 @@ const quizApp = {
                     option.style.transition = 'all 0.3s ease';
                     option.classList.add('disabled-option');
                     
-                    // X i�areti ekle
+                    // X işareti ekle
                     const xMark = document.createElement('div');
-                    xMark.innerHTML = '?';
+                    xMark.innerHTML = '❌';
                     xMark.style.cssText = `
                         position: absolute;
                         top: 10px;
@@ -1260,59 +1762,59 @@ const quizApp = {
                     option.appendChild(xMark);
                 });
                 
-                // Jokeri kullan (useJoker i�inde zaten envanter d���r�l�yor)
+                // Jokeri kullan (useJoker içinde zaten envanter düşürülüyor)
                 this.useJoker('fifty');
                 
-                // Ses efekti �al
+                // Ses efekti çal
                 if (this.soundEnabled) {
                     const fiftySound = document.getElementById('sound-correct');
                     if (fiftySound) fiftySound.play().catch(e => {
-                        console.error("Ses �al�namad�:", e);
+                        console.error("Ses çalınamadı:", e);
                     });
                 }
                 
-                // Toast bildirimi g�ster
-                this.showToast("50:50 jokeri kullan�ld�! �ki yanl�� ��k s�nd�r�ld�.", "toast-success");
+                // Toast bildirimi göster
+                this.showToast("50:50 jokeri kullanıldı! İki yanlış şık söndürüldü.", "toast-success");
             });
         }
         
-        // �pucu jokeri
+        // İpucu jokeri
         if (this.jokerHintBtn) {
             this.jokerHintBtn.addEventListener('click', () => {
                 if (this.jokerHintBtn.disabled) return;
                 
-                console.log('�pucu joker kullan�l�yor...');
+                console.log('İpucu joker kullanılıyor...');
                 
-                // Mevcut soru i�in bir ipucu g�ster
+                // Mevcut soru için bir ipucu göster
                 const currentQuestion = this.questions[this.currentQuestionIndex];
                 let hint = '';
                 
-                // �pucu olu�tur - farkl� soru tiplerine g�re
-                if (currentQuestion.category === "Bo�luk Doldurma" || currentQuestion.type === "BlankFilling") {
-                    hint = "�pucu: Cevab�n ilk harfi \"" + currentQuestion.correctAnswer.charAt(0) + "\" ";
+                // İpucu oluştur - farklı soru tiplerine göre
+                if (currentQuestion.category === "Boşluk Doldurma" || currentQuestion.type === "BlankFilling") {
+                    hint = "İpucu: Cevabın ilk harfi \"" + currentQuestion.correctAnswer.charAt(0) + "\" ";
                     if (currentQuestion.correctAnswer.length > 3) {
                         hint += "ve son harfi \"" + currentQuestion.correctAnswer.charAt(currentQuestion.correctAnswer.length - 1) + "\"";
                     }
-                } else if (currentQuestion.type === "Do�ruYanl��" || currentQuestion.type === "TrueFalse") {
-                    // Do�ru/Yanl�� sorular i�in �zel ipucu
+                } else if (currentQuestion.type === "DoğruYanlış" || currentQuestion.type === "TrueFalse") {
+                    // Doğru/Yanlış sorular için özel ipucu
                     const correctAnswer = currentQuestion.correctAnswer.toLowerCase();
-                    if (correctAnswer === 'do�ru' || correctAnswer === 'true' || correctAnswer === 'evet') {
-                        hint = "�pucu: Bu ifade do�ru bir bilgidir.";
+                    if (correctAnswer === 'doğru' || correctAnswer === 'true' || correctAnswer === 'evet') {
+                        hint = "İpucu: Bu ifade doğru bir bilgidir.";
                     } else {
-                        hint = "�pucu: Bu ifadede bir yanl��l�k vard�r.";
+                        hint = "İpucu: Bu ifadede bir yanlışlık vardır.";
                     }
                 } else {
                     const correctAnswer = currentQuestion.correctAnswer;
-                    // Cevab�n ilk ve varsa son harfini ipucu olarak ver
-                    hint = "�pucu: Do�ru cevab�n ilk harfi \"" + correctAnswer.charAt(0) + "\" ";
+                    // Cevabın ilk ve varsa son harfini ipucu olarak ver
+                    hint = "İpucu: Doğru cevabın ilk harfi \"" + correctAnswer.charAt(0) + "\" ";
                     if (correctAnswer.length > 3) {
                         hint += "ve son harfi \"" + correctAnswer.charAt(correctAnswer.length - 1) + "\"";
                     }
                 }
                 
-                console.log('Olu�turulan ipucu:', hint);
+                console.log('Oluşturulan ipucu:', hint);
                 
-                // �pucunu g�ster
+                // İpucunu göster
                 const hintElement = document.createElement('div');
                 hintElement.className = 'hint-message';
                 hintElement.innerHTML = '<i class="fas fa-lightbulb"></i> ' + hint;
@@ -1329,68 +1831,68 @@ const quizApp = {
                     text-align: center;
                 `;
                 
-                // �pucu mesaj�n� ekleme
+                // İpucu mesajını ekleme
                 const questionElement = document.getElementById('question');
                 if (questionElement && questionElement.parentNode) {
-                    // Eski ipucu mesaj�n� kald�r
+                    // Eski ipucu mesajını kaldır
                     const oldHint = document.querySelector('.hint-message');
                     if (oldHint) oldHint.remove();
                     
                     // Yeni ipucunu ekle
                     questionElement.parentNode.insertBefore(hintElement, questionElement.nextSibling);
-                    console.log('�pucu mesaj� DOM\'a eklendi');
+                    console.log('İpucu mesajı DOM\'a eklendi');
                 }
                 
-                // Jokeri kullan (useJoker i�inde zaten envanter d���r�l�yor)
+                // Jokeri kullan (useJoker içinde zaten envanter düşürülüyor)
                 this.useJoker('hint');
                 
-                // Ses efekti �al
+                // Ses efekti çal
                 if (this.soundEnabled) {
                     const hintSound = document.getElementById('sound-correct');
                     if (hintSound) hintSound.play().catch(e => {
-                        console.error("Ses �al�namad�:", e);
+                        console.error("Ses çalınamadı:", e);
                     });
                 }
                 
-                // Toast bildirimi g�ster
-                this.showToast("�pucu jokeri kullan�ld�! " + hint, "toast-success");
+                // Toast bildirimi göster
+                this.showToast("İpucu jokeri kullanıldı! " + hint, "toast-success");
             });
         }
         
-        // +S�re jokeri
+        // +Süre jokeri
         if (this.jokerTimeBtn) {
             this.jokerTimeBtn.addEventListener('click', () => {
                 if (this.jokerTimeBtn.disabled) return;
                 
-                console.log('S�re joker kullan�l�yor...');
-                console.log('Kullan�m �ncesi s�re:', this.timeLeft);
+                console.log('Süre joker kullanılıyor...');
+                console.log('Kullanım öncesi süre:', this.timeLeft);
                 
-                // Mevcut sorunun s�resini 15 saniye uzat
+                // Mevcut sorunun süresini 15 saniye uzat
                 this.timeLeft += 15;
                 
-                console.log('Kullan�m sonras� s�re:', this.timeLeft);
+                console.log('Kullanım sonrası süre:', this.timeLeft);
                 
-                // S�re g�stergesini g�ncelle
+                // Süre göstergesini güncelle
                 this.updateTimeDisplay();
                 
-                // Zaman�n azald���n� belirten s�n�f� kald�r
+                // Zamanın azaldığını belirten sınıfı kaldır
                 if (this.timeLeftElement && this.timeLeftElement.classList.contains('time-low')) {
                     this.timeLeftElement.classList.remove('time-low');
                 }
                 
-                // Jokeri kullan (useJoker i�inde zaten envanter d���r�l�yor)
+                // Jokeri kullan (useJoker içinde zaten envanter düşürülüyor)
                 this.useJoker('time');
                 
-                // Ses efekti �al
+                // Ses efekti çal
                 if (this.soundEnabled) {
                     const timeSound = document.getElementById('sound-correct');
                     if (timeSound) timeSound.play().catch(e => {
-                        console.error("Ses �al�namad�:", e);
+                        console.error("Ses çalınamadı:", e);
                     });
                 }
                 
-                // Toast bildirimi g�ster
-                this.showToast("S�re jokeri kullan�ld�! 15 saniye eklendi. Yeni s�re: " + this.timeLeft + " saniye", "toast-success");
+                // Toast bildirimi göster
+                this.showToast("Süre jokeri kullanıldı! 15 saniye eklendi. Yeni süre: " + this.timeLeft + " saniye", "toast-success");
             });
         }
         
@@ -1399,43 +1901,43 @@ const quizApp = {
             this.jokerSkipBtn.addEventListener('click', () => {
                 if (this.jokerSkipBtn.disabled) return;
                 
-                console.log('Pas joker kullan�l�yor...');
-                console.log('Pas joker kullan�m �ncesi envanter:', JSON.stringify(this.jokerInventory));
+                console.log('Pas joker kullanılıyor...');
+                console.log('Pas joker kullanım öncesi envanter:', JSON.stringify(this.jokerInventory));
                 
                 // Joker envanterini kontrol et
                 if (this.jokerInventory.skip <= 0) {
-                    console.warn('Pas joker envanteri bo�!');
-                    this.showToast("Pas jokeriniz kalmad�!", "toast-warning");
+                    console.warn('Pas joker envanteri boş!');
+                    this.showToast("Pas jokeriniz kalmadı!", "toast-warning");
                     return;
                 }
                 
-                // S�reyi s�f�rlamak yerine do�rudan sonraki soruya ge�i� yapal�m
+                // Süreyi sıfırlamak yerine doğrudan sonraki soruya geçiş yapalım
                 clearInterval(this.timerInterval);
                 
-                // Ses efekti �al
+                // Ses efekti çal
                 if (this.soundEnabled) {
                     const skipSound = document.getElementById('sound-correct');
                     if (skipSound) skipSound.play().catch(e => {
-                        console.error("Ses �al�namad�:", e);
+                        console.error("Ses çalınamadı:", e);
                     });
                 }
                 
-                // Jokeri kullan (useJoker i�inde zaten envanter d���r�l�yor)
+                // Jokeri kullan (useJoker içinde zaten envanter düşürülüyor)
                 this.useJoker('skip');
                 
-                // Toast bildirimi g�ster
-                this.showToast("Pas jokeri kullan�ld�! Sonraki soruya ge�iliyor.", "toast-success");
+                // Toast bildirimi göster
+                this.showToast("Pas jokeri kullanıldı! Sonraki soruya geçiliyor.", "toast-success");
                 
-                console.log('Pas joker kullan�m sonras� envanter:', JSON.stringify(this.jokerInventory));
+                console.log('Pas joker kullanım sonrası envanter:', JSON.stringify(this.jokerInventory));
                 
-                // Bir sonraki soruya ge�
+                // Bir sonraki soruya geç
                 setTimeout(() => {
                     this.showNextQuestion();
                 }, 800);
             });
         }
         
-        // Joker ma�azas� butonu
+        // Joker mağazası butonu
         if (this.jokerStoreBtn) {
             // Click event (desktop)
             this.jokerStoreBtn.addEventListener('click', (e) => {
@@ -1456,108 +1958,121 @@ const quizApp = {
                 this.openJokerStore();
             });
             
-            // Mobil cihazlarda butonun t�klanabilir oldu�unu garanti et
+            // Mobil cihazlarda butonun tıklanabilir olduğunu garanti et
             this.jokerStoreBtn.style.cursor = 'pointer';
             this.jokerStoreBtn.style.touchAction = 'manipulation';
         }
     },
     
-    // Joker ma�azas�n� a�
+    // Joker mağazasını aç
     openJokerStore: function() {
-        console.log('?? Joker ma�azas� a��l�yor...');
-        console.log('?? User Agent:', navigator.userAgent);
-        console.log('?? Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
-        console.log('?? Mevcut puan:', this.score);
+        console.log('🛒 Joker mağazası açılıyor...');
+        console.log('📱 User Agent:', navigator.userAgent);
+        console.log('🎮 Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
+        console.log('💰 Mevcut puan:', this.score);
         
         var modal = document.getElementById('joker-store-modal');
         var closeBtn = modal.querySelector('.close-modal');
         var buyButtons = modal.querySelectorAll('.joker-buy-btn');
+        var livesBuyBtn = modal.querySelector('.lives-buy-btn');
         var pointsDisplay = document.getElementById('joker-store-points-display');
+        var starsDisplay = document.getElementById('joker-store-stars-display');
+        var livesCountDisplay = modal.querySelector('.lives-count');
         
-        // Mevcut toplam puanlar� ve joker envanterini g�ster (misafir i�in sessionScore kullan)
+        // Mevcut toplam puanları ve joker envanterini göster (misafir için sessionScore kullan)
         const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
-        pointsDisplay.textContent = currentPoints || 0;
-        console.log('?? Joker ma�azas� - G�sterilen puan: ' + currentPoints + ' (Giri� durumu: ' + (this.isLoggedIn ? 'Kay�tl�' : 'Misafir') + ')');
-        console.log('?? Detay - totalScore: ' + this.totalScore + ', sessionScore: ' + this.sessionScore);
+        pointsDisplay.textContent = this.formatNumber(currentPoints || 0);
         
-        // Oyun ekran�ndaki joker butonlar�n� da g�ncelle
+        // Yıldız sayısını göster
+        starsDisplay.textContent = this.formatNumber(this.totalStars || 0);
+        
+        // Tooltip'leri ekle
+        this.createTooltip(pointsDisplay.parentElement, `Coin: ${(currentPoints || 0).toLocaleString()}`);
+        this.createTooltip(starsDisplay.parentElement, `Yıldız: ${(this.totalStars || 0).toLocaleString()}`);
+        
+        // Can sayısını göster
+        livesCountDisplay.textContent = this.lives || 3;
+        console.log(`🛒 Joker mağazası - Gösterilen puan: ${currentPoints} (Giriş durumu: ${this.isLoggedIn ? 'Kayıtlı' : 'Misafir'})`);
+        console.log(`📊 Detay - totalScore: ${this.totalScore}, sessionScore: ${this.sessionScore}`);
+        
+        // Oyun ekranındaki joker butonlarını da güncelle
         this.updateJokerButtons();
         
-        // Joker miktarlar�n� g�ncelle
+        // Joker miktarlarını güncelle
         this.updateJokerStoreDisplay(modal);
         
-        // Sat�n alma butonlar�n� etkinle�tir
+        // Satın alma butonlarını etkinleştir
         buyButtons.forEach(function(btn) {
             var item = btn.closest('.joker-store-item');
             var jokerType = item.dataset.joker;
             var price = parseInt(item.dataset.price);
             
-            // Yeterli puan varsa butonu etkinle�tir (misafir i�in sessionScore kullan)
+            // Yeterli puan varsa butonu etkinleştir (misafir için sessionScore kullan)
             const availablePoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
             btn.disabled = availablePoints < price;
             
-            // Sat�n alma fonksiyonu
+            // Satın alma fonksiyonu
             var self = this;
             const purchaseJoker = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 
                 const availablePoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
-                console.log('Joker sat�n alma denemesi: ' + jokerType + ', Fiyat: ' + price + ', Mevcut Puan: ' + availablePoints + ' (' + (self.isLoggedIn ? 'totalScore' : 'sessionScore') + ')');
-                console.log('Sat�n alma �ncesi envanter:', JSON.stringify(self.jokerInventory));
+                console.log(`Joker satın alma denemesi: ${jokerType}, Fiyat: ${price}, Mevcut Puan: ${availablePoints} (${self.isLoggedIn ? 'totalScore' : 'sessionScore'})`);
+                console.log('Satın alma öncesi envanter:', JSON.stringify(self.jokerInventory));
                 
                 if (availablePoints >= price) {
-                    // Puan� azalt (misafir i�in sessionScore, kay�tl� i�in totalScore)
+                    // Puanı azalt (misafir için sessionScore, kayıtlı için totalScore)
                     if (self.isLoggedIn) {
-                        self.totalScore -= price;
+                    self.totalScore -= price;
                     } else {
                         self.sessionScore -= price;
                     }
                     
                     // PUANI FIREBASE'E KAYDET
                     if (self.isLoggedIn) {
-                        self.delayedSaveUserData(); // Firebase'e geciktirilmi� kaydet
-                        console.log(`Joker sat�n alma: ${price} puan harcand�. Yeni toplam: ${self.totalScore}`);
+                        self.delayedSaveUserData(); // Firebase'e geciktirilmiş kaydet
+                        console.log(`Joker satın alma: ${price} puan harcandı. Yeni toplam: ${self.totalScore}`);
                     }
                     
                     // Jokeri envantere ekle
                     var previousCount = self.jokerInventory[jokerType] || 0;
                     self.jokerInventory[jokerType]++;
                     
-                    console.log(`${jokerType} joker say�s�: ${previousCount} -> ${self.jokerInventory[jokerType]}`);
+                    console.log(`${jokerType} joker sayısı: ${previousCount} -> ${self.jokerInventory[jokerType]}`);
                     
                     // Joker envanterini kaydet
                     self.saveJokerInventory();
                     
-                    // G�stergeleri g�ncelle (misafir i�in sessionScore kullan)
+                    // Göstergeleri güncelle (misafir için sessionScore kullan)
                     const updatedPoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
-                    pointsDisplay.textContent = updatedPoints;
+                    pointsDisplay.textContent = self.formatNumber(updatedPoints);
                     
-                    // Joker ma�azas�ndaki say�mlar� ve buton durumlar�n� g�ncelle
+                    // Joker mağazasındaki sayımları ve buton durumlarını güncelle
                     self.updateJokerStoreDisplay(modal);
                     
-                    // OYUN EKRANINDAK� JOKER BUTONLARINI DA G�NCELLE
+                    // OYUN EKRANINDAKİ JOKER BUTONLARINI DA GÜNCELLE
                     self.updateJokerButtons();
                     
-                    // MOB�L JOKER TAB BAR'I DA G�NCELLE
+                    // MOBİL JOKER TAB BAR'I DA GÜNCELLE
                     self.updateJokerTabBar();
                     
-                    // Skor g�sterimini g�ncelle
+                    // Skor gösterimini güncelle
                     self.updateScoreDisplay();
                     
-                    // Toast bildirimi g�ster
+                    // Toast bildirimi göster
                     var jokerName = jokerType === 'fifty' ? '50:50' : 
-                        jokerType === 'hint' ? '�pucu' : 
-                        jokerType === 'time' ? 'S�re' : 'Pas';
-                    self.showToast(jokerName + ' jokeri sat�n al�nd�!', "toast-success");
+                        jokerType === 'hint' ? 'İpucu' : 
+                        jokerType === 'time' ? 'Süre' : 'Pas';
+                    self.showToast(jokerName + ' jokeri satın alındı!', "toast-success");
                     
-                    // Joker butonlar�n� g�ncelle
+                    // Joker butonlarını güncelle
                     self.updateJokerButtons();
                     
-                    console.log('Sat�n alma sonras� envanter:', JSON.stringify(self.jokerInventory));
+                    console.log('Satın alma sonrası envanter:', JSON.stringify(self.jokerInventory));
                 } else {
                     console.warn('Yeterli puan yok!');
-                    self.showToast("Yeterli puan�n�z yok!", "toast-error");
+                    self.showToast("Yeterli puanınız yok!", "toast-error");
                 }
             };
             
@@ -1565,30 +2080,86 @@ const quizApp = {
             btn.onclick = purchaseJoker;
             btn.addEventListener('touchend', purchaseJoker);
             
-            // Mobil cihazlar i�in ek optimizasyonlar
+            // Mobil cihazlar için ek optimizasyonlar
             btn.style.touchAction = 'manipulation';
             btn.style.webkitTapHighlightColor = 'transparent';
         }.bind(this));
         
-        // Modal� g�ster
+        // Can satın alma fonksiyonu
+        if (livesBuyBtn) {
+            const livesPrice = 15; // 15 yıldız = 3 can
+            
+            // Yeterli yıldız varsa butonu etkinleştir
+            livesBuyBtn.disabled = (this.totalStars || 0) < livesPrice;
+            
+            const purchaseLives = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const availableStars = this.totalStars || 0;
+                console.log(`Can satın alma denemesi: Fiyat: ${livesPrice} yıldız, Mevcut Yıldız: ${availableStars}`);
+                
+                if (availableStars >= livesPrice) {
+                    // Yıldızları azalt
+                    this.totalStars = Math.max(0, this.totalStars - livesPrice);
+                    
+                    // 3 can ekle (maksimum 5 can)
+                    this.lives = Math.min(5, this.lives + 3);
+                    
+                    // Verileri kaydet
+                    if (this.isLoggedIn) {
+                        this.delayedSaveUserData();
+                    }
+                    
+                    // Göstergeleri güncelle
+                    starsDisplay.textContent = this.formatNumber(this.totalStars);
+                    livesCountDisplay.textContent = this.lives;
+                    
+                    // Can gösterimini güncelle
+                    this.updateLivesDisplay();
+                    
+                    // Buton durumunu güncelle
+                    livesBuyBtn.disabled = this.totalStars < livesPrice;
+                    
+                    // Toast bildirimi göster
+                    this.showToast("3 can satın alındı! ❤️❤️❤️", "toast-success");
+                    
+                    console.log(`Can satın alma başarılı: ${livesPrice} yıldız harcandı. Yeni yıldız: ${this.totalStars}, Yeni can: ${this.lives}`);
+                } else {
+                    console.warn('Yeterli yıldız yok!');
+                    this.showToast("Yeterli yıldızınız yok! (15 yıldız gerekli)", "toast-error");
+                }
+            };
+            
+            // Event listeners ekle
+            livesBuyBtn.onclick = purchaseLives;
+            livesBuyBtn.addEventListener('touchend', purchaseLives);
+            livesBuyBtn.style.touchAction = 'manipulation';
+            livesBuyBtn.style.webkitTapHighlightColor = 'transparent';
+        }
+        
+        // Modalı göster
         modal.style.display = 'block';
         modal.style.visibility = 'visible';
         modal.style.opacity = '1';
         
-        // Mobil cihazlarda modal�n �stte g�r�nmesini garanti et
+        // Mobil cihazlarda modalın üstte görünmesini garanti et
         modal.style.zIndex = '9999';
         modal.classList.add('show');
         
-        // Body scroll'unu engelle (mobil cihazlarda �nemli)
+        // Body scroll'unu engelle (mobil cihazlarda önemli)
         document.body.style.overflow = 'hidden';
         
-        console.log('? Joker ma�azas� modal a��ld�');
+        // Dil güncellemesi yap
+        this.updateUITexts();
+        
+        console.log('✅ Joker mağazası modal açıldı');
         console.log('Modal visibility:', modal.style.visibility);
         console.log('Modal display:', modal.style.display);
         console.log('Modal z-index:', modal.style.zIndex);
         console.log('Modal classList:', modal.classList.toString());
         
-        // Kapat butonuna t�klama olay�
+        // Kapat butonuna tıklama olayı
         var self = this;
         const closeModal = function() {
             modal.style.display = 'none';
@@ -1596,7 +2167,7 @@ const quizApp = {
             modal.style.opacity = '0';
             modal.classList.remove('show');
             document.body.style.overflow = ''; // Body scroll'unu restore et
-            // Ma�aza kapand���nda joker butonlar�n� g�ncelle
+            // Mağaza kapandığında joker butonlarını güncelle
             self.updateJokerButtons();
         };
         
@@ -1607,33 +2178,33 @@ const quizApp = {
             closeModal();
         });
         
-        // Modal d���na t�klama olay�
+        // Modal dışına tıklama olayı
         window.onclick = function(event) {
             if (event.target === modal) {
                 closeModal();
             }
         };
         
-        // Modal d���na dokunma olay� (mobil)
+        // Modal dışına dokunma olayı (mobil)
         modal.addEventListener('touchend', function(event) {
             if (event.target === modal) {
                 closeModal();
             }
         });
         
-        // Sat�n alma butonlar�na da touch event ekle (mobil)
+        // Satın alma butonlarına da touch event ekle (mobil)
         buyButtons.forEach(function(btn) {
             btn.addEventListener('touchend', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                // onclick event'i zaten �al��acak, sadece touch'u handle ediyoruz
+                // onclick event'i zaten çalışacak, sadece touch'u handle ediyoruz
             });
         });
     },
     
-    // Joker butonlar�n� g�ncelle
+    // Joker butonlarını güncelle
     updateJokerButtons: function() {
-        // Elementleri dinamik olarak al (e�er hen�z null ise)
+        // Elementleri dinamik olarak al (eğer henüz null ise)
         if (!this.jokerFiftyBtn) this.jokerFiftyBtn = document.getElementById('joker-fifty');
         if (!this.jokerHintBtn) this.jokerHintBtn = document.getElementById('joker-hint');
         if (!this.jokerTimeBtn) this.jokerTimeBtn = document.getElementById('joker-time');
@@ -1641,12 +2212,12 @@ const quizApp = {
         if (!this.jokerStoreBtn) this.jokerStoreBtn = document.getElementById('joker-store');
         
         const currentQuestion = this.questions[this.currentQuestionIndex] || {};
-        const isTrueFalse = currentQuestion.type === "Do�ruYanl��" || currentQuestion.type === "TrueFalse";
+        const isTrueFalse = currentQuestion.type === "DoğruYanlış" || currentQuestion.type === "TrueFalse";
         const isBlankFilling = currentQuestion.type === "BlankFilling";
         
-        console.log('updateJokerButtons �a�r�ld�');
+        console.log('updateJokerButtons çağrıldı');
         console.log('Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
-        console.log('Joker kullan�m durumlar�:', JSON.stringify(this.jokersUsed));
+        console.log('Joker kullanım durumları:', JSON.stringify(this.jokersUsed));
         console.log('updateJokerButtons - elementler:', {
             fifty: !!this.jokerFiftyBtn,
             hint: !!this.jokerHintBtn,
@@ -1659,864 +2230,49 @@ const quizApp = {
         if (this.jokerFiftyBtn) {
             const fiftyCount = this.jokerInventory.fifty || 0;
             const used = this.jokersUsed.fifty;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${fiftyCount}${used ? '<span class=\'joker-used-text\'>?</span>' : ''}</span>`;
             this.jokerFiftyBtn.disabled = (fiftyCount <= 0) || used || isTrueFalse || isBlankFilling;
             this.jokerFiftyBtn.style.opacity = (fiftyCount <= 0 || used || isTrueFalse || isBlankFilling) ? '0.3' : '1';
-            this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i>${badgeHtml}`;
+            this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i>`;
         }
-        // �pucu jokeri
+        // İpucu jokeri
         if (this.jokerHintBtn) {
             const hintCount = this.jokerInventory.hint || 0;
             const used = this.jokersUsed.hint;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${hintCount}${used ? '<span class=\'joker-used-text\'>?</span>' : ''}</span>`;
             this.jokerHintBtn.disabled = (hintCount <= 0) || used;
             this.jokerHintBtn.style.opacity = (hintCount <= 0 || used) ? '0.3' : '1';
-            this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i>${badgeHtml}`;
+            this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i>`;
         }
-        // S�re jokeri
+        // Süre jokeri
         if (this.jokerTimeBtn) {
             const timeCount = this.jokerInventory.time || 0;
             const used = this.jokersUsed.time;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${timeCount}${used ? '<span class=\'joker-used-text\'>?</span>' : ''}</span>`;
             this.jokerTimeBtn.disabled = (timeCount <= 0) || used;
             this.jokerTimeBtn.style.opacity = (timeCount <= 0 || used) ? '0.3' : '1';
-            this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i>${badgeHtml}`;
+            this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i>`;
         }
         // Pas jokeri
         if (this.jokerSkipBtn) {
             const skipCount = this.jokerInventory.skip || 0;
             const used = this.jokersUsed.skip;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${skipCount}${used ? '<span class=\'joker-used-text\'>?</span>' : ''}</span>`;
             this.jokerSkipBtn.disabled = (skipCount <= 0) || used;
             this.jokerSkipBtn.style.opacity = (skipCount <= 0 || used) ? '0.3' : '1';
-            this.jokerSkipBtn.innerHTML = `<i class="fas fa-forward"></i>${badgeHtml}`;
-        }
-        // Joker ma�azas�
-        if (this.jokerStoreBtn) {
-            this.jokerStoreBtn.innerHTML = '<i class="fas fa-store"></i>';
-        }
-        
-        // Mobil joker tab bar'�n� da g�ncelle
-        this.updateJokerTabBar();
-    },
-    
-    // Joker kullanma fonksiyonu
-    useJoker: function(jokerType) {
-// @ts-nocheck
-/* eslint-disable */
-// Bu dosya JavaScript'tir, TypeScript de�ildir.
-// Script Version 3.0 - Firebase puan kaydetme sistemi tamamland�
-
-// Tam Ekran Modunu Ayarla
-function initFullscreenMode() {
-    // PWA tam ekran modunu etkinle�tir
-    if ('serviceWorker' in navigator) {
-        // PWA modunda �al���yor mu kontrol et
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
-                           window.navigator.standalone ||
-                           document.referrer.includes('android-app://');
-        
-        if (isStandalone) {
-            console.log('? PWA standalone modunda �al���yor');
-            
-            // Tam ekran i�in CSS s�n�flar� ekle
-            document.body.classList.add('pwa-fullscreen');
-            document.documentElement.classList.add('pwa-fullscreen');
-            
-            // Viewport meta tag g�ncelle
-            const viewport = document.querySelector('meta[name="viewport"]');
-            if (viewport) {
-                viewport.setAttribute('content', 
-                    'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
-            }
-            
-            // Status bar rengi ayarla
-            const themeColor = document.querySelector('meta[name="theme-color"]');
-            if (themeColor) {
-                themeColor.setAttribute('content', '#1e40af');
-            }
-        } else {
-            console.log('?? PWA standalone modunda �al��m�yor - taray�c� modunda');
-        }
-    }
-    
-    // CSS ile tam ekran stillerini uygula
-    const fullscreenStyles = `
-        .pwa-fullscreen {
-            height: 100vh !important;
-            height: 100dvh !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-        
-        .pwa-fullscreen .container {
-            height: 100vh !important;
-            height: 100dvh !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            overflow-y: auto !important;
-        }
-        
-        /* Safe area i�in padding ekle */
-        @supports (padding: max(0px)) {
-            .pwa-fullscreen .container {
-                padding-top: max(env(safe-area-inset-top), 0px) !important;
-                padding-bottom: max(env(safe-area-inset-bottom), 0px) !important;
-                padding-left: max(env(safe-area-inset-left), 0px) !important;
-                padding-right: max(env(safe-area-inset-right), 0px) !important;
-            }
-        }
-        
-        /* Capacitor/Cordova i�in */
-        .platform-cordova .pwa-fullscreen,
-        .platform-capacitor .pwa-fullscreen {
-            height: 100vh !important;
-            overflow: hidden !important;
-        }
-    `;
-    
-    // Stilleri head'e ekle
-    const styleSheet = document.createElement('style');
-    styleSheet.type = 'text/css';
-    styleSheet.innerText = fullscreenStyles;
-    document.head.appendChild(styleSheet);
-}
-
-// Sayfa Y�kleme ��lemleri
-document.addEventListener('DOMContentLoaded', () => {
-    // Tam ekran modunu ba�lat
-    initFullscreenMode();
-    
-    // Ana i�eri�i g�r�n�r yap
-    const container = document.querySelector('.container');
-    if (container) {
-        container.style.visibility = 'visible';
-        container.classList.add('fade-in');
-    }
-});
-
-const quizApp = {
-    // DOM Elements
-    questionElement: document.getElementById('question'),
-    optionsElement: document.getElementById('options'),
-    resultElement: document.getElementById('result'),
-    scoreElement: document.getElementById('score'),
-    restartButton: document.getElementById('restart'),
-    quizElement: document.getElementById('quiz'),
-    containerElement: document.querySelector('.container'),
-    categorySelectionElement: document.getElementById('category-selection'),
-    categoriesElement: document.getElementById('categories'),
-    nextButton: document.getElementById('next-question'),
-    highScoresListElement: document.getElementById('high-scores-list'),
-    timeLeftElement: document.getElementById('time-left'),
-    badgesContainer: document.getElementById('badges'),
-    themeToggle: document.getElementById('checkbox'),
-    jokerFiftyBtn: null, // document.getElementById('joker-fifty'),
-    jokerHintBtn: null, // document.getElementById('joker-hint'),
-    jokerTimeBtn: null, // document.getElementById('joker-time'),
-    jokerSkipBtn: null, // document.getElementById('joker-skip'),
-    jokerStoreBtn: null, // document.getElementById('joker-store'),
-    
-    // State Variables
-    currentQuestionIndex: 0,
-    score: 0,
-    totalScore: 0, // <-- EKLEND�: Toplam birikmi� puan
-    sessionScore: 0, // <-- EKLEND�: Bu oturumdaki toplam puan
-    userLevel: 1, // <-- EKLEND�: Kullan�c� seviyesi
-    levelProgress: 0, // <-- EKLEND�: Seviye ilerlemesi (XP)
-    correctAnswers: 0,
-    selectedCategory: null,
-    questions: [],
-    allQuestionsData: {},
-    questionsData: {}, 
-    timerInterval: null,
-    timeLeft: 0,
-    answeredQuestions: 0,
-    answerTimes: [],
-    jokersUsed: {fifty: false, hint: false, time: false, skip: false},
-    jokerInventory: {fifty: 0, hint: 0, time: 0, skip: 0},
-    soundEnabled: true,
-    lives: 5,
-    currentLevel: 1,
-    levelProgress: 0,
-    skipJokerActive: false,
-    currentSection: 1, // �u anki b�l�m numaras�
-    totalSections: 50, // Toplam b�l�m say�s�
-    sectionStats: [], // Her b�l�m i�in do�ru/yanl�� cevap istatistiklerini saklayacak dizi
-    currentLanguage: 'tr', // Varsay�lan dil
-    translatedQuestions: {}, // �evrilmi� sorular
-    isLoggedIn: false, // <-- EKLEND�: Kullan�c� giri� durumu
-    currentUser: null, // <-- EKLEND�: Mevcut kullan�c�
-    userSettings: {}, // <-- EKLEND�: Kullan�c� ayarlar�
-    totalScore: 0, // <-- EKLEND�: Toplam puan
-    sessionScore: 0, // <-- EKLEND�: Oturum puan�
-    userLevel: 1, // <-- EKLEND�: Kullan�c� seviyesi
-    levelProgress: 0, // <-- EKLEND�: Seviye ilerlemesi
-    totalStars: 0, // <-- EKLEND�: Toplam y�ld�z say�s�
-    
-    // Constants
-    HIGH_SCORES_KEY: 'quizHighScores',
-    MAX_HIGH_SCORES: 5,
-    TIME_PER_QUESTION: 45,
-    TIME_PER_BLANK_FILLING_QUESTION: 60,
-    SEEN_QUESTIONS_KEY: 'quizSeenQuestions',
-    QUESTIONS_PER_GAME: 'dynamic', // Art�k kategoriye g�re dinamik
-    STATS_KEY: 'quizStats',
-    USER_SETTINGS_KEY: 'quizSettings',
-    JOKER_INVENTORY_KEY: 'quizJokerInventory',
-    LANGUAGE_KEY: 'quizLanguage',
-    
-    // Ba�lang��
-    init: function() {
-        console.log("Quiz Uygulamas� Ba�lat�l�yor...");
-        
-        // �lk Firebase durumu kontrol�
-        console.log('?? Firebase �lk Durum Kontrol�:');
-        console.log('- Firebase nesnesi:', typeof firebase !== 'undefined' ? 'VAR' : 'YOK');
-        console.log('- Firebase.auth:', firebase && firebase.auth ? 'VAR' : 'YOK');
-        console.log('- Firebase.firestore:', firebase && firebase.firestore ? 'VAR' : 'YOK');
-        
-        // Taray�c� �zelliklerini kontrol et
-        this.checkBrowserSupport();
-        
-        try {
-            // �nce dil ayarlar�n� y�kle
-            this.loadLanguageSettings();
-            
-            // Kullan�c� aray�z�n� haz�rla
-            this.initUI();
-            
-            // �nce kullan�c� ayarlar�n� y�kle
-            this.loadUserSettings();
-            
-            // Joker tab bar'� ba�lat
-            this.initJokerTabBar();
-            
-            // Kullan�c�n�n quiz modunda olup olmad���n� kontrol et (sayfa yenilemesi senaryosu i�in)
-            if (localStorage.getItem('quizModeActive') === 'true' && document.getElementById('quiz').style.display !== 'none') {
-                this.activateQuizMode();
-            }
-            
-            // localStorage'dan skor verilerini y�kle
-            this.loadScoreFromLocalStorage();
-            
-            // Soru verilerini y�kle
-            this.loadQuestionsData()
-                .then(() => {
-                    console.log("T�m veriler ba�ar�yla y�klendi.");
-                    
-                    // Soru verilerinin y�klenip y�klenmedi�ini kontrol et
-                    if (!this.questionsData || Object.keys(this.questionsData).length === 0) {
-                        console.error("Soru verileri y�klenemedi veya bo�!");
-                        
-                        // Tekrar y�klemeyi dene
-                        this.loadQuestionsData()
-                            .then(() => {
-                                console.log("�kinci deneme: Soru verileri y�klendi");
-                            })
-                            .catch(err => {
-                                console.error("�kinci deneme ba�ar�s�z:", err);
-                                this.showAlert(this.getTranslation('questionLoadError'));
-                            });
-                    }
-                    
-                    // Sorular� �evir
-                    this.translateQuestions();
-                })
-                .catch(error => {
-                    console.error("Soru verileri y�klenirken hata olu�tu:", error);
-                });
-        } catch (error) {
-            console.error("Ba�latma s�ras�nda kritik hata:", error);
-        }
-    },
-    
-    // Mevcut dil i�in metni getir
-    getTranslation: function(key) {
-        try {
-            // Dil dosyas� import edilmi� mi kontrol et
-            if (typeof languages === 'undefined') {
-                console.warn('Dil dosyas� y�klenemedi. Varsay�lan metin g�steriliyor.');
-                return this.getDefaultTranslation(key);
-            }
-            
-            // Mevcut dil i�in �eviri var m�?
-            if (languages[this.currentLanguage] && languages[this.currentLanguage][key] !== undefined) {
-                return languages[this.currentLanguage][key];
-            }
-            
-            // T�rk�e varsay�lan dil olarak kullan�l�r
-            if (languages.tr && languages.tr[key] !== undefined) {
-                return languages.tr[key];
-            }
-            
-            // �eviri bulunamazsa, anahtar� d�nd�r
-            console.warn(`'${key}' i�in �eviri bulunamad�.`);
-            return key;
-        } catch (error) {
-            console.error('�eviri al�n�rken hata olu�tu:', error);
-            return this.getDefaultTranslation(key);
-        }
-    },
-    
-    // Varsay�lan �evirileri d�nd�r
-    getDefaultTranslation: function(key) {
-        // S�k kullan�lan metinler i�in varsay�lan de�erler
-        const defaults = {
-            'appName': 'Quiz Game',
-            'loading': 'Loading...',
-            'restart': 'Restart',
-            'next': 'Next',
-            'score': 'Score',
-            'correct': 'Correct!',
-            'wrong': 'Wrong!',
-            'timeUp': 'Time is up!',
-            'correctAnswer': 'Correct answer',
-            'questionImage': 'Question image',
-            'true': 'TRUE',
-            'false': 'FALSE'
-        };
-        
-        return defaults[key] || key;
-    },
-    
-    // Dil ayarlar�n� y�kle
-    loadLanguageSettings: function() {
-        try {
-            // Local storage'dan tercihler ekran�nda se�ilen dili kontrol et
-            const userLanguage = localStorage.getItem('user_language');
-            
-            if (userLanguage && ['tr', 'en', 'de'].includes(userLanguage)) {
-                this.currentLanguage = userLanguage;
-                console.log(`Kullan�c� tercih etti�i dil: ${this.currentLanguage}`);
-                
-                // HTML dil etiketini g�ncelle
-                document.documentElement.setAttribute('lang', this.currentLanguage);
-                document.documentElement.setAttribute('data-language', this.currentLanguage);
-            } else {
-                // Kaydedilmi� dil ayar� varsa y�kle
-                const savedLanguage = localStorage.getItem(this.LANGUAGE_KEY);
-                if (savedLanguage && ['tr', 'en', 'de'].includes(savedLanguage)) {
-                    this.currentLanguage = savedLanguage;
-                    console.log(`Kaydedilmi� dil ayar�: ${this.currentLanguage}`);
-                } else {
-                    // Taray�c� dilini kontrol et
-                    const browserLang = navigator.language || navigator.userLanguage;
-                    if (browserLang) {
-                        const lang = browserLang.substring(0, 2).toLowerCase();
-                        
-                        // Desteklenen diller
-                        if (['tr', 'en', 'de'].includes(lang)) {
-                            this.currentLanguage = lang;
-                        } else {
-                            // Desteklenmeyen dil durumunda varsay�lan olarak �ngilizce
-                            this.currentLanguage = 'en';
-                        }
-                        
-                        console.log(`Taray�c� dili: ${browserLang}, Uygulama dili: ${this.currentLanguage}`);
-                    }
-                }
-            }
-            
-            // Dil de�i�tirme elementini olu�tur
-            this.createLanguageSelector();
-        } catch (e) {
-            console.error("Dil ayarlar� y�klenirken hata:", e);
-            this.currentLanguage = 'tr'; // Hata durumunda varsay�lan dil
-        }
-    },
-    
-    // Dil se�ici olu�tur
-    createLanguageSelector: function() {
-        // Men�de zaten bir dil se�ici oldu�u i�in sayfa �zerinde ekstra bir dil se�ici olu�turmuyoruz
-        console.log("Men�de zaten dil se�im alan� bulundu�u i�in ek bir dil se�ici olu�turulmad�");
-        return;
-    },
-    
-    // Dili de�i�tir
-    switchLanguage: function(language) {
-        if (this.currentLanguage === language) return;
-        
-        console.log(`Dil de�i�tiriliyor: ${this.currentLanguage} -> ${language}`);
-        
-        // Dili kaydet
-        this.currentLanguage = language;
-        localStorage.setItem(this.LANGUAGE_KEY, language);
-        localStorage.setItem('quizLanguage', language); // Eski referans i�in uyumluluk
-        
-        // HTML etiketinin dil �zelliklerini g�ncelle
-        const htmlRoot = document.getElementById('html-root') || document.documentElement;
-        htmlRoot.setAttribute('lang', language);
-        htmlRoot.setAttribute('data-language', language);
-        
-        // Soru verilerini yeniden y�kle
-        this.loadQuestionsData()
-            .then(() => {
-                console.log("Dil de�i�ikli�i sonras� yeni soru verileri y�klendi");
-                
-                // UI metinlerini g�ncelle
-                this.updateUITexts();
-                
-                // Dil de�i�ikli�i olay�n� tetikle - bu, di�er mod�llerin �evirilerini g�ncellemesini sa�lar
-                document.dispatchEvent(new Event('languageChanged'));
-                
-                // E�er aktif bir kategori varsa ve sorular g�steriliyorsa, sorular� g�ncelle
-                if (this.selectedCategory && this.quizElement && this.quizElement.style.display !== 'none') {
-                    // Kategorileri yeniden g�ster (mevcut dildeki kategorileri g�stermek i�in)
-                    this.displayCategories();
-                    
-                    // Se�ili kategori ad�n� kontrol et ve mevcut dildeki kar��l���n� bul
-                    const translatedCategoryName = this.getCurrentCategoryName(this.selectedCategory);
-                    
-                    if (this.questionsData[translatedCategoryName]) {
-                        // Kategori mevcut dildeki sorularla g�ncellenir
-                        this.selectedCategory = translatedCategoryName;
-                        
-                        // Sorular� g�ncelle
-                        this.questions = this.shuffleArray([...this.questionsData[this.selectedCategory]]);
-                        this.arrangeBlankFillingFirst();
-                        
-                        // Mevcut soruyu s�f�rla ve ilk soruyu g�ster
-                        this.currentQuestionIndex = 0;
-                        this.displayQuestion(this.questions[0]);
-                    }
-                }
-                
-                // Mevcut g�sterilen i�eri�i g�ncelle
-                this.updateCurrentContent();
-                
-                // Dil de�i�ikli�ini kullan�c�ya bildir
-                this.showToast(this.getTranslation('languageChanged'), 'toast-success');
-                this.updateResultAndWarningTexts();
-            })
-            .catch(error => {
-                console.error("Dil de�i�ikli�i sonras� soru verileri y�klenirken hata:", error);
-                this.showToast("Sorular y�klenirken bir hata olu�tu", "toast-error");
-            });
-    },
-    
-    // Sorular� �evir
-    translateQuestions: function() {
-        if (!this.questionsData || Object.keys(this.questionsData).length === 0) {
-            console.warn('�evrilecek soru verisi bulunamad�.');
-            return;
-        }
-        
-        if (this.currentLanguage === 'tr') {
-            // T�rk�e i�in �eviriye gerek yok, orijinal sorular� kullan
-            this.translatedQuestions = this.cloneObject(this.questionsData);
-            // Mevcut sorular� g�ncelle
-            this.updateCurrentQuestionsWithTranslations();
-            return;
-        }
-        
-        // �evrilmi� sorular zaten varsa ve ge�erli dilde ise tekrar �evirme
-        if (this.hasTranslatedQuestions(this.currentLanguage)) {
-            console.log(`${this.currentLanguage} dilinde �evrilmi� sorular zaten mevcut, tekrar �evirme i�lemi yap�lmayacak.`);
-            
-            // Mevcut sorular� g�ncelle
-            this.updateCurrentQuestionsWithTranslations();
-            return;
-        }
-        
-        console.log(`Sorular ${this.currentLanguage} diline �evriliyor...`);
-        
-        // Bo� �eviri nesnesini olu�tur
-        this.translatedQuestions = {};
-        
-        // Her kategori i�in
-        Object.keys(this.questionsData).forEach(categoryTR => {
-            // Kategori ad�n� �evir
-            const translatedCategoryName = this.getTranslatedCategoryName(categoryTR, this.currentLanguage);
-            this.translatedQuestions[translatedCategoryName] = [];
-            
-            // Kategorideki her soru i�in
-            this.questionsData[categoryTR].forEach(questionObj => {
-                // Soru nesnesinin kopyas�n� olu�tur
-                const translatedQuestion = this.cloneObject(questionObj);
-                
-                // Translations �zelli�i varsa ve istenen dilde �eviri varsa kullan
-                if (questionObj.translations && questionObj.translations[this.currentLanguage]) {
-                    const translation = questionObj.translations[this.currentLanguage];
-                    if (translation.question) translatedQuestion.question = translation.question;
-                    if (translation.options) translatedQuestion.options = translation.options;
-                    if (translation.correctAnswer) translatedQuestion.correctAnswer = translation.correctAnswer;
-                } else {
-                    // Soru metnini ve ��klar� �evir (otomatik �eviri yerine �zelle�tirilmi� metin)
-                    if (this.currentLanguage === 'en') {
-                        translatedQuestion.question = this.translateToEnglish(questionObj.question);
-                        
-                        if (Array.isArray(translatedQuestion.options)) {
-                            translatedQuestion.options = translatedQuestion.options.map(option => 
-                                this.translateToEnglish(option)
-                            );
-                        }
-                        
-                        if (translatedQuestion.correctAnswer) {
-                            translatedQuestion.correctAnswer = this.translateToEnglish(questionObj.correctAnswer);
-                        }
-                        
-                        // Do�ru/Yanl�� sorular� i�in
-                        if (translatedQuestion.type === "Do�ruYanl��" || translatedQuestion.type === "TrueFalse") {
-                            translatedQuestion.type = "TrueFalse";
-                            
-                            if (translatedQuestion.correctAnswer === "DO�RU" || translatedQuestion.correctAnswer === "YANLI�") {
-                                translatedQuestion.correctAnswer = trueFalseMapping[translatedQuestion.correctAnswer].en;
-                            }
-                        }
-                    } else if (this.currentLanguage === 'de') {
-                        translatedQuestion.question = this.translateToGerman(questionObj.question);
-                        
-                        if (Array.isArray(translatedQuestion.options)) {
-                            translatedQuestion.options = translatedQuestion.options.map(option => 
-                                this.translateToGerman(option)
-                            );
-                        }
-                        
-                        if (translatedQuestion.correctAnswer) {
-                            translatedQuestion.correctAnswer = this.translateToGerman(questionObj.correctAnswer);
-                        }
-                        
-                        // Do�ru/Yanl�� sorular� i�in
-                        if (translatedQuestion.type === "Do�ruYanl��" || translatedQuestion.type === "TrueFalse") {
-                            translatedQuestion.type = "TrueFalse";
-                            
-                            if (translatedQuestion.correctAnswer === "DO�RU" || translatedQuestion.correctAnswer === "YANLI�") {
-                                translatedQuestion.correctAnswer = trueFalseMapping[translatedQuestion.correctAnswer].de;
-                            }
-                        }
-                    }
-                }
-                
-                // Kategori ad�n� g�ncelle
-                translatedQuestion.category = translatedCategoryName;
-                
-                // Bo�luk doldurma sorular� i�in
-                if (translatedQuestion.type === "BlankFilling" && translatedQuestion.choices) {
-                    // Harfleri �evir (�rne�in Almanca'da �, � gibi harfler i�in)
-                    translatedQuestion.choices = this.translateChoices(questionObj.choices, this.currentLanguage);
-                }
-                
-                // �evrilmi� soruyu kategoriye ekle
-                this.translatedQuestions[translatedCategoryName].push(translatedQuestion);
-            });
-        });
-        
-        console.log(`Soru �evirisi tamamland�. ${Object.keys(this.translatedQuestions).length} kategori �evrildi.`);
-        
-        // Mevcut sorular� g�ncelle
-        this.updateCurrentQuestionsWithTranslations();
-    },
-    
-    // �evrilmi� sorular var m� kontrol et
-    hasTranslatedQuestions: function(language) {
-        // �evrilmi� sorular bo�sa veya dil T�rk�e ise kontrol etmeye gerek yok
-        if (language === 'tr' || !this.translatedQuestions) {
-            return false;
-        }
-        
-        // �evrilmi� sorular�n i�inde en az bir kategori var m�?
-        const hasCategories = Object.keys(this.translatedQuestions).length > 0;
-        
-        if (hasCategories) {
-            // Rastgele bir kategori se�
-            const sampleCategory = Object.keys(this.translatedQuestions)[0];
-            
-            // Bu kategoride soru var m�?
-            const hasQuestions = this.translatedQuestions[sampleCategory] && 
-                                this.translatedQuestions[sampleCategory].length > 0;
-            
-            if (hasQuestions) {
-                // Rastgele bir soru se�
-                const sampleQuestion = this.translatedQuestions[sampleCategory][0];
-                
-                // Bu soru �evrilmi� mi? (Kategori ad�n� kontrol et)
-                // T�rk�e kategorinin �evrilmi� ad�n� bul
-                const originalCategoryName = Object.keys(this.questionsData)[0]; // �lk T�rk�e kategori
-                const expectedTranslatedName = this.getTranslatedCategoryName(originalCategoryName, language);
-                
-                // �evirinin do�ru dilde olup olmad���n� kontrol et
-                return sampleCategory === expectedTranslatedName;
-            }
-        }
-        
-        return false;
-    },
-    
-    // Mevcut sorular� �evirilerle g�ncelle
-    updateCurrentQuestionsWithTranslations: function() {
-        // E�er bir kategori se�ilmi�se ve sorular y�klenmi�se, mevcut sorular� da g�ncelle
-        if (this.selectedCategory && this.questions.length > 0) {
-            console.log(`Se�ili kategori: ${this.selectedCategory}`);
-            
-            // Mevcut sorular dil de�i�iminden sonra g�ncellenecek
-            const translatedCategoryName = this.getCurrentCategoryName(this.selectedCategory);
-            
-            console.log(`Se�ili kategori: ${this.selectedCategory}, �evrilmi� ad�: ${translatedCategoryName}`);
-            
-            // �evrilmi� kategorideki sorular� al
-            const translatedCategoryQuestions = this.currentLanguage === 'tr' ? 
-                this.questionsData[translatedCategoryName] : 
-                this.translatedQuestions[translatedCategoryName];
-            
-            if (translatedCategoryQuestions) {
-                console.log(`${translatedCategoryName} kategorisinde ${translatedCategoryQuestions.length} �evrilmi� soru bulundu.`);
-                
-                // Sorular� g�ncelle
-                this.questions = this.shuffleArray([...translatedCategoryQuestions]);
-                this.arrangeBlankFillingFirst();
-                
-                // Mevcut soruyu g�ncelle
-                if (this.currentQuestionIndex < this.questions.length) {
-                    this.displayQuestion(this.questions[this.currentQuestionIndex]);
-                }
-            } else {
-                console.warn(`${translatedCategoryName} kategorisinde �evrilmi� soru bulunamad�!`);
-            }
-        }
-    },
-    
-    // Nesne kopyalama (deep clone)
-    cloneObject: function(obj) {
-        return JSON.parse(JSON.stringify(obj));
-    },
-    
-    // Kategori ad�n� �evir
-    getTranslatedCategoryName: function(categoryTR, targetLang) {
-        if (categoryMappings[categoryTR] && categoryMappings[categoryTR][targetLang]) {
-            return categoryMappings[categoryTR][targetLang];
-        }
-        
-        // E�le�me yoksa orijinal kategori ad�n� d�nd�r
-        return categoryTR;
-    },
-    
-    // UI elemanlar�n� g�ncelle
-    updateUITexts: function() {
-        // Ba�l�k
-        document.title = this.getTranslation('appName');
-        
-        // Navbar ba�l���
-        const navbarTitle = document.querySelector('.navbar-title');
-        if (navbarTitle) navbarTitle.textContent = this.getTranslation('appName');
-        const appTitle = document.querySelector('.app-title');
-        if (appTitle) appTitle.textContent = this.getTranslation('appName');
-        const mainTitle = document.querySelector('.main-title');
-        if (mainTitle) mainTitle.textContent = this.getTranslation('appName');
-        
-        // Yan men� (sidebar) metinleri
-        const sidebarHome = document.querySelector('.sidebar-home');
-        if (sidebarHome) sidebarHome.textContent = this.getTranslation('home');
-        const sidebarFriends = document.querySelector('.sidebar-friends');
-        if (sidebarFriends) sidebarFriends.textContent = this.getTranslation('friends');
-        const sidebarLeaderboard = document.querySelector('.sidebar-leaderboard');
-        if (sidebarLeaderboard) sidebarLeaderboard.textContent = this.getTranslation('leaderboardMenu');
-        
-        // Ana men� ba�l���
-        const menuTitle = document.querySelector('.menu-title');
-        if (menuTitle) {
-            menuTitle.textContent = this.getTranslation('quiz');
-        }
-        
-        // Quiz ba�l��� (soru ekran� �st�)
-        const quizHeader = document.querySelector('#quiz h2');
-        if (quizHeader) {
-            quizHeader.textContent = this.getTranslation('quiz');
-        }
-        
-        // ��k�� butonu kald�r�ld�
-        
-        // Ana men� butonlar�
-        const singlePlayerBtn = document.getElementById('single-player-btn');
-        if (singlePlayerBtn) {
-            singlePlayerBtn.textContent = this.getTranslation('singlePlayer');
-        }
-        const multiPlayerBtn = document.getElementById('online-game-button');
-        if (multiPlayerBtn) {
-            multiPlayerBtn.textContent = this.getTranslation('multiPlayer');
-        }
-        const leaderboardBtn = document.getElementById('view-global-leaderboard');
-        if (leaderboardBtn) {
-            leaderboardBtn.textContent = this.getTranslation('leaderboard');
-        }
-        const statsBtn = document.getElementById('show-stats');
-        if (statsBtn) {
-            statsBtn.textContent = this.getTranslation('statistics');
-        }
-        const settingsBtn = document.getElementById('show-settings');
-        if (settingsBtn) {
-            settingsBtn.textContent = this.getTranslation('settings');
-        }
-        const addQuestionBtn = document.getElementById('add-question-button');
-        if (addQuestionBtn) {
-            addQuestionBtn.textContent = this.getTranslation('addQuestion');
-        }
-        // Logout butonu kald�r�ld�
-        
-        // Kategori ba�l���
-        const categoryTitle = document.querySelector('#category-selection h2 span');
-        if (categoryTitle) {
-            categoryTitle.textContent = this.getTranslation('categories');
-        }
-        
-        // Puan etiketi
-        if (this.scoreElement) {
-            const scoreLabel = this.scoreElement.querySelector('.score-label');
-            if (scoreLabel) {
-                scoreLabel.textContent = this.getTranslation('score');
-            }
-        }
-        
-        // Sonraki soru butonu
-        if (this.nextButton) {
-            const nextBtnText = this.nextButton.querySelector('span');
-            if (nextBtnText) {
-                nextBtnText.textContent = this.getTranslation('next');
-            } else {
-                this.nextButton.textContent = this.getTranslation('next');
-            }
-        }
-        
-        // Yeniden ba�lat butonu
-        if (this.restartButton) {
-            this.restartButton.textContent = this.getTranslation('restart');
-        }
-        
-        // Joker butonlar�
-        this.updateJokerButtonsText();
-        
-        // Dil etiketi
-        const langLabel = document.getElementById('language-label');
-        if (langLabel) {
-            langLabel.textContent = this.getTranslation('language') + ':';
-        }
-        
-        // Hamburger men� ��eleri - Yeni ID'ler ile g�ncelleme
-        const appTitleElement = document.getElementById('menu-app-title');
-        if (appTitleElement) {
-            appTitleElement.textContent = this.getTranslation('app');
-        }
-        
-        const settingsTitleElement = document.getElementById('menu-settings-title');
-        if (settingsTitleElement) {
-            settingsTitleElement.textContent = this.getTranslation('settings');
-        }
-        
-        // Men� ��eleri metinleri
-        const homeText = document.getElementById('menu-home-text');
-        if (homeText) {
-            homeText.textContent = this.getTranslation('home');
-        }
-        
-        const profileText = document.getElementById('menu-profile-text');
-        if (profileText) {
-            profileText.textContent = this.getTranslation('profile');
-        }
-        
-        const friendsText = document.getElementById('menu-friends-text');
-        if (friendsText) {
-            friendsText.textContent = this.getTranslation('friends');
-        }
-        
-        const leaderboardText = document.getElementById('menu-leaderboard-text');
-        if (leaderboardText) {
-            leaderboardText.textContent = this.getTranslation('leaderboardMenu');
-        }
-        
-        // Ayarlar metinleri
-        const languageText = document.getElementById('menu-language-text');
-        if (languageText) {
-            languageText.textContent = this.getTranslation('language');
-        }
-        
-        const difficultyText = document.getElementById('menu-difficulty-text');
-        if (difficultyText) {
-            difficultyText.textContent = this.getTranslation('difficulty');
-        }
-        
-        const soundText = document.getElementById('menu-sound-text');
-        if (soundText) {
-            soundText.textContent = this.getTranslation('sound');
-        }
-        
-        const themeText = document.getElementById('menu-theme-text');
-        if (themeText) {
-            themeText.textContent = this.getTranslation('darkTheme');
-        }
-        
-        const logoutText = document.getElementById('menu-logout-text');
-        if (logoutText) {
-            logoutText.textContent = this.getTranslation('logout');
-        }
-        
-        // Zorluk seviyeleri
-        const difficultySelect = document.getElementById('difficulty-level');
-        if (difficultySelect) {
-            const options = difficultySelect.options;
-            for (let i = 0; i < options.length; i++) {
-                const option = options[i];
-                if (option.value === 'easy') {
-                    option.textContent = this.getTranslation('easy');
-                } else if (option.value === 'medium') {
-                    option.textContent = this.getTranslation('medium');
-                } else if (option.value === 'hard') {
-                    option.textContent = this.getTranslation('hard');
-                }
-            }
-        }
-        
-        // data-i18n �zniteli�i olan t�m elemanlar� g�ncelle
-        const i18nElements = document.querySelectorAll('[data-i18n]');
-        i18nElements.forEach(element => {
-            const key = element.getAttribute('data-i18n');
-            if (key && languages[this.currentLanguage] && languages[this.currentLanguage][key]) {
-                element.textContent = languages[this.currentLanguage][key];
-            }
-        });
-        
-
-    },
-    
-    // Joker butonlar� metinlerini g�ncelle
-    updateJokerButtonsText: function() {
-        if (this.jokerFiftyBtn && !this.jokersUsed.fifty) {
-            this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i>`;
-        } else if (this.jokerFiftyBtn && this.jokersUsed.fifty) {
-            this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i>`;
-        }
-        
-        if (this.jokerHintBtn && !this.jokersUsed.hint) {
-            this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i>`;
-        } else if (this.jokerHintBtn && this.jokersUsed.hint) {
-            this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i>`;
-        }
-        
-        if (this.jokerTimeBtn && !this.jokersUsed.time) {
-            this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i>`;
-        } else if (this.jokerTimeBtn && this.jokersUsed.time) {
-            this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i>`;
-        }
-        
-        if (this.jokerSkipBtn && !this.jokersUsed.skip) {
-            this.jokerSkipBtn.innerHTML = `<i class="fas fa-forward"></i>`;
-        } else if (this.jokerSkipBtn && this.jokersUsed.skip) {
             this.jokerSkipBtn.innerHTML = `<i class="fas fa-forward"></i>`;
         }
-        
+        // Joker mağazası
         if (this.jokerStoreBtn) {
             this.jokerStoreBtn.innerHTML = `<i class="fas fa-store"></i>`;
         }
         
-        // Mobil joker tab bar'� da g�ncelle
+        // Mobil joker tab bar'ı da güncelle
         this.updateJokerTabBar();
         
-        console.log('updateJokerButtons tamamland�');
+        console.log('updateJokerButtons tamamlandı');
     },
     
-    // Mobil joker tab bar'�n� g�ncelle
+    // Mobil joker tab bar'ını güncelle
     updateJokerTabBar: function() {
         const currentQuestion = this.questions[this.currentQuestionIndex] || {};
-        const isTrueFalse = currentQuestion.type === "Do�ruYanl��" || currentQuestion.type === "TrueFalse";
+        const isTrueFalse = currentQuestion.type === "DoğruYanlış" || currentQuestion.type === "TrueFalse";
         const isBlankFilling = currentQuestion.type === "BlankFilling";
         
         // 50:50 joker tab
@@ -2529,7 +2285,7 @@ const quizApp = {
             jokerTabFifty.style.filter = disabled ? 'grayscale(100%)' : 'none';
         }
         
-        // �pucu joker tab
+        // İpucu joker tab
         const jokerTabHint = document.getElementById('joker-tab-hint');
         if (jokerTabHint) {
             const hintCount = this.jokerInventory.hint || 0;
@@ -2539,7 +2295,7 @@ const quizApp = {
             jokerTabHint.style.filter = disabled ? 'grayscale(100%)' : 'none';
         }
         
-        // S�re joker tab
+        // Süre joker tab
         const jokerTabTime = document.getElementById('joker-tab-time');
         if (jokerTabTime) {
             const timeCount = this.jokerInventory.time || 0;
@@ -2559,7 +2315,7 @@ const quizApp = {
             jokerTabSkip.style.filter = disabled ? 'grayscale(100%)' : 'none';
         }
         
-        // Ma�aza tab her zaman aktif
+        // Mağaza tab her zaman aktif
         const jokerTabStore = document.getElementById('joker-tab-store');
         if (jokerTabStore) {
             jokerTabStore.style.opacity = '1';
@@ -2567,888 +2323,58 @@ const quizApp = {
         }
     },
     
-    // Mevcut i�eri�i g�ncelle
-    updateCurrentContent: function() {
-        // Ana men� butonlar� ve di�er UI elemanlar�n� g�ncelle
-        this.updateUITexts();
-        
-        // Hangi sayfa g�r�n�rse onu g�ncelle
-        if (this.categorySelectionElement && this.categorySelectionElement.style.display !== 'none') {
-            // Kategori se�im ekran� g�r�n�yorsa
-            this.displayCategories();
-        } else if (this.quizElement && this.quizElement.style.display !== 'none' && this.questions.length > 0) {
-            // Quiz ekran� g�r�n�yorsa
-            if (this.resultElement && this.resultElement.style.display !== 'none') {
-                // Sonu� g�steriliyorsa sonu� metnini g�ncelle
-                const correctAnswer = this.questions[this.currentQuestionIndex].correctAnswer;
-                if (this.resultElement.classList.contains('correct')) {
-                    this.resultElement.innerHTML = `
-                        <div class="correct-answer-container">
-                            <div class="correct-icon"><i class="fas fa-badge-check"></i></div>
-                            <div class="correct-text">${this.getTranslation('correct')}</div>
-                            <div class="correct-animation">
-                                <span>+</span>
-                                <span>${Math.max(1, Math.ceil(this.timeLeft / (this.questions[this.currentQuestionIndex].type === "BlankFilling" ? 5 : 3)))}</span>
-                            </div>
-                        </div>
-                        <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
-                    `;
-                } else if (this.resultElement.classList.contains('wrong')) {
-                    this.resultElement.innerHTML = `${this.getTranslation('timeUp')} ${this.getTranslation('correctAnswer')}: <strong>${correctAnswer}</strong>
-                        <button id="next-question" class="next-button">${this.getTranslation('next')}</button>`;
-                }
-            } else {
-                // Aktif soru varsa yeniden y�kle
-                this.displayQuestion(this.questions[this.currentQuestionIndex]);
-            }
-        }
-        this.updateResultAndWarningTexts();
-    },
-    
-    // Basit �eviri fonksiyonlar� (ger�ek bir projede daha profesyonel bir ��z�m kullan�lmal�d�r)
-    translateToEnglish: function(text) {
-        // Bo� metin kontrol�
-        if (!text) return '';
-        
-        // Bu sadece basit bir �rnektir - ger�ek projede buraya �zelle�tirilmi� �eviri eklenebilir
-        // Not: Ger�ek bir uygulamada burada �nceden haz�rlanm�� �eviriler veya API kullan�labilir
-        return text; // �u an i�in orijinal metni koruyoruz
-    },
-    
-    translateToGerman: function(text) {
-        // Bo� metin kontrol�
-        if (!text) return '';
-        
-        // Almanca �eviri - bu basit bir �rnek
-        return text; // �u an i�in orijinal metni koruyoruz
-    },
-    
-    // Bo�luk doldurma i�in harfleri �evir
-    translateChoices: function(choices, targetLang) {
-        if (!choices) return [];
-        
-        // Bu fonksiyon �zellikle Almanca gibi dillerde �, �, � gibi harfler i�in kullan�labilir
-        // �u an i�in orijinal harfleri koruyoruz
-        return choices;
-    },
-    
-    // Mevcut dil i�in ge�erli kategori ad�n� al
-    getCurrentCategoryName: function(originalCategory) {
-        if (this.currentLanguage === 'tr') return originalCategory;
-        
-        // T�rk�e kategori ad� m� kontrol et
-        if (categoryMappings[originalCategory] && categoryMappings[originalCategory][this.currentLanguage]) {
-            return categoryMappings[originalCategory][this.currentLanguage];
-        }
-        
-        // Bu kategori ad� zaten �evrilmi� bir isim mi kontrol et
-        if (reverseCategoryMappings[originalCategory] && 
-            reverseCategoryMappings[originalCategory]['tr']) {
-            return originalCategory; // Zaten �evrilmi� durumda, aynen d�nd�r
-        }
-        
-        // Burada e�er kategori �evrilmi� bir isimse, mevcut dilde do�ru versiyonunu bul
-        for (const [sourceCat, translations] of Object.entries(reverseCategoryMappings)) {
-            // E�er bu bir yabanc� kategori ad�ysa ve bizim istedi�imiz dilde bir kar��l��� varsa
-            if (sourceCat === originalCategory && translations[this.currentLanguage]) {
-                return translations[this.currentLanguage];
-            }
-        }
-        
-        // Hi�bir e�le�me bulunamazsa orijinal kategori ad�n� d�nd�r
-        return originalCategory;
-    },
-    
-    // Toast mesaj� g�ster
-    showToast: function(message, type = 'toast-info') {
-        // Toast container'� kontrol et veya olu�tur
-        let toastContainer = document.getElementById('toast-container');
-        if (!toastContainer) {
-            toastContainer = document.createElement('div');
-            toastContainer.id = 'toast-container';
-            document.body.appendChild(toastContainer);
-        }
-        
-        // Yeni toast olu�tur
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        
-        // �kon ekle
-        let icon = '<i class="fas fa-info-circle"></i>';
-        if (type === 'toast-success') icon = '<i class="fas fa-check-circle"></i>';
-        if (type === 'toast-warning') icon = '<i class="fas fa-exclamation-triangle"></i>';
-        if (type === 'toast-error') icon = '<i class="fas fa-times-circle"></i>';
-        
-        // Toast i�eri�i
-        toast.innerHTML = `
-            <div class="toast-content">
-                ${icon}
-                <span>${message}</span>
-            </div>
-        `;
-        
-        // Toast'u ekle
-        toastContainer.appendChild(toast);
-        
-        // �pucu jokeri ve s�re jokeri i�in farkl� konumland�rma
-        // Toast'� joker butonlar�n�n hemen �zerinde g�ster
-        if (message.includes("�pucu jokeri kullan�ld�") || message.includes("S�re jokeri kullan�ld�")) {
-            toast.style.position = "fixed";
-            toast.style.bottom = "180px"; // Joker butonlar�n�n �zerinde
-            toast.style.left = "50%";
-            toast.style.transform = "translateX(-50%)";
-            toast.style.zIndex = "10002"; // Joker butonlar�ndan daha y�ksek
-        }
-        
-        // Toast'u g�ster
-        setTimeout(() => {
-            toast.classList.add('show');
-        }, 10);
-        
-        // Toast'u belirli bir s�re sonra kald�r
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => {
-                toastContainer.removeChild(toast);
-            }, 300);
-        }, 3000);
-    },
-    
-    // Taray�c� deste�ini kontrol et
-    checkBrowserSupport: function() {
-        console.log("Taray�c� �zellikleri kontrol ediliyor...");
-        
-        // localStorage deste�i
-        let hasLocalStorage = false;
-        try {
-            hasLocalStorage = 'localStorage' in window && window.localStorage !== null;
-            if (hasLocalStorage) {
-                // Test et
-                localStorage.setItem('test', 'test');
-                localStorage.removeItem('test');
-                console.log("localStorage destekleniyor");
-                    } else {
-                console.warn("localStorage desteklenmiyor");
-            }
-        } catch (e) {
-            console.error("localStorage eri�ilemez:", e);
-            hasLocalStorage = false;
-        }
-        
-        // Fetch API deste�i
-        const hasFetch = 'fetch' in window;
-        console.log("Fetch API deste�i:", hasFetch);
-        
-        // Firebase SDK varl���
-        const hasFirebase = typeof firebase !== 'undefined' && firebase.app;
-        console.log("Firebase SDK durumu:", hasFirebase ? "Y�kl�" : "Y�kl� de�il");
-        
-        // JSON i�leme deste�i
-        const hasJSON = typeof JSON !== 'undefined' && typeof JSON.parse === 'function';
-        console.log("JSON deste�i:", hasJSON);
-        
-        // Eksik �zellikler varsa kullan�c�y� bilgilendir
-        if (!hasLocalStorage || !hasFetch || !hasJSON) {
-            console.warn("Baz� taray�c� �zellikleri eksik, uygulama s�n�rl� �al��abilir");
-            // Uyar� mesaj� g�ster
-            const warningDiv = document.createElement('div');
-            warningDiv.className = 'browser-warning';
-            warningDiv.innerHTML = `
-                <div class="warning-content">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <p>${this.getTranslation('browserWarning')}</p>
-                    <button class="close-warning">${this.getTranslation('understood')}</button>
-                </div>
-            `;
-            document.body.appendChild(warningDiv);
-            
-            // Kapat butonuna t�klama olay�
-            const closeBtn = warningDiv.querySelector('.close-warning');
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => {
-                    warningDiv.remove();
-                });
-            }
-        }
-        
-        return {
-            localStorage: hasLocalStorage,
-            fetch: hasFetch,
-            firebase: hasFirebase,
-            json: hasJSON
-        };
-    },
-    
-    // Joker envanterini y�kle
-    loadJokerInventory: function() {
-        console.log('Joker envanteri y�kleniyor...');
-        console.log('localStorage anahtar�:', this.JOKER_INVENTORY_KEY);
-        
-        var inventoryJSON = localStorage.getItem(this.JOKER_INVENTORY_KEY);
-        console.log('localStorage\'dan al�nan veri:', inventoryJSON);
-        
-        if (inventoryJSON && inventoryJSON !== 'null' && inventoryJSON !== 'undefined') {
-            try {
-                const parsed = JSON.parse(inventoryJSON);
-                
-                // Ge�erli bir obje ve t�m joker t�rleri var m� kontrol et
-                if (parsed && typeof parsed === 'object' && 
-                    parsed.hasOwnProperty('fifty') && 
-                    parsed.hasOwnProperty('hint') && 
-                    parsed.hasOwnProperty('time') && 
-                    parsed.hasOwnProperty('skip')) {
-                    
-                    this.jokerInventory = parsed;
-                    console.log("Joker envanteri ba�ar�yla y�klendi:", this.jokerInventory);
-                } else {
-                    console.warn("Ge�ersiz joker envanteri format�, varsay�lan envanter atan�yor");
-                    this.jokerInventory = {fifty: 1, hint: 1, time: 1, skip: 1};
-                    this.saveJokerInventory();
-                }
-            } catch (e) {
-                console.error("Joker envanteri y�klenirken hata olu�tu:", e);
-                this.jokerInventory = {fifty: 1, hint: 1, time: 1, skip: 1};
-                this.saveJokerInventory();
-                console.log("Varsay�lan envanter atand�:", this.jokerInventory);
-            }
-        } else {
-            // �lk kez �al��t�r�l�yorsa veya ge�ersiz veri varsa her joker t�r�nden birer tane ver
-            console.log("�lk kez �al��t�r�l�yor veya ge�ersiz veri, varsay�lan envanter olu�turuluyor...");
-            this.jokerInventory = {fifty: 1, hint: 1, time: 1, skip: 1};
-            this.saveJokerInventory();
-        }
-        
-        // Negatif de�erleri �nle
-        Object.keys(this.jokerInventory).forEach(key => {
-            if (this.jokerInventory[key] < 0) {
-                this.jokerInventory[key] = 0;
-            }
-        });
-        
-        // Final kontrol
-        console.log('loadJokerInventory tamamland�, final envanter:', this.jokerInventory);
-    },
-    
-    // Joker envanterini kaydet
-    saveJokerInventory: function() {
-        try {
-            localStorage.setItem(this.JOKER_INVENTORY_KEY, JSON.stringify(this.jokerInventory));
-            console.log("Joker envanteri kaydedildi:", this.jokerInventory);
-            
-            // Kaydetmenin ba�ar�l� olup olmad���n� kontrol et
-            var saved = localStorage.getItem(this.JOKER_INVENTORY_KEY);
-            if (saved) {
-                var parsedSaved = JSON.parse(saved);
-                console.log("Kaydedilen veri do�ruland�:", parsedSaved);
-            } else {
-                console.error("Joker envanteri kaydedilemedi!");
-            }
-        } catch (e) {
-            console.error("Joker envanteri kaydedilirken hata olu�tu:", e);
-        }
-    },
-    
-    // Joker butonlar�na olay dinleyicileri ekle
-    addJokerEventListeners: function() {
-        console.log('addJokerEventListeners �a�r�ld�...');
-        
-        // Elementleri dinamik olarak al
-        this.jokerFiftyBtn = document.getElementById('joker-fifty');
-        this.jokerHintBtn = document.getElementById('joker-hint');
-        this.jokerTimeBtn = document.getElementById('joker-time');
-        this.jokerSkipBtn = document.getElementById('joker-skip');
-        this.jokerStoreBtn = document.getElementById('joker-store');
-        
-        console.log('jokerFiftyBtn:', this.jokerFiftyBtn);
-        console.log('jokerHintBtn:', this.jokerHintBtn);
-        console.log('jokerTimeBtn:', this.jokerTimeBtn);
-        console.log('jokerSkipBtn:', this.jokerSkipBtn);
-        console.log('jokerStoreBtn:', this.jokerStoreBtn);
-        
-        // Mobil debug i�in
-        console.log('Mobile device check:', /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-        console.log('Touch events supported:', 'ontouchstart' in window);
-        
-        // Joker store modal element kontrol�
-        const jokerStoreModal = document.getElementById('joker-store-modal');
-        console.log('Joker store modal element:', jokerStoreModal);
-        
-        // 50:50 jokeri
-        if (this.jokerFiftyBtn) {
-            this.jokerFiftyBtn.addEventListener('click', () => {
-                if (this.jokerFiftyBtn.disabled) return;
-                
-                console.log('50:50 joker kullan�l�yor...');
-                
-                // Mevcut sorunun do�ru cevab�n� al
-                const currentQuestion = this.questions[this.currentQuestionIndex];
-                const correctAnswer = currentQuestion.correctAnswer;
-                
-                // BlankFilling sorular�nda 50:50 joker kullan�lamaz
-                if (currentQuestion.type === "BlankFilling") {
-                    console.warn('BlankFilling sorular�nda 50:50 joker kullan�lamaz');
-                    this.showToast("Bo�luk doldurma sorular�nda 50:50 joker kullan�lamaz!", "toast-warning");
-                    return;
-                }
-                
-                // Do�ruYanl�� sorular�nda da 50:50 joker kullan�lamaz
-                if (currentQuestion.type === "Do�ruYanl��" || currentQuestion.type === "TrueFalse") {
-                    console.warn('Do�ru/Yanl�� sorular�nda 50:50 joker kullan�lamaz');
-                    this.showToast("Do�ru/Yanl�� sorular�nda 50:50 joker kullan�lamaz!", "toast-warning");
-                    return;
-                }
-                
-                console.log('Do�ru cevap:', correctAnswer);
-                
-                // Sadece aktif quiz container'daki se�enekleri al
-                const optionsContainer = document.getElementById('options');
-                const options = optionsContainer ? optionsContainer.querySelectorAll('.option') : document.querySelectorAll('#options .option');
-                console.log('Bulunan se�enekler:', options.length);
-                console.log('Options container:', optionsContainer);
-                
-                if (options.length < 3) {
-                    console.warn('Yeterli se�enek yok, 50:50 joker kullan�lamaz');
-                    this.showToast("Bu soru tipinde 50:50 joker kullan�lamaz!", "toast-warning");
-                    return;
-                }
-                
-                // Yanl�� ��klar� bul - case insensitive kar��la�t�rma
-                const wrongOptions = Array.from(options).filter((option, index) => {
-                    const optionText = option.textContent.trim();
-                    const isCorrect = optionText.toLowerCase() === correctAnswer.toLowerCase();
-                    console.log(`Se�enek ${index + 1}: "${optionText}" | Do�ru cevap: "${correctAnswer}" | E�it mi: ${isCorrect}`);
-                    return !isCorrect;
-                });
-                
-                console.log('Toplam se�enek say�s�:', options.length);
-                console.log('Yanl�� se�enek say�s�:', wrongOptions.length);
-                console.log('Do�ru se�enek say�s�:', options.length - wrongOptions.length);
-                
-                if (wrongOptions.length < 2) {
-                    console.warn('Yeterli yanl�� se�enek yok');
-                    this.showToast("Bu soruda yeterli yanl�� se�enek yok!", "toast-warning");
-                    return;
-                }
-                
-                // �ki yanl�� ��kk� rastgele se�
-                const shuffledWrong = this.shuffleArray([...wrongOptions]);
-                const toHide = shuffledWrong.slice(0, 2);
-                
-                console.log('S�nd�r�lecek se�enekler:', toHide.length);
-                
-                // Se�ili ��klar� s�nd�r
-                toHide.forEach(option => {
-                    option.style.opacity = '0.3';
-                    option.style.pointerEvents = 'none';
-                    option.style.background = 'linear-gradient(135deg, #ddd, #ccc)';
-                    option.style.color = '#666';
-                    option.style.textDecoration = 'line-through';
-                    option.style.filter = 'blur(1px)';
-                    option.style.border = '2px solid #f0f0f0';
-                    option.style.transform = 'scale(0.95)';
-                    option.style.transition = 'all 0.3s ease';
-                    option.classList.add('disabled-option');
-                    
-                    // X i�areti ekle
-                    const xMark = document.createElement('div');
-                    xMark.innerHTML = '?';
-                    xMark.style.cssText = `
-                        position: absolute;
-                        top: 10px;
-                        right: 10px;
-                        font-size: 20px;
-                        z-index: 10;
-                        animation: bounceIn 0.5s ease;
-                    `;
-                    option.style.position = 'relative';
-                    option.appendChild(xMark);
-                });
-                
-                // Jokeri kullan (useJoker i�inde zaten envanter d���r�l�yor)
-                this.useJoker('fifty');
-                
-                // Ses efekti �al
-                if (this.soundEnabled) {
-                    const fiftySound = document.getElementById('sound-correct');
-                    if (fiftySound) fiftySound.play().catch(e => {
-                        console.error("Ses �al�namad�:", e);
-                    });
-                }
-                
-                // Toast bildirimi g�ster
-                this.showToast("50:50 jokeri kullan�ld�! �ki yanl�� ��k s�nd�r�ld�.", "toast-success");
-            });
-        }
-        
-        // �pucu jokeri
-        if (this.jokerHintBtn) {
-            this.jokerHintBtn.addEventListener('click', () => {
-                if (this.jokerHintBtn.disabled) return;
-                
-                console.log('�pucu joker kullan�l�yor...');
-                
-                // Mevcut soru i�in bir ipucu g�ster
-                const currentQuestion = this.questions[this.currentQuestionIndex];
-                let hint = '';
-                
-                // �pucu olu�tur - farkl� soru tiplerine g�re
-                if (currentQuestion.category === "Bo�luk Doldurma" || currentQuestion.type === "BlankFilling") {
-                    hint = "�pucu: Cevab�n ilk harfi \"" + currentQuestion.correctAnswer.charAt(0) + "\" ";
-                    if (currentQuestion.correctAnswer.length > 3) {
-                        hint += "ve son harfi \"" + currentQuestion.correctAnswer.charAt(currentQuestion.correctAnswer.length - 1) + "\"";
-                    }
-                } else if (currentQuestion.type === "Do�ruYanl��" || currentQuestion.type === "TrueFalse") {
-                    // Do�ru/Yanl�� sorular i�in �zel ipucu
-                    const correctAnswer = currentQuestion.correctAnswer.toLowerCase();
-                    if (correctAnswer === 'do�ru' || correctAnswer === 'true' || correctAnswer === 'evet') {
-                        hint = "�pucu: Bu ifade do�ru bir bilgidir.";
-                    } else {
-                        hint = "�pucu: Bu ifadede bir yanl��l�k vard�r.";
-                    }
-                } else {
-                    const correctAnswer = currentQuestion.correctAnswer;
-                    // Cevab�n ilk ve varsa son harfini ipucu olarak ver
-                    hint = "�pucu: Do�ru cevab�n ilk harfi \"" + correctAnswer.charAt(0) + "\" ";
-                    if (correctAnswer.length > 3) {
-                        hint += "ve son harfi \"" + correctAnswer.charAt(correctAnswer.length - 1) + "\"";
-                    }
-                }
-                
-                console.log('Olu�turulan ipucu:', hint);
-                
-                // �pucunu g�ster
-                const hintElement = document.createElement('div');
-                hintElement.className = 'hint-message';
-                hintElement.innerHTML = '<i class="fas fa-lightbulb"></i> ' + hint;
-                hintElement.style.cssText = `
-                    background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
-                    color: #2d3436;
-                    padding: 15px 20px;
-                    margin: 15px 0;
-                    border-radius: 10px;
-                    border-left: 4px solid #e17055;
-                    box-shadow: 0 4px 15px rgba(253, 203, 110, 0.3);
-                    animation: fadeInUp 0.5s ease;
-                    font-weight: 600;
-                    text-align: center;
-                `;
-                
-                // �pucu mesaj�n� ekleme
-                const questionElement = document.getElementById('question');
-                if (questionElement && questionElement.parentNode) {
-                    // Eski ipucu mesaj�n� kald�r
-                    const oldHint = document.querySelector('.hint-message');
-                    if (oldHint) oldHint.remove();
-                    
-                    // Yeni ipucunu ekle
-                    questionElement.parentNode.insertBefore(hintElement, questionElement.nextSibling);
-                    console.log('�pucu mesaj� DOM\'a eklendi');
-                }
-                
-                // Jokeri kullan (useJoker i�inde zaten envanter d���r�l�yor)
-                this.useJoker('hint');
-                
-                // Ses efekti �al
-                if (this.soundEnabled) {
-                    const hintSound = document.getElementById('sound-correct');
-                    if (hintSound) hintSound.play().catch(e => {
-                        console.error("Ses �al�namad�:", e);
-                    });
-                }
-                
-                // Toast bildirimi g�ster
-                this.showToast("�pucu jokeri kullan�ld�! " + hint, "toast-success");
-            });
-        }
-        
-        // +S�re jokeri
-        if (this.jokerTimeBtn) {
-            this.jokerTimeBtn.addEventListener('click', () => {
-                if (this.jokerTimeBtn.disabled) return;
-                
-                console.log('S�re joker kullan�l�yor...');
-                console.log('Kullan�m �ncesi s�re:', this.timeLeft);
-                
-                // Mevcut sorunun s�resini 15 saniye uzat
-                this.timeLeft += 15;
-                
-                console.log('Kullan�m sonras� s�re:', this.timeLeft);
-                
-                // S�re g�stergesini g�ncelle
-                this.updateTimeDisplay();
-                
-                // Zaman�n azald���n� belirten s�n�f� kald�r
-                if (this.timeLeftElement && this.timeLeftElement.classList.contains('time-low')) {
-                    this.timeLeftElement.classList.remove('time-low');
-                }
-                
-                // Jokeri kullan (useJoker i�inde zaten envanter d���r�l�yor)
-                this.useJoker('time');
-                
-                // Ses efekti �al
-                if (this.soundEnabled) {
-                    const timeSound = document.getElementById('sound-correct');
-                    if (timeSound) timeSound.play().catch(e => {
-                        console.error("Ses �al�namad�:", e);
-                    });
-                }
-                
-                // Toast bildirimi g�ster
-                this.showToast("S�re jokeri kullan�ld�! 15 saniye eklendi. Yeni s�re: " + this.timeLeft + " saniye", "toast-success");
-            });
-        }
-        
-        // Pas jokeri
-        if (this.jokerSkipBtn) {
-            this.jokerSkipBtn.addEventListener('click', () => {
-                if (this.jokerSkipBtn.disabled) return;
-                
-                console.log('Pas joker kullan�l�yor...');
-                console.log('Pas joker kullan�m �ncesi envanter:', JSON.stringify(this.jokerInventory));
-                
-                // Joker envanterini kontrol et
-                if (this.jokerInventory.skip <= 0) {
-                    console.warn('Pas joker envanteri bo�!');
-                    this.showToast("Pas jokeriniz kalmad�!", "toast-warning");
-                    return;
-                }
-                
-                // S�reyi s�f�rlamak yerine do�rudan sonraki soruya ge�i� yapal�m
-                clearInterval(this.timerInterval);
-                
-                // Ses efekti �al
-                if (this.soundEnabled) {
-                    const skipSound = document.getElementById('sound-correct');
-                    if (skipSound) skipSound.play().catch(e => {
-                        console.error("Ses �al�namad�:", e);
-                    });
-                }
-                
-                // Jokeri kullan (useJoker i�inde zaten envanter d���r�l�yor)
-                this.useJoker('skip');
-                
-                // Toast bildirimi g�ster
-                this.showToast("Pas jokeri kullan�ld�! Sonraki soruya ge�iliyor.", "toast-success");
-                
-                console.log('Pas joker kullan�m sonras� envanter:', JSON.stringify(this.jokerInventory));
-                
-                // Bir sonraki soruya ge�
-                setTimeout(() => {
-                    this.showNextQuestion();
-                }, 800);
-            });
-        }
-        
-        // Joker ma�azas� butonu
-        if (this.jokerStoreBtn) {
-            // Click event (desktop)
-            this.jokerStoreBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.openJokerStore();
-            });
-            
-            // Touch event (mobile)
-            this.jokerStoreBtn.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-            });
-            
-            this.jokerStoreBtn.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.openJokerStore();
-            });
-            
-            // Mobil cihazlarda butonun t�klanabilir oldu�unu garanti et
-            this.jokerStoreBtn.style.cursor = 'pointer';
-            this.jokerStoreBtn.style.touchAction = 'manipulation';
-        }
-    },
-    
-    // Joker ma�azas�n� a�
-    openJokerStore: function() {
-        console.log('?? Joker ma�azas� a��l�yor...');
-        console.log('?? User Agent:', navigator.userAgent);
-        console.log('?? Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
-        console.log('?? Mevcut puan:', this.score);
-        
-        var modal = document.getElementById('joker-store-modal');
-        var closeBtn = modal.querySelector('.close-modal');
-        var buyButtons = modal.querySelectorAll('.joker-buy-btn');
-        var pointsDisplay = document.getElementById('joker-store-points-display');
-        
-        // Mevcut toplam puanlar� ve joker envanterini g�ster (misafir i�in sessionScore kullan)
-        const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
-        pointsDisplay.textContent = currentPoints || 0;
-        console.log('?? Joker ma�azas� - G�sterilen puan: ' + currentPoints + ' (Giri� durumu: ' + (this.isLoggedIn ? 'Kay�tl�' : 'Misafir') + ')');
-        console.log('?? Detay - totalScore: ' + this.totalScore + ', sessionScore: ' + this.sessionScore);
-        
-        // Oyun ekran�ndaki joker butonlar�n� da g�ncelle
-        this.updateJokerButtons();
-        
-        // Joker miktarlar�n� g�ncelle
-        this.updateJokerStoreDisplay(modal);
-        
-        // Sat�n alma butonlar�n� etkinle�tir
-        buyButtons.forEach(function(btn) {
-            var item = btn.closest('.joker-store-item');
-            var jokerType = item.dataset.joker;
-            var price = parseInt(item.dataset.price);
-            
-            // Yeterli puan varsa butonu etkinle�tir (misafir i�in sessionScore kullan)
-            const availablePoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
-            btn.disabled = availablePoints < price;
-            
-            // Sat�n alma fonksiyonu
-            var self = this;
-            const purchaseJoker = function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const availablePoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
-                console.log('Joker sat�n alma denemesi: ' + jokerType + ', Fiyat: ' + price + ', Mevcut Puan: ' + availablePoints + ' (' + (self.isLoggedIn ? 'totalScore' : 'sessionScore') + ')');
-                console.log('Sat�n alma �ncesi envanter:', JSON.stringify(self.jokerInventory));
-                
-                if (availablePoints >= price) {
-                    // Puan� azalt (misafir i�in sessionScore, kay�tl� i�in totalScore)
-                    if (self.isLoggedIn) {
-                        self.totalScore -= price;
-                    } else {
-                        self.sessionScore -= price;
-                    }
-                    
-                    // PUANI FIREBASE'E KAYDET
-                    if (self.isLoggedIn) {
-                        self.delayedSaveUserData(); // Firebase'e geciktirilmi� kaydet
-                        console.log(`Joker sat�n alma: ${price} puan harcand�. Yeni toplam: ${self.totalScore}`);
-                    }
-                    
-                    // Jokeri envantere ekle
-                    var previousCount = self.jokerInventory[jokerType] || 0;
-                    self.jokerInventory[jokerType]++;
-                    
-                    console.log(`${jokerType} joker say�s�: ${previousCount} -> ${self.jokerInventory[jokerType]}`);
-                    
-                    // Joker envanterini kaydet
-                    self.saveJokerInventory();
-                    
-                    // G�stergeleri g�ncelle (misafir i�in sessionScore kullan)
-                    const updatedPoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
-                    pointsDisplay.textContent = updatedPoints;
-                    
-                    // Joker ma�azas�ndaki say�mlar� ve buton durumlar�n� g�ncelle
-                    self.updateJokerStoreDisplay(modal);
-                    
-                    // OYUN EKRANINDAK� JOKER BUTONLARINI DA G�NCELLE
-                    self.updateJokerButtons();
-                    
-                    // MOB�L JOKER TAB BAR'I DA G�NCELLE
-                    self.updateJokerTabBar();
-                    
-                    // Skor g�sterimini g�ncelle
-                    self.updateScoreDisplay();
-                    
-                    // Toast bildirimi g�ster
-                    var jokerName = jokerType === 'fifty' ? '50:50' : 
-                        jokerType === 'hint' ? '�pucu' : 
-                        jokerType === 'time' ? 'S�re' : 'Pas';
-                    self.showToast(jokerName + ' jokeri sat�n al�nd�!', "toast-success");
-                    
-                    // Joker butonlar�n� g�ncelle
-                    self.updateJokerButtons();
-                    
-                    console.log('Sat�n alma sonras� envanter:', JSON.stringify(self.jokerInventory));
-                } else {
-                    console.warn('Yeterli puan yok!');
-                    self.showToast("Yeterli puan�n�z yok!", "toast-error");
-                }
-            };
-            
-            // Hem click hem de touch event'lerini ekle
-            btn.onclick = purchaseJoker;
-            btn.addEventListener('touchend', purchaseJoker);
-            
-            // Mobil cihazlar i�in ek optimizasyonlar
-            btn.style.touchAction = 'manipulation';
-            btn.style.webkitTapHighlightColor = 'transparent';
-        }.bind(this));
-        
-        // Modal� g�ster
-        modal.style.display = 'block';
-        modal.style.visibility = 'visible';
-        modal.style.opacity = '1';
-        
-        // Mobil cihazlarda modal�n �stte g�r�nmesini garanti et
-        modal.style.zIndex = '9999';
-        modal.classList.add('show');
-        
-        // Body scroll'unu engelle (mobil cihazlarda �nemli)
-        document.body.style.overflow = 'hidden';
-        
-        console.log('? Joker ma�azas� modal a��ld�');
-        console.log('Modal visibility:', modal.style.visibility);
-        console.log('Modal display:', modal.style.display);
-        console.log('Modal z-index:', modal.style.zIndex);
-        console.log('Modal classList:', modal.classList.toString());
-        
-        // Kapat butonuna t�klama olay�
-        var self = this;
-        const closeModal = function() {
-            modal.style.display = 'none';
-            modal.style.visibility = 'hidden';
-            modal.style.opacity = '0';
-            modal.classList.remove('show');
-            document.body.style.overflow = ''; // Body scroll'unu restore et
-            // Ma�aza kapand���nda joker butonlar�n� g�ncelle
-            self.updateJokerButtons();
-        };
-        
-        // Close button events (both click and touch)
-        closeBtn.onclick = closeModal;
-        closeBtn.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            closeModal();
-        });
-        
-        // Modal d���na t�klama olay�
-        window.onclick = function(event) {
-            if (event.target === modal) {
-                closeModal();
-            }
-        };
-        
-        // Modal d���na dokunma olay� (mobil)
-        modal.addEventListener('touchend', function(event) {
-            if (event.target === modal) {
-                closeModal();
-            }
-        });
-        
-        // Sat�n alma butonlar�na da touch event ekle (mobil)
-        buyButtons.forEach(function(btn) {
-            btn.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                // onclick event'i zaten �al��acak, sadece touch'u handle ediyoruz
-            });
-        });
-    },
-    
-    // Joker butonlar�n� g�ncelle
-    updateJokerButtons: function() {
-        // Elementleri dinamik olarak al (e�er hen�z null ise)
-        if (!this.jokerFiftyBtn) this.jokerFiftyBtn = document.getElementById('joker-fifty');
-        if (!this.jokerHintBtn) this.jokerHintBtn = document.getElementById('joker-hint');
-        if (!this.jokerTimeBtn) this.jokerTimeBtn = document.getElementById('joker-time');
-        if (!this.jokerSkipBtn) this.jokerSkipBtn = document.getElementById('joker-skip');
-        if (!this.jokerStoreBtn) this.jokerStoreBtn = document.getElementById('joker-store');
-        
-        const currentQuestion = this.questions[this.currentQuestionIndex] || {};
-        const isTrueFalse = currentQuestion.type === "Do�ruYanl��" || currentQuestion.type === "TrueFalse";
-        const isBlankFilling = currentQuestion.type === "BlankFilling";
-        
-        console.log('updateJokerButtons �a�r�ld�');
-        console.log('Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
-        console.log('Joker kullan�m durumlar�:', JSON.stringify(this.jokersUsed));
-        console.log('updateJokerButtons - elementler:', {
-            fifty: !!this.jokerFiftyBtn,
-            hint: !!this.jokerHintBtn,
-            time: !!this.jokerTimeBtn,
-            skip: !!this.jokerSkipBtn,
-            store: !!this.jokerStoreBtn
-        });
-        
-        // 50:50 jokeri
-        if (this.jokerFiftyBtn) {
-            const fiftyCount = this.jokerInventory.fifty || 0;
-            const used = this.jokersUsed.fifty;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${fiftyCount}${used ? '<span class=\'joker-used-text\'>?</span>' : ''}</span>`;
-            this.jokerFiftyBtn.disabled = (fiftyCount <= 0) || used || isTrueFalse || isBlankFilling;
-            this.jokerFiftyBtn.style.opacity = (fiftyCount <= 0 || used || isTrueFalse || isBlankFilling) ? '0.3' : '1';
-            this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i>${badgeHtml}`;
-        }
-        // �pucu jokeri
-        if (this.jokerHintBtn) {
-            const hintCount = this.jokerInventory.hint || 0;
-            const used = this.jokersUsed.hint;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${hintCount}${used ? '<span class=\'joker-used-text\'>?</span>' : ''}</span>`;
-            this.jokerHintBtn.disabled = (hintCount <= 0) || used;
-            this.jokerHintBtn.style.opacity = (hintCount <= 0 || used) ? '0.3' : '1';
-            this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i>${badgeHtml}`;
-        }
-        // S�re jokeri
-        if (this.jokerTimeBtn) {
-            const timeCount = this.jokerInventory.time || 0;
-            const used = this.jokersUsed.time;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${timeCount}${used ? '<span class=\'joker-used-text\'>?</span>' : ''}</span>`;
-            this.jokerTimeBtn.disabled = (timeCount <= 0) || used;
-            this.jokerTimeBtn.style.opacity = (timeCount <= 0 || used) ? '0.3' : '1';
-            this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i>${badgeHtml}`;
-        }
-        // Pas jokeri
-        if (this.jokerSkipBtn) {
-            const skipCount = this.jokerInventory.skip || 0;
-            const used = this.jokersUsed.skip;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${skipCount}${used ? '<span class=\'joker-used-text\'>?</span>' : ''}</span>`;
-            this.jokerSkipBtn.disabled = (skipCount <= 0) || used;
-            this.jokerSkipBtn.style.opacity = (skipCount <= 0 || used) ? '0.3' : '1';
-            this.jokerSkipBtn.innerHTML = `<i class="fas fa-forward"></i>${badgeHtml}`;
-        }
-        // Joker ma�azas�
-        if (this.jokerStoreBtn) {
-            this.jokerStoreBtn.innerHTML = '<i class="fas fa-store"></i>';
-        }
-    },
-    
     // Joker kullanma fonksiyonu
     useJoker: function(jokerType) {
-        // Envanter kontrol� - eksiye d��mesin
+        // Envanter kontrolü - eksiye düşmesin
         if (this.jokerInventory[jokerType] > 0) {
             this.jokersUsed[jokerType] = true;
             this.jokerInventory[jokerType]--;
             this.saveJokerInventory();
-            console.log(`${jokerType} joker kullan�ld�. Kalan: ${this.jokerInventory[jokerType]}`);
+            console.log(`${jokerType} joker kullanıldı. Kalan: ${this.jokerInventory[jokerType]}`);
             
-            // Joker kullan�m� i�in k�sa modal g�ster
+            // Joker kullanımı için kısa modal göster
             this.showJokerUsageModal(jokerType);
             
-            // Joker butonlar�n� g�ncelle
+            // Joker butonlarını güncelle
             this.updateJokerButtons();
         } else {
             console.warn(`${jokerType} joker envanterinde yok!`);
         }
     },
     
-    // Joker kullan�m� i�in k�sa s�reli modal g�ster
+    // Joker kullanımı için kısa süreli modal göster
     showJokerUsageModal: function(jokerType) {
-        console.log(`${jokerType} jokeri i�in modal g�steriliyor...`);
+        console.log(`${jokerType} jokeri için modal gösteriliyor...`);
         
-        // Modal HTML yap�s�n� olu�tur
+        // Modal HTML yapısını oluştur
         let modalTitle = "";
         let modalMessage = "";
         let modalIcon = "";
         
-        // Joker tipine g�re i�eri�i ayarla
+        // Get current language
+        const currentLang = this.getCurrentLanguage();
+        const langData = window.languages && window.languages[currentLang] ? window.languages[currentLang] : window.languages.tr;
+
+        // Joker tipine göre içeriği ayarla
         if (jokerType === 'fifty') {
-            modalTitle = "50:50 Jokeri Kullan�ld�";
-            modalMessage = "�ki yanl�� ��k elendi!";
+            modalTitle = langData.joker50UsedTitle || "50:50 Jokeri Kullanıldı";
+            modalMessage = langData.joker50UsedMessage || "İki yanlış şık elendi!";
             modalIcon = "fa-th-large";
         } else if (jokerType === 'hint') {
-            modalTitle = "�pucu Jokeri Kullan�ld�";
-            modalMessage = "Do�ru cevap i�in ipu�lar� verildi!";
+            modalTitle = langData.hintJokerUsedTitle || "İpucu Jokeri Kullanıldı";
+            modalMessage = langData.hintJokerUsedMessage || "Doğru cevap için ipucu verildi!";
             modalIcon = "fa-lightbulb";
         } else if (jokerType === 'time') {
-            modalTitle = "S�re Jokeri Kullan�ld�";
-            modalMessage = "+15 saniye eklendi!";
+            modalTitle = langData.timeJokerUsedTitle || "Süre Jokeri Kullanıldı";
+            modalMessage = langData.timeJokerUsedMessage || "15 saniye eklendi!";
             modalIcon = "fa-clock";
         } else if (jokerType === 'skip') {
-            modalTitle = "Pas Jokeri Kullan�ld�";
-            modalMessage = "Bu soruyu ge�iyorsunuz!";
+            modalTitle = langData.skipJokerUsedTitle || "Pas Jokeri Kullanıldı";
+            modalMessage = langData.skipJokerUsedMessage || "Soru pas geçildi!";
             modalIcon = "fa-forward";
         }
         
-        // Modal div'ini olu�tur (CSS i�in stil ekleyece�iz)
+        // Modal div'ini oluştur (CSS için stil ekleyeceğiz)
         const modalDiv = document.createElement('div');
         modalDiv.className = `joker-usage-modal joker-usage-${jokerType}`;
         modalDiv.innerHTML = `
@@ -3477,7 +2403,7 @@ const quizApp = {
             animation: fadeInScale 0.3s ease-out;
         `;
         
-        // Joker tipine g�re farkl� renk �emas�
+        // Joker tipine göre farklı renk şeması
         if (jokerType === 'fifty') {
             modalDiv.style.background = 'linear-gradient(135deg, #74b9ff, #0984e3)';
         } else if (jokerType === 'hint') {
@@ -3488,14 +2414,14 @@ const quizApp = {
             modalDiv.style.background = 'linear-gradient(135deg, #ff7675, #d63031)';
         }
         
-        // ��erik stilini ayarla
+        // İçerik stilini ayarla
         const contentDiv = modalDiv.querySelector('.joker-usage-content');
         contentDiv.style.cssText = `
             color: #fff;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         `;
         
-        // �kon stilini ayarla
+        // İkon stilini ayarla
         const iconDiv = modalDiv.querySelector('.joker-usage-icon');
         iconDiv.style.cssText = `
             font-size: 40px;
@@ -3503,7 +2429,7 @@ const quizApp = {
             animation: pulse 1s infinite;
         `;
         
-        // Ba�l�k stilini ayarla
+        // Başlık stilini ayarla
         const titleEl = modalDiv.querySelector('h3');
         titleEl.style.cssText = `
             font-size: 22px;
@@ -3518,7 +2444,7 @@ const quizApp = {
             opacity: 0.9;
         `;
         
-        // Animasyonlar i�in stil ekle
+        // Animasyonlar için stil ekle
         const style = document.createElement('style');
         style.textContent = `
             @keyframes fadeInScale {
@@ -3539,10 +2465,10 @@ const quizApp = {
         `;
         document.head.appendChild(style);
         
-        // Modal� DOM'a ekle
+        // Modalı DOM'a ekle
         document.body.appendChild(modalDiv);
         
-        // Modal� k�sa s�re sonra kald�r (ip ucu jokeri i�in biraz daha uzun s�re)
+        // Modalı kısa süre sonra kaldır (ip ucu jokeri için biraz daha uzun süre)
         const displayTime = jokerType === 'hint' ? 2000 : 1500;
         
         setTimeout(() => {
@@ -3559,9 +2485,9 @@ const quizApp = {
         }, displayTime);
     },
     
-    // Joker ma�azas� say�m g�sterimini g�ncelle
+    // Joker mağazası sayım gösterimini güncelle
     updateJokerStoreDisplay: function(modal) {
-        console.log('Joker ma�azas� say�mlar� g�ncelleniyor...');
+        console.log('Joker mağazası sayımları güncelleniyor...');
         console.log('Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
         console.log('Mevcut toplam puan:', this.totalScore);
         
@@ -3570,64 +2496,64 @@ const quizApp = {
             const jokerType = el.closest('.joker-store-item').dataset.joker;
             const count = this.jokerInventory[jokerType] || 0;
             el.textContent = count;
-            console.log(`${jokerType} joker say�s� ma�azada g�ncellendi: ${count}`);
+            console.log(`${jokerType} joker sayısı mağazada güncellendi: ${count}`);
         });
         
-        // Sat�n alma butonlar�n�n durumunu da g�ncelle
+        // Satın alma butonlarının durumunu da güncelle
         const buyButtons = modal.querySelectorAll('.joker-buy-btn');
         buyButtons.forEach((btn) => {
             const item = btn.closest('.joker-store-item');
             const price = parseInt(item.dataset.price);
             btn.disabled = this.totalScore < price;
-            console.log(`Buton durumu g�ncellendi: Fiyat ${price}, Toplam puan ${this.totalScore}, Aktif: ${this.totalScore >= price}`);
+            console.log(`Buton durumu güncellendi: Fiyat ${price}, Toplam puan ${this.totalScore}, Aktif: ${this.totalScore >= price}`);
         });
     },
 
-    // Joker kullan�m durumlar�n� s�f�rla (envanter korunur)
+    // Joker kullanım durumlarını sıfırla (envanter korunur)
     resetJokerUsage: function() {
-        console.log('Joker kullan�m durumlar� s�f�rlan�yor...');
+        console.log('Joker kullanım durumları sıfırlanıyor...');
         
-        // Kullan�lm�� jokerleri s�f�rla
+        // Kullanılmış jokerleri sıfırla
         this.jokersUsed = {fifty: false, hint: false, time: false, skip: false};
         this.skipJokerActive = false;
         
-        // 50:50 joker ile devre d��� b�rak�lan se�enekleri tekrar aktif et
+        // 50:50 joker ile devre dışı bırakılan seçenekleri tekrar aktif et
         this.resetDisabledOptions();
         
-        // Joker butonlar�n� g�ncelle
+        // Joker butonlarını güncelle
         setTimeout(() => {
             this.updateJokerButtons();
         }, 100);
     },
 
-    // Reset jokers for new game (sadece oyun ba�lang�c�nda �a�r�lmal�)
+    // Reset jokers for new game (sadece oyun başlangıcında çağrılmalı)
     resetJokers: function() {
-        console.log('resetJokers �a�r�ld�, mevcut envanter:', JSON.stringify(this.jokerInventory));
+        console.log('resetJokers çağrıldı, mevcut envanter:', JSON.stringify(this.jokerInventory));
         
-        // �nce joker kullan�m durumlar�n� s�f�rla
+        // Önce joker kullanım durumlarını sıfırla
         this.resetJokerUsage();
         
-        // Envanter kontrol� - sadece tan�ms�z veya bo� ise ba�lang�� jokerleri ver
+        // Envanter kontrolü - sadece tanımsız veya boş ise başlangıç jokerleri ver
         if (!this.jokerInventory || Object.keys(this.jokerInventory).length === 0) {
-            console.log('�lk oyun veya envanter tan�ms�z, ba�lang�� jokerleri veriliyor...');
+            console.log('İlk oyun veya envanter tanımsız, başlangıç jokerleri veriliyor...');
             this.jokerInventory = {fifty: 1, hint: 1, time: 1, skip: 1};
             this.saveJokerInventory();
         }
         
-        // Mevcut envanterde eksik joker t�rleri varsa tamamla
+        // Mevcut envanterde eksik joker türleri varsa tamamla
         if (this.jokerInventory.fifty === undefined) this.jokerInventory.fifty = 0;
         if (this.jokerInventory.hint === undefined) this.jokerInventory.hint = 0;
         if (this.jokerInventory.time === undefined) this.jokerInventory.time = 0;
         if (this.jokerInventory.skip === undefined) this.jokerInventory.skip = 0;
         
-        console.log('resetJokers tamamland�, final envanter:', JSON.stringify(this.jokerInventory));
+        console.log('resetJokers tamamlandı, final envanter:', JSON.stringify(this.jokerInventory));
     },
     
-    // Yeni oyun i�in joker envanterini yenile
+    // Yeni oyun için joker envanterini yenile
     refreshJokersForNewGame: function() {
-        console.log('refreshJokersForNewGame �a�r�ld�, jokerler yenileniyor...');
+        console.log('refreshJokersForNewGame çağrıldı, jokerler yenileniyor...');
         
-        // �nce joker kullan�m durumlar�n� s�f�rla
+        // Önce joker kullanım durumlarını sıfırla
         this.resetJokerUsage();
         
         // Her yeni oyunda fresh jokerler ver
@@ -3637,7 +2563,7 @@ const quizApp = {
         console.log('Jokerler yenilendi, yeni envanter:', JSON.stringify(this.jokerInventory));
     },
     
-    // 50:50 joker ile devre d��� b�rak�lan se�enekleri s�f�rla
+    // 50:50 joker ile devre dışı bırakılan seçenekleri sıfırla
     resetDisabledOptions: function() {
         const disabledOptions = document.querySelectorAll('.option.disabled-option');
         disabledOptions.forEach(option => {
@@ -3648,1785 +2574,48 @@ const quizApp = {
             option.classList.remove('disabled-option');
         });
         
-        // �pucu mesajlar�n� da temizle
+        // İpucu mesajlarını da temizle
         const hintMessages = document.querySelectorAll('.hint-message');
         hintMessages.forEach(hint => {
             hint.remove();
         });
     },
     
-// @ts-nocheck
-/* eslint-disable */
-// Bu dosya JavaScript'tir, TypeScript de�ildir.
-// Script Version 3.0 - Firebase puan kaydetme sistemi tamamland�
-
-// Tam Ekran Modunu Ayarla
-function initFullscreenMode() {
-    // PWA tam ekran modunu etkinle�tir
-    if ('serviceWorker' in navigator) {
-        // PWA modunda �al���yor mu kontrol et
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
-                           window.navigator.standalone ||
-                           document.referrer.includes('android-app://');
-        
-        if (isStandalone) {
-            console.log('? PWA standalone modunda �al���yor');
-            
-            // Tam ekran i�in CSS s�n�flar� ekle
-            document.body.classList.add('pwa-fullscreen');
-            document.documentElement.classList.add('pwa-fullscreen');
-            
-            // Viewport meta tag g�ncelle
-            const viewport = document.querySelector('meta[name="viewport"]');
-            if (viewport) {
-                viewport.setAttribute('content', 
-                    'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
-            }
-            
-            // Status bar rengi ayarla
-            const themeColor = document.querySelector('meta[name="theme-color"]');
-            if (themeColor) {
-                themeColor.setAttribute('content', '#1e40af');
-            }
-        } else {
-            console.log('?? PWA standalone modunda �al��m�yor - taray�c� modunda');
-        }
-    }
-    
-    // CSS ile tam ekran stillerini uygula
-    const fullscreenStyles = `
-        .pwa-fullscreen {
-            height: 100vh !important;
-            height: 100dvh !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-        
-        .pwa-fullscreen .container {
-            height: 100vh !important;
-            height: 100dvh !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            overflow-y: auto !important;
-        }
-        
-        /* Safe area i�in padding ekle */
-        @supports (padding: max(0px)) {
-            .pwa-fullscreen .container {
-                padding-top: max(env(safe-area-inset-top), 0px) !important;
-                padding-bottom: max(env(safe-area-inset-bottom), 0px) !important;
-                padding-left: max(env(safe-area-inset-left), 0px) !important;
-                padding-right: max(env(safe-area-inset-right), 0px) !important;
-            }
-        }
-        
-        /* Capacitor/Cordova i�in */
-        .platform-cordova .pwa-fullscreen,
-        .platform-capacitor .pwa-fullscreen {
-            height: 100vh !important;
-            overflow: hidden !important;
-        }
-    `;
-    
-    // Stilleri head'e ekle
-    const styleSheet = document.createElement('style');
-    styleSheet.type = 'text/css';
-    styleSheet.innerText = fullscreenStyles;
-    document.head.appendChild(styleSheet);
-}
-
-// Sayfa Y�kleme ��lemleri
-document.addEventListener('DOMContentLoaded', () => {
-    // Tam ekran modunu ba�lat
-    initFullscreenMode();
-    
-    // Ana i�eri�i g�r�n�r yap
-    const container = document.querySelector('.container');
-    if (container) {
-        container.style.visibility = 'visible';
-        container.classList.add('fade-in');
-    }
-});
-
-const quizApp = {
-    // DOM Elements
-    questionElement: document.getElementById('question'),
-    optionsElement: document.getElementById('options'),
-    resultElement: document.getElementById('result'),
-    scoreElement: document.getElementById('score'),
-    restartButton: document.getElementById('restart'),
-    quizElement: document.getElementById('quiz'),
-    containerElement: document.querySelector('.container'),
-    categorySelectionElement: document.getElementById('category-selection'),
-    categoriesElement: document.getElementById('categories'),
-    nextButton: document.getElementById('next-question'),
-    highScoresListElement: document.getElementById('high-scores-list'),
-    timeLeftElement: document.getElementById('time-left'),
-    badgesContainer: document.getElementById('badges'),
-    themeToggle: document.getElementById('checkbox'),
-    jokerFiftyBtn: null, // document.getElementById('joker-fifty'),
-    jokerHintBtn: null, // document.getElementById('joker-hint'),
-    jokerTimeBtn: null, // document.getElementById('joker-time'),
-    jokerSkipBtn: null, // document.getElementById('joker-skip'),
-    jokerStoreBtn: null, // document.getElementById('joker-store'),
-    
-    // State Variables
-    currentQuestionIndex: 0,
-    score: 0,
-    totalScore: 0, // <-- EKLEND�: Toplam birikmi� puan
-    sessionScore: 0, // <-- EKLEND�: Bu oturumdaki toplam puan
-    userLevel: 1, // <-- EKLEND�: Kullan�c� seviyesi
-    levelProgress: 0, // <-- EKLEND�: Seviye ilerlemesi (XP)
-    correctAnswers: 0,
-    selectedCategory: null,
-    questions: [],
-    allQuestionsData: {},
-    questionsData: {}, 
-    timerInterval: null,
-    timeLeft: 0,
-    answeredQuestions: 0,
-    answerTimes: [],
-    jokersUsed: {fifty: false, hint: false, time: false, skip: false},
-    jokerInventory: {fifty: 0, hint: 0, time: 0, skip: 0},
-    soundEnabled: true,
-    lives: 5,
-    currentLevel: 1,
-    levelProgress: 0,
-    skipJokerActive: false,
-    currentSection: 1, // �u anki b�l�m numaras�
-    totalSections: 50, // Toplam b�l�m say�s�
-    sectionStats: [], // Her b�l�m i�in do�ru/yanl�� cevap istatistiklerini saklayacak dizi
-    currentLanguage: 'tr', // Varsay�lan dil
-    translatedQuestions: {}, // �evrilmi� sorular
-    isLoggedIn: false, // <-- EKLEND�: Kullan�c� giri� durumu
-    currentUser: null, // <-- EKLEND�: Mevcut kullan�c�
-    userSettings: {}, // <-- EKLEND�: Kullan�c� ayarlar�
-    totalScore: 0, // <-- EKLEND�: Toplam puan
-    sessionScore: 0, // <-- EKLEND�: Oturum puan�
-    userLevel: 1, // <-- EKLEND�: Kullan�c� seviyesi
-    levelProgress: 0, // <-- EKLEND�: Seviye ilerlemesi
-    
-    // Constants
-    HIGH_SCORES_KEY: 'quizHighScores',
-    MAX_HIGH_SCORES: 5,
-    TIME_PER_QUESTION: 45,
-    TIME_PER_BLANK_FILLING_QUESTION: 60,
-    SEEN_QUESTIONS_KEY: 'quizSeenQuestions',
-    QUESTIONS_PER_GAME: 'dynamic', // Art�k kategoriye g�re dinamik
-    STATS_KEY: 'quizStats',
-    USER_SETTINGS_KEY: 'quizSettings',
-    JOKER_INVENTORY_KEY: 'quizJokerInventory',
-    LANGUAGE_KEY: 'quizLanguage',
-    
-    // Ba�lang��
-    init: function() {
-        console.log("Quiz Uygulamas� Ba�lat�l�yor...");
-        
-        // �lk Firebase durumu kontrol�
-        console.log('?? Firebase �lk Durum Kontrol�:');
-        console.log('- Firebase nesnesi:', typeof firebase !== 'undefined' ? 'VAR' : 'YOK');
-        console.log('- Firebase.auth:', firebase && firebase.auth ? 'VAR' : 'YOK');
-        console.log('- Firebase.firestore:', firebase && firebase.firestore ? 'VAR' : 'YOK');
-        
-        // Taray�c� �zelliklerini kontrol et
-        this.checkBrowserSupport();
-        
-        try {
-            // �nce dil ayarlar�n� y�kle
-            this.loadLanguageSettings();
-            
-            // Kullan�c� aray�z�n� haz�rla
-            this.initUI();
-            
-            // �nce kullan�c� ayarlar�n� y�kle
-            this.loadUserSettings();
-            
-            // Joker tab bar'� ba�lat
-            this.initJokerTabBar();
-            
-            // Kullan�c�n�n quiz modunda olup olmad���n� kontrol et (sayfa yenilemesi senaryosu i�in)
-            if (localStorage.getItem('quizModeActive') === 'true' && document.getElementById('quiz').style.display !== 'none') {
-                this.activateQuizMode();
-            }
-            
-            // localStorage'dan skor verilerini y�kle
-            this.loadScoreFromLocalStorage();
-            
-            // Soru verilerini y�kle
-            this.loadQuestionsData()
-                .then(() => {
-                    console.log("T�m veriler ba�ar�yla y�klendi.");
-                    
-                    // Soru verilerinin y�klenip y�klenmedi�ini kontrol et
-                    if (!this.questionsData || Object.keys(this.questionsData).length === 0) {
-                        console.error("Soru verileri y�klenemedi veya bo�!");
-                        
-                        // Tekrar y�klemeyi dene
-                        this.loadQuestionsData()
-                            .then(() => {
-                                console.log("�kinci deneme: Soru verileri y�klendi");
-                            })
-                            .catch(err => {
-                                console.error("�kinci deneme ba�ar�s�z:", err);
-                                this.showAlert(this.getTranslation('questionLoadError'));
-                            });
-                    }
-                    
-                    // Sorular� �evir
-                    this.translateQuestions();
-                })
-                .catch(error => {
-                    console.error("Soru verileri y�klenirken hata olu�tu:", error);
-                });
-        } catch (error) {
-            console.error("Ba�latma s�ras�nda kritik hata:", error);
-        }
-    },
-    
-    // Mevcut dil i�in metni getir
-    getTranslation: function(key) {
-        try {
-            // Dil dosyas� import edilmi� mi kontrol et
-            if (typeof languages === 'undefined') {
-                console.warn('Dil dosyas� y�klenemedi. Varsay�lan metin g�steriliyor.');
-                return this.getDefaultTranslation(key);
-            }
-            
-            // Mevcut dil i�in �eviri var m�?
-            if (languages[this.currentLanguage] && languages[this.currentLanguage][key] !== undefined) {
-                return languages[this.currentLanguage][key];
-            }
-            
-            // T�rk�e varsay�lan dil olarak kullan�l�r
-            if (languages.tr && languages.tr[key] !== undefined) {
-                return languages.tr[key];
-            }
-            
-            // �eviri bulunamazsa, anahtar� d�nd�r
-            console.warn(`'${key}' i�in �eviri bulunamad�.`);
-            return key;
-        } catch (error) {
-            console.error('�eviri al�n�rken hata olu�tu:', error);
-            return this.getDefaultTranslation(key);
-        }
-    },
-    
-    // Varsay�lan �evirileri d�nd�r
-    getDefaultTranslation: function(key) {
-        // S�k kullan�lan metinler i�in varsay�lan de�erler
-        const defaults = {
-            'appName': 'Quiz Game',
-            'loading': 'Loading...',
-            'restart': 'Restart',
-            'next': 'Next',
-            'score': 'Score',
-            'correct': 'Correct!',
-            'wrong': 'Wrong!',
-            'timeUp': 'Time is up!',
-            'correctAnswer': 'Correct answer',
-            'questionImage': 'Question image',
-            'true': 'TRUE',
-            'false': 'FALSE'
-        };
-        
-        return defaults[key] || key;
-    },
-    
-    // Dil ayarlar�n� y�kle
-    loadLanguageSettings: function() {
-        try {
-            // Local storage'dan tercihler ekran�nda se�ilen dili kontrol et
-            const userLanguage = localStorage.getItem('user_language');
-            
-            if (userLanguage && ['tr', 'en', 'de'].includes(userLanguage)) {
-                this.currentLanguage = userLanguage;
-                console.log(`Kullan�c� tercih etti�i dil: ${this.currentLanguage}`);
-                
-                // HTML dil etiketini g�ncelle
-                document.documentElement.setAttribute('lang', this.currentLanguage);
-                document.documentElement.setAttribute('data-language', this.currentLanguage);
-            } else {
-                // Kaydedilmi� dil ayar� varsa y�kle
-                const savedLanguage = localStorage.getItem(this.LANGUAGE_KEY);
-                if (savedLanguage && ['tr', 'en', 'de'].includes(savedLanguage)) {
-                    this.currentLanguage = savedLanguage;
-                    console.log(`Kaydedilmi� dil ayar�: ${this.currentLanguage}`);
-                } else {
-                    // Taray�c� dilini kontrol et
-                    const browserLang = navigator.language || navigator.userLanguage;
-                    if (browserLang) {
-                        const lang = browserLang.substring(0, 2).toLowerCase();
-                        
-                        // Desteklenen diller
-                        if (['tr', 'en', 'de'].includes(lang)) {
-                            this.currentLanguage = lang;
-                        } else {
-                            // Desteklenmeyen dil durumunda varsay�lan olarak �ngilizce
-                            this.currentLanguage = 'en';
-                        }
-                        
-                        console.log(`Taray�c� dili: ${browserLang}, Uygulama dili: ${this.currentLanguage}`);
-                    }
-                }
-            }
-            
-            // Dil de�i�tirme elementini olu�tur
-            this.createLanguageSelector();
-        } catch (e) {
-            console.error("Dil ayarlar� y�klenirken hata:", e);
-            this.currentLanguage = 'tr'; // Hata durumunda varsay�lan dil
-        }
-    },
-    
-    // Dil se�ici olu�tur
-    createLanguageSelector: function() {
-        // Men�de zaten bir dil se�ici oldu�u i�in sayfa �zerinde ekstra bir dil se�ici olu�turmuyoruz
-        console.log("Men�de zaten dil se�im alan� bulundu�u i�in ek bir dil se�ici olu�turulmad�");
-        return;
-    },
-    
-    // Dili de�i�tir
-    switchLanguage: function(language) {
-        if (this.currentLanguage === language) return;
-        
-        console.log(`Dil de�i�tiriliyor: ${this.currentLanguage} -> ${language}`);
-        
-        // Dili kaydet
-        this.currentLanguage = language;
-        localStorage.setItem(this.LANGUAGE_KEY, language);
-        localStorage.setItem('quizLanguage', language); // Eski referans i�in uyumluluk
-        
-        // HTML etiketinin dil �zelliklerini g�ncelle
-        const htmlRoot = document.getElementById('html-root') || document.documentElement;
-        htmlRoot.setAttribute('lang', language);
-        htmlRoot.setAttribute('data-language', language);
-        
-        // Soru verilerini yeniden y�kle
-        this.loadQuestionsData()
-            .then(() => {
-                console.log("Dil de�i�ikli�i sonras� yeni soru verileri y�klendi");
-                
-                // UI metinlerini g�ncelle
-                this.updateUITexts();
-                
-                // Dil de�i�ikli�i olay�n� tetikle - bu, di�er mod�llerin �evirilerini g�ncellemesini sa�lar
-                document.dispatchEvent(new Event('languageChanged'));
-                
-                // E�er aktif bir kategori varsa ve sorular g�steriliyorsa, sorular� g�ncelle
-                if (this.selectedCategory && this.quizElement && this.quizElement.style.display !== 'none') {
-                    // Kategorileri yeniden g�ster (mevcut dildeki kategorileri g�stermek i�in)
-                    this.displayCategories();
-                    
-                    // Se�ili kategori ad�n� kontrol et ve mevcut dildeki kar��l���n� bul
-                    const translatedCategoryName = this.getCurrentCategoryName(this.selectedCategory);
-                    
-                    if (this.questionsData[translatedCategoryName]) {
-                        // Kategori mevcut dildeki sorularla g�ncellenir
-                        this.selectedCategory = translatedCategoryName;
-                        
-                        // Sorular� g�ncelle
-                        this.questions = this.shuffleArray([...this.questionsData[this.selectedCategory]]);
-                        this.arrangeBlankFillingFirst();
-                        
-                        // Mevcut soruyu s�f�rla ve ilk soruyu g�ster
-                        this.currentQuestionIndex = 0;
-                        this.displayQuestion(this.questions[0]);
-                    }
-                }
-                
-                // Mevcut g�sterilen i�eri�i g�ncelle
-                this.updateCurrentContent();
-                
-                // Dil de�i�ikli�ini kullan�c�ya bildir
-                this.showToast(this.getTranslation('languageChanged'), 'toast-success');
-                this.updateResultAndWarningTexts();
-            })
-            .catch(error => {
-                console.error("Dil de�i�ikli�i sonras� soru verileri y�klenirken hata:", error);
-                this.showToast("Sorular y�klenirken bir hata olu�tu", "toast-error");
-            });
-    },
-    
-    // Sorular� �evir
-    translateQuestions: function() {
-        if (!this.questionsData || Object.keys(this.questionsData).length === 0) {
-            console.warn('�evrilecek soru verisi bulunamad�.');
-            return;
-        }
-        
-        if (this.currentLanguage === 'tr') {
-            // T�rk�e i�in �eviriye gerek yok, orijinal sorular� kullan
-            this.translatedQuestions = this.cloneObject(this.questionsData);
-            // Mevcut sorular� g�ncelle
-            this.updateCurrentQuestionsWithTranslations();
-            return;
-        }
-        
-        // �evrilmi� sorular zaten varsa ve ge�erli dilde ise tekrar �evirme
-        if (this.hasTranslatedQuestions(this.currentLanguage)) {
-            console.log(`${this.currentLanguage} dilinde �evrilmi� sorular zaten mevcut, tekrar �evirme i�lemi yap�lmayacak.`);
-            
-            // Mevcut sorular� g�ncelle
-            this.updateCurrentQuestionsWithTranslations();
-            return;
-        }
-        
-        console.log(`Sorular ${this.currentLanguage} diline �evriliyor...`);
-        
-        // Bo� �eviri nesnesini olu�tur
-        this.translatedQuestions = {};
-        
-        // Her kategori i�in
-        Object.keys(this.questionsData).forEach(categoryTR => {
-            // Kategori ad�n� �evir
-            const translatedCategoryName = this.getTranslatedCategoryName(categoryTR, this.currentLanguage);
-            this.translatedQuestions[translatedCategoryName] = [];
-            
-            // Kategorideki her soru i�in
-            this.questionsData[categoryTR].forEach(questionObj => {
-                // Soru nesnesinin kopyas�n� olu�tur
-                const translatedQuestion = this.cloneObject(questionObj);
-                
-                // Translations �zelli�i varsa ve istenen dilde �eviri varsa kullan
-                if (questionObj.translations && questionObj.translations[this.currentLanguage]) {
-                    const translation = questionObj.translations[this.currentLanguage];
-                    if (translation.question) translatedQuestion.question = translation.question;
-                    if (translation.options) translatedQuestion.options = translation.options;
-                    if (translation.correctAnswer) translatedQuestion.correctAnswer = translation.correctAnswer;
-                } else {
-                    // Soru metnini ve ��klar� �evir (otomatik �eviri yerine �zelle�tirilmi� metin)
-                    if (this.currentLanguage === 'en') {
-                        translatedQuestion.question = this.translateToEnglish(questionObj.question);
-                        
-                        if (Array.isArray(translatedQuestion.options)) {
-                            translatedQuestion.options = translatedQuestion.options.map(option => 
-                                this.translateToEnglish(option)
-                            );
-                        }
-                        
-                        if (translatedQuestion.correctAnswer) {
-                            translatedQuestion.correctAnswer = this.translateToEnglish(questionObj.correctAnswer);
-                        }
-                        
-                        // Do�ru/Yanl�� sorular� i�in
-                        if (translatedQuestion.type === "Do�ruYanl��" || translatedQuestion.type === "TrueFalse") {
-                            translatedQuestion.type = "TrueFalse";
-                            
-                            if (translatedQuestion.correctAnswer === "DO�RU" || translatedQuestion.correctAnswer === "YANLI�") {
-                                translatedQuestion.correctAnswer = trueFalseMapping[translatedQuestion.correctAnswer].en;
-                            }
-                        }
-                    } else if (this.currentLanguage === 'de') {
-                        translatedQuestion.question = this.translateToGerman(questionObj.question);
-                        
-                        if (Array.isArray(translatedQuestion.options)) {
-                            translatedQuestion.options = translatedQuestion.options.map(option => 
-                                this.translateToGerman(option)
-                            );
-                        }
-                        
-                        if (translatedQuestion.correctAnswer) {
-                            translatedQuestion.correctAnswer = this.translateToGerman(questionObj.correctAnswer);
-                        }
-                        
-                        // Do�ru/Yanl�� sorular� i�in
-                        if (translatedQuestion.type === "Do�ruYanl��" || translatedQuestion.type === "TrueFalse") {
-                            translatedQuestion.type = "TrueFalse";
-                            
-                            if (translatedQuestion.correctAnswer === "DO�RU" || translatedQuestion.correctAnswer === "YANLI�") {
-                                translatedQuestion.correctAnswer = trueFalseMapping[translatedQuestion.correctAnswer].de;
-                            }
-                        }
-                    }
-                }
-                
-                // Kategori ad�n� g�ncelle
-                translatedQuestion.category = translatedCategoryName;
-                
-                // Bo�luk doldurma sorular� i�in
-                if (translatedQuestion.type === "BlankFilling" && translatedQuestion.choices) {
-                    // Harfleri �evir (�rne�in Almanca'da �, � gibi harfler i�in)
-                    translatedQuestion.choices = this.translateChoices(questionObj.choices, this.currentLanguage);
-                }
-                
-                // �evrilmi� soruyu kategoriye ekle
-                this.translatedQuestions[translatedCategoryName].push(translatedQuestion);
-            });
-        });
-        
-        console.log(`Soru �evirisi tamamland�. ${Object.keys(this.translatedQuestions).length} kategori �evrildi.`);
-        
-        // Mevcut sorular� g�ncelle
-        this.updateCurrentQuestionsWithTranslations();
-    },
-    
-    // �evrilmi� sorular var m� kontrol et
-    hasTranslatedQuestions: function(language) {
-        // �evrilmi� sorular bo�sa veya dil T�rk�e ise kontrol etmeye gerek yok
-        if (language === 'tr' || !this.translatedQuestions) {
-            return false;
-        }
-        
-        // �evrilmi� sorular�n i�inde en az bir kategori var m�?
-        const hasCategories = Object.keys(this.translatedQuestions).length > 0;
-        
-        if (hasCategories) {
-            // Rastgele bir kategori se�
-            const sampleCategory = Object.keys(this.translatedQuestions)[0];
-            
-            // Bu kategoride soru var m�?
-            const hasQuestions = this.translatedQuestions[sampleCategory] && 
-                                this.translatedQuestions[sampleCategory].length > 0;
-            
-            if (hasQuestions) {
-                // Rastgele bir soru se�
-                const sampleQuestion = this.translatedQuestions[sampleCategory][0];
-                
-                // Bu soru �evrilmi� mi? (Kategori ad�n� kontrol et)
-                // T�rk�e kategorinin �evrilmi� ad�n� bul
-                const originalCategoryName = Object.keys(this.questionsData)[0]; // �lk T�rk�e kategori
-                const expectedTranslatedName = this.getTranslatedCategoryName(originalCategoryName, language);
-                
-                // �evirinin do�ru dilde olup olmad���n� kontrol et
-                return sampleCategory === expectedTranslatedName;
-            }
-        }
-        
-        return false;
-    },
-    
-    // Mevcut sorular� �evirilerle g�ncelle
-    updateCurrentQuestionsWithTranslations: function() {
-        // E�er bir kategori se�ilmi�se ve sorular y�klenmi�se, mevcut sorular� da g�ncelle
-        if (this.selectedCategory && this.questions.length > 0) {
-            console.log(`Se�ili kategori: ${this.selectedCategory}`);
-            
-            // Mevcut sorular dil de�i�iminden sonra g�ncellenecek
-            const translatedCategoryName = this.getCurrentCategoryName(this.selectedCategory);
-            
-            console.log(`Se�ili kategori: ${this.selectedCategory}, �evrilmi� ad�: ${translatedCategoryName}`);
-            
-            // �evrilmi� kategorideki sorular� al
-            const translatedCategoryQuestions = this.currentLanguage === 'tr' ? 
-                this.questionsData[translatedCategoryName] : 
-                this.translatedQuestions[translatedCategoryName];
-            
-            if (translatedCategoryQuestions) {
-                console.log(`${translatedCategoryName} kategorisinde ${translatedCategoryQuestions.length} �evrilmi� soru bulundu.`);
-                
-                // Sorular� g�ncelle
-                this.questions = this.shuffleArray([...translatedCategoryQuestions]);
-                this.arrangeBlankFillingFirst();
-                
-                // Mevcut soruyu g�ncelle
-                if (this.currentQuestionIndex < this.questions.length) {
-                    this.displayQuestion(this.questions[this.currentQuestionIndex]);
-                }
-            } else {
-                console.warn(`${translatedCategoryName} kategorisinde �evrilmi� soru bulunamad�!`);
-            }
-        }
-    },
-    
-    // Nesne kopyalama (deep clone)
-    cloneObject: function(obj) {
-        return JSON.parse(JSON.stringify(obj));
-    },
-    
-    // Kategori ad�n� �evir
-    getTranslatedCategoryName: function(categoryTR, targetLang) {
-        if (categoryMappings[categoryTR] && categoryMappings[categoryTR][targetLang]) {
-            return categoryMappings[categoryTR][targetLang];
-        }
-        
-        // E�le�me yoksa orijinal kategori ad�n� d�nd�r
-        return categoryTR;
-    },
-    
-    // UI elemanlar�n� g�ncelle
-    updateUITexts: function() {
-        // Ba�l�k
-        document.title = this.getTranslation('appName');
-        
-        // Navbar ba�l���
-        const navbarTitle = document.querySelector('.navbar-title');
-        if (navbarTitle) navbarTitle.textContent = this.getTranslation('appName');
-        const appTitle = document.querySelector('.app-title');
-        if (appTitle) appTitle.textContent = this.getTranslation('appName');
-        const mainTitle = document.querySelector('.main-title');
-        if (mainTitle) mainTitle.textContent = this.getTranslation('appName');
-        
-        // Yan men� (sidebar) metinleri
-        const sidebarHome = document.querySelector('.sidebar-home');
-        if (sidebarHome) sidebarHome.textContent = this.getTranslation('home');
-        const sidebarFriends = document.querySelector('.sidebar-friends');
-        if (sidebarFriends) sidebarFriends.textContent = this.getTranslation('friends');
-        const sidebarLeaderboard = document.querySelector('.sidebar-leaderboard');
-        if (sidebarLeaderboard) sidebarLeaderboard.textContent = this.getTranslation('leaderboardMenu');
-        
-        // Ana men� ba�l���
-        const menuTitle = document.querySelector('.menu-title');
-        if (menuTitle) {
-            menuTitle.textContent = this.getTranslation('quiz');
-        }
-        
-        // Quiz ba�l��� (soru ekran� �st�)
-        const quizHeader = document.querySelector('#quiz h2');
-        if (quizHeader) {
-            quizHeader.textContent = this.getTranslation('quiz');
-        }
-        
-        // ��k�� butonu kald�r�ld�
-        
-        // Ana men� butonlar�
-        const singlePlayerBtn = document.getElementById('single-player-btn');
-        if (singlePlayerBtn) {
-            singlePlayerBtn.textContent = this.getTranslation('singlePlayer');
-        }
-        const multiPlayerBtn = document.getElementById('online-game-button');
-        if (multiPlayerBtn) {
-            multiPlayerBtn.textContent = this.getTranslation('multiPlayer');
-        }
-        const leaderboardBtn = document.getElementById('view-global-leaderboard');
-        if (leaderboardBtn) {
-            leaderboardBtn.textContent = this.getTranslation('leaderboard');
-        }
-        const statsBtn = document.getElementById('show-stats');
-        if (statsBtn) {
-            statsBtn.textContent = this.getTranslation('statistics');
-        }
-        const settingsBtn = document.getElementById('show-settings');
-        if (settingsBtn) {
-            settingsBtn.textContent = this.getTranslation('settings');
-        }
-        const addQuestionBtn = document.getElementById('add-question-button');
-        if (addQuestionBtn) {
-            addQuestionBtn.textContent = this.getTranslation('addQuestion');
-        }
-        // Logout butonu kald�r�ld�
-        
-        // Kategori ba�l���
-        const categoryTitle = document.querySelector('#category-selection h2 span');
-        if (categoryTitle) {
-            categoryTitle.textContent = this.getTranslation('categories');
-        }
-        
-        // Puan etiketi
-        if (this.scoreElement) {
-            const scoreLabel = this.scoreElement.querySelector('.score-label');
-            if (scoreLabel) {
-                scoreLabel.textContent = this.getTranslation('score');
-            }
-        }
-        
-        // Sonraki soru butonu
-        if (this.nextButton) {
-            const nextBtnText = this.nextButton.querySelector('span');
-            if (nextBtnText) {
-                nextBtnText.textContent = this.getTranslation('next');
-            } else {
-                this.nextButton.textContent = this.getTranslation('next');
-            }
-        }
-        
-        // Yeniden ba�lat butonu
-        if (this.restartButton) {
-            this.restartButton.textContent = this.getTranslation('restart');
-        }
-        
-        // Joker butonlar�
-        this.updateJokerButtonsText();
-        
-        // Dil etiketi
-        const langLabel = document.getElementById('language-label');
-        if (langLabel) {
-            langLabel.textContent = this.getTranslation('language') + ':';
-        }
-        
-        // Hamburger men� ��eleri - Yeni ID'ler ile g�ncelleme
-        const appTitleElement = document.getElementById('menu-app-title');
-        if (appTitleElement) {
-            appTitleElement.textContent = this.getTranslation('app');
-        }
-        
-        const settingsTitleElement = document.getElementById('menu-settings-title');
-        if (settingsTitleElement) {
-            settingsTitleElement.textContent = this.getTranslation('settings');
-        }
-        
-        // Men� ��eleri metinleri
-        const homeText = document.getElementById('menu-home-text');
-        if (homeText) {
-            homeText.textContent = this.getTranslation('home');
-        }
-        
-        const profileText = document.getElementById('menu-profile-text');
-        if (profileText) {
-            profileText.textContent = this.getTranslation('profile');
-        }
-        
-        const friendsText = document.getElementById('menu-friends-text');
-        if (friendsText) {
-            friendsText.textContent = this.getTranslation('friends');
-        }
-        
-        const leaderboardText = document.getElementById('menu-leaderboard-text');
-        if (leaderboardText) {
-            leaderboardText.textContent = this.getTranslation('leaderboardMenu');
-        }
-        
-        // Ayarlar metinleri
-        const languageText = document.getElementById('menu-language-text');
-        if (languageText) {
-            languageText.textContent = this.getTranslation('language');
-        }
-        
-        const difficultyText = document.getElementById('menu-difficulty-text');
-        if (difficultyText) {
-            difficultyText.textContent = this.getTranslation('difficulty');
-        }
-        
-        const soundText = document.getElementById('menu-sound-text');
-        if (soundText) {
-            soundText.textContent = this.getTranslation('sound');
-        }
-        
-        const themeText = document.getElementById('menu-theme-text');
-        if (themeText) {
-            themeText.textContent = this.getTranslation('darkTheme');
-        }
-        
-        const logoutText = document.getElementById('menu-logout-text');
-        if (logoutText) {
-            logoutText.textContent = this.getTranslation('logout');
-        }
-        
-        // Zorluk seviyeleri
-        const difficultySelect = document.getElementById('difficulty-level');
-        if (difficultySelect) {
-            const options = difficultySelect.options;
-            for (let i = 0; i < options.length; i++) {
-                const option = options[i];
-                if (option.value === 'easy') {
-                    option.textContent = this.getTranslation('easy');
-                } else if (option.value === 'medium') {
-                    option.textContent = this.getTranslation('medium');
-                } else if (option.value === 'hard') {
-                    option.textContent = this.getTranslation('hard');
-                }
-            }
-        }
-        
-        // data-i18n �zniteli�i olan t�m elemanlar� g�ncelle
-        const i18nElements = document.querySelectorAll('[data-i18n]');
-        i18nElements.forEach(element => {
-            const key = element.getAttribute('data-i18n');
-            if (key && languages[this.currentLanguage] && languages[this.currentLanguage][key]) {
-                element.textContent = languages[this.currentLanguage][key];
-            }
-        });
-        
-
-    },
-    
-    // Joker butonlar� metinlerini g�ncelle
-    updateJokerButtonsText: function() {
-        if (this.jokerFiftyBtn && !this.jokersUsed.fifty) {
-            this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i>`;
-        } else if (this.jokerFiftyBtn && this.jokersUsed.fifty) {
-            this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i>`;
-        }
-        
-        if (this.jokerHintBtn && !this.jokersUsed.hint) {
-            this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i>`;
-        } else if (this.jokerHintBtn && this.jokersUsed.hint) {
-            this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i>`;
-        }
-        
-        if (this.jokerTimeBtn && !this.jokersUsed.time) {
-            this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i>`;
-        } else if (this.jokerTimeBtn && this.jokersUsed.time) {
-            this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i>`;
-        }
-        
-        if (this.jokerSkipBtn && !this.jokersUsed.skip) {
-            this.jokerSkipBtn.innerHTML = `<i class="fas fa-forward"></i>`;
-        } else if (this.jokerSkipBtn && this.jokersUsed.skip) {
-            this.jokerSkipBtn.innerHTML = `<i class="fas fa-forward"></i>`;
-        }
-        
-        if (this.jokerStoreBtn) {
-            this.jokerStoreBtn.innerHTML = `<i class="fas fa-store"></i>`;
-        }
-    },
-    
-    // Mevcut i�eri�i g�ncelle
-    updateCurrentContent: function() {
-        // Ana men� butonlar� ve di�er UI elemanlar�n� g�ncelle
-        this.updateUITexts();
-        
-        // Hangi sayfa g�r�n�rse onu g�ncelle
-        if (this.categorySelectionElement && this.categorySelectionElement.style.display !== 'none') {
-            // Kategori se�im ekran� g�r�n�yorsa
-            this.displayCategories();
-        } else if (this.quizElement && this.quizElement.style.display !== 'none' && this.questions.length > 0) {
-            // Quiz ekran� g�r�n�yorsa
-            if (this.resultElement && this.resultElement.style.display !== 'none') {
-                // Sonu� g�steriliyorsa sonu� metnini g�ncelle
-                const correctAnswer = this.questions[this.currentQuestionIndex].correctAnswer;
-                if (this.resultElement.classList.contains('correct')) {
-                    this.resultElement.innerHTML = `
-                        <div class="correct-answer-container">
-                            <div class="correct-icon"><i class="fas fa-badge-check"></i></div>
-                            <div class="correct-text">${this.getTranslation('correct')}</div>
-                            <div class="correct-animation">
-                                <span>+</span>
-                                <span>${Math.max(1, Math.ceil(this.timeLeft / (this.questions[this.currentQuestionIndex].type === "BlankFilling" ? 5 : 3)))}</span>
-                            </div>
-                        </div>
-                        <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
-                    `;
-                } else if (this.resultElement.classList.contains('wrong')) {
-                    this.resultElement.innerHTML = `${this.getTranslation('timeUp')} ${this.getTranslation('correctAnswer')}: <strong>${correctAnswer}</strong>
-                        <button id="next-question" class="next-button">${this.getTranslation('next')}</button>`;
-                }
-            } else {
-                // Aktif soru varsa yeniden y�kle
-                this.displayQuestion(this.questions[this.currentQuestionIndex]);
-            }
-        }
-        this.updateResultAndWarningTexts();
-    },
-    
-    // Basit �eviri fonksiyonlar� (ger�ek bir projede daha profesyonel bir ��z�m kullan�lmal�d�r)
-    translateToEnglish: function(text) {
-        // Bo� metin kontrol�
-        if (!text) return '';
-        
-        // Bu sadece basit bir �rnektir - ger�ek projede buraya �zelle�tirilmi� �eviri eklenebilir
-        // Not: Ger�ek bir uygulamada burada �nceden haz�rlanm�� �eviriler veya API kullan�labilir
-        return text; // �u an i�in orijinal metni koruyoruz
-    },
-    
-    translateToGerman: function(text) {
-        // Bo� metin kontrol�
-        if (!text) return '';
-        
-        // Almanca �eviri - bu basit bir �rnek
-        return text; // �u an i�in orijinal metni koruyoruz
-    },
-    
-    // Bo�luk doldurma i�in harfleri �evir
-    translateChoices: function(choices, targetLang) {
-        if (!choices) return [];
-        
-        // Bu fonksiyon �zellikle Almanca gibi dillerde �, �, � gibi harfler i�in kullan�labilir
-        // �u an i�in orijinal harfleri koruyoruz
-        return choices;
-    },
-    
-    // Mevcut dil i�in ge�erli kategori ad�n� al
-    getCurrentCategoryName: function(originalCategory) {
-        if (this.currentLanguage === 'tr') return originalCategory;
-        
-        // T�rk�e kategori ad� m� kontrol et
-        if (categoryMappings[originalCategory] && categoryMappings[originalCategory][this.currentLanguage]) {
-            return categoryMappings[originalCategory][this.currentLanguage];
-        }
-        
-        // Bu kategori ad� zaten �evrilmi� bir isim mi kontrol et
-        if (reverseCategoryMappings[originalCategory] && 
-            reverseCategoryMappings[originalCategory]['tr']) {
-            return originalCategory; // Zaten �evrilmi� durumda, aynen d�nd�r
-        }
-        
-        // Burada e�er kategori �evrilmi� bir isimse, mevcut dilde do�ru versiyonunu bul
-        for (const [sourceCat, translations] of Object.entries(reverseCategoryMappings)) {
-            // E�er bu bir yabanc� kategori ad�ysa ve bizim istedi�imiz dilde bir kar��l��� varsa
-            if (sourceCat === originalCategory && translations[this.currentLanguage]) {
-                return translations[this.currentLanguage];
-            }
-        }
-        
-        // Hi�bir e�le�me bulunamazsa orijinal kategori ad�n� d�nd�r
-        return originalCategory;
-    },
-    
-    // Toast mesaj� g�ster
-    showToast: function(message, type = 'toast-info') {
-        // Toast container'� kontrol et veya olu�tur
-        let toastContainer = document.getElementById('toast-container');
-        if (!toastContainer) {
-            toastContainer = document.createElement('div');
-            toastContainer.id = 'toast-container';
-            document.body.appendChild(toastContainer);
-        }
-        
-        // Yeni toast olu�tur
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        
-        // �kon ekle
-        let icon = '<i class="fas fa-info-circle"></i>';
-        if (type === 'toast-success') icon = '<i class="fas fa-check-circle"></i>';
-        if (type === 'toast-warning') icon = '<i class="fas fa-exclamation-triangle"></i>';
-        if (type === 'toast-error') icon = '<i class="fas fa-times-circle"></i>';
-        
-        // Toast i�eri�i
-        toast.innerHTML = `
-            <div class="toast-content">
-                ${icon}
-                <span>${message}</span>
-            </div>
-        `;
-        
-        // Toast'u ekle
-        toastContainer.appendChild(toast);
-        
-        // �pucu jokeri ve s�re jokeri i�in farkl� konumland�rma
-        // Toast'� joker butonlar�n�n hemen �zerinde g�ster
-        if (message.includes("�pucu jokeri kullan�ld�") || message.includes("S�re jokeri kullan�ld�")) {
-            toast.style.position = "fixed";
-            toast.style.bottom = "180px"; // Joker butonlar�n�n �zerinde
-            toast.style.left = "50%";
-            toast.style.transform = "translateX(-50%)";
-            toast.style.zIndex = "10002"; // Joker butonlar�ndan daha y�ksek
-        }
-        
-        // Toast'u g�ster
-        setTimeout(() => {
-            toast.classList.add('show');
-        }, 10);
-        
-        // Toast'u belirli bir s�re sonra kald�r
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => {
-                toastContainer.removeChild(toast);
-            }, 300);
-        }, 3000);
-    },
-    
-    // Taray�c� deste�ini kontrol et
-    checkBrowserSupport: function() {
-        console.log("Taray�c� �zellikleri kontrol ediliyor...");
-        
-        // localStorage deste�i
-        let hasLocalStorage = false;
-        try {
-            hasLocalStorage = 'localStorage' in window && window.localStorage !== null;
-            if (hasLocalStorage) {
-                // Test et
-                localStorage.setItem('test', 'test');
-                localStorage.removeItem('test');
-                console.log("localStorage destekleniyor");
-                    } else {
-                console.warn("localStorage desteklenmiyor");
-            }
-        } catch (e) {
-            console.error("localStorage eri�ilemez:", e);
-            hasLocalStorage = false;
-        }
-        
-        // Fetch API deste�i
-        const hasFetch = 'fetch' in window;
-        console.log("Fetch API deste�i:", hasFetch);
-        
-        // Firebase SDK varl���
-        const hasFirebase = typeof firebase !== 'undefined' && firebase.app;
-        console.log("Firebase SDK durumu:", hasFirebase ? "Y�kl�" : "Y�kl� de�il");
-        
-        // JSON i�leme deste�i
-        const hasJSON = typeof JSON !== 'undefined' && typeof JSON.parse === 'function';
-        console.log("JSON deste�i:", hasJSON);
-        
-        // Eksik �zellikler varsa kullan�c�y� bilgilendir
-        if (!hasLocalStorage || !hasFetch || !hasJSON) {
-            console.warn("Baz� taray�c� �zellikleri eksik, uygulama s�n�rl� �al��abilir");
-            // Uyar� mesaj� g�ster
-            const warningDiv = document.createElement('div');
-            warningDiv.className = 'browser-warning';
-            warningDiv.innerHTML = `
-                <div class="warning-content">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <p>${this.getTranslation('browserWarning')}</p>
-                    <button class="close-warning">${this.getTranslation('understood')}</button>
-                </div>
-            `;
-            document.body.appendChild(warningDiv);
-            
-            // Kapat butonuna t�klama olay�
-            const closeBtn = warningDiv.querySelector('.close-warning');
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => {
-                    warningDiv.remove();
-                });
-            }
-        }
-        
-        return {
-            localStorage: hasLocalStorage,
-            fetch: hasFetch,
-            firebase: hasFirebase,
-            json: hasJSON
-        };
-    },
-    
-    // Joker envanterini y�kle
-    loadJokerInventory: function() {
-        console.log('Joker envanteri y�kleniyor...');
-        console.log('localStorage anahtar�:', this.JOKER_INVENTORY_KEY);
-        
-        var inventoryJSON = localStorage.getItem(this.JOKER_INVENTORY_KEY);
-        console.log('localStorage\'dan al�nan veri:', inventoryJSON);
-        
-        if (inventoryJSON && inventoryJSON !== 'null' && inventoryJSON !== 'undefined') {
-            try {
-                const parsed = JSON.parse(inventoryJSON);
-                
-                // Ge�erli bir obje ve t�m joker t�rleri var m� kontrol et
-                if (parsed && typeof parsed === 'object' && 
-                    parsed.hasOwnProperty('fifty') && 
-                    parsed.hasOwnProperty('hint') && 
-                    parsed.hasOwnProperty('time') && 
-                    parsed.hasOwnProperty('skip')) {
-                    
-                    this.jokerInventory = parsed;
-                    console.log("Joker envanteri ba�ar�yla y�klendi:", this.jokerInventory);
-                } else {
-                    console.warn("Ge�ersiz joker envanteri format�, varsay�lan envanter atan�yor");
-                    this.jokerInventory = {fifty: 1, hint: 1, time: 1, skip: 1};
-                    this.saveJokerInventory();
-                }
-            } catch (e) {
-                console.error("Joker envanteri y�klenirken hata olu�tu:", e);
-                this.jokerInventory = {fifty: 1, hint: 1, time: 1, skip: 1};
-                this.saveJokerInventory();
-                console.log("Varsay�lan envanter atand�:", this.jokerInventory);
-            }
-        } else {
-            // �lk kez �al��t�r�l�yorsa veya ge�ersiz veri varsa her joker t�r�nden birer tane ver
-            console.log("�lk kez �al��t�r�l�yor veya ge�ersiz veri, varsay�lan envanter olu�turuluyor...");
-            this.jokerInventory = {fifty: 1, hint: 1, time: 1, skip: 1};
-            this.saveJokerInventory();
-        }
-        
-        // Negatif de�erleri �nle
-        Object.keys(this.jokerInventory).forEach(key => {
-            if (this.jokerInventory[key] < 0) {
-                this.jokerInventory[key] = 0;
-            }
-        });
-        
-        // Final kontrol
-        console.log('loadJokerInventory tamamland�, final envanter:', this.jokerInventory);
-    },
-    
-    // Joker envanterini kaydet
-    saveJokerInventory: function() {
-        try {
-            localStorage.setItem(this.JOKER_INVENTORY_KEY, JSON.stringify(this.jokerInventory));
-            console.log("Joker envanteri kaydedildi:", this.jokerInventory);
-            
-            // Kaydetmenin ba�ar�l� olup olmad���n� kontrol et
-            var saved = localStorage.getItem(this.JOKER_INVENTORY_KEY);
-            if (saved) {
-                var parsedSaved = JSON.parse(saved);
-                console.log("Kaydedilen veri do�ruland�:", parsedSaved);
-            } else {
-                console.error("Joker envanteri kaydedilemedi!");
-            }
-        } catch (e) {
-            console.error("Joker envanteri kaydedilirken hata olu�tu:", e);
-        }
-    },
-    
-    // Joker butonlar�na olay dinleyicileri ekle
-    addJokerEventListeners: function() {
-        console.log('addJokerEventListeners �a�r�ld�...');
-        
-        // Elementleri dinamik olarak al
-        this.jokerFiftyBtn = document.getElementById('joker-fifty');
-        this.jokerHintBtn = document.getElementById('joker-hint');
-        this.jokerTimeBtn = document.getElementById('joker-time');
-        this.jokerSkipBtn = document.getElementById('joker-skip');
-        this.jokerStoreBtn = document.getElementById('joker-store');
-        
-        console.log('jokerFiftyBtn:', this.jokerFiftyBtn);
-        console.log('jokerHintBtn:', this.jokerHintBtn);
-        console.log('jokerTimeBtn:', this.jokerTimeBtn);
-        console.log('jokerSkipBtn:', this.jokerSkipBtn);
-        console.log('jokerStoreBtn:', this.jokerStoreBtn);
-        
-        // Mobil debug i�in
-        console.log('Mobile device check:', /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-        console.log('Touch events supported:', 'ontouchstart' in window);
-        
-        // Joker store modal element kontrol�
-        const jokerStoreModal = document.getElementById('joker-store-modal');
-        console.log('Joker store modal element:', jokerStoreModal);
-        
-        // 50:50 jokeri
-        if (this.jokerFiftyBtn) {
-            this.jokerFiftyBtn.addEventListener('click', () => {
-                if (this.jokerFiftyBtn.disabled) return;
-                
-                console.log('50:50 joker kullan�l�yor...');
-                
-                // Mevcut sorunun do�ru cevab�n� al
-                const currentQuestion = this.questions[this.currentQuestionIndex];
-                const correctAnswer = currentQuestion.correctAnswer;
-                
-                // BlankFilling sorular�nda 50:50 joker kullan�lamaz
-                if (currentQuestion.type === "BlankFilling") {
-                    console.warn('BlankFilling sorular�nda 50:50 joker kullan�lamaz');
-                    this.showToast("Bo�luk doldurma sorular�nda 50:50 joker kullan�lamaz!", "toast-warning");
-                    return;
-                }
-                
-                // Do�ruYanl�� sorular�nda da 50:50 joker kullan�lamaz
-                if (currentQuestion.type === "Do�ruYanl��" || currentQuestion.type === "TrueFalse") {
-                    console.warn('Do�ru/Yanl�� sorular�nda 50:50 joker kullan�lamaz');
-                    this.showToast("Do�ru/Yanl�� sorular�nda 50:50 joker kullan�lamaz!", "toast-warning");
-                    return;
-                }
-                
-                console.log('Do�ru cevap:', correctAnswer);
-                
-                // Sadece aktif quiz container'daki se�enekleri al
-                const optionsContainer = document.getElementById('options');
-                const options = optionsContainer ? optionsContainer.querySelectorAll('.option') : document.querySelectorAll('#options .option');
-                console.log('Bulunan se�enekler:', options.length);
-                console.log('Options container:', optionsContainer);
-                
-                if (options.length < 3) {
-                    console.warn('Yeterli se�enek yok, 50:50 joker kullan�lamaz');
-                    this.showToast("Bu soru tipinde 50:50 joker kullan�lamaz!", "toast-warning");
-                    return;
-                }
-                
-                // Yanl�� ��klar� bul - case insensitive kar��la�t�rma
-                const wrongOptions = Array.from(options).filter((option, index) => {
-                    const optionText = option.textContent.trim();
-                    const isCorrect = optionText.toLowerCase() === correctAnswer.toLowerCase();
-                    console.log(`Se�enek ${index + 1}: "${optionText}" | Do�ru cevap: "${correctAnswer}" | E�it mi: ${isCorrect}`);
-                    return !isCorrect;
-                });
-                
-                console.log('Toplam se�enek say�s�:', options.length);
-                console.log('Yanl�� se�enek say�s�:', wrongOptions.length);
-                console.log('Do�ru se�enek say�s�:', options.length - wrongOptions.length);
-                
-                if (wrongOptions.length < 2) {
-                    console.warn('Yeterli yanl�� se�enek yok');
-                    this.showToast("Bu soruda yeterli yanl�� se�enek yok!", "toast-warning");
-                    return;
-                }
-                
-                // �ki yanl�� ��kk� rastgele se�
-                const shuffledWrong = this.shuffleArray([...wrongOptions]);
-                const toHide = shuffledWrong.slice(0, 2);
-                
-                console.log('S�nd�r�lecek se�enekler:', toHide.length);
-                
-                // Se�ili ��klar� s�nd�r
-                toHide.forEach(option => {
-                    option.style.opacity = '0.3';
-                    option.style.pointerEvents = 'none';
-                    option.style.background = 'linear-gradient(135deg, #ddd, #ccc)';
-                    option.style.color = '#666';
-                    option.style.textDecoration = 'line-through';
-                    option.style.filter = 'blur(1px)';
-                    option.style.border = '2px solid #f0f0f0';
-                    option.style.transform = 'scale(0.95)';
-                    option.style.transition = 'all 0.3s ease';
-                    option.classList.add('disabled-option');
-                    
-                    // X i�areti ekle
-                    const xMark = document.createElement('div');
-                    xMark.innerHTML = '?';
-                    xMark.style.cssText = `
-                        position: absolute;
-                        top: 10px;
-                        right: 10px;
-                        font-size: 20px;
-                        z-index: 10;
-                        animation: bounceIn 0.5s ease;
-                    `;
-                    option.style.position = 'relative';
-                    option.appendChild(xMark);
-                });
-                
-                // Jokeri kullan (useJoker i�inde zaten envanter d���r�l�yor)
-                this.useJoker('fifty');
-                
-                // Ses efekti �al
-                if (this.soundEnabled) {
-                    const fiftySound = document.getElementById('sound-correct');
-                    if (fiftySound) fiftySound.play().catch(e => {
-                        console.error("Ses �al�namad�:", e);
-                    });
-                }
-                
-                // Toast bildirimi g�ster
-                this.showToast("50:50 jokeri kullan�ld�! �ki yanl�� ��k s�nd�r�ld�.", "toast-success");
-            });
-        }
-        
-        // �pucu jokeri
-        if (this.jokerHintBtn) {
-            this.jokerHintBtn.addEventListener('click', () => {
-                if (this.jokerHintBtn.disabled) return;
-                
-                console.log('�pucu joker kullan�l�yor...');
-                
-                // Mevcut soru i�in bir ipucu g�ster
-                const currentQuestion = this.questions[this.currentQuestionIndex];
-                let hint = '';
-                
-                // �pucu olu�tur - farkl� soru tiplerine g�re
-                if (currentQuestion.category === "Bo�luk Doldurma" || currentQuestion.type === "BlankFilling") {
-                    hint = "�pucu: Cevab�n ilk harfi \"" + currentQuestion.correctAnswer.charAt(0) + "\" ";
-                    if (currentQuestion.correctAnswer.length > 3) {
-                        hint += "ve son harfi \"" + currentQuestion.correctAnswer.charAt(currentQuestion.correctAnswer.length - 1) + "\"";
-                    }
-                } else if (currentQuestion.type === "Do�ruYanl��" || currentQuestion.type === "TrueFalse") {
-                    // Do�ru/Yanl�� sorular i�in �zel ipucu
-                    const correctAnswer = currentQuestion.correctAnswer.toLowerCase();
-                    if (correctAnswer === 'do�ru' || correctAnswer === 'true' || correctAnswer === 'evet') {
-                        hint = "�pucu: Bu ifade do�ru bir bilgidir.";
-                    } else {
-                        hint = "�pucu: Bu ifadede bir yanl��l�k vard�r.";
-                    }
-                } else {
-                    const correctAnswer = currentQuestion.correctAnswer;
-                    // Cevab�n ilk ve varsa son harfini ipucu olarak ver
-                    hint = "�pucu: Do�ru cevab�n ilk harfi \"" + correctAnswer.charAt(0) + "\" ";
-                    if (correctAnswer.length > 3) {
-                        hint += "ve son harfi \"" + correctAnswer.charAt(correctAnswer.length - 1) + "\"";
-                    }
-                }
-                
-                console.log('Olu�turulan ipucu:', hint);
-                
-                // �pucunu g�ster
-                const hintElement = document.createElement('div');
-                hintElement.className = 'hint-message';
-                hintElement.innerHTML = '<i class="fas fa-lightbulb"></i> ' + hint;
-                hintElement.style.cssText = `
-                    background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
-                    color: #2d3436;
-                    padding: 15px 20px;
-                    margin: 15px 0;
-                    border-radius: 10px;
-                    border-left: 4px solid #e17055;
-                    box-shadow: 0 4px 15px rgba(253, 203, 110, 0.3);
-                    animation: fadeInUp 0.5s ease;
-                    font-weight: 600;
-                    text-align: center;
-                `;
-                
-                // �pucu mesaj�n� ekleme
-                const questionElement = document.getElementById('question');
-                if (questionElement && questionElement.parentNode) {
-                    // Eski ipucu mesaj�n� kald�r
-                    const oldHint = document.querySelector('.hint-message');
-                    if (oldHint) oldHint.remove();
-                    
-                    // Yeni ipucunu ekle
-                    questionElement.parentNode.insertBefore(hintElement, questionElement.nextSibling);
-                    console.log('�pucu mesaj� DOM\'a eklendi');
-                }
-                
-                // Jokeri kullan (useJoker i�inde zaten envanter d���r�l�yor)
-                this.useJoker('hint');
-                
-                // Ses efekti �al
-                if (this.soundEnabled) {
-                    const hintSound = document.getElementById('sound-correct');
-                    if (hintSound) hintSound.play().catch(e => {
-                        console.error("Ses �al�namad�:", e);
-                    });
-                }
-                
-                // Toast bildirimi g�ster
-                this.showToast("�pucu jokeri kullan�ld�! " + hint, "toast-success");
-            });
-        }
-        
-        // +S�re jokeri
-        if (this.jokerTimeBtn) {
-            this.jokerTimeBtn.addEventListener('click', () => {
-                if (this.jokerTimeBtn.disabled) return;
-                
-                console.log('S�re joker kullan�l�yor...');
-                console.log('Kullan�m �ncesi s�re:', this.timeLeft);
-                
-                // Mevcut sorunun s�resini 15 saniye uzat
-                this.timeLeft += 15;
-                
-                console.log('Kullan�m sonras� s�re:', this.timeLeft);
-                
-                // S�re g�stergesini g�ncelle
-                this.updateTimeDisplay();
-                
-                // Zaman�n azald���n� belirten s�n�f� kald�r
-                if (this.timeLeftElement && this.timeLeftElement.classList.contains('time-low')) {
-                    this.timeLeftElement.classList.remove('time-low');
-                }
-                
-                // Jokeri kullan (useJoker i�inde zaten envanter d���r�l�yor)
-                this.useJoker('time');
-                
-                // Ses efekti �al
-                if (this.soundEnabled) {
-                    const timeSound = document.getElementById('sound-correct');
-                    if (timeSound) timeSound.play().catch(e => {
-                        console.error("Ses �al�namad�:", e);
-                    });
-                }
-                
-                // Toast bildirimi g�ster
-                this.showToast("S�re jokeri kullan�ld�! 15 saniye eklendi. Yeni s�re: " + this.timeLeft + " saniye", "toast-success");
-            });
-        }
-        
-        // Pas jokeri
-        if (this.jokerSkipBtn) {
-            this.jokerSkipBtn.addEventListener('click', () => {
-                if (this.jokerSkipBtn.disabled) return;
-                
-                console.log('Pas joker kullan�l�yor...');
-                console.log('Pas joker kullan�m �ncesi envanter:', JSON.stringify(this.jokerInventory));
-                
-                // Joker envanterini kontrol et
-                if (this.jokerInventory.skip <= 0) {
-                    console.warn('Pas joker envanteri bo�!');
-                    this.showToast("Pas jokeriniz kalmad�!", "toast-warning");
-                    return;
-                }
-                
-                // S�reyi s�f�rlamak yerine do�rudan sonraki soruya ge�i� yapal�m
-                clearInterval(this.timerInterval);
-                
-                // Ses efekti �al
-                if (this.soundEnabled) {
-                    const skipSound = document.getElementById('sound-correct');
-                    if (skipSound) skipSound.play().catch(e => {
-                        console.error("Ses �al�namad�:", e);
-                    });
-                }
-                
-                // Jokeri kullan (useJoker i�inde zaten envanter d���r�l�yor)
-                this.useJoker('skip');
-                
-                // Toast bildirimi g�ster
-                this.showToast("Pas jokeri kullan�ld�! Sonraki soruya ge�iliyor.", "toast-success");
-                
-                console.log('Pas joker kullan�m sonras� envanter:', JSON.stringify(this.jokerInventory));
-                
-                // Bir sonraki soruya ge�
-                setTimeout(() => {
-                    this.showNextQuestion();
-                }, 800);
-            });
-        }
-        
-        // Joker ma�azas� butonu
-        if (this.jokerStoreBtn) {
-            // Click event (desktop)
-            this.jokerStoreBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.openJokerStore();
-            });
-            
-            // Touch event (mobile)
-            this.jokerStoreBtn.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-            });
-            
-            this.jokerStoreBtn.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.openJokerStore();
-            });
-            
-            // Mobil cihazlarda butonun t�klanabilir oldu�unu garanti et
-            this.jokerStoreBtn.style.cursor = 'pointer';
-            this.jokerStoreBtn.style.touchAction = 'manipulation';
-        }
-    },
-    
-    // Joker ma�azas�n� a�
-    openJokerStore: function() {
-        console.log('?? Joker ma�azas� a��l�yor...');
-        console.log('?? User Agent:', navigator.userAgent);
-        console.log('?? Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
-        console.log('?? Mevcut puan:', this.score);
-        
-        var modal = document.getElementById('joker-store-modal');
-        var closeBtn = modal.querySelector('.close-modal');
-        var buyButtons = modal.querySelectorAll('.joker-buy-btn');
-        var pointsDisplay = document.getElementById('joker-store-points-display');
-        
-        // Mevcut toplam puanlar� ve joker envanterini g�ster (misafir i�in sessionScore kullan)
-        const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
-        pointsDisplay.textContent = currentPoints || 0;
-        console.log('?? Joker ma�azas� - G�sterilen puan: ' + currentPoints + ' (Giri� durumu: ' + (this.isLoggedIn ? 'Kay�tl�' : 'Misafir') + ')');
-        console.log('?? Detay - totalScore: ' + this.totalScore + ', sessionScore: ' + this.sessionScore);
-        
-        // Oyun ekran�ndaki joker butonlar�n� da g�ncelle
-        this.updateJokerButtons();
-        
-        // Joker miktarlar�n� g�ncelle
-        this.updateJokerStoreDisplay(modal);
-        
-        // Sat�n alma butonlar�n� etkinle�tir
-        buyButtons.forEach(function(btn) {
-            var item = btn.closest('.joker-store-item');
-            var jokerType = item.dataset.joker;
-            var price = parseInt(item.dataset.price);
-            
-            // Yeterli puan varsa butonu etkinle�tir (misafir i�in sessionScore kullan)
-            const availablePoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
-            btn.disabled = availablePoints < price;
-            
-            // Sat�n alma olay�
-            var self = this;
-            btn.onclick = function() {
-                const availablePoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
-                console.log('Joker sat�n alma denemesi: ' + jokerType + ', Fiyat: ' + price + ', Mevcut Puan: ' + availablePoints + ' (' + (self.isLoggedIn ? 'totalScore' : 'sessionScore') + ')');
-                console.log('Sat�n alma �ncesi envanter:', JSON.stringify(self.jokerInventory));
-                
-                if (availablePoints >= price) {
-                    // Puan� azalt (misafir i�in sessionScore, kay�tl� i�in totalScore)
-                    if (self.isLoggedIn) {
-                    self.totalScore -= price;
-                    } else {
-                        self.sessionScore -= price;
-                    }
-                    
-                    // PUANI FIREBASE'E KAYDET
-                    if (self.isLoggedIn) {
-                        self.delayedSaveUserData(); // Firebase'e geciktirilmi� kaydet
-                        console.log(`Joker sat�n alma: ${price} puan harcand�. Yeni toplam: ${self.totalScore}`);
-                    }
-                    
-                    // Jokeri envantere ekle
-                    var previousCount = self.jokerInventory[jokerType] || 0;
-                    self.jokerInventory[jokerType]++;
-                    
-                    console.log(`${jokerType} joker say�s�: ${previousCount} -> ${self.jokerInventory[jokerType]}`);
-                    
-                    // Joker envanterini kaydet
-                    self.saveJokerInventory();
-                    
-                    // G�stergeleri g�ncelle (misafir i�in sessionScore kullan)
-                    const updatedPoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
-                    pointsDisplay.textContent = updatedPoints;
-                    
-                    // Joker ma�azas�ndaki say�mlar� ve buton durumlar�n� g�ncelle
-                    self.updateJokerStoreDisplay(modal);
-                    
-                    // OYUN EKRANINDAK� JOKER BUTONLARINI DA G�NCELLE
-                    self.updateJokerButtons();
-                    
-                    // Skor g�sterimini g�ncelle
-                    self.updateScoreDisplay();
-                    
-                    // Toast bildirimi g�ster
-                    var jokerName = jokerType === 'fifty' ? '50:50' : 
-                        jokerType === 'hint' ? '�pucu' : 
-                        jokerType === 'time' ? 'S�re' : 'Pas';
-                    self.showToast(jokerName + ' jokeri sat�n al�nd�!', "toast-success");
-                    
-                    // Joker butonlar�n� g�ncelle
-                    self.updateJokerButtons();
-                    
-                    console.log('Sat�n alma sonras� envanter:', JSON.stringify(self.jokerInventory));
-                } else {
-                    console.warn('Yeterli puan yok!');
-                    self.showToast("Yeterli puan�n�z yok!", "toast-error");
-                }
-            };
-        }.bind(this));
-        
-        // Modal� g�ster
-        modal.style.display = 'block';
-        modal.style.visibility = 'visible';
-        modal.style.opacity = '1';
-        
-        // Mobil cihazlarda modal�n �stte g�r�nmesini garanti et
-        modal.style.zIndex = '9999';
-        modal.classList.add('show');
-        
-        // Body scroll'unu engelle (mobil cihazlarda �nemli)
-        document.body.style.overflow = 'hidden';
-        
-        console.log('? Joker ma�azas� modal a��ld�');
-        console.log('Modal visibility:', modal.style.visibility);
-        console.log('Modal display:', modal.style.display);
-        console.log('Modal z-index:', modal.style.zIndex);
-        console.log('Modal classList:', modal.classList.toString());
-        
-        // Kapat butonuna t�klama olay�
-        var self = this;
-        const closeModal = function() {
-            modal.style.display = 'none';
-            modal.style.visibility = 'hidden';
-            modal.style.opacity = '0';
-            modal.classList.remove('show');
-            document.body.style.overflow = ''; // Body scroll'unu restore et
-            // Ma�aza kapand���nda joker butonlar�n� g�ncelle
-            self.updateJokerButtons();
-        };
-        
-        // Close button events (both click and touch)
-        closeBtn.onclick = closeModal;
-        closeBtn.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            closeModal();
-        });
-        
-        // Modal d���na t�klama olay�
-        window.onclick = function(event) {
-            if (event.target === modal) {
-                closeModal();
-            }
-        };
-        
-        // Modal d���na dokunma olay� (mobil)
-        modal.addEventListener('touchend', function(event) {
-            if (event.target === modal) {
-                closeModal();
-            }
-        });
-        
-        // Sat�n alma butonlar�na da touch event ekle (mobil)
-        buyButtons.forEach(function(btn) {
-            btn.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                // onclick event'i zaten �al��acak, sadece touch'u handle ediyoruz
-            });
-        });
-    },
-    
-    // Joker butonlar�n� g�ncelle
-    updateJokerButtons: function() {
-        // Elementleri dinamik olarak al (e�er hen�z null ise)
-        if (!this.jokerFiftyBtn) this.jokerFiftyBtn = document.getElementById('joker-fifty');
-        if (!this.jokerHintBtn) this.jokerHintBtn = document.getElementById('joker-hint');
-        if (!this.jokerTimeBtn) this.jokerTimeBtn = document.getElementById('joker-time');
-        if (!this.jokerSkipBtn) this.jokerSkipBtn = document.getElementById('joker-skip');
-        if (!this.jokerStoreBtn) this.jokerStoreBtn = document.getElementById('joker-store');
-        
-        const currentQuestion = this.questions[this.currentQuestionIndex] || {};
-        const isTrueFalse = currentQuestion.type === "Do�ruYanl��" || currentQuestion.type === "TrueFalse";
-        const isBlankFilling = currentQuestion.type === "BlankFilling";
-        
-        console.log('updateJokerButtons �a�r�ld�');
-        console.log('Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
-        console.log('Joker kullan�m durumlar�:', JSON.stringify(this.jokersUsed));
-        console.log('updateJokerButtons - elementler:', {
-            fifty: !!this.jokerFiftyBtn,
-            hint: !!this.jokerHintBtn,
-            time: !!this.jokerTimeBtn,
-            skip: !!this.jokerSkipBtn,
-            store: !!this.jokerStoreBtn
-        });
-        
-        // 50:50 jokeri
-        if (this.jokerFiftyBtn) {
-            const fiftyCount = this.jokerInventory.fifty || 0;
-            const used = this.jokersUsed.fifty;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${fiftyCount}${used ? '<span class=\'joker-used-text\'>?</span>' : ''}</span>`;
-            this.jokerFiftyBtn.disabled = (fiftyCount <= 0) || used || isTrueFalse || isBlankFilling;
-            this.jokerFiftyBtn.style.opacity = (fiftyCount <= 0 || used || isTrueFalse || isBlankFilling) ? '0.3' : '1';
-            this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i>${badgeHtml}`;
-        }
-        // �pucu jokeri
-        if (this.jokerHintBtn) {
-            const hintCount = this.jokerInventory.hint || 0;
-            const used = this.jokersUsed.hint;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${hintCount}${used ? '<span class=\'joker-used-text\'>?</span>' : ''}</span>`;
-            this.jokerHintBtn.disabled = (hintCount <= 0) || used;
-            this.jokerHintBtn.style.opacity = (hintCount <= 0 || used) ? '0.3' : '1';
-            this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i>${badgeHtml}`;
-        }
-        // S�re jokeri
-        if (this.jokerTimeBtn) {
-            const timeCount = this.jokerInventory.time || 0;
-            const used = this.jokersUsed.time;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${timeCount}${used ? '<span class=\'joker-used-text\'>?</span>' : ''}</span>`;
-            this.jokerTimeBtn.disabled = (timeCount <= 0) || used;
-            this.jokerTimeBtn.style.opacity = (timeCount <= 0 || used) ? '0.3' : '1';
-            this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i>${badgeHtml}`;
-        }
-        // Pas jokeri
-        if (this.jokerSkipBtn) {
-            const skipCount = this.jokerInventory.skip || 0;
-            const used = this.jokersUsed.skip;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${skipCount}${used ? '<span class=\'joker-used-text\'>?</span>' : ''}</span>`;
-            this.jokerSkipBtn.disabled = (skipCount <= 0) || used;
-            this.jokerSkipBtn.style.opacity = (skipCount <= 0 || used) ? '0.3' : '1';
-            this.jokerSkipBtn.innerHTML = `<i class="fas fa-forward"></i>${badgeHtml}`;
-        }
-        // Joker ma�azas�
-        if (this.jokerStoreBtn) {
-            this.jokerStoreBtn.innerHTML = '<i class="fas fa-store"></i>';
-        }
-    },
-    
-    // Joker kullanma fonksiyonu
-    useJoker: function(jokerType) {
-        // Envanter kontrol� - eksiye d��mesin
-        if (this.jokerInventory[jokerType] > 0) {
-            this.jokersUsed[jokerType] = true;
-            this.jokerInventory[jokerType]--;
-            this.saveJokerInventory();
-            console.log(`${jokerType} joker kullan�ld�. Kalan: ${this.jokerInventory[jokerType]}`);
-            
-            // Joker butonlar�n� g�ncelle
-            this.updateJokerButtons();
-        } else {
-            console.warn(`${jokerType} joker envanterinde yok!`);
-        }
-    },
-    
-    // Joker ma�azas� say�m g�sterimini g�ncelle
-    updateJokerStoreDisplay: function(modal) {
-        console.log('Joker ma�azas� say�mlar� g�ncelleniyor...');
-        console.log('Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
-        console.log('Mevcut toplam puan:', this.totalScore);
-        
-        const ownedCountElements = modal.querySelectorAll('.joker-owned-count');
-        ownedCountElements.forEach((el) => {
-            const jokerType = el.closest('.joker-store-item').dataset.joker;
-            const count = this.jokerInventory[jokerType] || 0;
-            el.textContent = count;
-            console.log(`${jokerType} joker say�s� ma�azada g�ncellendi: ${count}`);
-        });
-        
-        // Sat�n alma butonlar�n�n durumunu da g�ncelle
-        const buyButtons = modal.querySelectorAll('.joker-buy-btn');
-        buyButtons.forEach((btn) => {
-            const item = btn.closest('.joker-store-item');
-            const price = parseInt(item.dataset.price);
-            btn.disabled = this.totalScore < price;
-            console.log(`Buton durumu g�ncellendi: Fiyat ${price}, Toplam puan ${this.totalScore}, Aktif: ${this.totalScore >= price}`);
-        });
-    },
-
-    // Joker kullan�m durumlar�n� s�f�rla (envanter korunur)
-    resetJokerUsage: function() {
-        console.log('Joker kullan�m durumlar� s�f�rlan�yor...');
-        
-        // Kullan�lm�� jokerleri s�f�rla
-        this.jokersUsed = {fifty: false, hint: false, time: false, skip: false};
-        this.skipJokerActive = false;
-        
-        // 50:50 joker ile devre d��� b�rak�lan se�enekleri tekrar aktif et
-        this.resetDisabledOptions();
-        
-        // Joker butonlar�n� g�ncelle
-        setTimeout(() => {
-            this.updateJokerButtons();
-        }, 100);
-    },
-
-    // Reset jokers for new game (sadece oyun ba�lang�c�nda �a�r�lmal�)
-    resetJokers: function() {
-        console.log('resetJokers �a�r�ld�, mevcut envanter:', JSON.stringify(this.jokerInventory));
-        
-        // �nce joker kullan�m durumlar�n� s�f�rla
-        this.resetJokerUsage();
-        
-        // Envanter kontrol� - sadece tan�ms�z veya bo� ise ba�lang�� jokerleri ver
-        if (!this.jokerInventory || Object.keys(this.jokerInventory).length === 0) {
-            console.log('�lk oyun veya envanter tan�ms�z, ba�lang�� jokerleri veriliyor...');
-            this.jokerInventory = {fifty: 1, hint: 1, time: 1, skip: 1};
-            this.saveJokerInventory();
-        }
-        
-        // Mevcut envanterde eksik joker t�rleri varsa tamamla
-        if (this.jokerInventory.fifty === undefined) this.jokerInventory.fifty = 0;
-        if (this.jokerInventory.hint === undefined) this.jokerInventory.hint = 0;
-        if (this.jokerInventory.time === undefined) this.jokerInventory.time = 0;
-        if (this.jokerInventory.skip === undefined) this.jokerInventory.skip = 0;
-        
-        console.log('resetJokers tamamland�, final envanter:', JSON.stringify(this.jokerInventory));
-    },
-    
-    // Yeni oyun i�in joker envanterini yenile
-    refreshJokersForNewGame: function() {
-        console.log('refreshJokersForNewGame �a�r�ld�, jokerler yenileniyor...');
-        
-        // �nce joker kullan�m durumlar�n� s�f�rla
-        this.resetJokerUsage();
-        
-        // Her yeni oyunda fresh jokerler ver
-        this.jokerInventory = {fifty: 1, hint: 1, time: 1, skip: 1};
-        this.saveJokerInventory();
-        
-        console.log('Jokerler yenilendi, yeni envanter:', JSON.stringify(this.jokerInventory));
-    },
-    
-    // 50:50 joker ile devre d��� b�rak�lan se�enekleri s�f�rla
-    resetDisabledOptions: function() {
-        const disabledOptions = document.querySelectorAll('.option.disabled-option');
-        disabledOptions.forEach(option => {
-            option.style.opacity = '';
-            option.style.pointerEvents = '';
-            option.style.background = '';
-            option.style.color = '';
-            option.classList.remove('disabled-option');
-        });
-        
-        // �pucu mesajlar�n� da temizle
-        const hintMessages = document.querySelectorAll('.hint-message');
-        hintMessages.forEach(hint => {
-            hint.remove();
-        });
-    },
-    
-    // Kullan�c� ayarlar�n� y�kle
+    // Kullanıcı ayarlarını yükle
     loadUserSettings: function() {
         try {
-            // Kaydedilmi� ayarlar� kontrol et
+            // Kaydedilmiş ayarları kontrol et
             const settings = localStorage.getItem(this.USER_SETTINGS_KEY);
             
-            // Hamburger men�s�ndeki zorluk ayar�n� �ncelikle kontrol et
-            const hamburg�rDifficulty = localStorage.getItem('difficulty');
+            // Hamburger menüsündeki zorluk ayarını öncelikle kontrol et
+            const hamburgırDifficulty = localStorage.getItem('difficulty');
             
-            // Tercihler ekran�ndan zorluk seviyesi ayar�n� kontrol et
+            // Tercihler ekranından zorluk seviyesi ayarını kontrol et
             const difficultyPreference = localStorage.getItem('difficulty_preference');
             let calculatedDifficulty = null;
             
-            // �ncelik s�ras�: hamburger men�s� > tercihler > hesaplanm�� zorluk
-            if (hamburg�rDifficulty && ['easy', 'medium', 'hard'].includes(hamburg�rDifficulty)) {
-                calculatedDifficulty = hamburg�rDifficulty;
-                console.log(`Zorluk seviyesi hamburger men�s�nden al�nd�: ${calculatedDifficulty}`);
+            // Öncelik sırası: hamburger menüsü > tercihler > hesaplanmış zorluk
+            if (hamburgırDifficulty && ['easy', 'medium', 'hard'].includes(hamburgırDifficulty)) {
+                calculatedDifficulty = hamburgırDifficulty;
+                console.log(`Zorluk seviyesi hamburger menüsünden alındı: ${calculatedDifficulty}`);
             } else if (difficultyPreference) {
-                // Otomatik zorluk ayar� ise, hesaplanm�� zorlu�u kontrol et
+                // Otomatik zorluk ayarı ise, hesaplanmış zorluğu kontrol et
                 if (difficultyPreference === 'auto') {
                     calculatedDifficulty = localStorage.getItem('calculated_difficulty');
                 } else {
-                    // Do�rudan se�ilen zorlu�u kullan
+                    // Doğrudan seçilen zorluğu kullan
                     calculatedDifficulty = difficultyPreference;
                 }
                 
                 if (calculatedDifficulty) {
-                    console.log(`Zorluk seviyesi tercihlere g�re ayarland�: ${calculatedDifficulty}`);
+                    console.log(`Zorluk seviyesi tercihlere göre ayarlandı: ${calculatedDifficulty}`);
                 }
             }
             
             if (settings) {
                 this.userSettings = JSON.parse(settings);
                 
-                // Tercihlerden zorluk seviyesi ayarlanmad�ysa kaydedilmi� ayarlar� kullan
+                // Tercihlerden zorluk seviyesi ayarlanmadıysa kaydedilmiş ayarları kullan
                 if (!calculatedDifficulty && this.userSettings.difficulty) {
                     calculatedDifficulty = this.userSettings.difficulty;
                 }
@@ -5436,16 +2625,16 @@ const quizApp = {
                 this.notificationsEnabled = this.userSettings.notificationsEnabled !== undefined ? this.userSettings.notificationsEnabled : true;
                 this.theme = this.userSettings.theme || 'light';
                 
-                console.log("Kullan�c� ayarlar� y�klendi:", this.userSettings);
+                console.log("Kullanıcı ayarları yüklendi:", this.userSettings);
             } else {
-                // Varsay�lan ayarlar
+                // Varsayılan ayarlar
                 this.userSettings = {};
                 this.soundEnabled = true;
                 this.animationsEnabled = true;
                 this.notificationsEnabled = true;
                 this.theme = 'light';
                 
-                console.log("Varsay�lan ayarlar kullan�l�yor");
+                console.log("Varsayılan ayarlar kullanılıyor");
             }
             
             // Zorluk seviyesini ayarla
@@ -5454,20 +2643,20 @@ const quizApp = {
             
             console.log(`Final zorluk seviyesi: ${this.currentDifficulty}`);
             
-            // Tema ayar�n� uygula
+            // Tema ayarını uygula
             this.applyTheme();
             
-            // Joker envanterini y�kle
+            // Joker envanterini yükle
             this.loadJokerInventory();
         } catch (e) {
-            console.error("Ayarlar y�klenirken hata:", e);
+            console.error("Ayarlar yüklenirken hata:", e);
         }
     },
     
-    // Kullan�c� ayarlar�n� kaydet
+    // Kullanıcı ayarlarını kaydet
     saveUserSettings: function() {
         try {
-            // userSettings objesini g�ncelle
+            // userSettings objesini güncelle
             if (!this.userSettings) {
                 this.userSettings = {};
             }
@@ -5479,9 +2668,9 @@ const quizApp = {
             this.userSettings.theme = this.theme;
             
             localStorage.setItem(this.USER_SETTINGS_KEY, JSON.stringify(this.userSettings));
-            console.log("Kullan�c� ayarlar� kaydedildi:", this.userSettings);
+            console.log("Kullanıcı ayarları kaydedildi:", this.userSettings);
         } catch (e) {
-            console.error("Kullan�c� ayarlar� kaydedilirken hata olu�tu:", e);
+            console.error("Kullanıcı ayarları kaydedilirken hata oluştu:", e);
         }
     },
     
@@ -5490,1038 +2679,1319 @@ const quizApp = {
         document.body.className = this.theme === 'dark' ? 'dark-theme' : '';
     },
     
-    // Quiz aktivasyon i�levi - CSS class� ekleyerek tab bar�n g�r�n�rl���n� kontrol eder
-    activateQuizMode: function() {
-        document.body.classList.add('quiz-active');
-        // Quiz modunda oldu�umuzu localStorage'a kaydet
-        localStorage.setItem('quizModeActive', 'true');
+    // İstatistikleri getir
+    getStats: function() {
+        const statsJSON = localStorage.getItem(this.STATS_KEY);
+        let stats = {
+            totalQuestions: 0,
+            correctAnswers: 0,
+            totalGames: 0,
+            categoryStats: {},
+            recentGames: []
+        };
+        
+        if (statsJSON) {
+            try {
+                stats = JSON.parse(statsJSON);
+            } catch (e) {
+                console.error("İstatistikler yüklenirken hata oluştu:", e);
+            }
+        }
+        
+        return stats;
+    },
+    
+    // Seviye tamamlandı, sonraki seviyeyi göster
+    showLevelCompletionScreen: function(completedLevel) {
+        clearInterval(this.timerInterval);
+        
+        // Seviye tamamlama ses efekti
+        if (this.soundEnabled) {
+            const completionSound = document.getElementById('sound-level-completion');
+            if (completionSound) completionSound.play().catch(e => console.error("Ses çalınamadı:", e));
+        }
+        
+        // Oyuncuyu tebrik et
+        const levelCompletionElement = document.createElement('div');
+        levelCompletionElement.className = 'level-completion-screen';
+        levelCompletionElement.innerHTML = `
+            <div class="level-completion-content">
+                <h2>${completedLevel}. Seviye Tamamlandı!</h2>
+                <div class="level-completion-stats">
+                    <p><i class="fas fa-star"></i> Skor: ${this.score}</p>
+                    <p><i class="fas fa-check-circle"></i> Doğru: ${this.score}/${this.answeredQuestions}</p>
+                    <p><i class="fas fa-clock"></i> Ortalama Süre: ${Math.round(this.answerTimes.reduce((a, b) => a + b, 0) / this.answerTimes.length)} saniye</p>
+                </div>
+                <div class="confetti-animation">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <button id="next-level-btn" class="shiny-btn">Sonraki Seviyeye Geç</button>
+            </div>
+        `;
+        
+        document.body.appendChild(levelCompletionElement);
+        
+        // Sonraki seviyeye geçme butonu
+        const nextLevelBtn = document.getElementById('next-level-btn');
+        nextLevelBtn.addEventListener('click', () => {
+            // Sonuç ekranını kaldır
+            document.body.removeChild(levelCompletionElement);
+            
+            // Sonraki seviyeye devam et
+            this.currentQuestionIndex = 0;
+            this.resetJokers();
+            // Canları koruyoruz, sıfırlamıyoruz ki önceki seviyeden kalan canlarla devam edilsin
+            this.score = 0;
+            this.answerTimes = [];
+            this.answeredQuestions = 0;
+            
+            // Sonraki seviye için soruları yükle
+            this.loadQuestionsForCurrentLevel();
+        });
+    },
+    
+    // Olay dinleyicilerini ekle
+    addEventListeners: function() {
+        try {
+            console.log("Event listener'lar ekleniyor...");
+            
+            // Tema değiştirme butonu için olay dinleyicisi
+            if (this.themeToggle) {
+                this.themeToggle.addEventListener('change', () => {
+                    const theme = this.themeToggle.checked ? 'dark' : 'light';
+                    this.userSettings.theme = theme;
+                    this.applyTheme(theme);
+                    this.saveUserSettings();
+                });
+            }
+            
+            // Yeniden başlatma butonu için olay dinleyicisi
+            if (this.restartButton) {
+                this.restartButton.addEventListener('click', () => {
+                    this.restartGame();
+                });
+            }
+            
+            // Sonraki soru butonu için olay dinleyicisi
+            if (this.nextButton) {
+                this.nextButton.addEventListener('click', () => {
+                    this.showNextQuestion();
+                });
+            }
+            
+            // Joker butonları için olay dinleyicileri
+            console.log('DOM hazır, joker event listener\'ları ekleniyor...');
+            this.addJokerEventListeners();
+            
+            // Tekli oyun butonu
+            if (this.singlePlayerBtn) {
+                console.log("Tekli oyun butonu bulundu, dinleyici ekleniyor");
+                this.singlePlayerBtn.addEventListener('click', () => {
+                    console.log("Tekli oyun butonuna tıklandı");
+                    if (this.mainMenu) this.mainMenu.style.display = 'none';
+                    
+                    // Tekli oyun modunda chat ekranını gizle
+                    const gameChatContainer = document.getElementById('game-chat-container');
+                    if (gameChatContainer) {
+                        gameChatContainer.style.display = 'none';
+                    }
+                    
+                    if (this.categorySelectionElement) {
+                        this.categorySelectionElement.style.display = 'block';
+                        // Kategorileri göster
+                        this.displayCategories();
+                    } else {
+                        console.error("Kategori seçim elementi bulunamadı!");
+                    }
+                });
+            } else {
+                console.error("Tekli oyun butonu bulunamadı! ID: single-player-btn");
+            }
+            
+            // Soru ekle butonu
+            const addQuestionBtn = document.getElementById('add-question-button');
+            if (addQuestionBtn) {
+                addQuestionBtn.addEventListener('click', () => {
+                    // Ana menüyü gizle
+                    const mainMenu = document.getElementById('main-menu');
+                    if (mainMenu) {
+                        mainMenu.style.display = 'none';
+                    } else {
+                        console.error('Ana menü elementi bulunamadı.');
+                        return;
+                    }
+                    
+                    // Doğrudan showAddQuestionModal fonksiyonunu çağır
+                    try {
+                        showAddQuestionModal();
+                    } catch (err) {
+                        console.error('showAddQuestionModal fonksiyonu çağrılırken hata:', err);
+                        // Hata durumunda ana menüyü tekrar göster
+                        if (mainMenu) {
+                            mainMenu.style.display = 'block';
+                        }
+                    }
+                });
+            }
+            
+            // Hakkımızda butonu
+            const aboutBtn = document.getElementById('about-button');
+            if (aboutBtn) {
+                aboutBtn.addEventListener('click', () => {
+                    // Ana menüyü gizle
+                    const mainMenu = document.getElementById('main-menu');
+                    if (mainMenu) {
+                        mainMenu.style.display = 'none';
+                    }
+                    
+                    // Hakkımızda sayfasını göster
+                    const aboutPage = document.getElementById('about-page');
+                    if (aboutPage) {
+                        aboutPage.style.display = 'block';
+                    }
+                });
+            }
+            
+            // Hakkımızda sayfasından ana menüye dön butonu
+            const backToMainAbout = document.getElementById('back-to-main-about');
+            if (backToMainAbout) {
+                backToMainAbout.addEventListener('click', () => {
+                    // Hakkımızda sayfasını gizle
+                    const aboutPage = document.getElementById('about-page');
+                    if (aboutPage) {
+                        aboutPage.style.display = 'none';
+                    }
+                    
+                    // Ana menüyü göster
+                    const mainMenu = document.getElementById('main-menu');
+                    if (mainMenu) {
+                        mainMenu.style.display = 'block';
+                    }
+                });
+            }
+            
+            console.log("Event listener'lar başarıyla eklendi");
+        } catch (error) {
+            console.error("addEventListeners fonksiyonunda hata:", error);
+        }
+    },
+    
+    // Joker butonlarını ayarla (setupJokerButtons'un yerine kullanıyoruz)
+    setupJokerButtons: function() {
+        // Bu fonksiyon gerektiğinde joker butonlarını ayarlar
+        console.log("Joker butonları ayarlanıyor");
+        this.updateJokerButtons();
+    },
+    
+    // Soru verilerini yükle
+    loadQuestionsData: function() {
+            console.log("Soru verileri yükleniyor...");
+            
+        return new Promise((resolve, reject) => {
+            // Seçilen dile göre dosya belirle
+            let questionsFile = 'languages/tr/questions.json'; // Türkçe için varsayılan
+            
+            if (this.currentLanguage === 'en') {
+                questionsFile = 'languages/en/questions.json';
+            } else if (this.currentLanguage === 'de') {
+                questionsFile = 'languages/de/questions.json';
+            }
+            
+            console.log(`Dil: ${this.currentLanguage}, Yüklenen dosya: ${questionsFile}`);
+            
+            // Soruları belirlenen JSON dosyasından yükle
+            fetch(questionsFile)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Sorular yüklenemedi: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data) {
+                    this.questionsData = data;
+                        // allQuestionsData'yı questionsData ile aynı verilere işaret edecek şekilde atayalım
+                        this.allQuestionsData = data; 
+                        console.log("Soru verileri başarıyla yüklendi:", Object.keys(data).length, "kategori");
+                        console.log("Kategoriler:", Object.keys(data));
+                        resolve(data);
+                    } else {
+                        console.log("Sorular yüklenemedi, varsayılan veriler kullanılacak.");
+                        this.loadDefaultQuestions();
+                        resolve(this.questionsData);
+                    }
+                })
+                .catch(error => {
+                    console.error("Sorular yüklenirken hata:", error);
+                    console.log("Varsayılan sorular kullanılacak");
+                    this.loadDefaultQuestions();
+                    resolve(this.questionsData);
+                });
+        });
+    },
+    
+    // Varsayılan soruları yükle (offline durumlar için)
+    loadDefaultQuestions: function() {
+        // Varsayılan bazı sorular
+        this.questionsData = {
+            "Genel Kültür": [
+                {
+                    question: "Türkiye'nin başkenti hangi şehirdir?",
+                                options: ["İstanbul", "Ankara", "İzmir", "Bursa"],
+                                correctAnswer: "Ankara",
+                    difficulty: "easy"
+                },
+                {
+                    question: "Hangi gezegen Güneş Sistemi'nde en büyük olanıdır?",
+                    options: ["Mars", "Venüs", "Jüpiter", "Satürn"],
+                    correctAnswer: "Jüpiter",
+                    difficulty: "easy"
+                            },
+                            {
+                                question: "Dünyanın en büyük okyanusu hangisidir?",
+                    options: ["Atlas Okyanusu", "Hint Okyanusu", "Pasifik Okyanusu", "Arktik Okyanusu"],
+                    correctAnswer: "Pasifik Okyanusu",
+                    difficulty: "medium"
+                }
+            ],
+            "Teknoloji": [
+                {
+                    question: "HTML'in açılımı nedir?",
+                    options: ["Hyper Text Markup Language", "High Tech Modern Language", "Hyper Transfer Mode Language", "Home Tool Markup Language"],
+                    correctAnswer: "Hyper Text Markup Language",
+                    difficulty: "easy"
+                },
+                {
+                    question: "Hangi şirket Windows işletim sistemini geliştirmiştir?",
+                    options: ["Apple", "Google", "Microsoft", "IBM"],
+                    correctAnswer: "Microsoft",
+                    difficulty: "easy"
+                }
+            ],
+            "Bilim": [
+                {
+                    question: "Periyodik tabloda 'Fe' hangi elementi simgeler?",
+                    options: ["Flor", "Demir", "Fosfor", "Fermiyum"],
+                    correctAnswer: "Demir",
+                    difficulty: "medium"
+                },
+                {
+                    question: "Işık hızı yaklaşık kaç km/s'dir?",
+                    options: ["100.000 km/s", "200.000 km/s", "300.000 km/s", "400.000 km/s"],
+                    correctAnswer: "300.000 km/s",
+                    difficulty: "medium"
+                }
+            ]
+        };
+        // allQuestionsData'yı da güncelle
+        this.allQuestionsData = this.questionsData;
+        console.log("Varsayılan sorular yüklendi:", Object.keys(this.questionsData).length, "kategori");
+    },
+    
+    // Restartlama işlevi
+    restartGame: function() {
+        this.currentQuestionIndex = 0;
+        this.score = 0;
+        this.correctAnswers = 0; // <-- EKLENDİ: Doğru cevap sayısını sıfırla
+        this.sessionScore = 0; // Oturum puanını sıfırla
+        this.lives = 5;
+        this.answeredQuestions = 0;
+        this.answerTimes = [];
+        this.currentSection = 1; // Bölüm sayısını da sıfırla
+        this.resetJokers();
+        
+        // Body'den quiz ve kategori class'larını kaldır - logo tekrar görünsün
+        document.body.classList.remove('quiz-active', 'category-selection');
+        
+        // Tekli oyun modunda chat ekranını gizle
+        const gameChatContainer = document.getElementById('game-chat-container');
+        if (gameChatContainer) {
+            gameChatContainer.style.display = 'none';
+        }
+        
+        // Kategorileri yeniden göster
+        this.displayCategories();
+        
+        // İstatistikleri sıfırla
+        this.updateScoreDisplay();
+    },
+    
+    // Sonraki soruyu göster
+    showNextQuestion: function() {
+        // Yeni soruya geçerken joker kullanımlarını sıfırla
+        this.resetJokerUsage();
+        // Önceki sonuç ve seçili şıkları temizle
+        if (this.resultElement) {
+            this.resultElement.style.display = 'none';
+            this.resultElement.innerHTML = '';
+        }
+        
+        // Tüm seçilmiş şıkların seçimini kaldır
+        const selectedOptions = document.querySelectorAll('.option.selected, .true-false-option.selected, .option.answered, .true-false-option.answered');
+        selectedOptions.forEach(option => {
+            option.classList.remove('selected', 'answered', 'correct', 'wrong');
+            option.disabled = false;
+        });
+        
+        // 50:50 joker ile devre dışı bırakılan seçenekleri sıfırla
+        this.resetDisabledOptions();
+        
+        // Boşluk doldurma ekranındaki cevap göstergesini temizle
+        const answerDisplay = document.getElementById('blank-filling-answer');
+        if (answerDisplay) {
+            answerDisplay.textContent = '';
+            answerDisplay.classList.remove('correct', 'wrong');
+        }
+        
+        // Seçilmiş harfleri sıfırla
+        this.selectedLetters = [];
+        
+        // Soru sayacını artır
+        this.currentQuestionIndex++;
+        
+        // Önceki ipucu mesajlarını temizle
+        const existingHintMessages = document.querySelectorAll('.hint-message');
+        existingHintMessages.forEach(element => {
+            element.remove();
+        });
+        
+        // Her 5 soruda bir bölüm geçişi göster
+        if (this.currentQuestionIndex > 0 && this.currentQuestionIndex % 5 === 0 && this.currentQuestionIndex < this.questions.length) {
+            // Bölüm sayısını artır
+            this.currentSection++; 
+            console.log(`🔼 Bölüm artırıldı: ${this.currentSection}`);
+            
+            // Progressive difficulty sistemi ile dinamik bölüm sayısı
+            const maxSections = this.getMaxSectionsForCategory();
+            console.log(`📊 Bölüm kontrolü: Şu anki bölüm ${this.currentSection}, Maksimum bölüm: ${maxSections}`);
+            
+            // Yeni zorluk seviyesini hesapla ve kaydet
+            const newDifficulty = this.getProgressiveDifficulty();
+            console.log(`🚀 Bölüm ${this.currentSection} - Yeni zorluk seviyesi: ${newDifficulty === 1 ? 'Kolay' : newDifficulty === 2 ? 'Orta' : 'Zor'} (${newDifficulty})`);
+            
+            // Maksimum bölüm sayısını aşıp aşmadığını kontrol et
+            if (this.currentSection > maxSections) {
+                console.log(`⚠️ Maksimum bölüm sayısı (${maxSections}) aşıldı! Kategori tamamlama ekranı gösteriliyor.`);
+                this.showCategoryCompletion();
+                return;
+            }
+            
+            // Yeni bölüm için zorluk seviyesine göre soruları yükle
+            console.log(`⭐ Bölüm ${this.currentSection} için yeni sorular yükleniyor...`);
+            
+            // Kategorinin tüm sorularını al
+            const allCategoryQuestions = [...this.questionsData[this.selectedCategory]];
+            
+            // Progressive difficulty'ye göre hedef zorluk seviyesini belirle
+            const targetDifficulty = this.getProgressiveDifficulty();
+            
+            // Soruları zorluğa göre grupla
+            const easyQuestions = allCategoryQuestions.filter(q => (q.difficulty || 2) === 1);  
+            const mediumQuestions = allCategoryQuestions.filter(q => (q.difficulty || 2) === 2);
+            const hardQuestions = allCategoryQuestions.filter(q => (q.difficulty || 2) === 3);
+            
+            // Hedef zorluk seviyesine göre soru havuzu oluştur
+            let nextSectionQuestions = [];
+            
+            if (targetDifficulty === 1 && easyQuestions.length > 0) {
+                nextSectionQuestions = this.shuffleArray([...easyQuestions]);
+                console.log(`✅ Bölüm ${this.currentSection} için kolay sorular seçildi.`);
+            }
+            else if (targetDifficulty === 2 && mediumQuestions.length > 0) {
+                nextSectionQuestions = this.shuffleArray([...mediumQuestions]);
+                console.log(`✅ Bölüm ${this.currentSection} için orta zorluktaki sorular seçildi.`);
+            }
+            else if (targetDifficulty === 3 && hardQuestions.length > 0) {
+                nextSectionQuestions = this.shuffleArray([...hardQuestions]);
+                console.log(`✅ Bölüm ${this.currentSection} için zor sorular seçildi.`);
+            }
+            else {
+                // Hedef zorluk seviyesinde soru bulunamazsa, mevcut tüm sorulardan al
+                nextSectionQuestions = this.shuffleArray([...allCategoryQuestions]);
+                console.log(`⚠️ Bölüm ${this.currentSection} için ${targetDifficulty} zorluk seviyesinde soru bulunamadı, karışık sorular seçiliyor.`);
+            }
+            
+            // İlk 5 soruyu seç (bir bölüm 5 soru içerir)
+            const newSectionQuestions = nextSectionQuestions.slice(0, 5);
+            console.log(`📝 Bölüm ${this.currentSection} için ${newSectionQuestions.length} soru seçildi.`);
+            
+            // Bu soruları mevcut sorularla birleştir
+            this.questions = [...this.questions.slice(0, this.currentQuestionIndex), ...newSectionQuestions];
+            
+            // Bölüm geçiş ekranını göster
+            this.showSectionTransition();
+        } else if (this.currentQuestionIndex < this.questions.length) {
+            this.displayQuestion(this.questions[this.currentQuestionIndex]);
+        } else {
+            // Tüm sorular cevaplandı - yeni bölüm için sorular yükle
+            console.log("Bölümdeki sorular tamamlandı, bir sonraki bölüm için sorular yükleniyor...");
+            
+            // Bölüm sayısını artır
+            this.currentSection++;
+            console.log(`🔼 Bölüm otomatik artırıldı: ${this.currentSection}`);
+            
+            // Yeni zorluk seviyesini hesapla ve kaydet
+            const newDifficulty = this.getProgressiveDifficulty();
+            console.log(`🚀 Bölüm ${this.currentSection} - Yeni zorluk seviyesi: ${newDifficulty === 1 ? 'Kolay' : newDifficulty === 2 ? 'Orta' : 'Zor'} (${newDifficulty})`);
+            
+            // Progressive difficulty sistemi ile dinamik bölüm sayısı
+            const maxSections = this.getMaxSectionsForCategory();
+            console.log(`📊 Bölüm kontrolü: Şu anki bölüm ${this.currentSection}, Maksimum bölüm: ${maxSections}`);
+            
+            // Maksimum bölüm sayısını aşıp aşmadığını kontrol et
+            if (this.currentSection > maxSections) {
+                console.log(`⚠️ Maksimum bölüm sayısı (${maxSections}) aşıldı! Kategori tamamlama ekranı gösteriliyor.`);
+            this.showCategoryCompletion();
+                return;
+            }
+            
+            // Yeni bölüm için zorluk seviyesine göre soruları yükle
+            console.log(`⭐ Bölüm ${this.currentSection} için yeni sorular yükleniyor...`);
+            
+            // Kategorinin tüm sorularını al
+            const allCategoryQuestions = [...this.questionsData[this.selectedCategory]];
+            
+            // Progressive difficulty'ye göre hedef zorluk seviyesini belirle
+            const targetDifficulty = this.getProgressiveDifficulty();
+            
+            // Soruları zorluğa göre grupla
+            const easyQuestions = allCategoryQuestions.filter(q => (q.difficulty || 2) === 1);  
+            const mediumQuestions = allCategoryQuestions.filter(q => (q.difficulty || 2) === 2);
+            const hardQuestions = allCategoryQuestions.filter(q => (q.difficulty || 2) === 3);
+            
+            // Hedef zorluk seviyesine göre soru havuzu oluştur
+            let nextSectionQuestions = [];
+            
+            if (targetDifficulty === 1 && easyQuestions.length > 0) {
+                nextSectionQuestions = this.shuffleArray([...easyQuestions]);
+                console.log(`✅ Bölüm ${this.currentSection} için kolay sorular seçildi.`);
+            }
+            else if (targetDifficulty === 2 && mediumQuestions.length > 0) {
+                nextSectionQuestions = this.shuffleArray([...mediumQuestions]);
+                console.log(`✅ Bölüm ${this.currentSection} için orta zorluktaki sorular seçildi.`);
+            }
+            else if (targetDifficulty === 3 && hardQuestions.length > 0) {
+                nextSectionQuestions = this.shuffleArray([...hardQuestions]);
+                console.log(`✅ Bölüm ${this.currentSection} için zor sorular seçildi.`);
+            }
+            else {
+                // Hedef zorluk seviyesinde soru bulunamazsa, mevcut tüm sorulardan al
+                nextSectionQuestions = this.shuffleArray([...allCategoryQuestions]);
+                console.log(`⚠️ Bölüm ${this.currentSection} için ${targetDifficulty} zorluk seviyesinde soru bulunamadı, karışık sorular seçiliyor.`);
+            }
+            
+            // İlk 5 soruyu seç (bir bölüm 5 soru içerir)
+            const newSectionQuestions = nextSectionQuestions.slice(0, 5);
+            console.log(`📝 Bölüm ${this.currentSection} için ${newSectionQuestions.length} soru seçildi.`);
+            
+            // Bu soruları mevcut sorulara ekle
+            this.questions = newSectionQuestions;
+            
+            // Soru indeksini sıfırla
+            this.currentQuestionIndex = 0;
+            
+            // Bölüm geçiş ekranını göster
+            this.showSectionTransition();
+        }
+    },
+    
+    // Kategoriye göre maksimum bölüm sayısını belirle
+    getMaxSectionsForCategory: function() {
+        // Kategoriye özel zorluk seviyesi belirle
+        const categoryDifficultyMap = {
+            // Kolay kategoriler (12-15 bölüm)
+            'Hayvanlar': 12,
+            'Renkler': 12, 
+            'Basit Kelimeler': 13,
+            'Sayılar': 13,
+            'Vücut': 14,
+            'Aile': 14,
+            'Yemek': 15,
+            'Ev': 15,
+            
+            // Orta kategoriler (15-18 bölüm)
+            'Spor': 15,
+            'Müzik': 16,
+            'Meslek': 16,
+            'Ulaşım': 17,
+            'Doğa': 17,
+            'Teknoloji': 18,
+            'Sağlık': 18,
+            'Genel Kültür': 15,
+            
+            // Zor kategoriler (18-25 bölüm)
+            'Bilim': 20,
+            'Tarih': 20,
+            'Edebiyat': 22,
+            'Coğrafya': 22,
+            'Felsefe': 24,
+            'Matematik': 24,
+            'Fizik': 25,
+            'Kimya': 25
+        };
+        
+        // Seçilen kategoriye göre bölüm sayısı döndür
+        const maxSections = categoryDifficultyMap[this.selectedCategory] || 15; // Varsayılan 15 bölüm
+        console.log(`Kategori: ${this.selectedCategory}, Maksimum Bölüm: ${maxSections}`);
+        return maxSections;
+    },
+    
+    // Kategori zorluk seviyesi metni
+    getCategoryDifficultyText: function() {
+        const maxSections = this.getMaxSectionsForCategory();
+        
+        if (maxSections <= 15) {
+            return "🟢 Kolay Kategori";
+        } else if (maxSections <= 18) {
+            return "🟡 Orta Kategori";
+        } else {
+            return "🔴 Zor Kategori";
+        }
+    },
+    
+    // Progressive difficulty: Mevcut bölüme göre zorluk seviyesi belirle
+    getProgressiveDifficulty: function() {
+        const maxSections = this.getMaxSectionsForCategory();
+        const currentProgress = this.currentSection / maxSections;
+        
+        // Debug bilgisi ekle
+        console.log(`Progressive Difficulty Hesaplama: Bölüm ${this.currentSection}/${maxSections}, İlerleme: ${currentProgress}`);
+        
+        // Oyunun başında her zaman kolay zorluk seviyesi ile başla (bölüm ≤ 1)
+        if (this.currentSection <= 1) {
+            console.log("⭐ İlk bölüm - Kolay seviye (1) seçiliyor");
+            return 1; // Her zaman Kolay ile başla
+        }
+        
+        // İlk %40'ı kolay, sonraki %40'ı orta, son %20'si zor
+        if (currentProgress <= 0.4) {
+            console.log(`⭐ İlerleme: ${Math.round(currentProgress*100)}% - Kolay seviye (1) seçiliyor`);
+            return 1; // Kolay
+        } else if (currentProgress <= 0.8) {
+            console.log(`🔶 İlerleme: ${Math.round(currentProgress*100)}% - Orta seviye (2) seçiliyor`);
+            return 2; // Orta  
+        } else {
+            console.log(`🔴 İlerleme: ${Math.round(currentProgress*100)}% - Zor seviye (3) seçiliyor`);
+            return 3; // Zor
+        }
+    },
+    
+    // Kategori Tamamlama Ekranını Göster (dinamik bölüm sayısına göre)
+    showCategoryCompletion: function() {
+        // Zamanlayıcıyı durdur
+        clearInterval(this.timerInterval);
+        
+        console.log(`Genel Kültür kategorisi ${this.currentSection} bölüm ile tamamlandı!`);
+        
+        // Kategori tamamlama modalını oluştur
+        const categoryCompletionModal = document.createElement('div');
+        categoryCompletionModal.className = 'category-completion-modal';
+        categoryCompletionModal.innerHTML = `
+            <div class="category-completion-content">
+                <div class="completion-header">
+                    <div class="completion-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h2>Kategori Tamamlandı!</h2>
+                    <p class="completion-message">"${this.selectedCategory}" kategorisinin ${this.currentSection} bölümünü başarıyla tamamladınız!</p>
+                    <p class="completion-difficulty" style="font-size: 14px; color: #64748b; margin-top: 10px;">
+                        ${this.getCategoryDifficultyText()} • Progressive Zorluk Sistemi
+                    </p>
+                </div>
+                
+                <div class="completion-stats">
+                                         <div class="stat-item">
+                         <div class="stat-icon">
+                             <i class="fas fa-layer-group"></i>
+                         </div>
+                         <div class="stat-content">
+                             <div class="stat-value">${this.currentSection}</div>
+                             <div class="stat-label">Bölüm Tamamlandı</div>
+                         </div>
+                     </div>
+                    
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">${this.score}</div>
+                            <div class="stat-label">Toplam Puan</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">${this.correctAnswers}</div>
+                            <div class="stat-label">Doğru Cevap</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">${this.lives}</div>
+                            <div class="stat-label">Kalan Can</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-item" style="grid-column: 1 / -1;">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" style="font-size: 14px;">Kolay → Orta → Zor</div>
+                            <div class="stat-label">Zorluk Progresyonu</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="completion-actions">
+                    <button id="show-final-results" class="completion-btn primary">
+                        <i class="fas fa-chart-line"></i>
+                        Detaylı Sonuçları Gör
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(categoryCompletionModal);
+        
+        // Detaylı sonuçları göster butonu
+        const showResultsBtn = document.getElementById('show-final-results');
+        if (showResultsBtn) {
+            showResultsBtn.addEventListener('click', () => {
+                // Modalı kaldır
+                categoryCompletionModal.remove();
+                
+                // Normal oyun bitiş ekranını göster
+                setTimeout(() => {
+            this.showResult();
+                }, 500);
+            });
+        }
+        
+        // Modal dışına tıklanırsa da sonuç ekranını göster
+        categoryCompletionModal.addEventListener('click', (e) => {
+            if (e.target === categoryCompletionModal) {
+                categoryCompletionModal.remove();
+                setTimeout(() => {
+                    this.showResult();
+                }, 500);
+            }
+        });
+        
+        // Başarı ses efekti çal
+        if (this.soundEnabled) {
+            const victorySound = document.getElementById('sound-level-completion');
+            if (victorySound) victorySound.play().catch(e => console.error("Ses çalınamadı:", e));
+        }
+        
+        // 10 saniye sonra otomatik olarak sonuç ekranını göster
+        setTimeout(() => {
+            if (document.body.contains(categoryCompletionModal)) {
+                categoryCompletionModal.remove();
+                this.showResult();
+            }
+        }, 10000);
+        
+        // Konfeti efekti ekle
+        console.log(`${this.selectedCategory} kategorisi ${this.getMaxSectionsForCategory()} bölüm ile tamamlandı!`);
     },
 
-    // Quiz deaktivasyon i�levi
-    deactivateQuizMode: function() {
+    // DEBUG: Kategori tamamlama modalını test et
+    testCategoryCompletion: function() {
+        console.log("Test: Kategori tamamlama modalı manuel olarak gösteriliyor...");
+        this.showCategoryCompletion();
+    },
+    
+    // Oyun Tamamlama Ekranını Göster (50 bölüm tamamlandığında)
+    showGameCompletion: function() {
+        // Sayacı durdur
+        clearInterval(this.timerInterval);
+        
+        // Oyun tamamlama ekranını oluştur
+        const completionElement = document.createElement('div');
+        completionElement.className = 'game-completion-screen';
+        completionElement.innerHTML = `
+            <div class="game-completion-content">
+                <div class="trophy-container">
+                    <i class="fas fa-trophy trophy-icon"></i>
+                </div>
+                <h2>Tebrikler! Oyunu Tamamladınız!</h2>
+                <div class="completion-info">
+                    <p class="completion-congrats">50 bölümü başarıyla tamamladınız!</p>
+                    <p>Toplam Puan: <strong>${this.score}</strong></p>
+                    <p class="completion-message">Bu muhteşem başarınız için kutlarız!</p>
+                </div>
+                <div class="completion-buttons">
+                    <button id="restart-game-btn" class="completion-btn"><i class="fas fa-redo"></i> Yeniden Oyna</button>
+                    <button id="share-result-btn" class="completion-btn"><i class="fas fa-share-alt"></i> Sonucu Paylaş</button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(completionElement);
+        
+        // Yeniden başlatma butonu
+        const restartGameBtn = document.getElementById('restart-game-btn');
+        if (restartGameBtn) {
+            restartGameBtn.addEventListener('click', () => {
+                document.body.removeChild(completionElement);
+                this.restartGame();
+            });
+        }
+        
+        // Paylaşım butonu
+        const shareResultBtn = document.getElementById('share-result-btn');
+        if (shareResultBtn) {
+            shareResultBtn.addEventListener('click', () => {
+                // Paylaşım özelliği eklenebilir
+                const shareText = `Bilgoo'yu ${this.score} puanla tamamladım! Sende oynamak ister misin?`;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Bilgoo',
+                        text: shareText,
+                        url: window.location.href
+                    }).catch(err => {
+                        console.error('Paylaşım hatası:', err);
+                        this.showToast('Sonuç paylaşılamadı', 'toast-error');
+                    });
+                } else {
+                    // Tarayıcı paylaşımı desteklemiyorsa panoya kopyala
+                    navigator.clipboard.writeText(shareText)
+                        .then(() => {
+                            this.showToast('Sonuç panoya kopyalandı!', 'toast-success');
+                        })
+                        .catch(err => {
+                            console.error('Panoya kopyalama hatası:', err);
+                            this.showToast('Sonuç kopyalanamadı', 'toast-error');
+                        });
+                }
+            });
+        }
+        
+        // Konfeti efekti veya ses efekti eklenebilir
+        if (this.soundEnabled) {
+            const victorySound = document.getElementById('sound-level-completion');
+            if (victorySound) victorySound.play().catch(e => console.error("Ses çalınamadı:", e));
+        }
+        
+        // İstatistikleri kaydet
+        this.saveStats(this.selectedCategory, this.score, this.answeredQuestions, 
+            this.answerTimes.length > 0 ? Math.round(this.answerTimes.reduce((a, b) => a + b, 0) / this.answerTimes.length) : 0);
+    },
+    
+    // Bölüm geçiş ekranını göster
+    showSectionTransition: function() {
+        // Sayacı durdur
+        clearInterval(this.timerInterval);
+        
+        // Tamamlanan bölüm numarası (0-tabanlı) - currentSection 1'den başladığı için -1
+        const sectionIndex = this.currentSection - 2; // Bir önceki tamamlanan bölüm
+        
+        // Bölüm istatistiklerini al
+        const stats = this.sectionStats[sectionIndex] || { correct: 0, total: 0 };
+        
+        console.log(`Bölüm geçişi gösteriliyor. Bölüm: ${sectionIndex+1}, İstatistikler:`, stats);
+        
+        // Doğru cevap yüzdesini hesapla
+        const correctPercentage = stats.total > 0 
+            ? Math.round((stats.correct / stats.total) * 100) 
+            : 0;
+        
+        console.log(`Bölüm istatistikleri hesaplandı: Doğru: ${stats.correct}, Toplam: ${stats.total}, Yüzde: ${correctPercentage}%`);
+        
+        // Yıldız tipini belirle (altın, gümüş veya bronz)
+        let starType, starColor, starText;
+        if (correctPercentage >= 80) {
+            starType = 'gold';
+            starColor = '#ffd700';
+            starText = 'Altın Yıldız';
+        } else if (correctPercentage >= 50) {
+            starType = 'silver';
+            starColor = '#c0c0c0';
+            starText = 'Gümüş Yıldız';
+        } else {
+            starType = 'bronze';
+            starColor = '#cd7f32';
+            starText = 'Bronz Yıldız';
+        }
+        
+        // Performansa göre kaç yıldız verilecek
+        let starCount;
+        if (correctPercentage >= 80) {
+            starCount = 3; // Çok iyi performans: 3 yıldız
+        } else if (correctPercentage >= 50) {
+            starCount = 2; // Orta performans: 2 yıldız
+        } else {
+            starCount = 1; // Düşük performans: 1 yıldız
+        }
+        
+        // Yıldız HTML'ini oluştur
+        let starsHTML = '';
+        for (let i = 0; i < 3; i++) {
+            if (i < starCount) {
+                // Aktif yıldız (kazanılan)
+                starsHTML += `<i class="fas fa-star" style="color: ${starColor};"></i>`;
+            } else {
+                // Gri yıldız (kazanılmayan)
+                starsHTML += `<i class="fas fa-star" style="color: #888; opacity: 0.5;"></i>`;
+            }
+        }
+        
+        // Bölüm geçiş ekranını oluştur - önceki tasarıma benzer bir stil kullanılıyor
+        const sectionElement = document.createElement('div');
+        sectionElement.className = 'section-transition';
+        sectionElement.innerHTML = `
+            <div class="section-transition-content">
+                <h2>${this.currentSection-1}. ${this.getTranslation('sectionCompleted')}</h2>
+                
+                <div class="stars-container">
+                    ${starsHTML}
+                </div>
+                
+                <div class="level-info">
+                    <p class="level-congrats">${starCount} ${this.getTranslation('earnedStars')}</p>
+                </div>
+                
+                <div class="section-stats">
+                    <p><i class="fas fa-star"></i> ${this.getTranslation('currentScore')}: ${this.score}</p>
+                    <p><i class="fas fa-heart"></i> ${this.getTranslation('remainingLives')}: ${this.lives}</p>
+                    <p><i class="fas fa-check-circle"></i> ${this.getTranslation('correctAnswers')}: ${stats.correct}/${stats.total} (${correctPercentage}%)</p>
+                    <p><i class="fas fa-chart-line"></i> Sonraki Bölüm: ${['', 'Kolay', 'Orta', 'Zor'][this.getProgressiveDifficulty()]} Seviye</p>
+                </div>
+                <button id="next-section-btn" class="level-btn"><i class="fas fa-forward"></i> ${this.getTranslation('nextSection')}</button>
+            </div>
+        `;
+        
+        // Mevcut ekranı gizle ve geçiş ekranını göster
+        if (this.quizElement) this.quizElement.style.display = 'none';
+        document.body.appendChild(sectionElement);
+        
+        // Kazanılan yıldızları kaydet
+        this.totalStars += starCount;
+        
+        // Kullanıcı giriş yapmışsa Firebase'de yıldız sayısını güncelle
+        if (this.isLoggedIn && firebase && firebase.firestore) {
+            const db = firebase.firestore();
+            db.collection('users').doc(this.currentUser.uid).update({
+                totalStars: firebase.firestore.FieldValue.increment(starCount)
+            }).catch(error => {
+                console.error("Yıldız kaydederken hata:", error);
+            });
+        }
+        
+        // Local storage'a kaydet
+        localStorage.setItem('quizTotalStars', this.totalStars);
+        
+        // Puan göstergesini güncelle
+        this.updateTotalScoreDisplay();
+        
+        // Sonraki bölüme geçiş butonu
+        const nextSectionBtn = document.getElementById('next-section-btn');
+        nextSectionBtn.addEventListener('click', () => {
+            // Geçiş ekranını kaldır
+            document.body.removeChild(sectionElement);
+            
+            // Quiz ekranını göster
+            if (this.quizElement) this.quizElement.style.display = 'block';
+            
+            // Sonraki soruyu göster
+            this.displayQuestion(this.questions[this.currentQuestionIndex]);
+        });
+        
+        // Ses efekti çal
+        if (this.soundEnabled) {
+            const sectionSound = document.getElementById('sound-correct');
+            if (sectionSound) sectionSound.play().catch(e => console.error("Ses çalınamadı:", e));
+        }
+        
+        // Tebrik toast mesajı göster
+        this.showToast(`${this.currentSection-1}. ${this.getTranslation('sectionCompleted')}`, "toast-success");
+    },
+    
+    // Kategorileri göster
+    displayCategories: function() {
+        const categoriesContainer = document.getElementById('categories');
+        if (!categoriesContainer) {
+            console.error("Kategoriler için DOM elementi bulunamadı! (ID: categories)");
+            return;
+        }
+        // Kategorileri temizle
+        categoriesContainer.innerHTML = '';
+        
+        // Body'ye kategori seçimi class'ını ekle - logo gizlemek için
+        document.body.classList.add('category-selection');
         document.body.classList.remove('quiz-active');
-        // Quiz modundan ��kt���m�z� localStorage'a kaydet
+        
+        // Tekli oyun modunda chat ekranını gizle
+        const gameChatContainer = document.getElementById('game-chat-container');
+        if (gameChatContainer) {
+            gameChatContainer.style.display = 'none';
+        }
+        
+        // Aktif kategori verilerini al
+        const activeQuestionData = this.currentLanguage === 'tr' ? this.questionsData : this.translatedQuestions;
+        
+        console.log("displayCategories çağrıldı! Mevcut kategoriler:", activeQuestionData ? Object.keys(activeQuestionData) : "Veri yok");
+        if (!activeQuestionData || Object.keys(activeQuestionData).length === 0) {
+            // Yükleniyor mesajı göster
+            categoriesContainer.innerHTML = `<div class="loading">${this.getTranslation('loading')}</div>`;
+            return;
+        }
+        
+        // Tüm kategorileri göster
+        Object.keys(activeQuestionData).forEach(category => {
+            const categoryElement = document.createElement('div');
+            categoryElement.className = 'category category-btn';
+            categoryElement.innerHTML = `
+                <div class="category-icon">
+                    <i class="${this.getCategoryIcon(category)}"></i>
+                </div>
+                <div class="category-name">${category}</div>
+            `;
+            // Kategori elementine tıklama olayı ekle
+            categoryElement.addEventListener('click', () => {
+                this.selectCategory(category);
+            });
+            categoriesContainer.appendChild(categoryElement);
+        });
+        console.log("Toplam", Object.keys(activeQuestionData).length, "kategori görüntülendi");
+    },
+    
+    // Kategori simgesini belirle
+    getCategoryIcon: function(category) {
+        // Kategori adına göre uygun simge döndür
+        const categoryIcons = {
+            // Türkçe kategoriler
+            'Genel Kültür': 'fas fa-globe',
+            'Bilim': 'fas fa-flask',
+            'Teknoloji': 'fas fa-microchip',
+            'Spor': 'fas fa-futbol',
+            'Müzik': 'fas fa-music',
+            'Tarih': 'fas fa-landmark',
+            'Coğrafya': 'fas fa-mountain',
+            'Sanat': 'fas fa-palette',
+            'Edebiyat': 'fas fa-book',
+            'Sinema': 'fas fa-film',
+            'Yemek': 'fas fa-utensils',
+            'Bilgisayar': 'fas fa-laptop-code',
+            'Matematik': 'fas fa-calculator',
+            'Boşluk Doldurma': 'fas fa-keyboard',
+            'Diğer': 'fas fa-question-circle',
+            
+            // İngilizce kategoriler
+            'General Knowledge': 'fas fa-globe',
+            'Science': 'fas fa-flask',
+            'Technology': 'fas fa-microchip',
+            'Sports': 'fas fa-futbol',
+            'Music': 'fas fa-music',
+            'History': 'fas fa-landmark',
+            'Geography': 'fas fa-mountain',
+            'Art': 'fas fa-palette',
+            'Literature': 'fas fa-book',
+            'Movies': 'fas fa-film',
+            'Food': 'fas fa-utensils',
+            'Computer': 'fas fa-laptop-code',
+            'Mathematics': 'fas fa-calculator',
+            'Fill in the Blank': 'fas fa-keyboard',
+            'Other': 'fas fa-question-circle',
+            
+            // Almanca kategoriler
+            'Allgemeinwissen': 'fas fa-globe',
+            'Wissenschaft': 'fas fa-flask',
+            'Technologie': 'fas fa-microchip',
+            'Sport': 'fas fa-futbol',
+            'Musik': 'fas fa-music',
+            'Geschichte': 'fas fa-landmark',
+            'Geographie': 'fas fa-mountain',
+            'Kunst': 'fas fa-palette',
+            'Literatur': 'fas fa-book',
+            'Filme': 'fas fa-film',
+            'Essen': 'fas fa-utensils',
+            'Computer': 'fas fa-laptop-code',
+            'Mathematik': 'fas fa-calculator',
+            'Lückentext': 'fas fa-keyboard',
+            'Sonstiges': 'fas fa-question-circle'
+        };
+        
+        return categoryIcons[category] || 'fas fa-question-circle';
+    },
+    
+    // Kategori seç
+    selectCategory: function(category) {
+        try {
+            console.log("Seçilen kategori:", category);
+            this.selectedCategory = category;
+            
+            // Yeni oyun başlıyor!
+            this.currentQuestionIndex = 0;
+            this.score = 0;
+            this.correctAnswers = 0; // <-- EKLENDİ: Doğru cevap sayısını sıfırla
+            this.sessionScore = 0;
+            this.answeredQuestions = 0;
+            this.answerTimes = [];
+            this.lives = 5;
+            this.currentSection = 1; // Bölüm numarasını sıfırla - Progressive Difficulty için önemli
+            this.sectionStats = []; // Bölüm istatistiklerini sıfırla
+            
+            // Her yeni oyunda jokerları yenile
+            this.refreshJokersForNewGame();
+            
+            // Kategori seçim ekranını gizle
+            if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'none';
+            
+            // Aktif soru verilerini al (çevrilmiş veya orijinal)
+            const activeQuestionData = this.currentLanguage === 'tr' ? this.questionsData : this.translatedQuestions;
+            
+            // Seçilen kategori için özel soru yükleme algoritmasını kullan
+            if (activeQuestionData && activeQuestionData[category]) {
+                console.log(`🎯 Kategori seçildi: ${category}`);
+                console.log("Aktif dil:", this.currentLanguage);
+                
+                // Doğru soru seçim algoritmasını kullan
+                this.loadQuestionsForCategory(category);
+            } else {
+                console.error("Kategori verileri bulunamadı:", category);
+                this.showToast(this.getTranslation('categoryLoadError') || "Seçilen kategoride soru bulunamadı. Lütfen başka bir kategori seçin.", "toast-error");
+                
+                // Kategori seçim ekranını tekrar göster
+                if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'block';
+            }
+        } catch (error) {
+            console.error("selectCategory fonksiyonunda hata:", error);
+            this.showToast(this.getTranslation('categorySelectionError') || "Kategori seçilirken bir hata oluştu. Lütfen tekrar deneyin.", "toast-error");
+            
+            // Kategori seçim ekranını tekrar göster
+            if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'block';
+        }
+    },
+    
+    // Seçilen kategori için soruları yükle
+    loadQuestionsForCategory: function(category) {
+        if (!this.questionsData[category]) {
+            console.error(`${category} kategorisi için soru bulunamadı!`);
+            return;
+        }
+        
+        // Değişkenleri sıfırla - oyun başlangıcı için önemli
+        this.currentQuestionIndex = 0;
+        this.score = 0;
+        this.correctAnswers = 0;
+        this.answeredQuestions = 0;
+        this.answerTimes = [];
+        this.sectionStats = []; // Bölüm istatistiklerini sıfırla
+        this.currentSection = 1; // Bölüm numarasını sıfırla - en önemlisi bu
+        this.resetJokerUsage(); // Sadece kullanım durumlarını sıfırla, envanter korunsun
+        
+        console.log("🔄 Yeni oyun başlıyor! Bölüm sıfırlandı: " + this.currentSection);
+        
+        // Kategorinin tüm sorularını al
+        const allCategoryQuestions = [...this.questionsData[category]];
+        
+        // Soruları zorluğa göre grupla
+        const easyQuestions = allCategoryQuestions.filter(q => (q.difficulty || 2) === 1);  
+        const mediumQuestions = allCategoryQuestions.filter(q => (q.difficulty || 2) === 2);
+        const hardQuestions = allCategoryQuestions.filter(q => (q.difficulty || 2) === 3);
+        
+        console.log(`📊 Zorluk dağılımı - Kolay: ${easyQuestions.length}, Orta: ${mediumQuestions.length}, Zor: ${hardQuestions.length}`);
+        
+        // Debug: İlk 5 sorunun zorluk seviyelerini kontrol et
+        console.log("🔍 İlk 5 sorunun zorluk seviyeleri:");
+        allCategoryQuestions.slice(0, 5).forEach((q, i) => {
+            console.log(`  Soru ${i+1}: "${q.question}" - Zorluk: ${q.difficulty || 'undefined'}`);
+        });
+        
+        // İlk bölüm için SADECE KOLAY sorular
+        let firstSectionQuestions = [];
+        
+        // Kolay sorular varsa sadece onları kullan
+        if (easyQuestions.length > 0) {
+            firstSectionQuestions = this.shuffleArray([...easyQuestions]);
+            console.log("✅ Oyun sadece kolay sorularla başlıyor! Kolay soru sayısı: " + easyQuestions.length);
+            
+            // Debug: Seçilen kolay soruları kontrol et
+            console.log("🔍 Seçilen kolay sorular:");
+            firstSectionQuestions.slice(0, 3).forEach((q, i) => {
+                console.log(`  Kolay Soru ${i+1}: "${q.question}" - Zorluk: ${q.difficulty}`);
+            });
+        }
+        // Kolay soru yoksa orta zorlukta soruları kullan
+        else if (mediumQuestions.length > 0) {
+            firstSectionQuestions = this.shuffleArray([...mediumQuestions]);
+            console.log("⚠️ Kolay soru bulunamadı! Orta zorluktaki sorularla başlıyor.");
+        }
+        // Son çare olarak tüm soruları kullan
+        else {
+            firstSectionQuestions = this.shuffleArray([...allCategoryQuestions]);
+            console.log("⚠️ Kolay ve orta soru bulunamadı! Mevcut tüm sorularla başlıyor.");
+        }
+        
+        // İlk 10 soruyu seç
+        this.questions = firstSectionQuestions.slice(0, 10);
+        console.log(`📝 İlk bölüm için ${this.questions.length} soru seçildi.`);
+        
+        // Debug: Final seçilen soruların zorluk seviyelerini kontrol et
+        console.log("🔍 Final seçilen soruların zorluk seviyeleri:");
+        this.questions.forEach((q, i) => {
+            console.log(`  Final Soru ${i+1}: "${q.question}" - Zorluk: ${q.difficulty || 'undefined'}`);
+        });
+        
+        // Quiz ekranını göster ve ilk soruyu yükle
+        this.startQuiz();
+    },
+    
+    // Diziyi karıştır (Fisher-Yates algoritması)
+    shuffleArray: function(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    },
+    
+    // Quiz modunu aktifleştir
+    activateQuizMode: function() {
+        // Joker tab menüsünü göster
+        const jokerTabBar = document.getElementById('joker-tab-bar');
+        if (jokerTabBar) jokerTabBar.style.display = 'flex';
+        
+        // Normal tab menüsünü gizle (mobile-tab-bar ID'sine sahip element kullanıldığı için düzeltildi)
+        const tabBar = document.getElementById('mobile-tab-bar');
+        if (tabBar) tabBar.style.display = 'none';
+        
+        document.body.classList.add('quiz-active');
+        // Quiz modunda olduğumuzu localStorage'a kaydet
+        localStorage.setItem('quizModeActive', 'true');
+    },
+    
+    // Quiz modunu deaktive et
+    deactivateQuizMode: function() {
+        // Joker tab menüsünü gizle
+        const jokerTabBar = document.getElementById('joker-tab-bar');
+        if (jokerTabBar) jokerTabBar.style.display = 'none';
+        
+        // Normal tab menüsünü göster (mobile-tab-bar ID'sine sahip element kullanıldığı için düzeltildi)
+        const tabBar = document.getElementById('mobile-tab-bar');
+        if (tabBar) tabBar.style.display = 'flex';
+        
+        document.body.classList.remove('quiz-active');
+        // Quiz modundan çıktığımızı localStorage'a kaydet
         localStorage.removeItem('quizModeActive');
     },
     
-    // Joker tab butonlar�na olay dinleyicileri ekle
+    // Joker tab butonlarına olay dinleyicileri ekle
     initJokerTabBar: function() {
         const self = this;
         
         // 50:50 jokeri
-        document.getElementById('joker-tab-fifty').addEventListener('click', function() {
-            const jokerFiftyBtn = document.getElementById('joker-fifty');
-            if (jokerFiftyBtn && !jokerFiftyBtn.disabled) {
-                jokerFiftyBtn.click();
-            }
-        });
+        const jokerTabFifty = document.getElementById('joker-tab-fifty');
+        if (jokerTabFifty) {
+            jokerTabFifty.addEventListener('click', function() {
+                const jokerFiftyBtn = document.getElementById('joker-fifty');
+                if (jokerFiftyBtn && !jokerFiftyBtn.disabled) {
+                    jokerFiftyBtn.click();
+                }
+            });
+        }
 
-        // �pucu jokeri
-        document.getElementById('joker-tab-hint').addEventListener('click', function() {
-            const jokerHintBtn = document.getElementById('joker-hint');
-            if (jokerHintBtn && !jokerHintBtn.disabled) {
-                jokerHintBtn.click();
-            }
-        });
+        // İpucu jokeri
+        const jokerTabHint = document.getElementById('joker-tab-hint');
+        if (jokerTabHint) {
+            jokerTabHint.addEventListener('click', function() {
+                const jokerHintBtn = document.getElementById('joker-hint');
+                if (jokerHintBtn && !jokerHintBtn.disabled) {
+                    jokerHintBtn.click();
+                }
+            });
+        }
 
-        // S�re jokeri
-        document.getElementById('joker-tab-time').addEventListener('click', function() {
-            const jokerTimeBtn = document.getElementById('joker-time');
-            if (jokerTimeBtn && !jokerTimeBtn.disabled) {
-                jokerTimeBtn.click();
-            }
-        });
+        // Süre jokeri
+        const jokerTabTime = document.getElementById('joker-tab-time');
+        if (jokerTabTime) {
+            jokerTabTime.addEventListener('click', function() {
+                const jokerTimeBtn = document.getElementById('joker-time');
+                if (jokerTimeBtn && !jokerTimeBtn.disabled) {
+                    jokerTimeBtn.click();
+                }
+            });
+        }
 
         // Pas jokeri
-        document.getElementById('joker-tab-skip').addEventListener('click', function() {
-            const jokerSkipBtn = document.getElementById('joker-skip');
-            if (jokerSkipBtn && !jokerSkipBtn.disabled) {
-                jokerSkipBtn.click();
-            }
-        });
+        const jokerTabSkip = document.getElementById('joker-tab-skip');
+        if (jokerTabSkip) {
+            jokerTabSkip.addEventListener('click', function() {
+                const jokerSkipBtn = document.getElementById('joker-skip');
+                if (jokerSkipBtn && !jokerSkipBtn.disabled) {
+                    jokerSkipBtn.click();
+                }
+            });
+        }
 
-        // Joker ma�azas�
-        document.getElementById('joker-tab-store').addEventListener('click', function() {
-            const jokerStoreBtn = document.getElementById('joker-store');
-            if (jokerStoreBtn && !jokerStoreBtn.disabled) {
-                jokerStoreBtn.click();
-            }
-        });
+        // Joker mağazası
+        const jokerTabStore = document.getElementById('joker-tab-store');
+        if (jokerTabStore) {
+            jokerTabStore.addEventListener('click', function() {
+                const jokerStoreBtn = document.getElementById('joker-store');
+                if (jokerStoreBtn && !jokerStoreBtn.disabled) {
+                    jokerStoreBtn.click();
+                }
+            });
+        }
 
-        // Ana sayfa butonu (quiz'den ��k��)
-        document.getElementById('joker-tab-home').addEventListener('click', function() {
-            // Quiz'den ��k�� i�in onay sor
-            if (confirm('Quiz\'den ��kmak istedi�inize emin misiniz? �lerleyi�iniz kaydedilecek.')) {
-                // Quiz'i gizle
-                document.getElementById('quiz').style.display = 'none';
-                // Ana men�y� g�ster
-                document.getElementById('main-menu').style.display = 'block';
-                // Kategori se�imini g�ster
-                document.getElementById('category-selection').style.display = 'none';
-                // Quiz modunu deaktive et
-                self.deactivateQuizMode();
-            }
-        });
-    },
-    
-    // �statistikleri getir
-    getStats: function() {
-        const statsJSON = localStorage.getItem(this.STATS_KEY);
-        let stats = {
-            totalQuestions: 0,
-            correctAnswers: 0,
-            totalGames: 0,
-            categoryStats: {},
-            recentGames: []
-        };
-        
-        if (statsJSON) {
-            try {
-                stats = JSON.parse(statsJSON);
-            } catch (e) {
-                console.error("�statistikler y�klenirken hata olu�tu:", e);
-            }
-        }
-        
-        return stats;
-    },
-    
-    // Seviye tamamland�, sonraki seviyeyi g�ster
-    showLevelCompletionScreen: function(completedLevel) {
-        clearInterval(this.timerInterval);
-        
-        // Seviye tamamlama ses efekti
-        if (this.soundEnabled) {
-            const completionSound = document.getElementById('sound-level-completion');
-            if (completionSound) completionSound.play().catch(e => console.error("Ses �al�namad�:", e));
-        }
-        
-        // Oyuncuyu tebrik et
-        const levelCompletionElement = document.createElement('div');
-        levelCompletionElement.className = 'level-completion-screen';
-        levelCompletionElement.innerHTML = `
-            <div class="level-completion-content">
-                <h2>${completedLevel}. Seviye Tamamland�!</h2>
-                <div class="level-completion-stats">
-                    <p><i class="fas fa-star"></i> Skor: ${this.score}</p>
-                    <p><i class="fas fa-check-circle"></i> Do�ru: ${this.score}/${this.answeredQuestions}</p>
-                    <p><i class="fas fa-clock"></i> Ortalama S�re: ${Math.round(this.answerTimes.reduce((a, b) => a + b, 0) / this.answerTimes.length)} saniye</p>
-                </div>
-                <div class="confetti-animation">
-                    <i class="fas fa-trophy"></i>
-                </div>
-                <button id="next-level-btn" class="shiny-btn">Sonraki Seviyeye Ge�</button>
-            </div>
-        `;
-        
-        document.body.appendChild(levelCompletionElement);
-        
-        // Sonraki seviyeye ge�me butonu
-        const nextLevelBtn = document.getElementById('next-level-btn');
-        nextLevelBtn.addEventListener('click', () => {
-            // Sonu� ekran�n� kald�r
-            document.body.removeChild(levelCompletionElement);
-            
-            // Sonraki seviyeye devam et
-            this.currentQuestionIndex = 0;
-            this.resetJokers();
-            // Canlar� koruyoruz, s�f�rlam�yoruz ki �nceki seviyeden kalan canlarla devam edilsin
-            this.score = 0;
-            this.answerTimes = [];
-            this.answeredQuestions = 0;
-            
-            // Sonraki seviye i�in sorular� y�kle
-            this.loadQuestionsForCurrentLevel();
-        });
-    },
-    
-    // Olay dinleyicilerini ekle
-    addEventListeners: function() {
-        try {
-            console.log("Event listener'lar ekleniyor...");
-            
-        // Tema de�i�tirme butonu i�in olay dinleyicisi
-        if (this.themeToggle) {
-            this.themeToggle.addEventListener('change', () => {
-                const theme = this.themeToggle.checked ? 'dark' : 'light';
-                this.userSettings.theme = theme;
-                this.applyTheme(theme);
-                this.saveUserSettings();
-            });
-        }
-        
-        // Yeniden ba�latma butonu i�in olay dinleyicisi
-        if (this.restartButton) {
-            this.restartButton.addEventListener('click', () => {
-                this.restartGame();
-            });
-        }
-        
-        // Sonraki soru butonu i�in olay dinleyicisi
-        if (this.nextButton) {
-            this.nextButton.addEventListener('click', () => {
-                this.showNextQuestion();
-            });
-        }
-        
-            // Joker butonlar� i�in olay dinleyicileri
-            console.log('DOM haz�r, joker event listener\'lar� ekleniyor...');
-            this.addJokerEventListeners();
-            
-            // Tekli oyun butonu
-            if (this.singlePlayerBtn) {
-                console.log("Tekli oyun butonu bulundu, dinleyici ekleniyor");
-                this.singlePlayerBtn.addEventListener('click', () => {
-                    console.log("Tekli oyun butonuna t�kland�");
-                    if (this.mainMenu) this.mainMenu.style.display = 'none';
+        // Ana sayfa butonu (quiz'den çıkış)
+        const jokerTabHome = document.getElementById('joker-tab-home');
+        if (jokerTabHome) {
+            jokerTabHome.addEventListener('click', function() {
+                // Quiz'den çıkış için onay sor
+                if (confirm('Quiz\'den çıkmak istediğinize emin misiniz? İlerleyişiniz kaydedilecek.')) {
+                    // Quiz'i gizle
+                    const quizElement = document.getElementById('quiz');
+                    if (quizElement) quizElement.style.display = 'none';
                     
-                    // Tekli oyun modunda chat ekran�n� gizle
-                    const gameChatContainer = document.getElementById('game-chat-container');
-                    if (gameChatContainer) {
-                        gameChatContainer.style.display = 'none';
-                    }
+                    // Ana menüyü göster
+                    const mainMenu = document.getElementById('main-menu');
+                    if (mainMenu) mainMenu.style.display = 'block';
                     
-                    if (this.categorySelectionElement) {
-                        this.categorySelectionElement.style.display = 'block';
-                        // Kategorileri g�ster
-                        this.displayCategories();
-                    } else {
-                        console.error("Kategori se�im elementi bulunamad�!");
-                    }
-                });
-            } else {
-                console.error("Tekli oyun butonu bulunamad�! ID: single-player-btn");
-            }
-            
-            console.log("Event listener'lar ba�ar�yla eklendi");
-        } catch (error) {
-            console.error("addEventListeners fonksiyonunda hata:", error);
-        }
-    },
-    
-    // Joker butonlar�n� ayarla (setupJokerButtons'un yerine kullan�yoruz)
-    setupJokerButtons: function() {
-        // Bu fonksiyon gerekti�inde joker butonlar�n� ayarlar
-        console.log("Joker butonlar� ayarlan�yor");
-        this.updateJokerButtons();
-    },
-    
-    // Soru verilerini y�kle
-    loadQuestionsData: function() {
-            console.log("Soru verileri y�kleniyor...");
-            
-        return new Promise((resolve, reject) => {
-            // Se�ilen dile g�re dosya belirle
-            let questionsFile = 'languages/tr/questions.json'; // T�rk�e i�in varsay�lan
-            
-            if (this.currentLanguage === 'en') {
-                questionsFile = 'languages/en/questions.json';
-            } else if (this.currentLanguage === 'de') {
-                questionsFile = 'languages/de/questions.json';
-            }
-            
-            console.log(`Dil: ${this.currentLanguage}, Y�klenen dosya: ${questionsFile}`);
-            
-            // Sorular� belirlenen JSON dosyas�ndan y�kle
-            fetch(questionsFile)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Sorular y�klenemedi: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data) {
-                    this.questionsData = data;
-                        // allQuestionsData'y� questionsData ile ayn� verilere i�aret edecek �ekilde atayal�m
-                        this.allQuestionsData = data; 
-                        console.log("Soru verileri ba�ar�yla y�klendi:", Object.keys(data).length, "kategori");
-                        console.log("Kategoriler:", Object.keys(data));
-                        resolve(data);
-                    } else {
-                        console.log("Sorular y�klenemedi, varsay�lan veriler kullan�lacak.");
-                        this.loadDefaultQuestions();
-                        resolve(this.questionsData);
-                    }
-                })
-                .catch(error => {
-                    console.error("Sorular y�klenirken hata:", error);
-                    console.log("Varsay�lan sorular kullan�lacak");
-                    this.loadDefaultQuestions();
-                    resolve(this.questionsData);
-                });
-        });
-    },
-    
-    // Varsay�lan sorular� y�kle (offline durumlar i�in)
-    loadDefaultQuestions: function() {
-        // Varsay�lan baz� sorular
-        this.questionsData = {
-            "Genel K�lt�r": [
-                {
-                    question: "T�rkiye'nin ba�kenti hangi �ehirdir?",
-                                options: ["�stanbul", "Ankara", "�zmir", "Bursa"],
-                                correctAnswer: "Ankara",
-                    difficulty: "easy"
-                },
-                {
-                    question: "Hangi gezegen G�ne� Sistemi'nde en b�y�k olan�d�r?",
-                    options: ["Mars", "Ven�s", "J�piter", "Sat�rn"],
-                    correctAnswer: "J�piter",
-                    difficulty: "easy"
-                            },
-                            {
-                                question: "D�nyan�n en b�y�k okyanusu hangisidir?",
-                    options: ["Atlas Okyanusu", "Hint Okyanusu", "Pasifik Okyanusu", "Arktik Okyanusu"],
-                    correctAnswer: "Pasifik Okyanusu",
-                    difficulty: "medium"
-                }
-            ],
-            "Teknoloji": [
-                {
-                    question: "HTML'in a��l�m� nedir?",
-                    options: ["Hyper Text Markup Language", "High Tech Modern Language", "Hyper Transfer Mode Language", "Home Tool Markup Language"],
-                    correctAnswer: "Hyper Text Markup Language",
-                    difficulty: "easy"
-                },
-                {
-                    question: "Hangi �irket Windows i�letim sistemini geli�tirmi�tir?",
-                    options: ["Apple", "Google", "Microsoft", "IBM"],
-                    correctAnswer: "Microsoft",
-                    difficulty: "easy"
-                }
-            ],
-            "Bilim": [
-                {
-                    question: "Periyodik tabloda 'Fe' hangi elementi simgeler?",
-                    options: ["Flor", "Demir", "Fosfor", "Fermiyum"],
-                    correctAnswer: "Demir",
-                    difficulty: "medium"
-                },
-                {
-                    question: "I��k h�z� yakla��k ka� km/s'dir?",
-                    options: ["100.000 km/s", "200.000 km/s", "300.000 km/s", "400.000 km/s"],
-                    correctAnswer: "300.000 km/s",
-                    difficulty: "medium"
-                }
-            ]
-        };
-        // allQuestionsData'y� da g�ncelle
-        this.allQuestionsData = this.questionsData;
-        console.log("Varsay�lan sorular y�klendi:", Object.keys(this.questionsData).length, "kategori");
-    },
-    
-    // Restartlama i�levi
-    restartGame: function() {
-        this.currentQuestionIndex = 0;
-        this.score = 0;
-        this.correctAnswers = 0; // <-- EKLEND�: Do�ru cevap say�s�n� s�f�rla
-        this.sessionScore = 0; // Oturum puan�n� s�f�rla
-        this.lives = 5;
-        this.answeredQuestions = 0;
-        this.answerTimes = [];
-        this.currentSection = 1; // B�l�m say�s�n� da s�f�rla
-        this.resetJokers();
-        
-        // Body'den quiz ve kategori class'lar�n� kald�r - logo tekrar g�r�ns�n
-        document.body.classList.remove('quiz-active', 'category-selection');
-        
-        // Tekli oyun modunda chat ekran�n� gizle
-        const gameChatContainer = document.getElementById('game-chat-container');
-        if (gameChatContainer) {
-            gameChatContainer.style.display = 'none';
-        }
-        
-        // Kategorileri yeniden g�ster
-        this.displayCategories();
-        
-        // �statistikleri s�f�rla
-        this.updateScoreDisplay();
-    },
-    
-    // Sonraki soruyu g�ster
-    showNextQuestion: function() {
-        // Yeni soruya ge�erken joker kullan�mlar�n� s�f�rla
-        this.resetJokerUsage();
-        // �nceki sonu� ve se�ili ��klar� temizle
-        if (this.resultElement) {
-            this.resultElement.style.display = 'none';
-            this.resultElement.innerHTML = '';
-        }
-        
-        // T�m se�ilmi� ��klar�n se�imini kald�r
-        const selectedOptions = document.querySelectorAll('.option.selected, .true-false-option.selected, .option.answered, .true-false-option.answered');
-        selectedOptions.forEach(option => {
-            option.classList.remove('selected', 'answered', 'correct', 'wrong');
-            option.disabled = false;
-        });
-        
-        // 50:50 joker ile devre d��� b�rak�lan se�enekleri s�f�rla
-        this.resetDisabledOptions();
-        
-        // Bo�luk doldurma ekran�ndaki cevap g�stergesini temizle
-        const answerDisplay = document.getElementById('blank-filling-answer');
-        if (answerDisplay) {
-            answerDisplay.textContent = '';
-            answerDisplay.classList.remove('correct', 'wrong');
-        }
-        
-        // Se�ilmi� harfleri s�f�rla
-        this.selectedLetters = [];
-        
-        // Soru sayac�n� art�r
-        this.currentQuestionIndex++;
-        
-        // �nceki ipucu mesajlar�n� temizle
-        const existingHintMessages = document.querySelectorAll('.hint-message');
-        existingHintMessages.forEach(element => {
-            element.remove();
-        });
-        
-        // Her 5 soruda bir b�l�m ge�i�i g�ster
-        if (this.currentQuestionIndex > 0 && this.currentQuestionIndex % 5 === 0 && this.currentQuestionIndex < this.questions.length) {
-            this.currentSection++; // B�l�m say�s�n� art�r
-            
-                    // Progressive difficulty sistemi ile dinamik b�l�m say�s�
-            const maxSections = this.getMaxSectionsForCategory();
-            if (this.currentSection > maxSections) {
-                this.showCategoryCompletion();
-                return;
-            }
-            
-            // Eski 50 b�l�m kontrol� kald�r�ld� - art�k dinamik sistem kullan�l�yor
-            
-            this.showSectionTransition();
-        } else if (this.currentQuestionIndex < this.questions.length) {
-            this.displayQuestion(this.questions[this.currentQuestionIndex]);
-        } else {
-            // T�m sorular cevapland� - kategori tamamlama ekran�n� g�ster
-            console.log("T�m sorular cevapland�, kategori tamamlama ekran� g�steriliyor...");
-            this.showCategoryCompletion();
-        }
-    },
-    
-    // Kategoriye g�re maksimum b�l�m say�s�n� belirle
-    getMaxSectionsForCategory: function() {
-        // Kategoriye �zel zorluk seviyesi belirle
-        const categoryDifficultyMap = {
-            // Kolay kategoriler (12-15 b�l�m)
-            'Hayvanlar': 12,
-            'Renkler': 12, 
-            'Basit Kelimeler': 13,
-            'Say�lar': 13,
-            'V�cut': 14,
-            'Aile': 14,
-            'Yemek': 15,
-            'Ev': 15,
-            
-            // Orta kategoriler (15-18 b�l�m)
-            'Spor': 15,
-            'M�zik': 16,
-            'Meslek': 16,
-            'Ula��m': 17,
-            'Do�a': 17,
-            'Teknoloji': 18,
-            'Sa�l�k': 18,
-            
-            // Zor kategoriler (18-25 b�l�m)
-            'Bilim': 20,
-            'Tarih': 20,
-            'Edebiyat': 22,
-            'Co�rafya': 22,
-            'Felsefe': 24,
-            'Matematik': 24,
-            'Fizik': 25,
-            'Kimya': 25
-        };
-        
-        // Se�ilen kategoriye g�re b�l�m say�s� d�nd�r
-        const maxSections = categoryDifficultyMap[this.selectedCategory] || 15; // Varsay�lan 15 b�l�m
-        console.log(`Kategori: ${this.selectedCategory}, Maksimum B�l�m: ${maxSections}`);
-        return maxSections;
-    },
-    
-    // Kategori zorluk seviyesi metni
-    getCategoryDifficultyText: function() {
-        const maxSections = this.getMaxSectionsForCategory();
-        
-        if (maxSections <= 15) {
-            return "?? Kolay Kategori";
-        } else if (maxSections <= 18) {
-            return "?? Orta Kategori";
-        } else {
-            return "?? Zor Kategori";
-        }
-    },
-    
-    // Progressive difficulty: Mevcut b�l�me g�re zorluk seviyesi belirle
-    getProgressiveDifficulty: function() {
-        const maxSections = this.getMaxSectionsForCategory();
-        const currentProgress = this.currentSection / maxSections;
-        
-        // �lk %40'� kolay, sonraki %40'� orta, son %20'si zor
-        if (currentProgress <= 0.4) {
-            return 1; // Kolay
-        } else if (currentProgress <= 0.8) {
-            return 2; // Orta  
-        } else {
-            return 3; // Zor
-        }
-    },
-    
-    // Kategori Tamamlama Ekran�n� G�ster (dinamik b�l�m say�s�na g�re)
-    showCategoryCompletion: function() {
-        // Zamanlay�c�y� durdur
-        clearInterval(this.timerInterval);
-        
-        // Kategori tamamlama modal�n� olu�tur
-        const categoryCompletionModal = document.createElement('div');
-        categoryCompletionModal.className = 'category-completion-modal';
-        categoryCompletionModal.innerHTML = `
-            <div class="category-completion-content">
-                <div class="completion-header">
-                    <div class="completion-icon">
-                        <i class="fas fa-trophy"></i>
-                    </div>
-                    <h2>Kategori Tamamland�!</h2>
-                    <p class="completion-message">"${this.selectedCategory}" kategorisinin ${this.getMaxSectionsForCategory()} b�l�m�n� ba�ar�yla tamamlad�n�z!</p>
-                    <p class="completion-difficulty" style="font-size: 14px; color: #64748b; margin-top: 10px;">
-                        ${this.getCategoryDifficultyText()} � Progressive Zorluk Sistemi
-                    </p>
-                </div>
-                
-                <div class="completion-stats">
-                                         <div class="stat-item">
-                         <div class="stat-icon">
-                             <i class="fas fa-layer-group"></i>
-                         </div>
-                         <div class="stat-content">
-                             <div class="stat-value">${this.getMaxSectionsForCategory()}</div>
-                             <div class="stat-label">B�l�m Tamamland�</div>
-                         </div>
-                     </div>
+                    // Kategori seçimini göster
+                    const categorySelection = document.getElementById('category-selection');
+                    if (categorySelection) categorySelection.style.display = 'none';
                     
-                    <div class="stat-item">
-                        <div class="stat-icon">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-value">${this.score}</div>
-                            <div class="stat-label">Toplam Puan</div>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-item">
-                        <div class="stat-icon">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-value">${this.correctAnswers}</div>
-                            <div class="stat-label">Do�ru Cevap</div>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-item">
-                        <div class="stat-icon">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-value">${this.lives}</div>
-                            <div class="stat-label">Kalan Can</div>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-item" style="grid-column: 1 / -1;">
-                        <div class="stat-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-value" style="font-size: 14px;">Kolay � Orta � Zor</div>
-                            <div class="stat-label">Zorluk Progresyonu</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="completion-actions">
-                    <button id="show-final-results" class="completion-btn primary">
-                        <i class="fas fa-chart-line"></i>
-                        Detayl� Sonu�lar� G�r
-                    </button>
-                </div>
-            </div>
-        `;
-        
-        document.body.appendChild(categoryCompletionModal);
-        
-        // Detayl� sonu�lar� g�ster butonu
-        const showResultsBtn = document.getElementById('show-final-results');
-        if (showResultsBtn) {
-            showResultsBtn.addEventListener('click', () => {
-                // Modal� kald�r
-                categoryCompletionModal.remove();
-                
-                // Normal oyun biti� ekran�n� g�ster
-                setTimeout(() => {
-            this.showResult();
-                }, 500);
-            });
-        }
-        
-        // Modal d���na t�klan�rsa da sonu� ekran�n� g�ster
-        categoryCompletionModal.addEventListener('click', (e) => {
-            if (e.target === categoryCompletionModal) {
-                categoryCompletionModal.remove();
-                setTimeout(() => {
-                    this.showResult();
-                }, 500);
-            }
-        });
-        
-        // Ba�ar� ses efekti �al
-        if (this.soundEnabled) {
-            const victorySound = document.getElementById('sound-level-completion');
-            if (victorySound) victorySound.play().catch(e => console.error("Ses �al�namad�:", e));
-        }
-        
-        // 10 saniye sonra otomatik olarak sonu� ekran�n� g�ster
-        setTimeout(() => {
-            if (document.body.contains(categoryCompletionModal)) {
-                categoryCompletionModal.remove();
-                this.showResult();
-            }
-        }, 10000);
-        
-        // Konfeti efekti eklenebilir
-        console.log(`${this.selectedCategory} kategorisi ${this.getMaxSectionsForCategory()} b�l�m ile tamamland�!`);
-    },
-
-    // DEBUG: Kategori tamamlama modal�n� test et
-    testCategoryCompletion: function() {
-        console.log("Test: Kategori tamamlama modal� manuel olarak g�steriliyor...");
-        this.showCategoryCompletion();
-    },
-    
-    // Oyun Tamamlama Ekran�n� G�ster (50 b�l�m tamamland���nda)
-    showGameCompletion: function() {
-        // Sayac� durdur
-        clearInterval(this.timerInterval);
-        
-        // Oyun tamamlama ekran�n� olu�tur
-        const completionElement = document.createElement('div');
-        completionElement.className = 'game-completion-screen';
-        completionElement.innerHTML = `
-            <div class="game-completion-content">
-                <div class="trophy-container">
-                    <i class="fas fa-trophy trophy-icon"></i>
-                </div>
-                <h2>Tebrikler! Oyunu Tamamlad�n�z!</h2>
-                <div class="completion-info">
-                    <p class="completion-congrats">50 b�l�m� ba�ar�yla tamamlad�n�z!</p>
-                    <p>Toplam Puan: <strong>${this.score}</strong></p>
-                    <p class="completion-message">Bu muhte�em ba�ar�n�z i�in kutlar�z!</p>
-                </div>
-                <div class="completion-buttons">
-                    <button id="restart-game-btn" class="completion-btn"><i class="fas fa-redo"></i> Yeniden Oyna</button>
-                    <button id="share-result-btn" class="completion-btn"><i class="fas fa-share-alt"></i> Sonucu Payla�</button>
-                </div>
-            </div>
-        `;
-        
-        document.body.appendChild(completionElement);
-        
-        // Yeniden ba�latma butonu
-        const restartGameBtn = document.getElementById('restart-game-btn');
-        if (restartGameBtn) {
-            restartGameBtn.addEventListener('click', () => {
-                document.body.removeChild(completionElement);
-                this.restartGame();
-            });
-        }
-        
-        // Payla��m butonu
-        const shareResultBtn = document.getElementById('share-result-btn');
-        if (shareResultBtn) {
-            shareResultBtn.addEventListener('click', () => {
-                // Payla��m �zelli�i eklenebilir
-                const shareText = `Bilgoo'yu ${this.score} puanla tamamlad�m! Sende oynamak ister misin?`;
-                
-                if (navigator.share) {
-                    navigator.share({
-                        title: 'Bilgoo',
-                        text: shareText,
-                        url: window.location.href
-                    }).catch(err => {
-                        console.error('Payla��m hatas�:', err);
-                        this.showToast('Sonu� payla��lamad�', 'toast-error');
-                    });
-                } else {
-                    // Taray�c� payla��m� desteklemiyorsa panoya kopyala
-                    navigator.clipboard.writeText(shareText)
-                        .then(() => {
-                            this.showToast('Sonu� panoya kopyaland�!', 'toast-success');
-                        })
-                        .catch(err => {
-                            console.error('Panoya kopyalama hatas�:', err);
-                            this.showToast('Sonu� kopyalanamad�', 'toast-error');
-                        });
+                    // Quiz modunu deaktive et
+                    self.deactivateQuizMode();
                 }
             });
         }
-        
-        // Konfeti efekti veya ses efekti eklenebilir
-        if (this.soundEnabled) {
-            const victorySound = document.getElementById('sound-level-completion');
-            if (victorySound) victorySound.play().catch(e => console.error("Ses �al�namad�:", e));
-        }
-        
-        // �statistikleri kaydet
-        this.saveStats(this.selectedCategory, this.score, this.answeredQuestions, 
-            this.answerTimes.length > 0 ? Math.round(this.answerTimes.reduce((a, b) => a + b, 0) / this.answerTimes.length) : 0);
     },
     
-    // B�l�m ge�i� ekran�n� g�ster
-    showSectionTransition: function() {
-        // Sayac� durdur
-        clearInterval(this.timerInterval);
-        
-        // Tamamlanan b�l�m numaras� (0-tabanl�) - currentSection 1'den ba�lad��� i�in -1
-        const sectionIndex = this.currentSection - 2; // Bir �nceki tamamlanan b�l�m
-        
-        // B�l�m istatistiklerini al
-        const stats = this.sectionStats[sectionIndex] || { correct: 0, total: 0 };
-        
-        console.log(`B�l�m ge�i�i g�steriliyor. B�l�m: ${sectionIndex+1}, �statistikler:`, stats);
-        
-        // Do�ru cevap y�zdesini hesapla
-        const correctPercentage = stats.total > 0 
-            ? Math.round((stats.correct / stats.total) * 100) 
-            : 0;
-        
-        console.log(`B�l�m istatistikleri hesapland�: Do�ru: ${stats.correct}, Toplam: ${stats.total}, Y�zde: ${correctPercentage}%`);
-        
-        // Y�ld�z tipini belirle (alt�n, g�m�� veya bronz)
-        let starType, starColor, starText;
-        if (correctPercentage >= 80) {
-            starType = 'gold';
-            starColor = '#ffd700';
-            starText = 'Alt�n Y�ld�z';
-        } else if (correctPercentage >= 50) {
-            starType = 'silver';
-            starColor = '#c0c0c0';
-            starText = 'G�m�� Y�ld�z';
-        } else {
-            starType = 'bronze';
-            starColor = '#cd7f32';
-            starText = 'Bronz Y�ld�z';
-        }
-        
-        // Performansa g�re ka� y�ld�z verilecek
-        let starCount;
-        if (correctPercentage >= 80) {
-            starCount = 3; // �ok iyi performans: 3 y�ld�z
-        } else if (correctPercentage >= 50) {
-            starCount = 2; // Orta performans: 2 y�ld�z
-        } else {
-            starCount = 1; // D���k performans: 1 y�ld�z
-        }
-        
-        // Y�ld�z HTML'ini olu�tur
-        let starsHTML = '';
-        for (let i = 0; i < 3; i++) {
-            if (i < starCount) {
-                // Aktif y�ld�z (kazan�lan)
-                starsHTML += `<i class="fas fa-star" style="color: ${starColor};"></i>`;
-            } else {
-                // Gri y�ld�z (kazan�lmayan)
-                starsHTML += `<i class="fas fa-star" style="color: #888; opacity: 0.5;"></i>`;
-            }
-        }
-        
-        // B�l�m ge�i� ekran�n� olu�tur - �nceki tasar�ma benzer bir stil kullan�l�yor
-        const sectionElement = document.createElement('div');
-        sectionElement.className = 'section-transition';
-        sectionElement.innerHTML = `
-            <div class="section-transition-content">
-                <h2>${this.currentSection-1}. ${this.getTranslation('sectionCompleted')}</h2>
-                
-                <div class="stars-container">
-                    ${starsHTML}
-                </div>
-                
-                <div class="level-info">
-                    <p class="level-congrats">${starCount} ${this.getTranslation('earnedStars')}</p>
-                </div>
-                
-                <div class="section-stats">
-                    <p><i class="fas fa-star"></i> ${this.getTranslation('currentScore')}: ${this.score}</p>
-                    <p><i class="fas fa-heart"></i> ${this.getTranslation('remainingLives')}: ${this.lives}</p>
-                    <p><i class="fas fa-check-circle"></i> ${this.getTranslation('correctAnswers')}: ${stats.correct}/${stats.total} (${correctPercentage}%)</p>
-                    <p><i class="fas fa-chart-line"></i> Sonraki B�l�m: ${['', 'Kolay', 'Orta', 'Zor'][this.getProgressiveDifficulty()]} Seviye</p>
-                </div>
-                <button id="next-section-btn" class="level-btn"><i class="fas fa-forward"></i> ${this.getTranslation('nextSection')}</button>
-            </div>
-        `;
-        
-        // Mevcut ekran� gizle ve ge�i� ekran�n� g�ster
-        if (this.quizElement) this.quizElement.style.display = 'none';
-        document.body.appendChild(sectionElement);
-        
-        // Sonraki b�l�me ge�i� butonu
-        const nextSectionBtn = document.getElementById('next-section-btn');
-        nextSectionBtn.addEventListener('click', () => {
-            // Ge�i� ekran�n� kald�r
-            document.body.removeChild(sectionElement);
-            
-            // Quiz ekran�n� g�ster
-            if (this.quizElement) this.quizElement.style.display = 'block';
-            
-            // Sonraki soruyu g�ster
-            this.displayQuestion(this.questions[this.currentQuestionIndex]);
-        });
-        
-        // Ses efekti �al
-        if (this.soundEnabled) {
-            const sectionSound = document.getElementById('sound-correct');
-            if (sectionSound) sectionSound.play().catch(e => console.error("Ses �al�namad�:", e));
-        }
-        
-        // Tebrik toast mesaj� g�ster
-        this.showToast(`${this.currentSection-1}. ${this.getTranslation('sectionCompleted')}`, "toast-success");
-    },
-    
-    // Kategorileri g�ster
-    displayCategories: function() {
-        const categoriesContainer = document.getElementById('categories');
-        if (!categoriesContainer) {
-            console.error("Kategoriler i�in DOM elementi bulunamad�! (ID: categories)");
-            return;
-        }
-        // Kategorileri temizle
-        categoriesContainer.innerHTML = '';
-        
-        // Body'ye kategori se�imi class'�n� ekle - logo gizlemek i�in
-        document.body.classList.add('category-selection');
-        document.body.classList.remove('quiz-active');
-        
-        // Tekli oyun modunda chat ekran�n� gizle
-        const gameChatContainer = document.getElementById('game-chat-container');
-        if (gameChatContainer) {
-            gameChatContainer.style.display = 'none';
-        }
-        
-        // Aktif kategori verilerini al
-        const activeQuestionData = this.currentLanguage === 'tr' ? this.questionsData : this.translatedQuestions;
-        
-        console.log("displayCategories �a�r�ld�! Mevcut kategoriler:", activeQuestionData ? Object.keys(activeQuestionData) : "Veri yok");
-        if (!activeQuestionData || Object.keys(activeQuestionData).length === 0) {
-            // Y�kleniyor mesaj� g�ster
-            categoriesContainer.innerHTML = `<div class="loading">${this.getTranslation('loading')}</div>`;
-            return;
-        }
-        
-        // T�m kategorileri g�ster
-        Object.keys(activeQuestionData).forEach(category => {
-            const categoryElement = document.createElement('div');
-            categoryElement.className = 'category category-btn';
-            categoryElement.innerHTML = `
-                <div class="category-icon">
-                    <i class="${this.getCategoryIcon(category)}"></i>
-                </div>
-                <div class="category-name">${category}</div>
-            `;
-            // Kategori elementine t�klama olay� ekle
-            categoryElement.addEventListener('click', () => {
-                this.selectCategory(category);
-            });
-            categoriesContainer.appendChild(categoryElement);
-        });
-        console.log("Toplam", Object.keys(activeQuestionData).length, "kategori g�r�nt�lendi");
-    },
-    
-    // Kategori simgesini belirle
-    getCategoryIcon: function(category) {
-        // Kategori ad�na g�re uygun simge d�nd�r
-        const categoryIcons = {
-            // T�rk�e kategoriler
-            'Genel K�lt�r': 'fas fa-globe',
-            'Bilim': 'fas fa-flask',
-            'Teknoloji': 'fas fa-microchip',
-            'Spor': 'fas fa-futbol',
-            'M�zik': 'fas fa-music',
-            'Tarih': 'fas fa-landmark',
-            'Co�rafya': 'fas fa-mountain',
-            'Sanat': 'fas fa-palette',
-            'Edebiyat': 'fas fa-book',
-            'Sinema': 'fas fa-film',
-            'Yemek': 'fas fa-utensils',
-            'Bilgisayar': 'fas fa-laptop-code',
-            'Matematik': 'fas fa-calculator',
-            'Bo�luk Doldurma': 'fas fa-keyboard',
-            'Di�er': 'fas fa-question-circle',
-            
-            // �ngilizce kategoriler
-            'General Knowledge': 'fas fa-globe',
-            'Science': 'fas fa-flask',
-            'Technology': 'fas fa-microchip',
-            'Sports': 'fas fa-futbol',
-            'Music': 'fas fa-music',
-            'History': 'fas fa-landmark',
-            'Geography': 'fas fa-mountain',
-            'Art': 'fas fa-palette',
-            'Literature': 'fas fa-book',
-            'Movies': 'fas fa-film',
-            'Food': 'fas fa-utensils',
-            'Computer': 'fas fa-laptop-code',
-            'Mathematics': 'fas fa-calculator',
-            'Fill in the Blank': 'fas fa-keyboard',
-            'Other': 'fas fa-question-circle',
-            
-            // Almanca kategoriler
-            'Allgemeinwissen': 'fas fa-globe',
-            'Wissenschaft': 'fas fa-flask',
-            'Technologie': 'fas fa-microchip',
-            'Sport': 'fas fa-futbol',
-            'Musik': 'fas fa-music',
-            'Geschichte': 'fas fa-landmark',
-            'Geographie': 'fas fa-mountain',
-            'Kunst': 'fas fa-palette',
-            'Literatur': 'fas fa-book',
-            'Filme': 'fas fa-film',
-            'Essen': 'fas fa-utensils',
-            'Computer': 'fas fa-laptop-code',
-            'Mathematik': 'fas fa-calculator',
-            'L�ckentext': 'fas fa-keyboard',
-            'Sonstiges': 'fas fa-question-circle'
-        };
-        
-        return categoryIcons[category] || 'fas fa-question-circle';
-    },
-    
-    // Kategori se�
-    selectCategory: function(category) {
-        try {
-            console.log("Se�ilen kategori:", category);
-            this.selectedCategory = category;
-            
-            // Yeni oyun ba�lad���nda de�i�kenleri s�f�rla
-            this.currentQuestionIndex = 0;
-            this.score = 0;
-            this.correctAnswers = 0; // <-- EKLEND�: Do�ru cevap say�s�n� s�f�rla
-            this.sessionScore = 0;
-            this.answeredQuestions = 0;
-            this.answerTimes = [];
-            this.lives = 5;
-            
-            // Her yeni oyunda jokerlar� yenile
-            this.refreshJokersForNewGame();
-            
-            // Kategori se�im ekran�n� gizle
-            if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'none';
-            
-            // Aktif soru verilerini al (�evrilmi� veya orijinal)
-            const activeQuestionData = this.currentLanguage === 'tr' ? this.questionsData : this.translatedQuestions;
-            
-            // Se�ilen kategorideki sorular� kar��t�r
-            if (activeQuestionData && activeQuestionData[category]) {
-                this.questions = this.shuffleArray([...activeQuestionData[category]]);
-                this.arrangeBlankFillingFirst();
-                console.log("Soru say�s�:", this.questions.length);
-                console.log("Aktif dil:", this.currentLanguage);
-                
-                // Maksimum soru say�s�n� dinamik olarak hesapla
-                const maxSections = this.getMaxSectionsForCategory();
-                const maxQuestions = maxSections * 5; // Her b�l�mde 5 soru
-                
-                console.log(`Kategori: ${this.selectedCategory}`);
-                console.log(`Maksimum b�l�m: ${maxSections}`);
-                console.log(`Maksimum soru: ${maxQuestions}`);
-                
-                if (this.questions.length > maxQuestions) {
-                    this.questions = this.questions.slice(0, maxQuestions);
-                    console.log("Sorular", maxQuestions, "ile s�n�rland�r�ld� (dinamik sistem)");
-                } else if (this.questions.length < maxQuestions) {
-                    // E�er yeterli soru yoksa mevcut sorular� tekrarla
-                    const originalQuestions = [...this.questions];
-                    while (this.questions.length < maxQuestions) {
-                        this.questions = this.questions.concat(this.shuffleArray([...originalQuestions]));
-                    }
-                    this.questions = this.questions.slice(0, maxQuestions);
-                    console.log("Yetersiz soru! Sorular tekrarlanarak", maxQuestions, "soraya ��kar�ld�");
-                }
-                
-                // Toplam puan g�stergesini ba�lat
-                this.updateTotalScoreDisplay();
-                
-                // Oyunu ba�lat
-                this.startQuiz();
-            } else {
-                console.error("Kategori verileri bulunamad�:", category);
-                this.showToast(this.getTranslation('categoryLoadError') || "Se�ilen kategoride soru bulunamad�. L�tfen ba�ka bir kategori se�in.", "toast-error");
-                
-                // Kategori se�im ekran�n� tekrar g�ster
-                if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'block';
-            }
-        } catch (error) {
-            console.error("selectCategory fonksiyonunda hata:", error);
-            this.showToast(this.getTranslation('categorySelectionError') || "Kategori se�ilirken bir hata olu�tu. L�tfen tekrar deneyin.", "toast-error");
-            
-            // Kategori se�im ekran�n� tekrar g�ster
-            if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'block';
-        }
-    },
-    
-    // Se�ilen kategori i�in sorular� y�kle
-    loadQuestionsForCategory: function(category) {
-        if (!this.questionsData[category]) {
-            console.error(`${category} kategorisi i�in soru bulunamad�!`);
-            return;
-        }
-        
-        // Kategorinin sorular�n� al ve kar��t�r
-        this.questions = this.shuffleArray([...this.questionsData[category]]);
-        
-        // Zorluk seviyesine g�re s�rala (iste�e ba�l�)
-        // this.questions.sort((a, b) => (a.difficulty || 1) - (b.difficulty || 1));
-        
-        // �lk soruyu g�ster
-        this.currentQuestionIndex = 0;
-        this.score = 0;
-        this.correctAnswers = 0; // <-- EKLEND�
-        // this.lives = 5; // BUNU S�L�YORUM
-        this.answeredQuestions = 0;
-        this.answerTimes = [];
-        this.sectionStats = []; // B�l�m istatistiklerini s�f�rla
-        this.currentSection = 1; // B�l�m numaras�n� s�f�rla
-        this.resetJokerUsage(); // Sadece kullan�m durumlar�n� s�f�rla, envanter korunsun
-        
-        // Quiz ekran�n� g�ster ve ilk soruyu y�kle
-        this.startQuiz();
-    },
-    
-    // Diziyi kar��t�r (Fisher-Yates algoritmas�)
-    shuffleArray: function(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    },
-    
-    // Quiz'i ba�lat
+    // Quiz'i başlat
     startQuiz: function() {
-        // Body'ye quiz aktif class'�n� ekle - logo gizlemek i�in ve mobil tab bar�n yer de�i�tirmesi i�in
+        // Body'ye quiz aktif class'ını ekle - logo gizlemek için ve mobil tab barın yer değiştirmesi için
         document.body.classList.add('quiz-active');
         document.body.classList.remove('category-selection');
         
-        // Quiz modunu aktifle�tir
+        // Quiz modunu aktifleştir
         this.activateQuizMode();
         
-        // �nce t�m ana b�l�mleri gizle, sadece quiz ekran�n� g�ster
+        // Progressive Zorluk Sistemi - İlk başlangıç için bölümün 1 olduğundan emin ol
+        this.currentSection = 1; // Zorluk seviyesi kolay başlaması için
+        console.log('✅ startQuiz: currentSection ayarlandı:', this.currentSection);
+        
+        console.log('🚀 Quiz başlıyor - Progressive Zorluk Sistemi aktif, bölüm:', this.currentSection);
+        
+        // Önce tüm ana bölümleri gizle, sadece quiz ekranını göster
         if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'none';
         if (this.quizElement) this.quizElement.style.display = 'block';
         if (this.resultElement) this.resultElement.style.display = 'none';
         
-        // Oyun aray�z�ne kalan di�er elemanlar� da gizle
+        // Oyun arayüzüne kalan diğer elemanları da gizle
         const mainMenu = document.getElementById('main-menu');
         if (mainMenu) mainMenu.style.display = 'none';
         
@@ -6534,41 +4004,45 @@ const quizApp = {
         const winnerScreen = document.getElementById('winner-screen');
         if (winnerScreen) winnerScreen.style.display = 'none';
         
-        // Tekli oyun modunda chat ekran�n� gizle
+        // Tekli oyun modunda chat ekranını gizle
         const gameChatContainer = document.getElementById('game-chat-container');
         if (gameChatContainer) {
             gameChatContainer.style.display = 'none';
         }
         
-        // "Bilgisel Bilgi Yar��mas�" ba�l���n� ve ikonunu gizle
+        // "Bilgisel Bilgi Yarışması" başlığını ve ikonunu gizle
         const quizTitle = document.querySelector('h1');
-        if (quizTitle && quizTitle.innerText.includes('Bilgisel Bilgi Yar��mas�')) {
+        if (quizTitle && quizTitle.innerText.includes('Bilgisel Bilgi Yarışması')) {
             quizTitle.style.display = 'none';
         }
         
-        // Footer i�erisindeki t�m i�eri�i (TEKNOVA B�L���M yaz�s�, logo, ikon vb.) gizle
+        // Footer içerisindeki tüm içeriği (TEKNOVA BİLİŞİM yazısı, logo, ikon vb.) gizle
         const footer = document.querySelector('footer');
         if (footer) {
             footer.style.display = 'none';
         }
         
-        // Logo veya di�er ikonlar� da gizle
+        // Logo veya diğer ikonları da gizle
         const logoIcons = document.querySelectorAll('.logo, .logo-icon, .company-info, .company-logo');
         logoIcons.forEach(icon => {
             icon.style.display = 'none';
         });
         
-        // Skorlar� g�ncelle
+        // Skorları güncelle
         this.updateScoreDisplay();
         
-        // Joker butonlar�n� ba�lang�� durumuna getir
+        // Joker butonlarını başlangıç durumuna getir
         this.updateJokerButtons();
         
-        // �lk soruyu g�ster
+        // İlk soruyu göster
+        // Debug: İlk soru gösterilmeden önce zorluk seviyesini kontrol et
+        const difficulty = this.getProgressiveDifficulty();
+        console.log(`🚀 Quiz başlıyor - İlk bölüm (${this.currentSection}) zorluk: ${difficulty === 1 ? 'Kolay' : difficulty === 2 ? 'Orta' : 'Zor'}`);
+        
         this.displayQuestion(this.questions[0]);
     },
     
-    // Skoru g�ncelle
+    // Skoru güncelle
     updateScoreDisplay: function() {
         if (this.scoreElement) {
             this.scoreElement.innerHTML = `
@@ -6579,45 +4053,45 @@ const quizApp = {
             `;
         }
         
-        // Oyun s�ras�ndaki puan g�stergesini g�ncelle
+        // Oyun sırasındaki puan göstergesini güncelle
         const currentScoreElement = document.getElementById('current-score');
         if (currentScoreElement) {
             currentScoreElement.textContent = this.score;
         }
         
-        // Toplam puan g�stergesini g�ncelle
+        // Toplam puan göstergesini güncelle
         this.updateTotalScoreDisplay();
         
-        // Canlar� g�ncelle
+        // Canları güncelle
         this.updateLives();
     },
     
-    // Soruyu g�ster
+    // Soruyu göster
     displayQuestion: function(questionData) {
         if (!questionData) {
-            console.error("Soru verisi bulunamad�!");
+            console.error("Soru verisi bulunamadı!");
             return;
         }
         
-        // �nceki ipucu mesajlar�n� temizle
+        // Önceki ipucu mesajlarını temizle
         const existingHintMessages = document.querySelectorAll('.hint-message');
         existingHintMessages.forEach(element => {
             element.remove();
         });
         
-        // E�er soru bo�luk doldurma ise farkl� g�ster
+        // Eğer soru boşluk doldurma ise farklı göster
         if (questionData.type === "BlankFilling") {
             this.loadBlankFillingQuestion(questionData);
             return;
         }
         
-        // E�er soru do�ru/yanl�� tipindeyse farkl� g�ster
-        if (questionData.type === "Do�ruYanl��" || questionData.type === "TrueFalse") {
+        // Eğer soru doğru/yanlış tipindeyse farklı göster
+        if (questionData.type === "DoğruYanlış" || questionData.type === "TrueFalse") {
             this.loadTrueFalseQuestion(questionData);
             return;
         }
         
-        // Sonu� alan�n� temizle
+        // Sonuç alanını temizle
         if (this.resultElement) {
             this.resultElement.innerHTML = '';
             this.resultElement.className = 'result';
@@ -6629,16 +4103,16 @@ const quizApp = {
             this.nextButton.style.display = 'none';
         }
         
-        // Soru metnini g�ster
+        // Soru metnini göster
         if (this.questionElement) {
-            // �evrilmi� soru kullan (e�er varsa)
+            // Çevrilmiş soru kullan (eğer varsa)
             if (questionData.translations && questionData.translations[this.currentLanguage] && questionData.translations[this.currentLanguage].question) {
                 this.questionElement.textContent = questionData.translations[this.currentLanguage].question;
             } else {
                 this.questionElement.textContent = questionData.question;
             }
             
-            // E�er soruda g�rsel varsa g�ster
+            // Eğer soruda görsel varsa göster
             if (questionData.imageUrl) {
                 const imageContainer = document.createElement('div');
                 imageContainer.className = 'question-image';
@@ -6672,14 +4146,14 @@ const quizApp = {
             }
         }
         
-        // ��klar� g�ster
+        // Şıkları göster
         if (this.optionsElement) {
             this.optionsElement.innerHTML = '';
             this.optionsElement.style.display = '';
             this.optionsElement.style.justifyContent = '';
             this.optionsElement.style.width = '';
             
-            // �evrilmi� ��klar� kullan (e�er varsa)
+            // Çevrilmiş şıkları kullan (eğer varsa)
             let displayOptions = [];
             if (questionData.translations && questionData.translations[this.currentLanguage] && questionData.translations[this.currentLanguage].options) {
                 displayOptions = questionData.translations[this.currentLanguage].options;
@@ -6696,14 +4170,14 @@ const quizApp = {
             }
         }
         
-        // Joker butonlar�n�n durumunu g�ncelle
+        // Joker butonlarının durumunu güncelle
         this.updateJokerButtons();
 
-        // Sayac� ba�lat
+        // Sayacı başlat
         this.startTimer();
     },
     
-    // ��klar� ekrana yazd�r
+    // Şıkları ekrana yazdır
     displayOptions: function(options) {
         if (!this.optionsElement) return;
         
@@ -6712,18 +4186,18 @@ const quizApp = {
             optionButton.className = 'option';
             optionButton.textContent = option;
             
-            // ��k t�klama olay�
+            // Şık tıklama olayı
             optionButton.addEventListener('click', (e) => {
-                // Zaten t�klanm�� veya devre d��� b�rak�lm�� ��klara t�klamay� �nle
+                // Zaten tıklanmış veya devre dışı bırakılmış şıklara tıklamayı önle
                 if (e.target.disabled || e.target.classList.contains('selected') || 
                     document.querySelector('.option.selected')) {
                     return;
                 }
                 
-                // T�klanan ��k� i�aretle
+                // Tıklanan şıkı işaretle
                 e.target.classList.add('selected');
                 
-                // Cevab� kontrol et
+                // Cevabı kontrol et
                 this.checkAnswer(option);
             });
             
@@ -6731,9 +4205,9 @@ const quizApp = {
         });
     },
     
-    // Zamanlay�c�y� ba�lat
+    // Zamanlayıcıyı başlat
     startTimer: function() {
-        // Var olan zamanlay�c�y� temizle
+        // Var olan zamanlayıcıyı temizle
         if (this.timerInterval) {
             clearInterval(this.timerInterval);
         }
@@ -6746,17 +4220,17 @@ const quizApp = {
             this.updateTimeDisplay();
             if (this.timeLeft <= 0) {
                 clearInterval(this.timerInterval);
-                this.handleTimeUp(); // T�m soru tiplerinde handleTimeUp �a�r�lacak
+                this.handleTimeUp(); // Tüm soru tiplerinde handleTimeUp çağrılacak
             }
         }, 1000);
     },
     
-    // Zaman g�stergesini g�ncelle
+    // Zaman göstergesini güncelle
     updateTimeDisplay: function() {
         if (this.timeLeftElement) {
             this.timeLeftElement.textContent = this.timeLeft;
             
-            // Son 5 saniyede k�rm�z� yap
+            // Son 5 saniyede kırmızı yap
             if (this.timeLeft <= 5) {
                 this.timeLeftElement.classList.add('time-low');
             } else {
@@ -6765,60 +4239,60 @@ const quizApp = {
         }
     },
     
-    // Cevab� kontrol et
+    // Cevabı kontrol et
     checkAnswer: function(selectedAnswer) {
-        // E�er zaten cevap verilmi�se i�lem yapma
+        // Eğer zaten cevap verilmişse işlem yapma
         if (document.querySelector('.result').style.display === 'block') {
             return;
         }
         
-        // Sayac� durdur
+        // Sayacı durdur
         clearInterval(this.timerInterval);
         
         const currentQuestion = this.questions[this.currentQuestionIndex];
         const correctAnswer = currentQuestion.correctAnswer;
         
-        // Cevap do�ru mu?
+        // Cevap doğru mu?
         const isCorrect = selectedAnswer === correctAnswer;
         
-        // Cevab� mevcut b�l�m istatisti�ine ekle
+        // Cevabı mevcut bölüm istatistiğine ekle
         this.recordAnswer(isCorrect);
 
-        // Do�ru/Yanl�� tipindeki sorular i�in
-        if (currentQuestion.type === "Do�ruYanl��" || currentQuestion.type === "TrueFalse") {
+        // Doğru/Yanlış tipindeki sorular için
+        if (currentQuestion.type === "DoğruYanlış" || currentQuestion.type === "TrueFalse") {
             const tfOptions = document.querySelectorAll('.true-false-option');
             tfOptions.forEach(option => {
                 option.disabled = true;
                 const isTrue = option.classList.contains('true');
                 const isFalse = option.classList.contains('false');
                 
-                // Do�ru cevap DO�RU ise
+                // Doğru cevap DOĞRU ise
                 if (correctAnswer === this.getTranslation('trueOption') && isTrue) {
                     option.classList.add('correct');
                 }
-                // Do�ru cevap YANLI� ise
+                // Doğru cevap YANLIŞ ise
                 else if (correctAnswer === this.getTranslation('falseOption') && isFalse) {
                     option.classList.add('correct');
                 }
                 
-                // Se�ilen yanl�� ise
+                // Seçilen yanlış ise
                 if ((isTrue && selectedAnswer === this.getTranslation('trueOption') && !isCorrect) ||
                     (isFalse && selectedAnswer === this.getTranslation('falseOption') && !isCorrect)) {
                     option.classList.add('wrong');
                 }
                 
-                // Se�ilen buton ise
+                // Seçilen buton ise
                 if ((isTrue && selectedAnswer === this.getTranslation('trueOption')) ||
                     (isFalse && selectedAnswer === this.getTranslation('falseOption'))) {
                     option.classList.add('selected');
                 }
             });
         } else {
-            // Normal �oktan se�meli sorular i�in
+            // Normal çoktan seçmeli sorular için
             const options = document.querySelectorAll('.option');
             options.forEach(option => {
                 option.disabled = true;
-                option.classList.add('answered'); // Cevapland���n� belirt
+                option.classList.add('answered'); // Cevaplandığını belirt
                 
                 if (option.textContent === correctAnswer) {
                     option.classList.add('correct');
@@ -6828,25 +4302,26 @@ const quizApp = {
             });
         }
         
-        // Sonucu g�ster
+        // Sonucu göster
         const resultElement = document.getElementById('result');
         if (!resultElement) {
-            console.warn('Result elementi bulunamad�, olu�turuluyor...');
+            console.warn('Result elementi bulunamadı, oluşturuluyor...');
             this.createResultElement();
         }
         
         if (resultElement) {
             if (isCorrect) {
-                // Tam ekran do�ru modal�
+                // Tam ekran doğru modalı
                 const correctModal = document.createElement('div');
                 correctModal.className = 'correct-modal';
+                const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
                 correctModal.innerHTML = `
                     <div class="correct-modal-content">
                         <div class="correct-modal-icon">
                             <i class="fas fa-crown"></i>
                         </div>
                         <div class="correct-modal-text">${this.getTranslation('correct')}</div>
-                        <div class="correct-modal-score">+${Math.max(1, Math.ceil(this.timeLeft / 5))}</div>
+                        <div class="correct-modal-score">+${scoreForQuestion}</div>
                         <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
                     </div>
                 `;
@@ -6864,18 +4339,16 @@ const quizApp = {
                 this.resultElement.style.display = 'none';
                 this.resultElement.innerHTML = '';
                 this.resultElement.className = 'result';
-                // Puan� art�r
-                const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
+                // Puanı artır
                 this.addScore(scoreForQuestion);
-        this.recordAnswer(true);
                 this.correctAnswers++;
-                // Ses efekti �al
+                // Ses efekti çal
                 if (this.soundEnabled) {
                     const correctSound = document.getElementById('sound-correct');
-                    if (correctSound) correctSound.play().catch(e => console.error("Ses �al�namad�:", e));
+                    if (correctSound) correctSound.play().catch(e => console.error("Ses çalınamadı:", e));
                 }
             } else {
-                // Tam ekran yanl�� modal�
+                // Tam ekran yanlış modalı
                 this.loseLife();
                 const wrongModal = document.createElement('div');
                 wrongModal.className = 'wrong-modal';
@@ -6903,15 +4376,15 @@ const quizApp = {
                 this.resultElement.style.display = 'none';
                 this.resultElement.innerHTML = '';
                 this.resultElement.className = 'result';
-                // Ses efekti �al
+                // Ses efekti çal
                 if (this.soundEnabled) {
                     const wrongSound = document.getElementById('sound-wrong');
-                    if (wrongSound) wrongSound.play().catch(e => console.error("Ses �al�namad�:", e));
+                    if (wrongSound) wrongSound.play().catch(e => console.error("Ses çalınamadı:", e));
                 }
             }
         }
         
-        // Sonuc elementini g�r�n�r yap
+        // Sonuc elementini görünür yap
         resultElement.style.display = 'block';
         
         // Sonraki soru butonuna olay dinleyicisi ekle
@@ -6925,7 +4398,7 @@ const quizApp = {
         }
     },
     
-    // Bo�luk doldurma cevab�n� kontrol et
+    // Boşluk doldurma cevabını kontrol et
     checkBlankFillingAnswer: function(userAnswer, correctAnswer) {
         clearInterval(this.timerInterval);
         const isCorrect = userAnswer.toLowerCase() === correctAnswer.toLowerCase();
@@ -6936,16 +4409,17 @@ const quizApp = {
         if (answerInput) answerInput.disabled = true;
         if (submitButton) submitButton.disabled = true;
 
-        // Sonucu tam ekran modal ile g�ster
+        // Sonucu tam ekran modal ile göster
         if (isCorrect) {
-            // DO�RU MODAL
+            // DOĞRU MODAL
             const correctModal = document.createElement('div');
             correctModal.className = 'correct-modal';
+            const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
             correctModal.innerHTML = `
                 <div class="correct-modal-content">
                     <div class="correct-modal-icon"><i class="fas fa-crown"></i></div>
                     <div class="correct-modal-text">${this.getTranslation('correct')}</div>
-                    <div class="correct-modal-score">+${Math.max(1, Math.ceil(this.timeLeft / 5))}</div>
+                    <div class="correct-modal-score">+${scoreForQuestion}</div>
                     <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
                 </div>
             `;
@@ -6957,17 +4431,15 @@ const quizApp = {
             correctModal.onclick = (e) => {
                 if (e.target === correctModal) correctModal.remove();
             };
-            // Puan� art�r
-            const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
+            // Puanı artır
             this.addScore(scoreForQuestion);
-        this.recordAnswer(true);
             this.correctAnswers++;
             if (this.soundEnabled) {
                 const correctSound = document.getElementById('sound-correct');
                 if (correctSound) correctSound.play().catch(e => {});
             }
         } else {
-            // YANLI� MODAL
+            // YANLIŞ MODAL
             this.loseLife();
             const wrongModal = document.createElement('div');
             wrongModal.className = 'wrong-modal';
@@ -6997,26 +4469,26 @@ const quizApp = {
         this.answeredQuestions++;
         this.answerTimes.push(this.TIME_PER_BLANK_FILLING_QUESTION - this.timeLeft);
 
-        // Can kontrol� kald�r�ld� - loseLife fonksiyonu kendi ba��na can sat�n alma modal�n� handle ediyor
+        // Can kontrolü kaldırıldı - loseLife fonksiyonu kendi başına can satın alma modalını handle ediyor
     },
     
-    // Do�ru cevaba benzer yanl�� ��klar �ret
+    // Doğru cevaba benzer yanlış şıklar üret
     generateWrongOptions: function(correctAnswer) {
-        // Bu fonksiyon, do�ru cevaba benzer yanl�� ��klar �retmek i�in �e�itli stratejiler kullan�r
+        // Bu fonksiyon, doğru cevaba benzer yanlış şıklar üretmek için çeşitli stratejiler kullanır
         
-        // Basit bir strateji: T�rk�e'deki yayg�n kelimelerden rastgele 3 tane se�
+        // Basit bir strateji: Türkçe'deki yaygın kelimelerden rastgele 3 tane seç
         const commonWords = [
-            "Elma", "T�rkiye", "Ankara", "�stanbul", "Kitap", "Bilgisayar", "Araba", 
-            "Deniz", "G�ne�", "Ay", "Y�ld�z", "Okul", "��retmen", "��renci",
-            "�i�ek", "A�a�", "Orman", "Da�", "Nehir", "G�l", "Okyanus", "M�zik",
+            "Elma", "Türkiye", "Ankara", "İstanbul", "Kitap", "Bilgisayar", "Araba", 
+            "Deniz", "Güneş", "Ay", "Yıldız", "Okul", "Öğretmen", "Öğrenci",
+            "Çiçek", "Ağaç", "Orman", "Dağ", "Nehir", "Göl", "Okyanus", "Müzik",
             "Film", "Tiyatro", "Spor", "Futbol", "Basketbol", "Voleybol", "Tenis"
         ];
         
         let wrongOptions = [];
         
-        // Do�ru cevab� d�n��t�r (say� ise kelimeye �evir, tek kelime ise ba�ka kelimeler se�)
+        // Doğru cevabı dönüştür (sayı ise kelimeye çevir, tek kelime ise başka kelimeler seç)
         if (!isNaN(correctAnswer)) {
-            // Say�ysa, yak�n say�lar �ret
+            // Sayıysa, yakın sayılar üret
             const correctNum = parseInt(correctAnswer);
             const randomOffset = () => Math.floor(Math.random() * 10) + 1;
             
@@ -7026,7 +4498,7 @@ const quizApp = {
                 String(correctNum * 2)
             ];
         } else {
-            // Kelime ise, rastgele kelimeler se�
+            // Kelime ise, rastgele kelimeler seç
             let availableWords = commonWords.filter(word => word.toLowerCase() !== correctAnswer.toLowerCase());
             availableWords = this.shuffleArray(availableWords);
             wrongOptions = availableWords.slice(0, 3);
@@ -7035,34 +4507,35 @@ const quizApp = {
         return wrongOptions;
     },
     
-    // Mevcut seviye i�in sorular� y�kle
+    // Mevcut seviye için soruları yükle
     loadQuestionsForCurrentLevel: function() {
-        console.log(`Seviye ${this.currentLevel} i�in sorular y�kleniyor...`);
+        console.log(`Seviye ${this.currentLevel} için sorular yükleniyor...`);
         
         if (!this.questionsData || !this.selectedCategory) {
-            console.error("Soru verisi veya se�ili kategori bulunamad�!");
+            console.error("Soru verisi veya seçili kategori bulunamadı!");
             return;
         }
         
-        // Se�ilen kategoriden sorular
+        // Seçilen kategoriden sorular
         let categoryQuestions = this.questionsData[this.selectedCategory] || [];
         
         if (categoryQuestions.length === 0) {
-            console.error(`${this.selectedCategory} kategorisinde soru bulunamad�!`);
+            console.error(`${this.selectedCategory} kategorisinde soru bulunamadı!`);
             return;
         }
         
-        // Progressive difficulty sistemi: B�l�me g�re otomatik zorluk belirleme
-        const targetDifficulty = this.getProgressiveDifficulty();
-        const difficultyNames = { 1: 'Kolay', 2: 'Orta', 3: 'Zor' };
-        const difficultyName = difficultyNames[targetDifficulty];
+        // Progressive difficulty sistemi: Bölüme göre otomatik zorluk belirleme
+        // İlk bölümde her zaman kolay sorular gösterildiğinden emin ol
+        if (this.currentSection <= 1) {
+            console.log("🔄 Yeni oyun/yeni bölüm başlıyor - currentSection:", this.currentSection);
+            // Eğer currentSection 1 veya düşük değilse, 1 olarak ayarla
+            this.currentSection = 1;
+        }
         
-        console.log(`?? Progressive Difficulty: B�l�m ${this.currentSection}/${this.getMaxSectionsForCategory()} - Zorluk: ${difficultyName} (${targetDifficulty})`);
-        
-        // Sorular� zorluklar�na g�re grupla
+        // Soruları zorluklarına göre grupla
         const groupedByDifficulty = {};
         categoryQuestions.forEach(question => {
-            // Zorluk seviyesi belirtilmemi�se 2 olarak kabul et (orta seviye)
+            // Zorluk seviyesi belirtilmemişse 2 olarak kabul et (orta seviye)
             const difficulty = question.difficulty || 2;
             
             if (!groupedByDifficulty[difficulty]) {
@@ -7072,66 +4545,119 @@ const quizApp = {
             groupedByDifficulty[difficulty].push(question);
         });
         
-        // Debug bilgisi
-        console.log('Se�ilen kategori:', this.selectedCategory);
-        console.log('Kategoride toplam soru say�s�:', categoryQuestions.length);
-        console.log('Zorluk seviyelerine g�re grupland�r�lm�� sorular:', groupedByDifficulty);
-        console.log('Zorluk seviyesi 3 olan soru say�s�:', (groupedByDifficulty[3] || []).length);
+        // Kolay, orta ve zor soruları ayır
+        const easyQuestions = groupedByDifficulty[1] || [];
+        const mediumQuestions = groupedByDifficulty[2] || [];
+        const hardQuestions = groupedByDifficulty[3] || [];
         
-        // Se�ilen zorluk seviyesinden sorular al
+        console.log(`🔍 Zorluk seviyesi dağılımı: Kolay: ${easyQuestions.length}, Orta: ${mediumQuestions.length}, Zor: ${hardQuestions.length}`);
+        
+        // İlk bölüm her zaman kolay sorularla başlar
         let levelQuestions = [];
         
-        // SADECE hedef zorluk seviyesinden sorular al
-        const targetQuestions = groupedByDifficulty[targetDifficulty] || [];
-        console.log(`Hedef zorluk seviyesi ${targetDifficulty} i�in mevcut soru say�s�:`, targetQuestions.length);
-        
-        if (targetQuestions.length > 0) {
-            const shuffled = this.shuffleArray([...targetQuestions]);
-            levelQuestions = shuffled;
-            console.log(`? Se�ilen zorluk seviyesi (${targetDifficulty}) i�in ${levelQuestions.length} soru bulundu`);
-        } else {
-            console.warn(`?? Se�ilen zorluk seviyesi (${targetDifficulty}) i�in hi� soru bulunamad�!`);
+        // İlk bölüm için sadece KOLAY sorular
+        if (this.currentSection === 1) {
+            if (easyQuestions.length > 0) {
+                levelQuestions = this.shuffleArray([...easyQuestions]);
+                console.log(`✅ İlk bölüm: ${easyQuestions.length} kolay soru bulundu`);
+            } 
+            // Kolay soru yoksa orta zorluk kullan
+            else if (mediumQuestions.length > 0) {
+                levelQuestions = this.shuffleArray([...mediumQuestions]);
+                console.log(`⚠️ UYARI: Kolay soru bulunamadı! İlk bölüm için ${mediumQuestions.length} orta zorluktaki soru kullanılıyor`);
+            }
+            // Her ikisi de yoksa ne varsa kullan
+            else {
+                levelQuestions = this.shuffleArray([...categoryQuestions]);
+                console.log(`⚠️ UYARI: Kolay veya orta soru bulunamadı! İlk bölüm için tüm sorular kullanılıyor`);
+            }
+        }
+        // İkinci bölüm için ORTA sorular
+        else if (this.currentSection === 2) {
+            if (mediumQuestions.length > 0) {
+                levelQuestions = this.shuffleArray([...mediumQuestions]);
+                console.log(`✅ İkinci bölüm: ${mediumQuestions.length} orta zorlukta soru bulundu`);
+            }
+            // Orta yoksa kolay ile devam et
+            else if (easyQuestions.length > 0) {
+                levelQuestions = this.shuffleArray([...easyQuestions]);
+                console.log(`⚠️ UYARI: Orta soru bulunamadı! İkinci bölüm için kolay sorular kullanılıyor`);
+            }
+            // Kolay da yoksa ne varsa kullan
+            else {
+                levelQuestions = this.shuffleArray([...categoryQuestions]);
+                console.log(`⚠️ UYARI: Orta veya kolay soru bulunamadı! İkinci bölüm için tüm sorular kullanılıyor`);
+            }
+        }
+        // Üçüncü ve sonraki bölümler için ZOR sorular
+        else {
+            if (hardQuestions.length > 0) {
+                levelQuestions = this.shuffleArray([...hardQuestions]);
+                console.log(`✅ İleri bölüm: ${hardQuestions.length} zor soru bulundu`);
+            }
+            // Zor yoksa orta ile devam et
+            else if (mediumQuestions.length > 0) {
+                levelQuestions = this.shuffleArray([...mediumQuestions]);
+                console.log(`⚠️ UYARI: Zor soru bulunamadı! İleri bölüm için orta zorluktaki sorular kullanılıyor`);
+            }
+            // İkisi de yoksa ne varsa kullan
+            else {
+                levelQuestions = this.shuffleArray([...categoryQuestions]);
+                console.log(`⚠️ UYARI: Zor veya orta soru bulunamadı! İleri bölüm için tüm sorular kullanılıyor`);
+            }
         }
         
-        // E�er hi� soru yoksa kullan�c�y� bilgilendir
+        // Eğer hiç soru yoksa uyarı gösterelim
         if (levelQuestions.length === 0) {
-            const difficultyName = difficultyNames[targetDifficulty] || 'Bilinmeyen';
+            console.error("⛔️ Bu bölüm için hiç soru bulunamadı!");
+            alert("Bu kategoride yeterli soru bulunamadı. Lütfen başka bir kategori seçin.");
             
-            alert(`Bu kategoride "${difficultyName}" seviyesinde soru bulunmuyor. L�tfen ba�ka bir kategori veya zorluk seviyesi se�in.`);
-            
-            // Kategori se�imine geri d�n
+            // Kategori seçimine geri dön
             this.displayCategories();
             return;
         }
         
-        // En fazla 10 soru g�ster (kullan�c�n�n se�ti�i zorluk seviyesinden)
+        // En fazla 10 soru göster (ilgili zorluk seviyesinden) - soru sayısı yetersizse hepsini kullan
         this.questions = levelQuestions.slice(0, Math.min(10, levelQuestions.length));
+        
+        // Soruları zorluk seviyesine göre sırala (kolaydan zora)
+        this.questions.sort((a, b) => {
+            const difficultyA = a.difficulty || 2;
+            const difficultyB = b.difficulty || 2;
+            return difficultyA - difficultyB;
+        });
+        
+        console.log(`📊 Sorular zorluk seviyesine göre sıralandı: ${this.questions.map(q => q.difficulty || 2).join(', ')}`);
+        
         this.arrangeBlankFillingFirst();
         
-        // Debug: Y�klenen sorular�n zorluk seviyelerini kontrol et
+        // Debug: Yüklenen soruların zorluk seviyelerini kontrol et
         const difficultyCheck = {};
         this.questions.forEach(q => {
             const diff = q.difficulty || 'undefined';
             difficultyCheck[diff] = (difficultyCheck[diff] || 0) + 1;
         });
-        console.log(`?? Progressive Zorluk: ${difficultyNames[targetDifficulty]} (${targetDifficulty})`);
-        console.log(`? Y�klenen ${this.questions.length} sorunun zorluk da��l�m�:`, difficultyCheck);
-        console.log(`B�l�m ${this.currentSection} i�in ${this.questions.length} soru y�klendi.`);
         
-        // �lk soruyu g�ster
+        // Bölüm bilgisini ekrana yazdır
+        const sectionNames = { 1: 'Başlangıç (Kolay)', 2: 'Orta', 3: 'İleri (Zor)' };
+        const sectionName = sectionNames[this.currentSection] || `Bölüm ${this.currentSection}`;
+        console.log(`🎮 ${sectionName} bölümü için ${this.questions.length} soru yüklendi.`);
+        console.log(`✅ Yüklenen soruların zorluk dağılımı:`, difficultyCheck);
+        
+        // İlk soruyu göster
         if (this.questions.length > 0) {
             this.currentQuestionIndex = 0;
             this.startQuiz();
         } else {
-            // Yeterli soru yoksa kategori se�imine geri d�n
-            console.error("Bu seviye i�in yeterli soru bulunamad�!");
+            // Yeterli soru yoksa kategori seçimine geri dön
+            console.error("Bu seviye için yeterli soru bulunamadı!");
             this.displayCategories();
         }
     },
     
-    // Do�ru/Yanl�� tipi sorular� g�ster
+    // Doğru/Yanlış tipi soruları göster
     loadTrueFalseQuestion: function(questionData) {
-        // Sonu� alan�n� temizle
+        // Sonuç alanını temizle
         if (this.resultElement) {
             this.resultElement.innerHTML = '';
             this.resultElement.className = 'result';
@@ -7143,16 +4669,16 @@ const quizApp = {
             this.nextButton.style.display = 'none';
         }
         
-        // Soruyu g�ster
+        // Soruyu göster
         if (this.questionElement) {
-            // �evirisi varsa �eviriyi g�ster
+            // Çevirisi varsa çeviriyi göster
             if (questionData.translations && questionData.translations[this.currentLanguage] && questionData.translations[this.currentLanguage].question) {
                 this.questionElement.textContent = questionData.translations[this.currentLanguage].question;
             } else {
                 this.questionElement.textContent = questionData.question;
             }
             
-            // E�er soruda g�rsel varsa g�ster
+            // Eğer soruda görsel varsa göster
             if (questionData.imageUrl) {
                 const imageContainer = document.createElement('div');
                 imageContainer.className = 'question-image';
@@ -7170,7 +4696,7 @@ const quizApp = {
             }
         }
         
-        // Do�ru/Yanl�� se�eneklerini g�ster
+        // Doğru/Yanlış seçeneklerini göster
         if (this.optionsElement) {
             this.optionsElement.innerHTML = '';
             this.optionsElement.style.display = 'flex';
@@ -7179,7 +4705,7 @@ const quizApp = {
             this.optionsElement.style.justifyContent = 'center';
             this.optionsElement.style.width = '100%';
             
-            // Se�enekler
+            // Seçenekler
             const trueOption = document.createElement('button');
             trueOption.className = 'true-false-option true';
             trueOption.innerHTML = `<i class="fas fa-check"></i> ${this.getTranslation('trueOption')}`;
@@ -7188,55 +4714,55 @@ const quizApp = {
             falseOption.className = 'true-false-option false';
             falseOption.innerHTML = `<i class="fas fa-times"></i> ${this.getTranslation('falseOption')}`;
             
-            // T�klama olaylar�
+            // Tıklama olayları
             trueOption.addEventListener('click', (e) => {
-                // Zaten cevapland�ysa i�lem yapma
+                // Zaten cevaplandıysa işlem yapma
                 if (e.target.disabled || e.target.classList.contains('selected') || 
                     document.querySelector('.true-false-option.selected') || 
                     document.querySelector('.result').style.display === 'block') {
                     return;
                 }
                 
-                // T�klanan ��k� i�aretle
+                // Tıklanan şıkı işaretle
                 e.target.classList.add('selected');
                 
                 this.checkAnswer(this.getTranslation('trueOption'));
             });
             
             falseOption.addEventListener('click', (e) => {
-                // Zaten cevapland�ysa i�lem yapma
+                // Zaten cevaplandıysa işlem yapma
                 if (e.target.disabled || e.target.classList.contains('selected') || 
                     document.querySelector('.true-false-option.selected') || 
                     document.querySelector('.result').style.display === 'block') {
                     return;
                 }
                 
-                // T�klanan ��k� i�aretle
+                // Tıklanan şıkı işaretle
                 e.target.classList.add('selected');
                 
                 this.checkAnswer(this.getTranslation('falseOption'));
             });
             
-            // Se�enekleri ekle
+            // Seçenekleri ekle
             this.optionsElement.appendChild(trueOption);
             this.optionsElement.appendChild(falseOption);
         }
         
-        // Sayac� ba�lat
+        // Sayacı başlat
         this.startTimer();
     },
     
-    // Do�ru/Yanl�� cevab�n� kontrol et
+    // Doğru/Yanlış cevabını kontrol et
     selectTrueFalseAnswer: function(selectedAnswer, correctAnswer) {
-        // Sayac� durdur
+        // Sayacı durdur
         clearInterval(this.timerInterval);
         
         const isCorrect = selectedAnswer === correctAnswer;
         
-        // Cevab� mevcut b�l�m istatisti�ine ekle
+        // Cevabı mevcut bölüm istatistiğine ekle
         this.recordAnswer(isCorrect);
         
-        // ��klar� devre d��� b�rak ve do�ru/yanl�� renklendir
+        // Şıkları devre dışı bırak ve doğru/yanlış renklendir
         const options = document.querySelectorAll('.option');
         options.forEach(option => {
             option.disabled = true;
@@ -7248,52 +4774,47 @@ const quizApp = {
             }
         });
         
-        // Sonucu g�ster
+        // Sonucu göster
         if (this.resultElement) {
             if (isCorrect) {
                 this.resultElement.innerHTML = `
                     <div class="correct-answer-container">
                         <div class="correct-icon"><i class="fas fa-badge-check"></i></div>
-                        <div class="correct-text">Do�ru!</div>
-                        <div class="correct-animation">
-                            <span>+</span>
-                            <span>${Math.max(1, Math.ceil(this.timeLeft / 3))}</span>
-                        </div>
+                        <div class="correct-text">Doğru!</div>
                     </div>
                     <button id="next-question" class="next-button">Sonraki Soru</button>
                 `;
                 this.resultElement.className = 'result correct';
                 
-                // Sonraki soru butonuna olay dinleyicisi ekle - showNextQuestion fonksiyonunu �a��r
+                // Sonraki soru butonuna olay dinleyicisi ekle - showNextQuestion fonksiyonunu çağır
                 const nextBtn = this.resultElement.querySelector('#next-question');
                 if (nextBtn) {
                     nextBtn.addEventListener('click', () => this.showNextQuestion());
                 }
                 
-                // Puan� art�r - kalan s�reye g�re puan ver (min 1, max 5)
+                // Puanı artır - kalan süreye göre puan ver (min 1, max 5)
                 const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 3));
                 this.addScore(scoreForQuestion);
-        this.recordAnswer(true);
                 
-                // Ses efekti �al
+                // Ses efekti çal
                 if (this.soundEnabled) {
                     const correctSound = document.getElementById('sound-correct');
-                    if (correctSound) correctSound.play().catch(e => console.error("Ses �al�namad�:", e));
+                    if (correctSound) correctSound.play().catch(e => console.error("Ses çalınamadı:", e));
                 }
             } else {
-                this.resultElement.innerHTML = `Yanl��! Do�ru cevap: <strong>${correctAnswer}</strong>`;
+                this.resultElement.innerHTML = `Yanlış! Doğru cevap: <strong>${correctAnswer}</strong>`;
                 this.resultElement.className = 'result wrong';
                 
                 // Can azalt
                 this.loseLife();
                 
-                // Ses efekti �al
+                // Ses efekti çal
                 if (this.soundEnabled) {
                     const wrongSound = document.getElementById('sound-wrong');
-                    if (wrongSound) wrongSound.play().catch(e => console.error("Ses �al�namad�:", e));
+                    if (wrongSound) wrongSound.play().catch(e => console.error("Ses çalınamadı:", e));
                 }
                 
-                // Yanl�� cevap durumunda sonraki soru butonunu g�ster
+                // Yanlış cevap durumunda sonraki soru butonunu göster
                 if (this.nextButton) {
                     this.nextButton.style.display = 'block';
                 }
@@ -7302,19 +4823,19 @@ const quizApp = {
             this.resultElement.style.display = 'block';
         }
         
-        // Skoru g�ncelle
+        // Skoru güncelle
         this.updateScoreDisplay();
         
-        // �statisti�i g�ncelle
+        // İstatistiği güncelle
         this.answeredQuestions++;
         this.answerTimes.push(this.TIME_PER_QUESTION - this.timeLeft);
         
-        // Can kontrol� kald�r�ld� - loseLife fonksiyonu kendi ba��na can sat�n alma modal�n� handle ediyor
+        // Can kontrolü kaldırıldı - loseLife fonksiyonu kendi başına can satın alma modalını handle ediyor
     },
     
-    // Profil sayfas�n� g�ster
+    // Profil sayfasını göster
     showProfilePage: function() {
-        // Ana i�erikleri gizle
+        // Ana içerikleri gizle
         if (this.quizElement) this.quizElement.style.display = 'none';
         if (this.resultElement) this.resultElement.style.display = 'none';
         if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'none';
@@ -7328,117 +4849,163 @@ const quizApp = {
         const globalLeaderboard = document.getElementById('global-leaderboard'); 
         if (globalLeaderboard) globalLeaderboard.style.display = 'none';
         
-        // Di�er sayfalar� da gizle
+        // Diğer sayfaları da gizle
         const friendsPage = document.getElementById('friends-page');
         if (friendsPage) friendsPage.style.display = 'none';
         
         const adminPanel = document.getElementById('admin-panel');
         if (adminPanel) adminPanel.style.display = 'none';
         
-        // Profil sayfas�n� g�r�nt�le
+        // Profil sayfasını görüntüle
         const profilePage = document.getElementById('profile-page');
         if (profilePage) {
             profilePage.style.display = 'block';
             document.body.classList.add('profile-active');
             
-            // Profil bilgilerini y�kle
+            // Profil bilgilerini yükle
             this.loadProfileData();
             
-            // Profil sayfas� butonlar�na event listener'lar� ekle
+            // Profil sayfası butonlarına event listener'ları ekle
             this.addProfileEventListeners();
         } else {
-            // Profil sayfas� yoksa uyar� g�ster
-            this.showToast("Profil sayfas� hen�z eklenmemi�", "toast-warning");
+            // Profil sayfası yoksa uyarı göster
+            this.showToast("Profil sayfası henüz eklenmemiş", "toast-warning");
             
-            // Ana men�ye geri d�n
+            // Ana menüye geri dön
             if (mainMenu) mainMenu.style.display = 'block';
         }
     },
     
-    // Profil sayfas� butonlar�na olay dinleyicileri ekle
+    // Profil sayfası butonlarına olay dinleyicileri ekle
     addProfileEventListeners: function() {
-        // Ana men�ye d�n butonu
+        // Ana menüye dön butonu
         const backFromProfileBtn = document.getElementById('back-from-profile');
         if (backFromProfileBtn) {
             backFromProfileBtn.addEventListener('click', () => {
-                // Profil sayfas�n� gizle
+                // Profil sayfasını gizle
                 const profilePage = document.getElementById('profile-page');
                 if (profilePage) profilePage.style.display = 'none';
                 document.body.classList.remove('profile-active');
                 
-                // Ana men�y� g�ster
+                // Ana menüyü göster
                 const mainMenu = document.getElementById('main-menu');
                 if (mainMenu) mainMenu.style.display = 'block';
             });
         }
         
-        // ��k�� yap butonu
+        // Çıkış yap butonu
         const logoutFromProfileBtn = document.getElementById('logout-from-profile');
         if (logoutFromProfileBtn) {
             logoutFromProfileBtn.addEventListener('click', () => {
-                // Firebase ile ��k�� yap
+                // Firebase ile çıkış yap
                 if (firebase.auth) {
                     firebase.auth().signOut().then(() => {
+                        // Android Capacitor'da login sayfasına yönlendirme
+                        if (document.body.classList.contains('platform-capacitor') || 
+                            document.body.classList.contains('platform-android')) {
+                            // Android'de aynı sayfada login göster
+                            location.reload();
+                        } else {
+                            // Web'de normal yönlendirme
                         window.location.href = 'login.html';
+                        }
                     }).catch(error => {
-                        console.error("��k�� yap�l�rken hata olu�tu:", error);
-                        this.showToast("��k�� yap�l�rken bir hata olu�tu", "toast-error");
+                        console.error("Çıkış yapılırken hata oluştu:", error);
+                        this.showToast("Çıkış yapılırken bir hata oluştu", "toast-error");
                     });
                 }
             });
         }
         
-        // Profili d�zenle butonu
+        // Profili düzenle butonu
         const editProfileBtn = document.getElementById('edit-profile-btn');
         if (editProfileBtn) {
-            editProfileBtn.addEventListener('click', () => {
-                this.showEditProfileModal();
+            console.log('Profil düzenleme butonu bulundu, olay dinleyicisi ekleniyor...');
+            
+            // Önceki onclick handler'ını temizle
+            editProfileBtn.onclick = null;
+            
+            // Self referansı sakla (this context sorunu için)
+            const self = this;
+            
+            // Yeni event listener ekle
+            editProfileBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Profil düzenleme butonuna tıklandı!');
+                console.log('Self objesi:', self);
+                console.log('showEditProfileModal fonksiyonu var mı?', typeof self.showEditProfileModal);
+                
+                if (typeof self.showEditProfileModal === 'function') {
+                    try {
+                        console.log('showEditProfileModal çağrılıyor...');
+                        self.showEditProfileModal();
+                        console.log('showEditProfileModal başarıyla çağrıldı');
+                    } catch (error) {
+                        console.error('showEditProfileModal çağrılırken hata:', error);
+                        alert('Profil düzenleme modalı açılırken hata oluştu: ' + error.message);
+                    }
+                } else {
+                    console.error('showEditProfileModal fonksiyonu bulunamadı!');
+                    alert('Profil düzenleme özelliği şu anda kullanılamıyor.');
+                }
             });
-            // Buton metnini g�ncelle
-            editProfileBtn.innerHTML = '<i class="fas fa-edit"></i> Profili D�zenle';
+            
+            // Buton metnini güncelle
+            editProfileBtn.innerHTML = '<i class="fas fa-edit"></i> Profili Düzenle';
+            console.log('Profil düzenleme butonu hazırlandı');
+        } else {
+            console.error('Profil düzenleme butonu bulunamadı!');
         }
     },
     
-    // Profil verilerini y�kle
+    // Profil verilerini yükle
     loadProfileData: function() {
         const userId = this.getCurrentUserId();
         
-        // Kullan�c� bilgilerini y�kle
+        // Kullanıcı bilgilerini yükle
         if (firebase.auth && firebase.auth().currentUser) {
             const user = firebase.auth().currentUser;
             
-            // Kullan�c� ad� ve e-posta
+            // Kullanıcı adı ve e-posta
             const profileName = document.getElementById('profile-name');
-            if (profileName) profileName.textContent = user.displayName || user.email || 'Kullan�c�';
+            if (profileName) profileName.textContent = user.displayName || user.email || 'Kullanıcı';
             
             const profileEmail = document.getElementById('profile-email');
             if (profileEmail) profileEmail.textContent = user.email || '';
             
-            // �yelik tarihi
+            // Üyelik tarihi
             const joinDate = document.getElementById('profile-join-date');
             if (joinDate && user.metadata && user.metadata.creationTime) {
                 const date = new Date(user.metadata.creationTime);
                 joinDate.textContent = date.toLocaleDateString('tr-TR');
             }
         }
-        
-        // Firebase'den kullan�c� verilerini y�kle (puan, istatistikler vs.)
+            
+        // Firebase'den kullanıcı verilerini yükle (puan, istatistikler vs.)
         this.loadFirebaseUserStats(userId);
         
-        // Ger�ek istatistikleri g�ncelle
+        // Gerçek istatistikleri güncelle
         this.updateRealUserStats();
+        
+        // İstatistikleri hemen yeniden hesapla ve güncelle
+        setTimeout(() => {
+            const latestStats = this.calculateRealStats();
+            console.log('Profil açıldığında hesaplanan son istatistikler:', latestStats);
+            this.updateProfileStats(latestStats);
+        }, 100);
             
-        // Rozetleri y�kle
+            // Rozetleri yükle
         this.loadUserBadgesForProfile(userId);
             
-        // Y�ksek skorlar� y�kle
+            // Yüksek skorları yükle
         this.loadHighScoresForProfile(userId);
             
-        // Son aktiviteleri y�kle
+            // Son aktiviteleri yükle
         this.loadRecentActivitiesForProfile(userId);
     },
 
-    // Mevcut kullan�c� ID'sini al
+    // Mevcut kullanıcı ID'sini al
     getCurrentUserId: function() {
         if (firebase.auth && firebase.auth().currentUser) {
             return firebase.auth().currentUser.uid;
@@ -7447,4663 +5014,168 @@ const quizApp = {
         return 'local-user';
     },
 
-    // Test verileri olu�tur (geli�tirme ama�l�)
+    // Test verileri oluştur (geliştirme amaçlı)
     createTestData: function() {
         const userId = this.getCurrentUserId();
         
-        // Test skorlar� olu�tur
+        // Test skorları oluştur
         const testScores = [
-            { category: 'Genel K�lt�r', score: 85, totalQuestions: 10, correctAnswers: 8, date: Date.now() - 86400000 },
+            { category: 'Genel Kültür', score: 85, totalQuestions: 10, correctAnswers: 8, date: Date.now() - 86400000 },
             { category: 'Bilim', score: 92, totalQuestions: 10, correctAnswers: 9, date: Date.now() - 172800000 },
             { category: 'Tarih', score: 78, totalQuestions: 10, correctAnswers: 7, date: Date.now() - 259200000 },
             { category: 'Spor', score: 90, totalQuestions: 10, correctAnswers: 9, date: Date.now() - 345600000 },
-            { category: 'Co�rafya', score: 100, totalQuestions: 10, correctAnswers: 10, date: Date.now() - 432000000 }
+            { category: 'Coğrafya', score: 100, totalQuestions: 10, correctAnswers: 10, date: Date.now() - 432000000 }
         ];
         
-        // Skorlar� localStorage'a kaydet
+        // Skorları localStorage'a kaydet
         localStorage.setItem('quiz-high-scores', JSON.stringify(testScores));
         
-        // �statistikleri hesapla ve kaydet
-        this.calculateRealStats();
-        
-        // �lk oyun rozetini ver
-        this.badgeSystem.awardBadge(userId, this.badgeSystem.badges.firstGame);
-        
-        console.log('Test verileri olu�turuldu!');
-        this.showToast('Test verileri olu�turuldu! Profil sayfas�n� yenileyin.', 'toast-success');
-    },
-    
-    // Firebase'den kullan�c� istatistiklerini y�kle
-    loadFirebaseUserStats: function(userId) {
-        if (!firebase.firestore) {
-            // Firebase yoksa localStorage'dan istatistikleri al
-            const stats = this.getStats();
-            this.updateProfileStats(stats);
-            return;
-        }
-        
-        const db = firebase.firestore();
-        
-        // Kullan�c� dok�man�ndan temel bilgileri al
-        db.collection('users').doc(userId).get()
-            .then((doc) => {
-                if (doc.exists) {
-                    const userData = doc.data();
-                    console.log('Kullan�c� verileri:', userData);
-                    
-                    // Firebase'den gelen totalScore'u quizApp'e ata
-                    if (userData.totalScore !== undefined) {
-                        this.totalScore = userData.totalScore;
-                    }
-                    
-                    // Profilde toplam puan� g�ster
-                    const profileTotalScore = document.getElementById('profile-total-score');
-                    if (profileTotalScore) {
-                        profileTotalScore.textContent = this.totalScore || 0;
-                    }
-                    
-                    // Profilde seviyeyi g�ster
-                    const profileUserLevel = document.getElementById('profile-user-level');
-                    if (profileUserLevel) {
-                        const level = Math.floor((this.totalScore || 0) / 500) + 1;
-                        profileUserLevel.textContent = level;
-                    }
-                    
-                    // E�er kullan�c� verisinde istatistik yoksa skorlardan hesapla
-                    if (!userData.stats) {
-                        this.calculateStatsFromScores(userId);
-                    } else {
-                        this.updateProfileStats(userData.stats);
-                    }
-                } else {
-                    // Kullan�c� verisi yoksa skorlardan hesapla
-                    this.calculateStatsFromScores(userId);
-                }
-            })
-            .catch((error) => {
-                console.error('Kullan�c� verileri y�klenirken hata:', error);
-                // Hata durumunda localStorage'dan al
-                const stats = this.getStats();
-                this.updateProfileStats(stats);
-            });
-    },
-    
-    // Skorlardan istatistikleri hesapla
-    calculateStatsFromScores: function(userId) {
-        if (!firebase.firestore) return;
-        
-        const db = firebase.firestore();
-        
-        // Firestore'daki highScores koleksiyonundan kullan�c�n�n skorlar�n� al
-        db.collection('highScores')
-            .where('userId', '==', userId)
-            .get()
-            .then((querySnapshot) => {
-                let totalGames = 0;
-                let totalQuestions = 0;
-                let totalCorrect = 0;
-                let categoryStats = {};
-                
-                querySnapshot.forEach((doc) => {
-                    const scoreData = doc.data();
-                    totalGames++;
-                    totalQuestions += scoreData.totalQuestions || 0;
-                    totalCorrect += scoreData.correctAnswers || scoreData.score || 0;
-                    
-                    // Kategori istatistikleri
-                    const category = scoreData.category || 'Genel';
-                    if (!categoryStats[category]) {
-                        categoryStats[category] = {
-                            games: 0,
-                            questions: 0,
-                            correct: 0
-                        };
-                    }
-                    categoryStats[category].games++;
-                    categoryStats[category].questions += scoreData.totalQuestions || 0;
-                    categoryStats[category].correct += scoreData.correctAnswers || scoreData.score || 0;
-                });
-                
-                const stats = {
-                    totalGames,
-                    totalQuestions,
-                    correctAnswers: totalCorrect,
-                    categoryStats
-                };
-                
-                console.log('Hesaplanan istatistikler:', stats);
-                this.updateProfileStats(stats);
-                
-                // �statistikleri kullan�c� dok�man�na kaydet
-                db.collection('users').doc(userId).update({
-                    stats: stats,
-                    statsLastUpdated: new Date()
-                }).catch((error) => {
-                    console.error('�statistikler kaydedilirken hata:', error);
-                });
-            })
-            .catch((error) => {
-                console.error('Skorlar al�n�rken hata:', error);
-                // Hata durumunda localStorage'dan al
-                const stats = this.getStats();
-                this.updateProfileStats(stats);
-            });
-    },
-    
-    // Profil istatistiklerini g�ncelle
-    updateProfileStats: function(stats) {
-        console.log('updateProfileStats �a�r�ld�, stats:', stats);
-        
-        const totalGames = document.getElementById('stats-total-games');
-        if (totalGames) {
-            totalGames.textContent = stats.totalGames || 0;
-            console.log('Toplam oyun g�ncellendi:', stats.totalGames || 0);
-        }
-        
-        const totalQuestions = document.getElementById('stats-total-questions');
-        if (totalQuestions) {
-            totalQuestions.textContent = stats.totalQuestions || 0;
-            console.log('Toplam soru g�ncellendi:', stats.totalQuestions || 0);
-        }
-        
-        const correctAnswers = document.getElementById('stats-correct-answers');
-        if (correctAnswers) {
-            correctAnswers.textContent = stats.correctAnswers || 0;
-            console.log('Do�ru cevap g�ncellendi:', stats.correctAnswers || 0);
-        }
-        
-        // Do�ruluk oran�
-        const accuracy = document.getElementById('stats-accuracy');
-        if (accuracy) {
-            const accuracyValue = stats.totalQuestions > 0 
-                ? Math.round((stats.correctAnswers / stats.totalQuestions) * 100) 
-                : 0;
-            accuracy.textContent = `%${accuracyValue}`;
-            console.log('Do�ruluk oran� g�ncellendi:', accuracyValue);
-        }
-    },
-
-    // Ger�ek kullan�c� istatistiklerini al ve g�ncelle
-    updateRealUserStats: function() {
-        const userId = this.getCurrentUserId();
-        if (!userId) return;
-
-        // localStorage'dan ger�ek istatistikleri �ek
-        const realStats = this.calculateRealStats();
-        
-        // Profil sayfas� a��ksa istatistikleri g�ncelle
-        const profilePage = document.getElementById('profile-page');
-        if (profilePage && profilePage.style.display !== 'none') {
-            this.updateProfileStats(realStats);
-            
-            // Toplam puan� g�ncelle (Firebase'den gelen veya mevcut toplam puan)
-            const profileTotalScore = document.getElementById('profile-total-score');
-            if (profileTotalScore) {
-                profileTotalScore.textContent = this.totalScore || 0;
-            }
-            
-            // Seviyeyi g�ncelle (toplam puana g�re)
-            const profileUserLevel = document.getElementById('profile-user-level');
-            if (profileUserLevel) {
-                const level = Math.floor((this.totalScore || 0) / 500) + 1;
-                profileUserLevel.textContent = level;
-            }
-        }
-
-        // Rozet sistemini kontrol et
-        this.badgeSystem.checkAndAwardBadges(userId, realStats);
-        
-        return realStats;
-    },
-
-    // Ger�ek istatistikleri hesapla
-    calculateRealStats: function() {
-        try {
-            console.log('calculateRealStats �a�r�ld�');
-            
-            // Oyun ge�mi�ini al
-            const gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
-            console.log('Oyun ge�mi�i:', gameHistory);
-            
-            let totalGames = 0;
-            let totalQuestions = 0;
-            let correctAnswers = 0;
-            let totalScore = 0;
-            let perfectGames = 0;
-            let fastAnswers = 0;
-            let categoriesPlayed = new Set();
-            let categoryStats = {};
-
-            // Her oyunu analiz et
-            gameHistory.forEach(game => {
-                totalGames++;
-                totalQuestions += game.totalQuestions || 0;
-                correctAnswers += game.correctAnswers || 0;
-                totalScore += game.score || 0;
-                
-                // M�kemmel oyunlar� say
-                if (game.correctAnswers === game.totalQuestions && game.totalQuestions > 0) {
-                    perfectGames++;
-                }
-                
-                // H�zl� cevaplar� say (ortalama s�re 10 saniyeden az ise)
-                if (game.averageTime && game.averageTime < 10) {
-                    fastAnswers++;
-                }
-                
-                // Kategorileri topla
-                if (game.category) {
-                    categoriesPlayed.add(game.category);
-                    
-                    // Kategori istatistikleri
-                    if (!categoryStats[game.category]) {
-                        categoryStats[game.category] = { total: 0, correct: 0, games: 0 };
-            }
-                    categoryStats[game.category].total += game.totalQuestions || 0;
-                    categoryStats[game.category].correct += game.correctAnswers || 0;
-                    categoryStats[game.category].games++;
-                }
-            });
-
-            // High scores'tan da veri topla (eski format deste�i i�in)
-            const categories = ['Genel K�lt�r', 'Bilim', 'Teknoloji', 'Spor', 'M�zik', 'Tarih', 'Co�rafya', 'Sanat', 'Edebiyat', 'Hayvanlar', 'Matematik'];
-            
-            categories.forEach(category => {
-                const categoryScores = JSON.parse(localStorage.getItem(`highScores_${category}`) || '[]');
-                categoryScores.forEach(score => {
-                    if (score.score) {
-                        // Sadece gameHistory'de yoksa ekle (duplikasyon �nleme)
-                        const existsInHistory = gameHistory.some(game => 
-                            game.category === category && 
-                            Math.abs((game.score || 0) - score.score) < 5 // K���k fark tolerans�
-                        );
-                        
-                        if (!existsInHistory) {
-                            totalGames++;
-                        totalScore += score.score;
-                            totalQuestions += score.totalQuestions || 10; // Varsay�lan
-                            correctAnswers += score.correctAnswers || Math.round(score.score / 10);
-                        
-                        if (score.percentage === 100) {
-                            perfectGames++;
-                        }
-                        categoriesPlayed.add(category);
-                            
-                            // Kategori istatistikleri
-                            if (!categoryStats[category]) {
-                                categoryStats[category] = { total: 0, correct: 0, games: 0 };
-                            }
-                            categoryStats[category].total += score.totalQuestions || 10;
-                            categoryStats[category].correct += score.correctAnswers || Math.round(score.score / 10);
-                            categoryStats[category].games++;
-                        }
-                    }
-                });
-            });
-
-            const stats = {
-                totalGames,
-                totalQuestions,
-                correctAnswers,
-                totalScore,
-                perfectGames,
-                fastAnswers,
-                categoriesPlayed: categoriesPlayed.size,
-                accuracy: totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0,
-                averageScore: totalGames > 0 ? Math.round(totalScore / totalGames) : 0,
-                highestScore: Math.max(...[totalScore, ...categories.map(cat => {
-                    const scores = JSON.parse(localStorage.getItem(`highScores_${cat}`) || '[]');
-                    return scores.length > 0 ? Math.max(...scores.map(s => s.score || 0)) : 0;
-                })]),
-                categoryStats
-            };
-
-            console.log('Hesaplanan istatistikler:', stats);
-
-            // �statistikleri localStorage'a kaydet
-            localStorage.setItem('userStats', JSON.stringify(stats));
-            localStorage.setItem('quiz-user-stats', JSON.stringify(stats));
-            
-            return stats;
-        } catch (error) {
-            console.error('�statistikler hesaplan�rken hata:', error);
-            return {
-                totalGames: 0,
-                totalQuestions: 0,
-                correctAnswers: 0,
-                totalScore: 0,
-                perfectGames: 0,
-                fastAnswers: 0,
-                categoriesPlayed: 0,
-                accuracy: 0,
-                averageScore: 0,
-                highestScore: 0,
-                categoryStats: {}
-            };
-        }
-    },
-    
-    // Kullan�c� rozetlerini profil i�in y�kle
-    loadUserBadgesForProfile: function(userId) {
-        const badgesContainer = document.getElementById('profile-badges-container');
-        if (!badgesContainer) return;
-        
-        badgesContainer.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Rozetler y�kleniyor...</div>';
-        
-        // Kullan�c�n�n kazand��� rozetleri al
-        const userBadges = this.badgeSystem.getUserBadges(userId);
-        // T�m mevcut rozetleri al
-        const allBadges = this.badgeSystem.badges;
-        
-        setTimeout(() => {
-            badgesContainer.innerHTML = '';
-            
-            // T�m rozetleri g�ster (kazan�lan ve kazan�lmayan)
-            Object.values(allBadges).forEach(badge => {
-                const badgeElement = document.createElement('div');
-                const isEarned = userBadges[badge.id] !== undefined;
-                
-                badgeElement.className = isEarned ? 'badge-item earned' : 'badge-item';
-                badgeElement.setAttribute('data-badge-id', badge.id);
-                
-                let badgeDate = '';
-                if (isEarned) {
-                    const earnedDate = userBadges[badge.id].earnedDate ? 
-                        new Date(userBadges[badge.id].earnedDate).toLocaleDateString('tr-TR') : 
-                        'Bilinmiyor';
-                    badgeDate = earnedDate;
-                } else {
-                    badgeDate = 'Hen�z kazan�lmad�';
-                }
-                
-                        badgeElement.innerHTML = `
-                    <i class="badge-icon ${badge.icon || 'fas fa-award'}"></i>
-                            <div class="badge-name">${badge.name || 'Bilinmeyen Rozet'}</div>
-                    <div class="badge-date">${badgeDate}</div>
-                        `;
-                
-                // Rozet t�klama olay� ekle
-                badgeElement.addEventListener('click', () => {
-                    this.showBadgeInfoModal(badge, isEarned, badgeDate);
-                });
-                        
-                        badgesContainer.appendChild(badgeElement);
-                    });
-            
-            // Rozetleri y�kledikten sonra g�ncel istatistikleri kontrol et ve rozetleri g�ncelle
-            this.checkAndUpdateBadges(userId);
-            
-            // Hi� rozet yoksa placeholder g�ster
-            if (Object.keys(allBadges).length === 0) {
-                badgesContainer.innerHTML = '<div class="badge-placeholder">Hen�z tan�ml� rozet yok</div>';
-            }
-        }, 500);
-    },
-
-    // Rozet bilgi modal�n� g�ster
-    showBadgeInfoModal: function(badge, isEarned, earnedDate) {
-        // Modal olu�tur
-        const modal = document.createElement('div');
-        modal.className = 'modal badge-info-modal';
-        modal.id = 'badge-info-modal';
-        
-        const statusText = isEarned ? '? Kazan�ld�!' : '? Hen�z Kazan�lmad�';
-        const statusClass = isEarned ? 'earned' : 'not-earned';
-        const howToEarnText = this.getBadgeRequirementText(badge);
-        
-        modal.innerHTML = `
-            <div class="modal-content badge-modal-content">
-                <div class="modal-header">
-                    <h3><i class="${badge.icon}"></i> ${badge.name}</h3>
-                    <button class="close-modal" onclick="this.closest('.modal').remove()">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="badge-info-display">
-                        <div class="badge-icon-large ${statusClass}">
-                            <i class="${badge.icon}"></i>
-                </div>
-                        <div class="badge-details">
-                            <h4>${badge.name}</h4>
-                            <p class="badge-description">${badge.description}</p>
-                            <div class="badge-status ${statusClass}">
-                                ${statusText}
-                            </div>
-                            ${isEarned ? `<div class="badge-earned-date">Kazan�ld�: ${earnedDate}</div>` : ''}
-                        </div>
-                    </div>
-                    <div class="badge-requirements">
-                        <h5><i class="fas fa-tasks"></i> Nas�l Kazan�l�r:</h5>
-                        <p>${howToEarnText}</p>
-                    </div>
-                </div>
-                </div>
-            `;
-        
-        document.body.appendChild(modal);
-        
-        // Modal g�ster
-        setTimeout(() => modal.classList.add('show'), 10);
-    },
-
-    // Rozet gereksinimlerini a��klayan metin
-    getBadgeRequirementText: function(badge) {
-        const requirements = {
-            'firstGame': '�lk quiz oyununuzu oynay�n.',
-            'perfectScore': 'Bir oyunda t�m sorular� do�ru cevaplay�n (10/10 puan).',
-            'speedster': '5 soruyu 10 saniyeden k�sa s�rede cevaplay�n.',
-            'scholar': 'Toplamda 50 soruyu do�ru cevaplay�n.',
-            'dedicated': 'Toplamda 10 oyun tamamlay�n.',
-            'genius': 'En az 20 soru cevaplad�ktan sonra %90 veya �zeri do�ruluk oran�na sahip olun.',
-            'explorer': '5 farkl� kategoride oyun oynay�n.'
-        };
-        return requirements[badge.id] || 'Bu rozetin gereksinimleri hen�z tan�mlanmam��.';
-    },
-
-    // Rozetleri kontrol et ve g�ncelle
-    checkAndUpdateBadges: function(userId) {
-        // G�ncel istatistikleri al
-        const currentStats = this.calculateRealStats();
-        
-        // Yeni rozetleri kontrol et
-        const newBadges = this.badgeSystem.checkAndAwardBadges(userId, currentStats);
-        
-        // E�er yeni rozet kazan�ld�ysa profili yenile
-        if (newBadges && newBadges.length > 0) {
-            setTimeout(() => {
-                this.loadUserBadgesForProfile(userId);
-            }, 1000);
-        }
-    },
-    
-    // Y�ksek skorlar� profil i�in y�kle
-    loadHighScoresForProfile: function(userId) {
-        const highScoresTable = document.getElementById('profile-high-scores');
-        if (!highScoresTable) return;
-        
-        highScoresTable.innerHTML = '<tr><td colspan="3" class="loading">Skorlar y�kleniyor...</td></tr>';
-        
-        if (firebase.firestore) {
-            const db = firebase.firestore();
-            
-            db.collection('highScores')
-                .where('userId', '==', userId)
-                .orderBy('score', 'desc')
-                .limit(10)
-                .get()
-                .then(querySnapshot => {
-                    if (querySnapshot.empty) {
-                        highScoresTable.innerHTML = '<tr><td colspan="3" class="no-data">Hen�z kaydedilen skor yok</td></tr>';
-                        return;
-                    }
-                    
-                    highScoresTable.innerHTML = '';
-                    querySnapshot.forEach(doc => {
-                        const scoreData = doc.data();
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${scoreData.category || 'Genel'}</td>
-                            <td>${scoreData.score || 0}</td>
-                            <td>${scoreData.date ? new Date(scoreData.date.toDate()).toLocaleDateString('tr-TR') : 'Bilinmiyor'}</td>
-                        `;
-                        highScoresTable.appendChild(row);
-                    });
-                })
-                .catch(error => {
-                    console.error('Y�ksek skorlar y�klenirken hata:', error);
-                    highScoresTable.innerHTML = '<tr><td colspan="3" class="no-data">Skorlar y�klenirken hata olu�tu</td></tr>';
-                });
-        } else {
-            // Firebase yoksa localStorage'dan al
-            const scores = this.getHighScores();
-            if (scores.length === 0) {
-                highScoresTable.innerHTML = '<tr><td colspan="3" class="no-data">Hen�z kaydedilen skor yok</td></tr>';
-                return;
-            }
-            
-            highScoresTable.innerHTML = '';
-            scores.slice(0, 10).forEach(score => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${score.category || 'Genel'}</td>
-                    <td>${score.score || 0}</td>
-                    <td>${score.date ? new Date(score.date).toLocaleDateString('tr-TR') : 'Bug�n'}</td>
-                `;
-                highScoresTable.appendChild(row);
-            });
-        }
-    },
-    
-    // Son aktiviteleri profil i�in y�kle
-    loadRecentActivitiesForProfile: function(userId) {
-        const activitiesList = document.getElementById('recent-activities-list');
-        if (!activitiesList) return;
-        
-        activitiesList.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Aktiviteler y�kleniyor...</div>';
-        
-        // Firebase'den aktiviteleri y�kleme
-        if (firebase.auth && firebase.firestore && this.isLoggedIn) {
-            const db = firebase.firestore();
-            db.collection('users').doc(userId)
-                .collection('activities')
-                .orderBy('timestamp', 'desc')
-                .limit(5)
-                .get()
-                .then((querySnapshot) => {
-                    // Firebase'den gelen aktiviteleri i�le
-                    if (!querySnapshot.empty) {
-                        activitiesList.innerHTML = '';
-                        querySnapshot.forEach((doc) => {
-                            const activity = doc.data();
-                            this.renderActivity(activity, activitiesList);
-                        });
-                    } else {
-                        // Firebase'de aktivite yoksa localStorage'a bak
-                        this.loadLocalActivities(activitiesList, userId);
-                    }
-                })
-                .catch((error) => {
-                    console.error("Aktiviteler y�klenirken hata olu�tu:", error);
-                    // Hata durumunda localStorage'a bak
-                    this.loadLocalActivities(activitiesList, userId);
-                });
-        } else {
-            // Firebase yoksa veya kullan�c� giri� yapmam��sa localStorage'a bak
-            this.loadLocalActivities(activitiesList, userId);
-        }
-    },
-    
-    // LocalStorage'dan aktiviteleri y�kle
-    loadLocalActivities: function(activitiesList, userId) {
-        try {
-            const storedActivities = localStorage.getItem(`user-activities-${userId}`);
-            const activities = storedActivities ? JSON.parse(storedActivities) : [];
-            
-            if (activities && activities.length > 0) {
-                activitiesList.innerHTML = '';
-                activities.forEach(activity => {
-                    this.renderActivity(activity, activitiesList);
-                });
-            } else {
-                this.generateSampleActivities(activitiesList);
-            }
-        } catch (error) {
-            console.error("LocalStorage aktiviteleri i�lenirken hata:", error);
-            this.generateSampleActivities(activitiesList);
-        }
-    },
-    
-    // Aktivite olu�tur
-    createUserActivity: function(type, title, score = null, category = null) {
-        const userId = this.getCurrentUserId();
-        const now = new Date();
-        
-        const activityData = {
-            type: type,           // 'game', 'badge', 'task', vb.
-            title: title,         // Aktivite ba�l���
-            timestamp: now,       // Ger�ekle�me zaman�
-            score: score,         // Varsa skor de�eri
-            category: category,   // Varsa kategori
-            icon: this.getActivityIcon(type) // T�r i�in uygun ikon
-        };
-        
-        // Firebase'e aktiviteyi kaydet
-        if (firebase.auth && firebase.firestore && this.isLoggedIn) {
-            const db = firebase.firestore();
-            db.collection('users').doc(userId)
-                .collection('activities')
-                .add(activityData)
-                .then(() => {
-                    console.log("Aktivite Firebase'e kaydedildi:", title);
-                })
-                .catch((error) => {
-                    console.error("Aktivite kaydedilirken hata:", error);
-                    // Hata durumunda localStorage'a kaydet
-                    this.saveActivityToLocalStorage(userId, activityData);
-                });
-        } else {
-            // Firebase yoksa localStorage'a kaydet
-            this.saveActivityToLocalStorage(userId, activityData);
-        }
-    },
-    
-    // Aktiviteyi LocalStorage'a kaydet
-    saveActivityToLocalStorage: function(userId, activityData) {
-        try {
-            const storedActivities = localStorage.getItem(`user-activities-${userId}`);
-            const activities = storedActivities ? JSON.parse(storedActivities) : [];
-            
-            // Aktiviteyi ekle ve en fazla 10 aktivite sakla
-            activities.unshift(activityData);
-            if (activities.length > 10) activities.pop();
-            
-            localStorage.setItem(`user-activities-${userId}`, JSON.stringify(activities));
-            console.log("Aktivite localStorage'a kaydedildi");
-        } catch (error) {
-            console.error("Aktivite localStorage'a kaydedilirken hata:", error);
-        }
-    },
-    
-    // Aktivite tipi i�in uygun ikon s�n�f�
-    getActivityIcon: function(type) {
-        switch(type) {
-            case 'game': return 'fas fa-gamepad';
-            case 'badge': return 'fas fa-award';
-            case 'task': return 'fas fa-tasks';
-            case 'level': return 'fas fa-level-up-alt';
-            case 'purchase': return 'fas fa-shopping-cart';
-            case 'achievement': return 'fas fa-trophy';
-            default: return 'fas fa-history';
-        }
-    },
-    
-    // Aktiviteyi HTML olarak render et
-    renderActivity: function(activity, container) {
-        const activityTime = activity.timestamp ? this.getTimeAgo(activity.timestamp) : activity.time;
-        const activityElement = document.createElement('div');
-        activityElement.className = 'activity-item';
-        activityElement.innerHTML = `
-            <div class="activity-icon"><i class="${activity.icon}"></i></div>
-            <div class="activity-details">
-                <div class="activity-title">${activity.title}</div>
-                <div class="activity-time">${activityTime}</div>
-            </div>
-            ${activity.score ? `<div class="activity-score">Skor: ${activity.score}</div>` : ''}
-        `;
-        container.appendChild(activityElement);
-    },
-    
-    // Ge�en zaman� belirtilen format� �evir (1 saat �nce, 2 g�n �nce vb.)
-    getTimeAgo: function(timestamp) {
-        const now = new Date();
-        const activityTime = timestamp instanceof Date ? timestamp : new Date(timestamp);
-        const diffMs = now - activityTime;
-        const diffSec = Math.floor(diffMs / 1000);
-        const diffMin = Math.floor(diffSec / 60);
-        const diffHour = Math.floor(diffMin / 60);
-        const diffDay = Math.floor(diffHour / 24);
-        
-        if (diffDay > 30) {
-            return activityTime.toLocaleDateString('tr-TR');
-        } else if (diffDay > 0) {
-            return `${diffDay} g�n �nce`;
-        } else if (diffHour > 0) {
-            return `${diffHour} saat �nce`;
-        } else if (diffMin > 0) {
-            return `${diffMin} dakika �nce`;
-        } else {
-            return 'Az �nce';
-        }
-    },
-    
-    // �rnek aktiviteleri g�ster - veri yoksa
-    generateSampleActivities: function(activitiesList) {
-        activitiesList.innerHTML = '';
-        
-        // Rastgele kategori se�
-        const categories = ['Genel K�lt�r', 'Tarih', 'Bilim', 'Spor', 'Sanat', 'Co�rafya'];
-        const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-        
-        // �rnek aktiviteler
-        const sampleActivities = [
-            {
-                icon: 'fas fa-gamepad',
-                title: `${randomCategory} kategorisinde bir oyun oynand�`,
-                time: '2 saat �nce',
-                score: Math.floor(Math.random() * 100)
-            },
-            {
-                icon: 'fas fa-award',
-                title: '"Bilgi Ustas�" rozeti kazan�ld�',
-                time: '1 g�n �nce',
-                score: null
-            },
-            {
-                icon: 'fas fa-tasks',
-                title: 'G�nl�k g�rev tamamland�',
-                time: '2 g�n �nce',
-                score: null
-            }
+        // Test oyun geçmişi oluştur
+        const testGameHistory = [
+            { category: 'Genel Kültür', score: 85, totalQuestions: 10, correctAnswers: 8, date: Date.now() - 86400000, averageTime: 12 },
+            { category: 'Bilim', score: 92, totalQuestions: 10, correctAnswers: 9, date: Date.now() - 172800000, averageTime: 8 },
+            { category: 'Tarih', score: 78, totalQuestions: 10, correctAnswers: 7, date: Date.now() - 259200000, averageTime: 15 },
+            { category: 'Spor', score: 90, totalQuestions: 10, correctAnswers: 9, date: Date.now() - 345600000, averageTime: 9 },
+            { category: 'Coğrafya', score: 100, totalQuestions: 10, correctAnswers: 10, date: Date.now() - 432000000, averageTime: 7 }
         ];
         
-        // �rnek aktiviteleri render et
-        sampleActivities.forEach(activity => {
-            this.renderActivity(activity, activitiesList);
-        });
-    },
-    
-    // Profil d�zenleme modal�n� g�ster
-    showEditProfileModal: function() {
-        // Modal olu�tur
-        const modal = document.createElement('div');
-        modal.className = 'modal';
-        modal.id = 'edit-profile-modal';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3><i class="fas fa-edit"></i> Profili D�zenle</h3>
-                    <button class="close-modal" onclick="this.closest('.modal').remove()">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="edit-display-name">G�r�nen Ad:</label>
-                        <input type="text" id="edit-display-name" placeholder="Ad�n�z� girin">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit-bio">Hakk�mda:</label>
-                        <textarea id="edit-bio" placeholder="Kendiniz hakk�nda k�sa bilgi..." rows="3"></textarea>
-                    </div>
-                    <div class="modal-actions">
-                        <button class="btn-secondary" onclick="this.closest('.modal').remove()">�ptal</button>
-                        <button class="btn-primary" onclick="quizApp.saveProfileChanges()">Kaydet</button>
-                    </div>
-                </div>
-            </div>
-        `;
+        localStorage.setItem('gameHistory', JSON.stringify(testGameHistory));
         
-        document.body.appendChild(modal);
+        // İstatistikleri hesapla ve kaydet
+        const stats = this.calculateRealStats();
         
-        // Mevcut verileri doldur
-        const displayNameInput = document.getElementById('edit-display-name');
-        const bioInput = document.getElementById('edit-bio');
-        
-        if (firebase.auth && firebase.auth().currentUser) {
-            const user = firebase.auth().currentUser;
-            if (displayNameInput && user.displayName) {
-                displayNameInput.value = user.displayName;
-            }
-                            } else {
-            // Firebase yoksa localStorage'dan al
-            const userId = this.getCurrentUserId();
-            try {
-                const profileData = localStorage.getItem(`user-profile-${userId}`);
-                if (profileData) {
-                    const profile = JSON.parse(profileData);
-                    if (displayNameInput && profile.displayName) {
-                        displayNameInput.value = profile.displayName;
-                    }
-                    if (bioInput && profile.bio) {
-                        bioInput.value = profile.bio;
-                            }
-                        } else {
-                    // Varsay�lan kullan�c� ad�n� g�ster
-                    const currentName = document.getElementById('profile-name')?.textContent;
-                    if (displayNameInput && currentName) {
-                        displayNameInput.value = currentName;
-                    }
-                }
-            } catch (error) {
-                console.error('Profil verileri y�klenemedi:', error);
-            }
-        }
-        
-        // Modal g�ster
-        setTimeout(() => modal.classList.add('show'), 10);
-    },
-    
-    // Profil de�i�ikliklerini kaydet
-    saveProfileChanges: function() {
-        const displayName = document.getElementById('edit-display-name').value.trim();
-        const bio = document.getElementById('edit-bio').value.trim();
-        
-        if (!displayName) {
-            this.showToast('G�r�nen ad bo� olamaz', 'toast-error');
-            return;
-        }
-        
-        // Firebase kullan�c�s� varsa
-        if (firebase.auth && firebase.auth().currentUser) {
-            const user = firebase.auth().currentUser;
-            
-            // Firebase Authentication'da displayName g�ncelle
-            user.updateProfile({
-                displayName: displayName
-            }).then(() => {
-                // Firestore'da da g�ncelle (varsa)
-                if (firebase.firestore) {
-                    const db = firebase.firestore();
-                    db.collection('users').doc(user.uid).update({
-                        displayName: displayName,
-                        bio: bio,
-                        lastUpdated: new Date()
-                    }).catch(error => {
-                        console.error('Firestore g�ncelleme hatas�:', error);
-                    });
-                }
-                
-                this.updateProfileUI(displayName, bio);
-                this.showToast('Profil ba�ar�yla g�ncellendi', 'toast-success');
-            }).catch(error => {
-                console.error('Profil g�ncelleme hatas�:', error);
-                this.showToast('Profil g�ncellenirken hata olu�tu', 'toast-error');
-                });
-        } else {
-            // Firebase yoksa localStorage'a kaydet
-            const userId = this.getCurrentUserId();
-            const profileData = {
-                displayName: displayName,
-                bio: bio,
-                lastUpdated: new Date().toISOString()
-            };
-            
-            try {
-                localStorage.setItem(`user-profile-${userId}`, JSON.stringify(profileData));
-                this.updateProfileUI(displayName, bio);
-                this.showToast('Profil ba�ar�yla g�ncellendi', 'toast-success');
-            } catch (error) {
-                console.error('Profil localStorage\'a kaydedilemedi:', error);
-                this.showToast('Profil kaydedilemedi', 'toast-error');
-            }
-        }
-    },
-
-    // Profil UI'sini g�ncelle
-    updateProfileUI: function(displayName, bio) {
-        // Profil sayfas�ndaki bilgileri g�ncelle
-        const profileName = document.getElementById('profile-name');
-        if (profileName) {
-            profileName.textContent = displayName;
-        }
-        
-        // Bio varsa g�ster (hen�z UI'da yer yoksa eklenecek)
-        const profileBio = document.getElementById('profile-bio');
-        if (profileBio) {
-            profileBio.textContent = bio;
-        }
-        
-        // Modal kapat
-        const modal = document.getElementById('edit-profile-modal');
-        if (modal) modal.remove();
-        
-        // Profil sayfas�n� yenile
-        this.loadProfileData();
-    },
-
-// @ts-nocheck
-/* eslint-disable */
-// Bu dosya JavaScript'tir, TypeScript de�ildir.
-// Script Version 3.0 - Firebase puan kaydetme sistemi tamamland�
-
-// Tam Ekran Modunu Ayarla
-function initFullscreenMode() {
-    // PWA tam ekran modunu etkinle�tir
-    if ('serviceWorker' in navigator) {
-        // PWA modunda �al���yor mu kontrol et
-        const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
-                           window.navigator.standalone ||
-                           document.referrer.includes('android-app://');
-        
-        if (isStandalone) {
-            console.log('? PWA standalone modunda �al���yor');
-            
-            // Tam ekran i�in CSS s�n�flar� ekle
-            document.body.classList.add('pwa-fullscreen');
-            document.documentElement.classList.add('pwa-fullscreen');
-            
-            // Viewport meta tag g�ncelle
-            const viewport = document.querySelector('meta[name="viewport"]');
-            if (viewport) {
-                viewport.setAttribute('content', 
-                    'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
-            }
-            
-            // Status bar rengi ayarla
-            const themeColor = document.querySelector('meta[name="theme-color"]');
-            if (themeColor) {
-                themeColor.setAttribute('content', '#1e40af');
-            }
-        } else {
-            console.log('?? PWA standalone modunda �al��m�yor - taray�c� modunda');
-        }
-    }
-    
-    // CSS ile tam ekran stillerini uygula
-    const fullscreenStyles = `
-        .pwa-fullscreen {
-            height: 100vh !important;
-            height: 100dvh !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-        
-        .pwa-fullscreen .container {
-            height: 100vh !important;
-            height: 100dvh !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            overflow-y: auto !important;
-        }
-        
-        /* Safe area i�in padding ekle */
-        @supports (padding: max(0px)) {
-            .pwa-fullscreen .container {
-                padding-top: max(env(safe-area-inset-top), 0px) !important;
-                padding-bottom: max(env(safe-area-inset-bottom), 0px) !important;
-                padding-left: max(env(safe-area-inset-left), 0px) !important;
-                padding-right: max(env(safe-area-inset-right), 0px) !important;
-            }
-        }
-        
-        /* Capacitor/Cordova i�in */
-        .platform-cordova .pwa-fullscreen,
-        .platform-capacitor .pwa-fullscreen {
-            height: 100vh !important;
-            overflow: hidden !important;
-        }
-    `;
-    
-    // Stilleri head'e ekle
-    const styleSheet = document.createElement('style');
-    styleSheet.type = 'text/css';
-    styleSheet.innerText = fullscreenStyles;
-    document.head.appendChild(styleSheet);
-}
-
-// Sayfa Y�kleme ��lemleri
-document.addEventListener('DOMContentLoaded', () => {
-    // Tam ekran modunu ba�lat
-    initFullscreenMode();
-    
-    // Ana i�eri�i g�r�n�r yap
-    const container = document.querySelector('.container');
-    if (container) {
-        container.style.visibility = 'visible';
-        container.classList.add('fade-in');
-    }
-});
-
-const quizApp = {
-    // DOM Elements
-    questionElement: document.getElementById('question'),
-    optionsElement: document.getElementById('options'),
-    resultElement: document.getElementById('result'),
-    scoreElement: document.getElementById('score'),
-    restartButton: document.getElementById('restart'),
-    quizElement: document.getElementById('quiz'),
-    containerElement: document.querySelector('.container'),
-    categorySelectionElement: document.getElementById('category-selection'),
-    categoriesElement: document.getElementById('categories'),
-    nextButton: document.getElementById('next-question'),
-    highScoresListElement: document.getElementById('high-scores-list'),
-    timeLeftElement: document.getElementById('time-left'),
-    badgesContainer: document.getElementById('badges'),
-    themeToggle: document.getElementById('checkbox'),
-    jokerFiftyBtn: null, // document.getElementById('joker-fifty'),
-    jokerHintBtn: null, // document.getElementById('joker-hint'),
-    jokerTimeBtn: null, // document.getElementById('joker-time'),
-    jokerSkipBtn: null, // document.getElementById('joker-skip'),
-    jokerStoreBtn: null, // document.getElementById('joker-store'),
-    
-    // State Variables
-    currentQuestionIndex: 0,
-    score: 0,
-    totalScore: 0, // <-- EKLEND�: Toplam birikmi� puan
-    sessionScore: 0, // <-- EKLEND�: Bu oturumdaki toplam puan
-    userLevel: 1, // <-- EKLEND�: Kullan�c� seviyesi
-    levelProgress: 0, // <-- EKLEND�: Seviye ilerlemesi (XP)
-    correctAnswers: 0,
-    selectedCategory: null,
-    questions: [],
-    allQuestionsData: {},
-    questionsData: {}, 
-    timerInterval: null,
-    timeLeft: 0,
-    answeredQuestions: 0,
-    answerTimes: [],
-    jokersUsed: {fifty: false, hint: false, time: false, skip: false},
-    jokerInventory: {fifty: 0, hint: 0, time: 0, skip: 0},
-    soundEnabled: true,
-    lives: 5,
-    currentLevel: 1,
-    levelProgress: 0,
-    skipJokerActive: false,
-    currentSection: 1, // �u anki b�l�m numaras�
-    totalSections: 50, // Toplam b�l�m say�s�
-    sectionStats: [], // Her b�l�m i�in do�ru/yanl�� cevap istatistiklerini saklayacak dizi
-    currentLanguage: 'tr', // Varsay�lan dil
-    translatedQuestions: {}, // �evrilmi� sorular
-    isLoggedIn: false, // <-- EKLEND�: Kullan�c� giri� durumu
-    currentUser: null, // <-- EKLEND�: Mevcut kullan�c�
-    userSettings: {}, // <-- EKLEND�: Kullan�c� ayarlar�
-    totalScore: 0, // <-- EKLEND�: Toplam puan
-    sessionScore: 0, // <-- EKLEND�: Oturum puan�
-    userLevel: 1, // <-- EKLEND�: Kullan�c� seviyesi
-    levelProgress: 0, // <-- EKLEND�: Seviye ilerlemesi
-    
-    // Constants
-    HIGH_SCORES_KEY: 'quizHighScores',
-    MAX_HIGH_SCORES: 5,
-    TIME_PER_QUESTION: 45,
-    TIME_PER_BLANK_FILLING_QUESTION: 60,
-    SEEN_QUESTIONS_KEY: 'quizSeenQuestions',
-    QUESTIONS_PER_GAME: 'dynamic', // Art�k kategoriye g�re dinamik
-    STATS_KEY: 'quizStats',
-    USER_SETTINGS_KEY: 'quizSettings',
-    JOKER_INVENTORY_KEY: 'quizJokerInventory',
-    LANGUAGE_KEY: 'quizLanguage',
-    
-    // Ba�lang��
-    init: function() {
-        console.log("Quiz Uygulamas� Ba�lat�l�yor...");
-        
-        // �lk Firebase durumu kontrol�
-        console.log('?? Firebase �lk Durum Kontrol�:');
-        console.log('- Firebase nesnesi:', typeof firebase !== 'undefined' ? 'VAR' : 'YOK');
-        console.log('- Firebase.auth:', firebase && firebase.auth ? 'VAR' : 'YOK');
-        console.log('- Firebase.firestore:', firebase && firebase.firestore ? 'VAR' : 'YOK');
-        
-        // Taray�c� �zelliklerini kontrol et
-        this.checkBrowserSupport();
-        
-        try {
-            // �nce dil ayarlar�n� y�kle
-            this.loadLanguageSettings();
-            
-            // Kullan�c� aray�z�n� haz�rla
-            this.initUI();
-            
-            // �nce kullan�c� ayarlar�n� y�kle
-            this.loadUserSettings();
-            
-            // localStorage'dan skor verilerini y�kle
-            this.loadScoreFromLocalStorage();
-            
-            // Soru verilerini y�kle
-            this.loadQuestionsData()
-                .then(() => {
-                    console.log("T�m veriler ba�ar�yla y�klendi.");
-                    
-                    // Soru verilerinin y�klenip y�klenmedi�ini kontrol et
-                    if (!this.questionsData || Object.keys(this.questionsData).length === 0) {
-                        console.error("Soru verileri y�klenemedi veya bo�!");
-                        
-                        // Tekrar y�klemeyi dene
-                        this.loadQuestionsData()
-                            .then(() => {
-                                console.log("�kinci deneme: Soru verileri y�klendi");
-                            })
-                            .catch(err => {
-                                console.error("�kinci deneme ba�ar�s�z:", err);
-                                this.showAlert(this.getTranslation('questionLoadError'));
-                            });
-                    }
-                    
-                    // Sorular� �evir
-                    this.translateQuestions();
-                })
-                .catch(error => {
-                    console.error("Soru verileri y�klenirken hata olu�tu:", error);
-                });
-        } catch (error) {
-            console.error("Ba�latma s�ras�nda kritik hata:", error);
-        }
-    },
-    
-    // Mevcut dil i�in metni getir
-    getTranslation: function(key) {
-        try {
-            // Dil dosyas� import edilmi� mi kontrol et
-            if (typeof languages === 'undefined') {
-                console.warn('Dil dosyas� y�klenemedi. Varsay�lan metin g�steriliyor.');
-                return this.getDefaultTranslation(key);
-            }
-            
-            // Mevcut dil i�in �eviri var m�?
-            if (languages[this.currentLanguage] && languages[this.currentLanguage][key] !== undefined) {
-                return languages[this.currentLanguage][key];
-            }
-            
-            // T�rk�e varsay�lan dil olarak kullan�l�r
-            if (languages.tr && languages.tr[key] !== undefined) {
-                return languages.tr[key];
-            }
-            
-            // �eviri bulunamazsa, anahtar� d�nd�r
-            console.warn(`'${key}' i�in �eviri bulunamad�.`);
-            return key;
-        } catch (error) {
-            console.error('�eviri al�n�rken hata olu�tu:', error);
-            return this.getDefaultTranslation(key);
-        }
-    },
-    
-    // Varsay�lan �evirileri d�nd�r
-    getDefaultTranslation: function(key) {
-        // S�k kullan�lan metinler i�in varsay�lan de�erler
-        const defaults = {
-            'appName': 'Quiz Game',
-            'loading': 'Loading...',
-            'restart': 'Restart',
-            'next': 'Next',
-            'score': 'Score',
-            'correct': 'Correct!',
-            'wrong': 'Wrong!',
-            'timeUp': 'Time is up!',
-            'correctAnswer': 'Correct answer',
-            'questionImage': 'Question image',
-            'true': 'TRUE',
-            'false': 'FALSE'
-        };
-        
-        return defaults[key] || key;
-    },
-    
-    // Dil ayarlar�n� y�kle
-    loadLanguageSettings: function() {
-        try {
-            // Local storage'dan tercihler ekran�nda se�ilen dili kontrol et
-            const userLanguage = localStorage.getItem('user_language');
-            
-            if (userLanguage && ['tr', 'en', 'de'].includes(userLanguage)) {
-                this.currentLanguage = userLanguage;
-                console.log(`Kullan�c� tercih etti�i dil: ${this.currentLanguage}`);
-                
-                // HTML dil etiketini g�ncelle
-                document.documentElement.setAttribute('lang', this.currentLanguage);
-                document.documentElement.setAttribute('data-language', this.currentLanguage);
-            } else {
-                // Kaydedilmi� dil ayar� varsa y�kle
-                const savedLanguage = localStorage.getItem(this.LANGUAGE_KEY);
-                if (savedLanguage && ['tr', 'en', 'de'].includes(savedLanguage)) {
-                    this.currentLanguage = savedLanguage;
-                    console.log(`Kaydedilmi� dil ayar�: ${this.currentLanguage}`);
-                } else {
-                    // Taray�c� dilini kontrol et
-                    const browserLang = navigator.language || navigator.userLanguage;
-                    if (browserLang) {
-                        const lang = browserLang.substring(0, 2).toLowerCase();
-                        
-                        // Desteklenen diller
-                        if (['tr', 'en', 'de'].includes(lang)) {
-                            this.currentLanguage = lang;
-                        } else {
-                            // Desteklenmeyen dil durumunda varsay�lan olarak �ngilizce
-                            this.currentLanguage = 'en';
-                        }
-                        
-                        console.log(`Taray�c� dili: ${browserLang}, Uygulama dili: ${this.currentLanguage}`);
-                    }
-                }
-            }
-            
-            // Dil de�i�tirme elementini olu�tur
-            this.createLanguageSelector();
-        } catch (e) {
-            console.error("Dil ayarlar� y�klenirken hata:", e);
-            this.currentLanguage = 'tr'; // Hata durumunda varsay�lan dil
-        }
-    },
-    
-    // Dil se�ici olu�tur
-    createLanguageSelector: function() {
-        // Men�de zaten bir dil se�ici oldu�u i�in sayfa �zerinde ekstra bir dil se�ici olu�turmuyoruz
-        console.log("Men�de zaten dil se�im alan� bulundu�u i�in ek bir dil se�ici olu�turulmad�");
-        return;
-    },
-    
-    // Dili de�i�tir
-    switchLanguage: function(language) {
-        if (this.currentLanguage === language) return;
-        
-        console.log(`Dil de�i�tiriliyor: ${this.currentLanguage} -> ${language}`);
-        
-        // Dili kaydet
-        this.currentLanguage = language;
-        localStorage.setItem(this.LANGUAGE_KEY, language);
-        localStorage.setItem('quizLanguage', language); // Eski referans i�in uyumluluk
-        
-        // HTML etiketinin dil �zelliklerini g�ncelle
-        const htmlRoot = document.getElementById('html-root') || document.documentElement;
-        htmlRoot.setAttribute('lang', language);
-        htmlRoot.setAttribute('data-language', language);
-        
-        // Soru verilerini yeniden y�kle
-        this.loadQuestionsData()
-            .then(() => {
-                console.log("Dil de�i�ikli�i sonras� yeni soru verileri y�klendi");
-                
-                // UI metinlerini g�ncelle
-                this.updateUITexts();
-                
-                // Dil de�i�ikli�i olay�n� tetikle - bu, di�er mod�llerin �evirilerini g�ncellemesini sa�lar
-                document.dispatchEvent(new Event('languageChanged'));
-                
-                // E�er aktif bir kategori varsa ve sorular g�steriliyorsa, sorular� g�ncelle
-                if (this.selectedCategory && this.quizElement && this.quizElement.style.display !== 'none') {
-                    // Kategorileri yeniden g�ster (mevcut dildeki kategorileri g�stermek i�in)
-                    this.displayCategories();
-                    
-                    // Se�ili kategori ad�n� kontrol et ve mevcut dildeki kar��l���n� bul
-                    const translatedCategoryName = this.getCurrentCategoryName(this.selectedCategory);
-                    
-                    if (this.questionsData[translatedCategoryName]) {
-                        // Kategori mevcut dildeki sorularla g�ncellenir
-                        this.selectedCategory = translatedCategoryName;
-                        
-                        // Sorular� g�ncelle
-                        this.questions = this.shuffleArray([...this.questionsData[this.selectedCategory]]);
-                        this.arrangeBlankFillingFirst();
-                        
-                        // Mevcut soruyu s�f�rla ve ilk soruyu g�ster
-                        this.currentQuestionIndex = 0;
-                        this.displayQuestion(this.questions[0]);
-                    }
-                }
-                
-                // Mevcut g�sterilen i�eri�i g�ncelle
-                this.updateCurrentContent();
-                
-                // Dil de�i�ikli�ini kullan�c�ya bildir
-                this.showToast(this.getTranslation('languageChanged'), 'toast-success');
-                this.updateResultAndWarningTexts();
-            })
-            .catch(error => {
-                console.error("Dil de�i�ikli�i sonras� soru verileri y�klenirken hata:", error);
-                this.showToast("Sorular y�klenirken bir hata olu�tu", "toast-error");
-            });
-    },
-    
-    // Sorular� �evir
-    translateQuestions: function() {
-        if (!this.questionsData || Object.keys(this.questionsData).length === 0) {
-            console.warn('�evrilecek soru verisi bulunamad�.');
-            return;
-        }
-        
-        if (this.currentLanguage === 'tr') {
-            // T�rk�e i�in �eviriye gerek yok, orijinal sorular� kullan
-            this.translatedQuestions = this.cloneObject(this.questionsData);
-            // Mevcut sorular� g�ncelle
-            this.updateCurrentQuestionsWithTranslations();
-            return;
-        }
-        
-        // �evrilmi� sorular zaten varsa ve ge�erli dilde ise tekrar �evirme
-        if (this.hasTranslatedQuestions(this.currentLanguage)) {
-            console.log(`${this.currentLanguage} dilinde �evrilmi� sorular zaten mevcut, tekrar �evirme i�lemi yap�lmayacak.`);
-            
-            // Mevcut sorular� g�ncelle
-            this.updateCurrentQuestionsWithTranslations();
-            return;
-        }
-        
-        console.log(`Sorular ${this.currentLanguage} diline �evriliyor...`);
-        
-        // Bo� �eviri nesnesini olu�tur
-        this.translatedQuestions = {};
-        
-        // Her kategori i�in
-        Object.keys(this.questionsData).forEach(categoryTR => {
-            // Kategori ad�n� �evir
-            const translatedCategoryName = this.getTranslatedCategoryName(categoryTR, this.currentLanguage);
-            this.translatedQuestions[translatedCategoryName] = [];
-            
-            // Kategorideki her soru i�in
-            this.questionsData[categoryTR].forEach(questionObj => {
-                // Soru nesnesinin kopyas�n� olu�tur
-                const translatedQuestion = this.cloneObject(questionObj);
-                
-                // Translations �zelli�i varsa ve istenen dilde �eviri varsa kullan
-                if (questionObj.translations && questionObj.translations[this.currentLanguage]) {
-                    const translation = questionObj.translations[this.currentLanguage];
-                    if (translation.question) translatedQuestion.question = translation.question;
-                    if (translation.options) translatedQuestion.options = translation.options;
-                    if (translation.correctAnswer) translatedQuestion.correctAnswer = translation.correctAnswer;
-                } else {
-                    // Soru metnini ve ��klar� �evir (otomatik �eviri yerine �zelle�tirilmi� metin)
-                    if (this.currentLanguage === 'en') {
-                        translatedQuestion.question = this.translateToEnglish(questionObj.question);
-                        
-                        if (Array.isArray(translatedQuestion.options)) {
-                            translatedQuestion.options = translatedQuestion.options.map(option => 
-                                this.translateToEnglish(option)
-                            );
-                        }
-                        
-                        if (translatedQuestion.correctAnswer) {
-                            translatedQuestion.correctAnswer = this.translateToEnglish(questionObj.correctAnswer);
-                        }
-                        
-                        // Do�ru/Yanl�� sorular� i�in
-                        if (translatedQuestion.type === "Do�ruYanl��" || translatedQuestion.type === "TrueFalse") {
-                            translatedQuestion.type = "TrueFalse";
-                            
-                            if (translatedQuestion.correctAnswer === "DO�RU" || translatedQuestion.correctAnswer === "YANLI�") {
-                                translatedQuestion.correctAnswer = trueFalseMapping[translatedQuestion.correctAnswer].en;
-                            }
-                        }
-                    } else if (this.currentLanguage === 'de') {
-                        translatedQuestion.question = this.translateToGerman(questionObj.question);
-                        
-                        if (Array.isArray(translatedQuestion.options)) {
-                            translatedQuestion.options = translatedQuestion.options.map(option => 
-                                this.translateToGerman(option)
-                            );
-                        }
-                        
-                        if (translatedQuestion.correctAnswer) {
-                            translatedQuestion.correctAnswer = this.translateToGerman(questionObj.correctAnswer);
-                        }
-                        
-                        // Do�ru/Yanl�� sorular� i�in
-                        if (translatedQuestion.type === "Do�ruYanl��" || translatedQuestion.type === "TrueFalse") {
-                            translatedQuestion.type = "TrueFalse";
-                            
-                            if (translatedQuestion.correctAnswer === "DO�RU" || translatedQuestion.correctAnswer === "YANLI�") {
-                                translatedQuestion.correctAnswer = trueFalseMapping[translatedQuestion.correctAnswer].de;
-                            }
-                        }
-                    }
-                }
-                
-                // Kategori ad�n� g�ncelle
-                translatedQuestion.category = translatedCategoryName;
-                
-                // Bo�luk doldurma sorular� i�in
-                if (translatedQuestion.type === "BlankFilling" && translatedQuestion.choices) {
-                    // Harfleri �evir (�rne�in Almanca'da �, � gibi harfler i�in)
-                    translatedQuestion.choices = this.translateChoices(questionObj.choices, this.currentLanguage);
-                }
-                
-                // �evrilmi� soruyu kategoriye ekle
-                this.translatedQuestions[translatedCategoryName].push(translatedQuestion);
-            });
-        });
-        
-        console.log(`Soru �evirisi tamamland�. ${Object.keys(this.translatedQuestions).length} kategori �evrildi.`);
-        
-        // Mevcut sorular� g�ncelle
-        this.updateCurrentQuestionsWithTranslations();
-    },
-    
-    // �evrilmi� sorular var m� kontrol et
-    hasTranslatedQuestions: function(language) {
-        // �evrilmi� sorular bo�sa veya dil T�rk�e ise kontrol etmeye gerek yok
-        if (language === 'tr' || !this.translatedQuestions) {
-            return false;
-        }
-        
-        // �evrilmi� sorular�n i�inde en az bir kategori var m�?
-        const hasCategories = Object.keys(this.translatedQuestions).length > 0;
-        
-        if (hasCategories) {
-            // Rastgele bir kategori se�
-            const sampleCategory = Object.keys(this.translatedQuestions)[0];
-            
-            // Bu kategoride soru var m�?
-            const hasQuestions = this.translatedQuestions[sampleCategory] && 
-                                this.translatedQuestions[sampleCategory].length > 0;
-            
-            if (hasQuestions) {
-                // Rastgele bir soru se�
-                const sampleQuestion = this.translatedQuestions[sampleCategory][0];
-                
-                // Bu soru �evrilmi� mi? (Kategori ad�n� kontrol et)
-                // T�rk�e kategorinin �evrilmi� ad�n� bul
-                const originalCategoryName = Object.keys(this.questionsData)[0]; // �lk T�rk�e kategori
-                const expectedTranslatedName = this.getTranslatedCategoryName(originalCategoryName, language);
-                
-                // �evirinin do�ru dilde olup olmad���n� kontrol et
-                return sampleCategory === expectedTranslatedName;
-            }
-        }
-        
-        return false;
-    },
-    
-    // Mevcut sorular� �evirilerle g�ncelle
-    updateCurrentQuestionsWithTranslations: function() {
-        // E�er bir kategori se�ilmi�se ve sorular y�klenmi�se, mevcut sorular� da g�ncelle
-        if (this.selectedCategory && this.questions.length > 0) {
-            console.log(`Se�ili kategori: ${this.selectedCategory}`);
-            
-            // Mevcut sorular dil de�i�iminden sonra g�ncellenecek
-            const translatedCategoryName = this.getCurrentCategoryName(this.selectedCategory);
-            
-            console.log(`Se�ili kategori: ${this.selectedCategory}, �evrilmi� ad�: ${translatedCategoryName}`);
-            
-            // �evrilmi� kategorideki sorular� al
-            const translatedCategoryQuestions = this.currentLanguage === 'tr' ? 
-                this.questionsData[translatedCategoryName] : 
-                this.translatedQuestions[translatedCategoryName];
-            
-            if (translatedCategoryQuestions) {
-                console.log(`${translatedCategoryName} kategorisinde ${translatedCategoryQuestions.length} �evrilmi� soru bulundu.`);
-                
-                // Sorular� g�ncelle
-                this.questions = this.shuffleArray([...translatedCategoryQuestions]);
-                this.arrangeBlankFillingFirst();
-                
-                // Mevcut soruyu g�ncelle
-                if (this.currentQuestionIndex < this.questions.length) {
-                    this.displayQuestion(this.questions[this.currentQuestionIndex]);
-                }
-            } else {
-                console.warn(`${translatedCategoryName} kategorisinde �evrilmi� soru bulunamad�!`);
-            }
-        }
-    },
-    
-    // Nesne kopyalama (deep clone)
-    cloneObject: function(obj) {
-        return JSON.parse(JSON.stringify(obj));
-    },
-    
-    // Kategori ad�n� �evir
-    getTranslatedCategoryName: function(categoryTR, targetLang) {
-        if (categoryMappings[categoryTR] && categoryMappings[categoryTR][targetLang]) {
-            return categoryMappings[categoryTR][targetLang];
-        }
-        
-        // E�le�me yoksa orijinal kategori ad�n� d�nd�r
-        return categoryTR;
-    },
-    
-    // UI elemanlar�n� g�ncelle
-    updateUITexts: function() {
-        // Ba�l�k
-        document.title = this.getTranslation('appName');
-        
-        // Navbar ba�l���
-        const navbarTitle = document.querySelector('.navbar-title');
-        if (navbarTitle) navbarTitle.textContent = this.getTranslation('appName');
-        const appTitle = document.querySelector('.app-title');
-        if (appTitle) appTitle.textContent = this.getTranslation('appName');
-        const mainTitle = document.querySelector('.main-title');
-        if (mainTitle) mainTitle.textContent = this.getTranslation('appName');
-        
-        // Yan men� (sidebar) metinleri
-        const sidebarHome = document.querySelector('.sidebar-home');
-        if (sidebarHome) sidebarHome.textContent = this.getTranslation('home');
-        const sidebarFriends = document.querySelector('.sidebar-friends');
-        if (sidebarFriends) sidebarFriends.textContent = this.getTranslation('friends');
-        const sidebarLeaderboard = document.querySelector('.sidebar-leaderboard');
-        if (sidebarLeaderboard) sidebarLeaderboard.textContent = this.getTranslation('leaderboardMenu');
-        
-        // Ana men� ba�l���
-        const menuTitle = document.querySelector('.menu-title');
-        if (menuTitle) {
-            menuTitle.textContent = this.getTranslation('quiz');
-        }
-        
-        // Quiz ba�l��� (soru ekran� �st�)
-        const quizHeader = document.querySelector('#quiz h2');
-        if (quizHeader) {
-            quizHeader.textContent = this.getTranslation('quiz');
-        }
-        
-        // ��k�� butonu kald�r�ld�
-        
-        // Ana men� butonlar�
-        const singlePlayerBtn = document.getElementById('single-player-btn');
-        if (singlePlayerBtn) {
-            singlePlayerBtn.textContent = this.getTranslation('singlePlayer');
-        }
-        const multiPlayerBtn = document.getElementById('online-game-button');
-        if (multiPlayerBtn) {
-            multiPlayerBtn.textContent = this.getTranslation('multiPlayer');
-        }
-        const leaderboardBtn = document.getElementById('view-global-leaderboard');
-        if (leaderboardBtn) {
-            leaderboardBtn.textContent = this.getTranslation('leaderboard');
-        }
-        const statsBtn = document.getElementById('show-stats');
-        if (statsBtn) {
-            statsBtn.textContent = this.getTranslation('statistics');
-        }
-        const settingsBtn = document.getElementById('show-settings');
-        if (settingsBtn) {
-            settingsBtn.textContent = this.getTranslation('settings');
-        }
-        const addQuestionBtn = document.getElementById('add-question-button');
-        if (addQuestionBtn) {
-            addQuestionBtn.textContent = this.getTranslation('addQuestion');
-        }
-        // Logout butonu kald�r�ld�
-        
-        // Kategori ba�l���
-        const categoryTitle = document.querySelector('#category-selection h2 span');
-        if (categoryTitle) {
-            categoryTitle.textContent = this.getTranslation('categories');
-        }
-        
-        // Puan etiketi
-        if (this.scoreElement) {
-            const scoreLabel = this.scoreElement.querySelector('.score-label');
-            if (scoreLabel) {
-                scoreLabel.textContent = this.getTranslation('score');
-            }
-        }
-        
-        // Sonraki soru butonu
-        if (this.nextButton) {
-            const nextBtnText = this.nextButton.querySelector('span');
-            if (nextBtnText) {
-                nextBtnText.textContent = this.getTranslation('next');
-            } else {
-                this.nextButton.textContent = this.getTranslation('next');
-            }
-        }
-        
-        // Yeniden ba�lat butonu
-        if (this.restartButton) {
-            this.restartButton.textContent = this.getTranslation('restart');
-        }
-        
-        // Joker butonlar�
-        this.updateJokerButtonsText();
-        
-        // Dil etiketi
-        const langLabel = document.getElementById('language-label');
-        if (langLabel) {
-            langLabel.textContent = this.getTranslation('language') + ':';
-        }
-        
-        // Hamburger men� ��eleri - Yeni ID'ler ile g�ncelleme
-        const appTitleElement = document.getElementById('menu-app-title');
-        if (appTitleElement) {
-            appTitleElement.textContent = this.getTranslation('app');
-        }
-        
-        const settingsTitleElement = document.getElementById('menu-settings-title');
-        if (settingsTitleElement) {
-            settingsTitleElement.textContent = this.getTranslation('settings');
-        }
-        
-        // Men� ��eleri metinleri
-        const homeText = document.getElementById('menu-home-text');
-        if (homeText) {
-            homeText.textContent = this.getTranslation('home');
-        }
-        
-        const profileText = document.getElementById('menu-profile-text');
-        if (profileText) {
-            profileText.textContent = this.getTranslation('profile');
-        }
-        
-        const friendsText = document.getElementById('menu-friends-text');
-        if (friendsText) {
-            friendsText.textContent = this.getTranslation('friends');
-        }
-        
-        const leaderboardText = document.getElementById('menu-leaderboard-text');
-        if (leaderboardText) {
-            leaderboardText.textContent = this.getTranslation('leaderboardMenu');
-        }
-        
-        // Ayarlar metinleri
-        const languageText = document.getElementById('menu-language-text');
-        if (languageText) {
-            languageText.textContent = this.getTranslation('language');
-        }
-        
-        const difficultyText = document.getElementById('menu-difficulty-text');
-        if (difficultyText) {
-            difficultyText.textContent = this.getTranslation('difficulty');
-        }
-        
-        const soundText = document.getElementById('menu-sound-text');
-        if (soundText) {
-            soundText.textContent = this.getTranslation('sound');
-        }
-        
-        const themeText = document.getElementById('menu-theme-text');
-        if (themeText) {
-            themeText.textContent = this.getTranslation('darkTheme');
-        }
-        
-        const logoutText = document.getElementById('menu-logout-text');
-        if (logoutText) {
-            logoutText.textContent = this.getTranslation('logout');
-        }
-        
-        // Zorluk seviyeleri
-        const difficultySelect = document.getElementById('difficulty-level');
-        if (difficultySelect) {
-            const options = difficultySelect.options;
-            for (let i = 0; i < options.length; i++) {
-                const option = options[i];
-                if (option.value === 'easy') {
-                    option.textContent = this.getTranslation('easy');
-                } else if (option.value === 'medium') {
-                    option.textContent = this.getTranslation('medium');
-                } else if (option.value === 'hard') {
-                    option.textContent = this.getTranslation('hard');
-                }
-            }
+        // İlk oyun rozetini ver
+        if (this.badgeSystem && this.badgeSystem.awardBadge && this.badgeSystem.badges) {
+            console.log('İlk oyun rozeti veriliyor...');
+        this.badgeSystem.awardBadge(userId, this.badgeSystem.badges.firstGame);
         }
         
-        // data-i18n �zniteli�i olan t�m elemanlar� g�ncelle
-        const i18nElements = document.querySelectorAll('[data-i18n]');
-        i18nElements.forEach(element => {
-            const key = element.getAttribute('data-i18n');
-            if (key && languages[this.currentLanguage] && languages[this.currentLanguage][key]) {
-                element.textContent = languages[this.currentLanguage][key];
-            }
-        });
+        console.log('Test verileri oluşturuldu!', stats);
+        this.showToast('Test verileri oluşturuldu! Profil sayfasını yenileyin.', 'toast-success');
         
-
-    },
-    
-    // Joker butonlar� metinlerini g�ncelle
-    updateJokerButtonsText: function() {
-        if (this.jokerFiftyBtn && !this.jokersUsed.fifty) {
-            this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i>`;
-        } else if (this.jokerFiftyBtn && this.jokersUsed.fifty) {
-            this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i>`;
-        }
-        
-        if (this.jokerHintBtn && !this.jokersUsed.hint) {
-            this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i>`;
-        } else if (this.jokerHintBtn && this.jokersUsed.hint) {
-            this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i>`;
-        }
-        
-        if (this.jokerTimeBtn && !this.jokersUsed.time) {
-            this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i>`;
-        } else if (this.jokerTimeBtn && this.jokersUsed.time) {
-            this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i>`;
-        }
-        
-        if (this.jokerSkipBtn && !this.jokersUsed.skip) {
-            this.jokerSkipBtn.innerHTML = `<i class="fas fa-forward"></i>`;
-        } else if (this.jokerSkipBtn && this.jokersUsed.skip) {
-            this.jokerSkipBtn.innerHTML = `<i class="fas fa-forward"></i>`;
-        }
-        
-        if (this.jokerStoreBtn) {
-            this.jokerStoreBtn.innerHTML = `<i class="fas fa-store"></i>`;
-        }
-    },
-    
-    // Mevcut i�eri�i g�ncelle
-    updateCurrentContent: function() {
-        // Ana men� butonlar� ve di�er UI elemanlar�n� g�ncelle
-        this.updateUITexts();
-        
-        // Hangi sayfa g�r�n�rse onu g�ncelle
-        if (this.categorySelectionElement && this.categorySelectionElement.style.display !== 'none') {
-            // Kategori se�im ekran� g�r�n�yorsa
-            this.displayCategories();
-        } else if (this.quizElement && this.quizElement.style.display !== 'none' && this.questions.length > 0) {
-            // Quiz ekran� g�r�n�yorsa
-            if (this.resultElement && this.resultElement.style.display !== 'none') {
-                // Sonu� g�steriliyorsa sonu� metnini g�ncelle
-                const correctAnswer = this.questions[this.currentQuestionIndex].correctAnswer;
-                if (this.resultElement.classList.contains('correct')) {
-                    this.resultElement.innerHTML = `
-                        <div class="correct-answer-container">
-                            <div class="correct-icon"><i class="fas fa-badge-check"></i></div>
-                            <div class="correct-text">${this.getTranslation('correct')}</div>
-                            <div class="correct-animation">
-                                <span>+</span>
-                                <span>${Math.max(1, Math.ceil(this.timeLeft / (this.questions[this.currentQuestionIndex].type === "BlankFilling" ? 5 : 3)))}</span>
-                            </div>
-                        </div>
-                        <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
-                    `;
-                } else if (this.resultElement.classList.contains('wrong')) {
-                    this.resultElement.innerHTML = `${this.getTranslation('timeUp')} ${this.getTranslation('correctAnswer')}: <strong>${correctAnswer}</strong>
-                        <button id="next-question" class="next-button">${this.getTranslation('next')}</button>`;
-                }
-            } else {
-                // Aktif soru varsa yeniden y�kle
-                this.displayQuestion(this.questions[this.currentQuestionIndex]);
-            }
-        }
-        this.updateResultAndWarningTexts();
-    },
-    
-    // Basit �eviri fonksiyonlar� (ger�ek bir projede daha profesyonel bir ��z�m kullan�lmal�d�r)
-    translateToEnglish: function(text) {
-        // Bo� metin kontrol�
-        if (!text) return '';
-        
-        // Bu sadece basit bir �rnektir - ger�ek projede buraya �zelle�tirilmi� �eviri eklenebilir
-        // Not: Ger�ek bir uygulamada burada �nceden haz�rlanm�� �eviriler veya API kullan�labilir
-        return text; // �u an i�in orijinal metni koruyoruz
-    },
-    
-    translateToGerman: function(text) {
-        // Bo� metin kontrol�
-        if (!text) return '';
-        
-        // Almanca �eviri - bu basit bir �rnek
-        return text; // �u an i�in orijinal metni koruyoruz
-    },
-    
-    // Bo�luk doldurma i�in harfleri �evir
-    translateChoices: function(choices, targetLang) {
-        if (!choices) return [];
-        
-        // Bu fonksiyon �zellikle Almanca gibi dillerde �, �, � gibi harfler i�in kullan�labilir
-        // �u an i�in orijinal harfleri koruyoruz
-        return choices;
-    },
-    
-    // Mevcut dil i�in ge�erli kategori ad�n� al
-    getCurrentCategoryName: function(originalCategory) {
-        if (this.currentLanguage === 'tr') return originalCategory;
-        
-        // T�rk�e kategori ad� m� kontrol et
-        if (categoryMappings[originalCategory] && categoryMappings[originalCategory][this.currentLanguage]) {
-            return categoryMappings[originalCategory][this.currentLanguage];
-        }
-        
-        // Bu kategori ad� zaten �evrilmi� bir isim mi kontrol et
-        if (reverseCategoryMappings[originalCategory] && 
-            reverseCategoryMappings[originalCategory]['tr']) {
-            return originalCategory; // Zaten �evrilmi� durumda, aynen d�nd�r
-        }
-        
-        // Burada e�er kategori �evrilmi� bir isimse, mevcut dilde do�ru versiyonunu bul
-        for (const [sourceCat, translations] of Object.entries(reverseCategoryMappings)) {
-            // E�er bu bir yabanc� kategori ad�ysa ve bizim istedi�imiz dilde bir kar��l��� varsa
-            if (sourceCat === originalCategory && translations[this.currentLanguage]) {
-                return translations[this.currentLanguage];
-            }
-        }
-        
-        // Hi�bir e�le�me bulunamazsa orijinal kategori ad�n� d�nd�r
-        return originalCategory;
-    },
-    
-    // Toast mesaj� g�ster
-    showToast: function(message, type = 'toast-info') {
-        // Toast container'� kontrol et veya olu�tur
-        let toastContainer = document.getElementById('toast-container');
-        if (!toastContainer) {
-            toastContainer = document.createElement('div');
-            toastContainer.id = 'toast-container';
-            document.body.appendChild(toastContainer);
-        }
-        
-        // Yeni toast olu�tur
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        
-        // �kon ekle
-        let icon = '<i class="fas fa-info-circle"></i>';
-        if (type === 'toast-success') icon = '<i class="fas fa-check-circle"></i>';
-        if (type === 'toast-warning') icon = '<i class="fas fa-exclamation-triangle"></i>';
-        if (type === 'toast-error') icon = '<i class="fas fa-times-circle"></i>';
-        
-        // Toast i�eri�i
-        toast.innerHTML = `
-            <div class="toast-content">
-                ${icon}
-                <span>${message}</span>
-            </div>
-        `;
-        
-        // Toast'u ekle
-        toastContainer.appendChild(toast);
-        
-        // �pucu jokeri ve s�re jokeri i�in farkl� konumland�rma
-        // Toast'� joker butonlar�n�n hemen �zerinde g�ster
-        if (message.includes("�pucu jokeri kullan�ld�") || message.includes("S�re jokeri kullan�ld�")) {
-            toast.style.position = "fixed";
-            toast.style.bottom = "180px"; // Joker butonlar�n�n �zerinde
-            toast.style.left = "50%";
-            toast.style.transform = "translateX(-50%)";
-            toast.style.zIndex = "10002"; // Joker butonlar�ndan daha y�ksek
-        }
-        
-        // Toast'u g�ster
-        setTimeout(() => {
-            toast.classList.add('show');
-        }, 10);
-        
-        // Toast'u belirli bir s�re sonra kald�r
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => {
-                toastContainer.removeChild(toast);
-            }, 300);
-        }, 3000);
-    },
-    
-    // Taray�c� deste�ini kontrol et
-    checkBrowserSupport: function() {
-        console.log("Taray�c� �zellikleri kontrol ediliyor...");
-        
-        // localStorage deste�i
-        let hasLocalStorage = false;
-        try {
-            hasLocalStorage = 'localStorage' in window && window.localStorage !== null;
-            if (hasLocalStorage) {
-                // Test et
-                localStorage.setItem('test', 'test');
-                localStorage.removeItem('test');
-                console.log("localStorage destekleniyor");
-                    } else {
-                console.warn("localStorage desteklenmiyor");
-            }
-        } catch (e) {
-            console.error("localStorage eri�ilemez:", e);
-            hasLocalStorage = false;
-        }
-        
-        // Fetch API deste�i
-        const hasFetch = 'fetch' in window;
-        console.log("Fetch API deste�i:", hasFetch);
-        
-        // Firebase SDK varl���
-        const hasFirebase = typeof firebase !== 'undefined' && firebase.app;
-        console.log("Firebase SDK durumu:", hasFirebase ? "Y�kl�" : "Y�kl� de�il");
-        
-        // JSON i�leme deste�i
-        const hasJSON = typeof JSON !== 'undefined' && typeof JSON.parse === 'function';
-        console.log("JSON deste�i:", hasJSON);
-        
-        // Eksik �zellikler varsa kullan�c�y� bilgilendir
-        if (!hasLocalStorage || !hasFetch || !hasJSON) {
-            console.warn("Baz� taray�c� �zellikleri eksik, uygulama s�n�rl� �al��abilir");
-            // Uyar� mesaj� g�ster
-            const warningDiv = document.createElement('div');
-            warningDiv.className = 'browser-warning';
-            warningDiv.innerHTML = `
-                <div class="warning-content">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <p>${this.getTranslation('browserWarning')}</p>
-                    <button class="close-warning">${this.getTranslation('understood')}</button>
-                </div>
-            `;
-            document.body.appendChild(warningDiv);
-            
-            // Kapat butonuna t�klama olay�
-            const closeBtn = warningDiv.querySelector('.close-warning');
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => {
-                    warningDiv.remove();
-                });
-            }
-        }
-        
-        return {
-            localStorage: hasLocalStorage,
-            fetch: hasFetch,
-            firebase: hasFirebase,
-            json: hasJSON
-        };
-    },
-    
-    // Joker envanterini y�kle
-    loadJokerInventory: function() {
-        console.log('Joker envanteri y�kleniyor...');
-        console.log('localStorage anahtar�:', this.JOKER_INVENTORY_KEY);
-        
-        var inventoryJSON = localStorage.getItem(this.JOKER_INVENTORY_KEY);
-        console.log('localStorage\'dan al�nan veri:', inventoryJSON);
-        
-        if (inventoryJSON && inventoryJSON !== 'null' && inventoryJSON !== 'undefined') {
-            try {
-                const parsed = JSON.parse(inventoryJSON);
-                
-                // Ge�erli bir obje ve t�m joker t�rleri var m� kontrol et
-                if (parsed && typeof parsed === 'object' && 
-                    parsed.hasOwnProperty('fifty') && 
-                    parsed.hasOwnProperty('hint') && 
-                    parsed.hasOwnProperty('time') && 
-                    parsed.hasOwnProperty('skip')) {
-                    
-                    this.jokerInventory = parsed;
-                    console.log("Joker envanteri ba�ar�yla y�klendi:", this.jokerInventory);
-                } else {
-                    console.warn("Ge�ersiz joker envanteri format�, varsay�lan envanter atan�yor");
-                    this.jokerInventory = {fifty: 1, hint: 1, time: 1, skip: 1};
-                    this.saveJokerInventory();
-                }
-            } catch (e) {
-                console.error("Joker envanteri y�klenirken hata olu�tu:", e);
-                this.jokerInventory = {fifty: 1, hint: 1, time: 1, skip: 1};
-                this.saveJokerInventory();
-                console.log("Varsay�lan envanter atand�:", this.jokerInventory);
-            }
-        } else {
-            // �lk kez �al��t�r�l�yorsa veya ge�ersiz veri varsa her joker t�r�nden birer tane ver
-            console.log("�lk kez �al��t�r�l�yor veya ge�ersiz veri, varsay�lan envanter olu�turuluyor...");
-            this.jokerInventory = {fifty: 1, hint: 1, time: 1, skip: 1};
-            this.saveJokerInventory();
-        }
-        
-        // Negatif de�erleri �nle
-        Object.keys(this.jokerInventory).forEach(key => {
-            if (this.jokerInventory[key] < 0) {
-                this.jokerInventory[key] = 0;
-            }
-        });
-        
-        // Final kontrol
-        console.log('loadJokerInventory tamamland�, final envanter:', this.jokerInventory);
-    },
-    
-    // Joker envanterini kaydet
-    saveJokerInventory: function() {
-        try {
-            localStorage.setItem(this.JOKER_INVENTORY_KEY, JSON.stringify(this.jokerInventory));
-            console.log("Joker envanteri kaydedildi:", this.jokerInventory);
-            
-            // Kaydetmenin ba�ar�l� olup olmad���n� kontrol et
-            var saved = localStorage.getItem(this.JOKER_INVENTORY_KEY);
-            if (saved) {
-                var parsedSaved = JSON.parse(saved);
-                console.log("Kaydedilen veri do�ruland�:", parsedSaved);
-            } else {
-                console.error("Joker envanteri kaydedilemedi!");
-            }
-        } catch (e) {
-            console.error("Joker envanteri kaydedilirken hata olu�tu:", e);
-        }
-    },
-    
-    // Joker butonlar�na olay dinleyicileri ekle
-    addJokerEventListeners: function() {
-        console.log('addJokerEventListeners �a�r�ld�...');
-        
-        // Elementleri dinamik olarak al
-        this.jokerFiftyBtn = document.getElementById('joker-fifty');
-        this.jokerHintBtn = document.getElementById('joker-hint');
-        this.jokerTimeBtn = document.getElementById('joker-time');
-        this.jokerSkipBtn = document.getElementById('joker-skip');
-        this.jokerStoreBtn = document.getElementById('joker-store');
-        
-        console.log('jokerFiftyBtn:', this.jokerFiftyBtn);
-        console.log('jokerHintBtn:', this.jokerHintBtn);
-        console.log('jokerTimeBtn:', this.jokerTimeBtn);
-        console.log('jokerSkipBtn:', this.jokerSkipBtn);
-        console.log('jokerStoreBtn:', this.jokerStoreBtn);
-        
-        // Mobil debug i�in
-        console.log('Mobile device check:', /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-        console.log('Touch events supported:', 'ontouchstart' in window);
-        
-        // Joker store modal element kontrol�
-        const jokerStoreModal = document.getElementById('joker-store-modal');
-        console.log('Joker store modal element:', jokerStoreModal);
-        
-        // 50:50 jokeri
-        if (this.jokerFiftyBtn) {
-            this.jokerFiftyBtn.addEventListener('click', () => {
-                if (this.jokerFiftyBtn.disabled) return;
-                
-                console.log('50:50 joker kullan�l�yor...');
-                
-                // Mevcut sorunun do�ru cevab�n� al
-                const currentQuestion = this.questions[this.currentQuestionIndex];
-                const correctAnswer = currentQuestion.correctAnswer;
-                
-                // BlankFilling sorular�nda 50:50 joker kullan�lamaz
-                if (currentQuestion.type === "BlankFilling") {
-                    console.warn('BlankFilling sorular�nda 50:50 joker kullan�lamaz');
-                    this.showToast("Bo�luk doldurma sorular�nda 50:50 joker kullan�lamaz!", "toast-warning");
-                    return;
-                }
-                
-                // Do�ruYanl�� sorular�nda da 50:50 joker kullan�lamaz
-                if (currentQuestion.type === "Do�ruYanl��" || currentQuestion.type === "TrueFalse") {
-                    console.warn('Do�ru/Yanl�� sorular�nda 50:50 joker kullan�lamaz');
-                    this.showToast("Do�ru/Yanl�� sorular�nda 50:50 joker kullan�lamaz!", "toast-warning");
-                    return;
-                }
-                
-                console.log('Do�ru cevap:', correctAnswer);
-                
-                // Sadece aktif quiz container'daki se�enekleri al
-                const optionsContainer = document.getElementById('options');
-                const options = optionsContainer ? optionsContainer.querySelectorAll('.option') : document.querySelectorAll('#options .option');
-                console.log('Bulunan se�enekler:', options.length);
-                console.log('Options container:', optionsContainer);
-                
-                if (options.length < 3) {
-                    console.warn('Yeterli se�enek yok, 50:50 joker kullan�lamaz');
-                    this.showToast("Bu soru tipinde 50:50 joker kullan�lamaz!", "toast-warning");
-                    return;
-                }
-                
-                // Yanl�� ��klar� bul - case insensitive kar��la�t�rma
-                const wrongOptions = Array.from(options).filter((option, index) => {
-                    const optionText = option.textContent.trim();
-                    const isCorrect = optionText.toLowerCase() === correctAnswer.toLowerCase();
-                    console.log(`Se�enek ${index + 1}: "${optionText}" | Do�ru cevap: "${correctAnswer}" | E�it mi: ${isCorrect}`);
-                    return !isCorrect;
-                });
-                
-                console.log('Toplam se�enek say�s�:', options.length);
-                console.log('Yanl�� se�enek say�s�:', wrongOptions.length);
-                console.log('Do�ru se�enek say�s�:', options.length - wrongOptions.length);
-                
-                if (wrongOptions.length < 2) {
-                    console.warn('Yeterli yanl�� se�enek yok');
-                    this.showToast("Bu soruda yeterli yanl�� se�enek yok!", "toast-warning");
-                    return;
-                }
-                
-                // �ki yanl�� ��kk� rastgele se�
-                const shuffledWrong = this.shuffleArray([...wrongOptions]);
-                const toHide = shuffledWrong.slice(0, 2);
-                
-                console.log('S�nd�r�lecek se�enekler:', toHide.length);
-                
-                // Se�ili ��klar� s�nd�r
-                toHide.forEach(option => {
-                    option.style.opacity = '0.3';
-                    option.style.pointerEvents = 'none';
-                    option.style.background = 'linear-gradient(135deg, #ddd, #ccc)';
-                    option.style.color = '#666';
-                    option.style.textDecoration = 'line-through';
-                    option.style.filter = 'blur(1px)';
-                    option.style.border = '2px solid #f0f0f0';
-                    option.style.transform = 'scale(0.95)';
-                    option.style.transition = 'all 0.3s ease';
-                    option.classList.add('disabled-option');
-                    
-                    // X i�areti ekle
-                    const xMark = document.createElement('div');
-                    xMark.innerHTML = '?';
-                    xMark.style.cssText = `
-                        position: absolute;
-                        top: 10px;
-                        right: 10px;
-                        font-size: 20px;
-                        z-index: 10;
-                        animation: bounceIn 0.5s ease;
-                    `;
-                    option.style.position = 'relative';
-                    option.appendChild(xMark);
-                });
-                
-                // Jokeri kullan (useJoker i�inde zaten envanter d���r�l�yor)
-                this.useJoker('fifty');
-                
-                // Ses efekti �al
-                if (this.soundEnabled) {
-                    const fiftySound = document.getElementById('sound-correct');
-                    if (fiftySound) fiftySound.play().catch(e => {
-                        console.error("Ses �al�namad�:", e);
-                    });
-                }
-                
-                // Toast bildirimi g�ster
-                this.showToast("50:50 jokeri kullan�ld�! �ki yanl�� ��k s�nd�r�ld�.", "toast-success");
-            });
-        }
-        
-        // �pucu jokeri
-        if (this.jokerHintBtn) {
-            this.jokerHintBtn.addEventListener('click', () => {
-                if (this.jokerHintBtn.disabled) return;
-                
-                console.log('�pucu joker kullan�l�yor...');
-                
-                // Mevcut soru i�in bir ipucu g�ster
-                const currentQuestion = this.questions[this.currentQuestionIndex];
-                let hint = '';
-                
-                // �pucu olu�tur - farkl� soru tiplerine g�re
-                if (currentQuestion.category === "Bo�luk Doldurma" || currentQuestion.type === "BlankFilling") {
-                    hint = "�pucu: Cevab�n ilk harfi \"" + currentQuestion.correctAnswer.charAt(0) + "\" ";
-                    if (currentQuestion.correctAnswer.length > 3) {
-                        hint += "ve son harfi \"" + currentQuestion.correctAnswer.charAt(currentQuestion.correctAnswer.length - 1) + "\"";
-                    }
-                } else if (currentQuestion.type === "Do�ruYanl��" || currentQuestion.type === "TrueFalse") {
-                    // Do�ru/Yanl�� sorular i�in �zel ipucu
-                    const correctAnswer = currentQuestion.correctAnswer.toLowerCase();
-                    if (correctAnswer === 'do�ru' || correctAnswer === 'true' || correctAnswer === 'evet') {
-                        hint = "�pucu: Bu ifade do�ru bir bilgidir.";
-                    } else {
-                        hint = "�pucu: Bu ifadede bir yanl��l�k vard�r.";
-                    }
-                } else {
-                    const correctAnswer = currentQuestion.correctAnswer;
-                    // Cevab�n ilk ve varsa son harfini ipucu olarak ver
-                    hint = "�pucu: Do�ru cevab�n ilk harfi \"" + correctAnswer.charAt(0) + "\" ";
-                    if (correctAnswer.length > 3) {
-                        hint += "ve son harfi \"" + correctAnswer.charAt(correctAnswer.length - 1) + "\"";
-                    }
-                }
-                
-                console.log('Olu�turulan ipucu:', hint);
-                
-                // �pucunu g�ster
-                const hintElement = document.createElement('div');
-                hintElement.className = 'hint-message';
-                hintElement.innerHTML = '<i class="fas fa-lightbulb"></i> ' + hint;
-                hintElement.style.cssText = `
-                    background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
-                    color: #2d3436;
-                    padding: 15px 20px;
-                    margin: 15px 0;
-                    border-radius: 10px;
-                    border-left: 4px solid #e17055;
-                    box-shadow: 0 4px 15px rgba(253, 203, 110, 0.3);
-                    animation: fadeInUp 0.5s ease;
-                    font-weight: 600;
-                    text-align: center;
-                `;
-                
-                // �pucu mesaj�n� ekleme
-                const questionElement = document.getElementById('question');
-                if (questionElement && questionElement.parentNode) {
-                    // Eski ipucu mesaj�n� kald�r
-                    const oldHint = document.querySelector('.hint-message');
-                    if (oldHint) oldHint.remove();
-                    
-                    // Yeni ipucunu ekle
-                    questionElement.parentNode.insertBefore(hintElement, questionElement.nextSibling);
-                    console.log('�pucu mesaj� DOM\'a eklendi');
-                }
-                
-                // Jokeri kullan (useJoker i�inde zaten envanter d���r�l�yor)
-                this.useJoker('hint');
-                
-                // Ses efekti �al
-                if (this.soundEnabled) {
-                    const hintSound = document.getElementById('sound-correct');
-                    if (hintSound) hintSound.play().catch(e => {
-                        console.error("Ses �al�namad�:", e);
-                    });
-                }
-                
-                // Toast bildirimi g�ster
-                this.showToast("�pucu jokeri kullan�ld�! " + hint, "toast-success");
-            });
-        }
-        
-        // +S�re jokeri
-        if (this.jokerTimeBtn) {
-            this.jokerTimeBtn.addEventListener('click', () => {
-                if (this.jokerTimeBtn.disabled) return;
-                
-                console.log('S�re joker kullan�l�yor...');
-                console.log('Kullan�m �ncesi s�re:', this.timeLeft);
-                
-                // Mevcut sorunun s�resini 15 saniye uzat
-                this.timeLeft += 15;
-                
-                console.log('Kullan�m sonras� s�re:', this.timeLeft);
-                
-                // S�re g�stergesini g�ncelle
-                this.updateTimeDisplay();
-                
-                // Zaman�n azald���n� belirten s�n�f� kald�r
-                if (this.timeLeftElement && this.timeLeftElement.classList.contains('time-low')) {
-                    this.timeLeftElement.classList.remove('time-low');
-                }
-                
-                // Jokeri kullan (useJoker i�inde zaten envanter d���r�l�yor)
-                this.useJoker('time');
-                
-                // Ses efekti �al
-                if (this.soundEnabled) {
-                    const timeSound = document.getElementById('sound-correct');
-                    if (timeSound) timeSound.play().catch(e => {
-                        console.error("Ses �al�namad�:", e);
-                    });
-                }
-                
-                // Toast bildirimi g�ster
-                this.showToast("S�re jokeri kullan�ld�! 15 saniye eklendi. Yeni s�re: " + this.timeLeft + " saniye", "toast-success");
-            });
-        }
-        
-        // Pas jokeri
-        if (this.jokerSkipBtn) {
-            this.jokerSkipBtn.addEventListener('click', () => {
-                if (this.jokerSkipBtn.disabled) return;
-                
-                console.log('Pas joker kullan�l�yor...');
-                console.log('Pas joker kullan�m �ncesi envanter:', JSON.stringify(this.jokerInventory));
-                
-                // Joker envanterini kontrol et
-                if (this.jokerInventory.skip <= 0) {
-                    console.warn('Pas joker envanteri bo�!');
-                    this.showToast("Pas jokeriniz kalmad�!", "toast-warning");
-                    return;
-                }
-                
-                // S�reyi s�f�rlamak yerine do�rudan sonraki soruya ge�i� yapal�m
-                clearInterval(this.timerInterval);
-                
-                // Ses efekti �al
-                if (this.soundEnabled) {
-                    const skipSound = document.getElementById('sound-correct');
-                    if (skipSound) skipSound.play().catch(e => {
-                        console.error("Ses �al�namad�:", e);
-                    });
-                }
-                
-                // Jokeri kullan (useJoker i�inde zaten envanter d���r�l�yor)
-                this.useJoker('skip');
-                
-                // Toast bildirimi g�ster
-                this.showToast("Pas jokeri kullan�ld�! Sonraki soruya ge�iliyor.", "toast-success");
-                
-                console.log('Pas joker kullan�m sonras� envanter:', JSON.stringify(this.jokerInventory));
-                
-                // Bir sonraki soruya ge�
-                setTimeout(() => {
-                    this.showNextQuestion();
-                }, 800);
-            });
-        }
-        
-        // Joker ma�azas� butonu
-        if (this.jokerStoreBtn) {
-            // Click event (desktop)
-            this.jokerStoreBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.openJokerStore();
-            });
-            
-            // Touch event (mobile)
-            this.jokerStoreBtn.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-            });
-            
-            this.jokerStoreBtn.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.openJokerStore();
-            });
-            
-            // Mobil cihazlarda butonun t�klanabilir oldu�unu garanti et
-            this.jokerStoreBtn.style.cursor = 'pointer';
-            this.jokerStoreBtn.style.touchAction = 'manipulation';
-        }
-    },
-    
-    // Joker ma�azas�n� a�
-    openJokerStore: function() {
-        console.log('?? Joker ma�azas� a��l�yor...');
-        console.log('?? User Agent:', navigator.userAgent);
-        console.log('?? Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
-        console.log('?? Mevcut puan:', this.score);
-        
-        var modal = document.getElementById('joker-store-modal');
-        var closeBtn = modal.querySelector('.close-modal');
-        var buyButtons = modal.querySelectorAll('.joker-buy-btn');
-        var pointsDisplay = document.getElementById('joker-store-points-display');
-        
-        // Mevcut toplam puanlar� ve joker envanterini g�ster (misafir i�in sessionScore kullan)
-        const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
-        pointsDisplay.textContent = currentPoints || 0;
-        console.log('?? Joker ma�azas� - G�sterilen puan: ' + currentPoints + ' (Giri� durumu: ' + (this.isLoggedIn ? 'Kay�tl�' : 'Misafir') + ')');
-        console.log('?? Detay - totalScore: ' + this.totalScore + ', sessionScore: ' + this.sessionScore);
-        
-        // Oyun ekran�ndaki joker butonlar�n� da g�ncelle
-        this.updateJokerButtons();
-        
-        // Joker miktarlar�n� g�ncelle
-        this.updateJokerStoreDisplay(modal);
-        
-        // Sat�n alma butonlar�n� etkinle�tir
-        buyButtons.forEach(function(btn) {
-            var item = btn.closest('.joker-store-item');
-            var jokerType = item.dataset.joker;
-            var price = parseInt(item.dataset.price);
-            
-            // Yeterli puan varsa butonu etkinle�tir (misafir i�in sessionScore kullan)
-            const availablePoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
-            btn.disabled = availablePoints < price;
-            
-            // Sat�n alma olay�
-            var self = this;
-            btn.onclick = function() {
-                const availablePoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
-                console.log('Joker sat�n alma denemesi: ' + jokerType + ', Fiyat: ' + price + ', Mevcut Puan: ' + availablePoints + ' (' + (self.isLoggedIn ? 'totalScore' : 'sessionScore') + ')');
-                console.log('Sat�n alma �ncesi envanter:', JSON.stringify(self.jokerInventory));
-                
-                if (availablePoints >= price) {
-                    // Puan� azalt (misafir i�in sessionScore, kay�tl� i�in totalScore)
-                    if (self.isLoggedIn) {
-                    self.totalScore -= price;
-                    } else {
-                        self.sessionScore -= price;
-                    }
-                    
-                    // PUANI FIREBASE'E KAYDET
-                    if (self.isLoggedIn) {
-                        self.delayedSaveUserData(); // Firebase'e geciktirilmi� kaydet
-                        console.log(`Joker sat�n alma: ${price} puan harcand�. Yeni toplam: ${self.totalScore}`);
-                    }
-                    
-                    // Jokeri envantere ekle
-                    var previousCount = self.jokerInventory[jokerType] || 0;
-                    self.jokerInventory[jokerType]++;
-                    
-                    console.log(`${jokerType} joker say�s�: ${previousCount} -> ${self.jokerInventory[jokerType]}`);
-                    
-                    // Joker envanterini kaydet
-                    self.saveJokerInventory();
-                    
-                    // G�stergeleri g�ncelle (misafir i�in sessionScore kullan)
-                    const updatedPoints = self.isLoggedIn ? self.totalScore : self.sessionScore;
-                    pointsDisplay.textContent = updatedPoints;
-                    
-                    // Joker ma�azas�ndaki say�mlar� ve buton durumlar�n� g�ncelle
-                    self.updateJokerStoreDisplay(modal);
-                    
-                    // OYUN EKRANINDAK� JOKER BUTONLARINI DA G�NCELLE
-                    self.updateJokerButtons();
-                    
-                    // Skor g�sterimini g�ncelle
-                    self.updateScoreDisplay();
-                    
-                    // Toast bildirimi g�ster
-                    var jokerName = jokerType === 'fifty' ? '50:50' : 
-                        jokerType === 'hint' ? '�pucu' : 
-                        jokerType === 'time' ? 'S�re' : 'Pas';
-                    self.showToast(jokerName + ' jokeri sat�n al�nd�!', "toast-success");
-                    
-                    // Joker butonlar�n� g�ncelle
-                    self.updateJokerButtons();
-                    
-                    console.log('Sat�n alma sonras� envanter:', JSON.stringify(self.jokerInventory));
-                } else {
-                    console.warn('Yeterli puan yok!');
-                    self.showToast("Yeterli puan�n�z yok!", "toast-error");
-                }
-            };
-        }.bind(this));
-        
-        // Modal� g�ster
-        modal.style.display = 'block';
-        modal.style.visibility = 'visible';
-        modal.style.opacity = '1';
-        
-        // Mobil cihazlarda modal�n �stte g�r�nmesini garanti et
-        modal.style.zIndex = '9999';
-        modal.classList.add('show');
-        
-        // Body scroll'unu engelle (mobil cihazlarda �nemli)
-        document.body.style.overflow = 'hidden';
-        
-        console.log('? Joker ma�azas� modal a��ld�');
-        console.log('Modal visibility:', modal.style.visibility);
-        console.log('Modal display:', modal.style.display);
-        console.log('Modal z-index:', modal.style.zIndex);
-        console.log('Modal classList:', modal.classList.toString());
-        
-        // Kapat butonuna t�klama olay�
-        var self = this;
-        const closeModal = function() {
-            modal.style.display = 'none';
-            modal.style.visibility = 'hidden';
-            modal.style.opacity = '0';
-            modal.classList.remove('show');
-            document.body.style.overflow = ''; // Body scroll'unu restore et
-            // Ma�aza kapand���nda joker butonlar�n� g�ncelle
-            self.updateJokerButtons();
-        };
-        
-        // Close button events (both click and touch)
-        closeBtn.onclick = closeModal;
-        closeBtn.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            closeModal();
-        });
-        
-        // Modal d���na t�klama olay�
-        window.onclick = function(event) {
-            if (event.target === modal) {
-                closeModal();
-            }
-        };
-        
-        // Modal d���na dokunma olay� (mobil)
-        modal.addEventListener('touchend', function(event) {
-            if (event.target === modal) {
-                closeModal();
-            }
-        });
-        
-        // Sat�n alma butonlar�na da touch event ekle (mobil)
-        buyButtons.forEach(function(btn) {
-            btn.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                // onclick event'i zaten �al��acak, sadece touch'u handle ediyoruz
-            });
-        });
-    },
-    
-    // Joker butonlar�n� g�ncelle
-    updateJokerButtons: function() {
-        // Elementleri dinamik olarak al (e�er hen�z null ise)
-        if (!this.jokerFiftyBtn) this.jokerFiftyBtn = document.getElementById('joker-fifty');
-        if (!this.jokerHintBtn) this.jokerHintBtn = document.getElementById('joker-hint');
-        if (!this.jokerTimeBtn) this.jokerTimeBtn = document.getElementById('joker-time');
-        if (!this.jokerSkipBtn) this.jokerSkipBtn = document.getElementById('joker-skip');
-        if (!this.jokerStoreBtn) this.jokerStoreBtn = document.getElementById('joker-store');
-        
-        const currentQuestion = this.questions[this.currentQuestionIndex] || {};
-        const isTrueFalse = currentQuestion.type === "Do�ruYanl��" || currentQuestion.type === "TrueFalse";
-        const isBlankFilling = currentQuestion.type === "BlankFilling";
-        
-        console.log('updateJokerButtons �a�r�ld�');
-        console.log('Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
-        console.log('Joker kullan�m durumlar�:', JSON.stringify(this.jokersUsed));
-        console.log('updateJokerButtons - elementler:', {
-            fifty: !!this.jokerFiftyBtn,
-            hint: !!this.jokerHintBtn,
-            time: !!this.jokerTimeBtn,
-            skip: !!this.jokerSkipBtn,
-            store: !!this.jokerStoreBtn
-        });
-        
-        // 50:50 jokeri
-        if (this.jokerFiftyBtn) {
-            const fiftyCount = this.jokerInventory.fifty || 0;
-            const used = this.jokersUsed.fifty;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${fiftyCount}${used ? '<span class=\'joker-used-text\'>?</span>' : ''}</span>`;
-            this.jokerFiftyBtn.disabled = (fiftyCount <= 0) || used || isTrueFalse || isBlankFilling;
-            this.jokerFiftyBtn.style.opacity = (fiftyCount <= 0 || used || isTrueFalse || isBlankFilling) ? '0.3' : '1';
-            this.jokerFiftyBtn.innerHTML = `<i class="fas fa-star-half-alt"></i>${badgeHtml}`;
-        }
-        // �pucu jokeri
-        if (this.jokerHintBtn) {
-            const hintCount = this.jokerInventory.hint || 0;
-            const used = this.jokersUsed.hint;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${hintCount}${used ? '<span class=\'joker-used-text\'>?</span>' : ''}</span>`;
-            this.jokerHintBtn.disabled = (hintCount <= 0) || used;
-            this.jokerHintBtn.style.opacity = (hintCount <= 0 || used) ? '0.3' : '1';
-            this.jokerHintBtn.innerHTML = `<i class="fas fa-lightbulb"></i>${badgeHtml}`;
-        }
-        // S�re jokeri
-        if (this.jokerTimeBtn) {
-            const timeCount = this.jokerInventory.time || 0;
-            const used = this.jokersUsed.time;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${timeCount}${used ? '<span class=\'joker-used-text\'>?</span>' : ''}</span>`;
-            this.jokerTimeBtn.disabled = (timeCount <= 0) || used;
-            this.jokerTimeBtn.style.opacity = (timeCount <= 0 || used) ? '0.3' : '1';
-            this.jokerTimeBtn.innerHTML = `<i class="fas fa-clock"></i>${badgeHtml}`;
-        }
-        // Pas jokeri
-        if (this.jokerSkipBtn) {
-            const skipCount = this.jokerInventory.skip || 0;
-            const used = this.jokersUsed.skip;
-            let badgeHtml = `<span class="joker-count-badge${used ? ' used' : ''}">${skipCount}${used ? '<span class=\'joker-used-text\'>?</span>' : ''}</span>`;
-            this.jokerSkipBtn.disabled = (skipCount <= 0) || used;
-            this.jokerSkipBtn.style.opacity = (skipCount <= 0 || used) ? '0.3' : '1';
-            this.jokerSkipBtn.innerHTML = `<i class="fas fa-forward"></i>${badgeHtml}`;
-        }
-        // Joker ma�azas�
-        if (this.jokerStoreBtn) {
-            this.jokerStoreBtn.innerHTML = '<i class="fas fa-store"></i>';
-        }
-    },
-    
-    // Joker kullanma fonksiyonu
-    useJoker: function(jokerType) {
-        // Envanter kontrol� - eksiye d��mesin
-        if (this.jokerInventory[jokerType] > 0) {
-            this.jokersUsed[jokerType] = true;
-            this.jokerInventory[jokerType]--;
-            this.saveJokerInventory();
-            console.log(`${jokerType} joker kullan�ld�. Kalan: ${this.jokerInventory[jokerType]}`);
-            
-            // Joker butonlar�n� g�ncelle
-            this.updateJokerButtons();
-        } else {
-            console.warn(`${jokerType} joker envanterinde yok!`);
-        }
-    },
-    
-    // Joker ma�azas� say�m g�sterimini g�ncelle
-    updateJokerStoreDisplay: function(modal) {
-        console.log('Joker ma�azas� say�mlar� g�ncelleniyor...');
-        console.log('Mevcut joker envanteri:', JSON.stringify(this.jokerInventory));
-        console.log('Mevcut toplam puan:', this.totalScore);
-        
-        const ownedCountElements = modal.querySelectorAll('.joker-owned-count');
-        ownedCountElements.forEach((el) => {
-            const jokerType = el.closest('.joker-store-item').dataset.joker;
-            const count = this.jokerInventory[jokerType] || 0;
-            el.textContent = count;
-            console.log(`${jokerType} joker say�s� ma�azada g�ncellendi: ${count}`);
-        });
-        
-        // Sat�n alma butonlar�n�n durumunu da g�ncelle
-        const buyButtons = modal.querySelectorAll('.joker-buy-btn');
-        buyButtons.forEach((btn) => {
-            const item = btn.closest('.joker-store-item');
-            const price = parseInt(item.dataset.price);
-            btn.disabled = this.totalScore < price;
-            console.log(`Buton durumu g�ncellendi: Fiyat ${price}, Toplam puan ${this.totalScore}, Aktif: ${this.totalScore >= price}`);
-        });
-    },
-
-    // Joker kullan�m durumlar�n� s�f�rla (envanter korunur)
-    resetJokerUsage: function() {
-        console.log('Joker kullan�m durumlar� s�f�rlan�yor...');
-        
-        // Kullan�lm�� jokerleri s�f�rla
-        this.jokersUsed = {fifty: false, hint: false, time: false, skip: false};
-        this.skipJokerActive = false;
-        
-        // 50:50 joker ile devre d��� b�rak�lan se�enekleri tekrar aktif et
-        this.resetDisabledOptions();
-        
-        // Joker butonlar�n� g�ncelle
-        setTimeout(() => {
-            this.updateJokerButtons();
-        }, 100);
-    },
-
-    // Reset jokers for new game (sadece oyun ba�lang�c�nda �a�r�lmal�)
-    resetJokers: function() {
-        console.log('resetJokers �a�r�ld�, mevcut envanter:', JSON.stringify(this.jokerInventory));
-        
-        // �nce joker kullan�m durumlar�n� s�f�rla
-        this.resetJokerUsage();
-        
-        // Envanter kontrol� - sadece tan�ms�z veya bo� ise ba�lang�� jokerleri ver
-        if (!this.jokerInventory || Object.keys(this.jokerInventory).length === 0) {
-            console.log('�lk oyun veya envanter tan�ms�z, ba�lang�� jokerleri veriliyor...');
-            this.jokerInventory = {fifty: 1, hint: 1, time: 1, skip: 1};
-            this.saveJokerInventory();
-        }
-        
-        // Mevcut envanterde eksik joker t�rleri varsa tamamla
-        if (this.jokerInventory.fifty === undefined) this.jokerInventory.fifty = 0;
-        if (this.jokerInventory.hint === undefined) this.jokerInventory.hint = 0;
-        if (this.jokerInventory.time === undefined) this.jokerInventory.time = 0;
-        if (this.jokerInventory.skip === undefined) this.jokerInventory.skip = 0;
-        
-        console.log('resetJokers tamamland�, final envanter:', JSON.stringify(this.jokerInventory));
-    },
-    
-    // Yeni oyun i�in joker envanterini yenile
-    refreshJokersForNewGame: function() {
-        console.log('refreshJokersForNewGame �a�r�ld�, jokerler yenileniyor...');
-        
-        // �nce joker kullan�m durumlar�n� s�f�rla
-        this.resetJokerUsage();
-        
-        // Her yeni oyunda fresh jokerler ver
-        this.jokerInventory = {fifty: 1, hint: 1, time: 1, skip: 1};
-        this.saveJokerInventory();
-        
-        console.log('Jokerler yenilendi, yeni envanter:', JSON.stringify(this.jokerInventory));
-    },
-    
-    // 50:50 joker ile devre d��� b�rak�lan se�enekleri s�f�rla
-    resetDisabledOptions: function() {
-        const disabledOptions = document.querySelectorAll('.option.disabled-option');
-        disabledOptions.forEach(option => {
-            option.style.opacity = '';
-            option.style.pointerEvents = '';
-            option.style.background = '';
-            option.style.color = '';
-            option.classList.remove('disabled-option');
-        });
-        
-        // �pucu mesajlar�n� da temizle
-        const hintMessages = document.querySelectorAll('.hint-message');
-        hintMessages.forEach(hint => {
-            hint.remove();
-        });
-    },
-    
-    // Kullan�c� ayarlar�n� y�kle
-    loadUserSettings: function() {
-        try {
-            // Kaydedilmi� ayarlar� kontrol et
-            const settings = localStorage.getItem(this.USER_SETTINGS_KEY);
-            
-            // Hamburger men�s�ndeki zorluk ayar�n� �ncelikle kontrol et
-            const hamburg�rDifficulty = localStorage.getItem('difficulty');
-            
-            // Tercihler ekran�ndan zorluk seviyesi ayar�n� kontrol et
-            const difficultyPreference = localStorage.getItem('difficulty_preference');
-            let calculatedDifficulty = null;
-            
-            // �ncelik s�ras�: hamburger men�s� > tercihler > hesaplanm�� zorluk
-            if (hamburg�rDifficulty && ['easy', 'medium', 'hard'].includes(hamburg�rDifficulty)) {
-                calculatedDifficulty = hamburg�rDifficulty;
-                console.log(`Zorluk seviyesi hamburger men�s�nden al�nd�: ${calculatedDifficulty}`);
-            } else if (difficultyPreference) {
-                // Otomatik zorluk ayar� ise, hesaplanm�� zorlu�u kontrol et
-                if (difficultyPreference === 'auto') {
-                    calculatedDifficulty = localStorage.getItem('calculated_difficulty');
-                } else {
-                    // Do�rudan se�ilen zorlu�u kullan
-                    calculatedDifficulty = difficultyPreference;
-                }
-                
-                if (calculatedDifficulty) {
-                    console.log(`Zorluk seviyesi tercihlere g�re ayarland�: ${calculatedDifficulty}`);
-                }
-            }
-            
-            if (settings) {
-                this.userSettings = JSON.parse(settings);
-                
-                // Tercihlerden zorluk seviyesi ayarlanmad�ysa kaydedilmi� ayarlar� kullan
-                if (!calculatedDifficulty && this.userSettings.difficulty) {
-                    calculatedDifficulty = this.userSettings.difficulty;
-                }
-                
-                this.soundEnabled = this.userSettings.soundEnabled !== undefined ? this.userSettings.soundEnabled : true;
-                this.animationsEnabled = this.userSettings.animationsEnabled !== undefined ? this.userSettings.animationsEnabled : true;
-                this.notificationsEnabled = this.userSettings.notificationsEnabled !== undefined ? this.userSettings.notificationsEnabled : true;
-                this.theme = this.userSettings.theme || 'light';
-                
-                console.log("Kullan�c� ayarlar� y�klendi:", this.userSettings);
-            } else {
-                // Varsay�lan ayarlar
-                this.userSettings = {};
-                this.soundEnabled = true;
-                this.animationsEnabled = true;
-                this.notificationsEnabled = true;
-                this.theme = 'light';
-                
-                console.log("Varsay�lan ayarlar kullan�l�yor");
-            }
-            
-            // Zorluk seviyesini ayarla
-            this.currentDifficulty = calculatedDifficulty || 'medium';
-            this.userSettings.difficulty = this.currentDifficulty;
-            
-            console.log(`Final zorluk seviyesi: ${this.currentDifficulty}`);
-            
-            // Tema ayar�n� uygula
-            this.applyTheme();
-            
-            // Joker envanterini y�kle
-            this.loadJokerInventory();
-        } catch (e) {
-            console.error("Ayarlar y�klenirken hata:", e);
-        }
-    },
-    
-    // Kullan�c� ayarlar�n� kaydet
-    saveUserSettings: function() {
-        try {
-            // userSettings objesini g�ncelle
-            if (!this.userSettings) {
-                this.userSettings = {};
-            }
-            
-            this.userSettings.difficulty = this.currentDifficulty;
-            this.userSettings.soundEnabled = this.soundEnabled;
-            this.userSettings.animationsEnabled = this.animationsEnabled;
-            this.userSettings.notificationsEnabled = this.notificationsEnabled;
-            this.userSettings.theme = this.theme;
-            
-            localStorage.setItem(this.USER_SETTINGS_KEY, JSON.stringify(this.userSettings));
-            console.log("Kullan�c� ayarlar� kaydedildi:", this.userSettings);
-        } catch (e) {
-            console.error("Kullan�c� ayarlar� kaydedilirken hata olu�tu:", e);
-        }
-    },
-    
-    // Tema uygula
-    applyTheme: function() {
-        document.body.className = this.theme === 'dark' ? 'dark-theme' : '';
-    },
-    
-    // �statistikleri getir
-    getStats: function() {
-        const statsJSON = localStorage.getItem(this.STATS_KEY);
-        let stats = {
-            totalQuestions: 0,
-            correctAnswers: 0,
-            totalGames: 0,
-            categoryStats: {},
-            recentGames: []
-        };
-        
-        if (statsJSON) {
-            try {
-                stats = JSON.parse(statsJSON);
-            } catch (e) {
-                console.error("�statistikler y�klenirken hata olu�tu:", e);
-            }
-        }
+        // İstatistikleri hemen güncelle
+        this.updateRealUserStats();
         
         return stats;
     },
     
-    // Seviye tamamland�, sonraki seviyeyi g�ster
-    showLevelCompletionScreen: function(completedLevel) {
-        clearInterval(this.timerInterval);
-        
-        // Seviye tamamlama ses efekti
-        if (this.soundEnabled) {
-            const completionSound = document.getElementById('sound-level-completion');
-            if (completionSound) completionSound.play().catch(e => console.error("Ses �al�namad�:", e));
-        }
-        
-        // Oyuncuyu tebrik et
-        const levelCompletionElement = document.createElement('div');
-        levelCompletionElement.className = 'level-completion-screen';
-        levelCompletionElement.innerHTML = `
-            <div class="level-completion-content">
-                <h2>${completedLevel}. Seviye Tamamland�!</h2>
-                <div class="level-completion-stats">
-                    <p><i class="fas fa-star"></i> Skor: ${this.score}</p>
-                    <p><i class="fas fa-check-circle"></i> Do�ru: ${this.score}/${this.answeredQuestions}</p>
-                    <p><i class="fas fa-clock"></i> Ortalama S�re: ${Math.round(this.answerTimes.reduce((a, b) => a + b, 0) / this.answerTimes.length)} saniye</p>
-                </div>
-                <div class="confetti-animation">
-                    <i class="fas fa-trophy"></i>
-                </div>
-                <button id="next-level-btn" class="shiny-btn">Sonraki Seviyeye Ge�</button>
-            </div>
-        `;
-        
-        document.body.appendChild(levelCompletionElement);
-        
-        // Sonraki seviyeye ge�me butonu
-        const nextLevelBtn = document.getElementById('next-level-btn');
-        nextLevelBtn.addEventListener('click', () => {
-            // Sonu� ekran�n� kald�r
-            document.body.removeChild(levelCompletionElement);
-            
-            // Sonraki seviyeye devam et
-            this.currentQuestionIndex = 0;
-            this.resetJokers();
-            // Canlar� koruyoruz, s�f�rlam�yoruz ki �nceki seviyeden kalan canlarla devam edilsin
-            this.score = 0;
-            this.answerTimes = [];
-            this.answeredQuestions = 0;
-            
-            // Sonraki seviye i�in sorular� y�kle
-            this.loadQuestionsForCurrentLevel();
-        });
+    // İstatistikleri manuel olarak yenile (debug için)
+    refreshStats: function() {
+        console.log('İstatistikler yenileniyor...');
+        const stats = this.updateRealUserStats();
+        console.log('Güncellenmiş istatistikler:', stats);
+        this.showToast('İstatistikler yenilendi!', 'toast-success');
+        return stats;
     },
     
-    // Olay dinleyicilerini ekle
-    addEventListeners: function() {
-        try {
-            console.log("Event listener'lar ekleniyor...");
-            
-        // Tema de�i�tirme butonu i�in olay dinleyicisi
-        if (this.themeToggle) {
-            this.themeToggle.addEventListener('change', () => {
-                const theme = this.themeToggle.checked ? 'dark' : 'light';
-                this.userSettings.theme = theme;
-                this.applyTheme(theme);
-                this.saveUserSettings();
-            });
-        }
-        
-        // Yeniden ba�latma butonu i�in olay dinleyicisi
-        if (this.restartButton) {
-            this.restartButton.addEventListener('click', () => {
-                this.restartGame();
-            });
-        }
-        
-        // Sonraki soru butonu i�in olay dinleyicisi
-        if (this.nextButton) {
-            this.nextButton.addEventListener('click', () => {
-                this.showNextQuestion();
-            });
-        }
-        
-            // Joker butonlar� i�in olay dinleyicileri
-            console.log('DOM haz�r, joker event listener\'lar� ekleniyor...');
-            this.addJokerEventListeners();
-            
-            // Tekli oyun butonu
-            if (this.singlePlayerBtn) {
-                console.log("Tekli oyun butonu bulundu, dinleyici ekleniyor");
-                this.singlePlayerBtn.addEventListener('click', () => {
-                    console.log("Tekli oyun butonuna t�kland�");
-                    if (this.mainMenu) this.mainMenu.style.display = 'none';
-                    
-                    // Tekli oyun modunda chat ekran�n� gizle
-                    const gameChatContainer = document.getElementById('game-chat-container');
-                    if (gameChatContainer) {
-                        gameChatContainer.style.display = 'none';
-                    }
-                    
-                    if (this.categorySelectionElement) {
-                        this.categorySelectionElement.style.display = 'block';
-                        // Kategorileri g�ster
-                        this.displayCategories();
-                    } else {
-                        console.error("Kategori se�im elementi bulunamad�!");
-                    }
-                });
-            } else {
-                console.error("Tekli oyun butonu bulunamad�! ID: single-player-btn");
-            }
-            
-            console.log("Event listener'lar ba�ar�yla eklendi");
-        } catch (error) {
-            console.error("addEventListeners fonksiyonunda hata:", error);
-        }
-    },
-    
-    // Joker butonlar�n� ayarla (setupJokerButtons'un yerine kullan�yoruz)
-    setupJokerButtons: function() {
-        // Bu fonksiyon gerekti�inde joker butonlar�n� ayarlar
-        console.log("Joker butonlar� ayarlan�yor");
-        this.updateJokerButtons();
-    },
-    
-    // Soru verilerini y�kle
-    loadQuestionsData: function() {
-            console.log("Soru verileri y�kleniyor...");
-            
-        return new Promise((resolve, reject) => {
-            // Se�ilen dile g�re dosya belirle
-            let questionsFile = 'languages/tr/questions.json'; // T�rk�e i�in varsay�lan
-            
-            if (this.currentLanguage === 'en') {
-                questionsFile = 'languages/en/questions.json';
-            } else if (this.currentLanguage === 'de') {
-                questionsFile = 'languages/de/questions.json';
-            }
-            
-            console.log(`Dil: ${this.currentLanguage}, Y�klenen dosya: ${questionsFile}`);
-            
-            // Sorular� belirlenen JSON dosyas�ndan y�kle
-            fetch(questionsFile)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Sorular y�klenemedi: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data) {
-                    this.questionsData = data;
-                        // allQuestionsData'y� questionsData ile ayn� verilere i�aret edecek �ekilde atayal�m
-                        this.allQuestionsData = data; 
-                        console.log("Soru verileri ba�ar�yla y�klendi:", Object.keys(data).length, "kategori");
-                        console.log("Kategoriler:", Object.keys(data));
-                        resolve(data);
-                    } else {
-                        console.log("Sorular y�klenemedi, varsay�lan veriler kullan�lacak.");
-                        this.loadDefaultQuestions();
-                        resolve(this.questionsData);
-                    }
-                })
-                .catch(error => {
-                    console.error("Sorular y�klenirken hata:", error);
-                    console.log("Varsay�lan sorular kullan�lacak");
-                    this.loadDefaultQuestions();
-                    resolve(this.questionsData);
-                });
-        });
-    },
-    
-    // Varsay�lan sorular� y�kle (offline durumlar i�in)
-    loadDefaultQuestions: function() {
-        // Varsay�lan baz� sorular
-        this.questionsData = {
-            "Genel K�lt�r": [
-                {
-                    question: "T�rkiye'nin ba�kenti hangi �ehirdir?",
-                                options: ["�stanbul", "Ankara", "�zmir", "Bursa"],
-                                correctAnswer: "Ankara",
-                    difficulty: "easy"
-                },
-                {
-                    question: "Hangi gezegen G�ne� Sistemi'nde en b�y�k olan�d�r?",
-                    options: ["Mars", "Ven�s", "J�piter", "Sat�rn"],
-                    correctAnswer: "J�piter",
-                    difficulty: "easy"
-                            },
-                            {
-                                question: "D�nyan�n en b�y�k okyanusu hangisidir?",
-                    options: ["Atlas Okyanusu", "Hint Okyanusu", "Pasifik Okyanusu", "Arktik Okyanusu"],
-                    correctAnswer: "Pasifik Okyanusu",
-                    difficulty: "medium"
-                }
-            ],
-            "Teknoloji": [
-                {
-                    question: "HTML'in a��l�m� nedir?",
-                    options: ["Hyper Text Markup Language", "High Tech Modern Language", "Hyper Transfer Mode Language", "Home Tool Markup Language"],
-                    correctAnswer: "Hyper Text Markup Language",
-                    difficulty: "easy"
-                },
-                {
-                    question: "Hangi �irket Windows i�letim sistemini geli�tirmi�tir?",
-                    options: ["Apple", "Google", "Microsoft", "IBM"],
-                    correctAnswer: "Microsoft",
-                    difficulty: "easy"
-                }
-            ],
-            "Bilim": [
-                {
-                    question: "Periyodik tabloda 'Fe' hangi elementi simgeler?",
-                    options: ["Flor", "Demir", "Fosfor", "Fermiyum"],
-                    correctAnswer: "Demir",
-                    difficulty: "medium"
-                },
-                {
-                    question: "I��k h�z� yakla��k ka� km/s'dir?",
-                    options: ["100.000 km/s", "200.000 km/s", "300.000 km/s", "400.000 km/s"],
-                    correctAnswer: "300.000 km/s",
-                    difficulty: "medium"
-                }
-            ]
-        };
-        // allQuestionsData'y� da g�ncelle
-        this.allQuestionsData = this.questionsData;
-        console.log("Varsay�lan sorular y�klendi:", Object.keys(this.questionsData).length, "kategori");
-    },
-    
-    // Restartlama i�levi
-    restartGame: function() {
-        this.currentQuestionIndex = 0;
-        this.score = 0;
-        this.correctAnswers = 0; // <-- EKLEND�: Do�ru cevap say�s�n� s�f�rla
-        this.sessionScore = 0; // Oturum puan�n� s�f�rla
-        this.lives = 5;
-        this.answeredQuestions = 0;
-        this.answerTimes = [];
-        this.currentSection = 1; // B�l�m say�s�n� da s�f�rla
-        this.resetJokers();
-        
-        // Body'den quiz ve kategori class'lar�n� kald�r - logo tekrar g�r�ns�n
-        document.body.classList.remove('quiz-active', 'category-selection');
-        
-        // Tekli oyun modunda chat ekran�n� gizle
-        const gameChatContainer = document.getElementById('game-chat-container');
-        if (gameChatContainer) {
-            gameChatContainer.style.display = 'none';
-        }
-        
-        // Kategorileri yeniden g�ster
-        this.displayCategories();
-        
-        // �statistikleri s�f�rla
-        this.updateScoreDisplay();
-    },
-    
-    // Sonraki soruyu g�ster
-    showNextQuestion: function() {
-        // Yeni soruya ge�erken joker kullan�mlar�n� s�f�rla
-        this.resetJokerUsage();
-        // �nceki sonu� ve se�ili ��klar� temizle
-        if (this.resultElement) {
-            this.resultElement.style.display = 'none';
-            this.resultElement.innerHTML = '';
-        }
-        
-        // T�m se�ilmi� ��klar�n se�imini kald�r
-        const selectedOptions = document.querySelectorAll('.option.selected, .true-false-option.selected, .option.answered, .true-false-option.answered');
-        selectedOptions.forEach(option => {
-            option.classList.remove('selected', 'answered', 'correct', 'wrong');
-            option.disabled = false;
-        });
-        
-        // 50:50 joker ile devre d��� b�rak�lan se�enekleri s�f�rla
-        this.resetDisabledOptions();
-        
-        // Bo�luk doldurma ekran�ndaki cevap g�stergesini temizle
-        const answerDisplay = document.getElementById('blank-filling-answer');
-        if (answerDisplay) {
-            answerDisplay.textContent = '';
-            answerDisplay.classList.remove('correct', 'wrong');
-        }
-        
-        // Se�ilmi� harfleri s�f�rla
-        this.selectedLetters = [];
-        
-        // Soru sayac�n� art�r
-        this.currentQuestionIndex++;
-        
-        // �nceki ipucu mesajlar�n� temizle
-        const existingHintMessages = document.querySelectorAll('.hint-message');
-        existingHintMessages.forEach(element => {
-            element.remove();
-        });
-        
-        // Her 5 soruda bir b�l�m ge�i�i g�ster
-        if (this.currentQuestionIndex > 0 && this.currentQuestionIndex % 5 === 0 && this.currentQuestionIndex < this.questions.length) {
-            this.currentSection++; // B�l�m say�s�n� art�r
-            
-                    // Progressive difficulty sistemi ile dinamik b�l�m say�s�
-            const maxSections = this.getMaxSectionsForCategory();
-            if (this.currentSection > maxSections) {
-                this.showCategoryCompletion();
-                return;
-            }
-            
-            // Eski 50 b�l�m kontrol� kald�r�ld� - art�k dinamik sistem kullan�l�yor
-            
-            this.showSectionTransition();
-        } else if (this.currentQuestionIndex < this.questions.length) {
-            this.displayQuestion(this.questions[this.currentQuestionIndex]);
-        } else {
-            // T�m sorular cevapland� - kategori tamamlama ekran�n� g�ster
-            console.log("T�m sorular cevapland�, kategori tamamlama ekran� g�steriliyor...");
-            this.showCategoryCompletion();
-        }
-    },
-    
-    // Kategoriye g�re maksimum b�l�m say�s�n� belirle
-    getMaxSectionsForCategory: function() {
-        // Kategoriye �zel zorluk seviyesi belirle
-        const categoryDifficultyMap = {
-            // Kolay kategoriler (12-15 b�l�m)
-            'Hayvanlar': 12,
-            'Renkler': 12, 
-            'Basit Kelimeler': 13,
-            'Say�lar': 13,
-            'V�cut': 14,
-            'Aile': 14,
-            'Yemek': 15,
-            'Ev': 15,
-            
-            // Orta kategoriler (15-18 b�l�m)
-            'Spor': 15,
-            'M�zik': 16,
-            'Meslek': 16,
-            'Ula��m': 17,
-            'Do�a': 17,
-            'Teknoloji': 18,
-            'Sa�l�k': 18,
-            
-            // Zor kategoriler (18-25 b�l�m)
-            'Bilim': 20,
-            'Tarih': 20,
-            'Edebiyat': 22,
-            'Co�rafya': 22,
-            'Felsefe': 24,
-            'Matematik': 24,
-            'Fizik': 25,
-            'Kimya': 25
-        };
-        
-        // Se�ilen kategoriye g�re b�l�m say�s� d�nd�r
-        const maxSections = categoryDifficultyMap[this.selectedCategory] || 15; // Varsay�lan 15 b�l�m
-        console.log(`Kategori: ${this.selectedCategory}, Maksimum B�l�m: ${maxSections}`);
-        return maxSections;
-    },
-    
-    // Kategori zorluk seviyesi metni
-    getCategoryDifficultyText: function() {
-        const maxSections = this.getMaxSectionsForCategory();
-        
-        if (maxSections <= 15) {
-            return "?? Kolay Kategori";
-        } else if (maxSections <= 18) {
-            return "?? Orta Kategori";
-        } else {
-            return "?? Zor Kategori";
-        }
-    },
-    
-    // Progressive difficulty: Mevcut b�l�me g�re zorluk seviyesi belirle
-    getProgressiveDifficulty: function() {
-        const maxSections = this.getMaxSectionsForCategory();
-        const currentProgress = this.currentSection / maxSections;
-        
-        // �lk %40'� kolay, sonraki %40'� orta, son %20'si zor
-        if (currentProgress <= 0.4) {
-            return 1; // Kolay
-        } else if (currentProgress <= 0.8) {
-            return 2; // Orta  
-        } else {
-            return 3; // Zor
-        }
-    },
-    
-    // Kategori Tamamlama Ekran�n� G�ster (dinamik b�l�m say�s�na g�re)
-    showCategoryCompletion: function() {
-        // Zamanlay�c�y� durdur
-        clearInterval(this.timerInterval);
-        
-        // Kategori tamamlama modal�n� olu�tur
-        const categoryCompletionModal = document.createElement('div');
-        categoryCompletionModal.className = 'category-completion-modal';
-        categoryCompletionModal.innerHTML = `
-            <div class="category-completion-content">
-                <div class="completion-header">
-                    <div class="completion-icon">
-                        <i class="fas fa-trophy"></i>
-                    </div>
-                    <h2>Kategori Tamamland�!</h2>
-                    <p class="completion-message">"${this.selectedCategory}" kategorisinin ${this.getMaxSectionsForCategory()} b�l�m�n� ba�ar�yla tamamlad�n�z!</p>
-                    <p class="completion-difficulty" style="font-size: 14px; color: #64748b; margin-top: 10px;">
-                        ${this.getCategoryDifficultyText()} � Progressive Zorluk Sistemi
-                    </p>
-                </div>
-                
-                <div class="completion-stats">
-                                         <div class="stat-item">
-                         <div class="stat-icon">
-                             <i class="fas fa-layer-group"></i>
-                         </div>
-                         <div class="stat-content">
-                             <div class="stat-value">${this.getMaxSectionsForCategory()}</div>
-                             <div class="stat-label">B�l�m Tamamland�</div>
-                         </div>
-                     </div>
-                    
-                    <div class="stat-item">
-                        <div class="stat-icon">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-value">${this.score}</div>
-                            <div class="stat-label">Toplam Puan</div>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-item">
-                        <div class="stat-icon">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-value">${this.correctAnswers}</div>
-                            <div class="stat-label">Do�ru Cevap</div>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-item">
-                        <div class="stat-icon">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-value">${this.lives}</div>
-                            <div class="stat-label">Kalan Can</div>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-item" style="grid-column: 1 / -1;">
-                        <div class="stat-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-value" style="font-size: 14px;">Kolay � Orta � Zor</div>
-                            <div class="stat-label">Zorluk Progresyonu</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="completion-actions">
-                    <button id="show-final-results" class="completion-btn primary">
-                        <i class="fas fa-chart-line"></i>
-                        Detayl� Sonu�lar� G�r
-                    </button>
-                </div>
-            </div>
-        `;
-        
-        document.body.appendChild(categoryCompletionModal);
-        
-        // Detayl� sonu�lar� g�ster butonu
-        const showResultsBtn = document.getElementById('show-final-results');
-        if (showResultsBtn) {
-            showResultsBtn.addEventListener('click', () => {
-                // Modal� kald�r
-                categoryCompletionModal.remove();
-                
-                // Normal oyun biti� ekran�n� g�ster
-                setTimeout(() => {
-            this.showResult();
-                }, 500);
-            });
-        }
-        
-        // Modal d���na t�klan�rsa da sonu� ekran�n� g�ster
-        categoryCompletionModal.addEventListener('click', (e) => {
-            if (e.target === categoryCompletionModal) {
-                categoryCompletionModal.remove();
-                setTimeout(() => {
-                    this.showResult();
-                }, 500);
-            }
-        });
-        
-        // Ba�ar� ses efekti �al
-        if (this.soundEnabled) {
-            const victorySound = document.getElementById('sound-level-completion');
-            if (victorySound) victorySound.play().catch(e => console.error("Ses �al�namad�:", e));
-        }
-        
-        // 10 saniye sonra otomatik olarak sonu� ekran�n� g�ster
-        setTimeout(() => {
-            if (document.body.contains(categoryCompletionModal)) {
-                categoryCompletionModal.remove();
-                this.showResult();
-            }
-        }, 10000);
-        
-        // Konfeti efekti eklenebilir
-        console.log(`${this.selectedCategory} kategorisi ${this.getMaxSectionsForCategory()} b�l�m ile tamamland�!`);
-    },
-
-    // DEBUG: Kategori tamamlama modal�n� test et
-    testCategoryCompletion: function() {
-        console.log("Test: Kategori tamamlama modal� manuel olarak g�steriliyor...");
-        this.showCategoryCompletion();
-    },
-    
-    // Oyun Tamamlama Ekran�n� G�ster (50 b�l�m tamamland���nda)
-    showGameCompletion: function() {
-        // Sayac� durdur
-        clearInterval(this.timerInterval);
-        
-        // Oyun tamamlama ekran�n� olu�tur
-        const completionElement = document.createElement('div');
-        completionElement.className = 'game-completion-screen';
-        completionElement.innerHTML = `
-            <div class="game-completion-content">
-                <div class="trophy-container">
-                    <i class="fas fa-trophy trophy-icon"></i>
-                </div>
-                <h2>Tebrikler! Oyunu Tamamlad�n�z!</h2>
-                <div class="completion-info">
-                    <p class="completion-congrats">50 b�l�m� ba�ar�yla tamamlad�n�z!</p>
-                    <p>Toplam Puan: <strong>${this.score}</strong></p>
-                    <p class="completion-message">Bu muhte�em ba�ar�n�z i�in kutlar�z!</p>
-                </div>
-                <div class="completion-buttons">
-                    <button id="restart-game-btn" class="completion-btn"><i class="fas fa-redo"></i> Yeniden Oyna</button>
-                    <button id="share-result-btn" class="completion-btn"><i class="fas fa-share-alt"></i> Sonucu Payla�</button>
-                </div>
-            </div>
-        `;
-        
-        document.body.appendChild(completionElement);
-        
-        // Yeniden ba�latma butonu
-        const restartGameBtn = document.getElementById('restart-game-btn');
-        if (restartGameBtn) {
-            restartGameBtn.addEventListener('click', () => {
-                document.body.removeChild(completionElement);
-                this.restartGame();
-            });
-        }
-        
-        // Payla��m butonu
-        const shareResultBtn = document.getElementById('share-result-btn');
-        if (shareResultBtn) {
-            shareResultBtn.addEventListener('click', () => {
-                // Payla��m �zelli�i eklenebilir
-                const shareText = `Bilgoo'yu ${this.score} puanla tamamlad�m! Sende oynamak ister misin?`;
-                
-                if (navigator.share) {
-                    navigator.share({
-                        title: 'Bilgoo',
-                        text: shareText,
-                        url: window.location.href
-                    }).catch(err => {
-                        console.error('Payla��m hatas�:', err);
-                        this.showToast('Sonu� payla��lamad�', 'toast-error');
-                    });
-                } else {
-                    // Taray�c� payla��m� desteklemiyorsa panoya kopyala
-                    navigator.clipboard.writeText(shareText)
-                        .then(() => {
-                            this.showToast('Sonu� panoya kopyaland�!', 'toast-success');
-                        })
-                        .catch(err => {
-                            console.error('Panoya kopyalama hatas�:', err);
-                            this.showToast('Sonu� kopyalanamad�', 'toast-error');
-                        });
-                }
-            });
-        }
-        
-        // Konfeti efekti veya ses efekti eklenebilir
-        if (this.soundEnabled) {
-            const victorySound = document.getElementById('sound-level-completion');
-            if (victorySound) victorySound.play().catch(e => console.error("Ses �al�namad�:", e));
-        }
-        
-        // �statistikleri kaydet
-        this.saveStats(this.selectedCategory, this.score, this.answeredQuestions, 
-            this.answerTimes.length > 0 ? Math.round(this.answerTimes.reduce((a, b) => a + b, 0) / this.answerTimes.length) : 0);
-    },
-    
-    // B�l�m ge�i� ekran�n� g�ster
-    showSectionTransition: function() {
-        // Sayac� durdur
-        clearInterval(this.timerInterval);
-        
-        // Tamamlanan b�l�m numaras� (0-tabanl�) - currentSection 1'den ba�lad��� i�in -1
-        const sectionIndex = this.currentSection - 2; // Bir �nceki tamamlanan b�l�m
-        
-        // B�l�m istatistiklerini al
-        const stats = this.sectionStats[sectionIndex] || { correct: 0, total: 0 };
-        
-        console.log(`B�l�m ge�i�i g�steriliyor. B�l�m: ${sectionIndex+1}, �statistikler:`, stats);
-        
-        // Do�ru cevap y�zdesini hesapla
-        const correctPercentage = stats.total > 0 
-            ? Math.round((stats.correct / stats.total) * 100) 
-            : 0;
-        
-        console.log(`B�l�m istatistikleri hesapland�: Do�ru: ${stats.correct}, Toplam: ${stats.total}, Y�zde: ${correctPercentage}%`);
-        
-        // Y�ld�z tipini belirle (alt�n, g�m�� veya bronz)
-        let starType, starColor, starText;
-        if (correctPercentage >= 80) {
-            starType = 'gold';
-            starColor = '#ffd700';
-            starText = 'Alt�n Y�ld�z';
-        } else if (correctPercentage >= 50) {
-            starType = 'silver';
-            starColor = '#c0c0c0';
-            starText = 'G�m�� Y�ld�z';
-        } else {
-            starType = 'bronze';
-            starColor = '#cd7f32';
-            starText = 'Bronz Y�ld�z';
-        }
-        
-        // Performansa g�re ka� y�ld�z verilecek
-        let starCount;
-        if (correctPercentage >= 80) {
-            starCount = 3; // �ok iyi performans: 3 y�ld�z
-        } else if (correctPercentage >= 50) {
-            starCount = 2; // Orta performans: 2 y�ld�z
-        } else {
-            starCount = 1; // D���k performans: 1 y�ld�z
-        }
-        
-        // Y�ld�z HTML'ini olu�tur
-        let starsHTML = '';
-        for (let i = 0; i < 3; i++) {
-            if (i < starCount) {
-                // Aktif y�ld�z (kazan�lan)
-                starsHTML += `<i class="fas fa-star" style="color: ${starColor};"></i>`;
-            } else {
-                // Gri y�ld�z (kazan�lmayan)
-                starsHTML += `<i class="fas fa-star" style="color: #888; opacity: 0.5;"></i>`;
-            }
-        }
-        
-        // B�l�m ge�i� ekran�n� olu�tur - �nceki tasar�ma benzer bir stil kullan�l�yor
-        const sectionElement = document.createElement('div');
-        sectionElement.className = 'section-transition';
-        sectionElement.innerHTML = `
-            <div class="section-transition-content">
-                <h2>${this.currentSection-1}. ${this.getTranslation('sectionCompleted')}</h2>
-                
-                <div class="stars-container">
-                    ${starsHTML}
-                </div>
-                
-                <div class="level-info">
-                    <p class="level-congrats">${starCount} ${this.getTranslation('earnedStars')}</p>
-                </div>
-                
-                <div class="section-stats">
-                    <p><i class="fas fa-star"></i> ${this.getTranslation('currentScore')}: ${this.score}</p>
-                    <p><i class="fas fa-heart"></i> ${this.getTranslation('remainingLives')}: ${this.lives}</p>
-                    <p><i class="fas fa-check-circle"></i> ${this.getTranslation('correctAnswers')}: ${stats.correct}/${stats.total} (${correctPercentage}%)</p>
-                    <p><i class="fas fa-chart-line"></i> Sonraki B�l�m: ${['', 'Kolay', 'Orta', 'Zor'][this.getProgressiveDifficulty()]} Seviye</p>
-                </div>
-                <button id="next-section-btn" class="level-btn"><i class="fas fa-forward"></i> ${this.getTranslation('nextSection')}</button>
-            </div>
-        `;
-        
-        // Mevcut ekran� gizle ve ge�i� ekran�n� g�ster
-        if (this.quizElement) this.quizElement.style.display = 'none';
-        document.body.appendChild(sectionElement);
-        
-        // Sonraki b�l�me ge�i� butonu
-        const nextSectionBtn = document.getElementById('next-section-btn');
-        nextSectionBtn.addEventListener('click', () => {
-            // Ge�i� ekran�n� kald�r
-            document.body.removeChild(sectionElement);
-            
-            // Quiz ekran�n� g�ster
-            if (this.quizElement) this.quizElement.style.display = 'block';
-            
-            // Sonraki soruyu g�ster
-            this.displayQuestion(this.questions[this.currentQuestionIndex]);
-        });
-        
-        // Ses efekti �al
-        if (this.soundEnabled) {
-            const sectionSound = document.getElementById('sound-correct');
-            if (sectionSound) sectionSound.play().catch(e => console.error("Ses �al�namad�:", e));
-        }
-        
-        // Tebrik toast mesaj� g�ster
-        this.showToast(`${this.currentSection-1}. ${this.getTranslation('sectionCompleted')}`, "toast-success");
-    },
-    
-    // Kategorileri g�ster
-    displayCategories: function() {
-        const categoriesContainer = document.getElementById('categories');
-        if (!categoriesContainer) {
-            console.error("Kategoriler i�in DOM elementi bulunamad�! (ID: categories)");
-            return;
-        }
-        // Kategorileri temizle
-        categoriesContainer.innerHTML = '';
-        
-        // Body'ye kategori se�imi class'�n� ekle - logo gizlemek i�in
-        document.body.classList.add('category-selection');
-        document.body.classList.remove('quiz-active');
-        
-        // Tekli oyun modunda chat ekran�n� gizle
-        const gameChatContainer = document.getElementById('game-chat-container');
-        if (gameChatContainer) {
-            gameChatContainer.style.display = 'none';
-        }
-        
-        // Aktif kategori verilerini al
-        const activeQuestionData = this.currentLanguage === 'tr' ? this.questionsData : this.translatedQuestions;
-        
-        console.log("displayCategories �a�r�ld�! Mevcut kategoriler:", activeQuestionData ? Object.keys(activeQuestionData) : "Veri yok");
-        if (!activeQuestionData || Object.keys(activeQuestionData).length === 0) {
-            // Y�kleniyor mesaj� g�ster
-            categoriesContainer.innerHTML = `<div class="loading">${this.getTranslation('loading')}</div>`;
-            return;
-        }
-        
-        // T�m kategorileri g�ster
-        Object.keys(activeQuestionData).forEach(category => {
-            const categoryElement = document.createElement('div');
-            categoryElement.className = 'category category-btn';
-            categoryElement.innerHTML = `
-                <div class="category-icon">
-                    <i class="${this.getCategoryIcon(category)}"></i>
-                </div>
-                <div class="category-name">${category}</div>
-            `;
-            // Kategori elementine t�klama olay� ekle
-            categoryElement.addEventListener('click', () => {
-                this.selectCategory(category);
-            });
-            categoriesContainer.appendChild(categoryElement);
-        });
-        console.log("Toplam", Object.keys(activeQuestionData).length, "kategori g�r�nt�lendi");
-    },
-    
-    // Kategori simgesini belirle
-    getCategoryIcon: function(category) {
-        // Kategori ad�na g�re uygun simge d�nd�r
-        const categoryIcons = {
-            // T�rk�e kategoriler
-            'Genel K�lt�r': 'fas fa-globe',
-            'Bilim': 'fas fa-flask',
-            'Teknoloji': 'fas fa-microchip',
-            'Spor': 'fas fa-futbol',
-            'M�zik': 'fas fa-music',
-            'Tarih': 'fas fa-landmark',
-            'Co�rafya': 'fas fa-mountain',
-            'Sanat': 'fas fa-palette',
-            'Edebiyat': 'fas fa-book',
-            'Sinema': 'fas fa-film',
-            'Yemek': 'fas fa-utensils',
-            'Bilgisayar': 'fas fa-laptop-code',
-            'Matematik': 'fas fa-calculator',
-            'Bo�luk Doldurma': 'fas fa-keyboard',
-            'Di�er': 'fas fa-question-circle',
-            
-            // �ngilizce kategoriler
-            'General Knowledge': 'fas fa-globe',
-            'Science': 'fas fa-flask',
-            'Technology': 'fas fa-microchip',
-            'Sports': 'fas fa-futbol',
-            'Music': 'fas fa-music',
-            'History': 'fas fa-landmark',
-            'Geography': 'fas fa-mountain',
-            'Art': 'fas fa-palette',
-            'Literature': 'fas fa-book',
-            'Movies': 'fas fa-film',
-            'Food': 'fas fa-utensils',
-            'Computer': 'fas fa-laptop-code',
-            'Mathematics': 'fas fa-calculator',
-            'Fill in the Blank': 'fas fa-keyboard',
-            'Other': 'fas fa-question-circle',
-            
-            // Almanca kategoriler
-            'Allgemeinwissen': 'fas fa-globe',
-            'Wissenschaft': 'fas fa-flask',
-            'Technologie': 'fas fa-microchip',
-            'Sport': 'fas fa-futbol',
-            'Musik': 'fas fa-music',
-            'Geschichte': 'fas fa-landmark',
-            'Geographie': 'fas fa-mountain',
-            'Kunst': 'fas fa-palette',
-            'Literatur': 'fas fa-book',
-            'Filme': 'fas fa-film',
-            'Essen': 'fas fa-utensils',
-            'Computer': 'fas fa-laptop-code',
-            'Mathematik': 'fas fa-calculator',
-            'L�ckentext': 'fas fa-keyboard',
-            'Sonstiges': 'fas fa-question-circle'
-        };
-        
-        return categoryIcons[category] || 'fas fa-question-circle';
-    },
-    
-    // Kategori se�
-    selectCategory: function(category) {
-        try {
-            console.log("Se�ilen kategori:", category);
-            this.selectedCategory = category;
-            
-            // Yeni oyun ba�lad���nda de�i�kenleri s�f�rla
-            this.currentQuestionIndex = 0;
-            this.score = 0;
-            this.correctAnswers = 0; // <-- EKLEND�: Do�ru cevap say�s�n� s�f�rla
-            this.sessionScore = 0;
-            this.answeredQuestions = 0;
-            this.answerTimes = [];
-            this.lives = 5;
-            
-            // Her yeni oyunda jokerlar� yenile
-            this.refreshJokersForNewGame();
-            
-            // Kategori se�im ekran�n� gizle
-            if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'none';
-            
-            // Aktif soru verilerini al (�evrilmi� veya orijinal)
-            const activeQuestionData = this.currentLanguage === 'tr' ? this.questionsData : this.translatedQuestions;
-            
-            // Se�ilen kategorideki sorular� kar��t�r
-            if (activeQuestionData && activeQuestionData[category]) {
-                this.questions = this.shuffleArray([...activeQuestionData[category]]);
-                this.arrangeBlankFillingFirst();
-                console.log("Soru say�s�:", this.questions.length);
-                console.log("Aktif dil:", this.currentLanguage);
-                
-                // Maksimum soru say�s�n� dinamik olarak hesapla
-                const maxSections = this.getMaxSectionsForCategory();
-                const maxQuestions = maxSections * 5; // Her b�l�mde 5 soru
-                
-                console.log(`Kategori: ${this.selectedCategory}`);
-                console.log(`Maksimum b�l�m: ${maxSections}`);
-                console.log(`Maksimum soru: ${maxQuestions}`);
-                
-                if (this.questions.length > maxQuestions) {
-                    this.questions = this.questions.slice(0, maxQuestions);
-                    console.log("Sorular", maxQuestions, "ile s�n�rland�r�ld� (dinamik sistem)");
-                } else if (this.questions.length < maxQuestions) {
-                    // E�er yeterli soru yoksa mevcut sorular� tekrarla
-                    const originalQuestions = [...this.questions];
-                    while (this.questions.length < maxQuestions) {
-                        this.questions = this.questions.concat(this.shuffleArray([...originalQuestions]));
-                    }
-                    this.questions = this.questions.slice(0, maxQuestions);
-                    console.log("Yetersiz soru! Sorular tekrarlanarak", maxQuestions, "soraya ��kar�ld�");
-                }
-                
-                // Toplam puan g�stergesini ba�lat
-                this.updateTotalScoreDisplay();
-                
-                // Oyunu ba�lat
-                this.startQuiz();
-            } else {
-                console.error("Kategori verileri bulunamad�:", category);
-                this.showToast(this.getTranslation('categoryLoadError') || "Se�ilen kategoride soru bulunamad�. L�tfen ba�ka bir kategori se�in.", "toast-error");
-                
-                // Kategori se�im ekran�n� tekrar g�ster
-                if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'block';
-            }
-        } catch (error) {
-            console.error("selectCategory fonksiyonunda hata:", error);
-            this.showToast(this.getTranslation('categorySelectionError') || "Kategori se�ilirken bir hata olu�tu. L�tfen tekrar deneyin.", "toast-error");
-            
-            // Kategori se�im ekran�n� tekrar g�ster
-            if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'block';
-        }
-    },
-    
-    // Se�ilen kategori i�in sorular� y�kle
-    loadQuestionsForCategory: function(category) {
-        if (!this.questionsData[category]) {
-            console.error(`${category} kategorisi i�in soru bulunamad�!`);
-            return;
-        }
-        
-        // Kategorinin sorular�n� al ve kar��t�r
-        this.questions = this.shuffleArray([...this.questionsData[category]]);
-        
-        // Zorluk seviyesine g�re s�rala (iste�e ba�l�)
-        // this.questions.sort((a, b) => (a.difficulty || 1) - (b.difficulty || 1));
-        
-        // �lk soruyu g�ster
-        this.currentQuestionIndex = 0;
-        this.score = 0;
-        this.correctAnswers = 0; // <-- EKLEND�
-        // this.lives = 5; // BUNU S�L�YORUM
-        this.answeredQuestions = 0;
-        this.answerTimes = [];
-        this.sectionStats = []; // B�l�m istatistiklerini s�f�rla
-        this.currentSection = 1; // B�l�m numaras�n� s�f�rla
-        this.resetJokerUsage(); // Sadece kullan�m durumlar�n� s�f�rla, envanter korunsun
-        
-        // Quiz ekran�n� g�ster ve ilk soruyu y�kle
-        this.startQuiz();
-    },
-    
-    // Diziyi kar��t�r (Fisher-Yates algoritmas�)
-    shuffleArray: function(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    },
-    
-    // Quiz'i ba�lat
-    startQuiz: function() {
-        // Body'ye quiz aktif class'�n� ekle - logo gizlemek i�in
-        document.body.classList.add('quiz-active');
-        document.body.classList.remove('category-selection');
-        
-        // �nce t�m ana b�l�mleri gizle, sadece quiz ekran�n� g�ster
-        if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'none';
-        if (this.quizElement) this.quizElement.style.display = 'block';
-        if (this.resultElement) this.resultElement.style.display = 'none';
-        
-        // Oyun aray�z�ne kalan di�er elemanlar� da gizle
-        const mainMenu = document.getElementById('main-menu');
-        if (mainMenu) mainMenu.style.display = 'none';
-        
-        const onlineGameOptions = document.getElementById('online-game-options');
-        if (onlineGameOptions) onlineGameOptions.style.display = 'none';
-        
-        const globalLeaderboard = document.getElementById('global-leaderboard'); 
-        if (globalLeaderboard) globalLeaderboard.style.display = 'none';
-        
-        const winnerScreen = document.getElementById('winner-screen');
-        if (winnerScreen) winnerScreen.style.display = 'none';
-        
-        // Tekli oyun modunda chat ekran�n� gizle
-        const gameChatContainer = document.getElementById('game-chat-container');
-        if (gameChatContainer) {
-            gameChatContainer.style.display = 'none';
-        }
-        
-        // "Bilgisel Bilgi Yar��mas�" ba�l���n� ve ikonunu gizle
-        const quizTitle = document.querySelector('h1');
-        if (quizTitle && quizTitle.innerText.includes('Bilgisel Bilgi Yar��mas�')) {
-            quizTitle.style.display = 'none';
-        }
-        
-        // Footer i�erisindeki t�m i�eri�i (TEKNOVA B�L���M yaz�s�, logo, ikon vb.) gizle
-        const footer = document.querySelector('footer');
-        if (footer) {
-            footer.style.display = 'none';
-        }
-        
-        // Logo veya di�er ikonlar� da gizle
-        const logoIcons = document.querySelectorAll('.logo, .logo-icon, .company-info, .company-logo');
-        logoIcons.forEach(icon => {
-            icon.style.display = 'none';
-        });
-        
-        // Skorlar� g�ncelle
-        this.updateScoreDisplay();
-        
-        // Joker butonlar�n� ba�lang�� durumuna getir
-        this.updateJokerButtons();
-        
-        // �lk soruyu g�ster
-        this.displayQuestion(this.questions[0]);
-    },
-    
-    // Skoru g�ncelle
-    updateScoreDisplay: function() {
-        if (this.scoreElement) {
-            this.scoreElement.innerHTML = `
-                <div class="score-container">
-                    <span class="score-value">${this.score}</span>
-                    <span class="score-label">${this.getTranslation('score')}</span>
-                </div>
-            `;
-        }
-        
-        // Oyun s�ras�ndaki puan g�stergesini g�ncelle
-        const currentScoreElement = document.getElementById('current-score');
-        if (currentScoreElement) {
-            currentScoreElement.textContent = this.score;
-        }
-        
-        // Toplam puan g�stergesini g�ncelle
-        this.updateTotalScoreDisplay();
-        
-        // Canlar� g�ncelle
-        this.updateLives();
-    },
-    
-    // Soruyu g�ster
-    displayQuestion: function(questionData) {
-        if (!questionData) {
-            console.error("Soru verisi bulunamad�!");
-            return;
-        }
-        
-        // �nceki ipucu mesajlar�n� temizle
-        const existingHintMessages = document.querySelectorAll('.hint-message');
-        existingHintMessages.forEach(element => {
-            element.remove();
-        });
-        
-        // E�er soru bo�luk doldurma ise farkl� g�ster
-        if (questionData.type === "BlankFilling") {
-            this.loadBlankFillingQuestion(questionData);
-            return;
-        }
-        
-        // E�er soru do�ru/yanl�� tipindeyse farkl� g�ster
-        if (questionData.type === "Do�ruYanl��" || questionData.type === "TrueFalse") {
-            this.loadTrueFalseQuestion(questionData);
-            return;
-        }
-        
-        // Sonu� alan�n� temizle
-        if (this.resultElement) {
-            this.resultElement.innerHTML = '';
-            this.resultElement.className = 'result';
-            this.resultElement.style.display = 'none';
-        }
-        
-        // Sonraki soru butununu gizle
-        if (this.nextButton) {
-            this.nextButton.style.display = 'none';
-        }
-        
-        // Soru metnini g�ster
-        if (this.questionElement) {
-            // �evrilmi� soru kullan (e�er varsa)
-            if (questionData.translations && questionData.translations[this.currentLanguage] && questionData.translations[this.currentLanguage].question) {
-                this.questionElement.textContent = questionData.translations[this.currentLanguage].question;
-            } else {
-                this.questionElement.textContent = questionData.question;
-            }
-            
-            // E�er soruda g�rsel varsa g�ster
-            if (questionData.imageUrl) {
-                const imageContainer = document.createElement('div');
-                imageContainer.className = 'question-image';
-                const img = document.createElement('img');
-                img.src = questionData.imageUrl;
-                img.alt = this.getTranslation('questionImage');
-                img.style.maxWidth = '100%';
-                img.style.maxHeight = '300px';
-                img.style.margin = '10px auto';
-                img.style.display = 'block';
-                img.onerror = () => {
-                    console.warn(`${this.getTranslation('imageLoadError')}: ${questionData.imageUrl}`);
-                    this.showToast(this.getTranslation('imageLoadError'), "toast-warning");
-                    if (this.questions.length > this.currentQuestionIndex + 1) {
-                        clearInterval(this.timerInterval);
-                        setTimeout(() => {
-                            this.currentQuestionIndex++;
-                            this.displayQuestion(this.questions[this.currentQuestionIndex]);
-                        }, 1000);
-                    } else {
-                        setTimeout(() => {
-                            this.showResult();
-                        }, 1000);
-                    }
-                    return;
-                };
-                const oldImages = this.questionElement.querySelectorAll('.question-image');
-                oldImages.forEach(img => img.remove());
-                imageContainer.appendChild(img);
-                this.questionElement.appendChild(imageContainer);
-            }
-        }
-        
-        // ��klar� g�ster
-        if (this.optionsElement) {
-            this.optionsElement.innerHTML = '';
-            this.optionsElement.style.display = '';
-            this.optionsElement.style.justifyContent = '';
-            this.optionsElement.style.width = '';
-            
-            // �evrilmi� ��klar� kullan (e�er varsa)
-            let displayOptions = [];
-            if (questionData.translations && questionData.translations[this.currentLanguage] && questionData.translations[this.currentLanguage].options) {
-                displayOptions = questionData.translations[this.currentLanguage].options;
-            } else {
-                displayOptions = questionData.options || [];
-            }
-            
-            if (!Array.isArray(displayOptions) && questionData.correctAnswer) {
-                const wrongOptions = this.generateWrongOptions(questionData.correctAnswer);
-                const allOptions = [questionData.correctAnswer, ...wrongOptions];
-                this.displayOptions(this.shuffleArray(allOptions));
-            } else {
-                this.displayOptions(displayOptions);
-            }
-        }
-        
-        // Joker butonlar�n�n durumunu g�ncelle
-        this.updateJokerButtons();
-
-        // Sayac� ba�lat
-        this.startTimer();
-    },
-    
-    // ��klar� ekrana yazd�r
-    displayOptions: function(options) {
-        if (!this.optionsElement) return;
-        
-        options.forEach(option => {
-            const optionButton = document.createElement('button');
-            optionButton.className = 'option';
-            optionButton.textContent = option;
-            
-            // ��k t�klama olay�
-            optionButton.addEventListener('click', (e) => {
-                // Zaten t�klanm�� veya devre d��� b�rak�lm�� ��klara t�klamay� �nle
-                if (e.target.disabled || e.target.classList.contains('selected') || 
-                    document.querySelector('.option.selected')) {
-                    return;
-                }
-                
-                // T�klanan ��k� i�aretle
-                e.target.classList.add('selected');
-                
-                // Cevab� kontrol et
-                this.checkAnswer(option);
-            });
-            
-            this.optionsElement.appendChild(optionButton);
-        });
-    },
-    
-    // Zamanlay�c�y� ba�lat
-    startTimer: function() {
-        // Var olan zamanlay�c�y� temizle
-        if (this.timerInterval) {
-            clearInterval(this.timerInterval);
-        }
-        const currentQuestion = this.questions[this.currentQuestionIndex];
-        const isBlankFilling = currentQuestion.type === "BlankFilling";
-        this.timeLeft = isBlankFilling ? this.TIME_PER_BLANK_FILLING_QUESTION : this.TIME_PER_QUESTION;
-        this.updateTimeDisplay();
-        this.timerInterval = setInterval(() => {
-            this.timeLeft--;
-            this.updateTimeDisplay();
-            if (this.timeLeft <= 0) {
-                clearInterval(this.timerInterval);
-                this.handleTimeUp(); // T�m soru tiplerinde handleTimeUp �a�r�lacak
-            }
-        }, 1000);
-    },
-    
-    // Zaman g�stergesini g�ncelle
-    updateTimeDisplay: function() {
-        if (this.timeLeftElement) {
-            this.timeLeftElement.textContent = this.timeLeft;
-            
-            // Son 5 saniyede k�rm�z� yap
-            if (this.timeLeft <= 5) {
-                this.timeLeftElement.classList.add('time-low');
-            } else {
-                this.timeLeftElement.classList.remove('time-low');
-            }
-        }
-    },
-    
-    // Cevab� kontrol et
-    checkAnswer: function(selectedAnswer) {
-        // E�er zaten cevap verilmi�se i�lem yapma
-        if (document.querySelector('.result').style.display === 'block') {
-            return;
-        }
-        
-        // Sayac� durdur
-        clearInterval(this.timerInterval);
-        
-        const currentQuestion = this.questions[this.currentQuestionIndex];
-        const correctAnswer = currentQuestion.correctAnswer;
-        
-        // Cevap do�ru mu?
-        const isCorrect = selectedAnswer === correctAnswer;
-        
-        // Cevab� mevcut b�l�m istatisti�ine ekle
-        this.recordAnswer(isCorrect);
-
-        // Do�ru/Yanl�� tipindeki sorular i�in
-        if (currentQuestion.type === "Do�ruYanl��" || currentQuestion.type === "TrueFalse") {
-            const tfOptions = document.querySelectorAll('.true-false-option');
-            tfOptions.forEach(option => {
-                option.disabled = true;
-                const isTrue = option.classList.contains('true');
-                const isFalse = option.classList.contains('false');
-                
-                // Do�ru cevap DO�RU ise
-                if (correctAnswer === this.getTranslation('trueOption') && isTrue) {
-                    option.classList.add('correct');
-                }
-                // Do�ru cevap YANLI� ise
-                else if (correctAnswer === this.getTranslation('falseOption') && isFalse) {
-                    option.classList.add('correct');
-                }
-                
-                // Se�ilen yanl�� ise
-                if ((isTrue && selectedAnswer === this.getTranslation('trueOption') && !isCorrect) ||
-                    (isFalse && selectedAnswer === this.getTranslation('falseOption') && !isCorrect)) {
-                    option.classList.add('wrong');
-                }
-                
-                // Se�ilen buton ise
-                if ((isTrue && selectedAnswer === this.getTranslation('trueOption')) ||
-                    (isFalse && selectedAnswer === this.getTranslation('falseOption'))) {
-                    option.classList.add('selected');
-                }
-            });
-        } else {
-            // Normal �oktan se�meli sorular i�in
-            const options = document.querySelectorAll('.option');
-            options.forEach(option => {
-                option.disabled = true;
-                option.classList.add('answered'); // Cevapland���n� belirt
-                
-                if (option.textContent === correctAnswer) {
-                    option.classList.add('correct');
-                } else if (option.textContent === selectedAnswer && !isCorrect) {
-                    option.classList.add('wrong');
-                }
-            });
-        }
-        
-        // Sonucu g�ster
-        const resultElement = document.getElementById('result');
-        if (!resultElement) {
-            console.warn('Result elementi bulunamad�, olu�turuluyor...');
-            this.createResultElement();
-        }
-        
-        if (resultElement) {
-            if (isCorrect) {
-                // Tam ekran do�ru modal�
-                const correctModal = document.createElement('div');
-                correctModal.className = 'correct-modal';
-                correctModal.innerHTML = `
-                    <div class="correct-modal-content">
-                        <div class="correct-modal-icon">
-                            <i class="fas fa-crown"></i>
-                        </div>
-                        <div class="correct-modal-text">${this.getTranslation('correct')}</div>
-                        <div class="correct-modal-score">+${Math.max(1, Math.ceil(this.timeLeft / 5))}</div>
-                        <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
-                    </div>
-                `;
-                document.body.appendChild(correctModal);
-                correctModal.querySelector('#next-question').onclick = () => {
-                    correctModal.remove();
-                    this.showNextQuestion();
-                };
-                correctModal.onclick = (e) => {
-                    if (e.target === correctModal) {
-                        correctModal.remove();
-                        this.showNextQuestion();
-                    }
-                };
-                this.resultElement.style.display = 'none';
-                this.resultElement.innerHTML = '';
-                this.resultElement.className = 'result';
-                // Puan� art�r
-                const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
-                this.addScore(scoreForQuestion);
-        this.recordAnswer(true);
-                this.correctAnswers++;
-                // Ses efekti �al
-                if (this.soundEnabled) {
-                    const correctSound = document.getElementById('sound-correct');
-                    if (correctSound) correctSound.play().catch(e => console.error("Ses �al�namad�:", e));
-                }
-            } else {
-                // Tam ekran yanl�� modal�
-                this.loseLife();
-                const wrongModal = document.createElement('div');
-                wrongModal.className = 'wrong-modal';
-                wrongModal.innerHTML = `
-                    <div class="wrong-modal-content">
-                        <div class="wrong-modal-icon">
-                            <i class="fas fa-times-circle"></i>
-                        </div>
-                        <div class="wrong-modal-text">${this.getTranslation('wrong')}</div>
-                        <div class="wrong-modal-correct">${this.getTranslation('correctAnswer')}: <strong>${correctAnswer}</strong></div>
-                        <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
-                    </div>
-                `;
-                document.body.appendChild(wrongModal);
-                wrongModal.querySelector('#next-question').onclick = () => {
-                    wrongModal.remove();
-                    this.showNextQuestion();
-                };
-                wrongModal.onclick = (e) => {
-                    if (e.target === wrongModal) {
-                        wrongModal.remove();
-                        this.showNextQuestion();
-                    }
-                };
-                this.resultElement.style.display = 'none';
-                this.resultElement.innerHTML = '';
-                this.resultElement.className = 'result';
-                // Ses efekti �al
-                if (this.soundEnabled) {
-                    const wrongSound = document.getElementById('sound-wrong');
-                    if (wrongSound) wrongSound.play().catch(e => console.error("Ses �al�namad�:", e));
-                }
-            }
-        }
-        
-        // Sonuc elementini g�r�n�r yap
-        resultElement.style.display = 'block';
-        
-        // Sonraki soru butonuna olay dinleyicisi ekle
-        const nextBtn = resultElement.querySelector('#next-question');
-        if (nextBtn) {
-            nextBtn.id = 'next-question';
-            nextBtn.className = 'next-button';
-            nextBtn.textContent = this.getTranslation('next');
-            nextBtn.addEventListener('click', () => this.showNextQuestion());
-            resultElement.appendChild(nextBtn);
-        }
-    },
-    
-    // Bo�luk doldurma cevab�n� kontrol et
-    checkBlankFillingAnswer: function(userAnswer, correctAnswer) {
-        clearInterval(this.timerInterval);
-        const isCorrect = userAnswer.toLowerCase() === correctAnswer.toLowerCase();
-        this.recordAnswer(isCorrect);
-
-        const answerInput = document.getElementById('blank-answer');
-        const submitButton = document.getElementById('submit-answer');
-        if (answerInput) answerInput.disabled = true;
-        if (submitButton) submitButton.disabled = true;
-
-        // Sonucu tam ekran modal ile g�ster
-        if (isCorrect) {
-            // DO�RU MODAL
-            const correctModal = document.createElement('div');
-            correctModal.className = 'correct-modal';
-            correctModal.innerHTML = `
-                <div class="correct-modal-content">
-                    <div class="correct-modal-icon"><i class="fas fa-crown"></i></div>
-                    <div class="correct-modal-text">${this.getTranslation('correct')}</div>
-                    <div class="correct-modal-score">+${Math.max(1, Math.ceil(this.timeLeft / 5))}</div>
-                    <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
-                </div>
-            `;
-            document.body.appendChild(correctModal);
-            correctModal.querySelector('#next-question').onclick = () => {
-                correctModal.remove();
-                this.showNextQuestion();
-            };
-            correctModal.onclick = (e) => {
-                if (e.target === correctModal) correctModal.remove();
-            };
-            // Puan� art�r
-            const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
-            this.addScore(scoreForQuestion);
-        this.recordAnswer(true);
-            this.correctAnswers++;
-            if (this.soundEnabled) {
-                const correctSound = document.getElementById('sound-correct');
-                if (correctSound) correctSound.play().catch(e => {});
-            }
-        } else {
-            // YANLI� MODAL
-            this.loseLife();
-            const wrongModal = document.createElement('div');
-            wrongModal.className = 'wrong-modal';
-            wrongModal.innerHTML = `
-                <div class="wrong-modal-content">
-                    <div class="wrong-modal-icon"><i class="fas fa-times-circle"></i></div>
-                    <div class="wrong-modal-text">${this.getTranslation('wrong')}</div>
-                    <div class="wrong-modal-correct">${this.getTranslation('correctAnswer')}: <strong>${correctAnswer}</strong></div>
-                    <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
-                </div>
-            `;
-            document.body.appendChild(wrongModal);
-            wrongModal.querySelector('#next-question').onclick = () => {
-                wrongModal.remove();
-                this.showNextQuestion();
-            };
-            wrongModal.onclick = (e) => {
-                if (e.target === wrongModal) wrongModal.remove();
-            };
-            if (this.soundEnabled) {
-                const wrongSound = document.getElementById('sound-wrong');
-                if (wrongSound) wrongSound.play().catch(e => {});
-            }
-        }
-
-        this.updateScoreDisplay();
-        this.answeredQuestions++;
-        this.answerTimes.push(this.TIME_PER_BLANK_FILLING_QUESTION - this.timeLeft);
-
-        // Can kontrol� kald�r�ld� - loseLife fonksiyonu kendi ba��na can sat�n alma modal�n� handle ediyor
-    },
-    
-    // Do�ru cevaba benzer yanl�� ��klar �ret
-    generateWrongOptions: function(correctAnswer) {
-        // Bu fonksiyon, do�ru cevaba benzer yanl�� ��klar �retmek i�in �e�itli stratejiler kullan�r
-        
-        // Basit bir strateji: T�rk�e'deki yayg�n kelimelerden rastgele 3 tane se�
-        const commonWords = [
-            "Elma", "T�rkiye", "Ankara", "�stanbul", "Kitap", "Bilgisayar", "Araba", 
-            "Deniz", "G�ne�", "Ay", "Y�ld�z", "Okul", "��retmen", "��renci",
-            "�i�ek", "A�a�", "Orman", "Da�", "Nehir", "G�l", "Okyanus", "M�zik",
-            "Film", "Tiyatro", "Spor", "Futbol", "Basketbol", "Voleybol", "Tenis"
-        ];
-        
-        let wrongOptions = [];
-        
-        // Do�ru cevab� d�n��t�r (say� ise kelimeye �evir, tek kelime ise ba�ka kelimeler se�)
-        if (!isNaN(correctAnswer)) {
-            // Say�ysa, yak�n say�lar �ret
-            const correctNum = parseInt(correctAnswer);
-            const randomOffset = () => Math.floor(Math.random() * 10) + 1;
-            
-            wrongOptions = [
-                String(correctNum + randomOffset()),
-                String(correctNum - randomOffset()),
-                String(correctNum * 2)
-            ];
-        } else {
-            // Kelime ise, rastgele kelimeler se�
-            let availableWords = commonWords.filter(word => word.toLowerCase() !== correctAnswer.toLowerCase());
-            availableWords = this.shuffleArray(availableWords);
-            wrongOptions = availableWords.slice(0, 3);
-        }
-        
-        return wrongOptions;
-    },
-    
-    // Mevcut seviye i�in sorular� y�kle
-    loadQuestionsForCurrentLevel: function() {
-        console.log(`Seviye ${this.currentLevel} i�in sorular y�kleniyor...`);
-        
-        if (!this.questionsData || !this.selectedCategory) {
-            console.error("Soru verisi veya se�ili kategori bulunamad�!");
-            return;
-        }
-        
-        // Se�ilen kategoriden sorular
-        let categoryQuestions = this.questionsData[this.selectedCategory] || [];
-        
-        if (categoryQuestions.length === 0) {
-            console.error(`${this.selectedCategory} kategorisinde soru bulunamad�!`);
-            return;
-        }
-        
-        // Progressive difficulty sistemi: B�l�me g�re otomatik zorluk belirleme
-        const targetDifficulty = this.getProgressiveDifficulty();
-        const difficultyNames = { 1: 'Kolay', 2: 'Orta', 3: 'Zor' };
-        const difficultyName = difficultyNames[targetDifficulty];
-        
-        console.log(`?? Progressive Difficulty: B�l�m ${this.currentSection}/${this.getMaxSectionsForCategory()} - Zorluk: ${difficultyName} (${targetDifficulty})`);
-        
-        // Sorular� zorluklar�na g�re grupla
-        const groupedByDifficulty = {};
-        categoryQuestions.forEach(question => {
-            // Zorluk seviyesi belirtilmemi�se 2 olarak kabul et (orta seviye)
-            const difficulty = question.difficulty || 2;
-            
-            if (!groupedByDifficulty[difficulty]) {
-                groupedByDifficulty[difficulty] = [];
-            }
-            
-            groupedByDifficulty[difficulty].push(question);
-        });
-        
-        // Debug bilgisi
-        console.log('Se�ilen kategori:', this.selectedCategory);
-        console.log('Kategoride toplam soru say�s�:', categoryQuestions.length);
-        console.log('Zorluk seviyelerine g�re grupland�r�lm�� sorular:', groupedByDifficulty);
-        console.log('Zorluk seviyesi 3 olan soru say�s�:', (groupedByDifficulty[3] || []).length);
-        
-        // Se�ilen zorluk seviyesinden sorular al
-        let levelQuestions = [];
-        
-        // SADECE hedef zorluk seviyesinden sorular al
-        const targetQuestions = groupedByDifficulty[targetDifficulty] || [];
-        console.log(`Hedef zorluk seviyesi ${targetDifficulty} i�in mevcut soru say�s�:`, targetQuestions.length);
-        
-        if (targetQuestions.length > 0) {
-            const shuffled = this.shuffleArray([...targetQuestions]);
-            levelQuestions = shuffled;
-            console.log(`? Se�ilen zorluk seviyesi (${targetDifficulty}) i�in ${levelQuestions.length} soru bulundu`);
-        } else {
-            console.warn(`?? Se�ilen zorluk seviyesi (${targetDifficulty}) i�in hi� soru bulunamad�!`);
-        }
-        
-        // E�er hi� soru yoksa kullan�c�y� bilgilendir
-        if (levelQuestions.length === 0) {
-            const difficultyName = difficultyNames[targetDifficulty] || 'Bilinmeyen';
-            
-            alert(`Bu kategoride "${difficultyName}" seviyesinde soru bulunmuyor. L�tfen ba�ka bir kategori veya zorluk seviyesi se�in.`);
-            
-            // Kategori se�imine geri d�n
-            this.displayCategories();
-            return;
-        }
-        
-        // En fazla 10 soru g�ster (kullan�c�n�n se�ti�i zorluk seviyesinden)
-        this.questions = levelQuestions.slice(0, Math.min(10, levelQuestions.length));
-        this.arrangeBlankFillingFirst();
-        
-        // Debug: Y�klenen sorular�n zorluk seviyelerini kontrol et
-        const difficultyCheck = {};
-        this.questions.forEach(q => {
-            const diff = q.difficulty || 'undefined';
-            difficultyCheck[diff] = (difficultyCheck[diff] || 0) + 1;
-        });
-        console.log(`?? Progressive Zorluk: ${difficultyNames[targetDifficulty]} (${targetDifficulty})`);
-        console.log(`? Y�klenen ${this.questions.length} sorunun zorluk da��l�m�:`, difficultyCheck);
-        console.log(`B�l�m ${this.currentSection} i�in ${this.questions.length} soru y�klendi.`);
-        
-        // �lk soruyu g�ster
-        if (this.questions.length > 0) {
-            this.currentQuestionIndex = 0;
-            this.startQuiz();
-        } else {
-            // Yeterli soru yoksa kategori se�imine geri d�n
-            console.error("Bu seviye i�in yeterli soru bulunamad�!");
-            this.displayCategories();
-        }
-    },
-    
-    // Do�ru/Yanl�� tipi sorular� g�ster
-    loadTrueFalseQuestion: function(questionData) {
-        // Sonu� alan�n� temizle
-        if (this.resultElement) {
-            this.resultElement.innerHTML = '';
-            this.resultElement.className = 'result';
-            this.resultElement.style.display = 'none';
-        }
-        
-        // Sonraki soru butununu gizle
-        if (this.nextButton) {
-            this.nextButton.style.display = 'none';
-        }
-        
-        // Soruyu g�ster
-        if (this.questionElement) {
-            // �evirisi varsa �eviriyi g�ster
-            if (questionData.translations && questionData.translations[this.currentLanguage] && questionData.translations[this.currentLanguage].question) {
-                this.questionElement.textContent = questionData.translations[this.currentLanguage].question;
-            } else {
-                this.questionElement.textContent = questionData.question;
-            }
-            
-            // E�er soruda g�rsel varsa g�ster
-            if (questionData.imageUrl) {
-                const imageContainer = document.createElement('div');
-                imageContainer.className = 'question-image';
-                const img = document.createElement('img');
-                img.src = questionData.imageUrl;
-                img.alt = this.getTranslation('questionImage');
-                img.style.maxWidth = '100%';
-                img.style.maxHeight = '300px';
-                img.style.margin = '10px auto';
-                img.style.display = 'block';
-                const oldImages = this.questionElement.querySelectorAll('.question-image');
-                oldImages.forEach(img => img.remove());
-                imageContainer.appendChild(img);
-                this.questionElement.appendChild(imageContainer);
-            }
-        }
-        
-        // Do�ru/Yanl�� se�eneklerini g�ster
-        if (this.optionsElement) {
-            this.optionsElement.innerHTML = '';
-            this.optionsElement.style.display = 'flex';
-            this.optionsElement.style.flexDirection = 'column';
-            this.optionsElement.style.alignItems = 'center';
-            this.optionsElement.style.justifyContent = 'center';
-            this.optionsElement.style.width = '100%';
-            
-            // Se�enekler
-            const trueOption = document.createElement('button');
-            trueOption.className = 'true-false-option true';
-            trueOption.innerHTML = `<i class="fas fa-check"></i> ${this.getTranslation('trueOption')}`;
-            
-            const falseOption = document.createElement('button');
-            falseOption.className = 'true-false-option false';
-            falseOption.innerHTML = `<i class="fas fa-times"></i> ${this.getTranslation('falseOption')}`;
-            
-            // T�klama olaylar�
-            trueOption.addEventListener('click', (e) => {
-                // Zaten cevapland�ysa i�lem yapma
-                if (e.target.disabled || e.target.classList.contains('selected') || 
-                    document.querySelector('.true-false-option.selected') || 
-                    document.querySelector('.result').style.display === 'block') {
-                    return;
-                }
-                
-                // T�klanan ��k� i�aretle
-                e.target.classList.add('selected');
-                
-                this.checkAnswer(this.getTranslation('trueOption'));
-            });
-            
-            falseOption.addEventListener('click', (e) => {
-                // Zaten cevapland�ysa i�lem yapma
-                if (e.target.disabled || e.target.classList.contains('selected') || 
-                    document.querySelector('.true-false-option.selected') || 
-                    document.querySelector('.result').style.display === 'block') {
-                    return;
-                }
-                
-                // T�klanan ��k� i�aretle
-                e.target.classList.add('selected');
-                
-                this.checkAnswer(this.getTranslation('falseOption'));
-            });
-            
-            // Se�enekleri ekle
-            this.optionsElement.appendChild(trueOption);
-            this.optionsElement.appendChild(falseOption);
-        }
-        
-        // Sayac� ba�lat
-        this.startTimer();
-    },
-    
-    // Do�ru/Yanl�� cevab�n� kontrol et
-    selectTrueFalseAnswer: function(selectedAnswer, correctAnswer) {
-        // Sayac� durdur
-        clearInterval(this.timerInterval);
-        
-        const isCorrect = selectedAnswer === correctAnswer;
-        
-        // Cevab� mevcut b�l�m istatisti�ine ekle
-        this.recordAnswer(isCorrect);
-        
-        // ��klar� devre d��� b�rak ve do�ru/yanl�� renklendir
-        const options = document.querySelectorAll('.option');
-        options.forEach(option => {
-            option.disabled = true;
-            
-            if (option.textContent === correctAnswer) {
-                option.classList.add('correct');
-            } else if (option.textContent === selectedAnswer && !isCorrect) {
-                option.classList.add('wrong');
-            }
-        });
-        
-        // Sonucu g�ster
-        if (this.resultElement) {
-            if (isCorrect) {
-                this.resultElement.innerHTML = `
-                    <div class="correct-answer-container">
-                        <div class="correct-icon"><i class="fas fa-badge-check"></i></div>
-                        <div class="correct-text">Do�ru!</div>
-                        <div class="correct-animation">
-                            <span>+</span>
-                            <span>${Math.max(1, Math.ceil(this.timeLeft / 3))}</span>
-                        </div>
-                    </div>
-                    <button id="next-question" class="next-button">Sonraki Soru</button>
-                `;
-                this.resultElement.className = 'result correct';
-                
-                // Sonraki soru butonuna olay dinleyicisi ekle - showNextQuestion fonksiyonunu �a��r
-                const nextBtn = this.resultElement.querySelector('#next-question');
-                if (nextBtn) {
-                    nextBtn.addEventListener('click', () => this.showNextQuestion());
-                }
-                
-                // Puan� art�r - kalan s�reye g�re puan ver (min 1, max 5)
-                const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 3));
-                this.addScore(scoreForQuestion);
-        this.recordAnswer(true);
-                
-                // Ses efekti �al
-                if (this.soundEnabled) {
-                    const correctSound = document.getElementById('sound-correct');
-                    if (correctSound) correctSound.play().catch(e => console.error("Ses �al�namad�:", e));
-                }
-            } else {
-                this.resultElement.innerHTML = `Yanl��! Do�ru cevap: <strong>${correctAnswer}</strong>`;
-                this.resultElement.className = 'result wrong';
-                
-                // Can azalt
-                this.loseLife();
-                
-                // Ses efekti �al
-                if (this.soundEnabled) {
-                    const wrongSound = document.getElementById('sound-wrong');
-                    if (wrongSound) wrongSound.play().catch(e => console.error("Ses �al�namad�:", e));
-                }
-                
-                // Yanl�� cevap durumunda sonraki soru butonunu g�ster
-                if (this.nextButton) {
-                    this.nextButton.style.display = 'block';
-                }
-            }
-            
-            this.resultElement.style.display = 'block';
-        }
-        
-        // Skoru g�ncelle
-        this.updateScoreDisplay();
-        
-        // �statisti�i g�ncelle
-        this.answeredQuestions++;
-        this.answerTimes.push(this.TIME_PER_QUESTION - this.timeLeft);
-        
-        // Can kontrol� kald�r�ld� - loseLife fonksiyonu kendi ba��na can sat�n alma modal�n� handle ediyor
-    },
-    
-    // Profil sayfas�n� g�ster
-    showProfilePage: function() {
-        // Ana i�erikleri gizle
-        if (this.quizElement) this.quizElement.style.display = 'none';
-        if (this.resultElement) this.resultElement.style.display = 'none';
-        if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'none';
-        
-        const mainMenu = document.getElementById('main-menu');
-        if (mainMenu) mainMenu.style.display = 'none';
-        
-        const onlineGameOptions = document.getElementById('online-game-options');
-        if (onlineGameOptions) onlineGameOptions.style.display = 'none';
-        
-        const globalLeaderboard = document.getElementById('global-leaderboard'); 
-        if (globalLeaderboard) globalLeaderboard.style.display = 'none';
-        
-        // Di�er sayfalar� da gizle
-        const friendsPage = document.getElementById('friends-page');
-        if (friendsPage) friendsPage.style.display = 'none';
-        
-        const adminPanel = document.getElementById('admin-panel');
-        if (adminPanel) adminPanel.style.display = 'none';
-        
-        // Profil sayfas�n� g�r�nt�le
+    // Debug: Profil düzenleme testini çalıştır
+    testProfileEdit: function() {
+        console.log('Profil düzenleme testi başlatılıyor...');
+        
+        // Profil sayfasının açık olup olmadığını kontrol et
         const profilePage = document.getElementById('profile-page');
-        if (profilePage) {
-            profilePage.style.display = 'block';
-            document.body.classList.add('profile-active');
+        if (!profilePage || profilePage.style.display === 'none') {
+            console.log('Profil sayfası kapalı, açılıyor...');
+            this.showProfilePage();
             
-            // Profil bilgilerini y�kle
-            this.loadProfileData();
-            
-            // Profil sayfas� butonlar�na event listener'lar� ekle
-            this.addProfileEventListeners();
+            // Sayfa açıldıktan sonra test et
+            setTimeout(() => {
+                this.testProfileEditButton();
+            }, 1000);
         } else {
-            // Profil sayfas� yoksa uyar� g�ster
-            this.showToast("Profil sayfas� hen�z eklenmemi�", "toast-warning");
-            
-            // Ana men�ye geri d�n
-            if (mainMenu) mainMenu.style.display = 'block';
+            this.testProfileEditButton();
         }
     },
     
-    // Profil sayfas� butonlar�na olay dinleyicileri ekle
-    addProfileEventListeners: function() {
-        // Ana men�ye d�n butonu
-        const backFromProfileBtn = document.getElementById('back-from-profile');
-        if (backFromProfileBtn) {
-            backFromProfileBtn.addEventListener('click', () => {
-                // Profil sayfas�n� gizle
-                const profilePage = document.getElementById('profile-page');
-                if (profilePage) profilePage.style.display = 'none';
-                document.body.classList.remove('profile-active');
-                
-                // Ana men�y� g�ster
-                const mainMenu = document.getElementById('main-menu');
-                if (mainMenu) mainMenu.style.display = 'block';
-            });
-        }
-        
-        // ��k�� yap butonu
-        const logoutFromProfileBtn = document.getElementById('logout-from-profile');
-        if (logoutFromProfileBtn) {
-            logoutFromProfileBtn.addEventListener('click', () => {
-                // Firebase ile ��k�� yap
-                if (firebase.auth) {
-                    firebase.auth().signOut().then(() => {
-                        window.location.href = 'login.html';
-                    }).catch(error => {
-                        console.error("��k�� yap�l�rken hata olu�tu:", error);
-                        this.showToast("��k�� yap�l�rken bir hata olu�tu", "toast-error");
-                    });
-                }
-            });
-        }
-        
-        // Profili d�zenle butonu
-        const editProfileBtn = document.getElementById('edit-profile-btn');
-        if (editProfileBtn) {
-            editProfileBtn.addEventListener('click', () => {
-                this.showEditProfileModal();
-            });
-            // Buton metnini g�ncelle
-            editProfileBtn.innerHTML = '<i class="fas fa-edit"></i> Profili D�zenle';
+    // Debug: Profil düzenleme modalını direkt aç
+    openEditModal: function() {
+        console.log('Profil düzenleme modalı direkt açılıyor...');
+        if (typeof this.showEditProfileModal === 'function') {
+            this.showEditProfileModal();
+        } else {
+            console.error('showEditProfileModal fonksiyonu bulunamadı!');
         }
     },
     
-    // Profil verilerini y�kle
-    loadProfileData: function() {
-        const userId = this.getCurrentUserId();
-        
-        // Kullan�c� bilgilerini y�kle
-        if (firebase.auth && firebase.auth().currentUser) {
-            const user = firebase.auth().currentUser;
+    // Profil düzenleme butonunu test et
+    testProfileEditButton: function() {
+        const editBtn = document.getElementById('edit-profile-btn');
+        if (editBtn) {
+            console.log('Profil düzenleme butonu bulundu:', editBtn);
+            console.log('Buton görünür mü?', editBtn.offsetParent !== null);
+            console.log('Buton event listener\'ları:', editBtn.onclick);
             
-            // Kullan�c� ad� ve e-posta
-            const profileName = document.getElementById('profile-name');
-            if (profileName) profileName.textContent = user.displayName || user.email || 'Kullan�c�';
-            
-            const profileEmail = document.getElementById('profile-email');
-            if (profileEmail) profileEmail.textContent = user.email || '';
-            
-            // �yelik tarihi
-            const joinDate = document.getElementById('profile-join-date');
-            if (joinDate && user.metadata && user.metadata.creationTime) {
-                const date = new Date(user.metadata.creationTime);
-                joinDate.textContent = date.toLocaleDateString('tr-TR');
-            }
+            // Butona programatik olarak tıkla
+            editBtn.click();
+        } else {
+            console.error('Profil düzenleme butonu bulunamadı!');
         }
-        
-        // Firebase'den kullan�c� verilerini y�kle (puan, istatistikler vs.)
-        this.loadFirebaseUserStats(userId);
-        
-        // Ger�ek istatistikleri g�ncelle
-        this.updateRealUserStats();
-            
-        // Rozetleri y�kle
-        this.loadUserBadgesForProfile(userId);
-            
-        // Y�ksek skorlar� y�kle
-        this.loadHighScoresForProfile(userId);
-            
-        // Son aktiviteleri y�kle
-        this.loadRecentActivitiesForProfile(userId);
-    },
-
-    // Mevcut kullan�c� ID'sini al
-    getCurrentUserId: function() {
-        if (firebase.auth && firebase.auth().currentUser) {
-            return firebase.auth().currentUser.uid;
-        }
-        // Firebase yoksa yerel ID kullan
-        return 'local-user';
-    },
-
-    // Test verileri olu�tur (geli�tirme ama�l�)
-    createTestData: function() {
-        const userId = this.getCurrentUserId();
-        
-        // Test skorlar� olu�tur
-        const testScores = [
-            { category: 'Genel K�lt�r', score: 85, totalQuestions: 10, correctAnswers: 8, date: Date.now() - 86400000 },
-            { category: 'Bilim', score: 92, totalQuestions: 10, correctAnswers: 9, date: Date.now() - 172800000 },
-            { category: 'Tarih', score: 78, totalQuestions: 10, correctAnswers: 7, date: Date.now() - 259200000 },
-            { category: 'Spor', score: 90, totalQuestions: 10, correctAnswers: 9, date: Date.now() - 345600000 },
-            { category: 'Co�rafya', score: 100, totalQuestions: 10, correctAnswers: 10, date: Date.now() - 432000000 }
-        ];
-        
-        // Skorlar� localStorage'a kaydet
-        localStorage.setItem('quiz-high-scores', JSON.stringify(testScores));
-        
-        // �statistikleri hesapla ve kaydet
-        this.calculateRealStats();
-        
-        // �lk oyun rozetini ver
-        this.badgeSystem.awardBadge(userId, this.badgeSystem.badges.firstGame);
-        
-        console.log('Test verileri olu�turuldu!');
-        this.showToast('Test verileri olu�turuldu! Profil sayfas�n� yenileyin.', 'toast-success');
     },
     
-    // Firebase'den kullan�c� istatistiklerini y�kle
+    // Firebase'den kullanıcı istatistiklerini yükle
     loadFirebaseUserStats: function(userId) {
         if (!firebase.firestore) {
-            // Firebase yoksa localStorage'dan istatistikleri al
-            const stats = this.getStats();
+            // Firebase yoksa localStorage'dan istatistikleri al ve hesapla
+            console.log('Firebase yok, localStorage\'dan istatistikler yükleniyor...');
+            const stats = this.calculateRealStats();
             this.updateProfileStats(stats);
+            
+            // Toplam puanı da güncelle
+            const profileTotalScore = document.getElementById('profile-total-score');
+            if (profileTotalScore) {
+                profileTotalScore.textContent = this.totalScore || stats.totalScore || 0;
+            }
+            
+            // Seviyeyi güncelle
+            const profileUserLevel = document.getElementById('profile-user-level');
+            if (profileUserLevel) {
+                const totalPoints = this.totalScore || stats.totalScore || 0;
+                const level = Math.floor(totalPoints / 500) + 1;
+                profileUserLevel.textContent = level;
+            }
             return;
         }
         
         const db = firebase.firestore();
         
-        // Kullan�c� dok�man�ndan temel bilgileri al
+        // Kullanıcı dokümanından temel bilgileri al
         db.collection('users').doc(userId).get()
             .then((doc) => {
                 if (doc.exists) {
                     const userData = doc.data();
-                    console.log('Kullan�c� verileri:', userData);
+                    console.log('Kullanıcı verileri:', userData);
                     
                     // Firebase'den gelen totalScore'u quizApp'e ata
                     if (userData.totalScore !== undefined) {
                         this.totalScore = userData.totalScore;
                     }
                     
-                    // Profilde toplam puan� g�ster
+                    // Profilde toplam puanı göster
                     const profileTotalScore = document.getElementById('profile-total-score');
                     if (profileTotalScore) {
                         profileTotalScore.textContent = this.totalScore || 0;
                     }
                     
-                    // Profilde seviyeyi g�ster
+                    // Profilde seviyeyi göster
                     const profileUserLevel = document.getElementById('profile-user-level');
                     if (profileUserLevel) {
                         const level = Math.floor((this.totalScore || 0) / 500) + 1;
                         profileUserLevel.textContent = level;
                     }
                     
-                    // E�er kullan�c� verisinde istatistik yoksa skorlardan hesapla
+                    // Eğer kullanıcı verisinde istatistik yoksa skorlardan hesapla
                     if (!userData.stats) {
                         this.calculateStatsFromScores(userId);
                     } else {
                         this.updateProfileStats(userData.stats);
                     }
                 } else {
-                    // Kullan�c� verisi yoksa skorlardan hesapla
+                    // Kullanıcı verisi yoksa skorlardan hesapla
                     this.calculateStatsFromScores(userId);
                 }
             })
             .catch((error) => {
-                console.error('Kullan�c� verileri y�klenirken hata:', error);
+                console.error('Kullanıcı verileri yüklenirken hata:', error);
                 // Hata durumunda localStorage'dan al
                 const stats = this.getStats();
                 this.updateProfileStats(stats);
@@ -12116,7 +5188,7 @@ const quizApp = {
         
         const db = firebase.firestore();
         
-        // Firestore'daki highScores koleksiyonundan kullan�c�n�n skorlar�n� al
+        // Firestore'daki highScores koleksiyonundan kullanıcının skorlarını al
         db.collection('highScores')
             .where('userId', '==', userId)
             .get()
@@ -12156,96 +5228,143 @@ const quizApp = {
                 console.log('Hesaplanan istatistikler:', stats);
                 this.updateProfileStats(stats);
                 
-                // �statistikleri kullan�c� dok�man�na kaydet
+                // İstatistikleri kullanıcı dokümanına kaydet
                 db.collection('users').doc(userId).update({
                     stats: stats,
                     statsLastUpdated: new Date()
                 }).catch((error) => {
-                    console.error('�statistikler kaydedilirken hata:', error);
+                    console.error('İstatistikler kaydedilirken hata:', error);
                 });
             })
             .catch((error) => {
-                console.error('Skorlar al�n�rken hata:', error);
+                console.error('Skorlar alınırken hata:', error);
                 // Hata durumunda localStorage'dan al
                 const stats = this.getStats();
                 this.updateProfileStats(stats);
             });
     },
     
-    // Profil istatistiklerini g�ncelle
+    // Profil istatistiklerini güncelle
     updateProfileStats: function(stats) {
-        console.log('updateProfileStats �a�r�ld�, stats:', stats);
+        console.log('updateProfileStats çağrıldı, stats:', stats);
         
+        // Profil sayfasındaki istatistik kutuları
         const totalGames = document.getElementById('stats-total-games');
         if (totalGames) {
             totalGames.textContent = stats.totalGames || 0;
-            console.log('Toplam oyun g�ncellendi:', stats.totalGames || 0);
+            console.log('Profil - Toplam oyun güncellendi:', stats.totalGames || 0);
+        } else {
+            console.log('stats-total-games elementi bulunamadı');
         }
         
         const totalQuestions = document.getElementById('stats-total-questions');
         if (totalQuestions) {
             totalQuestions.textContent = stats.totalQuestions || 0;
-            console.log('Toplam soru g�ncellendi:', stats.totalQuestions || 0);
+            console.log('Profil - Toplam soru güncellendi:', stats.totalQuestions || 0);
+        } else {
+            console.log('stats-total-questions elementi bulunamadı');
         }
         
         const correctAnswers = document.getElementById('stats-correct-answers');
         if (correctAnswers) {
             correctAnswers.textContent = stats.correctAnswers || 0;
-            console.log('Do�ru cevap g�ncellendi:', stats.correctAnswers || 0);
+            console.log('Profil - Doğru cevap güncellendi:', stats.correctAnswers || 0);
+        } else {
+            console.log('stats-correct-answers elementi bulunamadı');
         }
         
-        // Do�ruluk oran�
+        // Doğruluk oranı
         const accuracy = document.getElementById('stats-accuracy');
         if (accuracy) {
             const accuracyValue = stats.totalQuestions > 0 
                 ? Math.round((stats.correctAnswers / stats.totalQuestions) * 100) 
                 : 0;
             accuracy.textContent = `%${accuracyValue}`;
-            console.log('Do�ruluk oran� g�ncellendi:', accuracyValue);
+            console.log('Profil - Doğruluk oranı güncellendi:', accuracyValue);
+        } else {
+            console.log('stats-accuracy elementi bulunamadı');
+        }
+        
+        // İstatistik sayfasındaki kutular da varsa onları da güncelle
+        const totalGamesStat = document.getElementById('total-games-stat');
+        if (totalGamesStat) {
+            totalGamesStat.textContent = stats.totalGames || 0;
+            console.log('İstatistik sayfası - Toplam oyun güncellendi:', stats.totalGames || 0);
+        }
+        
+        const totalQuestionsStat = document.getElementById('total-questions-stat');
+        if (totalQuestionsStat) {
+            totalQuestionsStat.textContent = stats.totalQuestions || 0;
+            console.log('İstatistik sayfası - Toplam soru güncellendi:', stats.totalQuestions || 0);
+        }
+        
+        const correctAnswersStat = document.getElementById('correct-answers-stat');
+        if (correctAnswersStat) {
+            correctAnswersStat.textContent = stats.correctAnswers || 0;
+            console.log('İstatistik sayfası - Doğru cevap güncellendi:', stats.correctAnswers || 0);
+        }
+        
+        const accuracyStat = document.getElementById('accuracy-stat');
+        if (accuracyStat) {
+            const accuracyValue = stats.totalQuestions > 0 
+                ? Math.round((stats.correctAnswers / stats.totalQuestions) * 100) 
+                : 0;
+            accuracyStat.textContent = `%${accuracyValue}`;
+            console.log('İstatistik sayfası - Doğruluk oranı güncellendi:', accuracyValue);
+        }
+        
+        const highestScoreStat = document.getElementById('highest-score-stat');
+        if (highestScoreStat) {
+            highestScoreStat.textContent = stats.highestScore || 0;
+            console.log('İstatistik sayfası - En yüksek skor güncellendi:', stats.highestScore || 0);
         }
     },
 
-    // Ger�ek kullan�c� istatistiklerini al ve g�ncelle
+    // Gerçek kullanıcı istatistiklerini al ve güncelle
     updateRealUserStats: function() {
         const userId = this.getCurrentUserId();
         if (!userId) return;
 
-        // localStorage'dan ger�ek istatistikleri �ek
+        // localStorage'dan gerçek istatistikleri çek
         const realStats = this.calculateRealStats();
+        console.log('updateRealUserStats - hesaplanan istatistikler:', realStats);
         
-        // Profil sayfas� a��ksa istatistikleri g�ncelle
-        const profilePage = document.getElementById('profile-page');
-        if (profilePage && profilePage.style.display !== 'none') {
+        // Profil sayfası açık olup olmadığına bakılmaksızın istatistikleri güncelle
             this.updateProfileStats(realStats);
             
-            // Toplam puan� g�ncelle (Firebase'den gelen veya mevcut toplam puan)
+        // Toplam puanı güncelle (hesaplanan istatistiklerden veya mevcut toplam puan)
             const profileTotalScore = document.getElementById('profile-total-score');
             if (profileTotalScore) {
-                profileTotalScore.textContent = this.totalScore || 0;
+            const totalPoints = this.totalScore || realStats.totalScore || 0;
+            profileTotalScore.textContent = totalPoints;
+            console.log('Toplam puan güncellendi:', totalPoints);
             }
             
-            // Seviyeyi g�ncelle (toplam puana g�re)
+            // Seviyeyi güncelle (toplam puana göre)
             const profileUserLevel = document.getElementById('profile-user-level');
             if (profileUserLevel) {
-                const level = Math.floor((this.totalScore || 0) / 500) + 1;
+            const totalPoints = this.totalScore || realStats.totalScore || 0;
+            const level = Math.floor(totalPoints / 500) + 1;
                 profileUserLevel.textContent = level;
-            }
+            console.log('Seviye güncellendi:', level);
         }
 
         // Rozet sistemini kontrol et
+        if (this.badgeSystem && this.badgeSystem.checkAndAwardBadges) {
         this.badgeSystem.checkAndAwardBadges(userId, realStats);
+        }
         
         return realStats;
     },
 
-    // Ger�ek istatistikleri hesapla
+    // Gerçek istatistikleri hesapla
     calculateRealStats: function() {
         try {
-            console.log('calculateRealStats �a�r�ld�');
+            console.log('calculateRealStats çağrıldı');
             
-            // Oyun ge�mi�ini al
+            // Oyun geçmişini al
             const gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
-            console.log('Oyun ge�mi�i:', gameHistory);
+            console.log('Oyun geçmişi:', gameHistory);
             
             let totalGames = 0;
             let totalQuestions = 0;
@@ -12263,12 +5382,12 @@ const quizApp = {
                 correctAnswers += game.correctAnswers || 0;
                 totalScore += game.score || 0;
                 
-                // M�kemmel oyunlar� say
+                // Mükemmel oyunları say
                 if (game.correctAnswers === game.totalQuestions && game.totalQuestions > 0) {
                     perfectGames++;
                 }
                 
-                // H�zl� cevaplar� say (ortalama s�re 10 saniyeden az ise)
+                // Hızlı cevapları say (ortalama süre 10 saniyeden az ise)
                 if (game.averageTime && game.averageTime < 10) {
                     fastAnswers++;
                 }
@@ -12287,23 +5406,27 @@ const quizApp = {
                 }
             });
 
-            // High scores'tan da veri topla (eski format deste�i i�in)
-            const categories = ['Genel K�lt�r', 'Bilim', 'Teknoloji', 'Spor', 'M�zik', 'Tarih', 'Co�rafya', 'Sanat', 'Edebiyat', 'Hayvanlar', 'Matematik'];
+            // High scores'tan da veri topla (eski format desteği için)
+            const categories = ['Genel Kültür', 'Bilim', 'Teknoloji', 'Spor', 'Müzik', 'Tarih', 'Coğrafya', 'Sanat', 'Edebiyat', 'Hayvanlar', 'Matematik'];
             
+            console.log('High scores kontrol ediliyor...');
             categories.forEach(category => {
                 const categoryScores = JSON.parse(localStorage.getItem(`highScores_${category}`) || '[]');
+                console.log(`${category} kategorisi skorları:`, categoryScores);
+                
                 categoryScores.forEach(score => {
                     if (score.score) {
-                        // Sadece gameHistory'de yoksa ekle (duplikasyon �nleme)
+                        // Sadece gameHistory'de yoksa ekle (duplikasyon önleme)
                         const existsInHistory = gameHistory.some(game => 
                             game.category === category && 
-                            Math.abs((game.score || 0) - score.score) < 5 // K���k fark tolerans�
+                            Math.abs((game.score || 0) - score.score) < 5 // Küçük fark toleransı
                         );
                         
                         if (!existsInHistory) {
+                            console.log(`${category} kategorisinden skor ekleniyor:`, score);
                             totalGames++;
                         totalScore += score.score;
-                            totalQuestions += score.totalQuestions || 10; // Varsay�lan
+                            totalQuestions += score.totalQuestions || 10; // Varsayılan
                             correctAnswers += score.correctAnswers || Math.round(score.score / 10);
                         
                         if (score.percentage === 100) {
@@ -12321,6 +5444,41 @@ const quizApp = {
                         }
                     }
                 });
+            });
+            
+            // Ayrıca genel high scores da kontrol et
+            const generalHighScores = JSON.parse(localStorage.getItem('quiz-high-scores') || '[]');
+            console.log('Genel high scores:', generalHighScores);
+            
+            generalHighScores.forEach(score => {
+                if (score.score) {
+                    const existsInHistory = gameHistory.some(game => 
+                        Math.abs((game.score || 0) - score.score) < 5
+                    );
+                    
+                    if (!existsInHistory) {
+                        console.log('Genel high score\'dan skor ekleniyor:', score);
+                        totalGames++;
+                        totalScore += score.score;
+                        totalQuestions += score.totalQuestions || 10;
+                        correctAnswers += score.correctAnswers || Math.round(score.score / 10);
+                        
+                        if (score.correctAnswers === score.totalQuestions) {
+                            perfectGames++;
+                        }
+                        
+                        if (score.category) {
+                            categoriesPlayed.add(score.category);
+                            
+                            if (!categoryStats[score.category]) {
+                                categoryStats[score.category] = { total: 0, correct: 0, games: 0 };
+                            }
+                            categoryStats[score.category].total += score.totalQuestions || 10;
+                            categoryStats[score.category].correct += score.correctAnswers || Math.round(score.score / 10);
+                            categoryStats[score.category].games++;
+                        }
+                    }
+                }
             });
 
             const stats = {
@@ -12342,13 +5500,19 @@ const quizApp = {
 
             console.log('Hesaplanan istatistikler:', stats);
 
-            // �statistikleri localStorage'a kaydet
+            // Toplam puanı this.totalScore'a ata (eğer daha büyükse)
+            if (stats.totalScore > (this.totalScore || 0)) {
+                this.totalScore = stats.totalScore;
+                console.log('Toplam puan güncellendi:', this.totalScore);
+            }
+
+            // İstatistikleri localStorage'a kaydet
             localStorage.setItem('userStats', JSON.stringify(stats));
             localStorage.setItem('quiz-user-stats', JSON.stringify(stats));
             
             return stats;
         } catch (error) {
-            console.error('�statistikler hesaplan�rken hata:', error);
+            console.error('İstatistikler hesaplanırken hata:', error);
             return {
                 totalGames: 0,
                 totalQuestions: 0,
@@ -12365,22 +5529,22 @@ const quizApp = {
         }
     },
     
-    // Kullan�c� rozetlerini profil i�in y�kle
+    // Kullanıcı rozetlerini profil için yükle
     loadUserBadgesForProfile: function(userId) {
         const badgesContainer = document.getElementById('profile-badges-container');
         if (!badgesContainer) return;
         
-        badgesContainer.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Rozetler y�kleniyor...</div>';
+        badgesContainer.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Rozetler yükleniyor...</div>';
         
-        // Kullan�c�n�n kazand��� rozetleri al
+        // Kullanıcının kazandığı rozetleri al
         const userBadges = this.badgeSystem.getUserBadges(userId);
-        // T�m mevcut rozetleri al
+        // Tüm mevcut rozetleri al
         const allBadges = this.badgeSystem.badges;
         
         setTimeout(() => {
             badgesContainer.innerHTML = '';
             
-            // T�m rozetleri g�ster (kazan�lan ve kazan�lmayan)
+            // Tüm rozetleri göster (kazanılan ve kazanılmayan)
             Object.values(allBadges).forEach(badge => {
                 const badgeElement = document.createElement('div');
                 const isEarned = userBadges[badge.id] !== undefined;
@@ -12395,7 +5559,7 @@ const quizApp = {
                         'Bilinmiyor';
                     badgeDate = earnedDate;
                 } else {
-                    badgeDate = 'Hen�z kazan�lmad�';
+                    badgeDate = 'Henüz kazanılmadı';
                 }
                 
                         badgeElement.innerHTML = `
@@ -12404,7 +5568,7 @@ const quizApp = {
                     <div class="badge-date">${badgeDate}</div>
                         `;
                 
-                // Rozet t�klama olay� ekle
+                // Rozet tıklama olayı ekle
                 badgeElement.addEventListener('click', () => {
                     this.showBadgeInfoModal(badge, isEarned, badgeDate);
                 });
@@ -12412,24 +5576,24 @@ const quizApp = {
                         badgesContainer.appendChild(badgeElement);
                     });
             
-            // Rozetleri y�kledikten sonra g�ncel istatistikleri kontrol et ve rozetleri g�ncelle
+            // Rozetleri yükledikten sonra güncel istatistikleri kontrol et ve rozetleri güncelle
             this.checkAndUpdateBadges(userId);
             
-            // Hi� rozet yoksa placeholder g�ster
+            // Hiç rozet yoksa placeholder göster
             if (Object.keys(allBadges).length === 0) {
-                badgesContainer.innerHTML = '<div class="badge-placeholder">Hen�z tan�ml� rozet yok</div>';
+                badgesContainer.innerHTML = '<div class="badge-placeholder">Henüz tanımlı rozet yok</div>';
             }
         }, 500);
     },
 
-    // Rozet bilgi modal�n� g�ster
+    // Rozet bilgi modalını göster
     showBadgeInfoModal: function(badge, isEarned, earnedDate) {
-        // Modal olu�tur
+        // Modal oluştur
         const modal = document.createElement('div');
         modal.className = 'modal badge-info-modal';
         modal.id = 'badge-info-modal';
         
-        const statusText = isEarned ? '? Kazan�ld�!' : '? Hen�z Kazan�lmad�';
+        const statusText = isEarned ? '✅ Kazanıldı!' : '⏳ Henüz Kazanılmadı';
         const statusClass = isEarned ? 'earned' : 'not-earned';
         const howToEarnText = this.getBadgeRequirementText(badge);
         
@@ -12452,11 +5616,11 @@ const quizApp = {
                             <div class="badge-status ${statusClass}">
                                 ${statusText}
                             </div>
-                            ${isEarned ? `<div class="badge-earned-date">Kazan�ld�: ${earnedDate}</div>` : ''}
+                            ${isEarned ? `<div class="badge-earned-date">Kazanıldı: ${earnedDate}</div>` : ''}
                         </div>
                     </div>
                     <div class="badge-requirements">
-                        <h5><i class="fas fa-tasks"></i> Nas�l Kazan�l�r:</h5>
+                        <h5><i class="fas fa-tasks"></i> Nasıl Kazanılır:</h5>
                         <p>${howToEarnText}</p>
                     </div>
                 </div>
@@ -12465,33 +5629,33 @@ const quizApp = {
         
         document.body.appendChild(modal);
         
-        // Modal g�ster
+        // Modal göster
         setTimeout(() => modal.classList.add('show'), 10);
     },
 
-    // Rozet gereksinimlerini a��klayan metin
+    // Rozet gereksinimlerini açıklayan metin
     getBadgeRequirementText: function(badge) {
         const requirements = {
-            'firstGame': '�lk quiz oyununuzu oynay�n.',
-            'perfectScore': 'Bir oyunda t�m sorular� do�ru cevaplay�n (10/10 puan).',
-            'speedster': '5 soruyu 10 saniyeden k�sa s�rede cevaplay�n.',
-            'scholar': 'Toplamda 50 soruyu do�ru cevaplay�n.',
-            'dedicated': 'Toplamda 10 oyun tamamlay�n.',
-            'genius': 'En az 20 soru cevaplad�ktan sonra %90 veya �zeri do�ruluk oran�na sahip olun.',
-            'explorer': '5 farkl� kategoride oyun oynay�n.'
+            'firstGame': 'İlk quiz oyununuzu oynayın.',
+            'perfectScore': 'Bir oyunda tüm soruları doğru cevaplayın (10/10 puan).',
+            'speedster': '5 soruyu 10 saniyeden kısa sürede cevaplayın.',
+            'scholar': 'Toplamda 50 soruyu doğru cevaplayın.',
+            'dedicated': 'Toplamda 10 oyun tamamlayın.',
+            'genius': 'En az 20 soru cevapladıktan sonra %90 veya üzeri doğruluk oranına sahip olun.',
+            'explorer': '5 farklı kategoride oyun oynayın.'
         };
-        return requirements[badge.id] || 'Bu rozetin gereksinimleri hen�z tan�mlanmam��.';
+        return requirements[badge.id] || 'Bu rozetin gereksinimleri henüz tanımlanmamış.';
     },
 
-    // Rozetleri kontrol et ve g�ncelle
+    // Rozetleri kontrol et ve güncelle
     checkAndUpdateBadges: function(userId) {
-        // G�ncel istatistikleri al
+        // Güncel istatistikleri al
         const currentStats = this.calculateRealStats();
         
         // Yeni rozetleri kontrol et
         const newBadges = this.badgeSystem.checkAndAwardBadges(userId, currentStats);
         
-        // E�er yeni rozet kazan�ld�ysa profili yenile
+        // Eğer yeni rozet kazanıldıysa profili yenile
         if (newBadges && newBadges.length > 0) {
             setTimeout(() => {
                 this.loadUserBadgesForProfile(userId);
@@ -12499,72 +5663,193 @@ const quizApp = {
         }
     },
     
-    // Y�ksek skorlar� profil i�in y�kle
+    // Yüksek skorları profil için yükle
     loadHighScoresForProfile: function(userId) {
         const highScoresTable = document.getElementById('profile-high-scores');
         if (!highScoresTable) return;
         
-        highScoresTable.innerHTML = '<tr><td colspan="3" class="loading">Skorlar y�kleniyor...</td></tr>';
+        highScoresTable.innerHTML = '<tr><td colspan="3" class="loading">Skorlar yükleniyor...</td></tr>';
         
         if (firebase.firestore) {
             const db = firebase.firestore();
             
+            // Firebase index hatası nedeniyle basit sorgu kullan
             db.collection('highScores')
                 .where('userId', '==', userId)
-                .orderBy('score', 'desc')
-                .limit(10)
                 .get()
                 .then(querySnapshot => {
                     if (querySnapshot.empty) {
-                        highScoresTable.innerHTML = '<tr><td colspan="3" class="no-data">Hen�z kaydedilen skor yok</td></tr>';
+                        // Firebase'de skor yoksa localStorage'dan al
+                        this.loadHighScoresFromLocalStorage(highScoresTable);
                         return;
                     }
                     
-                    highScoresTable.innerHTML = '';
+                    // Skorları al ve JavaScript'te sırala
+                    const scores = [];
                     querySnapshot.forEach(doc => {
-                        const scoreData = doc.data();
+                        scores.push({...doc.data(), id: doc.id});
+                    });
+                    
+                    // Skora göre azalan sırada sırala
+                    scores.sort((a, b) => (b.score || 0) - (a.score || 0));
+                    
+                    // İlk 10 skoru göster
+                    highScoresTable.innerHTML = '';
+                    scores.slice(0, 10).forEach(scoreData => {
                         const row = document.createElement('tr');
+                        const scoreDate = this.formatScoreDate(scoreData.date);
                         row.innerHTML = `
                             <td>${scoreData.category || 'Genel'}</td>
                             <td>${scoreData.score || 0}</td>
-                            <td>${scoreData.date ? new Date(scoreData.date.toDate()).toLocaleDateString('tr-TR') : 'Bilinmiyor'}</td>
+                            <td>${scoreDate}</td>
                         `;
                         highScoresTable.appendChild(row);
                     });
+                    
+                    if (scores.length === 0) {
+                        highScoresTable.innerHTML = '<tr><td colspan="3" class="no-data">Henüz kaydedilen skor yok</td></tr>';
+                    }
                 })
                 .catch(error => {
-                    console.error('Y�ksek skorlar y�klenirken hata:', error);
-                    highScoresTable.innerHTML = '<tr><td colspan="3" class="no-data">Skorlar y�klenirken hata olu�tu</td></tr>';
+                    console.error('Yüksek skorlar yüklenirken hata:', error);
+                    // Hata durumunda localStorage'dan yükle
+                    this.loadHighScoresFromLocalStorage(highScoresTable);
                 });
         } else {
             // Firebase yoksa localStorage'dan al
-            const scores = this.getHighScores();
-            if (scores.length === 0) {
-                highScoresTable.innerHTML = '<tr><td colspan="3" class="no-data">Hen�z kaydedilen skor yok</td></tr>';
-                return;
-            }
-            
-            highScoresTable.innerHTML = '';
-            scores.slice(0, 10).forEach(score => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${score.category || 'Genel'}</td>
-                    <td>${score.score || 0}</td>
-                    <td>${score.date ? new Date(score.date).toLocaleDateString('tr-TR') : 'Bug�n'}</td>
-                `;
-                highScoresTable.appendChild(row);
-            });
+            this.loadHighScoresFromLocalStorage(highScoresTable);
         }
     },
     
-    // Son aktiviteleri profil i�in y�kle
+    // Tarih objesini güvenli şekilde formatla
+    formatScoreDate: function(dateValue) {
+        try {
+            if (!dateValue) {
+                return 'Bilinmiyor';
+            }
+            
+            let dateObj;
+            
+            // Firebase Timestamp objesi kontrolü
+            if (dateValue && typeof dateValue.toDate === 'function') {
+                dateObj = dateValue.toDate();
+            }
+            // Firebase Timestamp objesi (seconds ve nanoseconds ile)
+            else if (dateValue && dateValue.seconds) {
+                dateObj = new Date(dateValue.seconds * 1000);
+            }
+            // Zaten Date objesi
+            else if (dateValue instanceof Date) {
+                dateObj = dateValue;
+            }
+            // String veya number timestamp
+            else if (typeof dateValue === 'string' || typeof dateValue === 'number') {
+                dateObj = new Date(dateValue);
+            }
+            // Diğer durumlar
+            else {
+                console.warn('Bilinmeyen tarih formatı:', dateValue);
+                return 'Bilinmiyor';
+            }
+            
+            // Geçerli tarih kontrolü
+            if (isNaN(dateObj.getTime())) {
+                console.warn('Geçersiz tarih:', dateValue);
+                return 'Bilinmiyor';
+            }
+            
+            return dateObj.toLocaleDateString('tr-TR');
+            
+        } catch (error) {
+            console.error('Tarih formatlanırken hata:', error, 'Değer:', dateValue);
+            return 'Bilinmiyor';
+        }
+    },
+    
+    // LocalStorage'dan yüksek skorları yükle
+    loadHighScoresFromLocalStorage: function(highScoresTable) {
+        try {
+            // Farklı kaynaklardan skorları topla
+            const allScores = [];
+            
+            // 1. Genel high scores
+            const generalScores = JSON.parse(localStorage.getItem('quiz-high-scores') || '[]');
+            allScores.push(...generalScores);
+            
+            // 2. Kategori bazlı skorlar
+            const categories = ['Genel Kültür', 'Bilim', 'Teknoloji', 'Spor', 'Müzik', 'Tarih', 'Coğrafya', 'Sanat', 'Edebiyat'];
+            categories.forEach(category => {
+                const categoryScores = JSON.parse(localStorage.getItem(`highScores_${category}`) || '[]');
+                categoryScores.forEach(score => {
+                    allScores.push({...score, category: category});
+                });
+            });
+            
+            // 3. Oyun geçmişinden
+            const gameHistory = JSON.parse(localStorage.getItem('gameHistory') || '[]');
+            gameHistory.forEach(game => {
+                if (game.score) {
+                    allScores.push({
+                        score: game.score,
+                        category: game.category || 'Genel',
+                        date: game.date || Date.now(),
+                        totalQuestions: game.totalQuestions,
+                        correctAnswers: game.correctAnswers
+                    });
+                }
+            });
+            
+            console.log('Toplanan tüm skorlar:', allScores);
+            
+            if (allScores.length === 0) {
+                highScoresTable.innerHTML = '<tr><td colspan="3" class="no-data">Henüz kaydedilen skor yok</td></tr>';
+                return;
+            }
+            
+            // Skorları sırala (en yüksekten en düşüğe)
+            allScores.sort((a, b) => (b.score || 0) - (a.score || 0));
+            
+            // Duplikatları kaldır ve en iyi 10'u al
+            const uniqueScores = [];
+            const seen = new Set();
+            
+            for (const score of allScores) {
+                const key = `${score.category}-${score.score}`;
+                if (!seen.has(key) && uniqueScores.length < 10) {
+                    seen.add(key);
+                    uniqueScores.push(score);
+                }
+            }
+            
+            // Tabloyu doldur
+            highScoresTable.innerHTML = '';
+            uniqueScores.forEach(score => {
+                const row = document.createElement('tr');
+                const scoreDate = this.formatScoreDate(score.date);
+                row.innerHTML = `
+                    <td>${score.category || 'Genel'}</td>
+                    <td>${score.score || 0}</td>
+                    <td>${scoreDate}</td>
+                `;
+                highScoresTable.appendChild(row);
+            });
+            
+            console.log('Yüksek skorlar tablosu dolduruldu:', uniqueScores);
+            
+        } catch (error) {
+            console.error('LocalStorage skorları yüklenirken hata:', error);
+            highScoresTable.innerHTML = '<tr><td colspan="3" class="no-data">Skorlar yüklenirken hata oluştu</td></tr>';
+        }
+    },
+    
+    // Son aktiviteleri profil için yükle
     loadRecentActivitiesForProfile: function(userId) {
         const activitiesList = document.getElementById('recent-activities-list');
         if (!activitiesList) return;
         
-        activitiesList.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Aktiviteler y�kleniyor...</div>';
+        activitiesList.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Aktiviteler yükleniyor...</div>';
         
-        // Firebase'den aktiviteleri y�kleme
+        // Firebase'den aktiviteleri yükleme
         if (firebase.auth && firebase.firestore && this.isLoggedIn) {
             const db = firebase.firestore();
             db.collection('users').doc(userId)
@@ -12573,7 +5858,7 @@ const quizApp = {
                 .limit(5)
                 .get()
                 .then((querySnapshot) => {
-                    // Firebase'den gelen aktiviteleri i�le
+                    // Firebase'den gelen aktiviteleri işle
                     if (!querySnapshot.empty) {
                         activitiesList.innerHTML = '';
                         querySnapshot.forEach((doc) => {
@@ -12586,17 +5871,17 @@ const quizApp = {
                     }
                 })
                 .catch((error) => {
-                    console.error("Aktiviteler y�klenirken hata olu�tu:", error);
+                    console.error("Aktiviteler yüklenirken hata oluştu:", error);
                     // Hata durumunda localStorage'a bak
                     this.loadLocalActivities(activitiesList, userId);
                 });
         } else {
-            // Firebase yoksa veya kullan�c� giri� yapmam��sa localStorage'a bak
+            // Firebase yoksa veya kullanıcı giriş yapmamışsa localStorage'a bak
             this.loadLocalActivities(activitiesList, userId);
         }
     },
     
-    // LocalStorage'dan aktiviteleri y�kle
+    // LocalStorage'dan aktiviteleri yükle
     loadLocalActivities: function(activitiesList, userId) {
         try {
             const storedActivities = localStorage.getItem(`user-activities-${userId}`);
@@ -12611,23 +5896,23 @@ const quizApp = {
                 this.generateSampleActivities(activitiesList);
             }
         } catch (error) {
-            console.error("LocalStorage aktiviteleri i�lenirken hata:", error);
+            console.error("LocalStorage aktiviteleri işlenirken hata:", error);
             this.generateSampleActivities(activitiesList);
         }
     },
     
-    // Aktivite olu�tur
+    // Aktivite oluştur
     createUserActivity: function(type, title, score = null, category = null) {
         const userId = this.getCurrentUserId();
         const now = new Date();
         
         const activityData = {
             type: type,           // 'game', 'badge', 'task', vb.
-            title: title,         // Aktivite ba�l���
-            timestamp: now,       // Ger�ekle�me zaman�
-            score: score,         // Varsa skor de�eri
+            title: title,         // Aktivite başlığı
+            timestamp: now,       // Gerçekleşme zamanı
+            score: score,         // Varsa skor değeri
             category: category,   // Varsa kategori
-            icon: this.getActivityIcon(type) // T�r i�in uygun ikon
+            icon: this.getActivityIcon(type) // Tür için uygun ikon
         };
         
         // Firebase'e aktiviteyi kaydet
@@ -12667,7 +5952,7 @@ const quizApp = {
         }
     },
     
-    // Aktivite tipi i�in uygun ikon s�n�f�
+    // Aktivite tipi için uygun ikon sınıfı
     getActivityIcon: function(type) {
         switch(type) {
             case 'game': return 'fas fa-gamepad';
@@ -12696,10 +5981,39 @@ const quizApp = {
         container.appendChild(activityElement);
     },
     
-    // Ge�en zaman� belirtilen format� �evir (1 saat �nce, 2 g�n �nce vb.)
+    // Geçen zamanı belirtilen formatı çevir (1 saat önce, 2 gün önce vb.)
     getTimeAgo: function(timestamp) {
+        try {
+            if (!timestamp) {
+                return 'Bilinmiyor';
+            }
+            
         const now = new Date();
-        const activityTime = timestamp instanceof Date ? timestamp : new Date(timestamp);
+            let activityTime;
+            
+            // Firebase Timestamp objesi kontrolü
+            if (timestamp && typeof timestamp.toDate === 'function') {
+                activityTime = timestamp.toDate();
+            }
+            // Firebase Timestamp objesi (seconds ile)
+            else if (timestamp && timestamp.seconds) {
+                activityTime = new Date(timestamp.seconds * 1000);
+            }
+            // Zaten Date objesi
+            else if (timestamp instanceof Date) {
+                activityTime = timestamp;
+            }
+            // String veya number
+            else {
+                activityTime = new Date(timestamp);
+            }
+            
+            // Geçerli tarih kontrolü
+            if (isNaN(activityTime.getTime())) {
+                console.warn('Geçersiz timestamp:', timestamp);
+                return 'Bilinmiyor';
+            }
+            
         const diffMs = now - activityTime;
         const diffSec = Math.floor(diffMs / 1000);
         const diffMin = Math.floor(diffSec / 60);
@@ -12709,84 +6023,177 @@ const quizApp = {
         if (diffDay > 30) {
             return activityTime.toLocaleDateString('tr-TR');
         } else if (diffDay > 0) {
-            return `${diffDay} g�n �nce`;
+            return `${diffDay} gün önce`;
         } else if (diffHour > 0) {
-            return `${diffHour} saat �nce`;
+            return `${diffHour} saat önce`;
         } else if (diffMin > 0) {
-            return `${diffMin} dakika �nce`;
+            return `${diffMin} dakika önce`;
         } else {
-            return 'Az �nce';
+            return 'Az önce';
+            }
+        } catch (error) {
+            console.error('Zaman hesaplanırken hata:', error, 'Timestamp:', timestamp);
+            return 'Bilinmiyor';
         }
     },
     
-    // �rnek aktiviteleri g�ster - veri yoksa
+    
+    // Örnek aktiviteleri göster - veri yoksa
     generateSampleActivities: function(activitiesList) {
         activitiesList.innerHTML = '';
         
-        // Rastgele kategori se�
-        const categories = ['Genel K�lt�r', 'Tarih', 'Bilim', 'Spor', 'Sanat', 'Co�rafya'];
+        // Rastgele kategori seç
+        const categories = ['Genel Kültür', 'Tarih', 'Bilim', 'Spor', 'Sanat', 'Coğrafya'];
         const randomCategory = categories[Math.floor(Math.random() * categories.length)];
         
-        // �rnek aktiviteler
+        // Örnek aktiviteler
         const sampleActivities = [
             {
                 icon: 'fas fa-gamepad',
-                title: `${randomCategory} kategorisinde bir oyun oynand�`,
-                time: '2 saat �nce',
+                title: `${randomCategory} kategorisinde bir oyun oynandı`,
+                time: '2 saat önce',
                 score: Math.floor(Math.random() * 100)
             },
             {
                 icon: 'fas fa-award',
-                title: '"Bilgi Ustas�" rozeti kazan�ld�',
-                time: '1 g�n �nce',
+                title: '"Bilgi Ustası" rozeti kazanıldı',
+                time: '1 gün önce',
                 score: null
             },
             {
                 icon: 'fas fa-tasks',
-                title: 'G�nl�k g�rev tamamland�',
-                time: '2 g�n �nce',
+                title: 'Günlük görev tamamlandı',
+                time: '2 gün önce',
                 score: null
             }
         ];
         
-        // �rnek aktiviteleri render et
-        sampleActivities.forEach(activity => {
+        // Örnek aktiviteleri render et
+            sampleActivities.forEach(activity => {
             this.renderActivity(activity, activitiesList);
-        });
+            });
     },
     
-    // Profil d�zenleme modal�n� g�ster
+    // Profil düzenleme modalını göster
     showEditProfileModal: function() {
-        // Modal olu�tur
+        console.log('showEditProfileModal fonksiyonu çağrıldı');
+        
+        // Mevcut modalı kapat (varsa)
+        const existingModal = document.getElementById('edit-profile-modal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+        
+        // Modal oluştur
         const modal = document.createElement('div');
-        modal.className = 'modal';
+        modal.className = 'modal show';
         modal.id = 'edit-profile-modal';
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        `;
+        
         modal.innerHTML = `
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3><i class="fas fa-edit"></i> Profili D�zenle</h3>
-                    <button class="close-modal" onclick="this.closest('.modal').remove()">
+            <div class="modal-content" style="
+                background: white;
+                border-radius: 12px;
+                padding: 20px;
+                max-width: 400px;
+                width: 90%;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            ">
+                <div class="modal-header" style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 20px;
+                ">
+                    <h3 style="margin: 0; color: #333;">
+                        <i class="fas fa-edit"></i> Profili Düzenle
+                    </h3>
+                    <button class="close-modal" style="
+                        background: none;
+                        border: none;
+                        font-size: 20px;
+                        cursor: pointer;
+                        color: #666;
+                        padding: 5px;
+                    " onclick="document.getElementById('edit-profile-modal').remove()">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label for="edit-display-name">G�r�nen Ad:</label>
-                        <input type="text" id="edit-display-name" placeholder="Ad�n�z� girin">
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label for="edit-display-name" style="
+                            display: block;
+                            margin-bottom: 5px;
+                            font-weight: bold;
+                            color: #333;
+                        ">Görünen Ad:</label>
+                        <input type="text" id="edit-display-name" placeholder="Adınızı girin" style="
+                            width: 100%;
+                            padding: 10px;
+                            border: 2px solid #ddd;
+                            border-radius: 6px;
+                            font-size: 14px;
+                            box-sizing: border-box;
+                        ">
                     </div>
-                    <div class="form-group">
-                        <label for="edit-bio">Hakk�mda:</label>
-                        <textarea id="edit-bio" placeholder="Kendiniz hakk�nda k�sa bilgi..." rows="3"></textarea>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label for="edit-bio" style="
+                            display: block;
+                            margin-bottom: 5px;
+                            font-weight: bold;
+                            color: #333;
+                        ">Hakkımda:</label>
+                        <textarea id="edit-bio" placeholder="Kendiniz hakkında kısa bilgi..." rows="3" style="
+                            width: 100%;
+                            padding: 10px;
+                            border: 2px solid #ddd;
+                            border-radius: 6px;
+                            font-size: 14px;
+                            resize: vertical;
+                            box-sizing: border-box;
+                        "></textarea>
                     </div>
-                    <div class="modal-actions">
-                        <button class="btn-secondary" onclick="this.closest('.modal').remove()">�ptal</button>
-                        <button class="btn-primary" onclick="quizApp.saveProfileChanges()">Kaydet</button>
+                    <div class="modal-actions" style="
+                        display: flex;
+                        gap: 10px;
+                        justify-content: flex-end;
+                    ">
+                        <button class="btn-secondary" onclick="document.getElementById('edit-profile-modal').remove()" style="
+                            padding: 10px 20px;
+                            border: 2px solid #ddd;
+                            background: white;
+                            color: #666;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            font-size: 14px;
+                        ">İptal</button>
+                        <button class="btn-primary" onclick="quizApp.saveProfileChanges()" style="
+                            padding: 10px 20px;
+                            border: none;
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            color: white;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            font-size: 14px;
+                        ">Kaydet</button>
                     </div>
                 </div>
             </div>
         `;
         
         document.body.appendChild(modal);
+        console.log('Modal DOM\'a eklendi');
         
         // Mevcut verileri doldur
         const displayNameInput = document.getElementById('edit-display-name');
@@ -12811,40 +6218,40 @@ const quizApp = {
                         bioInput.value = profile.bio;
                             }
                         } else {
-                    // Varsay�lan kullan�c� ad�n� g�ster
+                    // Varsayılan kullanıcı adını göster
                     const currentName = document.getElementById('profile-name')?.textContent;
                     if (displayNameInput && currentName) {
                         displayNameInput.value = currentName;
                     }
                 }
             } catch (error) {
-                console.error('Profil verileri y�klenemedi:', error);
+                console.error('Profil verileri yüklenemedi:', error);
             }
         }
         
-        // Modal g�ster
-        setTimeout(() => modal.classList.add('show'), 10);
+        // Modal göster - artık inline style ile görünür
+        console.log('Modal gösterildi');
     },
     
-    // Profil de�i�ikliklerini kaydet
+    // Profil değişikliklerini kaydet
     saveProfileChanges: function() {
         const displayName = document.getElementById('edit-display-name').value.trim();
         const bio = document.getElementById('edit-bio').value.trim();
         
         if (!displayName) {
-            this.showToast('G�r�nen ad bo� olamaz', 'toast-error');
+            this.showToast('Görünen ad boş olamaz', 'toast-error');
             return;
         }
         
-        // Firebase kullan�c�s� varsa
+        // Firebase kullanıcısı varsa
         if (firebase.auth && firebase.auth().currentUser) {
             const user = firebase.auth().currentUser;
             
-            // Firebase Authentication'da displayName g�ncelle
+            // Firebase Authentication'da displayName güncelle
             user.updateProfile({
                 displayName: displayName
             }).then(() => {
-                // Firestore'da da g�ncelle (varsa)
+                // Firestore'da da güncelle (varsa)
                 if (firebase.firestore) {
                     const db = firebase.firestore();
                     db.collection('users').doc(user.uid).update({
@@ -12852,15 +6259,15 @@ const quizApp = {
                         bio: bio,
                         lastUpdated: new Date()
                     }).catch(error => {
-                        console.error('Firestore g�ncelleme hatas�:', error);
+                        console.error('Firestore güncelleme hatası:', error);
                     });
                 }
                 
                 this.updateProfileUI(displayName, bio);
-                this.showToast('Profil ba�ar�yla g�ncellendi', 'toast-success');
+                this.showToast('Profil başarıyla güncellendi', 'toast-success');
             }).catch(error => {
-                console.error('Profil g�ncelleme hatas�:', error);
-                this.showToast('Profil g�ncellenirken hata olu�tu', 'toast-error');
+                console.error('Profil güncelleme hatası:', error);
+                this.showToast('Profil güncellenirken hata oluştu', 'toast-error');
                 });
         } else {
             // Firebase yoksa localStorage'a kaydet
@@ -12874,7 +6281,7 @@ const quizApp = {
             try {
                 localStorage.setItem(`user-profile-${userId}`, JSON.stringify(profileData));
                 this.updateProfileUI(displayName, bio);
-                this.showToast('Profil ba�ar�yla g�ncellendi', 'toast-success');
+                this.showToast('Profil başarıyla güncellendi', 'toast-success');
             } catch (error) {
                 console.error('Profil localStorage\'a kaydedilemedi:', error);
                 this.showToast('Profil kaydedilemedi', 'toast-error');
@@ -12882,15 +6289,15 @@ const quizApp = {
         }
     },
 
-    // Profil UI'sini g�ncelle
+    // Profil UI'sini güncelle
     updateProfileUI: function(displayName, bio) {
-        // Profil sayfas�ndaki bilgileri g�ncelle
+        // Profil sayfasındaki bilgileri güncelle
         const profileName = document.getElementById('profile-name');
         if (profileName) {
             profileName.textContent = displayName;
         }
         
-        // Bio varsa g�ster (hen�z UI'da yer yoksa eklenecek)
+        // Bio varsa göster (henüz UI'da yer yoksa eklenecek)
         const profileBio = document.getElementById('profile-bio');
         if (profileBio) {
             profileBio.textContent = bio;
@@ -12900,11 +6307,11 @@ const quizApp = {
         const modal = document.getElementById('edit-profile-modal');
         if (modal) modal.remove();
         
-        // Profil sayfas�n� yenile
+        // Profil sayfasını yenile
         this.loadProfileData();
     },
 
-    // Zaman fark� hesaplama yard�mc� fonksiyonu
+    // Zaman farkı hesaplama yardımcı fonksiyonu
     calculateTimeAgo: function(timestamp) {
         const now = Date.now();
         const diff = now - timestamp;
@@ -12914,15 +6321,15 @@ const quizApp = {
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         
         if (minutes < 60) {
-            return minutes <= 1 ? '1 dakika �nce' : `${minutes} dakika �nce`;
+            return minutes <= 1 ? '1 dakika önce' : `${minutes} dakika önce`;
         } else if (hours < 24) {
-            return hours === 1 ? '1 saat �nce' : `${hours} saat �nce`;
+            return hours === 1 ? '1 saat önce' : `${hours} saat önce`;
         } else {
-            return days === 1 ? '1 g�n �nce' : `${days} g�n �nce`;
+            return days === 1 ? '1 gün önce' : `${days} gün önce`;
         }
     },
 
-    // T�m y�ksek skorlar� al (localStorage'dan)
+    // Tüm yüksek skorları al (localStorage'dan)
     getAllHighScores: function() {
         try {
             const scores = localStorage.getItem('quiz-high-scores');
@@ -12935,60 +6342,60 @@ const quizApp = {
 
     // Rozet sistemi
     badgeSystem: {
-        // Mevcut rozetler tan�mlar�
+        // Mevcut rozetler tanımları
         badges: {
             firstGame: {
                 id: 'firstGame',
-                name: '�lk Oyun',
-                description: '�lk oyununu tamamlad�n!',
+                name: 'İlk Oyun',
+                description: 'İlk oyununu tamamladın!',
                 icon: 'fas fa-play',
                 condition: (stats) => stats.totalGames >= 1
             },
             perfectScore: {
                 id: 'perfectScore',
-                name: 'M�kemmel',
-                description: 'Bir oyunda t�m sorular� do�ru cevaplad�n!',
+                name: 'Mükemmel',
+                description: 'Bir oyunda tüm soruları doğru cevapladın!',
                 icon: 'fas fa-star',
                 condition: (stats) => stats.perfectGames >= 1
             },
             speedster: {
                 id: 'speedster',
-                name: 'H�z Ustas�',
-                description: '10 saniyede alt�nda cevap verdin!',
+                name: 'Hız Ustası',
+                description: '10 saniyede altında cevap verdin!',
                 icon: 'fas fa-bolt',
                 condition: (stats) => stats.fastAnswers >= 5
             },
             scholar: {
                 id: 'scholar',
-                name: 'Bilgi Ustas�',
-                description: '50 soruyu do�ru cevaplad�n!',
+                name: 'Bilgi Ustası',
+                description: '50 soruyu doğru cevapladın!',
                 icon: 'fas fa-graduation-cap',
                 condition: (stats) => stats.correctAnswers >= 50
             },
             dedicated: {
                 id: 'dedicated',
                 name: 'Azimli',
-                description: '10 oyun tamamlad�n!',
+                description: '10 oyun tamamladın!',
                 icon: 'fas fa-trophy',
                 condition: (stats) => stats.totalGames >= 10
             },
             genius: {
                 id: 'genius',
                 name: 'Deha',
-                description: '%90 �zeri do�ruluk oran�na sahipsin!',
+                description: '%90 üzeri doğruluk oranına sahipsin!',
                 icon: 'fas fa-brain',
                 condition: (stats) => stats.totalQuestions > 20 && (stats.correctAnswers / stats.totalQuestions) >= 0.9
             },
             explorer: {
                 id: 'explorer',
-                name: 'Ka�if',
-                description: '5 farkl� kategoride oyun oynad�n!',
+                name: 'Kaşif',
+                description: '5 farklı kategoride oyun oynadın!',
                 icon: 'fas fa-compass',
                 condition: (stats) => stats.categoriesPlayed >= 5
             }
         },
 
-        // Kullan�c�n�n rozetlerini kontrol et ve yeni rozetler ver
+        // Kullanıcının rozetlerini kontrol et ve yeni rozetler ver
         checkAndAwardBadges: function(userId, currentStats) {
             if (!userId) return;
 
@@ -12996,14 +6403,14 @@ const quizApp = {
             const newBadges = [];
 
             Object.values(this.badges).forEach(badge => {
-                // E�er kullan�c� bu rozeti hen�z kazanmad�ysa ve �artlar� sa�l�yorsa
+                // Eğer kullanıcı bu rozeti henüz kazanmadıysa ve şartları sağlıyorsa
                 if (!userBadges[badge.id] && badge.condition(currentStats)) {
                     this.awardBadge(userId, badge);
                     newBadges.push(badge);
                 }
             });
 
-            // Yeni rozet kazan�ld�ysa bildir
+            // Yeni rozet kazanıldıysa bildir
             if (newBadges.length > 0) {
                 this.showBadgeNotification(newBadges);
             }
@@ -13011,45 +6418,118 @@ const quizApp = {
             return newBadges;
         },
 
-        // Kullan�c�n�n mevcut rozetlerini al
+        // Kullanıcının mevcut rozetlerini al
         getUserBadges: function(userId) {
             try {
-                const badges = localStorage.getItem(`user-badges-${userId}`);
-                return badges ? JSON.parse(badges) : {};
+                // Önce localStorage'dan al
+                const localBadges = localStorage.getItem(`user-badges-${userId}`);
+                let userBadges = localBadges ? JSON.parse(localBadges) : {};
+                
+                // Eğer localStorage'da rozet yoksa ve Firebase varsa oradan al
+                if (Object.keys(userBadges).length === 0 && firebase.firestore) {
+                    // Bu asenkron işlem, sonucu hemen döndüremeyiz
+                    // Ancak localStorage'ı güncelleyebiliriz
+                    this.syncBadgesFromFirebase(userId);
+                }
+                
+                return userBadges;
             } catch (error) {
                 console.error('Rozetler okunurken hata:', error);
                 return {};
             }
         },
+        
+        // Firebase'den rozetleri senkronize et
+        syncBadgesFromFirebase: function(userId) {
+            if (!firebase.firestore) return;
+            
+            const db = firebase.firestore();
+            db.collection('users').doc(userId).get()
+                .then(doc => {
+                    if (doc.exists && doc.data().badges) {
+                        const firebaseBadges = doc.data().badges;
+                        
+                        // Firebase'den gelen rozetleri tam rozet objelerine dönüştür
+                        const fullBadges = {};
+                        Object.keys(firebaseBadges).forEach(badgeId => {
+                            const firebaseBadge = firebaseBadges[badgeId];
+                            const fullBadgeDefinition = this.badges[badgeId];
+                            
+                            if (fullBadgeDefinition) {
+                                fullBadges[badgeId] = {
+                                    ...fullBadgeDefinition,
+                                    earnedDate: firebaseBadge.earnedDate
+                                };
+                            }
+                        });
+                        
+                        // localStorage'ı güncelle
+                        localStorage.setItem(`user-badges-${userId}`, JSON.stringify(fullBadges));
+                        console.log('Rozetler Firebase\'den senkronize edildi:', Object.keys(fullBadges));
+                    }
+                })
+                .catch(error => {
+                    console.error('Firebase\'den rozetler alınırken hata:', error);
+                });
+        },
 
         // Rozet ver
         awardBadge: function(userId, badge) {
             const userBadges = this.getUserBadges(userId);
-            const badgeData = {
+            
+            // Firebase için güvenli badge verisi oluştur (fonksiyonları hariç tut)
+            const safeBadgeData = {
+                id: badge.id,
+                name: badge.name,
+                description: badge.description,
+                icon: badge.icon,
+                earnedDate: new Date().toISOString()
+            };
+            
+            // localStorage için tam veri (fonksiyonlar dahil)
+            const fullBadgeData = {
                 ...badge,
                 earnedDate: new Date().toISOString()
             };
             
-            userBadges[badge.id] = badgeData;
+            userBadges[badge.id] = fullBadgeData;
 
             try {
-                // LocalStorage'a kaydet
+                // LocalStorage'a kaydet (tam veri ile)
                 localStorage.setItem(`user-badges-${userId}`, JSON.stringify(userBadges));
+                console.log(`Rozet localStorage'a kaydedildi: ${badge.name}`);
                 
-                // Firestore'a kaydet (varsa)
+                // Firebase için güvenli rozetler objesi oluştur
+                const safeBadgesForFirebase = {};
+                Object.keys(userBadges).forEach(badgeId => {
+                    const userBadge = userBadges[badgeId];
+                    safeBadgesForFirebase[badgeId] = {
+                        id: userBadge.id,
+                        name: userBadge.name,
+                        description: userBadge.description,
+                        icon: userBadge.icon,
+                        earnedDate: userBadge.earnedDate
+                    };
+                });
+                
+                // Firestore'a kaydet (güvenli veri ile)
                 if (firebase.firestore) {
                     const db = firebase.firestore();
                     db.collection('users').doc(userId).set({
-                        badges: userBadges,
+                        badges: safeBadgesForFirebase,
                         lastUpdated: new Date()
-                    }, { merge: true }).catch(error => {
+                    }, { merge: true }).then(() => {
+                        console.log(`Rozet Firestore'a kaydedildi: ${badge.name}`);
+                    }).catch(error => {
                         console.error('Rozet Firestore\'a kaydedilemedi:', error);
                     });
                 }
                 
-                // Firebase Realtime Database'e de kaydet (geriye uyumluluk)
+                // Firebase Realtime Database'e de kaydet (güvenli veri ile)
                 if (firebase.database) {
-                    firebase.database().ref(`users/${userId}/badges/${badge.id}`).set(badgeData).catch(error => {
+                    firebase.database().ref(`users/${userId}/badges/${badge.id}`).set(safeBadgeData).then(() => {
+                        console.log(`Rozet Realtime Database'e kaydedildi: ${badge.name}`);
+                    }).catch(error => {
                         console.error('Rozet Firebase Realtime\'a kaydedilemedi:', error);
                     });
                 }
@@ -13058,69 +6538,209 @@ const quizApp = {
             }
         },
 
-        // Rozet bildirimi g�ster
+        // Rozet bildirimi göster
         showBadgeNotification: function(newBadges) {
             newBadges.forEach(badge => {
-                quizApp.showToast(`?? Yeni rozet kazand�n�z: ${badge.name}!`, 'toast-success');
+                // Toast ile kısa bildirimi göster
+                quizApp.showToast(`🎉 Yeni rozet kazandınız: ${badge.name}!`, 'toast-success');
+                
+                // Tam ekran modal ile rozet bilgisini göster
+                quizApp.showBadgeEarnedModal(badge);
             });
         }
     },
     
-    // Rozet gereksinimleri i�in a��klama metni olu�tur
+    // Rozet kazanma modalını göster (tam ekran)
+    showBadgeEarnedModal: function(badge) {
+        // Önceki badge modali varsa kapat
+        const existingModal = document.querySelector('.badge-earned-modal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+        
+        // Arka plan müziği ve ses efektleri
+        let badgeSound = null;
+        if (this.soundEnabled) {
+            badgeSound = new Audio('sounds/badge-earned.mp3');
+            badgeSound.volume = 0.6;
+            badgeSound.play();
+        }
+        
+        // Modal oluştur
+        const badgeModal = document.createElement('div');
+        badgeModal.className = 'badge-earned-modal';
+        
+        // Rozet ikon renkleri ve arkaplanları
+        let badgeColor = '#ffc107'; // Varsayılan sarı
+        let badgeBg = 'linear-gradient(135deg, #fff9c4, #ffeb3b)';
+        
+        // Rozet türüne göre renklendirme
+        if (badge.id === 'perfectScore' || badge.id === 'genius') {
+            badgeColor = '#f44336'; // Kırmızı
+            badgeBg = 'linear-gradient(135deg, #ffcdd2, #e57373)';
+        } else if (badge.id === 'explorer' || badge.id === 'dedicated') {
+            badgeColor = '#4caf50'; // Yeşil
+            badgeBg = 'linear-gradient(135deg, #c8e6c9, #81c784)';
+        } else if (badge.id === 'speedster') {
+            badgeColor = '#2196f3'; // Mavi
+            badgeBg = 'linear-gradient(135deg, #bbdefb, #64b5f6)';
+        } else if (badge.id === 'scholar') {
+            badgeColor = '#9c27b0'; // Mor
+            badgeBg = 'linear-gradient(135deg, #e1bee7, #ba68c8)';
+        }
+        
+        // Requirement text
+        const requirementText = this.getBadgeRequirementText(badge);
+        
+        badgeModal.innerHTML = `
+            <div class="badge-earned-content">
+                <div class="badge-earned-overlay"></div>
+                <div class="badge-earned-inner">
+                    <div class="badge-earned-header">
+                        <h2>🏆 Yeni Rozet Kazandınız!</h2>
+                        <p>Tebrikler! Başarınız için yeni bir rozet kazandınız.</p>
+                    </div>
+                    
+                    <div class="badge-earned-showcase" style="background: ${badgeBg};">
+                        <div class="badge-earned-icon" style="color: ${badgeColor};">
+                            <i class="${badge.icon}"></i>
+                        </div>
+                        <div class="badge-earned-info">
+                            <h3>${badge.name}</h3>
+                            <p>${badge.description}</p>
+                        </div>
+                        <div class="badge-earned-confetti">
+                            <div class="confetti"></div>
+                            <div class="confetti"></div>
+                            <div class="confetti"></div>
+                            <div class="confetti"></div>
+                            <div class="confetti"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="badge-earned-details">
+                        <div class="badge-earned-requirement">
+                            <h4><i class="fas fa-check-circle"></i> Kazanma Koşulu</h4>
+                            <p>${requirementText}</p>
+                        </div>
+                        <div class="badge-earned-date">
+                            <h4><i class="fas fa-calendar-alt"></i> Kazanılma Tarihi</h4>
+                            <p>${new Date().toLocaleDateString('tr-TR')} • ${new Date().toLocaleTimeString('tr-TR')}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="badge-earned-actions">
+                        <button class="btn-badge-close">
+                            <i class="fas fa-check"></i> Harika!
+                        </button>
+                        <button class="btn-badge-share">
+                            <i class="fas fa-share-alt"></i> Paylaş
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(badgeModal);
+        
+        // Modal efekti için kısa gecikme
+        setTimeout(() => {
+            badgeModal.classList.add('show');
+        }, 100);
+        
+        // Badge aktivite kaydet
+        this.createUserActivity('badge', `"${badge.name}" rozeti kazanıldı`);
+        
+        // Butonlara event listener ekle
+        const closeButton = badgeModal.querySelector('.btn-badge-close');
+        const shareButton = badgeModal.querySelector('.btn-badge-share');
+        
+        closeButton.addEventListener('click', () => {
+            badgeModal.classList.remove('show');
+            setTimeout(() => {
+                badgeModal.remove();
+            }, 300);
+        });
+        
+        shareButton.addEventListener('click', () => {
+            // Paylaşım fonksiyonu
+            const shareText = `🏆 Bilgoo Quiz'de "${badge.name}" rozetini kazandım! #BilgooQuiz`;
+            
+            // Paylaşım bilgisini kopyala
+            navigator.clipboard.writeText(shareText).then(() => {
+                this.showToast('Paylaşım metni kopyalandı!', 'toast-success');
+            }).catch(err => {
+                console.error('Clipboard write failed:', err);
+                this.showToast('Paylaşım metni kopyalanamadı', 'toast-error');
+            });
+        });
+        
+        // Arka plana tıklayınca da kapat
+        badgeModal.addEventListener('click', (e) => {
+            if (e.target === badgeModal || e.target.classList.contains('badge-earned-overlay')) {
+                badgeModal.classList.remove('show');
+                setTimeout(() => {
+                    badgeModal.remove();
+                }, 300);
+            }
+        });
+    },
+    
+    // Rozet gereksinimleri için açıklama metni oluştur
     getBadgeRequirementText: function(badge) {
         let text = "";
         
         switch(badge.id) {
             case 'perfectScore':
-                text = "Bir kategoride %100 do�ru cevap vererek m�kemmel skor elde etmek.";
+                text = "Bir kategoride %100 doğru cevap vererek mükemmel skor elde etmek.";
                 break;
             case 'genius':
-                text = "Arka arkaya 10 soruyu do�ru cevaplamak.";
+                text = "Arka arkaya 10 soruyu doğru cevaplamak.";
                 break;
             case 'explorer':
-                text = "5 farkl� kategoride en az 5'er soru ��zmek.";
+                text = "5 farklı kategoride en az 5'er soru çözmek.";
                 break;
             case 'dedicated':
-                text = "Toplam 100 soru ��zmek.";
+                text = "Toplam 100 soru çözmek.";
                 break;
             case 'speedster':
-                text = "10 soruyu ortalama 5 saniyeden k�sa s�rede cevaplamak.";
+                text = "10 soruyu ortalama 5 saniyeden kısa sürede cevaplamak.";
                 break;
             case 'scholar':
-                text = "T�m kategorilerde en az %70 ba�ar� oran� elde etmek.";
+                text = "Tüm kategorilerde en az %70 başarı oranı elde etmek.";
                 break;
             default:
-                text = "Bu rozeti kazanmak i�in gerekli ko�ullar� sa�lamak.";
+                text = "Bu rozeti kazanmak için gerekli koşulları sağlamak.";
         }
         
         return text;
     },
     
-    // Zaman fark�n� hesapla (ne kadar zaman �nce)
+    // Zaman farkını hesapla (ne kadar zaman önce)
     calculateTimeAgo: function(timestamp) {
         const now = Date.now();
         const diff = now - timestamp;
         
-        // Zaman fark�n� insan dostu formata �evir
+        // Zaman farkını insan dostu formata çevir
         const seconds = Math.floor(diff / 1000);
         const minutes = Math.floor(seconds / 60);
         const hours = Math.floor(minutes / 60);
         const days = Math.floor(hours / 24);
         
         if (days > 0) {
-            return days === 1 ? '1 g�n �nce' : `${days} g�n �nce`;
+            return days === 1 ? '1 gün önce' : `${days} gün önce`;
         } else if (hours > 0) {
-            return hours === 1 ? '1 saat �nce' : `${hours} saat �nce`;
+            return hours === 1 ? '1 saat önce' : `${hours} saat önce`;
         } else if (minutes > 0) {
-            return minutes === 1 ? '1 dakika �nce' : `${minutes} dakika �nce`;
+            return minutes === 1 ? '1 dakika önce' : `${minutes} dakika önce`;
         } else {
-            return seconds <= 5 ? 'Az �nce' : `${seconds} saniye �nce`;
+            return seconds <= 5 ? 'Az önce' : `${seconds} saniye önce`;
         }
     },
     
-    // Lider tablosunu g�ster
+    // Lider tablosunu göster
     showGlobalLeaderboard: function() {
-        // Ana i�erikleri gizle
+        // Ana içerikleri gizle
         if (this.quizElement) this.quizElement.style.display = 'none';
         if (this.resultElement) this.resultElement.style.display = 'none';
         if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'none';
@@ -13134,7 +6754,7 @@ const quizApp = {
         const profilePage = document.getElementById('profile-page');
         if (profilePage) profilePage.style.display = 'none';
         
-        // Di�er sayfalar� da gizle
+        // Diğer sayfaları da gizle
         const friendsPage = document.getElementById('friends-page');
         if (friendsPage) friendsPage.style.display = 'none';
         
@@ -13144,25 +6764,25 @@ const quizApp = {
         const winnerScreen = document.getElementById('winner-screen');
         if (winnerScreen) winnerScreen.style.display = 'none';
         
-        // Lider tablosunu g�r�nt�le
+        // Lider tablosunu görüntüle
         const globalLeaderboard = document.getElementById('global-leaderboard');
         if (globalLeaderboard) {
             globalLeaderboard.style.display = 'block';
             
-            // Lider tablosu verilerini y�kle
+            // Lider tablosu verilerini yükle
             this.loadLeaderboardData();
         }
     },
     
-    // Lider tablosu verilerini y�kle
+    // Lider tablosu verilerini yükle
     loadLeaderboardData: function() {
         const leaderboardList = document.getElementById('leaderboard-list');
         if (!leaderboardList) return;
         
-        // Y�kleniyor mesaj� g�ster
-        leaderboardList.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin fa-2x"></i><p>Lider tablosu y�kleniyor...</p></div>';
+        // Yükleniyor mesajı göster
+        leaderboardList.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin fa-2x"></i><p>Lider tablosu yükleniyor...</p></div>';
         
-        // Firebase'den verileri �ek
+        // Firebase'den verileri çek
         if (firebase.database) {
             const leaderboardRef = firebase.database().ref('leaderboard');
             const categoryFilter = document.getElementById('leaderboard-category').value;
@@ -13172,11 +6792,11 @@ const quizApp = {
                 .then(snapshot => {
                     const data = snapshot.val();
                     if (!data) {
-                        leaderboardList.innerHTML = '<div class="no-data-message">Hen�z kay�t yok</div>';
+                        leaderboardList.innerHTML = '<div class="no-data-message">Henüz kayıt yok</div>';
                         return;
                     }
                     
-                    // Verileri skor s�ras�na g�re diziye �evir
+                    // Verileri skor sırasına göre diziye çevir
                     const leaderboardArray = [];
                     Object.keys(data).forEach(key => {
                         leaderboardArray.push({
@@ -13185,7 +6805,7 @@ const quizApp = {
                         });
                     });
                     
-                    // Skora g�re s�rala (azalan)
+                    // Skora göre sırala (azalan)
                     leaderboardArray.sort((a, b) => b.score - a.score);
                     
                     // Tabloya ekle
@@ -13193,12 +6813,12 @@ const quizApp = {
                     const table = document.createElement('table');
                     table.className = 'leaderboard-table';
                     
-                    // Tablo ba�l���
+                    // Tablo başlığı
                     const thead = document.createElement('thead');
                     thead.innerHTML = `
                         <tr>
-                            <th>S�ra</th>
-                            <th>Kullan�c�</th>
+                            <th>Sıra</th>
+                            <th>Kullanıcı</th>
                             <th>Skor</th>
                             <th>Kategori</th>
                             <th>Tarih</th>
@@ -13206,7 +6826,7 @@ const quizApp = {
                     `;
                     table.appendChild(thead);
                     
-                    // Tablo i�eri�i
+                    // Tablo içeriği
                     const tbody = document.createElement('tbody');
                     leaderboardArray.forEach((item, index) => {
                         const row = document.createElement('tr');
@@ -13224,27 +6844,27 @@ const quizApp = {
                     leaderboardList.appendChild(table);
                 })
                 .catch(error => {
-                    console.error("Lider tablosu y�klenirken hata:", error);
-                    leaderboardList.innerHTML = '<div class="error-message">Lider tablosu y�klenemedi</div>';
+                    console.error("Lider tablosu yüklenirken hata:", error);
+                    leaderboardList.innerHTML = '<div class="error-message">Lider tablosu yüklenemedi</div>';
                 });
         } else {
-            // Firebase yoksa demo veri g�ster
+            // Firebase yoksa demo veri göster
             leaderboardList.innerHTML = `
                 <div class="demo-data-message">
-                    <p>Demo verileri g�steriliyor (Firebase ba�lant�s� yok)</p>
+                    <p>Demo verileri gösteriliyor (Firebase bağlantısı yok)</p>
                     <table class="leaderboard-table">
                         <thead>
                             <tr>
-                                <th>S�ra</th>
-                                <th>Kullan�c�</th>
+                                <th>Sıra</th>
+                                <th>Kullanıcı</th>
                                 <th>Skor</th>
                                 <th>Kategori</th>
                                 <th>Tarih</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td>1</td><td>Oyuncu123</td><td>95</td><td>Genel K�lt�r</td><td>01.05.2025</td></tr>
-                            <tr><td>2</td><td>BilgiKral�</td><td>87</td><td>Bilim</td><td>30.04.2025</td></tr>
+                            <tr><td>1</td><td>Oyuncu123</td><td>95</td><td>Genel Kültür</td><td>01.05.2025</td></tr>
+                            <tr><td>2</td><td>BilgiKralı</td><td>87</td><td>Bilim</td><td>30.04.2025</td></tr>
                             <tr><td>3</td><td>QuizMaster</td><td>82</td><td>Tarih</td><td>29.04.2025</td></tr>
                         </tbody>
                     </table>
@@ -13253,53 +6873,53 @@ const quizApp = {
         }
     },
     
-    // updateTimer fonksiyonunu g�ncelle
+    // updateTimer fonksiyonunu güncelle
     updateTimer: function() {
         this.timeLeft--;
         
-        // Zaman� g�ster
+        // Zamanı göster
         this.updateTimeDisplay();
         
-        // S�re bitti mi?
+        // Süre bitti mi?
         if (this.timeLeft <= 0) {
             clearInterval(this.timerInterval);
             this.handleTimeUp();
         }
     },
     
-    // Cevab� kaydet - b�l�m istatistiklerini takip etmek i�in
+    // Cevabı kaydet - bölüm istatistiklerini takip etmek için
     recordAnswer: function(isCorrect) {
-        // Mevcut b�l�m numaras� (0-tabanl�)
-        const sectionIndex = Math.floor(this.currentQuestionIndex / 5);
+        // Mevcut bölüm numarası (0-tabanlı) - currentSection kullan
+        const sectionIndex = this.currentSection - 1; // currentSection 1'den başladığı için -1
         
-        console.log(`Cevap kaydediliyor: Soru: ${this.currentQuestionIndex+1}, B�l�m: ${sectionIndex+1}, Do�ru mu: ${isCorrect}`);
+        console.log(`Cevap kaydediliyor: Soru: ${this.currentQuestionIndex+1}, Bölüm: ${this.currentSection}, Doğru mu: ${isCorrect}`);
         
-        // E�er bu b�l�m i�in hen�z istatistik olu�turulmad�ysa, yeni olu�tur
+        // Eğer bu bölüm için henüz istatistik oluşturulmadıysa, yeni oluştur
         if (!this.sectionStats[sectionIndex]) {
             this.sectionStats[sectionIndex] = { correct: 0, total: 0 };
         }
         
-        // Toplam cevap say�s�n� art�r
+        // Toplam cevap sayısını artır
         this.sectionStats[sectionIndex].total++;
         
-        // Do�ru ise do�ru cevap say�s�n� art�r
+        // Doğru ise doğru cevap sayısını artır
         if (isCorrect) {
             this.sectionStats[sectionIndex].correct++;
         }
         
-        console.log(`B�l�m ${sectionIndex+1} istatistikleri g�ncellendi: Do�ru: ${this.sectionStats[sectionIndex].correct}, Toplam: ${this.sectionStats[sectionIndex].total}`);
-        console.log('T�m b�l�m istatistikleri:', JSON.stringify(this.sectionStats));
+        console.log(`Bölüm ${this.currentSection} istatistikleri güncellendi: Doğru: ${this.sectionStats[sectionIndex].correct}, Toplam: ${this.sectionStats[sectionIndex].total}`);
+        console.log('Tüm bölüm istatistikleri:', JSON.stringify(this.sectionStats));
     },
     
-    // S�re doldu�unda yap�lacaklar
+    // Süre dolduğunda yapılacaklar
     handleTimeUp: function() {
         this.stopTimer();
-        this.timeLeftElement.textContent = "S�re Bitti!";
+        this.timeLeftElement.textContent = "Süre Bitti!";
         const optionButtons = this.optionsElement.querySelectorAll('.option');
         const currentQuestion = this.questions[this.currentQuestionIndex];
-        const questionTime = currentQuestion.category === "Bo�luk Doldurma" ? 
+        const questionTime = currentQuestion.category === "Boşluk Doldurma" ? 
             this.TIME_PER_BLANK_FILLING_QUESTION : this.TIME_PER_QUESTION;
-        this.answerTimes.push(questionTime); // Max s�re
+        this.answerTimes.push(questionTime); // Max süre
         this.answeredQuestions++;
         this.recordAnswer(false);
         optionButtons.forEach(btn => {
@@ -13310,7 +6930,7 @@ const quizApp = {
         });
         if (this.skipJokerActive) {
             this.skipJokerActive = false;
-            // Pas jokeri kullan�ld�ysa can eksilmesin, modal ��kmas�n, direkt sonraki soruya ge�
+            // Pas jokeri kullanıldıysa can eksilmesin, modal çıkmasın, direkt sonraki soruya geç
             setTimeout(() => {
                 this.showNextQuestion();
             }, 800);
@@ -13326,8 +6946,8 @@ const quizApp = {
                     <div class="timeout-modal-icon">
                         <i class="fas fa-hourglass-end"></i>
                     </div>
-                    <div class="timeout-modal-text">S�re Doldu!</div>
-                    <div class="timeout-modal-correct">Do�ru cevap: <strong>${currentQuestion.correctAnswer}</strong></div>
+                    <div class="timeout-modal-text">Süre Doldu!</div>
+                    <div class="timeout-modal-correct">Doğru cevap: <strong>${currentQuestion.correctAnswer}</strong></div>
                     <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
                 </div>
             `;
@@ -13355,7 +6975,6 @@ const quizApp = {
                 onlineGame.submitAnswer(false);
             }
         }
-        // Can kontrol� kald�r�ld� - loseLife fonksiyonu kendi ba��na can sat�n alma modal�n� handle ediyor
         
         if (this.nextButton) {
             this.nextButton.style.display = 'block';
@@ -13366,54 +6985,58 @@ const quizApp = {
         }
     },
     
-    // Canlar bitti�inde oyun sonucunu g�sterecek fonksiyonlar
+    // Canlar bittiğinde oyun sonucunu gösterecek fonksiyonlar
     
     handleAnswerClick: function(button) {
-        // Zamanlay�c�y� durdur
+        // Zamanlayıcıyı durdur
         this.stopTimer();
         
-        // Sonu� elementini temizle
+        // Sonuç elementini temizle
         if (this.resultElement) {
             this.resultElement.textContent = '';
             this.resultElement.style.display = 'none';
         }
         
-        // T�klanan butonu se�
+        // Tıklanan butonu seç
         const selectedOption = button.textContent;
         const currentQuestion = this.questions[this.currentQuestionIndex];
         
-        // Cevapland���n� belirt ve istatistiklere ekle
+        // Cevaplandığını belirt ve istatistiklere ekle
         const timeSpent = this.TIME_PER_QUESTION - this.timeLeft;
         this.answerTimes.push(timeSpent);
         this.answeredQuestions++;
         
-        // T�m ��klar� devre d��� b�rak
+        // Tüm şıkları devre dışı bırak
         const optionButtons = this.optionsElement.querySelectorAll('.option');
         optionButtons.forEach(btn => btn.disabled = true);
         
-        // Do�ru/yanl�� kontrol�
-        if (selectedOption === currentQuestion.correctAnswer) {
+        // Cevabı kaydet
+        const isCorrect = selectedOption === currentQuestion.correctAnswer;
+        this.recordAnswer(isCorrect);
+        
+        // Doğru/yanlış kontrolü
+        if (isCorrect) {
             button.classList.add('correct');
             
-            // Skoru g�ncelle
+            // Skoru güncelle
             this.score++;
-            // this.correctAnswers++; // <-- KALDIRILDI: Tekrar eden kod
+            this.correctAnswers++;
             this.updateScoreDisplay();
             
-            // Seviye ilerleme kontrol�
+            // Seviye ilerleme kontrolü
             this.levelProgress++;
             
-            // Do�ru cevap ses efekti
+            // Doğru cevap ses efekti
             this.playSound(this.soundCorrect);
             
-            // �evrimi�i oyunda skoru g�ncelle
+            // Çevrimiçi oyunda skoru güncelle
             if (onlineGame && onlineGame.gameStarted) {
                 onlineGame.submitAnswer(true);
             }
         } else {
             button.classList.add('wrong');
             
-            // Do�ru cevab� g�ster
+            // Doğru cevabı göster
             optionButtons.forEach(button => {
                 if (button.textContent === currentQuestion.correctAnswer) {
                     button.classList.add('correct');
@@ -13422,20 +7045,18 @@ const quizApp = {
             
             this.playSound(this.soundWrong);
             
-            // Can� azalt
+            // Canı azalt
             this.loseLife();
             
-            // �evrimi�i oyunda skoru g�ncelle
+            // Çevrimiçi oyunda skoru güncelle
             if (onlineGame && onlineGame.gameStarted) {
                 onlineGame.submitAnswer(false);
             }
-            
-            // Can kontrol� kald�r�ld� - loseLife fonksiyonu kendi ba��na can sat�n alma modal�n� handle ediyor
         }
         
-        // Bir sonraki soruya ge�
+        // Bir sonraki soruya geç
         setTimeout(() => {
-            // Son soru ise sonu� ekran�n� g�ster
+            // Son soru ise sonuç ekranını göster
             if (this.currentQuestionIndex >= this.questions.length - 1) {
                 this.showResult();
             } else {
@@ -13445,11 +7066,11 @@ const quizApp = {
         }, 1500);
     },
     
-    // Bo�luk doldurma sorular� i�in
+    // Boşluk doldurma soruları için
     handleBlankFillingCorrectAnswer: function() {
         this.stopTimer();
         this.disableBlankFillingControls();
-        // Tam ekran do�ru modal�
+        // Tam ekran doğru modalı
         const correctModal = document.createElement('div');
         correctModal.className = 'correct-modal';
         correctModal.innerHTML = `
@@ -13474,8 +7095,10 @@ const quizApp = {
         this.answeredQuestions++;
         const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
         this.addScore(scoreForQuestion);
+        
+        // Cevabı kaydet - İSTATİSTİKLER İÇİN ÖNEMLİ!
         this.recordAnswer(true);
-        // this.correctAnswers++; // <-- KALDIRILDI: Tekrar eden kod, zaten checkBlankFillingAnswer i�inde say�l�yor
+        
         if (this.soundEnabled) {
             const correctSound = document.getElementById('sound-correct');
             if (correctSound) correctSound.play().catch(e => {});
@@ -13487,7 +7110,7 @@ const quizApp = {
     handleBlankFillingWrongAnswer: function() {
         this.stopTimer();
         this.disableBlankFillingControls();
-        // Tam ekran yanl�� modal�
+        // Tam ekran yanlış modalı
         this.loseLife();
         const currentQuestion = this.questions[this.currentQuestionIndex];
         const wrongModal = document.createElement('div');
@@ -13523,42 +7146,39 @@ const quizApp = {
         if (typeof onlineGame !== 'undefined' && onlineGame && onlineGame.gameStarted) {
             onlineGame.submitAnswer(false);
         }
-        // Can kontrol� kald�r�ld� - loseLife fonksiyonu kendi ba��na can sat�n alma modal�n� handle ediyor
     },
     
-    // Load question i�levini g�ncelle
+    // Load question işlevini güncelle
     loadQuestion: function() {
-        console.log('loadQuestion �a�r�ld�, soru indeksi:', this.currentQuestionIndex);
+        console.log('loadQuestion çağrıldı, soru indeksi:', this.currentQuestionIndex);
         
         try {
-            // �nce �nceki sorunun kal�nt�lar�n� temizle
+            // Önce önceki sorunun kalıntılarını temizle
             this.cleanupPreviousQuestion();
             
-            // "Do�ru!" yaz�s�n�n oldu�u elementi varsa gizle
+            // "Doğru!" yazısının olduğu elementi varsa gizle
             const correctMessageElement = document.querySelector('.correct-answer-container');
             if (correctMessageElement) {
                 correctMessageElement.remove();
             }
             
-            // Can kontrol� kald�r�ld� - canlar bittiyse loseLife fonksiyonu zaten can sat�n alma modal�n� a��yor
-            
-            // Mevcut soru indeksi kontrol�
+            // Mevcut soru indeksi kontrolü
             if (this.currentQuestionIndex >= this.questions.length) {
-                console.log("T�m sorular tamamland�, kategori tamamlama ekran� g�steriliyor...");
+                console.log("Tüm sorular tamamlandı, kategori tamamlama ekranı gösteriliyor...");
                 this.showCategoryCompletion();
                 return;
             }
             
             const currentQuestion = this.questions[this.currentQuestionIndex];
-            console.log('Y�klenen soru:', currentQuestion);
+            console.log('Yüklenen soru:', currentQuestion);
             
-            // �oklu oyun i�in extra kontroller
+            // Çoklu oyun için extra kontroller
             const isOnlineGame = typeof onlineGame !== 'undefined' && onlineGame && onlineGame.gameStarted;
             
-            // Zamanlay�c� elementini kontrol et ve olu�tur
+            // Zamanlayıcı elementini kontrol et ve oluştur
             let timerElement = document.getElementById('timer');
             if (!timerElement) {
-                console.log('Timer elementi bulunamad�, olu�turuluyor...');
+                console.log('Timer elementi bulunamadı, oluşturuluyor...');
                 timerElement = document.createElement('div');
                 timerElement.id = 'timer';
                 timerElement.className = 'timer';
@@ -13572,7 +7192,7 @@ const quizApp = {
                 // Quiz container'a ekle
                 const quizContainer = document.getElementById('quiz-container');
                 if (quizContainer) {
-                    // E�er question-container varsa onun �st�ne ekle
+                    // Eğer question-container varsa onun üstüne ekle
                     const questionContainer = quizContainer.querySelector('.question-container');
                     if (questionContainer) {
                         quizContainer.insertBefore(timerElement, questionContainer);
@@ -13581,26 +7201,26 @@ const quizApp = {
                     }
                 }
             } else {
-                // Zamanlay�c�y� g�r�n�r yap ve s�f�rla
+                // Zamanlayıcıyı görünür yap ve sıfırla
                 timerElement.style.display = 'block';
                 
-                // Zamanlay�c� i�indeki ilerleme �ubu�unu s�f�rla
+                // Zamanlayıcı içindeki ilerleme çubuğunu sıfırla
                 const progressBar = timerElement.querySelector('.timer-progress');
                 if (progressBar) {
                     progressBar.style.width = '100%';
                 }
                 
-                // Zamanlay�c� metnini g�ncelleyelim
+                // Zamanlayıcı metnini güncelleyelim
                 const timerText = timerElement.querySelector('.timer-text');
                 if (timerText) {
                     timerText.textContent = this.TIME_PER_QUESTION;
                 }
             }
             
-            // Sonu� elementini kontrol et ve olu�tur
+            // Sonuç elementini kontrol et ve oluştur
             let resultElement = document.getElementById('result');
             if (!resultElement) {
-                console.log('Result elementi bulunamad�, olu�turuluyor...');
+                console.log('Result elementi bulunamadı, oluşturuluyor...');
                 resultElement = document.createElement('div');
                 resultElement.id = 'result';
                 resultElement.className = 'result';
@@ -13622,8 +7242,8 @@ const quizApp = {
                 resultElement.style.display = 'none';
             }
             
-            // Soru tipine g�re y�kleme i�lemini yap
-            if (currentQuestion.type === "Do�ruYanl��" || currentQuestion.type === "TrueFalse") {
+            // Soru tipine göre yükleme işlemini yap
+            if (currentQuestion.type === "DoğruYanlış" || currentQuestion.type === "TrueFalse") {
                 this.loadTrueFalseQuestion(currentQuestion);
             } else if (currentQuestion.type === "BlankFilling") {
                 this.loadBlankFillingQuestion(currentQuestion);
@@ -13631,42 +7251,42 @@ const quizApp = {
                 this.displayQuestion(currentQuestion);
             }
             
-            // Zamanlay�c�y� ba�lat
+            // Zamanlayıcıyı başlat
             this.startTimer();
             
-            // �oklu oyun i�in extra gecikme ile y�kleme kontrol�
+            // Çoklu oyun için extra gecikme ile yükleme kontrolü
             if (isOnlineGame) {
-                // �nce t�m elementlerin g�r�n�rl���n� kontrol et
+                // Önce tüm elementlerin görünürlüğünü kontrol et
                 setTimeout(() => {
-                    console.log('�oklu oyun i�in soru g�r�n�rl��� kontrol ediliyor');
+                    console.log('Çoklu oyun için soru görünürlüğü kontrol ediliyor');
                     
-                    // Soru i�eri�ini kontrol et ve yeniden y�kle
+                    // Soru içeriğini kontrol et ve yeniden yükle
                     if (this.questionElement && (!this.questionElement.textContent || this.questionElement.textContent === '')) {
-                        console.log('Soru metni eksik, yeniden y�kleniyor:', currentQuestion.question);
+                        console.log('Soru metni eksik, yeniden yükleniyor:', currentQuestion.question);
                         this.questionElement.textContent = currentQuestion.question;
                     }
                     
-                    // ��klar� kontrol et
+                    // Şıkları kontrol et
                     if (this.optionsElement && this.optionsElement.children.length === 0) {
-                        console.log('��klar eksik, yeniden y�kleniyor');
+                        console.log('Şıklar eksik, yeniden yükleniyor');
                         this.displayOptions(currentQuestion.options || []);
                     }
                     
-                    // Zamanlay�c�y� kontrol et ve yeniden ba�lat
+                    // Zamanlayıcıyı kontrol et ve yeniden başlat
                     if (this.timeLeft <= 0 || !this.timerInterval) {
-                        console.log('Zamanlay�c� yeniden ba�lat�l�yor');
+                        console.log('Zamanlayıcı yeniden başlatılıyor');
                         this.startTimer();
                     }
                 }, 300);
             }
         } catch (error) {
-            console.error('Soru y�kleme hatas�:', error);
+            console.error('Soru yükleme hatası:', error);
         }
     },
     
-    // Timer elementini olu�tur
+    // Timer elementini oluştur
     createTimerElement: function() {
-        console.log('Timer elementi olu�turuluyor...');
+        console.log('Timer elementi oluşturuluyor...');
         const timerElement = document.createElement('div');
         timerElement.id = 'timer';
         timerElement.className = 'timer';
@@ -13680,22 +7300,22 @@ const quizApp = {
         // Quiz container'a ekle
         const quizContainer = document.getElementById('quiz-container');
         if (quizContainer) {
-            // E�er question-container varsa onun �st�ne ekle
+            // Eğer question-container varsa onun üstüne ekle
             const questionContainer = quizContainer.querySelector('.question-container');
             if (questionContainer) {
                 quizContainer.insertBefore(timerElement, questionContainer);
             } else {
                 quizContainer.appendChild(timerElement);
             }
-            console.log('Timer elementi ba�ar�yla olu�turuldu');
+            console.log('Timer elementi başarıyla oluşturuldu');
         } else {
-            console.error('Quiz container bulunamad�!');
+            console.error('Quiz container bulunamadı!');
         }
     },
     
-    // Result elementini olu�tur
+    // Result elementini oluştur
     createResultElement: function() {
-        console.log('Result elementi olu�turuluyor...');
+        console.log('Result elementi oluşturuluyor...');
         const resultElement = document.createElement('div');
         resultElement.id = 'result';
         resultElement.className = 'result';
@@ -13705,345 +7325,434 @@ const quizApp = {
         const optionsContainer = document.querySelector('.options-container');
         if (optionsContainer) {
             optionsContainer.parentNode.insertBefore(resultElement, optionsContainer.nextSibling);
-            console.log('Result elementi ba�ar�yla olu�turuldu');
+            console.log('Result elementi başarıyla oluşturuldu');
         } else {
             const quizContainer = document.getElementById('quiz-container');
             if (quizContainer) {
                 quizContainer.appendChild(resultElement);
                 console.log('Result elementi quiz container\'a eklendi');
             } else {
-                console.error('Quiz container bulunamad�!');
+                console.error('Quiz container bulunamadı!');
             }
         }
     },
     
-    // showResult g�ncelleme
+    // showResult - YENİ KUTLAMA MODALI
     showResult: function() {
-        // Zamanlay�c�y� durdur
+        // Zamanlayıcıyı durdur
         this.stopTimer();
         
-        // Quiz modunu deaktifle�tir
+        // Quiz modunu deaktifleştir
         this.deactivateQuizMode();
         
-        // Debug: Oyun sonu de�erlerini logla
-        console.log("=== OYUN SONU DEBUG ===");
-        console.log("currentQuestionIndex:", this.currentQuestionIndex);
-        console.log("answeredQuestions:", this.answeredQuestions);
-        console.log("correctAnswers:", this.correctAnswers);
-        console.log("score:", this.score);
-        console.log("lives:", this.lives);
-        console.log("answerTimes length:", this.answerTimes.length);
-        
-        // F�NAL SKORU ve istatistikleri saklayal�m
+        // Temel istatistikleri hesapla
         const finalStats = {
             category: this.selectedCategory,
             score: this.score,
-            correctAnswers: this.correctAnswers, // <-- EKLEND�
-            totalQuestions: this.questions.length, // <-- D�ZELT�LD�: Oyunun toplam soru say�s�
+            correctAnswers: this.correctAnswers,
+            totalQuestions: this.currentQuestionIndex + 1,
             lives: this.lives,
             avgTime: this.answerTimes.length > 0 ? 
                 (this.answerTimes.reduce((a, b) => a + b, 0) / this.answerTimes.length).toFixed(1) : 0
         };
         
-        console.log("finalStats:", finalStats);
-        console.log("======================");
-        
         // Oyun istatistiklerini kaydet
         this.saveGameStatistics();
         this.addNewHighScore(finalStats.category, finalStats.score, finalStats.totalQuestions);
         
-        // PUANLARI KULLANICI HESABINA KAYDET
+        // Puanları kaydet
         if (this.isLoggedIn) {
             this.totalScore += this.score;
             this.sessionScore += this.score;
             this.levelProgress += this.score;
-            
-            // Seviye kontrol� yap
             this.checkLevelUp();
-            
-            // Kullan�c� verilerini Firebase'e kaydet
             this.saveUserData();
-            
-            console.log(`Oyun sonu: ${this.score} puan hesaba eklendi. Toplam puan: ${this.totalScore}`);
         } else {
-            // Giri� yapmam�� kullan�c�lar i�in session score'u kaydet
             this.sessionScore += this.score;
             this.saveScoreToLocalStorage();
-            
-            console.log(`Oyun sonu (misafir): ${this.score} puan session'a eklendi. Session toplam: ${this.sessionScore}`);
         }
         
-        try {
-            // TAM SAYFA SONU� EKRANI ���N SAYFAYI TEM�ZLE
-            // Body i�eri�ini tamamen siliyoruz!
-            document.body.innerHTML = '';
-            
-            // CLEAN SONU� EKRANI
-            const resultScreen = document.createElement('div');
-            resultScreen.id = 'fullscreen-result';
-            resultScreen.className = 'result-screen';
-            
-            // CSS Stilleri
-            resultScreen.style.cssText = `
-                background: linear-gradient(45deg, #4a148c, #e91e63);
-                min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: flex-start;
-                padding: 20px;
-                font-family: 'Poppins', sans-serif;
-                color: white;
-                box-sizing: border-box;
-                text-align: center;
-            `;
-            
-            // Dil se�imine g�re ba�l�k ve sonu� metinleri
-            const appName = languages[this.currentLanguage].quizAppName;
-            const resultText = languages[this.currentLanguage].resultTitle;
-            
-            // Ba�l�k
-            const header = document.createElement('div');
-            header.className = 'result-header';
-            header.innerHTML = `
-                <h1 style="font-size: 2rem; margin-bottom: 5px; color: white;">${appName}</h1>
-                <h2 style="font-size: 1.5rem; margin-top: 0; color: white;"><i class="fas fa-trophy"></i> ${resultText}</h2>
-            `;
-            
-            // Sonu� kart�
-            const resultCard = document.createElement('div');
-            resultCard.className = 'result-card';
-            resultCard.style.cssText = `
-                background-color: rgba(255, 255, 255, 0.95);
-                border-radius: 15px;
-                padding: 30px;
-                margin: 20px 0;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-                max-width: 500px;
-                width: 90%;
-                color: #333;
-            `;
-            
-            // Sonu� mesaj�
-            let resultMessage = '';
-            let perfectScore = false;
-            
-            // Dilin �evirilerini al
-            const categoryResultText = languages[this.currentLanguage].categoryResult;
-            const outOfLivesText = languages[this.currentLanguage].outOfLives;
-            const answeredQuestionsText = languages[this.currentLanguage].answeredQuestions;
-            const ofQuestionsText = languages[this.currentLanguage].ofQuestions;
-            const correctlyAnsweredText = languages[this.currentLanguage].correctlyAnswered;
-            const withLivesText = languages[this.currentLanguage].withLives;
-            
-            if (finalStats.lives <= 0) {
-                // Canlar bitti
-                resultMessage = `<b>${finalStats.category}</b> ${categoryResultText} ${outOfLivesText}. ${answeredQuestionsText} 
-                <span style="color: #4a148c; font-weight: bold;">${finalStats.totalQuestions}</span> ${ofQuestionsText} 
-                <span style="color: #e91e63; font-weight: bold;">${finalStats.correctAnswers}</span> ${correctlyAnsweredText}.`;
-            } else if (finalStats.correctAnswers === finalStats.totalQuestions && finalStats.correctAnswers > 0) {
-                // T�m sorular� do�ru cevaplad�
-                resultMessage = `<b>${finalStats.category}</b> ${categoryResultText} 
-                <span style="color: #4a148c; font-weight: bold;">${finalStats.totalQuestions}</span> ${ofQuestionsText} 
-                <span style="color: #e91e63; font-weight: bold;">${finalStats.correctAnswers}</span> ${correctlyAnsweredText}
-                <span style="color: #4CAF50; font-weight: bold;">${finalStats.lives}</span> ${withLivesText}!`;
-                perfectScore = true;
-            } else {
-                // Normal oyun sonu
-                resultMessage = `<b>${finalStats.category}</b> ${categoryResultText} ${answeredQuestionsText} 
-                <span style="color: #4a148c; font-weight: bold;">${finalStats.totalQuestions}</span> ${ofQuestionsText} 
-                <span style="color: #e91e63; font-weight: bold;">${finalStats.correctAnswers}</span> ${correctlyAnsweredText}
-                <span style="color: #4CAF50; font-weight: bold;">${finalStats.lives}</span> ${withLivesText}.`;
-            }
-            
-            // Sonu� mesaj�n� ekleyelim
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'result-message';
-            messageDiv.innerHTML = `<p>${resultMessage}</p>`;
-            
-            // �statistikler b�l�m�
-            const statsDiv = document.createElement('div');
-            statsDiv.className = 'statistics-section';
-            
-            // Dil se�imine g�re istatistik ba�l���
-            const statsTitle = languages[this.currentLanguage].statistics;
-            const totalQuestionText = languages[this.currentLanguage].totalQuestion;
-            const totalCorrectText = languages[this.currentLanguage].totalCorrect;
-            const avgTimeText = languages[this.currentLanguage].avgTime;
-            const totalScoreText = languages[this.currentLanguage].totalScore;
-            
-            statsDiv.innerHTML = `
-                <h3 style="color: #4a148c; margin-bottom: 15px;">${statsTitle}</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px;">
-                    <div style="background: linear-gradient(145deg, #f6f6f6, #ffffff); border-radius: 10px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: #4a148c;">${finalStats.totalQuestions}</div>
-                        <div style="font-size: 0.9rem; color: #666;">${totalQuestionText}</div>
-                    </div>
-                    <div style="background: linear-gradient(145deg, #f6f6f6, #ffffff); border-radius: 10px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: #e91e63;">${finalStats.correctAnswers}</div>
-                        <div style="font-size: 0.9rem; color: #666;">${totalCorrectText}</div>
-                    </div>
-                    <div style="background: linear-gradient(145deg, #f6f6f6, #ffffff); border-radius: 10px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: #2196F3;">${finalStats.avgTime}s</div>
-                        <div style="font-size: 0.9rem; color: #666;">${avgTimeText}</div>
-                    </div>
-                    <div style="background: linear-gradient(145deg, #f6f6f6, #ffffff); border-radius: 10px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: #009688;">${finalStats.score}</div>
-                        <div style="font-size: 0.9rem; color: #666;">${totalScoreText}</div>
-                    </div>
-                </div>
-            `;
-            
-            // Butonlar
-            const buttonsDiv = document.createElement('div');
-            buttonsDiv.className = 'result-buttons';
-            buttonsDiv.style.cssText = `
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 15px;
-                margin-top: 25px;
-            `;
-            
-            // Ana men�ye d�n�� butonu
-            const mainMenuBtn = document.createElement('button');
-            const backToCategoriesText = languages[this.currentLanguage].backToCategories;
-            mainMenuBtn.innerHTML = `<i class="fas fa-home"></i> ${backToCategoriesText}`;
-            mainMenuBtn.style.cssText = `
-                background: linear-gradient(45deg, #4a148c, #7b1fa2);
-                border: none;
-                color: white;
-                padding: 12px 20px;
-                border-radius: 8px;
-                font-size: 1rem;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                transition: all 0.3s ease;
-                box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            `;
-            
-            mainMenuBtn.addEventListener('click', () => {
-                // Sayfay� yeniden y�kle ve ana sayfaya d�n
-                window.location.reload();
-            });
-            
-            // Payla� butonu
-            const shareBtn = document.createElement('button');
-            const shareScoreText = languages[this.currentLanguage].shareScore;
-            shareBtn.innerHTML = `<i class="fas fa-share-alt"></i> ${shareScoreText}`;
-            shareBtn.style.cssText = `
-                background: linear-gradient(45deg, #00a0b0, #3f8ffc);
-                border: none;
-                color: white;
-                padding: 12px 20px;
-                border-radius: 8px;
-                font-size: 1rem;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                transition: all 0.3s ease;
-                box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            `;
-            
-            shareBtn.addEventListener('click', () => {
-                const appName = languages[this.currentLanguage].quizAppName;
-                const ofQuestionsText = languages[this.currentLanguage].ofQuestions;
-                const correctlyAnsweredText = languages[this.currentLanguage].correctlyAnswered;
-                
-                let shareText;
-                if (this.currentLanguage === 'tr') {
-                    shareText = `${appName}'nda ${finalStats.category} kategorisinde ${finalStats.totalQuestions} sorudan ${finalStats.correctAnswers} tanesini do�ru cevaplad�m!`;
-                } else if (this.currentLanguage === 'en') {
-                    shareText = `I correctly answered ${finalStats.correctAnswers} ${ofQuestionsText} ${finalStats.totalQuestions} questions in the ${finalStats.category} category of ${appName}!`;
-                } else if (this.currentLanguage === 'de') {
-                    shareText = `Im ${appName} habe ich ${finalStats.correctAnswers} ${ofQuestionsText} ${finalStats.totalQuestions} Fragen in der Kategorie ${finalStats.category} richtig beantwortet!`;
-                }
-                
-                if (navigator.share) {
-                    navigator.share({
-                        title: appName,
-                        text: shareText,
-                        url: window.location.href
-                    }).catch(() => {
-                        // Panoya kopyala
-                        navigator.clipboard.writeText(shareText)
-                            .then(() => alert('Skor metni panoya kopyaland�!'));
-                    });
-                } else {
-                    // Panoya kopyala
-                    navigator.clipboard.writeText(shareText)
-                        .then(() => alert('Skor metni panoya kopyaland�!'));
-                }
-            });
-            
-            // Butonlar� ekle
-            buttonsDiv.appendChild(mainMenuBtn);
-            buttonsDiv.appendChild(shareBtn);
-            
-            // T�m bile�enleri ana karta ekleyelim
-            resultCard.appendChild(messageDiv);
-            resultCard.appendChild(statsDiv);
-            resultCard.appendChild(buttonsDiv);
-            
-            // Bile�enleri sonu� ekran�na ekleyelim
-            resultScreen.appendChild(header);
-            resultScreen.appendChild(resultCard);
-            
-            // Perfect Score i�in konfeti efekti
-            if (perfectScore && finalStats.totalQuestions >= 5) {
-                this.createSimpleConfetti(resultScreen);
-            }
-            
-            // FontAwesome ekleyelim
-            const fontAwesome = document.createElement('link');
-            fontAwesome.rel = 'stylesheet';
-            fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
-            document.head.appendChild(fontAwesome);
-            
-            // Google Fonts ekleyelim
-            const googleFonts = document.createElement('link');
-            googleFonts.rel = 'stylesheet';
-            googleFonts.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap';
-            document.head.appendChild(googleFonts);
-            
-            // Sonu� ekran�n� body'ye ekle
-            document.body.appendChild(resultScreen);
-            
-            // Ses efekti
-            if (perfectScore) {
-                const winSound = document.getElementById('sound-win');
-                if (winSound) this.playSoundSafely(winSound);
-            } else if (finalStats.lives <= 0) {
-                const gameoverSound = document.getElementById('sound-gameover');
-                if (gameoverSound) this.playSoundSafely(gameoverSound);
-            } else {
-                const completionSound = document.getElementById('sound-level-completion');
-                if (completionSound) this.playSoundSafely(completionSound);
-            }
-            
-        } catch (error) {
-            console.error("Sonu� ekran� olu�turulurken hata:", error);
-            alert("Sonu� ekran� olu�turulurken bir hata olu�tu. L�tfen sayfay� yenileyiniz.");
-            window.location.reload();
-        }
-        
-        // Oyun durumunu s�f�rla
-        this.score = 0;
-        // this.lives = 5; // BUNU S�L�YORUM
-        this.currentQuestionIndex = 0;
-        this.answeredQuestions = 0;
-        this.answerTimes = [];
-        this.currentSection = 1;
-        this.resetJokerUsage(); // Sadece kullan�m durumlar�n� s�f�rla, envanter korunsun
+        // YENİ KUTLAMA MODALI OLUŞTUR
+        this.createCelebrationModal(finalStats);
     },
     
-    // Sesi g�venli �ekilde �al
+    // Yeni Kutlama Modalı Fonksiyonu
+    createCelebrationModal: function(finalStats) {
+        // Tam ekran modal oluştur
+        const celebrationModal = document.createElement('div');
+        celebrationModal.className = 'celebration-modal';
+        celebrationModal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            z-index: 99999;
+                display: flex;
+                flex-direction: column;
+            justify-content: center;
+                align-items: center;
+                font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        `;
+        
+        // Konfeti Canvas'ı
+        const confettiCanvas = document.createElement('canvas');
+        confettiCanvas.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        `;
+        confettiCanvas.width = window.innerWidth;
+        confettiCanvas.height = window.innerHeight;
+        
+        // Modal İçeriği
+        const modalContent = document.createElement('div');
+        modalContent.style.cssText = `
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 40px 20px;
+            max-width: 600px;
+                width: 90%;
+        `;
+        
+        // Başarı oranına göre kutlama mesajları (dil desteği ile)
+        const successRate = (finalStats.correctAnswers / finalStats.totalQuestions) * 100;
+        let congratsMessage, emoji, motivationText;
+        
+        const celebrationTexts = languages[this.currentLanguage].celebration;
+        
+        if (successRate >= 90) {
+            congratsMessage = celebrationTexts.perfect;
+            emoji = "🏆✨🌟";
+            motivationText = celebrationTexts.perfectMsg;
+        } else if (successRate >= 75) {
+            congratsMessage = celebrationTexts.excellent;
+            emoji = "🥇🔥💪";
+            motivationText = celebrationTexts.excellentMsg;
+        } else if (successRate >= 50) {
+            congratsMessage = celebrationTexts.good;
+            emoji = "🎯⭐💫";
+            motivationText = celebrationTexts.goodMsg;
+            } else {
+            congratsMessage = celebrationTexts.keepGoing;
+            emoji = "🚀🌈🎪";
+            motivationText = celebrationTexts.keepGoingMsg;
+        }
+        
+        modalContent.innerHTML = `
+            <div style="animation: bounceIn 1s ease-out;">
+                <h1 style="font-size: 3.5rem; color: #FFD700; text-shadow: 3px 3px 0px #FF6B35; margin: 0; font-weight: 900;">
+                    ${congratsMessage}
+                </h1>
+                <div style="font-size: 4rem; margin: 20px 0; animation: swing 2s ease-in-out infinite;">
+                    ${emoji}
+                </div>
+                <p style="font-size: 1.4rem; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin: 20px 0; font-weight: 600;">
+                    ${motivationText}
+                </p>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.95); border-radius: 20px; padding: 30px; margin: 30px 0; box-shadow: 0 20px 40px rgba(0,0,0,0.2); animation: slideInUp 0.8s ease-out 0.5s both;">
+                <h2 style="color: #4a148c; margin-bottom: 25px; font-size: 1.8rem; font-weight: 700;">
+                    ${celebrationTexts.gameSummary}
+                </h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin: 25px 0;">
+                    <div style="background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 15px; padding: 20px; color: white; box-shadow: 0 8px 16px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2.2rem; font-weight: bold; margin-bottom: 5px;">🎯</div>
+                        <div style="font-size: 1.6rem; font-weight: bold;">${finalStats.correctAnswers}/${finalStats.totalQuestions}</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">${celebrationTexts.correctAnswersLabel}</div>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, #f093fb, #f5576c); border-radius: 15px; padding: 20px; color: white; box-shadow: 0 8px 16px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2.2rem; font-weight: bold; margin-bottom: 5px;">⭐</div>
+                        <div style="font-size: 1.6rem; font-weight: bold;">${finalStats.score}</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">${celebrationTexts.totalPointsLabel}</div>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, #4facfe, #00f2fe); border-radius: 15px; padding: 20px; color: white; box-shadow: 0 8px 16px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2.2rem; font-weight: bold; margin-bottom: 5px;">⏱️</div>
+                        <div style="font-size: 1.6rem; font-weight: bold;">${finalStats.avgTime}s</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">${celebrationTexts.averageTimeLabel}</div>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, #fa709a, #fee140); border-radius: 15px; padding: 20px; color: white; box-shadow: 0 8px 16px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2.2rem; font-weight: bold; margin-bottom: 5px;">❤️</div>
+                        <div style="font-size: 1.6rem; font-weight: bold;">${finalStats.lives}</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">${celebrationTexts.remainingLivesLabel}</div>
+                    </div>
+                    </div>
+                
+                <div style="margin: 25px 0;">
+                    <div style="background: linear-gradient(90deg, #667eea, #764ba2); height: 10px; border-radius: 20px; overflow: hidden;">
+                        <div style="background: linear-gradient(90deg, #FFD700, #FFA500); height: 100%; width: ${successRate}%; border-radius: 20px; animation: fillBar 2s ease-out 1s both;"></div>
+                </div>
+                    <p style="color: #4a148c; font-weight: bold; margin-top: 10px; font-size: 1.1rem;">
+                        ${celebrationTexts.successRateLabel}: %${Math.round(successRate)}
+                    </p>
+                </div>
+            </div>
+            
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; animation: fadeInUp 0.8s ease-out 1s both;">
+                <button id="play-again-btn" style="
+                    background: linear-gradient(135deg, #667eea, #764ba2);
+                    border: none;
+                    color: white;
+                    padding: 15px 30px;
+                    border-radius: 50px;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+                    transition: all 0.3s ease;
+                display: flex;
+                    align-items: center;
+                    gap: 10px;
+                ">
+                    ${celebrationTexts.playAgainBtn}
+                </button>
+                
+                <button id="main-menu-btn" style="
+                    background: linear-gradient(135deg, #f093fb, #f5576c);
+                border: none;
+                color: white;
+                    padding: 15px 30px;
+                    border-radius: 50px;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                cursor: pointer;
+                    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+                    transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                    gap: 10px;
+                ">
+                    ${celebrationTexts.mainMenuBtn}
+                </button>
+                
+                <button id="share-btn" style="
+                    background: linear-gradient(135deg, #4facfe, #00f2fe);
+                border: none;
+                color: white;
+                    padding: 15px 30px;
+                    border-radius: 50px;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                cursor: pointer;
+                    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+                    transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                    gap: 10px;
+                ">
+                    ${celebrationTexts.shareBtn}
+                </button>
+            </div>
+        `;
+        
+        // CSS Animasyonları ekle
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes bounceIn {
+                0% { transform: scale(0.3); opacity: 0; }
+                50% { transform: scale(1.05); }
+                70% { transform: scale(0.9); }
+                100% { transform: scale(1); opacity: 1; }
+            }
+            @keyframes swing {
+                0%, 100% { transform: rotate(0deg); }
+                20% { transform: rotate(15deg); }
+                40% { transform: rotate(-10deg); }
+                60% { transform: rotate(5deg); }
+                80% { transform: rotate(-5deg); }
+            }
+            @keyframes slideInUp {
+                0% { transform: translateY(50px); opacity: 0; }
+                100% { transform: translateY(0); opacity: 1; }
+            }
+            @keyframes fadeInUp {
+                0% { transform: translateY(30px); opacity: 0; }
+                100% { transform: translateY(0); opacity: 1; }
+            }
+            @keyframes fillBar {
+                0% { width: 0%; }
+                100% { width: ${successRate}%; }
+            }
+            button:hover {
+                transform: translateY(-3px) scale(1.05) !important;
+                box-shadow: 0 12px 24px rgba(0,0,0,0.3) !important;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Modalı ekle
+        celebrationModal.appendChild(confettiCanvas);
+        celebrationModal.appendChild(modalContent);
+        document.body.appendChild(celebrationModal);
+        
+        // Konfeti animasyonu başlat
+        this.startConfetti(confettiCanvas);
+        
+        // Buton event listeners
+        document.getElementById('play-again-btn').addEventListener('click', () => {
+            celebrationModal.remove();
+            style.remove();
+            this.restartGame();
+        });
+        
+        document.getElementById('main-menu-btn').addEventListener('click', () => {
+            celebrationModal.remove();
+            style.remove();
+            window.location.reload();
+        });
+        
+        document.getElementById('share-btn').addEventListener('click', () => {
+            this.shareResults(finalStats);
+        });
+        
+        // Ses efekti çal
+        if (this.soundEnabled) {
+            const victorySound = document.getElementById('sound-victory');
+            if (victorySound) {
+                victorySound.play().catch(e => console.log('Ses çalma hatası:', e));
+            }
+        }
+    },
+    
+    // Konfeti Animasyonu
+    startConfetti: function(canvas) {
+        const ctx = canvas.getContext('2d');
+        const confettiPieces = [];
+        const colors = ['#FFD700', '#FF6B35', '#F7931E', '#FFE135', '#FB8500', '#8ECAE6', '#219EBC', '#023047', '#FFB3BA', '#BAFFC9'];
+        
+        // Konfeti parçacıkları oluştur
+        for (let i = 0; i < 100; i++) {
+            confettiPieces.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                width: Math.random() * 10 + 5,
+                height: Math.random() * 10 + 5,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                rotation: Math.random() * 360,
+                rotationSpeed: Math.random() * 10 - 5,
+                velocityX: Math.random() * 6 - 3,
+                velocityY: Math.random() * 3 + 2,
+                gravity: 0.1
+            });
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            confettiPieces.forEach((piece, index) => {
+                piece.velocityY += piece.gravity;
+                piece.x += piece.velocityX;
+                piece.y += piece.velocityY;
+                piece.rotation += piece.rotationSpeed;
+                
+                ctx.save();
+                ctx.translate(piece.x + piece.width / 2, piece.y + piece.height / 2);
+                ctx.rotate((piece.rotation * Math.PI) / 180);
+                ctx.fillStyle = piece.color;
+                ctx.fillRect(-piece.width / 2, -piece.height / 2, piece.width, piece.height);
+                ctx.restore();
+                
+                // Ekrandan çıkan parçacıkları kaldır
+                if (piece.y > canvas.height + 10) {
+                    confettiPieces.splice(index, 1);
+                }
+            });
+            
+            if (confettiPieces.length > 0) {
+                requestAnimationFrame(animate);
+            }
+        }
+        
+        animate();
+        
+        // 3 saniye sonra yeni konfetiler ekle
+        setTimeout(() => {
+            for (let i = 0; i < 50; i++) {
+                confettiPieces.push({
+                    x: Math.random() * canvas.width,
+                    y: -20,
+                    width: Math.random() * 8 + 3,
+                    height: Math.random() * 8 + 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rotation: Math.random() * 360,
+                    rotationSpeed: Math.random() * 8 - 4,
+                    velocityX: Math.random() * 4 - 2,
+                    velocityY: Math.random() * 2 + 1,
+                    gravity: 0.08
+                });
+            }
+            animate();
+        }, 3000);
+    },
+    
+    // Sonuçları Paylaş (Dil Desteği ile)
+    shareResults: function(finalStats) {
+        const successRate = Math.round((finalStats.correctAnswers / finalStats.totalQuestions) * 100);
+        const appName = languages[this.currentLanguage].quizAppName;
+        
+        let shareText;
+        if (this.currentLanguage === 'tr') {
+            shareText = `🎮 ${appName}'nda harika bir performans sergiledim!\n\n🎯 ${finalStats.correctAnswers}/${finalStats.totalQuestions} doğru cevap\n⭐ ${finalStats.score} puan\n📊 %${successRate} başarı oranı\n\nSen de oynamak ister misin?`;
+        } else if (this.currentLanguage === 'en') {
+            shareText = `🎮 I had a great performance in ${appName}!\n\n🎯 ${finalStats.correctAnswers}/${finalStats.totalQuestions} correct answers\n⭐ ${finalStats.score} points\n📊 ${successRate}% success rate\n\nWant to play too?`;
+        } else if (this.currentLanguage === 'de') {
+            shareText = `🎮 Ich hatte eine großartige Leistung in ${appName}!\n\n🎯 ${finalStats.correctAnswers}/${finalStats.totalQuestions} richtige Antworten\n⭐ ${finalStats.score} Punkte\n📊 ${successRate}% Erfolgsrate\n\nMöchtest du auch spielen?`;
+        }
+        
+        let shareTitle;
+        if (this.currentLanguage === 'tr') {
+            shareTitle = 'Quiz Oyunu Sonuçlarım';
+        } else if (this.currentLanguage === 'en') {
+            shareTitle = 'My Quiz Game Results';
+        } else if (this.currentLanguage === 'de') {
+            shareTitle = 'Meine Quiz-Spiel Ergebnisse';
+        }
+        
+        if (navigator.share) {
+            navigator.share({
+                title: shareTitle,
+                text: shareText,
+                url: window.location.href
+            }).catch(err => console.log('Paylaşım hatası:', err));
+        } else {
+            // Fallback: metni kopyala
+            navigator.clipboard.writeText(shareText).then(() => {
+                const copyMessage = this.currentLanguage === 'tr' ? 'Sonuçlar panoya kopyalandı! 📋' :
+                                    this.currentLanguage === 'en' ? 'Results copied to clipboard! 📋' :
+                                    'Ergebnisse in die Zwischenablage kopiert! 📋';
+                alert(copyMessage);
+            }).catch(() => {
+                // Manuel kopyalama için modal göster
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = shareText;
+                document.body.appendChild(tempTextArea);
+                tempTextArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempTextArea);
+                const copyMessage = this.currentLanguage === 'tr' ? 'Sonuçlar panoya kopyalandı! 📋' :
+                                    this.currentLanguage === 'en' ? 'Results copied to clipboard! 📋' :
+                                    'Ergebnisse in die Zwischenablage kopiert! 📋';
+                alert(copyMessage);
+            });
+        }
+    },
+    
+    // Sesi güvenli şekilde çal
     playSoundSafely: function(audioElement) {
         if (audioElement && this.soundEnabled) {
-            audioElement.play().catch(e => console.log("Ses �alma hatas�:", e));
+            audioElement.play().catch(e => console.log("Ses çalma hatası:", e));
         }
     },
     
@@ -14063,10 +7772,10 @@ const quizApp = {
             z-index: 1;
         `;
         
-        // Konfeti par�ac�klar� i�in renkler
+        // Konfeti parçacıkları için renkler
         const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
         
-        // Konfeti par�ac�klar� olu�tur
+        // Konfeti parçacıkları oluştur
         for (let i = 0; i < 100; i++) {
             setTimeout(() => {
                 const confetti = document.createElement('div');
@@ -14082,83 +7791,83 @@ const quizApp = {
                 
                 confettiContainer.appendChild(confetti);
                 
-                // Her par�ac��� 3-6 saniye sonra kald�r
+                // Her parçacığı 3-6 saniye sonra kaldır
                 setTimeout(() => {
                     confetti.remove();
                 }, (Math.random() * 3 + 3) * 1000);
-            }, Math.random() * 2000); // 0-2 saniye aras�nda rastgele zamanlama ile ekle
+            }, Math.random() * 2000); // 0-2 saniye arasında rastgele zamanlama ile ekle
         }
         
         container.appendChild(confettiContainer);
         
-        // 8 saniye sonra konfeti container'� kald�r
+        // 8 saniye sonra konfeti container'ı kaldır
         setTimeout(() => {
             confettiContainer.remove();
         }, 8000);
     },
     
-    // Bo�luk doldurma sorusunu y�kle
+    // Boşluk doldurma sorusunu yükle
     loadBlankFillingQuestion: function(question) {
-        console.log("Bo�luk doldurma sorusu y�kleniyor:", question);
+        console.log("Boşluk doldurma sorusu yükleniyor:", question);
         
-        // �nceki sorunun kal�nt�lar�n� temizle
+        // Önceki sorunun kalıntılarını temizle
         this.cleanupPreviousQuestion();
         
-        // Var olan do�ru/yanl�� mesajlar�n� temizle
+        // Var olan doğru/yanlış mesajlarını temizle
         const existingMessages = document.querySelectorAll('.correct-answer-container, .wrong-answer-container');
         existingMessages.forEach(element => {
             element.remove();
         });
         
-        // Sonu� mesaj�n� gizle
+        // Sonuç mesajını gizle
         if (this.resultElement) {
             this.resultElement.innerHTML = '';
             this.resultElement.style.display = 'none';
         }
         
-        // Sorunun do�ru formatlanmas� i�in kontrol
+        // Sorunun doğru formatlanması için kontrol
         if (!question || !question.question || !question.correctAnswer || !question.choices) {
-            console.error("Bo�luk doldurma sorusu eksik veya hatal� veri i�eriyor:", question);
-            this.loadNextQuestion(); // Sonraki soruya ge�
+            console.error("Boşluk doldurma sorusu eksik veya hatalı veri içeriyor:", question);
+            this.loadNextQuestion(); // Sonraki soruya geç
             return;
         }
         
-        // Soruyu g�ster
+        // Soruyu göster
         if (this.questionElement) {
             this.questionElement.textContent = question.question;
             
-            // E�er soruda g�rsel varsa g�ster
+            // Eğer soruda görsel varsa göster
             if (question.imageUrl) {
                 const imageContainer = document.createElement('div');
                 imageContainer.className = 'question-image';
                 
                 const img = document.createElement('img');
                 img.src = question.imageUrl;
-                img.alt = 'Soru g�rseli';
+                img.alt = 'Soru görseli';
                 img.style.maxWidth = '100%';
                 img.style.maxHeight = '300px';
                 img.style.margin = '10px auto';
                 img.style.display = 'block';
                 
-                // G�rsel y�kleme hatas� durumunda - soruyu de�i�tirme mekanizmas�
+                // Görsel yükleme hatası durumunda - soruyu değiştirme mekanizması
                 img.onerror = () => {
-                    console.warn(`Soru g�rseli y�klenemedi: ${question.imageUrl}. Sonraki soruya ge�iliyor...`);
+                    console.warn(`Soru görseli yüklenemedi: ${question.imageUrl}. Sonraki soruya geçiliyor...`);
                     
-                    // Toast bildirimi g�ster
-                    this.showToast("G�rsel y�klenemedi, ba�ka bir soruya ge�iliyor...", "toast-warning");
+                    // Toast bildirimi göster
+                    this.showToast("Görsel yüklenemedi, başka bir soruya geçiliyor...", "toast-warning");
                     
-                    // G�rseli y�klenemeyen soruyu atla
+                    // Görseli yüklenemeyen soruyu atla
                     if (this.questions.length > this.currentQuestionIndex + 1) {
-                        // Zamanlay�c�y� durdur
+                        // Zamanlayıcıyı durdur
                         clearInterval(this.timerInterval);
                         
-                        // Sonraki soruya ge�
+                        // Sonraki soruya geç
                         setTimeout(() => {
                             this.currentQuestionIndex++;
                             this.displayQuestion(this.questions[this.currentQuestionIndex]);
                         }, 1000);
                     } else {
-                        // Soru kalmad�ysa sonucu g�ster
+                        // Soru kalmadıysa sonucu göster
                         setTimeout(() => {
                             this.showResult();
                         }, 1000);
@@ -14166,7 +7875,7 @@ const quizApp = {
                     return;
                 };
                 
-                // �nce t�m eski resim elementlerini kald�r
+                // Önce tüm eski resim elementlerini kaldır
                 const oldImages = this.questionElement.querySelectorAll('.question-image');
                 oldImages.forEach(img => img.remove());
                 
@@ -14176,12 +7885,12 @@ const quizApp = {
             }
         }
         
-        // Se�enekleri g�ster
+        // Seçenekleri göster
         if (this.optionsElement) {
-            // �nceki i�eri�i temizle
+            // Önceki içeriği temizle
             this.optionsElement.innerHTML = '';
             
-            // Ana container - t�m i�eri�i sa�a yaslamak i�in flex kullanaca��z
+            // Ana container - tüm içeriği sağa yaslamak için flex kullanacağız
             const mainContainer = document.createElement('div');
             mainContainer.className = 'main-blank-filling-container';
             mainContainer.style.cssText = `
@@ -14193,7 +7902,7 @@ const quizApp = {
                 padding: 0;
             `;
             
-            // Bo�luk doldurma UI olu�tur - ortaya yaslanacak
+            // Boşluk doldurma UI oluştur - ortaya yaslanacak
             const blankFillingContainer = document.createElement('div');
             blankFillingContainer.className = 'blank-filling-container';
             blankFillingContainer.style.cssText = `
@@ -14206,7 +7915,7 @@ const quizApp = {
                 margin: 0 auto;
             `;
             
-            // Cevap g�sterim alan�
+            // Cevap gösterim alanı
             const answerDisplay = document.createElement('div');
             answerDisplay.className = 'answer-display';
             answerDisplay.id = 'blank-filling-answer';
@@ -14226,13 +7935,13 @@ const quizApp = {
             `;
             blankFillingContainer.appendChild(answerDisplay);
             
-            // Se�ilen harfleri saklamak i�in array
+            // Seçilen harfleri saklamak için array
             this.selectedLetters = [];
             
-            // T�m harfleri cevaptan al (b�y�k/k���k dahil)
+            // Tüm harfleri cevaptan al (büyük/küçük dahil)
             const correctLetters = [...question.choices];
             const shuffledLetters = this.shuffleArray([...correctLetters]);
-            // Harfleri g�stermek i�in bir container olu�tur
+            // Harfleri göstermek için bir container oluştur
             const lettersContainer = document.createElement('div');
             lettersContainer.className = 'letters-container';
             if (shuffledLetters.length === 8) {
@@ -14249,7 +7958,7 @@ const quizApp = {
                     max-width: 350px;
                 `;
             } else {
-                // Di�er durumlar i�in eski flex yap�s�
+                // Diğer durumlar için eski flex yapısı
                 lettersContainer.style.cssText = `
                     display: flex;
                     flex-wrap: wrap;
@@ -14260,7 +7969,7 @@ const quizApp = {
                     max-width: 450px;
                 `;
             }
-            // Harf butonlar�n� olu�tur
+            // Harf butonlarını oluştur
             shuffledLetters.forEach((letter, idx) => {
                 const letterButton = document.createElement('button');
                 letterButton.className = 'letter-button';
@@ -14287,14 +7996,14 @@ const quizApp = {
                         this.selectedLetters.push(letter);
                         this.updateBlankFillingAnswer();
                         
-                        // Se�ilen harfi s�nd�r (disabled durumuna getir)
+                        // Seçilen harfi söndür (disabled durumuna getir)
                         letterButton.disabled = true;
                         letterButton.style.opacity = '0.3';
                         letterButton.style.cursor = 'not-allowed';
                         letterButton.style.background = '#d3d3d3';
                         letterButton.style.color = '#888';
                         
-                        // Harfi geri almak i�in data attribute'unu ayarla
+                        // Harfi geri almak için data attribute'unu ayarla
                         letterButton.setAttribute('data-letter', letter);
                         letterButton.setAttribute('data-index', this.selectedLetters.length - 1);
                     }
@@ -14317,7 +8026,7 @@ const quizApp = {
             
             blankFillingContainer.appendChild(lettersContainer);
             
-            // Butonlar i�in container
+            // Butonlar için container
             const buttonsContainer = document.createElement('div');
             buttonsContainer.className = 'blank-filling-buttons';
             buttonsContainer.style.cssText = `
@@ -14353,9 +8062,9 @@ const quizApp = {
                     const removedLetter = this.selectedLetters.pop();
                     this.updateBlankFillingAnswer();
                     
-                    // Son se�ilen harfin butonunu normale d�nd�r
+                    // Son seçilen harfin butonunu normale döndür
                     const letterButtons = lettersContainer.querySelectorAll('.letter-button');
-                    // En son se�ilen harfi bulup normale d�nd�r
+                    // En son seçilen harfi bulup normale döndür
                     for (let i = letterButtons.length - 1; i >= 0; i--) {
                         const btn = letterButtons[i];
                         if (btn.disabled && btn.textContent === removedLetter.toUpperCase()) {
@@ -14366,7 +8075,7 @@ const quizApp = {
                             btn.style.color = '#333';
                             btn.removeAttribute('data-letter');
                             btn.removeAttribute('data-index');
-                            break; // Sadece bir tanesini geri d�nd�r
+                            break; // Sadece bir tanesini geri döndür
                         }
                     }
                 } else {
@@ -14397,7 +8106,7 @@ const quizApp = {
                 this.selectedLetters = [];
                 this.updateBlankFillingAnswer();
                 
-                // T�m harf butonlar�n� normale d�nd�r
+                // Tüm harf butonlarını normale döndür
                 const letterButtons = lettersContainer.querySelectorAll('.letter-button');
                 letterButtons.forEach(btn => {
                     btn.disabled = false;
@@ -14431,23 +8140,23 @@ const quizApp = {
                 height: 45px;
             `;
             checkButton.addEventListener('click', () => {
-                // E�er sonu� zaten g�sterilmi�se veya buton devre d��� b�rak�lm��sa hi�bir �ey yapma
+                // Eğer sonuç zaten gösterilmişse veya buton devre dışı bırakılmışsa hiçbir şey yapma
                 if (this.resultElement.style.display === 'block' || checkButton.disabled) {
                     return;
                 }
                 
                 const userAnswer = this.selectedLetters.join('');
                 if (userAnswer.length === 0) {
-                    this.showToast("L�tfen bir cevap girin!", "toast-warning");
+                    this.showToast("Lütfen bir cevap girin!", "toast-warning");
                     return;
                 }
                 
-                // Butonu devre d��� b�rak, tekrar t�klanmas�n� �nle
+                // Butonu devre dışı bırak, tekrar tıklanmasını önle
                 checkButton.disabled = true;
                 checkButton.style.opacity = '0.5';
                 checkButton.style.cursor = 'not-allowed';
                 
-                // T�m harf butonlar�n� ve di�er action butonlar�n� devre d��� b�rak
+                // Tüm harf butonlarını ve diğer action butonlarını devre dışı bırak
                 const letterButtons = lettersContainer.querySelectorAll('.letter-button');
                 letterButtons.forEach(btn => {
                     btn.disabled = true;
@@ -14460,17 +8169,17 @@ const quizApp = {
                 clearButton.style.opacity = '0.5';
                 
                 if (userAnswer.toLowerCase() === question.correctAnswer.toLowerCase()) {
-                    // Do�ru cevap
+                    // Doğru cevap
                     answerDisplay.classList.add('correct');
                     this.handleBlankFillingCorrectAnswer();
                 } else {
-                    // Yanl�� cevap
+                    // Yanlış cevap
                     answerDisplay.classList.add('wrong');
                     this.handleBlankFillingWrongAnswer();
                 }
             });
             
-            // Butonlar� ekle
+            // Butonları ekle
             buttonsContainer.appendChild(deleteButton);
             buttonsContainer.appendChild(clearButton);
             buttonsContainer.appendChild(checkButton);
@@ -14487,127 +8196,127 @@ const quizApp = {
             this.optionsElement.appendChild(mainContainer);
         }
         
-        // Zamanlay�c�y� ba�lat - bo�luk doldurma i�in daha uzun s�re
-        this.timeLeft = this.TIME_PER_BLANK_FILLING_QUESTION || 60; // Varsay�lan olarak 60 saniye
+        // Zamanlayıcıyı başlat - boşluk doldurma için daha uzun süre
+        this.timeLeft = this.TIME_PER_BLANK_FILLING_QUESTION || 60; // Varsayılan olarak 60 saniye
         this.updateTimeDisplay();
         this.startTimer();
     },
     
-    // Bo�luk doldurma cevap g�sterimini g�ncelle
+    // Boşluk doldurma cevap gösterimini güncelle
     updateBlankFillingAnswer: function() {
         const answerDisplay = document.getElementById('blank-filling-answer');
         if (answerDisplay) {
             answerDisplay.textContent = this.selectedLetters.join('');
             
-            // Varsa s�n�flar� temizle (do�ru/yanl�� olarak i�aretlenmi�se)
+            // Varsa sınıfları temizle (doğru/yanlış olarak işaretlenmişse)
             answerDisplay.classList.remove('correct', 'wrong');
         }
     },
     
-    // Bo�luk doldurma sorular� i�in kategoriye g�re getirme
+    // Boşluk doldurma soruları için kategoriye göre getirme
     getBlankFillingQuestionsForCategory: function(category, count) {
-        // T�m bo�luk doldurma sorular�n� al
-        const allBlankFillingQuestions = this.allQuestionsData["Bo�luk Doldurma"] || [];
+        // Tüm boşluk doldurma sorularını al
+        const allBlankFillingQuestions = this.allQuestionsData["Boşluk Doldurma"] || [];
         
-        // �stenen kategorideki sorular� filtrele
+        // İstenen kategorideki soruları filtrele
         let categoryQuestions = allBlankFillingQuestions.filter(q => q.category === category);
         
-        // Daha �nce sorulmu� sorular� filtrele
-        const seenIndices = this.getSeenQuestions("Bo�luk Doldurma_" + category) || [];
+        // Daha önce sorulmuş soruları filtrele
+        const seenIndices = this.getSeenQuestions("Boşluk Doldurma_" + category) || [];
         
         if (seenIndices.length >= categoryQuestions.length) {
-            // T�m sorular sorulmu�sa s�f�rla
-            this.saveSeenQuestions("Bo�luk Doldurma_" + category, []);
-            console.log(`${category} kategorisinde t�m bo�luk doldurma sorular� tamamland�, s�f�rland�.`);
+            // Tüm sorular sorulmuşsa sıfırla
+            this.saveSeenQuestions("Boşluk Doldurma_" + category, []);
+            console.log(`${category} kategorisinde tüm boşluk doldurma soruları tamamlandı, sıfırlandı.`);
         } else {
-            // Daha �nce sorulmam�� sorular� se�
+            // Daha önce sorulmamış soruları seç
             categoryQuestions = categoryQuestions.filter((_, index) => !seenIndices.includes(index));
         }
         
-        // Rastgele sorular se�
+        // Rastgele sorular seç
         const shuffledQuestions = this.shuffleArray(categoryQuestions);
         const selectedQuestions = shuffledQuestions.slice(0, count);
         
-        // Se�ilen sorular�n indekslerini bul
+        // Seçilen soruların indekslerini bul
         const selectedIndices = selectedQuestions.map(q => 
             allBlankFillingQuestions.findIndex(origQ => origQ.question === q.question)
         ).filter(index => index !== -1);
         
-        // Sorular�n birer kopyas�n� olu�tur ve �zel i�aretleme ekle
+        // Soruların birer kopyasını oluştur ve özel işaretleme ekle
         const processedQuestions = selectedQuestions.map(q => ({
             ...q,
-            category: "Bo�luk Doldurma",
+            category: "Boşluk Doldurma",
             originalCategory: category // Orijinal kategoriyi sakla
         }));
         
         return { questions: processedQuestions, indices: selectedIndices };
     },
     
-    // Soru y�klemesini d�zenle
+    // Soru yüklemesini düzenle
     prepareQuestions: function(category) {
         return new Promise((resolve, reject) => {
             try {
-                console.log(`${category} kategorisi i�in sorular haz�rlan�yor...`);
+                console.log(`${category} kategorisi için sorular hazırlanıyor...`);
                 
-                // Kategori i�in soru say�s� belirleme
-                const totalQuestionsCount = 10;
+                // Kategori için soru sayısı belirleme
+                const totalQuestionsCount = this.QUESTIONS_PER_GAME;
                 
-                // Normal sorular�n say�s�
+                // Normal soruların sayısı
                 const normalQuestionsCount = Math.floor(totalQuestionsCount * 0.8); // %80'i normal sorular
                 
-                // Bo�luk doldurma sorular�n�n say�s�
-                const blankFillingQuestionsCount = Math.floor(totalQuestionsCount * 0.2); // %20'si bo�luk doldurma
+                // Boşluk doldurma sorularının sayısı
+                const blankFillingQuestionsCount = Math.floor(totalQuestionsCount * 0.2); // %20'si boşluk doldurma
                 
-                // Normal sorular� al
+                // Normal soruları al
                 const result = this.getCategoryQuestions(category, normalQuestionsCount);
                 
                 // Normal sorular
                 const selectedQuestions = result.questions;
                 const selectedIndices = result.indices;
                 
-                // Bo�luk doldurma sorular� da ekleyelim
+                // Boşluk doldurma soruları da ekleyelim
                 let processedQuestions = selectedQuestions;
                 
-                // Kategori i�in bo�luk doldurma sorular�
+                // Kategori için boşluk doldurma soruları
                 const blankFillingResult = this.getBlankFillingQuestionsForCategory(category, blankFillingQuestionsCount);
                 
                 if (blankFillingResult.questions.length > 0) {
-                    // Bo�luk doldurma sorular�n� normal sorular aras�na da��t
+                    // Boşluk doldurma sorularını normal sorular arasına dağıt
                     const blankFillingQuestions = blankFillingResult.questions;
                     
-                    // T�m sorular� birle�tir
+                    // Tüm soruları birleştir
                     processedQuestions = [...selectedQuestions, ...blankFillingQuestions];
                     
-                    // Sorular� kar��t�r
+                    // Soruları karıştır
                     processedQuestions = this.shuffleArray(processedQuestions);
                     
-                    // Bo�luk doldurma sorular�n� takip et
-                    this.saveSeenQuestions("Bo�luk Doldurma_" + category, blankFillingResult.indices);
+                    // Boşluk doldurma sorularını takip et
+                    this.saveSeenQuestions("Boşluk Doldurma_" + category, blankFillingResult.indices);
                 }
                 
-                // Sorular� d�zenle
+                // Soruları düzenle
                 this.questions = processedQuestions;
                 
-                // G�r�len sorular� kaydet
+                // Görülen soruları kaydet
                 this.saveSeenQuestions(category, selectedIndices);
                 
-                // Oyun durumunu s�f�rla
+                // Oyun durumunu sıfırla
                 this.currentQuestionIndex = 0;
                 this.resetJokers();
                 
-                console.log(`${category} kategorisi i�in ${this.questions.length} soru haz�rland�.`);
-                console.log(`Normal sorular: ${this.questions.filter(q => q.category !== "Bo�luk Doldurma").length}`);
-                console.log(`Bo�luk doldurma sorular�: ${this.questions.filter(q => q.category === "Bo�luk Doldurma").length}`);
+                console.log(`${category} kategorisi için ${this.questions.length} soru hazırlandı.`);
+                console.log(`Normal sorular: ${this.questions.filter(q => q.category !== "Boşluk Doldurma").length}`);
+                console.log(`Boşluk doldurma soruları: ${this.questions.filter(q => q.category === "Boşluk Doldurma").length}`);
                 
                 resolve();
             } catch (error) {
-                console.error("Sorular haz�rlan�rken hata olu�tu:", error);
+                console.error("Sorular hazırlanırken hata oluştu:", error);
                 reject(error);
             }
         });
     },
     
-    // Zamanlay�c�y� durdur
+    // Zamanlayıcıyı durdur
     stopTimer: function() {
         if (this.timerInterval) {
             clearInterval(this.timerInterval);
@@ -14615,40 +8324,41 @@ const quizApp = {
         }
     },
     
-    // Ses �almak i�in yard�mc� fonksiyon
+    // Ses çalmak için yardımcı fonksiyon
     playSound: function(soundElement) {
         if (this.soundEnabled && soundElement) {
             soundElement.currentTime = 0;
-            soundElement.play().catch(e => console.error("Ses �al�namad�:", e));
+            soundElement.play().catch(e => console.error("Ses çalınamadı:", e));
         }
     },
     
     // Can kaybetme fonksiyonu
     loseLife: function() {
-        // �nce can� azalt
+        // Önce canı azalt
         this.lives--; 
         
-        // DOM'u g�ncelle
+        // DOM'u güncelle
         this.updateLives();
         
-        // Can kontrol� - canlar bittiyse can sat�n alma teklifi g�ster
+        // Can kontrolü - canlar bittiyse can satın alma teklifi göster
         if (this.lives <= 0) {
-            console.log("Canlar bitti, can sat�n alma teklifi g�steriliyor...");
+            console.log("Canlar bitti, can satın alma teklifi gösteriliyor...");
             
-            // Zamanlay�c�y� durdur
+            // Zamanlayıcıyı durdur
             this.stopTimer();
             
-            // Can sat�n alma modal�n� g�ster
+            // Can satın alma modalını göster
             this.showBuyLivesModal();
         }
     },
     
-    // Canlar� g�ncelle
+    // Canları güncelle
     updateLives: function() {
         const livesContainer = document.getElementById('lives-container');
         if (livesContainer) {
-            // �nce t�m eski ikonlar� temizle
+            // Önce tüm eski ikonları temizle
             livesContainer.innerHTML = '';
+            
             // this.lives kadar aktif ikon ekle
             for (let i = 0; i < this.lives; i++) {
                 const span = document.createElement('span');
@@ -14661,15 +8371,18 @@ const quizApp = {
         }
     },
 
-    // Can sat�n alma modal�n� g�ster
+    // Can satın alma modalını göster
     showBuyLivesModal: function() {
-        const LIVES_PRICE = 500; // 3 can i�in 500 puan
-        const LIVES_AMOUNT = 3; // Sat�n al�nacak can say�s�
+        const LIVES_PRICE = 500; // 3 can için 500 puan
+        const LIVES_AMOUNT = 3; // Satın alınacak can sayısı
         
-        // Oyuncunun puan�n� kontrol et
+        // Oyuncunun puanını kontrol et
         const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
         
-        // Modal olu�tur
+        // Dil çevirilerini al
+        const buyLivesTexts = languages[this.currentLanguage].buyLives;
+        
+        // Modal oluştur
         const buyLivesModal = document.createElement('div');
         buyLivesModal.className = 'buy-lives-modal';
         buyLivesModal.innerHTML = `
@@ -14678,8 +8391,8 @@ const quizApp = {
                     <div class="lives-out-icon">
                         <i class="fas fa-heart-broken"></i>
                     </div>
-                    <h2>Canlar�n�z Bitti!</h2>
-                    <p class="lives-out-message">Oyuna devam etmek i�in can sat�n alabilirsiniz.</p>
+                    <h2>${buyLivesTexts.title}</h2>
+                    <p class="lives-out-message">${buyLivesTexts.message}</p>
                 </div>
                 
                 <div class="buy-lives-offer">
@@ -14690,8 +8403,8 @@ const quizApp = {
                             <i class="fas fa-heart"></i>
                         </div>
                         <div class="package-details">
-                            <h3>3 Can Paketi</h3>
-                            <p class="package-description">Oyuna 3 canla devam edin!</p>
+                            <h3>${buyLivesTexts.packageTitle}</h3>
+                            <p class="package-description">${buyLivesTexts.packageDescription}</p>
                             <div class="package-price">
                                 <span class="price-amount">${LIVES_PRICE}</span>
                                 <i class="fas fa-coins"></i>
@@ -14701,7 +8414,7 @@ const quizApp = {
                     
                     <div class="current-points">
                         <i class="fas fa-wallet"></i>
-                        <span>Mevcut Puan�n�z: ${currentPoints}</span>
+                        <span>${buyLivesTexts.currentPoints}: ${currentPoints}</span>
                     </div>
                 </div>
                 
@@ -14709,16 +8422,16 @@ const quizApp = {
                     ${currentPoints >= LIVES_PRICE ? 
                         `<button id="confirm-buy-lives" class="btn-buy-lives">
                             <i class="fas fa-shopping-cart"></i>
-                            3 Can Sat�n Al (${LIVES_PRICE} Puan)
+                            ${buyLivesTexts.buyButton.replace('{price}', LIVES_PRICE)}
                         </button>` : 
                         `<button class="btn-buy-lives disabled" disabled>
                             <i class="fas fa-times"></i>
-                            Yetersiz Puan (${LIVES_PRICE} Gerekli)
+                            ${buyLivesTexts.insufficientPoints.replace('{price}', LIVES_PRICE)}
                         </button>`
                     }
                     <button id="decline-buy-lives" class="btn-decline-lives">
                         <i class="fas fa-flag-checkered"></i>
-                        Oyunu Bitir
+                        ${buyLivesTexts.finishGame}
                     </button>
                 </div>
             </div>
@@ -14726,7 +8439,7 @@ const quizApp = {
         
         document.body.appendChild(buyLivesModal);
         
-        // Sat�n alma butonuna event listener ekle
+        // Satın alma butonuna event listener ekle
         const confirmBuyBtn = document.getElementById('confirm-buy-lives');
         if (confirmBuyBtn) {
             confirmBuyBtn.addEventListener('click', () => {
@@ -14740,14 +8453,14 @@ const quizApp = {
         if (declineBuyBtn) {
             declineBuyBtn.addEventListener('click', () => {
                 buyLivesModal.remove();
-                // Oyun sonu ekran�n� g�ster
+                // Oyun sonu ekranını göster
                 setTimeout(() => {
                     this.showResult();
                 }, 500);
             });
         }
         
-        // Modal d���na t�klan�rsa oyunu bitir
+        // Modal dışına tıklanırsa oyunu bitir
         buyLivesModal.addEventListener('click', (e) => {
             if (e.target === buyLivesModal) {
                 buyLivesModal.remove();
@@ -14758,17 +8471,20 @@ const quizApp = {
         });
     },
 
-    // Can sat�n alma i�lemi
+    // Can satın alma işlemi
     buyLives: function(livesAmount, price) {
         const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
         
-        // Puan kontrol�
+        // Dil çevirilerini al
+        const buyLivesTexts = languages[this.currentLanguage].buyLives;
+        
+        // Puan kontrolü
         if (currentPoints < price) {
-            this.showToast('Yetersiz puan!', 'toast-error');
+            this.showToast(buyLivesTexts.insufficientPuan, 'toast-error');
             return false;
         }
         
-        // Puan� d��
+        // Puanı düş
         if (this.isLoggedIn) {
             this.totalScore -= price;
             this.delayedSaveUserData(); // Firebase'e kaydet
@@ -14776,30 +8492,30 @@ const quizApp = {
             this.sessionScore -= price;
         }
         
-        // Canlar� ekle
+        // Canları ekle
         this.lives = livesAmount;
         
-        // G�r�nt�leri g�ncelle
+        // Görüntüleri güncelle
         this.updateLives();
         this.updateScoreDisplay();
         this.updateTotalScoreDisplay();
         
-        // Ba�ar� mesaj� g�ster
-        this.showToast(`${livesAmount} can sat�n al�nd�! Oyun devam ediyor...`, 'toast-success');
+        // Başarı mesajı göster
+        this.showToast(buyLivesTexts.purchaseSuccess.replace('{amount}', livesAmount), 'toast-success');
         
-        // K�sa bir gecikme ile oyunu devam ettir
+        // Kısa bir gecikme ile oyunu devam ettir
         setTimeout(() => {
-            // Zamanlay�c�y� yeniden ba�lat
+            // Zamanlayıcıyı yeniden başlat
             this.timeLeft = this.TIME_PER_QUESTION;
             this.startTimer();
         }, 1500);
         
-        console.log(`${livesAmount} can sat�n al�nd�. Kalan puan: ${this.isLoggedIn ? this.totalScore : this.sessionScore}`);
+        console.log(`${livesAmount} can satın alındı. Kalan puan: ${this.isLoggedIn ? this.totalScore : this.sessionScore}`);
         
         return true;
     },
     
-    // Y�ksek skor ekleme fonksiyonu - Firebase ve localStorage'a kaydet
+    // Yüksek skor ekleme fonksiyonu - Firebase ve localStorage'a kaydet
     addNewHighScore: function(category, score, total) {
         try {
             // Tarih bilgisi
@@ -14810,7 +8526,7 @@ const quizApp = {
             const scoreData = {
                 score: score,
                 totalQuestions: total,
-                correctAnswers: score, // Score genellikle do�ru cevap say�s�d�r
+                correctAnswers: score, // Score genellikle doğru cevap sayısıdır
                 category: category,
                 percentage: Math.round((score / total) * 100),
                 date: date,
@@ -14832,7 +8548,7 @@ const quizApp = {
                         console.error('Firebase\'e skor kaydedilirken hata:', error);
                     });
                 
-                // Kullan�c�n�n ki�isel skorlar�n� da g�ncelle
+                // Kullanıcının kişisel skorlarını da güncelle
                 const userScoreData = {
                     ...scoreData,
                     gameId: Date.now().toString() // Benzersiz oyun ID'si
@@ -14841,10 +8557,10 @@ const quizApp = {
                 db.collection('users').doc(this.currentUser.uid)
                     .collection('personalScores').add(userScoreData)
                     .then(() => {
-                        console.log('Kullan�c�n�n ki�isel skorlar� g�ncellendi');
+                        console.log('Kullanıcının kişisel skorları güncellendi');
                     })
                     .catch((error) => {
-                        console.error('Ki�isel skorlar kaydedilirken hata:', error);
+                        console.error('Kişisel skorlar kaydedilirken hata:', error);
                     });
             }
             
@@ -14860,7 +8576,7 @@ const quizApp = {
                     date: date
                 });
                 
-                // Skorlar� y�zdeye g�re s�rala (y�ksekten d����e)
+                // Skorları yüzdeye göre sırala (yüksekten düşüğe)
                 highScores.sort((a, b) => b.percentage - a.percentage);
                 
                 // Maksimum 10 skor tut
@@ -14873,15 +8589,16 @@ const quizApp = {
             
             return true;
         } catch (error) {
-            console.error("Y�ksek skor kaydetme hatas�:", error);
+            console.error("Yüksek skor kaydetme hatası:", error);
             return false;
         }
     },
     
+    
     // Oyun istatistiklerini kaydetme - Firebase ve localStorage'a
     saveGameStatistics: function() {
         try {
-            // �statistik verisi haz�rla
+            // İstatistik verisi hazırla
             const gameStatsData = {
                 category: this.selectedCategory,
                 score: this.score,
@@ -14907,7 +8624,7 @@ const quizApp = {
                         console.error('Firebase\'e istatistik kaydedilirken hata:', error);
                     });
                 
-                // Kullan�c�n�n genel istatistiklerini g�ncelle
+                // Kullanıcının genel istatistiklerini güncelle
                 const userStatsRef = db.collection('users').doc(this.currentUser.uid);
                 
                 userStatsRef.get().then((doc) => {
@@ -14919,12 +8636,12 @@ const quizApp = {
                         categories: {}
                     };
                     
-                    // �statistikleri g�ncelle
+                    // İstatistikleri güncelle
                     currentStats.totalGames++;
                     currentStats.totalQuestions += this.questions.length;
                     currentStats.correctAnswers += this.score;
                     
-                    // Kategori bazl� istatistikler
+                    // Kategori bazlı istatistikler
                     if (!currentStats.categories[this.selectedCategory]) {
                         currentStats.categories[this.selectedCategory] = {
                             games: 0,
@@ -14937,28 +8654,28 @@ const quizApp = {
                     currentStats.categories[this.selectedCategory].questions += this.questions.length;
                     currentStats.categories[this.selectedCategory].correct += this.score;
                     
-                    // Firebase'e g�ncelleme kaydet
+                    // Firebase'e güncelleme kaydet
                     userStatsRef.update({ stats: currentStats })
                         .then(() => {
-                            console.log('Kullan�c� istatistikleri g�ncellendi');
+                            console.log('Kullanıcı istatistikleri güncellendi');
                         })
                         .catch((error) => {
-                            console.error('Kullan�c� istatistikleri g�ncellenirken hata:', error);
+                            console.error('Kullanıcı istatistikleri güncellenirken hata:', error);
                         });
                 }).catch((error) => {
-                    console.error('Kullan�c� istatistikleri al�n�rken hata:', error);
+                    console.error('Kullanıcı istatistikleri alınırken hata:', error);
                 });
             }
             
             // LOCALSTORAGE'A KAYDET (Yedek olarak)
             if (this.isLocalStorageAvailable()) {
-                // Oyun ge�mi�ine bu oyunu ekle
+                // Oyun geçmişine bu oyunu ekle
                 const gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
                 const gameRecord = {
                     category: this.selectedCategory,
                     score: this.score,
                     totalQuestions: this.questions.length,
-                    correctAnswers: this.score, // Bu �rnekte score = correctAnswers
+                    correctAnswers: this.score, // Bu örnekte score = correctAnswers
                     lives: this.lives,
                     averageTime: this.answerTimes.length > 0 ? 
                         (this.answerTimes.reduce((a, b) => a + b, 0) / this.answerTimes.length) : 0,
@@ -14968,15 +8685,24 @@ const quizApp = {
                 
                 gameHistory.push(gameRecord);
                 
-                // Son 100 oyunu sakla (haf�za tasarrufu i�in)
+                // Son 100 oyunu sakla (hafıza tasarrufu için)
                 if (gameHistory.length > 100) {
                     gameHistory.splice(0, gameHistory.length - 100);
                 }
                 
                 localStorage.setItem('gameHistory', JSON.stringify(gameHistory));
-                console.log('Oyun ge�mi�ine eklendi:', gameRecord);
+                console.log('Oyun geçmişine eklendi:', gameRecord);
                 
-                // Eski format istatistikler (uyumluluk i�in)
+                // İstatistikleri yeniden hesapla ve kaydet
+                const updatedStats = this.calculateRealStats();
+                localStorage.setItem('userStats', JSON.stringify(updatedStats));
+                localStorage.setItem('quiz-user-stats', JSON.stringify(updatedStats));
+                console.log('İstatistikler güncellendi:', updatedStats);
+                
+                // Profil sayfası istatistiklerini hemen güncelle
+                this.updateProfileStats(updatedStats);
+                
+                // Eski format istatistikler (uyumluluk için)
                 const statsKey = 'gameStats';
                 let stats = JSON.parse(localStorage.getItem(statsKey)) || {
                     totalGames: 0,
@@ -14985,12 +8711,12 @@ const quizApp = {
                     categories: {}
                 };
                 
-                // �statistikleri g�ncelle
+                // İstatistikleri güncelle
                 stats.totalGames++;
                 stats.totalQuestions += this.questions.length;
                 stats.correctAnswers += this.score;
                 
-                // Kategori bazl� istatistikler
+                // Kategori bazlı istatistikler
                 if (!stats.categories[this.selectedCategory]) {
                     stats.categories[this.selectedCategory] = {
                         games: 0,
@@ -15008,12 +8734,12 @@ const quizApp = {
             
             return true;
         } catch (error) {
-            console.error("�statistik kaydetme hatas�:", error);
+            console.error("İstatistik kaydetme hatası:", error);
             return false;
         }
     },
     
-    // Yerel depolama kullan�labilirli�ini kontrol et
+    // Yerel depolama kullanılabilirliğini kontrol et
     isLocalStorageAvailable: function() {
         try {
             const test = 'test';
@@ -15025,17 +8751,17 @@ const quizApp = {
         }
     },
     
-    // Kullan�c� rozetlerini y�kle
+    // Kullanıcı rozetlerini yükle
     loadUserBadges: function() {
-        // Kullan�c� rozetleri ile ilgili i�lemleri burada yap�n
-        // �imdilik sadece bo� bir fonksiyon olarak tan�ml�yoruz
+        // Kullanıcı rozetleri ile ilgili işlemleri burada yapın
+        // Şimdilik sadece boş bir fonksiyon olarak tanımlıyoruz
         return;
     },
     
-    // Y�ksek skorlar� g�r�nt�le
+    // Yüksek skorları görüntüle
     displayHighScores: function() {
         try {
-            // Y�ksek skorlar listesi elementini bul
+            // Yüksek skorlar listesi elementini bul
             const highScoresList = document.getElementById('high-scores-list');
             if (!highScoresList) {
                 return false;
@@ -15044,14 +8770,14 @@ const quizApp = {
             // Listeyi temizle
             highScoresList.innerHTML = '';
             
-            // Se�ilen kategori i�in y�ksek skorlar� al
+            // Seçilen kategori için yüksek skorları al
             const highScoresKey = 'highScores_' + this.selectedCategory;
             const highScores = JSON.parse(localStorage.getItem(highScoresKey)) || [];
             
-            // E�er y�ksek skorlar yoksa mesaj g�ster
+            // Eğer yüksek skorlar yoksa mesaj göster
             if (highScores.length === 0) {
                 const li = document.createElement('li');
-                li.textContent = 'Hen�z y�ksek skor kaydedilmemi�.';
+                li.textContent = 'Henüz yüksek skor kaydedilmemiş.';
                 li.style.textAlign = 'center';
                 li.style.fontStyle = 'italic';
                 li.style.color = '#666';
@@ -15059,7 +8785,7 @@ const quizApp = {
                 return true;
             }
             
-            // Y�ksek skorlar� listele
+            // Yüksek skorları listele
             highScores.forEach((scoreData, index) => {
                 const li = document.createElement('li');
                 const scoreSpan = document.createElement('span');
@@ -15075,19 +8801,19 @@ const quizApp = {
             
             return true;
         } catch (error) {
-            console.error("Y�ksek skorlar� g�r�nt�leme hatas�:", error);
+            console.error("Yüksek skorları görüntüleme hatası:", error);
             return false;
         }
     },
     
-    // Y�kleniyor mesaj�n� g�ster
+    // Yükleniyor mesajını göster
     showLoadingMessage: function() {
         if (this.questionElement) {
-            this.questionElement.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Sorular y�kleniyor...</div>';
+            this.questionElement.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Sorular yükleniyor...</div>';
         }
     },
     
-    // Dizi kar��t�rma fonksiyonu
+    // Dizi karıştırma fonksiyonu
     shuffleArray: function(array) {
         const newArray = [...array];
         for (let i = newArray.length - 1; i > 0; i--) {
@@ -15097,13 +8823,13 @@ const quizApp = {
         return newArray;
     },
     
-    // Zamanlay�c� �ubu�unu g�ncelleyen fonksiyon
+    // Zamanlayıcı çubuğunu güncelleyen fonksiyon
     updateTimerProgress: function(percentage) {
         const timerProgress = document.getElementById('timer-progress');
         if (timerProgress) {
             timerProgress.style.width = `${percentage}%`;
             
-            // Rengi g�ncelle
+            // Rengi güncelle
             if (percentage > 60) {
                 timerProgress.className = 'timer-progress good';
             } else if (percentage > 30) {
@@ -15114,17 +8840,17 @@ const quizApp = {
         }
     },
     
-    // Uyar� mesaj� g�ster
+    // Uyarı mesajı göster
     showAlert: function(message, type = 'info') {
-        console.log("Uyar� mesaj� g�steriliyor:", message, type);
+        console.log("Uyarı mesajı gösteriliyor:", message, type);
         
-        // Daha �nce olu�turulmu� uyar� varsa kald�r
+        // Daha önce oluşturulmuş uyarı varsa kaldır
         const existingAlert = document.querySelector('.custom-alert');
         if (existingAlert) {
             existingAlert.remove();
         }
         
-        // Yeni uyar� olu�tur
+        // Yeni uyarı oluştur
         const alertElement = document.createElement('div');
         alertElement.className = `custom-alert ${type}`;
         alertElement.innerHTML = `<span>${message}</span>`;
@@ -15132,34 +8858,34 @@ const quizApp = {
         // Sayfaya ekle
         document.body.appendChild(alertElement);
         
-        // Belirli bir s�re sonra kald�r
+        // Belirli bir süre sonra kaldır
         setTimeout(() => {
             alertElement.classList.add('hide');
             setTimeout(() => alertElement.remove(), 500);
         }, 3000);
     },
     
-    // �nceki sorunun kal�nt�lar�n� temizleyen fonksiyon
+    // Önceki sorunun kalıntılarını temizleyen fonksiyon
     cleanupPreviousQuestion: function() {
-        // �nceki ipucu mesajlar�n� temizle
+        // Önceki ipucu mesajlarını temizle
         const existingHintMessages = document.querySelectorAll('.hint-message');
         existingHintMessages.forEach(element => {
             element.remove();
         });
         
-        // "Do�ru!" veya "Yanl��!" mesajlar�n� temizle
+        // "Doğru!" veya "Yanlış!" mesajlarını temizle
         const correctMessageElements = document.querySelectorAll('.correct-answer-container');
         correctMessageElements.forEach(element => {
             element.remove();
         });
         
-        // Sonu� mesaj�n� temizle
+        // Sonuç mesajını temizle
         if (this.resultElement) {
             this.resultElement.innerHTML = '';
             this.resultElement.style.display = 'none';
         }
         
-        // Zamanlay�c�y� durdur
+        // Zamanlayıcıyı durdur
         clearInterval(this.timerInterval);
         
         // Sonraki soru butonunu gizle
@@ -15167,7 +8893,7 @@ const quizApp = {
             this.nextButton.style.display = 'none';
         }
         
-        // Options elementinin stilini s�f�rla - bo�luk doldurma sorular�ndan �oktan se�meliye ge�i�i d�zelt
+        // Options elementinin stilini sıfırla - boşluk doldurma sorularından çoktan seçmeliye geçişi düzelt
         if (this.optionsElement) {
             // Inline stilleri temizle
             this.optionsElement.style.display = '';
@@ -15176,25 +8902,25 @@ const quizApp = {
         }
     },
     
-    // Bu fonksiyon, daha �nce se�eneklere t�kland���nda �al��an i�levden �a�r�l�yor olmal�
+    // Bu fonksiyon, daha önce seçeneklere tıklandığında çalışan işlevden çağrılıyor olmalı
     handleCorrectAnswer: function() {
-        // Zamanlay�c�y� durdur
+        // Zamanlayıcıyı durdur
         this.stopTimer();
     },
     
-    // Kullan�c� ilerlemesini y�kle (�imdilik bo�, hata engelleme ama�l�)
+    // Kullanıcı ilerlemesini yükle (şimdilik boş, hata engelleme amaçlı)
     loadUserProgress: function(uid, category) {
-        // Kullan�c� ilerlemesi burada y�klenecek
-        // �imdilik hata almamak i�in bo� b�rak�ld�
+        // Kullanıcı ilerlemesi burada yüklenecek
+        // Şimdilik hata almamak için boş bırakıldı
         return;
     },
     
-    // Kullan�c� istatistiklerini y�kle
+    // Kullanıcı istatistiklerini yükle
     loadUserStats: function(userId) {
-        // �nce �evrimi�i kontrol� yap
+        // Önce çevrimiçi kontrolü yap
         if (!navigator.onLine) {
-            console.log('�evrimd��� mod - yerel istatistikler kullan�l�yor');
-            // Yerel veri yoksa varsay�lan de�erlerle devam et
+            console.log('Çevrimdışı mod - yerel istatistikler kullanılıyor');
+            // Yerel veri yoksa varsayılan değerlerle devam et
             this.userStats = {
                 gamesPlayed: 0,
                 totalQuestions: 0,
@@ -15204,41 +8930,41 @@ const quizApp = {
                 categoryStats: {}
             };
             
-            // Yerel depolamadan veriler varsa onlar� kullan
+            // Yerel depolamadan veriler varsa onları kullan
             try {
                 const localStats = localStorage.getItem('userStats_' + userId);
                 if (localStats) {
                     this.userStats = JSON.parse(localStats);
-                    console.log('Yerel istatistikler y�klendi:', this.userStats);
+                    console.log('Yerel istatistikler yüklendi:', this.userStats);
                     this.updateStatsDisplay();
                 }
             } catch (e) {
-                console.error('Yerel istatistikler y�klenirken hata:', e);
+                console.error('Yerel istatistikler yüklenirken hata:', e);
             }
             
             return;
         }
         
-        // �evrimi�i ise Firestore'dan y�kle
+        // Çevrimiçi ise Firestore'dan yükle
         const db = firebase.firestore();
         db.collection('users').doc(userId).get()
             .then((doc) => {
                 if (doc.exists && doc.data().stats) {
                     const userStats = doc.data().stats;
-                    console.log('Kullan�c� istatistikleri y�klendi:', userStats);
+                    console.log('Kullanıcı istatistikleri yüklendi:', userStats);
                     this.userStats = userStats;
                     
-                    // Yerel kopyas�n� da sakla
+                    // Yerel kopyasını da sakla
                     try {
                         localStorage.setItem('userStats_' + userId, JSON.stringify(userStats));
                     } catch (e) {
-                        console.warn('�statistikler yerel olarak kaydedilemedi:', e);
+                        console.warn('İstatistikler yerel olarak kaydedilemedi:', e);
                     }
                     
-                    // Gerekli UI g�ncellemeleri yap�labilir
+                    // Gerekli UI güncellemeleri yapılabilir
                     this.updateStatsDisplay();
                 } else {
-                    console.log('Kullan�c� istatistikleri bulunamad�, yeni olu�turuluyor');
+                    console.log('Kullanıcı istatistikleri bulunamadı, yeni oluşturuluyor');
                     this.userStats = {
                         gamesPlayed: 0,
                         totalQuestions: 0,
@@ -15248,26 +8974,26 @@ const quizApp = {
                         categoryStats: {}
                     };
                     
-                    // Firestore'a bo� istatistik verisi kaydet
+                    // Firestore'a boş istatistik verisi kaydet
                     db.collection('users').doc(userId).update({
                         stats: this.userStats
                     }).catch(error => {
-                        console.error('�statistik g�ncelleme hatas�:', error);
+                        console.error('İstatistik güncelleme hatası:', error);
                     });
                 }
             })
             .catch((error) => {
-                console.error('Kullan�c� istatistiklerini y�kleme hatas�:', error);
+                console.error('Kullanıcı istatistiklerini yükleme hatası:', error);
                 
                 // Hata durumunda yerel verileri kullan
                 try {
                     const localStats = localStorage.getItem('userStats_' + userId);
                     if (localStats) {
                         this.userStats = JSON.parse(localStats);
-                        console.log('Hata nedeniyle yerel istatistikler kullan�l�yor:', this.userStats);
+                        console.log('Hata nedeniyle yerel istatistikler kullanılıyor:', this.userStats);
                         this.updateStatsDisplay();
                     } else {
-                        // Yerel veri yoksa varsay�lan de�erler kullan
+                        // Yerel veri yoksa varsayılan değerler kullan
                         this.userStats = {
                             gamesPlayed: 0,
                             totalQuestions: 0,
@@ -15278,29 +9004,29 @@ const quizApp = {
                         };
                     }
                 } catch (e) {
-                    console.error('Yerel istatistikler y�klenirken hata:', e);
+                    console.error('Yerel istatistikler yüklenirken hata:', e);
                 }
             });
     },
     
-    // �statistik ekran�n� g�ncelle
+    // İstatistik ekranını güncelle
     updateStatsDisplay: function() {
-        // �statistikleri g�steren UI elementleri varsa g�ncelle
+        // İstatistikleri gösteren UI elementleri varsa güncelle
         const statsContainer = document.getElementById('user-stats');
         if (statsContainer && this.userStats) {
-            // �rnek istatistik g�sterimi
+            // Örnek istatistik gösterimi
             let statsHTML = `
                 <div class="stats-item">
                     <span class="stat-label">Toplam Oyun:</span>
                     <span class="stat-value">${this.userStats.gamesPlayed || 0}</span>
                 </div>
                 <div class="stats-item">
-                    <span class="stat-label">Do�ru Cevap Oran�:</span>
+                    <span class="stat-label">Doğru Cevap Oranı:</span>
                     <span class="stat-value">${this.userStats.totalQuestions > 0 ? 
                         Math.round((this.userStats.totalCorrect / this.userStats.totalQuestions) * 100) : 0}%</span>
                 </div>
                 <div class="stats-item">
-                    <span class="stat-label">Ortalama S�re:</span>
+                    <span class="stat-label">Ortalama Süre:</span>
                     <span class="stat-value">${this.userStats.averageTime ? 
                         this.userStats.averageTime.toFixed(1) : 0} sn</span>
                 </div>
@@ -15309,57 +9035,57 @@ const quizApp = {
         }
     },
     
-    // Taray�c� izleme �nleme sorunlar�n� kontrol et
+    // Tarayıcı izleme önleme sorunlarını kontrol et
     checkBrowserBlockingIssues: function(user) {
-        // Edge veya di�er taray�c�larda tracking prevention sorunlar� kontrol�
+        // Edge veya diğer tarayıcılarda tracking prevention sorunları kontrolü
         try {
-            // localStorage'� test et
+            // localStorage'ı test et
             const testKey = 'browserBlockingTest';
             localStorage.setItem(testKey, 'test');
             localStorage.removeItem(testKey);
             
-            // �nternet ba�lant�s�n� kontrol et
+            // İnternet bağlantısını kontrol et
             if (!navigator.onLine) {
-                console.log('�nternet ba�lant�s� yok, �evrimd��� mod aktif');
-                // this.showToast('�nternet ba�lant�s� olmadan �evrimd��� modda �al���yorsunuz. Tek oyunculu modda oynayabilirsiniz.', 'toast-info');
+                console.log('İnternet bağlantısı yok, çevrimdışı mod aktif');
+                // this.showToast('İnternet bağlantısı olmadan çevrimdışı modda çalışıyorsunuz. Tek oyunculu modda oynayabilirsiniz.', 'toast-info');
                 return;
             }
             
             // IndexedDB'yi test et
             const request = indexedDB.open('testDB', 1);
             request.onerror = () => {
-                console.warn('IndexedDB eri�imi engellenmi� olabilir - taray�c� izleme korumas� aktif olabilir');
-                // this.showToast('Taray�c� ayarlar�n�z veritaban� eri�imine izin vermiyor. Tek oyunculu modda oynayabilirsiniz.', 'toast-warning');
+                console.warn('IndexedDB erişimi engellenmiş olabilir - tarayıcı izleme koruması aktif olabilir');
+                // this.showToast('Tarayıcı ayarlarınız veritabanı erişimine izin vermiyor. Tek oyunculu modda oynayabilirsiniz.', 'toast-warning');
             };
             
-            // Firestore ba�lant�s�n� daha nazik test et
+            // Firestore bağlantısını daha nazik test et
             if (firebase.firestore) {
-                // Firestore ba�lant�s�n� ping ile test et
+                // Firestore bağlantısını ping ile test et
                 firebase.firestore().collection('test').doc('test')
                     .get()
                     .then(() => {
-                        console.log('Firestore ba�lant�s� ba�ar�l�');
+                        console.log('Firestore bağlantısı başarılı');
                     })
                     .catch(error => {
-                        // Ba�lant� hatas� olu�ursa
-                        console.warn('Firestore ba�lant� sorunu: ' + error.message);
+                        // Bağlantı hatası oluşursa
+                        console.warn('Firestore bağlantı sorunu: ' + error.message);
                         
-                        // Firebase uyar�s� kald�r�ld� - art�k g�sterilmeyecek
+                        // Firebase uyarısı kaldırıldı - artık gösterilmeyecek
                         // if (error.code === 'unavailable' || error.code === 'failed-precondition') {
-                        //     this.showToast('Firebase sunucular�na ba�lan�lamad�. �nternet ba�lant�n�z� kontrol edin veya tek oyunculu modda oynay�n.', 'toast-info');
+                        //     this.showToast('Firebase sunucularına bağlanılamadı. İnternet bağlantınızı kontrol edin veya tek oyunculu modda oynayın.', 'toast-info');
                         // }
                     });
             }
         } catch (error) {
-            console.error('Taray�c� engelleme testi s�ras�nda hata:', error);
-            // this.showToast('Baz� taray�c� �zellikleri kullan�lam�yor. Ancak tek oyunculu modu kullanabilirsiniz.', 'toast-info');
+            console.error('Tarayıcı engelleme testi sırasında hata:', error);
+            // this.showToast('Bazı tarayıcı özellikleri kullanılamıyor. Ancak tek oyunculu modu kullanabilirsiniz.', 'toast-info');
         }
     },
     
-    // Kullan�c� aray�z�n� haz�rla
+    // Kullanıcı arayüzünü hazırla
     initUI: function() {
         try {
-            console.log("UI ba�lat�l�yor...");
+            console.log("UI başlatılıyor...");
             
             // DOM elementleri
             this.quizElement = document.getElementById('quiz');
@@ -15375,97 +9101,109 @@ const quizApp = {
             this.mainMenu = document.getElementById('main-menu');
             this.singlePlayerBtn = document.getElementById('single-player-btn');
             
-            // DOM elementlerinin varl���n� kontrol et
+            // DOM elementlerinin varlığını kontrol et
             if (!this.categoriesElement) {
-                console.error("Kategoriler elementi bulunamad�! ID: categories");
+                console.error("Kategoriler elementi bulunamadı! ID: categories");
             }
             
             if (!this.categorySelectionElement) {
-                console.error("Kategori se�im elementi bulunamad�! ID: category-selection");
+                console.error("Kategori seçim elementi bulunamadı! ID: category-selection");
             }
             
             if (!this.mainMenu) {
-                console.error("Ana men� elementi bulunamad�! ID: main-menu");
+                console.error("Ana menü elementi bulunamadı! ID: main-menu");
             }
             
             if (!this.singlePlayerBtn) {
-                console.error("Tekli oyun butonu bulunamad�! ID: single-player-btn");
+                console.error("Tekli oyun butonu bulunamadı! ID: single-player-btn");
             }
             
-            console.log("UI elementleri haz�rland�.");
+            console.log("UI elementleri hazırlandı.");
             
-            // Event listener'lar� ekle
+            // Event listener'ları ekle
             this.addEventListeners();
             
             // Firebase authentication state listener
             if (firebase.auth) {
                 firebase.auth().onAuthStateChanged(user => {
                     if (user) {
-                        // Kullan�c� giri� yapm��
-                        console.log("Giri� yapan kullan�c�:", user.email || user.displayName || user.uid);
+                        // Kullanıcı giriş yapmış
+                        console.log("Giriş yapan kullanıcı:", user.email || user.displayName || user.uid);
                         
-                        // Kullan�c� bilgilerini kaydet
+                        // Kullanıcı bilgilerini kaydet
                         this.isLoggedIn = true;
                         this.currentUser = user;
                         
-                        // Ana men�y� g�ster
+                        // Ana menüyü göster
                         if (this.mainMenu) {
                             this.mainMenu.style.display = 'block';
                         } else {
                             console.error("mainMenu elementi null!");
                         }
                         
-                        // Kullan�c� verilerini y�kle ve Firebase'den senkronize et
+                        // Logo container'ını da göster
+                        const logoContainer = document.querySelector('.main-logo-container');
+                        if (logoContainer) {
+                            logoContainer.style.display = 'block';
+                        }
+                        
+                        // Kullanıcı verilerini yükle ve Firebase'den senkronize et
                         this.loadUserData(user.uid);
                         this.syncUserStatsFromFirebase();
                         
-                        // Joker ve ayarlar� y�kle
+                        // Joker ve ayarları yükle
                         this.loadUserSettings();
                         this.loadJokerInventory();
                         
-                        // Kullan�c� istatistiklerini y�kle
+                        // Kullanıcı istatistiklerini yükle
                         if (typeof this.loadUserStats === 'function') {
                             this.loadUserStats(user.uid);
                         }
                         
-                        // Taray�c� �zleme �nleme kontrol�
+                        // Tarayıcı İzleme Önleme kontrolü
                         if (typeof this.checkBrowserBlockingIssues === 'function') {
                             this.checkBrowserBlockingIssues(user);
                         }
                     } else {
-                        // Kullan�c� giri� yapmam��
+                        // Kullanıcı giriş yapmamış
                         this.isLoggedIn = false;
                         this.currentUser = null;
                         
-                        // Giri� sayfas�na y�nlendir
+                        // Giriş sayfasına yönlendir
                         window.location.href = 'login.html';
                     }
                 });
             } else {
-                console.error("Firebase authentication bulunamad�!");
+                console.error("Firebase authentication bulunamadı!");
                 
-                // Firebase olmadan da uygulaman�n �al��abilmesi i�in
+                // Firebase olmadan da uygulamanın çalışabilmesi için
                 this.isLoggedIn = false;
                 if (this.mainMenu) {
                     this.mainMenu.style.display = 'block';
                 }
+                
+                // Logo container'ını da göster
+                const logoContainer = document.querySelector('.main-logo-container');
+                if (logoContainer) {
+                    logoContainer.style.display = 'block';
+                }
             }
         } catch (error) {
             console.error("initUI fonksiyonunda kritik hata:", error);
-            alert("Uygulama ba�lat�l�rken bir hata olu�tu. L�tfen sayfay� yenileyin.");
+            alert("Uygulama başlatılırken bir hata oluştu. Lütfen sayfayı yenileyin.");
         }
     },
     
-    // --- Soru dizisini her b�l�m�n ilk sorusu bo�luk doldurma olacak �ekilde d�zenle ---
-    // Bu fonksiyonu, sorular kar��t�r�ld�ktan ve se�ildikten sonra �a��r�n
+    // --- Soru dizisini her bölümün ilk sorusu boşluk doldurma olacak şekilde düzenle ---
+    // Bu fonksiyonu, sorular karıştırıldıktan ve seçildikten sonra çağırın
     arrangeBlankFillingFirst: function() {
-        // Her 5'lik b�l�m�n ilk sorusu bo�luk doldurma olacak
+        // Her 5'lik bölümün ilk sorusu boşluk doldurma olacak
         for (let i = 0; i < this.questions.length; i += 5) {
-            // O b�l�mde bo�luk doldurma sorusu var m�?
+            // O bölümde boşluk doldurma sorusu var mı?
             const section = this.questions.slice(i, i + 5);
             const blankIndex = section.findIndex(q => q.type === 'BlankFilling');
             if (blankIndex > 0) {
-                // O b�l�mde bo�luk doldurma varsa, ilk s�raya al
+                // O bölümde boşluk doldurma varsa, ilk sıraya al
                 const temp = this.questions[i];
                 this.questions[i] = this.questions[i + blankIndex];
                 this.questions[i + blankIndex] = temp;
@@ -15473,9 +9211,9 @@ const quizApp = {
         }
     },
     
-    // Konfeti efekti olu�tur
+    // Konfeti efekti oluştur
     createConfetti: function(container) {
-        // Konfeti par�ac�klar� i�in container
+        // Konfeti parçacıkları için container
         const confettiContainer = document.createElement('div');
         confettiContainer.className = 'confetti-container';
         confettiContainer.style.position = 'absolute';
@@ -15489,10 +9227,10 @@ const quizApp = {
         
         container.appendChild(confettiContainer);
         
-        // Konfeti par�ac�klar�
+        // Konfeti parçacıkları
         const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
         
-        // Konfeti par�ac�klar� olu�tur
+        // Konfeti parçacıkları oluştur
         for (let i = 0; i < 150; i++) {
             const confetti = document.createElement('div');
             confetti.className = 'confetti-piece';
@@ -15537,20 +9275,20 @@ const quizApp = {
             confettiContainer.appendChild(confetti);
         }
         
-        // 6 saniye sonra konfetileri kald�r
+        // 6 saniye sonra konfetileri kaldır
         setTimeout(() => {
             confettiContainer.remove();
         }, 6000);
     },
     
-    // Sonraki soruyu y�kle - cleanupPreviousQuestion ile �zellikle options elementinin stillerini temizler
+    // Sonraki soruyu yükle - cleanupPreviousQuestion ile özellikle options elementinin stillerini temizler
     loadNextQuestion: function() {
         this.currentQuestionIndex++;
         
-        // �nceki sorunun t�m elementlerini ve stilleri temizleyelim
+        // Önceki sorunun tüm elementlerini ve stilleri temizleyelim
         this.cleanupPreviousQuestion();
         
-        // Options elementini �zel olarak s�f�rla
+        // Options elementini özel olarak sıfırla
         if (this.optionsElement) {
             this.optionsElement.innerHTML = '';
             this.optionsElement.style.display = '';
@@ -15558,34 +9296,34 @@ const quizApp = {
             this.optionsElement.style.width = '';
         }
         
-        // Oyun bitti kontrol�
+        // Oyun bitti kontrolü
         if (this.currentQuestionIndex >= this.questions.length) {
             this.showResult();
             return;
         }
         
-        // Sorug�sterimi
+        // Sorugösterimi
         const currentQuestion = this.questions[this.currentQuestionIndex];
         
-        // Soru tipine g�re y�kleme
+        // Soru tipine göre yükleme
         if (currentQuestion.type === "BlankFilling") {
             this.loadBlankFillingQuestion(currentQuestion);
-        } else if (currentQuestion.type === "Do�ruYanl��" || currentQuestion.type === "TrueFalse") {
+        } else if (currentQuestion.type === "DoğruYanlış" || currentQuestion.type === "TrueFalse") {
             this.loadTrueFalseQuestion(currentQuestion);
         } else {
             this.displayQuestion(currentQuestion);
         }
     },
     
-    // Sonu� ve uyar� mesajlar�n� g�ncelle (her durumda)
+    // Sonuç ve uyarı mesajlarını güncelle (her durumda)
     updateResultAndWarningTexts: function() {
-        // Sonu�/uyar� alan�
+        // Sonuç/uyarı alanı
         const resultEls = document.querySelectorAll('.result, .result-message, .warning-message, .alert-message');
         resultEls.forEach(el => {
-            // 'S�re doldu!' veya 'Time is up!' gibi dille ilgili metinleri kontrol etmek yerine
-            // i�erik ve s�n�f yap�s�na g�re tan�mlama yapal�m
+            // 'Süre doldu!' veya 'Time is up!' gibi dille ilgili metinleri kontrol etmek yerine
+            // içerik ve sınıf yapısına göre tanımlama yapalım
             if (el.classList.contains('wrong') || el.textContent.includes('doldu') || el.textContent.includes('is up')) {
-                // Do�ru cevap metni varsa onu koru
+                // Doğru cevap metni varsa onu koru
                 const match = el.innerHTML.match(/<strong>(.*?)<\/strong>/);
                 const answer = match ? match[1] : '';
                 
@@ -15601,9 +9339,9 @@ const quizApp = {
         });
     },
     
-    // Bo�luk doldurma kontrollerini devre d��� b�rak
+    // Boşluk doldurma kontrollerini devre dışı bırak
     disableBlankFillingControls: function() {
-        // Kontrol et butonunu devre d��� b�rak
+        // Kontrol et butonunu devre dışı bırak
         const checkButton = document.querySelector('.check-button');
         if (checkButton) {
             checkButton.disabled = true;
@@ -15611,7 +9349,7 @@ const quizApp = {
             checkButton.style.cursor = 'not-allowed';
         }
         
-        // Temizle butonunu devre d��� b�rak
+        // Temizle butonunu devre dışı bırak
         const clearButton = document.querySelector('.clear-button');
         if (clearButton) {
             clearButton.disabled = true;
@@ -15619,7 +9357,7 @@ const quizApp = {
             clearButton.style.cursor = 'not-allowed';
         }
         
-        // Sil butonunu devre d��� b�rak
+        // Sil butonunu devre dışı bırak
         const deleteButton = document.querySelector('.delete-button');
         if (deleteButton) {
             deleteButton.disabled = true;
@@ -15627,7 +9365,7 @@ const quizApp = {
             deleteButton.style.cursor = 'not-allowed';
         }
         
-        // Harf butonlar�n� devre d��� b�rak
+        // Harf butonlarını devre dışı bırak
         const letterButtons = document.querySelectorAll('.letter-button');
         letterButtons.forEach(button => {
             button.disabled = true;
@@ -15636,10 +9374,10 @@ const quizApp = {
         });
     },
     
-    // Kullan�c� verilerini y�kle
+    // Kullanıcı verilerini yükle
     loadUserData: function(userId) {
         if (!userId || !firebase.firestore) {
-            console.log("Firebase firestore bulunamad� veya kullan�c� ID yok");
+            console.log("Firebase firestore bulunamadı veya kullanıcı ID yok");
             return;
         }
         
@@ -15649,27 +9387,27 @@ const quizApp = {
             .then((doc) => {
                 if (doc.exists) {
                     const userData = doc.data();
-                    console.log('Kullan�c� verileri y�klendi:', userData);
+                    console.log('Kullanıcı verileri yüklendi:', userData);
                     
-                    // Kullan�c� verilerini uygula
+                    // Kullanıcı verilerini uygula
                     this.totalScore = userData.totalScore || 0;
                     this.userLevel = userData.userLevel || 1;
                     this.levelProgress = userData.levelProgress || 0;
                     
-                    // Puan g�stergesini g�ncelle
+                    // Puan göstergesini güncelle
                     this.updateScoreDisplay();
                     this.updateTotalScoreDisplay();
                 } else {
-                    console.log('Yeni kullan�c�, varsay�lan veriler olu�turuluyor');
+                    console.log('Yeni kullanıcı, varsayılan veriler oluşturuluyor');
                     this.initializeNewUser(userId);
                 }
             })
             .catch((error) => {
-                console.error('Kullan�c� verileri y�klenirken hata:', error);
+                console.error('Kullanıcı verileri yüklenirken hata:', error);
             });
     },
     
-    // Yeni kullan�c� i�in varsay�lan veriler olu�tur
+    // Yeni kullanıcı için varsayılan veriler oluştur
     initializeNewUser: function(userId) {
         if (!firebase.firestore) return;
         
@@ -15678,33 +9416,35 @@ const quizApp = {
             totalScore: 0,
             userLevel: 1,
             levelProgress: 0,
+            totalStars: 0,
             createdAt: new Date(),
             lastPlayed: new Date()
         };
         
         db.collection('users').doc(userId).set(defaultUserData, { merge: true })
             .then(() => {
-                console.log('Yeni kullan�c� verileri olu�turuldu');
+                console.log('Yeni kullanıcı verileri oluşturuldu');
                 this.totalScore = 0;
                 this.userLevel = 1;
                 this.levelProgress = 0;
+                this.totalStars = 0;
                 this.updateTotalScoreDisplay();
             })
             .catch((error) => {
-                console.error('Yeni kullan�c� verisi olu�turulurken hata:', error);
+                console.error('Yeni kullanıcı verisi oluşturulurken hata:', error);
             });
     },
     
-    // Kullan�c� verilerini kaydet
+    // Kullanıcı verilerini kaydet
     saveUserData: function() {
-        console.log('=== saveUserData �a�r�ld� ===');
-        console.log('Giri� durumu:', this.isLoggedIn);
-        console.log('Mevcut kullan�c�:', this.currentUser ? this.currentUser.uid : 'null');
-        console.log('Firebase.firestore var m�:', firebase && firebase.firestore ? 'VAR' : 'YOK');
+        console.log('=== saveUserData çağrıldı ===');
+        console.log('Giriş durumu:', this.isLoggedIn);
+        console.log('Mevcut kullanıcı:', this.currentUser ? this.currentUser.uid : 'null');
+        console.log('Firebase.firestore var mı:', firebase && firebase.firestore ? 'VAR' : 'YOK');
         
         if (!this.isLoggedIn || !this.currentUser || !firebase.firestore) {
-            console.warn('Firebase kay�t atlan�yor - localStorage\'a kaydediliyor');
-            // LocalStorage'a da kaydet (giri� yapmadan da skor tutulsun)
+            console.warn('Firebase kayıt atlanıyor - localStorage\'a kaydediliyor');
+            // LocalStorage'a da kaydet (giriş yapmadan da skor tutulsun)
             this.saveScoreToLocalStorage();
             return;
         }
@@ -15716,54 +9456,55 @@ const quizApp = {
             totalScore: this.totalScore,
             userLevel: this.userLevel,
             levelProgress: this.levelProgress,
+            totalStars: this.totalStars,
             lastPlayed: new Date()
         };
         
         console.log('Firebase\'e kaydedilecek veriler:', updateData);
-        console.log('Kullan�c� ID:', userId);
+        console.log('Kullanıcı ID:', userId);
         
         // Firebase isteklerini sinirla - son kaydetme ile arasinda en az 3 saniye olmali
         const now = Date.now();
         if (this.lastFirebaseSave && (now - this.lastFirebaseSave) < 3000) {
-            console.log('Firebase kay�t �ok s�k - localStorage\'a kaydediliyor');
+            console.log('Firebase kayıt çok sık - localStorage\'a kaydediliyor');
             this.saveScoreToLocalStorage();
             return;
         }
         
         this.lastFirebaseSave = now;
         
-        console.log('Firebase\'e kay�t ba�lat�l�yor...');
+        console.log('Firebase\'e kayıt başlatılıyor...');
         
         db.collection('users').doc(userId).update(updateData)
             .then(() => {
-                console.log('? Firebase\'e ba�ar�yla kaydedildi!');
-                // Ayn� zamanda localStorage'a da kaydet (backup olarak)
+                console.log('✅ Firebase\'e başarıyla kaydedildi!');
+                // Aynı zamanda localStorage'a da kaydet (backup olarak)
                 this.saveScoreToLocalStorage();
             })
             .catch((error) => {
-                console.error('? Firebase kay�t hatas�:', error.code, error.message);
+                console.error('❌ Firebase kayıt hatası:', error.code, error.message);
                 
-                // Hata loglar�n� azalt - sadece �nemli hatalar� logla
+                // Hata loglarını azalt - sadece önemli hataları logla
                 if (error.code === 'not-found' || (error.message && error.message.includes('No document to update'))) {
-                    console.log('Kullan�c� dok�man� yok - yeni olu�turuluyor...');
+                    console.log('Kullanıcı dokümanı yok - yeni oluşturuluyor...');
                     db.collection('users').doc(userId).set(updateData, { merge: true })
                         .then(() => {
-                            console.log('? Yeni kullan�c� dok�man� olu�turuldu!');
+                            console.log('✅ Yeni kullanıcı dokümanı oluşturuldu!');
                             this.saveScoreToLocalStorage();
                         })
                         .catch((err) => {
-                            console.error('? Yeni dokuman olu�turma hatas�:', err.code, err.message);
+                            console.error('❌ Yeni dokuman oluşturma hatası:', err.code, err.message);
                             this.saveScoreToLocalStorage();
                         });
                 } else {
-                    console.error('? Di�er Firebase hatas�:', error.code, error.message);
-                    // Firebase hatas� durumunda localStorage'a kaydet
+                    console.error('❌ Diğer Firebase hatası:', error.code, error.message);
+                    // Firebase hatası durumunda localStorage'a kaydet
                     this.saveScoreToLocalStorage();
                 }
             });
     },
     
-    // localStorage'a skor kaydet (backup veya giri� yapmam�� kullan�c�lar i�in)
+    // localStorage'a skor kaydet (backup veya giriş yapmamış kullanıcılar için)
     saveScoreToLocalStorage: function() {
         try {
             const scoreData = {
@@ -15771,6 +9512,7 @@ const quizApp = {
                 userLevel: this.userLevel,
                 levelProgress: this.levelProgress,
                 sessionScore: this.sessionScore,
+                totalStars: this.totalStars,
                 lastSaved: new Date().toISOString()
             };
             
@@ -15781,85 +9523,93 @@ const quizApp = {
         }
     },
     
-    // localStorage'dan skor y�kle
+    // localStorage'dan skor yükle
     loadScoreFromLocalStorage: function() {
         try {
             const scoreData = localStorage.getItem('userScoreData');
             if (scoreData) {
                 const parsedData = JSON.parse(scoreData);
                 
-                // Sadece giri� yapmam�� kullan�c�lar i�in localStorage'dan y�kle
+                // Sadece giriş yapmamış kullanıcılar için localStorage'dan yükle
                 if (!this.isLoggedIn) {
                     this.totalScore = parsedData.totalScore || 0;
                     this.userLevel = parsedData.userLevel || 1;
                     this.levelProgress = parsedData.levelProgress || 0;
                     this.sessionScore = parsedData.sessionScore || 0;
                     
-                    console.log('Skor localStorage\'dan y�klendi:', parsedData);
-                    this.updateTotalScoreDisplay();
+                    console.log('Skor localStorage\'dan yüklendi:', parsedData);
                 }
             }
+            
+            // Toplam yıldız sayısını yükle
+            const storedTotalStars = localStorage.getItem('quizTotalStars');
+            if (storedTotalStars) {
+                this.totalStars = parseInt(storedTotalStars);
+                console.log('Toplam yıldız sayısı yüklendi:', this.totalStars);
+            }
+            
+            this.updateTotalScoreDisplay();
         } catch (e) {
-            console.error('localStorage\'dan skor y�klenirken hata:', e);
+            console.error('localStorage\'dan skor yüklenirken hata:', e);
         }
     },
     
-    // Puan ekle ve seviye kontrol� yap
+    // Puan ekle ve seviye kontrolü yap
     addScore: function(points) {
         const previousScore = this.score;
         const previousTotalScore = this.totalScore;
         const previousLevel = this.userLevel;
         
-        // Mevcut oyun puan�n� g�ncelle
+        // Mevcut oyun puanını güncelle
         this.score += points;
         this.sessionScore += points;
         
-        // Firebase ba�lant� durumunu kontrol et
-        console.log('Firebase Durum Kontrol�:', {
+        // Firebase bağlantı durumunu kontrol et
+        console.log('Firebase Durum Kontrolü:', {
             isLoggedIn: this.isLoggedIn,
             currentUser: this.currentUser ? this.currentUser.uid : 'null',
             firebaseExists: typeof firebase !== 'undefined',
             firestoreExists: firebase && firebase.firestore ? true : false
         });
         
-        // Giri� yap�lm��sa toplam puana ekle
+        // Giriş yapılmışsa toplam puana ekle
         if (this.isLoggedIn) {
             this.totalScore += points;
             this.levelProgress += points;
             
-            // Seviye kontrol� yap
+            // Seviye kontrolü yap
             this.checkLevelUp();
             
-            // Firebase kaydetmeyi geciktir (�ok s�k kay�t �nleme)
+            // Firebase kaydetmeyi geciktir (çok sık kayıt önleme)
             this.delayedSaveUserData();
             
-            console.log(`Firebase'e kay�t i�in bekleniyor: +${points} puan`);
+            console.log(`Firebase'e kayıt için bekleniyor: +${points} puan`);
         } else {
-            console.warn('Kullan�c� giri� yapmam�� - sadece localStorage\'a kaydediliyor');
+            console.warn('Kullanıcı giriş yapmamış - sadece localStorage\'a kaydediliyor');
         }
         
-        // G�r�nt�leri g�ncelle
+        // Görüntüleri güncelle
         this.updateScoreDisplay();
         this.updateTotalScoreDisplay();
         
-        console.log(`Puan eklendi: +${points} (Oyun: ${previousScore} � ${this.score}, Toplam: ${previousTotalScore} � ${this.totalScore})`);
+        console.log(`Puan eklendi: +${points} (Oyun: ${previousScore} → ${this.score}, Toplam: ${previousTotalScore} → ${this.totalScore})`);
     },
     
-    // Geciktirilmi� kullan�c� verisi kaydetme (a��r� s�k istekleri �nlemek i�in)
+    // Geciktirilmiş kullanıcı verisi kaydetme (aşırı sık istekleri önlemek için)
     delayedSaveUserData: function() {
-        // �nceki timeout'u temizle
+        // Önceki timeout'u temizle
         if (this.saveTimeout) {
             clearTimeout(this.saveTimeout);
         }
         
-        // 2 saniye sonra kaydet (s�rekli istek yerine toplu kaydetme)
+        // 2 saniye sonra kaydet (sürekli istek yerine toplu kaydetme)
         this.saveTimeout = setTimeout(() => {
             this.saveUserData();
             this.saveTimeout = null;
         }, 2000);
     },
     
-    // Seviye atlatma kontrol�
+    // Seviye atlatma kontrolü
     checkLevelUp: function() {
         const requiredXP = this.getRequiredXPForNextLevel();
         
@@ -15868,43 +9618,118 @@ const quizApp = {
             this.userLevel++;
             this.levelProgress -= requiredXP;
             
-            console.log(`Seviye atlad�! ${previousLevel} � ${this.userLevel}`);
+            console.log(`Seviye atladı! ${previousLevel} → ${this.userLevel}`);
             
-            // Seviye atlama animasyonu kald�r�ld� (gereksiz modal)
+            // Seviye atlama animasyonu kaldırıldı (gereksiz modal)
         }
     },
     
-    // Sonraki seviye i�in gerekli XP hesapla
+    // Sonraki seviye için gerekli XP hesapla
     getRequiredXPForNextLevel: function() {
-        // Seviye ba��na 100 * seviye kadar XP gerekir
+        // Seviye başına 100 * seviye kadar XP gerekir
         return this.userLevel * 100;
     },
-    
 
     
-    // Toplam puan g�stergesini g�ncelle
+    // Sayıları kısaltma fonksiyonu
+    formatNumber: function(num) {
+        if (num >= 1000000) {
+            return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+        }
+        if (num >= 1000) {
+            return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+        }
+        return num.toString();
+    },
+
+    // Tooltip oluşturma fonksiyonu
+    createTooltip: function(element, text) {
+        element.setAttribute('title', text);
+        element.style.cursor = 'pointer';
+        
+        // Mobil cihazlar için touch event
+        element.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            const existingTooltip = document.querySelector('.custom-tooltip');
+            if (existingTooltip) {
+                existingTooltip.remove();
+            }
+            
+            const tooltip = document.createElement('div');
+            tooltip.className = 'custom-tooltip';
+            tooltip.textContent = text;
+            tooltip.style.cssText = `
+                position: absolute;
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 8px 12px;
+                border-radius: 6px;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 10000;
+                pointer-events: none;
+                white-space: nowrap;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            `;
+            
+            document.body.appendChild(tooltip);
+            
+            const rect = element.getBoundingClientRect();
+            tooltip.style.left = (rect.left + rect.width / 2 - tooltip.offsetWidth / 2) + 'px';
+            tooltip.style.top = (rect.top - tooltip.offsetHeight - 8) + 'px';
+            
+            setTimeout(() => {
+                if (tooltip.parentNode) {
+                    tooltip.remove();
+                }
+            }, 2000);
+        });
+    },
+    
+    // Toplam puan göstergesini güncelle
     updateTotalScoreDisplay: function() {
-        // Yeni sadele�tirilmi� puan g�sterimi
+        // Yeni sadeleştirilmiş puan gösterimi
         const totalScoreElement = document.getElementById('total-score-value');
         if (totalScoreElement) {
             const scoreValue = this.isLoggedIn ? this.totalScore : this.sessionScore;
-            totalScoreElement.textContent = scoreValue;
+            const formattedScore = this.formatNumber(scoreValue);
+            const formattedStars = this.formatNumber(this.totalStars);
+            
+            totalScoreElement.innerHTML = `
+                <span class="coin-display" data-full-value="${scoreValue}">
+                    ${formattedScore}
+                </span>
+                <span class="star-display" data-full-value="${this.totalStars}">
+                    <span class="star-icon">⭐</span> ${formattedStars}
+                </span>
+            `;
+            
+            // Tooltip'leri ekle
+            const coinDisplay = totalScoreElement.querySelector('.coin-display');
+            const starDisplay = totalScoreElement.querySelector('.star-display');
+            
+            if (coinDisplay) {
+                this.createTooltip(coinDisplay, `Coin: ${scoreValue.toLocaleString()}`);
+            }
+            if (starDisplay) {
+                this.createTooltip(starDisplay, `Yıldız: ${this.totalStars.toLocaleString()}`);
+            }
         }
         
-        // Profil sayfas�ndaki puan g�sterimini g�ncelle
+        // Profil sayfasındaki puan gösterimini güncelle
         const profileTotalScore = document.getElementById('profile-total-score');
         if (profileTotalScore) {
             profileTotalScore.textContent = this.totalScore || 0;
         }
         
-        // Profil sayfas�ndaki seviye g�sterimini g�ncelle
+        // Profil sayfasındaki seviye gösterimini güncelle
         const profileUserLevel = document.getElementById('profile-user-level');
         if (profileUserLevel) {
             const level = Math.floor((this.totalScore || 0) / 500) + 1;
             profileUserLevel.textContent = level;
         }
         
-        // Eski puan g�sterimini de destekle (geriye uyumluluk i�in)
+        // Eski puan gösterimini de destekle (geriye uyumluluk için)
         const totalScoreElements = document.querySelectorAll('.total-score-display');
         totalScoreElements.forEach(element => {
             if (element && !element.closest('.game-header')) {
@@ -15922,10 +9747,10 @@ const quizApp = {
         });
     },
     
-    // Firebase'den en y�ksek skorlar� �ek
+    // Firebase'den en yüksek skorları çek
     loadFirebaseHighScores: function(category = null, limit = 10) {
         if (!firebase.firestore) {
-            console.warn('Firebase Firestore kullan�lam�yor');
+            console.warn('Firebase Firestore kullanılamıyor');
             return Promise.resolve([]);
         }
         
@@ -15947,21 +9772,21 @@ const quizApp = {
                     highScores.push({
                         id: doc.id,
                         ...data,
-                        // Tarih format�n� d�zelt
+                        // Tarih formatını düzelt
                         date: data.timestamp ? data.timestamp.toDate().toLocaleDateString() : data.date
                     });
                 });
                 
-                console.log(`Firebase'den ${highScores.length} y�ksek skor �ekildi`);
+                console.log(`Firebase'den ${highScores.length} yüksek skor çekildi`);
                 return highScores;
             })
             .catch((error) => {
-                console.error('Firebase\'den y�ksek skorlar �ekilirken hata:', error);
+                console.error('Firebase\'den yüksek skorlar çekilirken hata:', error);
                 return [];
             });
     },
     
-    // Kullan�c�n�n ki�isel en y�ksek skorlar�n� �ek
+    // Kullanıcının kişisel en yüksek skorlarını çek
     loadUserPersonalScores: function(userId, limit = 10) {
         if (!firebase.firestore || !userId) {
             return Promise.resolve([]);
@@ -15985,32 +9810,32 @@ const quizApp = {
                     });
                 });
                 
-                console.log(`Kullan�c�n�n ${personalScores.length} ki�isel skoru �ekildi`);
+                console.log(`Kullanıcının ${personalScores.length} kişisel skoru çekildi`);
                 return personalScores;
             })
             .catch((error) => {
-                console.error('Ki�isel skorlar �ekilirken hata:', error);
+                console.error('Kişisel skorlar çekilirken hata:', error);
                 return [];
             });
     },
     
-    // Firebase'den kullan�c� istatistiklerini �ek ve senkronize et
+    // Firebase'den kullanıcı istatistiklerini çek ve senkronize et
     syncUserStatsFromFirebase: function() {
         if (!this.isLoggedIn || !firebase.firestore) {
-            console.warn('syncUserStatsFromFirebase atland� - kullan�c� giri� yapmam�� veya Firebase yok');
+            console.warn('syncUserStatsFromFirebase atlandı - kullanıcı giriş yapmamış veya Firebase yok');
             return Promise.resolve();
         }
         
         const db = firebase.firestore();
         const userId = this.currentUser.uid;
         
-        console.log('Firebase\'den kullan�c� verileri �ekiliyor:', userId);
+        console.log('Firebase\'den kullanıcı verileri çekiliyor:', userId);
         
         return db.collection('users').doc(userId).get()
             .then((doc) => {
                 if (doc.exists) {
                     const userData = doc.data();
-                    console.log('Firebase\'den �ekilen veri:', userData);
+                    console.log('Firebase\'den çekilen veri:', userData);
                     
                     // Puan verilerini senkronize et
                     if (userData.totalScore !== undefined) {
@@ -16022,88 +9847,234 @@ const quizApp = {
                     if (userData.levelProgress !== undefined) {
                         this.levelProgress = userData.levelProgress;
                     }
+                    if (userData.totalStars !== undefined) {
+                        this.totalStars = userData.totalStars;
+                        // localStorage'a da kaydet
+                        localStorage.setItem('quizTotalStars', this.totalStars);
+                    }
                     
-                    // G�r�nt�y� g�ncelle
+                    // Görüntüyü güncelle
                     this.updateTotalScoreDisplay();
                     
-                    console.log('Firebase\'den kullan�c� verileri senkronize edildi:', {
+                    console.log('Firebase\'den kullanıcı verileri senkronize edildi:', {
                         totalScore: this.totalScore,
                         userLevel: this.userLevel,
                         levelProgress: this.levelProgress
                     });
                 } else {
-                    console.log('Kullan�c� dok�man� bulunamad� - yeni olu�turuluyor');
-                    // Kullan�c� verisi yoksa yeni olu�tur
+                    console.log('Kullanıcı dokümanı bulunamadı - yeni oluşturuluyor');
+                    // Kullanıcı verisi yoksa yeni oluştur
                     this.initializeNewUser(userId);
                 }
             })
             .catch((error) => {
-                console.error('Firebase\'den veri senkronizasyonu hatas�:', error);
+                console.error('Firebase\'den veri senkronizasyonu hatası:', error);
             });
     },
     
-    // Firebase ba�lant� durumunu kontrol et (debug ama�l�)
+    // Firebase bağlantı durumunu kontrol et (debug amaçlı)
     checkFirebaseConnection: function() {
-        console.log('=== Firebase Ba�lant� Kontrol� ===');
-        console.log('1. Firebase nesnesi var m�:', typeof firebase !== 'undefined');
-        console.log('2. Firebase.auth var m�:', firebase && firebase.auth ? 'VAR' : 'YOK');
-        console.log('3. Firebase.firestore var m�:', firebase && firebase.firestore ? 'VAR' : 'YOK');
-        console.log('4. Kullan�c� giri� yapm�� m�:', this.isLoggedIn);
-        console.log('5. Mevcut kullan�c�:', this.currentUser ? this.currentUser.uid : 'YOK');
+        console.log('=== Firebase Bağlantı Kontrolü ===');
+        console.log('1. Firebase nesnesi var mı:', typeof firebase !== 'undefined');
+        console.log('2. Firebase.auth var mı:', firebase && firebase.auth ? 'VAR' : 'YOK');
+        console.log('3. Firebase.firestore var mı:', firebase && firebase.firestore ? 'VAR' : 'YOK');
+        console.log('4. Kullanıcı giriş yapmış mı:', this.isLoggedIn);
+        console.log('5. Mevcut kullanıcı:', this.currentUser ? this.currentUser.uid : 'YOK');
         
         if (firebase && firebase.auth) {
             const currentUser = firebase.auth().currentUser;
             console.log('6. Firebase.auth().currentUser:', currentUser ? currentUser.uid : 'YOK');
         }
         
-        // Test kay�t yapma
+        // Test kayıt yapma
         if (this.isLoggedIn && this.currentUser && firebase.firestore) {
-            console.log('7. Test kay�t yap�l�yor...');
+            console.log('7. Test kayıt yapılıyor...');
             const db = firebase.firestore();
             const testData = {
                 test: true,
                 timestamp: new Date(),
-                message: 'Bu bir test kayd�d�r'
+                message: 'Bu bir test kaydıdır'
             };
             
             db.collection('users').doc(this.currentUser.uid).set(testData, { merge: true })
                 .then(() => {
-                    console.log('? Test kay�t ba�ar�l�!');
+                    console.log('✅ Test kayıt başarılı!');
                 })
                 .catch((error) => {
-                    console.error('? Test kay�t ba�ar�s�z:', error);
+                    console.error('❌ Test kayıt başarısız:', error);
                 });
         } else {
-            console.log('7. Test kay�t atland� - gerekli �artlar sa�lanmad�');
+            console.log('7. Test kayıt atlandı - gerekli şartlar sağlanmadı');
         }
-    }
+        }
 };
 
-// Bu mod�l� ba�lat
+// Console'da kullanım kılavuzu
+console.log(`
+🎮 === Quiz App Test Sistemleri Hazır! ===
+
+📖 KULLANIM KILAVUZU:
+
+🏆 ROZET SİSTEMİ TESTLERİ:
+• testBadgeSystem.testAll() - Tüm rozet sistemini kontrol et
+• testBadgeSystem.checkBadges() - Manuel rozet kontrolü yap
+• testBadgeSystem.giveTestBadge() - Test rozeti ver
+
+🔥 FIREBASE TESTLERİ:
+• testFirebase.testConnection() - Firebase bağlantısını test et
+• testFirebase.testStatistics() - İstatistikleri Firebase'den yükle
+
+👤 PROFİL TESTLERİ:
+• debugProfile.getUserStats() - Kullanıcı istatistiklerini göster
+• debugProfile.getBadges() - Kullanıcı rozetlerini göster
+• debugProfile.createTestData() - Test verileri oluştur
+
+🔧 GENEL TESTLER:
+• debugFirebase() - Firebase durumunu kontrol et
+• showUserData() - Kullanıcı verilerini göster
+
+📊 İSTATİSTİKLER SAYFASINDAKİ SORUNLARI TEST ETMEK İÇİN:
+1. Giriş yapın
+2. testFirebase.testStatistics() çalıştırın
+3. İstatistikler sayfasını açın
+4. Console'daki hata mesajlarını kontrol edin
+
+Örnek kullanım: testBadgeSystem.testAll()
+`);
+
+ // Bu modülü başlat
 quizApp.init(); 
 
-// QuizApp mod�l�n� global olarak eri�ilebilir yap
+// QuizApp modülünü global olarak erişilebilir yap
 window.quizApp = quizApp;
 
-// Debug fonksiyonlar�n� global eri�im i�in ekle
+// Debug fonksiyonlarını global erişim için ekle
 window.debugFirebase = function() {
     return quizApp.checkFirebaseConnection();
 };
 
 window.testFirebaseSave = function() {
-    console.log('Manuel Firebase kay�t testi ba�lat�l�yor...');
+    console.log('Manuel Firebase kayıt testi başlatılıyor...');
     quizApp.addScore(10); // 10 puan ekle ve Firebase'e kaydet
 };
 
 window.showUserData = function() {
-    console.log('=== Kullan�c� Veri Durumu ===');
-    console.log('Giri� durumu:', quizApp.isLoggedIn);
+    console.log('=== Kullanıcı Veri Durumu ===');
+    console.log('Giriş durumu:', quizApp.isLoggedIn);
     console.log('Toplam puan:', quizApp.totalScore);
     console.log('Seviye:', quizApp.userLevel);
-    console.log('Mevcut kullan�c�:', quizApp.currentUser ? quizApp.currentUser.uid : 'YOK');
+    console.log('Mevcut kullanıcı:', quizApp.currentUser ? quizApp.currentUser.uid : 'YOK');
 };
 
-// Profil i�in debug fonksiyonlar�
+// Rozet sistemi test fonksiyonları
+window.testBadgeSystem = {
+    // Tüm rozet sistemini test et
+    testAll: function() {
+        console.log('🏆 === Rozet Sistemi Test ===');
+        console.log('1. Badge system mevcut:', quizApp.badgeSystem ? 'VAR' : 'YOK');
+        
+        if (!quizApp.badgeSystem) {
+            console.error('❌ Badge sistemi bulunamadı!');
+            return;
+        }
+        
+        console.log('2. Tanımlı rozetler:', Object.keys(quizApp.badgeSystem.badges));
+        
+        const userId = quizApp.getCurrentUserId();
+        if (!userId) {
+            console.warn('⚠️ Kullanıcı giriş yapmamış - rozet sistemi çalışmaz');
+            return;
+        }
+        
+        console.log('3. Mevcut kullanıcı:', userId);
+        
+        const userBadges = quizApp.badgeSystem.getUserBadges(userId);
+        console.log('4. Kullanıcının mevcut rozetleri:', Object.keys(userBadges));
+        
+        const currentStats = quizApp.calculateRealStats();
+        console.log('5. Mevcut istatistikler:', currentStats);
+        
+        console.log('6. Rozet koşulları kontrol ediliyor...');
+        Object.values(quizApp.badgeSystem.badges).forEach(badge => {
+            const hasCondition = typeof badge.condition === 'function';
+            const meetsCondition = hasCondition && badge.condition(currentStats);
+            const hasAlready = userBadges[badge.id];
+            
+            console.log(`   - ${badge.name}: Koşul var: ${hasCondition}, Karşılıyor: ${meetsCondition}, Zaten var: ${!!hasAlready}`);
+        });
+        
+        console.log('✅ Rozet sistemi test tamamlandı!');
+    },
+    
+    // Manuel rozet ver
+    giveTestBadge: function() {
+        const userId = quizApp.getCurrentUserId();
+        if (!userId) {
+            console.warn('⚠️ Giriş yapmanız gerekiyor');
+            return;
+        }
+        
+        const firstGameBadge = quizApp.badgeSystem.badges.firstGame;
+        if (firstGameBadge) {
+            quizApp.badgeSystem.awardBadge(userId, firstGameBadge);
+            console.log('🎉 Test rozeti verildi: İlk Oyun');
+        }
+    },
+    
+    // Rozet kontrolü yap
+    checkBadges: function() {
+        const userId = quizApp.getCurrentUserId();
+        if (!userId) {
+            console.warn('⚠️ Giriş yapmanız gerekiyor');
+            return;
+        }
+        
+        console.log('🔍 Manuel rozet kontrolü başlatılıyor...');
+        const currentStats = quizApp.calculateRealStats();
+        const newBadges = quizApp.badgeSystem.checkAndAwardBadges(userId, currentStats);
+        
+        if (newBadges && newBadges.length > 0) {
+            console.log('🎉 Yeni rozetler kazanıldı:', newBadges.map(b => b.name));
+        } else {
+            console.log('ℹ️ Yeni rozet kazanılmadı');
+        }
+    }
+};
+
+// Firebase test fonksiyonları
+window.testFirebase = {
+    // Firebase bağlantısını test et
+    testConnection: function() {
+        console.log('🔥 === Firebase Bağlantı Testi ===');
+        console.log('1. Firebase nesnesi:', typeof firebase !== 'undefined');
+        console.log('2. Realtime Database:', firebase && firebase.database ? true : false);
+        console.log('3. Firestore:', firebase && firebase.firestore ? true : false);
+        console.log('4. Auth:', firebase && firebase.auth ? true : false);
+        
+        if (firebase && firebase.auth) {
+            const currentUser = firebase.auth().currentUser;
+            console.log('5. Mevcut kullanıcı:', currentUser ? currentUser.uid : 'Giriş yapılmamış');
+        }
+        
+        console.log('✅ Firebase bağlantı testi tamamlandı');
+    },
+    
+    // İstatistikleri Firebase'den yükle
+    testStatistics: function() {
+        console.log('📊 === Firebase İstatistik Testi ===');
+        const userId = quizApp.getCurrentUserId();
+        
+        if (!userId) {
+            console.warn('⚠️ Giriş yapmanız gerekiyor');
+            return;
+        }
+        
+        console.log('Firebase\'den istatistikler yükleniyor...');
+        quizApp.loadFirebaseStatistics(userId);
+    }
+};
+
+// Profil için debug fonksiyonları
 window.debugProfile = {
     createTestData: () => quizApp.createTestData(),
     showProfile: () => quizApp.showProfilePage(),
@@ -16115,36 +10086,36 @@ window.debugProfile = {
         const userId = quizApp.getCurrentUserId();
         localStorage.removeItem(`user-badges-${userId}`);
         localStorage.removeItem(`user-profile-${userId}`);
-        console.log('? T�m profil verileri temizlendi!');
+        console.log('✅ Tüm profil verileri temizlendi!');
     },
     getUserStats: () => {
         const stats = quizApp.calculateRealStats();
-        console.log('?? Kullan�c� �statistikleri:', stats);
+        console.log('📊 Kullanıcı İstatistikleri:', stats);
         return stats;
     },
     getBadges: () => {
         const userId = quizApp.getCurrentUserId();
         const badges = quizApp.badgeSystem.getUserBadges(userId);
-        console.log('?? Kullan�c� Rozetleri:', badges);
+        console.log('🏆 Kullanıcı Rozetleri:', badges);
         return badges;
     },
     testEditProfile: () => {
-        // Profil d�zenleme modal�n� test et
-        console.log('?? Profil d�zenleme modal� a��l�yor...');
+        // Profil düzenleme modalını test et
+        console.log('🔧 Profil düzenleme modalı açılıyor...');
         quizApp.showEditProfileModal();
     },
     testProfileData: () => {
         const userId = quizApp.getCurrentUserId();
         const profileData = {
-            displayName: 'Test Kullan�c�s�',
+            displayName: 'Test Kullanıcısı',
             bio: 'Bu bir test biyografisidir.',
             lastUpdated: new Date().toISOString()
         };
         
         localStorage.setItem(`user-profile-${userId}`, JSON.stringify(profileData));
-        console.log('? Test profil verileri olu�turuldu:', profileData);
+        console.log('✅ Test profil verileri oluşturuldu:', profileData);
         
-        // Profil sayfas�n� yenile
+        // Profil sayfasını yenile
         if (document.getElementById('profile-container')) {
             quizApp.loadProfileData();
         }
@@ -16152,9 +10123,112 @@ window.debugProfile = {
     checkProfileData: () => {
         const userId = quizApp.getCurrentUserId();
         const profileData = localStorage.getItem(`user-profile-${userId}`);
-        console.log('?? Mevcut profil verileri:', profileData ? JSON.parse(profileData) : 'Veri yok');
+        console.log('📋 Mevcut profil verileri:', profileData ? JSON.parse(profileData) : 'Veri yok');
         return profileData ? JSON.parse(profileData) : null;
     }
 };
 
- 
+// Mevcut dili al fonksiyonu
+function getCurrentLanguage() {
+    // quizApp'ten dili al, yoksa localStorage'dan, yoksa tarayıcı dilini al
+    if (window.quizApp && window.quizApp.currentLanguage) {
+        return window.quizApp.currentLanguage;
+    }
+    return localStorage.getItem('language') || 
+           localStorage.getItem('user_language') || 
+           localStorage.getItem('selectedLanguage') ||
+           navigator.language.substring(0, 2) || 'tr';
+}
+
+// Çerez bildirimi dil desteği
+window.updateCookieConsentLanguage = function() {
+    const currentLang = getCurrentLanguage();
+    const cookieTexts = window.languages && window.languages[currentLang]?.cookies || 
+                       window.languages && window.languages['tr'].cookies || {
+        title: 'Çerez Bildirimi',
+        message: 'Web sitemiz, size daha iyi hizmet verebilmek ve reklamları kişiselleştirmek için çerezler kullanır.',
+        acceptEssential: 'Sadece Gerekli',
+        acceptAll: 'Tümünü Kabul Et',
+        settings: 'Ayarlar',
+        settingsTitle: 'Çerez Ayarları',
+        essentialCookies: 'Zorunlu Çerezler',
+        essentialCookiesDesc: 'Sitenin çalışması için gerekli çerezler',
+        analyticsCookies: 'Analitik Çerezler',
+        analyticsCookiesDesc: 'Site kullanımını analiz etmek için kullanılır',
+        advertisingCookies: 'Reklam Çerezleri',
+        advertisingCookiesDesc: 'Kişiselleştirilmiş reklamlar göstermek için kullanılır',
+        save: 'Kaydet',
+        privacyPolicy: 'Gizlilik Politikamızı'
+    };
+    
+    // Çerez banneri
+    const bannerTitle = document.getElementById('cookie-banner-title');
+    const bannerMessage = document.getElementById('cookie-banner-message');
+    const privacyLink = document.getElementById('privacy-policy-link');
+    const acceptEssential = document.getElementById('accept-essential');
+    const acceptAll = document.getElementById('accept-all');
+    const cookieSettings = document.getElementById('cookie-settings');
+    
+    if (bannerTitle) bannerTitle.textContent = cookieTexts.title;
+    if (bannerMessage) {
+        bannerMessage.innerHTML = `${cookieTexts.message.split('Gizlilik Politikamızı')[0]}<a href="privacy-policy.html" target="_blank" id="privacy-policy-link">${cookieTexts.privacyPolicy}</a>${cookieTexts.message.split('inceleyebilirsiniz')[1] || ' inceleyebilirsiniz.'}`;
+    }
+    if (acceptEssential) acceptEssential.textContent = cookieTexts.acceptEssential;
+    if (acceptAll) acceptAll.textContent = cookieTexts.acceptAll;
+    if (cookieSettings) cookieSettings.textContent = cookieTexts.settings;
+    
+    // Çerez modalı
+    const modalTitle = document.getElementById('cookie-modal-title');
+    const essentialTitle = document.getElementById('essential-cookies-modal-title');
+    const essentialDesc = document.getElementById('essential-cookies-modal-desc');
+    const analyticsTitle = document.getElementById('analytics-cookies-modal-title');
+    const analyticsDesc = document.getElementById('analytics-cookies-modal-desc');
+    const advertisingTitle = document.getElementById('advertising-cookies-modal-title');
+    const advertisingDesc = document.getElementById('advertising-cookies-modal-desc');
+    const saveBtn = document.getElementById('save-cookie-preferences');
+    
+    if (modalTitle) modalTitle.textContent = cookieTexts.settingsTitle;
+    if (essentialTitle) essentialTitle.textContent = cookieTexts.essentialCookies;
+    if (essentialDesc) essentialDesc.textContent = cookieTexts.essentialCookiesDesc;
+    if (analyticsTitle) analyticsTitle.textContent = cookieTexts.analyticsCookies;
+    if (analyticsDesc) analyticsDesc.textContent = cookieTexts.analyticsCookiesDesc;
+    if (advertisingTitle) advertisingTitle.textContent = cookieTexts.advertisingCookies;
+    if (advertisingDesc) advertisingDesc.textContent = cookieTexts.advertisingCookiesDesc;
+    if (saveBtn) saveBtn.textContent = cookieTexts.save;
+};
+
+// Çerez bildirimi butonlarının dil desteğini güncelle
+window.updateCookieButtonTexts = function() {
+    const currentLang = getCurrentLanguage();
+    const cookieTexts = languages[currentLang]?.cookies || languages['tr'].cookies;
+    
+    const acceptEssential = document.getElementById('accept-essential');
+    const acceptAll = document.getElementById('accept-all');
+    const cookieSettings = document.getElementById('cookie-settings');
+    
+    if (acceptEssential) acceptEssential.textContent = cookieTexts.acceptEssential;
+    if (acceptAll) acceptAll.textContent = cookieTexts.acceptAll;
+    if (cookieSettings) cookieSettings.textContent = cookieTexts.settings;
+};
+
+// Dil değiştirildiğinde çerez bildirimi güncelle
+window.addEventListener('storage', function(e) {
+    if (e.key === 'selectedLanguage') {
+        window.updateCookieConsentLanguage?.();
+    }
+});
+
+// languageChanged eventini dinle
+document.addEventListener('languageChanged', function() {
+    console.log('🌐 Dil değişti, çerez bildirimi güncelleniyor...');
+    setTimeout(() => {
+        window.updateCookieConsentLanguage?.();
+    }, 100);
+});
+
+// Sayfa yüklendiğinde çerez bildirimi dilini güncelle
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        window.updateCookieConsentLanguage?.();
+    }, 500);
+});

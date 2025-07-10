@@ -252,22 +252,31 @@
 <body>
     <div class="container">
         <a href="../index.html" class="back-link">
-            <span>←</span> Ana Sayfaya Dön
+            <span>←</span> <span id="back-link-text">Ana Sayfaya Dön</span>
         </a>
         
         <div class="settings-header">
-            <h1>🔒 Gizlilik Ayarları</h1>
-            <p>Kişisel verilerinizi nasıl kullandığımızı kontrol edin</p>
+            <h1>🔒 <span id="page-title">Gizlilik Ayarları</span></h1>
+            <p id="page-subtitle">Kişisel verilerinizi nasıl kullandığımızı kontrol edin</p>
+            
+            <!-- Dil Seçim Dropdown -->
+            <div class="language-selector" style="margin-top: 20px;">
+                <select id="language-select" style="padding: 10px; border-radius: 8px; border: 2px solid #e2e8f0; background: white; color: #374151; font-size: 14px; cursor: pointer;">
+                    <option value="tr">🇹🇷 Türkçe</option>
+                    <option value="en">🇬🇧 English</option>
+                    <option value="de">🇩🇪 Deutsch</option>
+                </select>
+            </div>
         </div>
         
         <!-- Çerez Ayarları -->
         <div class="settings-section">
-            <h2>🍪 Çerez Ayarları</h2>
+            <h2>🍪 <span id="cookie-settings-title">Çerez Ayarları</span></h2>
             
             <div class="setting-item">
                 <div class="setting-info">
-                    <h3>Gerekli Çerezler</h3>
-                    <p>Sitenin çalışması için gerekli çerezler (her zaman aktif)</p>
+                    <h3 id="essential-cookies-title">Gerekli Çerezler</h3>
+                    <p id="essential-cookies-desc">Sitenin çalışması için gerekli çerezler (her zaman aktif)</p>
                 </div>
                 <label class="toggle-switch">
                     <input type="checkbox" id="essential-cookies" checked disabled>
@@ -277,8 +286,8 @@
             
             <div class="setting-item">
                 <div class="setting-info">
-                    <h3>Analitik Çerezler</h3>
-                    <p>Site kullanımını analiz etmemize yardımcı olur</p>
+                    <h3 id="analytics-cookies-title">Analitik Çerezler</h3>
+                    <p id="analytics-cookies-desc">Site kullanımını analiz etmemize yardımcı olur</p>
                 </div>
                 <label class="toggle-switch">
                     <input type="checkbox" id="analytics-cookies">
@@ -288,8 +297,8 @@
             
             <div class="setting-item">
                 <div class="setting-info">
-                    <h3>Reklam Çerezleri</h3>
-                    <p>Kişiselleştirilmiş reklamlar için kullanılır</p>
+                    <h3 id="advertising-cookies-title">Reklam Çerezleri</h3>
+                    <p id="advertising-cookies-desc">Kişiselleştirilmiş reklamlar için kullanılır</p>
                 </div>
                 <label class="toggle-switch">
                     <input type="checkbox" id="advertising-cookies">
@@ -302,18 +311,18 @@
         
         <!-- Veri Yönetimi -->
         <div class="settings-section">
-            <h2>📊 Veri Yönetimi</h2>
+            <h2>📊 <span id="data-management-title">Veri Yönetimi</span></h2>
             
             <div class="data-export">
-                <h3>Verilerinizi İndirin</h3>
-                <p>Sizin hakkınızdaki tüm verileri JSON formatında indirebilirsiniz</p>
+                <h3 id="download-data-title">Verilerinizi İndirin</h3>
+                <p id="download-data-desc">Sizin hakkınızdaki tüm verileri JSON formatında indirebilirsiniz</p>
                 <button class="btn btn-success" id="export-data">Verilerimi İndir</button>
             </div>
             
             <div class="setting-item">
                 <div class="setting-info">
-                    <h3>Veri Saklama Süresi</h3>
-                    <p>Verileriniz ne kadar süre saklanacak</p>
+                    <h3 id="data-retention-title">Veri Saklama Süresi</h3>
+                    <p id="data-retention-desc">Verileriniz ne kadar süre saklanacak</p>
                 </div>
                 <select id="data-retention" class="form-control">
                     <option value="1year">1 Yıl</option>
@@ -328,12 +337,12 @@
         
         <!-- Gizlilik Kontrolü -->
         <div class="settings-section">
-            <h2>🛡️ Gizlilik Kontrolü</h2>
+            <h2>🛡️ <span id="privacy-control-title">Gizlilik Kontrolü</span></h2>
             
             <div class="setting-item">
                 <div class="setting-info">
-                    <h3>Profil Görünürlüğü</h3>
-                    <p>Profiliniz diğer kullanıcılara görünsün mü?</p>
+                    <h3 id="profile-visibility-title">Profil Görünürlüğü</h3>
+                    <p id="profile-visibility-desc">Profiliniz diğer kullanıcılara görünsün mü?</p>
                 </div>
                 <label class="toggle-switch">
                     <input type="checkbox" id="profile-visibility" checked>
@@ -343,8 +352,8 @@
             
             <div class="setting-item">
                 <div class="setting-info">
-                    <h3>İstatistik Paylaşımı</h3>
-                    <p>İstatistikleriniz leaderboard'da gösterilsin mi?</p>
+                    <h3 id="stats-sharing-title">İstatistik Paylaşımı</h3>
+                    <p id="stats-sharing-desc">İstatistikleriniz leaderboard'da gösterilsin mi?</p>
                 </div>
                 <label class="toggle-switch">
                     <input type="checkbox" id="stats-sharing" checked>
@@ -354,8 +363,8 @@
             
             <div class="setting-item">
                 <div class="setting-info">
-                    <h3>Arkadaş İstekleri</h3>
-                    <p>Diğer kullanıcılar size arkadaşlık isteği gönderebilsin mi?</p>
+                    <h3 id="friend-requests-title">Arkadaş İstekleri</h3>
+                    <p id="friend-requests-desc">Diğer kullanıcılar size arkadaşlık isteği gönderebilsin mi?</p>
                 </div>
                 <label class="toggle-switch">
                     <input type="checkbox" id="friend-requests" checked>
@@ -368,8 +377,8 @@
         
         <!-- Rıza Geçmişi -->
         <div class="settings-section">
-            <h2>📋 Rıza Geçmişi</h2>
-            <p>Gizlilik politikası onaylarınızın geçmişi</p>
+            <h2>📋 <span id="consent-history-title">Rıza Geçmişi</span></h2>
+            <p id="consent-history-desc">Gizlilik politikası onaylarınızın geçmişi</p>
             <div class="consent-history" id="consent-history">
                 <div class="consent-item">
                     <div class="consent-date">Yükleniyor...</div>
@@ -380,19 +389,22 @@
         
         <!-- Tehlikeli İşlemler -->
         <div class="settings-section">
-            <h2>⚠️ Hesap İşlemleri</h2>
+            <h2>⚠️ <span id="account-operations-title">Hesap İşlemleri</span></h2>
             
             <div class="setting-item">
                 <div class="setting-info">
-                    <h3>Hesabımı Sil</h3>
-                    <p>Hesabınızı ve tüm verilerinizi kalıcı olarak silin</p>
+                    <h3 id="delete-account-title">Hesabımı Sil</h3>
+                    <p id="delete-account-desc">Hesabınızı ve tüm verilerinizi kalıcı olarak silin</p>
                 </div>
-                <a href="delete-account.html" class="btn btn-danger">Hesabımı Sil</a>
+                <a href="delete-account.html" class="btn btn-danger" id="delete-account-btn">Hesabımı Sil</a>
             </div>
         </div>
         
         <div id="status-message" class="status-message"></div>
     </div>
+    
+    <!-- Languages Script -->
+    <script src="../languages.js"></script>
     
     <!-- Firebase SDK -->
     <script src="../firebase-sdk/firebase-app.js"></script>
@@ -401,6 +413,142 @@
     <script src="../firebase-config.js"></script>
     
     <script>
+        // Dil desteği fonksiyonları (ana sistemle uyumlu)
+        function getCurrentLanguage() {
+            // Ana sistemle uyumlu dil alma
+            return localStorage.getItem('user_language') || 
+                   localStorage.getItem('language') || 
+                   localStorage.getItem('selectedLanguage') ||
+                   navigator.language.substring(0, 2) || 'tr';
+        }
+        
+        // Dil seçim dropdown'u işlevselliği
+        function initLanguageSelector() {
+            const languageSelect = document.getElementById('language-select');
+            if (languageSelect) {
+                // Mevcut dili ayarla
+                const currentLang = getCurrentLanguage();
+                languageSelect.value = currentLang;
+                
+                // Dil değişimini dinle
+                languageSelect.addEventListener('change', function() {
+                    const selectedLang = this.value;
+                    // Ana sistemle uyumlu dil kaydetme
+                    localStorage.setItem('language', selectedLang);
+                    localStorage.setItem('user_language', selectedLang);
+                    localStorage.setItem('selectedLanguage', selectedLang);
+                    updatePageContent();
+                    
+                    // Ana sistemi de bilgilendir
+                    window.dispatchEvent(new StorageEvent('storage', {
+                        key: 'language',
+                        newValue: selectedLang
+                    }));
+                    window.dispatchEvent(new StorageEvent('storage', {
+                        key: 'user_language',
+                        newValue: selectedLang
+                    }));
+                    
+                    console.log('🌐 Gizlilik ayarları sayfası: Dil değiştirildi ->', selectedLang);
+                });
+            }
+        }
+
+        function updatePageContent() {
+            const currentLang = getCurrentLanguage();
+            console.log('🌐 Gizlilik ayarları: Sayfa içeriği güncelleniyor, dil:', currentLang);
+            
+            if (!window.languages) {
+                console.warn('⚠️ Languages objesi yüklenmemiş, bekliyor...');
+                setTimeout(updatePageContent, 100);
+                return;
+            }
+            
+            const privacyTexts = window.languages[currentLang]?.privacy || window.languages['tr'].privacy;
+            
+            if (!privacyTexts) {
+                console.warn('⚠️ Dil çevirileri bulunamadı:', currentLang);
+                return;
+            }
+            
+            // Sayfa başlığı ve lang attribute
+            document.title = `${privacyTexts.title} - Bilgoo Quiz`;
+            document.documentElement.lang = currentLang;
+            
+            // Ana içerik
+            document.getElementById('back-link-text').textContent = privacyTexts.backLink;
+            document.getElementById('page-title').textContent = privacyTexts.title;
+            document.getElementById('page-subtitle').textContent = privacyTexts.subtitle;
+            
+            // Çerez ayarları
+            document.getElementById('cookie-settings-title').textContent = privacyTexts.cookieSettings;
+            document.getElementById('essential-cookies-title').textContent = privacyTexts.essentialCookies;
+            document.getElementById('essential-cookies-desc').textContent = privacyTexts.essentialCookiesDesc;
+            document.getElementById('analytics-cookies-title').textContent = privacyTexts.analyticsCookies;
+            document.getElementById('analytics-cookies-desc').textContent = privacyTexts.analyticsCookiesDesc;
+            document.getElementById('advertising-cookies-title').textContent = privacyTexts.advertisingCookies;
+            document.getElementById('advertising-cookies-desc').textContent = privacyTexts.advertisingCookiesDesc;
+            document.getElementById('save-cookie-settings').textContent = privacyTexts.saveCookieSettings;
+            
+            // Veri yönetimi
+            document.getElementById('data-management-title').textContent = privacyTexts.dataManagement;
+            document.getElementById('download-data-title').textContent = privacyTexts.downloadData;
+            document.getElementById('download-data-desc').textContent = privacyTexts.downloadDataDesc;
+            document.getElementById('export-data').textContent = privacyTexts.downloadMyData;
+            document.getElementById('data-retention-title').textContent = privacyTexts.dataRetention;
+            document.getElementById('data-retention-desc').textContent = privacyTexts.dataRetentionDesc;
+            document.getElementById('save-data-settings').textContent = privacyTexts.saveDataSettings;
+            
+            // Select options
+            const retentionSelect = document.getElementById('data-retention');
+            retentionSelect.options[0].textContent = privacyTexts.oneYear;
+            retentionSelect.options[1].textContent = privacyTexts.twoYears;
+            retentionSelect.options[2].textContent = privacyTexts.fiveYears;
+            retentionSelect.options[3].textContent = privacyTexts.forever;
+            
+            // Gizlilik kontrolü
+            document.getElementById('privacy-control-title').textContent = privacyTexts.privacyControl;
+            document.getElementById('profile-visibility-title').textContent = privacyTexts.profileVisibility;
+            document.getElementById('profile-visibility-desc').textContent = privacyTexts.profileVisibilityDesc;
+            document.getElementById('stats-sharing-title').textContent = privacyTexts.statsSharing;
+            document.getElementById('stats-sharing-desc').textContent = privacyTexts.statsSharingDesc;
+            document.getElementById('friend-requests-title').textContent = privacyTexts.friendRequests;
+            document.getElementById('friend-requests-desc').textContent = privacyTexts.friendRequestsDesc;
+            document.getElementById('save-privacy-settings').textContent = privacyTexts.savePrivacySettings;
+            
+            // Rıza geçmişi
+            document.getElementById('consent-history-title').textContent = privacyTexts.consentHistory;
+            document.getElementById('consent-history-desc').textContent = privacyTexts.consentHistoryDesc;
+            
+            // Hesap işlemleri
+            document.getElementById('account-operations-title').textContent = privacyTexts.accountOperations;
+            document.getElementById('delete-account-title').textContent = privacyTexts.deleteAccount;
+            document.getElementById('delete-account-desc').textContent = privacyTexts.deleteAccountDesc;
+            document.getElementById('delete-account-btn').textContent = privacyTexts.deleteAccount;
+        }
+
+        // Dil değişikliğini dinle (ana sistemle uyumlu)
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'language' || e.key === 'user_language' || e.key === 'selectedLanguage') {
+                console.log('🌐 Storage event alındı:', e.key, '->', e.newValue);
+                setTimeout(updatePageContent, 100);
+            }
+        });
+        
+        // Ana sistemden gelen languageChanged eventini dinle
+        window.addEventListener('message', function(e) {
+            if (e.data.type === 'languageChanged') {
+                console.log('🌐 Ana sistemden dil değişikliği alındı:', e.data.language);
+                setTimeout(updatePageContent, 100);
+            }
+        });
+
+        // Sayfa yüklendiğinde içeriği güncelle
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePageContent();
+            initLanguageSelector();
+        });
+
         // Gizlilik ayarları yönetimi
         const privacySettings = {
             currentUser: null,

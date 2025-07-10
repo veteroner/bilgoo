@@ -203,6 +203,7 @@ const languages = {
         leaderboardMenu: 'Lider Tablosu',
         app: 'Uygulama',
         profile: 'Profilim',
+        privacySettings: 'Gizlilik Ayarları',
         
         // Soru tipleri
         questionImage: 'Soru görseli',
@@ -222,6 +223,134 @@ const languages = {
         // Oyun sonu ekranı
         quizAppName: 'Bilgoo',
         resultTitle: 'Sonuç',
+        
+        // Kutlama modalı metinleri
+        celebration: {
+            perfect: '🎉 MÜKEMMEL! 🎉',
+            excellent: '🎊 HARIKA! 🎊', 
+            good: '👏 TEBRİKLER! 👏',
+            keepGoing: '💪 DEVAM ET! 💪',
+            perfectMsg: 'Gerçek bir bilgi şampiyonusun! Bu performans inanılmaz!',
+            excellentMsg: 'Çok başarılı bir performans seriledin! Tebrikler!',
+            goodMsg: 'Güzel bir oyun oynadın! Devam et, daha da iyisini yapabilirsin!',
+            keepGoingMsg: 'Her oyun bir öğrenme deneyimi! Bir sonrakinde daha iyisini yapacaksın!',
+            gameSummary: '🎮 Oyun Özeti',
+            correctAnswersLabel: 'Doğru Cevap',
+            totalPointsLabel: 'Toplam Puan',
+            averageTimeLabel: 'Ortalama Süre',
+            remainingLivesLabel: 'Kalan Can',
+            successRateLabel: 'Başarı Oranı',
+            playAgainBtn: '🎮 Tekrar Oyna',
+            mainMenuBtn: '🏠 Ana Menü',
+            shareBtn: '📤 Paylaş'
+        },
+
+        // Can satın alma modalı metinleri
+        buyLives: {
+            title: 'Canlarınız Bitti!',
+            message: 'Oyuna devam etmek için can satın alabilirsiniz.',
+            packageTitle: '3 Can Paketi',
+            packageDescription: 'Oyuna 3 canla devam edin!',
+            currentPoints: 'Mevcut Puanınız',
+            buyButton: '3 Can Satın Al ({price} Puan)',
+            insufficientPoints: 'Yetersiz Puan ({price} Gerekli)',
+            finishGame: 'Oyunu Bitir',
+            livesPackage: 'Can Paketi',
+            livesPackageStore: '3 adet can satın al',
+            buyButtonStore: 'Satın Al',
+            currentLives: 'Mevcut canınız',
+            lifesPurchased: '3 can satın alındı! ❤️❤️❤️',
+            insufficientStars: 'Yeterli yıldızınız yok! (15 yıldız gerekli)',
+            purchaseSuccess: '{amount} can satın alındı! Oyun devam ediyor...',
+            insufficientPuan: 'Yetersiz puan!',
+            priceStars: '15 ⭐'
+        },
+
+        // Joker Mağazası çevirileri
+        jokerStore: 'Joker Mağazası',
+        jokerStoreTitle: 'Joker Mağazası - Puanlarınızla joker satın alın',
+        yourPoints: 'Puanınız',
+        yourStars: 'Yıldızlarınız',
+        joker50Name: '50:50 Joker',
+        joker50Desc: 'İki yanlış şıkkı eleme',
+        jokerHintName: 'İpucu Joker',
+        jokerHintDesc: 'Doğru cevap hakkında ipucu al',
+        jokerTimeName: 'Süre Joker',
+        jokerTimeDesc: 'Bu soru için 15 saniye ekle',
+        jokerSkipName: 'Pas Joker',
+        jokerSkipDesc: 'Bu soruyu pas geç ve can kaybetme',
+        livesPackageName: 'Can Paketi',
+        livesPackageDesc: '3 adet can satın al',
+        jokerOwned: 'Sahip olduğunuz',
+        currentLives: 'Mevcut canınız',
+        buyButton: 'Satın Al',
+        
+        // Joker kullanım mesajları
+        joker50UsedTitle: '50:50 Jokeri Kullanıldı',
+        joker50UsedMessage: 'İki yanlış şık elendi!',
+        hintJokerUsedTitle: 'İpucu Jokeri Kullanıldı',
+        hintJokerUsedMessage: 'Doğru cevap için ipucu verildi!',
+        timeJokerUsedTitle: 'Süre Jokeri Kullanıldı',
+        timeJokerUsedMessage: '15 saniye eklendi!',
+        skipJokerUsedTitle: 'Pas Jokeri Kullanıldı',
+        skipJokerUsedMessage: 'Soru pas geçildi!',
+
+        // Privacy settings texts
+        privacy: {
+            title: 'Gizlilik Ayarları',
+            subtitle: 'Kişisel verilerinizi nasıl kullandığımızı kontrol edin',
+            backLink: 'Ana Sayfaya Dön',
+            cookieSettings: 'Çerez Ayarları',
+            essentialCookies: 'Gerekli Çerezler',
+            essentialCookiesDesc: 'Sitenin çalışması için gerekli çerezler (her zaman aktif)',
+            analyticsCookies: 'Analitik Çerezler',
+            analyticsCookiesDesc: 'Site kullanımını analiz etmemize yardımcı olur',
+            advertisingCookies: 'Reklam Çerezleri',
+            advertisingCookiesDesc: 'Kişiselleştirilmiş reklamlar için kullanılır',
+            saveCookieSettings: 'Çerez Ayarlarını Kaydet',
+            dataManagement: 'Veri Yönetimi',
+            downloadData: 'Verilerinizi İndirin',
+            downloadDataDesc: 'Sizin hakkınızdaki tüm verileri JSON formatında indirebilirsiniz',
+            downloadMyData: 'Verilerimi İndir',
+            dataRetention: 'Veri Saklama Süresi',
+            dataRetentionDesc: 'Verileriniz ne kadar süre saklanacak',
+            oneYear: '1 Yıl',
+            twoYears: '2 Yıl',
+            fiveYears: '5 Yıl',
+            forever: 'Süresiz',
+            saveDataSettings: 'Veri Ayarlarını Kaydet',
+            privacyControl: 'Gizlilik Kontrolü',
+            profileVisibility: 'Profil Görünürlüğü',
+            profileVisibilityDesc: 'Profiliniz diğer kullanıcılara görünsün mü?',
+            statsSharing: 'İstatistik Paylaşımı',
+            statsSharingDesc: 'İstatistikleriniz leaderboard\'da gösterilsin mi?',
+            friendRequests: 'Arkadaş İstekleri',
+            friendRequestsDesc: 'Diğer kullanıcılar size arkadaşlık isteği gönderebilsin mi?',
+            savePrivacySettings: 'Gizlilik Ayarlarını Kaydet',
+            consentHistory: 'Rıza Geçmişi',
+            consentHistoryDesc: 'Gizlilik politikası onaylarınızın geçmişi',
+            accountOperations: 'Hesap İşlemleri',
+            deleteAccount: 'Hesabımı Sil',
+            deleteAccountDesc: 'Hesabınızı ve tüm verilerinizi kalıcı olarak silin'
+        },
+
+        // Cookie consent texts
+        cookies: {
+            title: 'Çerez Bildirimi',
+            message: 'Web sitemiz, size daha iyi hizmet verebilmek ve reklamları kişiselleştirmek için çerezler kullanır. Detaylı bilgi için Gizlilik Politikamızı inceleyebilirsiniz.',
+            acceptEssential: 'Sadece Gerekli',
+            acceptAll: 'Tümünü Kabul Et',
+            settings: 'Ayarlar',
+            settingsTitle: 'Çerez Ayarları',
+            essentialCookies: 'Zorunlu Çerezler',
+            essentialCookiesDesc: 'Sitenin çalışması için gerekli çerezler',
+            analyticsCookies: 'Analitik Çerezler',
+            analyticsCookiesDesc: 'Site kullanımını analiz etmek için kullanılır',
+            advertisingCookies: 'Reklam Çerezleri',
+            advertisingCookiesDesc: 'Kişiselleştirilmiş reklamlar göstermek için kullanılır',
+            save: 'Kaydet',
+            privacyPolicy: 'Gizlilik Politikamızı'
+        },
         
         // Soru ekleme modalı
         addQuestionModal: 'Yeni Soru Ekle',
@@ -508,6 +637,33 @@ const languages = {
         leaderboardMenu: 'Leaderboard',
         app: 'Application',
         profile: 'My Profile',
+        privacySettings: 'Privacy Settings',
+        
+        // Ana sayfa hakkında bölümü
+        aboutBilgoo: 'About Bilgoo',
+        aboutQuizGame: 'Bilgoo Quiz Game',
+        aboutDescription: 'Bilgoo is a fun and educational quiz game platform. Test your knowledge with thousands of questions, compete with friends and learn new things!',
+        features: 'Features',
+        singlePlayerMode: 'Single player mode',
+        multiplayerMode: 'Multiplayer online competitions',
+        globalLeaderboard: 'Global leaderboard',
+        detailedStats: 'Detailed statistics',
+        addQuestionFeature: 'Add question feature',
+        jokerCards: 'Joker cards',
+        questionPool: '50,000+ Question Pool',
+        categories: '25+ Categories',
+        multiLanguage: 'Multi-Language Support',
+        offlineSupport: 'Offline Support',
+        socialCompetition: 'Social Competition',
+        contactInfo: 'Contact Information',
+        developer: 'Developer',
+        quickLinks: 'Quick Links',
+        privacyPolicy: 'Privacy Policy',
+        contact: 'Contact',
+        backToMenu: 'Back to Main Menu',
+        onlineSupport: '24/7 Online Support',
+        allRightsReserved: 'All rights reserved',
+        gameFeatures: 'Game Features',
         
         // Core UI messages
         categoryLoadError: 'Could not find questions in the selected category. Please choose another category.',
@@ -564,6 +720,134 @@ const languages = {
         // Game end screen
         quizAppName: 'Quiz Game',
         resultTitle: 'Result',
+        
+        // Celebration modal texts
+        celebration: {
+            perfect: '🎉 PERFECT! 🎉',
+            excellent: '🎊 EXCELLENT! 🎊', 
+            good: '👏 CONGRATULATIONS! 👏',
+            keepGoing: '💪 KEEP GOING! 💪',
+            perfectMsg: 'You are a true knowledge champion! This performance is incredible!',
+            excellentMsg: 'You delivered a very successful performance! Congratulations!',
+            goodMsg: 'You played a great game! Keep going, you can do even better!',
+            keepGoingMsg: 'Every game is a learning experience! You will do better next time!',
+            gameSummary: '🎮 Game Summary',
+            correctAnswersLabel: 'Correct Answers',
+            totalPointsLabel: 'Total Points',
+            averageTimeLabel: 'Average Time',
+            remainingLivesLabel: 'Remaining Lives',
+            successRateLabel: 'Success Rate',
+            playAgainBtn: '🎮 Play Again',
+            mainMenuBtn: '🏠 Main Menu',
+            shareBtn: '📤 Share'
+        },
+
+        // Buy lives modal texts
+        buyLives: {
+            title: 'Out of Lives!',
+            message: 'You can purchase lives to continue playing.',
+            packageTitle: '3 Lives Package',
+            packageDescription: 'Continue playing with 3 lives!',
+            currentPoints: 'Your Current Points',
+            buyButton: 'Buy 3 Lives ({price} Points)',
+            insufficientPoints: 'Insufficient Points ({price} Required)',
+            finishGame: 'Finish Game',
+            livesPackage: 'Lives Package',
+            livesPackageStore: 'Buy 3 lives',
+            buyButtonStore: 'Buy',
+            currentLives: 'Your current lives',
+            lifesPurchased: '3 lives purchased! ❤️❤️❤️',
+            insufficientStars: 'Not enough stars! (15 stars required)',
+            purchaseSuccess: '{amount} lives purchased! Game continues...',
+            insufficientPuan: 'Insufficient points!',
+            priceStars: '15 ⭐'
+        },
+
+        // Joker Store translations
+        jokerStore: 'Joker Store',
+        jokerStoreTitle: 'Joker Store - Buy jokers with your points',
+        yourPoints: 'Your Points',
+        yourStars: 'Your Stars',
+        joker50Name: '50:50 Joker',
+        joker50Desc: 'Eliminate two wrong options',
+        jokerHintName: 'Hint Joker',
+        jokerHintDesc: 'Get a hint about the correct answer',
+        jokerTimeName: 'Time Joker',
+        jokerTimeDesc: 'Add 15 seconds for this question',
+        jokerSkipName: 'Skip Joker',
+        jokerSkipDesc: 'Skip this question without losing life',
+        livesPackageName: 'Lives Package',
+        livesPackageDesc: 'Buy 3 lives',
+        jokerOwned: 'You own',
+        currentLives: 'Current lives',
+        buyButton: 'Buy',
+        
+        // Joker usage messages
+        joker50UsedTitle: '50:50 Joker Used',
+        joker50UsedMessage: 'Two wrong options eliminated!',
+        hintJokerUsedTitle: 'Hint Joker Used',
+        hintJokerUsedMessage: 'Hints provided for the correct answer!',
+        timeJokerUsedTitle: 'Time Joker Used',
+        timeJokerUsedMessage: '15 seconds added!',
+        skipJokerUsedTitle: 'Skip Joker Used',
+        skipJokerUsedMessage: 'Question skipped!',
+
+        // Privacy settings texts
+        privacy: {
+            title: 'Privacy Settings',
+            subtitle: 'Control how we use your personal data',
+            backLink: 'Back to Home',
+            cookieSettings: 'Cookie Settings',
+            essentialCookies: 'Essential Cookies',
+            essentialCookiesDesc: 'Cookies required for site functionality (always active)',
+            analyticsCookies: 'Analytics Cookies',
+            analyticsCookiesDesc: 'Help us analyze site usage',
+            advertisingCookies: 'Advertising Cookies',
+            advertisingCookiesDesc: 'Used for personalized advertisements',
+            saveCookieSettings: 'Save Cookie Settings',
+            dataManagement: 'Data Management',
+            downloadData: 'Download Your Data',
+            downloadDataDesc: 'You can download all data about you in JSON format',
+            downloadMyData: 'Download My Data',
+            dataRetention: 'Data Retention Period',
+            dataRetentionDesc: 'How long your data will be stored',
+            oneYear: '1 Year',
+            twoYears: '2 Years',
+            fiveYears: '5 Years',
+            forever: 'Forever',
+            saveDataSettings: 'Save Data Settings',
+            privacyControl: 'Privacy Control',
+            profileVisibility: 'Profile Visibility',
+            profileVisibilityDesc: 'Should your profile be visible to other users?',
+            statsSharing: 'Statistics Sharing',
+            statsSharingDesc: 'Should your statistics be shown on leaderboard?',
+            friendRequests: 'Friend Requests',
+            friendRequestsDesc: 'Can other users send you friend requests?',
+            savePrivacySettings: 'Save Privacy Settings',
+            consentHistory: 'Consent History',
+            consentHistoryDesc: 'History of your privacy policy approvals',
+            accountOperations: 'Account Operations',
+            deleteAccount: 'Delete My Account',
+            deleteAccountDesc: 'Permanently delete your account and all your data'
+        },
+
+        // Cookie consent texts
+        cookies: {
+            title: 'Cookie Notice',
+            message: 'Our website uses cookies to provide you with better service and personalize advertisements. For detailed information, please review our Privacy Policy.',
+            acceptEssential: 'Essential Only',
+            acceptAll: 'Accept All',
+            settings: 'Settings',
+            settingsTitle: 'Cookie Settings',
+            essentialCookies: 'Essential Cookies',
+            essentialCookiesDesc: 'Cookies required for site functionality',
+            analyticsCookies: 'Analytics Cookies',
+            analyticsCookiesDesc: 'Used to analyze site usage',
+            advertisingCookies: 'Advertising Cookies',
+            advertisingCookiesDesc: 'Used to show personalized advertisements',
+            save: 'Save',
+            privacyPolicy: 'our Privacy Policy'
+        },
         
         // Add question modal
         addQuestionModal: 'Add New Question',
@@ -815,7 +1099,7 @@ const languages = {
         modalLivesEndedTitle: 'Keine Leben mehr!',
         modalLivesEndedMessage: 'Sie können Leben kaufen, um fortzufahren.',
         modalLivesPackageTitle: '3-Leben-Paket',
-        modalLivesPackageDescription: 'Spielen Sie mit 3 zusätzlichen Leben weiter!',
+        modalLivesPackageDescription: 'Spielen Sie mit 3 Leben weiter!',
         modalCurrentPoints: 'Ihre Punkte',
         modalBuyLivesButton: '3 Leben kaufen ({price} Punkte)',
         modalInsufficientPoints: 'Unzureichende Punkte ({price} benötigt)',
@@ -840,6 +1124,33 @@ const languages = {
         leaderboardMenu: 'Bestenliste',
         app: 'Anwendung',
         profile: 'Mein Profil',
+        privacySettings: 'Datenschutz-Einstellungen',
+        
+        // Ana sayfa hakkında bölümü
+        aboutBilgoo: 'Über Bilgoo',
+        aboutQuizGame: 'Bilgoo Quiz-Spiel',
+        aboutDescription: 'Bilgoo ist eine unterhaltsame und lehrreiche Quiz-Spiel-Plattform. Testen Sie Ihr Wissen mit Tausenden von Fragen, treten Sie gegen Freunde an und lernen Sie neue Dinge!',
+        features: 'Funktionen',
+        singlePlayerMode: 'Einzelspieler-Modus',
+        multiplayerMode: 'Mehrspieler-Online-Wettbewerbe',
+        globalLeaderboard: 'Globale Bestenliste',
+        detailedStats: 'Detaillierte Statistiken',
+        addQuestionFeature: 'Fragen hinzufügen',
+        jokerCards: 'Joker-Karten',
+        questionPool: '50.000+ Fragenpoll',
+        categories: '25+ Kategorien',
+        multiLanguage: 'Mehrsprachiger Support',
+        offlineSupport: 'Offline-Unterstützung',
+        socialCompetition: 'Sozialer Wettbewerb',
+        contactInfo: 'Kontaktinformationen',
+        developer: 'Entwickler',
+        quickLinks: 'Schnelllinks',
+        privacyPolicy: 'Datenschutzerklärung',
+        contact: 'Kontakt',
+        backToMenu: 'Zurück zum Hauptmenü',
+        onlineSupport: '24/7 Online-Support',
+        allRightsReserved: 'Alle Rechte vorbehalten',
+        gameFeatures: 'Spiel-Features',
         
         // Soru tipleri
         questionImage: 'Fragebild',
@@ -861,7 +1172,78 @@ const languages = {
         quizAppName: 'Quiz-Spiel',
         resultTitle: 'Ergebnis',
         
-        // Frage hinzufügen Modal
+        // Feier-Modal Texte
+        celebration: {
+            perfect: '🎉 PERFEKT! 🎉',
+            excellent: '🎊 AUSGEZEICHNET! 🎊', 
+            good: '👏 GLÜCKWUNSCH! 👏',
+            keepGoing: '💪 MACH WEITER! 💪',
+            perfectMsg: 'Du bist ein wahrer Wissens-Champion! Diese Leistung ist unglaublich!',
+            excellentMsg: 'Du hast eine sehr erfolgreiche Leistung erbracht! Glückwunsch!',
+            goodMsg: 'Du hast ein tolles Spiel gespielt! Mach weiter, du kannst noch besser werden!',
+            keepGoingMsg: 'Jedes Spiel ist eine Lernerfahrung! Du wirst es das nächste Mal besser machen!',
+            gameSummary: '🎮 Spiel Zusammenfassung',
+            correctAnswersLabel: 'Richtige Antworten',
+            totalPointsLabel: 'Gesamtpunkte',
+            averageTimeLabel: 'Durchschnittszeit',
+            remainingLivesLabel: 'Verbleibende Leben',
+            successRateLabel: 'Erfolgsrate',
+            playAgainBtn: '🎮 Nochmal Spielen',
+            mainMenuBtn: '🏠 Hauptmenü',
+            shareBtn: '📤 Teilen'
+        },
+
+        // Leben kaufen Modal Texte
+        buyLives: {
+            title: 'Keine Leben mehr!',
+            message: 'Du kannst Leben kaufen, um weiterzuspielen.',
+            packageTitle: '3 Leben Paket',
+            packageDescription: 'Spiele mit 3 Leben weiter!',
+            currentPoints: 'Deine aktuellen Punkte',
+            buyButton: '3 Leben kaufen ({price} Punkte)',
+            insufficientPoints: 'Unzureichende Punkte ({price} erforderlich)',
+            finishGame: 'Spiel beenden',
+            livesPackage: 'Leben Paket',
+            livesPackageStore: '3 Leben kaufen',
+            buyButtonStore: 'Kaufen',
+            currentLives: 'Deine aktuellen Leben',
+            lifesPurchased: '3 Leben gekauft! ❤️❤️❤️',
+            insufficientStars: 'Nicht genug Sterne! (15 Sterne erforderlich)',
+            purchaseSuccess: '{amount} Leben gekauft! Spiel geht weiter...',
+            insufficientPuan: 'Unzureichende Punkte!',
+            priceStars: '15 ⭐'
+        },
+
+        // Joker-Shop Übersetzungen
+        jokerStore: 'Joker-Shop',
+        jokerStoreTitle: 'Joker-Shop - Kaufen Sie Joker mit Ihren Punkten',
+        yourPoints: 'Ihre Punkte',
+        yourStars: 'Ihre Sterne',
+        joker50Name: '50:50 Joker',
+        joker50Desc: 'Zwei falsche Optionen eliminieren',
+        jokerHintName: 'Hinweis-Joker',
+        jokerHintDesc: 'Einen Hinweis zur richtigen Antwort erhalten',
+        jokerTimeName: 'Zeit-Joker',
+        jokerTimeDesc: '15 Sekunden für diese Frage hinzufügen',
+        jokerSkipName: 'Überspringen-Joker',
+        jokerSkipDesc: 'Diese Frage überspringen ohne Leben zu verlieren',
+        livesPackageName: 'Leben-Paket',
+        livesPackageDesc: '3 Leben kaufen',
+        jokerOwned: 'Sie besitzen',
+        currentLives: 'Aktuelle Leben',
+        buyButton: 'Kaufen',
+        
+        // Joker-Verwendungsnachrichten
+        joker50UsedTitle: '50:50 Joker Verwendet',
+        joker50UsedMessage: 'Zwei falsche Optionen entfernt!',
+        hintJokerUsedTitle: 'Hinweis-Joker Verwendet',
+        hintJokerUsedMessage: 'Hinweise für die richtige Antwort bereitgestellt!',
+        timeJokerUsedTitle: 'Zeit-Joker Verwendet',
+        timeJokerUsedMessage: '15 Sekunden hinzugefügt!',
+        skipJokerUsedTitle: 'Überspringen-Joker Verwendet',
+        skipJokerUsedMessage: 'Frage übersprungen!',
+        
+        // Add question modal
         addQuestionModal: 'Neue Frage hinzufügen',
         questionCategory: 'Kategorie',
         selectCategory: 'Kategorie auswählen',
@@ -1027,43 +1409,43 @@ const reverseCategoryMappings = {
     },
     "Sports": {
         tr: "Spor",
-        de: "Sport"
+        en: "Sports"
     },
     "Music": {
         tr: "Müzik",
-        de: "Musik"
+        en: "Music"
     },
     "History": {
         tr: "Tarih",
-        de: "Geschichte"
+        en: "History"
     },
     "Geography": {
         tr: "Coğrafya",
-        de: "Geographie"
+        en: "Geography"
     },
     "Art": {
         tr: "Sanat",
-        de: "Kunst"
+        en: "Art"
     },
     "Literature": {
         tr: "Edebiyat",
-        de: "Literatur"
+        en: "Literature"
     },
     "Movies": {
         tr: "Sinema",
-        de: "Filme"
+        en: "Movies"
     },
     "Food": {
         tr: "Yemek",
-        de: "Essen"
+        en: "Food"
     },
     "Computer": {
         tr: "Bilgisayar",
-        de: "Computer"
+        en: "Computer"
     },
     "Mathematics": {
         tr: "Matematik",
-        de: "Mathematik"
+        en: "Mathematics"
     },
     "Fill in the Blank": {
         tr: "Boşluk Doldurma",

@@ -1252,6 +1252,12 @@ const quizApp = {
             logoutText.textContent = this.getTranslation('logout');
         }
         
+        // Gizlilik ayarları
+        const privacyText = document.getElementById('menu-privacy-text');
+        if (privacyText) {
+            privacyText.textContent = this.getTranslation('privacySettings');
+        }
+        
         // Zorluk seviyeleri
         const difficultySelect = document.getElementById('difficulty-level');
         if (difficultySelect) {
@@ -1274,6 +1280,15 @@ const quizApp = {
             const key = element.getAttribute('data-i18n');
             if (key && languages[this.currentLanguage] && languages[this.currentLanguage][key]) {
                 element.textContent = languages[this.currentLanguage][key];
+            }
+        });
+        
+        // data-i18n-title özniteliği olan tüm elemanların title'larını güncelle
+        const i18nTitleElements = document.querySelectorAll('[data-i18n-title]');
+        i18nTitleElements.forEach(element => {
+            const key = element.getAttribute('data-i18n-title');
+            if (key && languages[this.currentLanguage] && languages[this.currentLanguage][key]) {
+                element.title = languages[this.currentLanguage][key];
             }
         });
         
@@ -2135,6 +2150,9 @@ const quizApp = {
         // Body scroll'unu engelle (mobil cihazlarda önemli)
         document.body.style.overflow = 'hidden';
         
+        // Dil güncellemesi yap
+        this.updateUITexts();
+        
         console.log('✅ Joker mağazası modal açıldı');
         console.log('Modal visibility:', modal.style.visibility);
         console.log('Modal display:', modal.style.display);
@@ -2333,22 +2351,26 @@ const quizApp = {
         let modalMessage = "";
         let modalIcon = "";
         
+        // Get current language
+        const currentLang = this.getCurrentLanguage();
+        const langData = window.languages && window.languages[currentLang] ? window.languages[currentLang] : window.languages.tr;
+
         // Joker tipine göre içeriği ayarla
         if (jokerType === 'fifty') {
-            modalTitle = "50:50 Jokeri Kullanıldı";
-            modalMessage = "İki yanlış şık elendi!";
+            modalTitle = langData.joker50UsedTitle || "50:50 Jokeri Kullanıldı";
+            modalMessage = langData.joker50UsedMessage || "İki yanlış şık elendi!";
             modalIcon = "fa-th-large";
         } else if (jokerType === 'hint') {
-            modalTitle = "İpucu Jokeri Kullanıldı";
-            modalMessage = "Doğru cevap için ipuçları verildi!";
+            modalTitle = langData.hintJokerUsedTitle || "İpucu Jokeri Kullanıldı";
+            modalMessage = langData.hintJokerUsedMessage || "Doğru cevap için ipucu verildi!";
             modalIcon = "fa-lightbulb";
         } else if (jokerType === 'time') {
-            modalTitle = "Süre Jokeri Kullanıldı";
-            modalMessage = "+15 saniye eklendi!";
+            modalTitle = langData.timeJokerUsedTitle || "Süre Jokeri Kullanıldı";
+            modalMessage = langData.timeJokerUsedMessage || "15 saniye eklendi!";
             modalIcon = "fa-clock";
         } else if (jokerType === 'skip') {
-            modalTitle = "Pas Jokeri Kullanıldı";
-            modalMessage = "Bu soruyu geçiyorsunuz!";
+            modalTitle = langData.skipJokerUsedTitle || "Pas Jokeri Kullanıldı";
+            modalMessage = langData.skipJokerUsedMessage || "Soru pas geçildi!";
             modalIcon = "fa-forward";
         }
         
@@ -3378,7 +3400,7 @@ const quizApp = {
             }
         }, 10000);
         
-        // Konfeti efekti eklenebilir
+        // Konfeti efekti ekle
         console.log(`${this.selectedCategory} kategorisi ${this.getMaxSectionsForCategory()} bölüm ile tamamlandı!`);
     },
 
@@ -3709,7 +3731,7 @@ const quizApp = {
             console.log("Seçilen kategori:", category);
             this.selectedCategory = category;
             
-            // Yeni oyun başladığında değişkenleri sıfırla
+            // Yeni oyun başlıyor!
             this.currentQuestionIndex = 0;
             this.score = 0;
             this.correctAnswers = 0; // <-- EKLENDİ: Doğru cevap sayısını sıfırla
@@ -4506,7 +4528,7 @@ const quizApp = {
         // İlk bölümde her zaman kolay sorular gösterildiğinden emin ol
         if (this.currentSection <= 1) {
             console.log("🔄 Yeni oyun/yeni bölüm başlıyor - currentSection:", this.currentSection);
-            // Eğer currentSection 1 veya daha düşük değilse, 1 olarak ayarla
+            // Eğer currentSection 1 veya düşük değilse, 1 olarak ayarla
             this.currentSection = 1;
         }
         
@@ -4958,7 +4980,7 @@ const quizApp = {
                 const date = new Date(user.metadata.creationTime);
                 joinDate.textContent = date.toLocaleDateString('tr-TR');
             }
-            }
+        }
             
         // Firebase'den kullanıcı verilerini yükle (puan, istatistikler vs.)
         this.loadFirebaseUserStats(userId);
@@ -7315,7 +7337,7 @@ const quizApp = {
         }
     },
     
-    // showResult güncelleme
+    // showResult - YENİ KUTLAMA MODALI
     showResult: function() {
         // Zamanlayıcıyı durdur
         this.stopTimer();
@@ -7323,351 +7345,408 @@ const quizApp = {
         // Quiz modunu deaktifleştir
         this.deactivateQuizMode();
         
-        // Debug: Oyun sonu değerlerini logla
-        console.log("=== OYUN SONU DEBUG ===");
-        console.log("currentQuestionIndex:", this.currentQuestionIndex);
-        console.log("answeredQuestions:", this.answeredQuestions);
-        console.log("correctAnswers:", this.correctAnswers);
-        console.log("score:", this.score);
-        console.log("lives:", this.lives);
-        console.log("answerTimes length:", this.answerTimes.length);
-        
-        // FİNAL SKORU ve istatistikleri saklayalım
-        // Doğru cevap sayısını hesapla - debug bilgisi ile
-        console.log("DEBUG - Oyun Sonu Değerleri:");
-        console.log("- currentQuestionIndex:", this.currentQuestionIndex);
-        console.log("- correctAnswers:", this.correctAnswers);
-        console.log("- questions.length:", this.questions.length);
-        // Debug: Oyun sonu değerlerini kontrol et
-        console.log("=== OYUN SONU DEBUG ===");
-        console.log("currentQuestionIndex:", this.currentQuestionIndex);
-        console.log("this.correctAnswers:", this.correctAnswers);
-        console.log("questions.length:", this.questions.length);
-        
-        // Doğru cevap sayısını toplam soruya eşit veya daha az olacak şekilde sınırla
-        const actualCorrectAnswers = Math.min(this.correctAnswers, this.currentQuestionIndex + 1);
-        const actualTotalQuestions = Math.min(this.currentQuestionIndex + 1, 10);
-        
-        console.log("actualCorrectAnswers:", actualCorrectAnswers);
-        console.log("actualTotalQuestions:", actualTotalQuestions);
-        console.log("===================");
-        
+        // Temel istatistikleri hesapla
         const finalStats = {
             category: this.selectedCategory,
             score: this.score,
-            correctAnswers: actualCorrectAnswers, // <-- DÜZELTİLDİ: Gerçek verilerden hesapla
-            totalQuestions: actualTotalQuestions, // <-- DÜZELTİLDİ: Gerçekte cevaplanan soru sayısı
+            correctAnswers: this.correctAnswers,
+            totalQuestions: this.currentQuestionIndex + 1,
             lives: this.lives,
             avgTime: this.answerTimes.length > 0 ? 
                 (this.answerTimes.reduce((a, b) => a + b, 0) / this.answerTimes.length).toFixed(1) : 0
         };
         
-        console.log("finalStats:", finalStats);
-        console.log("======================");
-        
         // Oyun istatistiklerini kaydet
         this.saveGameStatistics();
         this.addNewHighScore(finalStats.category, finalStats.score, finalStats.totalQuestions);
         
-        // İstatistikleri hemen güncelle
-        setTimeout(() => {
-            const updatedStats = this.calculateRealStats();
-            console.log('Oyun sonu güncellenmiş istatistikler:', updatedStats);
-            this.updateProfileStats(updatedStats);
-            
-            // Oyun bitişinde rozetleri kontrol et ve güncelle
-            if (this.isLoggedIn && this.currentUser) {
-                console.log('Oyun bitişinde rozetler kontrol ediliyor...');
-                this.checkAndUpdateBadges(this.currentUser.uid);
-            }
-        }, 200);
-        
-        // PUANLARI KULLANICI HESABINA KAYDET
+        // Puanları kaydet
         if (this.isLoggedIn) {
             this.totalScore += this.score;
             this.sessionScore += this.score;
             this.levelProgress += this.score;
-            
-            // Seviye kontrolü yap
             this.checkLevelUp();
-            
-            // Kullanıcı verilerini Firebase'e kaydet
             this.saveUserData();
-            
-            console.log(`Oyun sonu: ${this.score} puan hesaba eklendi. Toplam puan: ${this.totalScore}`);
         } else {
-            // Giriş yapmamış kullanıcılar için session score'u kaydet
             this.sessionScore += this.score;
             this.saveScoreToLocalStorage();
-            
-            console.log(`Oyun sonu (misafir): ${this.score} puan session'a eklendi. Session toplam: ${this.sessionScore}`);
         }
         
-        try {
-            // TAM SAYFA SONUÇ EKRANI İÇİN SAYFAYI TEMİZLE
-            // Body içeriğini tamamen siliyoruz!
-            document.body.innerHTML = '';
-            
-            // CLEAN SONUÇ EKRANI
-            const resultScreen = document.createElement('div');
-            resultScreen.id = 'fullscreen-result';
-            resultScreen.className = 'result-screen';
-            
-            // CSS Stilleri
-            resultScreen.style.cssText = `
-                background: linear-gradient(45deg, #4a148c, #e91e63);
-                min-height: 100vh;
+        // YENİ KUTLAMA MODALI OLUŞTUR
+        this.createCelebrationModal(finalStats);
+    },
+    
+    // Yeni Kutlama Modalı Fonksiyonu
+    createCelebrationModal: function(finalStats) {
+        // Tam ekran modal oluştur
+        const celebrationModal = document.createElement('div');
+        celebrationModal.className = 'celebration-modal';
+        celebrationModal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            z-index: 99999;
                 display: flex;
                 flex-direction: column;
+            justify-content: center;
                 align-items: center;
-                justify-content: flex-start;
-                padding: 20px;
                 font-family: 'Poppins', sans-serif;
-                color: white;
-                box-sizing: border-box;
-                text-align: center;
-            `;
-            
-            // Dil seçimine göre başlık ve sonuç metinleri
-            const appName = languages[this.currentLanguage].quizAppName;
-            const resultText = languages[this.currentLanguage].resultTitle;
-            
-            // Başlık
-            const header = document.createElement('div');
-            header.className = 'result-header';
-            header.innerHTML = `
-                <h1 style="font-size: 2rem; margin-bottom: 5px; color: white;">${appName}</h1>
-                <h2 style="font-size: 1.5rem; margin-top: 0; color: white;"><i class="fas fa-trophy"></i> ${resultText}</h2>
-            `;
-            
-            // Sonuç kartı
-            const resultCard = document.createElement('div');
-            resultCard.className = 'result-card';
-            resultCard.style.cssText = `
-                background-color: rgba(255, 255, 255, 0.95);
-                border-radius: 15px;
-                padding: 30px;
-                margin: 20px 0;
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-                max-width: 500px;
+            overflow: hidden;
+        `;
+        
+        // Konfeti Canvas'ı
+        const confettiCanvas = document.createElement('canvas');
+        confettiCanvas.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        `;
+        confettiCanvas.width = window.innerWidth;
+        confettiCanvas.height = window.innerHeight;
+        
+        // Modal İçeriği
+        const modalContent = document.createElement('div');
+        modalContent.style.cssText = `
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 40px 20px;
+            max-width: 600px;
                 width: 90%;
-                color: #333;
-            `;
-            
-            // Sonuç mesajı
-            let resultMessage = '';
-            let perfectScore = false;
-            
-            // Dilin çevirilerini al
-            const categoryResultText = languages[this.currentLanguage].categoryResult;
-            const outOfLivesText = languages[this.currentLanguage].outOfLives;
-            const answeredQuestionsText = languages[this.currentLanguage].answeredQuestions;
-            const ofQuestionsText = languages[this.currentLanguage].ofQuestions;
-            const correctlyAnsweredText = languages[this.currentLanguage].correctlyAnswered;
-            const withLivesText = languages[this.currentLanguage].withLives;
-            
-            if (finalStats.lives <= 0) {
-                // Canlar bitti
-                resultMessage = `<b>${finalStats.category}</b> ${categoryResultText} ${outOfLivesText}. ${answeredQuestionsText} 
-                <span style="color: #4a148c; font-weight: bold;">${finalStats.totalQuestions}</span> ${ofQuestionsText} 
-                <span style="color: #e91e63; font-weight: bold;">${finalStats.correctAnswers}</span> ${correctlyAnsweredText}.`;
-            } else if (finalStats.correctAnswers === finalStats.totalQuestions && finalStats.correctAnswers > 0) {
-                // Tüm soruları doğru cevapladı
-                resultMessage = `<b>${finalStats.category}</b> ${categoryResultText} 
-                <span style="color: #4a148c; font-weight: bold;">${finalStats.totalQuestions}</span> ${ofQuestionsText} 
-                <span style="color: #e91e63; font-weight: bold;">${finalStats.correctAnswers}</span> ${correctlyAnsweredText}
-                <span style="color: #4CAF50; font-weight: bold;">${finalStats.lives}</span> ${withLivesText}!`;
-                perfectScore = true;
+        `;
+        
+        // Başarı oranına göre kutlama mesajları (dil desteği ile)
+        const successRate = (finalStats.correctAnswers / finalStats.totalQuestions) * 100;
+        let congratsMessage, emoji, motivationText;
+        
+        const celebrationTexts = languages[this.currentLanguage].celebration;
+        
+        if (successRate >= 90) {
+            congratsMessage = celebrationTexts.perfect;
+            emoji = "🏆✨🌟";
+            motivationText = celebrationTexts.perfectMsg;
+        } else if (successRate >= 75) {
+            congratsMessage = celebrationTexts.excellent;
+            emoji = "🥇🔥💪";
+            motivationText = celebrationTexts.excellentMsg;
+        } else if (successRate >= 50) {
+            congratsMessage = celebrationTexts.good;
+            emoji = "🎯⭐💫";
+            motivationText = celebrationTexts.goodMsg;
             } else {
-                // Normal oyun sonu
-                resultMessage = `<b>${finalStats.category}</b> ${categoryResultText} ${answeredQuestionsText} 
-                <span style="color: #4a148c; font-weight: bold;">${finalStats.totalQuestions}</span> ${ofQuestionsText} 
-                <span style="color: #e91e63; font-weight: bold;">${finalStats.correctAnswers}</span> ${correctlyAnsweredText}
-                <span style="color: #4CAF50; font-weight: bold;">${finalStats.lives}</span> ${withLivesText}.`;
-            }
-            
-            // Sonuç mesajını ekleyelim
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'result-message';
-            messageDiv.innerHTML = `<p>${resultMessage}</p>`;
-            
-            // İstatistikler bölümü
-            const statsDiv = document.createElement('div');
-            statsDiv.className = 'statistics-section';
-            
-            // Dil seçimine göre istatistik başlığı
-            const statsTitle = languages[this.currentLanguage].statistics;
-            const totalQuestionText = languages[this.currentLanguage].totalQuestion;
-            const totalCorrectText = languages[this.currentLanguage].totalCorrect;
-            const avgTimeText = languages[this.currentLanguage].avgTime;
-            const totalScoreText = languages[this.currentLanguage].totalScore;
-            
-            statsDiv.innerHTML = `
-                <h3 style="color: #4a148c; margin-bottom: 15px;">${statsTitle}</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px;">
-                    <div style="background: linear-gradient(145deg, #f6f6f6, #ffffff); border-radius: 10px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: #4a148c;">${finalStats.totalQuestions}</div>
-                        <div style="font-size: 0.9rem; color: #666;">${totalQuestionText}</div>
-                    </div>
-                    <div style="background: linear-gradient(145deg, #f6f6f6, #ffffff); border-radius: 10px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: #e91e63;">${finalStats.correctAnswers}</div>
-                        <div style="font-size: 0.9rem; color: #666;">${totalCorrectText}</div>
-                    </div>
-                    <div style="background: linear-gradient(145deg, #f6f6f6, #ffffff); border-radius: 10px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: #2196F3;">${finalStats.avgTime}s</div>
-                        <div style="font-size: 0.9rem; color: #666;">${avgTimeText}</div>
-                    </div>
-                    <div style="background: linear-gradient(145deg, #f6f6f6, #ffffff); border-radius: 10px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: #009688;">${finalStats.score}</div>
-                        <div style="font-size: 0.9rem; color: #666;">${totalScoreText}</div>
-                    </div>
-                </div>
-            `;
-            
-            // Butonlar
-            const buttonsDiv = document.createElement('div');
-            buttonsDiv.className = 'result-buttons';
-            buttonsDiv.style.cssText = `
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 15px;
-                margin-top: 25px;
-            `;
-            
-            // Ana menüye dönüş butonu
-            const mainMenuBtn = document.createElement('button');
-            const backToCategoriesText = languages[this.currentLanguage].backToCategories;
-            mainMenuBtn.innerHTML = `<i class="fas fa-home"></i> ${backToCategoriesText}`;
-            mainMenuBtn.style.cssText = `
-                background: linear-gradient(45deg, #4a148c, #7b1fa2);
-                border: none;
-                color: white;
-                padding: 12px 20px;
-                border-radius: 8px;
-                font-size: 1rem;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                transition: all 0.3s ease;
-                box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            `;
-            
-            mainMenuBtn.addEventListener('click', () => {
-                // Sayfayı yeniden yükle ve ana sayfaya dön
-                window.location.reload();
-            });
-            
-            // Paylaş butonu
-            const shareBtn = document.createElement('button');
-            const shareScoreText = languages[this.currentLanguage].shareScore;
-            shareBtn.innerHTML = `<i class="fas fa-share-alt"></i> ${shareScoreText}`;
-            shareBtn.style.cssText = `
-                background: linear-gradient(45deg, #00a0b0, #3f8ffc);
-                border: none;
-                color: white;
-                padding: 12px 20px;
-                border-radius: 8px;
-                font-size: 1rem;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                transition: all 0.3s ease;
-                box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            `;
-            
-            shareBtn.addEventListener('click', () => {
-                const appName = languages[this.currentLanguage].quizAppName;
-                const ofQuestionsText = languages[this.currentLanguage].ofQuestions;
-                const correctlyAnsweredText = languages[this.currentLanguage].correctlyAnswered;
-                
-                let shareText;
-                if (this.currentLanguage === 'tr') {
-                    shareText = `${appName}'nda ${finalStats.category} kategorisinde ${finalStats.totalQuestions} sorudan ${finalStats.correctAnswers} tanesini doğru cevapladım!`;
-                } else if (this.currentLanguage === 'en') {
-                    shareText = `I correctly answered ${finalStats.correctAnswers} ${ofQuestionsText} ${finalStats.totalQuestions} questions in the ${finalStats.category} category of ${appName}!`;
-                } else if (this.currentLanguage === 'de') {
-                    shareText = `Im ${appName} habe ich ${finalStats.correctAnswers} ${ofQuestionsText} ${finalStats.totalQuestions} Fragen in der Kategorie ${finalStats.category} richtig beantwortet!`;
-                }
-                
-                if (navigator.share) {
-                    navigator.share({
-                        title: appName,
-                        text: shareText,
-                        url: window.location.href
-                    }).catch(() => {
-                        // Panoya kopyala
-                        navigator.clipboard.writeText(shareText)
-                            .then(() => alert('Skor metni panoya kopyalandı!'));
-                    });
-                } else {
-                    // Panoya kopyala
-                    navigator.clipboard.writeText(shareText)
-                        .then(() => alert('Skor metni panoya kopyalandı!'));
-                }
-            });
-            
-            // Butonları ekle
-            buttonsDiv.appendChild(mainMenuBtn);
-            buttonsDiv.appendChild(shareBtn);
-            
-            // Tüm bileşenleri ana karta ekleyelim
-            resultCard.appendChild(messageDiv);
-            resultCard.appendChild(statsDiv);
-            resultCard.appendChild(buttonsDiv);
-            
-            // Bileşenleri sonuç ekranına ekleyelim
-            resultScreen.appendChild(header);
-            resultScreen.appendChild(resultCard);
-            
-            // Perfect Score için konfeti efekti
-            if (perfectScore && finalStats.totalQuestions >= 5) {
-                this.createSimpleConfetti(resultScreen);
-            }
-            
-            // FontAwesome ekleyelim
-            const fontAwesome = document.createElement('link');
-            fontAwesome.rel = 'stylesheet';
-            fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
-            document.head.appendChild(fontAwesome);
-            
-            // Google Fonts ekleyelim
-            const googleFonts = document.createElement('link');
-            googleFonts.rel = 'stylesheet';
-            googleFonts.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap';
-            document.head.appendChild(googleFonts);
-            
-            // Sonuç ekranını body'ye ekle
-            document.body.appendChild(resultScreen);
-            
-            // Ses efekti
-            if (perfectScore) {
-                const winSound = document.getElementById('sound-win');
-                if (winSound) this.playSoundSafely(winSound);
-            } else if (finalStats.lives <= 0) {
-                const gameoverSound = document.getElementById('sound-gameover');
-                if (gameoverSound) this.playSoundSafely(gameoverSound);
-            } else {
-                const completionSound = document.getElementById('sound-level-completion');
-                if (completionSound) this.playSoundSafely(completionSound);
-            }
-            
-        } catch (error) {
-            console.error("Sonuç ekranı oluşturulurken hata:", error);
-            alert("Sonuç ekranı oluşturulurken bir hata oluştu. Lütfen sayfayı yenileyiniz.");
-            window.location.reload();
+            congratsMessage = celebrationTexts.keepGoing;
+            emoji = "🚀🌈🎪";
+            motivationText = celebrationTexts.keepGoingMsg;
         }
         
-        // Oyun durumunu sıfırla
-        this.score = 0;
-        // this.lives = 5; // BUNU SİLİYORUM
-        this.currentQuestionIndex = 0;
-        this.answeredQuestions = 0;
-        this.answerTimes = [];
-        this.currentSection = 1;
-        this.resetJokerUsage(); // Sadece kullanım durumlarını sıfırla, envanter korunsun
+        modalContent.innerHTML = `
+            <div style="animation: bounceIn 1s ease-out;">
+                <h1 style="font-size: 3.5rem; color: #FFD700; text-shadow: 3px 3px 0px #FF6B35; margin: 0; font-weight: 900;">
+                    ${congratsMessage}
+                </h1>
+                <div style="font-size: 4rem; margin: 20px 0; animation: swing 2s ease-in-out infinite;">
+                    ${emoji}
+                </div>
+                <p style="font-size: 1.4rem; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin: 20px 0; font-weight: 600;">
+                    ${motivationText}
+                </p>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.95); border-radius: 20px; padding: 30px; margin: 30px 0; box-shadow: 0 20px 40px rgba(0,0,0,0.2); animation: slideInUp 0.8s ease-out 0.5s both;">
+                <h2 style="color: #4a148c; margin-bottom: 25px; font-size: 1.8rem; font-weight: 700;">
+                    ${celebrationTexts.gameSummary}
+                </h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin: 25px 0;">
+                    <div style="background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 15px; padding: 20px; color: white; box-shadow: 0 8px 16px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2.2rem; font-weight: bold; margin-bottom: 5px;">🎯</div>
+                        <div style="font-size: 1.6rem; font-weight: bold;">${finalStats.correctAnswers}/${finalStats.totalQuestions}</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">${celebrationTexts.correctAnswersLabel}</div>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, #f093fb, #f5576c); border-radius: 15px; padding: 20px; color: white; box-shadow: 0 8px 16px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2.2rem; font-weight: bold; margin-bottom: 5px;">⭐</div>
+                        <div style="font-size: 1.6rem; font-weight: bold;">${finalStats.score}</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">${celebrationTexts.totalPointsLabel}</div>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, #4facfe, #00f2fe); border-radius: 15px; padding: 20px; color: white; box-shadow: 0 8px 16px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2.2rem; font-weight: bold; margin-bottom: 5px;">⏱️</div>
+                        <div style="font-size: 1.6rem; font-weight: bold;">${finalStats.avgTime}s</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">${celebrationTexts.averageTimeLabel}</div>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, #fa709a, #fee140); border-radius: 15px; padding: 20px; color: white; box-shadow: 0 8px 16px rgba(0,0,0,0.1);">
+                        <div style="font-size: 2.2rem; font-weight: bold; margin-bottom: 5px;">❤️</div>
+                        <div style="font-size: 1.6rem; font-weight: bold;">${finalStats.lives}</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9;">${celebrationTexts.remainingLivesLabel}</div>
+                    </div>
+                    </div>
+                
+                <div style="margin: 25px 0;">
+                    <div style="background: linear-gradient(90deg, #667eea, #764ba2); height: 10px; border-radius: 20px; overflow: hidden;">
+                        <div style="background: linear-gradient(90deg, #FFD700, #FFA500); height: 100%; width: ${successRate}%; border-radius: 20px; animation: fillBar 2s ease-out 1s both;"></div>
+                </div>
+                    <p style="color: #4a148c; font-weight: bold; margin-top: 10px; font-size: 1.1rem;">
+                        ${celebrationTexts.successRateLabel}: %${Math.round(successRate)}
+                    </p>
+                </div>
+            </div>
+            
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; animation: fadeInUp 0.8s ease-out 1s both;">
+                <button id="play-again-btn" style="
+                    background: linear-gradient(135deg, #667eea, #764ba2);
+                    border: none;
+                    color: white;
+                    padding: 15px 30px;
+                    border-radius: 50px;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+                    transition: all 0.3s ease;
+                display: flex;
+                    align-items: center;
+                    gap: 10px;
+                ">
+                    ${celebrationTexts.playAgainBtn}
+                </button>
+                
+                <button id="main-menu-btn" style="
+                    background: linear-gradient(135deg, #f093fb, #f5576c);
+                border: none;
+                color: white;
+                    padding: 15px 30px;
+                    border-radius: 50px;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                cursor: pointer;
+                    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+                    transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                    gap: 10px;
+                ">
+                    ${celebrationTexts.mainMenuBtn}
+                </button>
+                
+                <button id="share-btn" style="
+                    background: linear-gradient(135deg, #4facfe, #00f2fe);
+                border: none;
+                color: white;
+                    padding: 15px 30px;
+                    border-radius: 50px;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                cursor: pointer;
+                    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+                    transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                    gap: 10px;
+                ">
+                    ${celebrationTexts.shareBtn}
+                </button>
+            </div>
+        `;
+        
+        // CSS Animasyonları ekle
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes bounceIn {
+                0% { transform: scale(0.3); opacity: 0; }
+                50% { transform: scale(1.05); }
+                70% { transform: scale(0.9); }
+                100% { transform: scale(1); opacity: 1; }
+            }
+            @keyframes swing {
+                0%, 100% { transform: rotate(0deg); }
+                20% { transform: rotate(15deg); }
+                40% { transform: rotate(-10deg); }
+                60% { transform: rotate(5deg); }
+                80% { transform: rotate(-5deg); }
+            }
+            @keyframes slideInUp {
+                0% { transform: translateY(50px); opacity: 0; }
+                100% { transform: translateY(0); opacity: 1; }
+            }
+            @keyframes fadeInUp {
+                0% { transform: translateY(30px); opacity: 0; }
+                100% { transform: translateY(0); opacity: 1; }
+            }
+            @keyframes fillBar {
+                0% { width: 0%; }
+                100% { width: ${successRate}%; }
+            }
+            button:hover {
+                transform: translateY(-3px) scale(1.05) !important;
+                box-shadow: 0 12px 24px rgba(0,0,0,0.3) !important;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Modalı ekle
+        celebrationModal.appendChild(confettiCanvas);
+        celebrationModal.appendChild(modalContent);
+        document.body.appendChild(celebrationModal);
+        
+        // Konfeti animasyonu başlat
+        this.startConfetti(confettiCanvas);
+        
+        // Buton event listeners
+        document.getElementById('play-again-btn').addEventListener('click', () => {
+            celebrationModal.remove();
+            style.remove();
+            this.restartGame();
+        });
+        
+        document.getElementById('main-menu-btn').addEventListener('click', () => {
+            celebrationModal.remove();
+            style.remove();
+            window.location.reload();
+        });
+        
+        document.getElementById('share-btn').addEventListener('click', () => {
+            this.shareResults(finalStats);
+        });
+        
+        // Ses efekti çal
+        if (this.soundEnabled) {
+            const victorySound = document.getElementById('sound-victory');
+            if (victorySound) {
+                victorySound.play().catch(e => console.log('Ses çalma hatası:', e));
+            }
+        }
+    },
+    
+    // Konfeti Animasyonu
+    startConfetti: function(canvas) {
+        const ctx = canvas.getContext('2d');
+        const confettiPieces = [];
+        const colors = ['#FFD700', '#FF6B35', '#F7931E', '#FFE135', '#FB8500', '#8ECAE6', '#219EBC', '#023047', '#FFB3BA', '#BAFFC9'];
+        
+        // Konfeti parçacıkları oluştur
+        for (let i = 0; i < 100; i++) {
+            confettiPieces.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                width: Math.random() * 10 + 5,
+                height: Math.random() * 10 + 5,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                rotation: Math.random() * 360,
+                rotationSpeed: Math.random() * 10 - 5,
+                velocityX: Math.random() * 6 - 3,
+                velocityY: Math.random() * 3 + 2,
+                gravity: 0.1
+            });
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            confettiPieces.forEach((piece, index) => {
+                piece.velocityY += piece.gravity;
+                piece.x += piece.velocityX;
+                piece.y += piece.velocityY;
+                piece.rotation += piece.rotationSpeed;
+                
+                ctx.save();
+                ctx.translate(piece.x + piece.width / 2, piece.y + piece.height / 2);
+                ctx.rotate((piece.rotation * Math.PI) / 180);
+                ctx.fillStyle = piece.color;
+                ctx.fillRect(-piece.width / 2, -piece.height / 2, piece.width, piece.height);
+                ctx.restore();
+                
+                // Ekrandan çıkan parçacıkları kaldır
+                if (piece.y > canvas.height + 10) {
+                    confettiPieces.splice(index, 1);
+                }
+            });
+            
+            if (confettiPieces.length > 0) {
+                requestAnimationFrame(animate);
+            }
+        }
+        
+        animate();
+        
+        // 3 saniye sonra yeni konfetiler ekle
+        setTimeout(() => {
+            for (let i = 0; i < 50; i++) {
+                confettiPieces.push({
+                    x: Math.random() * canvas.width,
+                    y: -20,
+                    width: Math.random() * 8 + 3,
+                    height: Math.random() * 8 + 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rotation: Math.random() * 360,
+                    rotationSpeed: Math.random() * 8 - 4,
+                    velocityX: Math.random() * 4 - 2,
+                    velocityY: Math.random() * 2 + 1,
+                    gravity: 0.08
+                });
+            }
+            animate();
+        }, 3000);
+    },
+    
+    // Sonuçları Paylaş (Dil Desteği ile)
+    shareResults: function(finalStats) {
+        const successRate = Math.round((finalStats.correctAnswers / finalStats.totalQuestions) * 100);
+        const appName = languages[this.currentLanguage].quizAppName;
+        
+        let shareText;
+        if (this.currentLanguage === 'tr') {
+            shareText = `🎮 ${appName}'nda harika bir performans sergiledim!\n\n🎯 ${finalStats.correctAnswers}/${finalStats.totalQuestions} doğru cevap\n⭐ ${finalStats.score} puan\n📊 %${successRate} başarı oranı\n\nSen de oynamak ister misin?`;
+        } else if (this.currentLanguage === 'en') {
+            shareText = `🎮 I had a great performance in ${appName}!\n\n🎯 ${finalStats.correctAnswers}/${finalStats.totalQuestions} correct answers\n⭐ ${finalStats.score} points\n📊 ${successRate}% success rate\n\nWant to play too?`;
+        } else if (this.currentLanguage === 'de') {
+            shareText = `🎮 Ich hatte eine großartige Leistung in ${appName}!\n\n🎯 ${finalStats.correctAnswers}/${finalStats.totalQuestions} richtige Antworten\n⭐ ${finalStats.score} Punkte\n📊 ${successRate}% Erfolgsrate\n\nMöchtest du auch spielen?`;
+        }
+        
+        let shareTitle;
+        if (this.currentLanguage === 'tr') {
+            shareTitle = 'Quiz Oyunu Sonuçlarım';
+        } else if (this.currentLanguage === 'en') {
+            shareTitle = 'My Quiz Game Results';
+        } else if (this.currentLanguage === 'de') {
+            shareTitle = 'Meine Quiz-Spiel Ergebnisse';
+        }
+        
+        if (navigator.share) {
+            navigator.share({
+                title: shareTitle,
+                text: shareText,
+                url: window.location.href
+            }).catch(err => console.log('Paylaşım hatası:', err));
+        } else {
+            // Fallback: metni kopyala
+            navigator.clipboard.writeText(shareText).then(() => {
+                const copyMessage = this.currentLanguage === 'tr' ? 'Sonuçlar panoya kopyalandı! 📋' :
+                                    this.currentLanguage === 'en' ? 'Results copied to clipboard! 📋' :
+                                    'Ergebnisse in die Zwischenablage kopiert! 📋';
+                alert(copyMessage);
+            }).catch(() => {
+                // Manuel kopyalama için modal göster
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = shareText;
+                document.body.appendChild(tempTextArea);
+                tempTextArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempTextArea);
+                const copyMessage = this.currentLanguage === 'tr' ? 'Sonuçlar panoya kopyalandı! 📋' :
+                                    this.currentLanguage === 'en' ? 'Results copied to clipboard! 📋' :
+                                    'Ergebnisse in die Zwischenablage kopiert! 📋';
+                alert(copyMessage);
+            });
+        }
     },
     
     // Sesi güvenli şekilde çal
@@ -8300,6 +8379,9 @@ const quizApp = {
         // Oyuncunun puanını kontrol et
         const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
         
+        // Dil çevirilerini al
+        const buyLivesTexts = languages[this.currentLanguage].buyLives;
+        
         // Modal oluştur
         const buyLivesModal = document.createElement('div');
         buyLivesModal.className = 'buy-lives-modal';
@@ -8309,8 +8391,8 @@ const quizApp = {
                     <div class="lives-out-icon">
                         <i class="fas fa-heart-broken"></i>
                     </div>
-                    <h2>Canlarınız Bitti!</h2>
-                    <p class="lives-out-message">Oyuna devam etmek için can satın alabilirsiniz.</p>
+                    <h2>${buyLivesTexts.title}</h2>
+                    <p class="lives-out-message">${buyLivesTexts.message}</p>
                 </div>
                 
                 <div class="buy-lives-offer">
@@ -8321,8 +8403,8 @@ const quizApp = {
                             <i class="fas fa-heart"></i>
                         </div>
                         <div class="package-details">
-                            <h3>3 Can Paketi</h3>
-                            <p class="package-description">Oyuna 3 canla devam edin!</p>
+                            <h3>${buyLivesTexts.packageTitle}</h3>
+                            <p class="package-description">${buyLivesTexts.packageDescription}</p>
                             <div class="package-price">
                                 <span class="price-amount">${LIVES_PRICE}</span>
                                 <i class="fas fa-coins"></i>
@@ -8332,7 +8414,7 @@ const quizApp = {
                     
                     <div class="current-points">
                         <i class="fas fa-wallet"></i>
-                        <span>Mevcut Puanınız: ${currentPoints}</span>
+                        <span>${buyLivesTexts.currentPoints}: ${currentPoints}</span>
                     </div>
                 </div>
                 
@@ -8340,16 +8422,16 @@ const quizApp = {
                     ${currentPoints >= LIVES_PRICE ? 
                         `<button id="confirm-buy-lives" class="btn-buy-lives">
                             <i class="fas fa-shopping-cart"></i>
-                            3 Can Satın Al (${LIVES_PRICE} Puan)
+                            ${buyLivesTexts.buyButton.replace('{price}', LIVES_PRICE)}
                         </button>` : 
                         `<button class="btn-buy-lives disabled" disabled>
                             <i class="fas fa-times"></i>
-                            Yetersiz Puan (${LIVES_PRICE} Gerekli)
+                            ${buyLivesTexts.insufficientPoints.replace('{price}', LIVES_PRICE)}
                         </button>`
                     }
                     <button id="decline-buy-lives" class="btn-decline-lives">
                         <i class="fas fa-flag-checkered"></i>
-                        Oyunu Bitir
+                        ${buyLivesTexts.finishGame}
                     </button>
                 </div>
             </div>
@@ -8393,9 +8475,12 @@ const quizApp = {
     buyLives: function(livesAmount, price) {
         const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
         
+        // Dil çevirilerini al
+        const buyLivesTexts = languages[this.currentLanguage].buyLives;
+        
         // Puan kontrolü
         if (currentPoints < price) {
-            this.showToast('Yetersiz puan!', 'toast-error');
+            this.showToast(buyLivesTexts.insufficientPuan, 'toast-error');
             return false;
         }
         
@@ -8416,7 +8501,7 @@ const quizApp = {
         this.updateTotalScoreDisplay();
         
         // Başarı mesajı göster
-        this.showToast(`${livesAmount} can satın alındı! Oyun devam ediyor...`, 'toast-success');
+        this.showToast(buyLivesTexts.purchaseSuccess.replace('{amount}', livesAmount), 'toast-success');
         
         // Kısa bir gecikme ile oyunu devam ettir
         setTimeout(() => {
@@ -10043,4 +10128,107 @@ window.debugProfile = {
     }
 };
 
- 
+// Mevcut dili al fonksiyonu
+function getCurrentLanguage() {
+    // quizApp'ten dili al, yoksa localStorage'dan, yoksa tarayıcı dilini al
+    if (window.quizApp && window.quizApp.currentLanguage) {
+        return window.quizApp.currentLanguage;
+    }
+    return localStorage.getItem('language') || 
+           localStorage.getItem('user_language') || 
+           localStorage.getItem('selectedLanguage') ||
+           navigator.language.substring(0, 2) || 'tr';
+}
+
+// Çerez bildirimi dil desteği
+window.updateCookieConsentLanguage = function() {
+    const currentLang = getCurrentLanguage();
+    const cookieTexts = window.languages && window.languages[currentLang]?.cookies || 
+                       window.languages && window.languages['tr'].cookies || {
+        title: 'Çerez Bildirimi',
+        message: 'Web sitemiz, size daha iyi hizmet verebilmek ve reklamları kişiselleştirmek için çerezler kullanır.',
+        acceptEssential: 'Sadece Gerekli',
+        acceptAll: 'Tümünü Kabul Et',
+        settings: 'Ayarlar',
+        settingsTitle: 'Çerez Ayarları',
+        essentialCookies: 'Zorunlu Çerezler',
+        essentialCookiesDesc: 'Sitenin çalışması için gerekli çerezler',
+        analyticsCookies: 'Analitik Çerezler',
+        analyticsCookiesDesc: 'Site kullanımını analiz etmek için kullanılır',
+        advertisingCookies: 'Reklam Çerezleri',
+        advertisingCookiesDesc: 'Kişiselleştirilmiş reklamlar göstermek için kullanılır',
+        save: 'Kaydet',
+        privacyPolicy: 'Gizlilik Politikamızı'
+    };
+    
+    // Çerez banneri
+    const bannerTitle = document.getElementById('cookie-banner-title');
+    const bannerMessage = document.getElementById('cookie-banner-message');
+    const privacyLink = document.getElementById('privacy-policy-link');
+    const acceptEssential = document.getElementById('accept-essential');
+    const acceptAll = document.getElementById('accept-all');
+    const cookieSettings = document.getElementById('cookie-settings');
+    
+    if (bannerTitle) bannerTitle.textContent = cookieTexts.title;
+    if (bannerMessage) {
+        bannerMessage.innerHTML = `${cookieTexts.message.split('Gizlilik Politikamızı')[0]}<a href="privacy-policy.html" target="_blank" id="privacy-policy-link">${cookieTexts.privacyPolicy}</a>${cookieTexts.message.split('inceleyebilirsiniz')[1] || ' inceleyebilirsiniz.'}`;
+    }
+    if (acceptEssential) acceptEssential.textContent = cookieTexts.acceptEssential;
+    if (acceptAll) acceptAll.textContent = cookieTexts.acceptAll;
+    if (cookieSettings) cookieSettings.textContent = cookieTexts.settings;
+    
+    // Çerez modalı
+    const modalTitle = document.getElementById('cookie-modal-title');
+    const essentialTitle = document.getElementById('essential-cookies-modal-title');
+    const essentialDesc = document.getElementById('essential-cookies-modal-desc');
+    const analyticsTitle = document.getElementById('analytics-cookies-modal-title');
+    const analyticsDesc = document.getElementById('analytics-cookies-modal-desc');
+    const advertisingTitle = document.getElementById('advertising-cookies-modal-title');
+    const advertisingDesc = document.getElementById('advertising-cookies-modal-desc');
+    const saveBtn = document.getElementById('save-cookie-preferences');
+    
+    if (modalTitle) modalTitle.textContent = cookieTexts.settingsTitle;
+    if (essentialTitle) essentialTitle.textContent = cookieTexts.essentialCookies;
+    if (essentialDesc) essentialDesc.textContent = cookieTexts.essentialCookiesDesc;
+    if (analyticsTitle) analyticsTitle.textContent = cookieTexts.analyticsCookies;
+    if (analyticsDesc) analyticsDesc.textContent = cookieTexts.analyticsCookiesDesc;
+    if (advertisingTitle) advertisingTitle.textContent = cookieTexts.advertisingCookies;
+    if (advertisingDesc) advertisingDesc.textContent = cookieTexts.advertisingCookiesDesc;
+    if (saveBtn) saveBtn.textContent = cookieTexts.save;
+};
+
+// Çerez bildirimi butonlarının dil desteğini güncelle
+window.updateCookieButtonTexts = function() {
+    const currentLang = getCurrentLanguage();
+    const cookieTexts = languages[currentLang]?.cookies || languages['tr'].cookies;
+    
+    const acceptEssential = document.getElementById('accept-essential');
+    const acceptAll = document.getElementById('accept-all');
+    const cookieSettings = document.getElementById('cookie-settings');
+    
+    if (acceptEssential) acceptEssential.textContent = cookieTexts.acceptEssential;
+    if (acceptAll) acceptAll.textContent = cookieTexts.acceptAll;
+    if (cookieSettings) cookieSettings.textContent = cookieTexts.settings;
+};
+
+// Dil değiştirildiğinde çerez bildirimi güncelle
+window.addEventListener('storage', function(e) {
+    if (e.key === 'selectedLanguage') {
+        window.updateCookieConsentLanguage?.();
+    }
+});
+
+// languageChanged eventini dinle
+document.addEventListener('languageChanged', function() {
+    console.log('🌐 Dil değişti, çerez bildirimi güncelleniyor...');
+    setTimeout(() => {
+        window.updateCookieConsentLanguage?.();
+    }, 100);
+});
+
+// Sayfa yüklendiğinde çerez bildirimi dilini güncelle
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        window.updateCookieConsentLanguage?.();
+    }, 500);
+});

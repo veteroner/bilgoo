@@ -253,6 +253,15 @@
             <div class="logo">B</div>
             <h1>Bilgoo Hakkında</h1>
             <p class="subtitle">Eğitimi oyunlaştırarak öğrenmeyi eğlenceli hale getiriyoruz</p>
+            
+            <!-- Dil Seçim Dropdown -->
+            <div class="language-selector" style="margin-top: 20px;">
+                <select id="language-select" style="padding: 10px; border-radius: 8px; border: 2px solid #e2e8f0; background: white; color: #374151; font-size: 14px; cursor: pointer;">
+                    <option value="tr">🇹🇷 Türkçe</option>
+                    <option value="en">🇬🇧 English</option>
+                    <option value="de">🇩🇪 Deutsch</option>
+                </select>
+            </div>
         </div>
         
         <div class="highlight">
@@ -382,162 +391,280 @@
     <script src="languages.js"></script>
     <script>
     (function() {
-        /* Dil belirleme */
-        function getLang() {
-            const saved = localStorage.getItem('language');
-            if (saved && window.languages && window.languages[saved]) return saved;
-            const browser = navigator.language ? navigator.language.slice(0,2) : 'tr';
+        // Dil belirleme - ana uygulama ile uyumlu
+        function getCurrentLanguage() {
+            // Ana sistemle uyumlu dil alma - tüm localStorage key'lerini kontrol et
+            const userLang = localStorage.getItem('user_language');
+            const savedLang = localStorage.getItem('language');
+            const selectedLang = localStorage.getItem('selectedLanguage');
+            
+            let lang = userLang || savedLang || selectedLang;
+            
+            if (lang && window.languages && window.languages[lang]) {
+                return lang;
+            }
+            
+            const browser = navigator.language ? navigator.language.slice(0, 2) : 'tr';
             return (window.languages && window.languages[browser]) ? browser : 'tr';
         }
 
-        const lang = getLang();
-        const t = window.languages && window.languages[lang] && window.languages[lang].about ? window.languages[lang].about : null;
-        if (!t) return;
+        function updatePageContent() {
+            const lang = getCurrentLanguage();
+            const t = window.languages && window.languages[lang] && window.languages[lang].about;
+            
+            console.log('About page - Current language:', lang);
+            console.log('About page - Languages object:', window.languages);
+            console.log('About page - Translations object:', t);
+            
+            if (!t) {
+                console.warn('About page translations not found for language:', lang);
+                return;
+            }
 
-        const setText = (selector, key, withIcon = false) => {
-            const el = document.querySelector(selector);
-            if (!el || !t[key]) return;
-            if (withIcon) {
-                const icon = el.querySelector('i');
+            // Sayfa başlığını güncelle
+            document.title = t.title + ' - ' + window.languages[lang].quizAppName;
+            
+            // HTML lang attribute
+            document.documentElement.lang = lang;
+
+            // Başlık ve alt başlık
+            const headerTitle = document.querySelector('.header h1');
+            const subtitle = document.querySelector('.header .subtitle');
+            if (headerTitle) headerTitle.textContent = t.title;
+            if (subtitle) subtitle.textContent = t.subtitle;
+
+            // Misyon bölümü
+            const missionTitle = document.querySelector('.highlight h3');
+            const missionText = document.querySelector('.highlight p');
+            if (missionTitle) {
+                const icon = missionTitle.querySelector('i');
                 const iconHTML = icon ? icon.outerHTML + ' ' : '';
-                el.innerHTML = iconHTML + t[key];
-            } else {
-                el.textContent = t[key];
+                missionTitle.innerHTML = iconHTML + t.missionTitle;
             }
-        };
+            if (missionText) missionText.textContent = t.missionText;
 
-        /* Başlık ve alt başlık */
-        setText('.header h1', 'title');
-        setText('.header .subtitle', 'subtitle');
-
-        /* Misyon */
-        setText('.highlight h3', 'missionTitle', true);
-        setText('.highlight p', 'missionText');
-
-        /* Bilgoo Nedir */
+            // Bilgoo Nedir bölümü
         const rocketHeading = document.querySelector('h2 i.fas.fa-rocket');
-        if (rocketHeading) {
-            const parent = rocketHeading.parentElement;
-            parent.innerHTML = rocketHeading.outerHTML + ' ' + t.whatIsTitle;
-            const nxt = parent.nextElementSibling;
-            if (nxt) nxt.textContent = t.whatIsText;
+            if (rocketHeading && rocketHeading.parentElement) {
+                const icon = rocketHeading.outerHTML;
+                rocketHeading.parentElement.innerHTML = icon + ' ' + t.whatIsTitle;
+                const nextP = rocketHeading.parentElement.nextElementSibling;
+                if (nextP && nextP.tagName === 'P') {
+                    nextP.textContent = t.whatIsText;
+                }
         }
 
-        /* İstatistik etiketleri */
+            // İstatistik etiketleri
         const statLabels = document.querySelectorAll('.stat-label');
-        if (statLabels.length >= 4) {
-            statLabels[0].textContent = t.statsActiveUsers;
-            statLabels[1].textContent = t.statsQuestionPool;
-            statLabels[2].textContent = t.statsCategories;
-            statLabels[3].textContent = t.statsQuizSolved;
+            const statKeys = ['statsActiveUsers', 'statsQuestionPool', 'statsCategories', 'statsQuizSolved'];
+            statLabels.forEach((label, index) => {
+                if (t[statKeys[index]]) {
+                    label.textContent = t[statKeys[index]];
         }
+            });
 
-        /* Özellikler */
+            // Özellikler başlığı
         const starHeading = document.querySelector('h2 i.fas.fa-star');
-        if (starHeading) {
-            starHeading.parentElement.innerHTML = starHeading.outerHTML + ' ' + t.featuresTitle;
+            if (starHeading && starHeading.parentElement) {
+                const icon = starHeading.outerHTML;
+                starHeading.parentElement.innerHTML = icon + ' ' + t.featuresTitle;
         }
-        const featTitles = [
-            'featurePoolTitle','featureSocialTitle','featureProgressTitle',
-            'featureAchievementsTitle','featureMultiTitle','featureSecurityTitle'
-        ];
-        const featTexts = [
-            'featurePoolText','featureSocialText','featureProgressText',
-            'featureAchievementsText','featureMultiText','featureSecurityText'
-        ];
-        const featureH3s = document.querySelectorAll('.features .feature h3');
-        const featurePs = document.querySelectorAll('.features .feature p');
-        featureH3s.forEach((el, idx) => { if (t[featTitles[idx]]) el.textContent = t[featTitles[idx]]; });
-        featurePs.forEach((el, idx) => { if (t[featTexts[idx]]) el.textContent = t[featTexts[idx]]; });
 
-        /* Vizyon */
+            // Özellik kartları
+            const featureCards = document.querySelectorAll('.features .feature');
+            const featureKeys = [
+                { title: 'featurePoolTitle', text: 'featurePoolText' },
+                { title: 'featureSocialTitle', text: 'featureSocialText' },
+                { title: 'featureProgressTitle', text: 'featureProgressText' },
+                { title: 'featureAchievementsTitle', text: 'featureAchievementsText' },
+                { title: 'featureMultiTitle', text: 'featureMultiText' },
+                { title: 'featureSecurityTitle', text: 'featureSecurityText' }
+        ];
+
+            featureCards.forEach((card, index) => {
+                if (featureKeys[index]) {
+                    const h3 = card.querySelector('h3');
+                    const p = card.querySelector('p');
+                    if (h3 && t[featureKeys[index].title]) {
+                        h3.textContent = t[featureKeys[index].title];
+                    }
+                    if (p && t[featureKeys[index].text]) {
+                        p.textContent = t[featureKeys[index].text];
+                    }
+                }
+            });
+
+            // Vizyon
         const eyeHeading = document.querySelector('h2 i.fas.fa-eye');
-        if (eyeHeading) {
-            eyeHeading.parentElement.innerHTML = eyeHeading.outerHTML + ' ' + t.visionTitle;
-            const vp = eyeHeading.parentElement.nextElementSibling;
-            if (vp) vp.textContent = t.visionText;
+            if (eyeHeading && eyeHeading.parentElement) {
+                const icon = eyeHeading.outerHTML;
+                eyeHeading.parentElement.innerHTML = icon + ' ' + t.visionTitle;
+                const nextP = eyeHeading.parentElement.nextElementSibling;
+                if (nextP && nextP.tagName === 'P') {
+                    nextP.textContent = t.visionText;
+                }
         }
 
-        /* Hedefler */
-        const bullHeading = document.querySelector('h2 i.fas.fa-bullseye');
-        if (bullHeading) {
-            bullHeading.parentElement.innerHTML = bullHeading.outerHTML + ' ' + t.goalsTitle;
-            const ul = bullHeading.parentElement.nextElementSibling;
-            if (ul && ul.tagName === 'UL') {
-                ul.innerHTML = '';
+            // Hedefler
+            const bullseyeHeading = document.querySelector('h2 i.fas.fa-bullseye');
+            if (bullseyeHeading && bullseyeHeading.parentElement) {
+                const icon = bullseyeHeading.outerHTML;
+                bullseyeHeading.parentElement.innerHTML = icon + ' ' + t.goalsTitle;
+                const nextUl = bullseyeHeading.parentElement.nextElementSibling;
+                if (nextUl && nextUl.tagName === 'UL') {
+                    nextUl.innerHTML = '';
                 for (let i = 1; i <= 6; i++) {
+                        if (t['goal' + i]) {
                     const li = document.createElement('li');
-                    li.textContent = t['goal'+i];
-                    ul.appendChild(li);
+                            li.textContent = t['goal' + i];
+                            nextUl.appendChild(li);
+                        }
                 }
             }
         }
 
-        /* Ekip bilgisi */
-        const teamHeading = document.querySelector('.team-info h3');
-        if (teamHeading) {
-            const icon = teamHeading.querySelector('i');
-            teamHeading.innerHTML = (icon ? icon.outerHTML + ' ' : '') + t.teamTitle;
-            const p1 = document.querySelector('.team-info p:first-of-type');
-            const p2 = document.querySelector('.team-info p:nth-of-type(2)');
-            if (p1) p1.innerHTML = t.teamText1;
-            if (p2) p2.innerHTML = t.teamText2;
-        }
+            // Ekip bilgisi
+            const teamTitle = document.querySelector('.team-info h3');
+            if (teamTitle) {
+                const icon = teamTitle.querySelector('i');
+                const iconHTML = icon ? icon.outerHTML + ' ' : '';
+                teamTitle.innerHTML = iconHTML + t.teamTitle;
+            }
+            const teamP1 = document.querySelector('.team-info p:first-of-type');
+            const teamP2 = document.querySelector('.team-info p:nth-of-type(2)');
+            if (teamP1) teamP1.innerHTML = t.teamText1;
+            if (teamP2) teamP2.innerHTML = t.teamText2;
 
-        /* Kalite */
+            // Kalite ve Güvenilirlik
         const awardHeading = document.querySelector('h2 i.fas.fa-award');
-        if (awardHeading) {
-            awardHeading.parentElement.innerHTML = awardHeading.outerHTML + ' ' + t.qualityTitle;
+            if (awardHeading && awardHeading.parentElement) {
+                const icon = awardHeading.outerHTML;
+                awardHeading.parentElement.innerHTML = icon + ' ' + t.qualityTitle;
             const introP = awardHeading.parentElement.nextElementSibling;
-            if (introP) introP.textContent = t.qualityIntro;
-            const ul = introP ? introP.nextElementSibling : null;
-            if (ul && ul.tagName === 'UL') {
-                ul.innerHTML = '';
+                if (introP && introP.tagName === 'P') {
+                    introP.textContent = t.qualityIntro;
+                    const nextUl = introP.nextElementSibling;
+                    if (nextUl && nextUl.tagName === 'UL') {
+                        nextUl.innerHTML = '';
                 for (let i = 1; i <= 5; i++) {
+                            if (t['quality' + i]) {
                     const li = document.createElement('li');
-                    li.textContent = t['quality'+i];
-                    ul.appendChild(li);
+                                li.textContent = t['quality' + i];
+                                nextUl.appendChild(li);
+                            }
+                        }
                 }
             }
         }
 
-        /* Sosyal sorumluluk */
+            // Sosyal Sorumluluk
         const leafHeading = document.querySelector('h2 i.fas.fa-leaf');
-        if (leafHeading) {
-            leafHeading.parentElement.innerHTML = leafHeading.outerHTML + ' ' + t.socialTitle;
+            if (leafHeading && leafHeading.parentElement) {
+                const icon = leafHeading.outerHTML;
+                leafHeading.parentElement.innerHTML = icon + ' ' + t.socialTitle;
             const introP = leafHeading.parentElement.nextElementSibling;
-            if (introP) introP.textContent = t.socialIntro;
-            const ul = introP ? introP.nextElementSibling : null;
-            if (ul && ul.tagName === 'UL') {
-                ul.innerHTML = '';
+                if (introP && introP.tagName === 'P') {
+                    introP.textContent = t.socialIntro;
+                    const nextUl = introP.nextElementSibling;
+                    if (nextUl && nextUl.tagName === 'UL') {
+                        nextUl.innerHTML = '';
                 for (let i = 1; i <= 4; i++) {
+                            if (t['social' + i]) {
                     const li = document.createElement('li');
-                    li.textContent = t['social'+i];
-                    ul.appendChild(li);
+                                li.textContent = t['social' + i];
+                                nextUl.appendChild(li);
+                            }
+                        }
                 }
             }
         }
 
-        /* İletişim */
-        const contactHeading = document.querySelector('.contact-info h3');
-        if (contactHeading) {
-            const icon = contactHeading.querySelector('i');
-            contactHeading.innerHTML = (icon ? icon.outerHTML + ' ' : '') + t.contactTitle;
-            const txtP = document.querySelector('.contact-info p');
-            if (txtP) txtP.textContent = t.contactText;
-            const strongs = document.querySelectorAll('.contact-info p strong');
-            if (strongs.length >= 3) {
-                strongs[0].textContent = t.contactEmailLabel + ':';
-                strongs[1].textContent = t.contactWebLabel + ':';
-                strongs[2].textContent = t.contactSupportLabel + ':';
+            // İletişim
+            const contactTitle = document.querySelector('.contact-info h3');
+            if (contactTitle) {
+                const icon = contactTitle.querySelector('i');
+                const iconHTML = icon ? icon.outerHTML + ' ' : '';
+                contactTitle.innerHTML = iconHTML + t.contactTitle;
             }
+            
+            const contactPs = document.querySelectorAll('.contact-info p');
+            if (contactPs.length > 0) {
+                contactPs[0].textContent = t.contactText;
+                
+                // E-posta, Web, Destek etiketlerini güncelle
+                const emailP = contactPs[1];
+                const webP = contactPs[2];
+                const supportP = contactPs[3];
+                
+                if (emailP) {
+                    const emailStrong = emailP.querySelector('strong');
+                    if (emailStrong) emailStrong.textContent = t.contactEmailLabel + ':';
+                }
+                if (webP) {
+                    const webStrong = webP.querySelector('strong');
+                    if (webStrong) webStrong.textContent = t.contactWebLabel + ':';
+                }
+                if (supportP) {
+                    const supportStrong = supportP.querySelector('strong');
+                    if (supportStrong) supportStrong.textContent = t.contactSupportLabel + ':';
+                }
         }
 
-        /* Geri dön butonu */
+            // Geri dön butonu
         const backLink = document.querySelector('.back-link');
         if (backLink) {
             backLink.innerHTML = '<i class="fas fa-arrow-left"></i> ' + t.backLink;
         }
+        }
+
+        // Dil seçim dropdown'u işlevselliği
+        function initLanguageSelector() {
+            const languageSelect = document.getElementById('language-select');
+            if (languageSelect) {
+                // Mevcut dili ayarla
+                const currentLang = getCurrentLanguage();
+                languageSelect.value = currentLang;
+                
+                // Dil değişimini dinle
+                languageSelect.addEventListener('change', function() {
+                    const newLang = this.value;
+                    // Ana sistemle uyumlu dil kaydetme
+                    localStorage.setItem('language', newLang);
+                    localStorage.setItem('user_language', newLang);
+                    localStorage.setItem('selectedLanguage', newLang);
+                    updatePageContent();
+                    
+                    // Ana sistemi de bilgilendir
+                    window.dispatchEvent(new StorageEvent('storage', {
+                        key: 'language',
+                        newValue: newLang
+                    }));
+                    window.dispatchEvent(new StorageEvent('storage', {
+                        key: 'user_language',
+                        newValue: newLang
+                    }));
+                });
+            }
+        }
+
+        // Sayfa yüklendiğinde çalıştır
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                updatePageContent();
+                initLanguageSelector();
+            });
+        } else {
+            updatePageContent();
+            initLanguageSelector();
+        }
+
+        // Dil değişimini dinle (localStorage değişikliği)
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'language' || e.key === 'user_language' || e.key === 'selectedLanguage') {
+                console.log('🌐 About sayfası: Storage event alındı:', e.key, '->', e.newValue);
+                setTimeout(updatePageContent, 100);
+            }
+        });
     })();
     </script>
 </body>

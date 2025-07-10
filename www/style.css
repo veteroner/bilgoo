@@ -6373,7 +6373,7 @@ input:checked + .switch-label:before {
     background: linear-gradient(90deg, #3a8dde 0%, #7b1fa2 50%, #00eaff 100%);
     border-radius: 8px;
     box-shadow: none;
-    animation: loadingBarModern 2.5s cubic-bezier(0.68,-0.55,0.27,1.55) forwards;
+    transition: width 0.1s ease-out;
 }
 
 .loader-percentage.glass {

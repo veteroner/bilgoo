@@ -41,11 +41,12 @@ const MonetizationManager = {
         if (banner) {
             banner.style.display = 'block';
             
-            // Banner'a ek bilgi ekle
-            const existingText = banner.querySelector('p');
-            if (existingText && !existingText.textContent.includes('Tracking Protection')) {
-                existingText.innerHTML += '<br><br><strong>⚠️ Önemli:</strong> Tarayıcınızda "Tracking Prevention" veya "Gizlilik Koruması" aktifse, bu siteye özel olarak devre dışı bırakmanız önerilir. Aksi takdirde reklamlar ve bazı özellikler düzgün çalışmayabilir.';
-            }
+            // Dil desteğini uygula
+            setTimeout(() => {
+                if (window.updateCookieConsentLanguage) {
+                    window.updateCookieConsentLanguage();
+                }
+            }, 100);
         }
     },
 
