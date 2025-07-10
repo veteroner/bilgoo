@@ -120,6 +120,13 @@ const languages = {
         bronzeStar: 'Bronz Yıldız',
         earnedStars: 'Yıldız Kazandınız!',
         
+        // Zorluk seviyeleri
+        difficultyEasy: 'Kolay',
+        difficultyMedium: 'Orta',
+        difficultyHard: 'Zor',
+        nextSectionLevel: 'Sonraki Bölüm',
+        levelText: 'Seviye',
+        
         // Sonuç ekranı
         gameResult: 'Sonuç',
         categoryResult: 'kategorisinde',
@@ -553,6 +560,13 @@ const languages = {
         silverStar: 'Silver Star',
         bronzeStar: 'Bronze Star',
         earnedStars: 'Stars Earned!',
+        
+        // Difficulty levels
+        difficultyEasy: 'Easy',
+        difficultyMedium: 'Medium',
+        difficultyHard: 'Hard',
+        nextSectionLevel: 'Next Section',
+        levelText: 'Level',
         
         // Result screen
         gameResult: 'Result',
@@ -1040,6 +1054,13 @@ const languages = {
         silverStar: 'Silberstern',
         bronzeStar: 'Bronzestern',
         earnedStars: 'Sterne verdient!',
+        
+        // Schwierigkeitsgrade
+        difficultyEasy: 'Leicht',
+        difficultyMedium: 'Mittel',
+        difficultyHard: 'Schwer',
+        nextSectionLevel: 'Nächster Abschnitt',
+        levelText: 'Level',
         
         // Ergebnisbildschirm
         gameResult: 'Ergebnis',

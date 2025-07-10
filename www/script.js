@@ -3276,6 +3276,20 @@ const quizApp = {
         }
     },
     
+    // Zorluk seviyesi metni döndür (dil desteği ile)
+    getDifficultyText: function(difficultyLevel) {
+        switch(difficultyLevel) {
+            case 1:
+                return this.getTranslation('difficultyEasy');
+            case 2:
+                return this.getTranslation('difficultyMedium');
+            case 3:
+                return this.getTranslation('difficultyHard');
+            default:
+                return this.getTranslation('difficultyEasy');
+        }
+    },
+    
     // Kategori Tamamlama Ekranını Göster (dinamik bölüm sayısına göre)
     showCategoryCompletion: function() {
         // Zamanlayıcıyı durdur
@@ -3565,7 +3579,7 @@ const quizApp = {
                     <p><i class="fas fa-star"></i> ${this.getTranslation('currentScore')}: ${this.score}</p>
                     <p><i class="fas fa-heart"></i> ${this.getTranslation('remainingLives')}: ${this.lives}</p>
                     <p><i class="fas fa-check-circle"></i> ${this.getTranslation('correctAnswers')}: ${stats.correct}/${stats.total} (${correctPercentage}%)</p>
-                    <p><i class="fas fa-chart-line"></i> Sonraki Bölüm: ${['', 'Kolay', 'Orta', 'Zor'][this.getProgressiveDifficulty()]} Seviye</p>
+                    <p><i class="fas fa-chart-line"></i> ${this.getTranslation('nextSectionLevel')}: ${this.getDifficultyText(this.getProgressiveDifficulty())} ${this.getTranslation('levelText')}</p>
                 </div>
                 <button id="next-section-btn" class="level-btn"><i class="fas fa-forward"></i> ${this.getTranslation('nextSection')}</button>
             </div>
@@ -7381,7 +7395,7 @@ const quizApp = {
         // Tam ekran modal oluştur
         const celebrationModal = document.createElement('div');
         celebrationModal.className = 'celebration-modal';
-        celebrationModal.style.cssText = `
+                celebrationModal.style.cssText = `
             position: fixed;
             top: 0;
             left: 0;
@@ -7391,10 +7405,13 @@ const quizApp = {
             z-index: 99999;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             font-family: 'Poppins', sans-serif;
-            overflow: hidden;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 20px 10px;
+            box-sizing: border-box;
         `;
         
         // Konfeti Canvas'ı
@@ -7413,13 +7430,18 @@ const quizApp = {
         
         // Modal İçeriği
         const modalContent = document.createElement('div');
-        modalContent.style.cssText = `
+                modalContent.style.cssText = `
             position: relative;
             z-index: 2;
             text-align: center;
-            padding: 40px 20px;
-            max-width: 600px;
-            width: 90%;
+            padding: 20px 15px;
+            max-width: 90%;
+            width: 100%;
+            margin: auto;
+            min-height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         `;
         
         // Başarı oranına göre kutlama mesajları (dil desteği ile)
@@ -7586,22 +7608,34 @@ const quizApp = {
         // Konfeti animasyonu başlat
         this.startConfetti(confettiCanvas);
         
-        // Buton event listeners
-        document.getElementById('play-again-btn').addEventListener('click', () => {
-            celebrationModal.remove();
-            style.remove();
-            this.restartGame();
-        });
-        
-        document.getElementById('main-menu-btn').addEventListener('click', () => {
-            celebrationModal.remove();
-            style.remove();
-            window.location.reload();
-        });
-        
-        document.getElementById('share-btn').addEventListener('click', () => {
-            this.shareResults(finalStats);
-        });
+        // DOM'a eklendikten sonra buton event listeners - setTimeout ile DOM'un hazır olmasını bekle
+        setTimeout(() => {
+            const playAgainBtn = document.getElementById('play-again-btn');
+            const mainMenuBtn = document.getElementById('main-menu-btn');
+            const shareBtn = document.getElementById('share-btn');
+            
+            if (playAgainBtn) {
+                playAgainBtn.addEventListener('click', () => {
+                    celebrationModal.remove();
+                    style.remove();
+                    this.restartGame();
+                });
+            }
+            
+            if (mainMenuBtn) {
+                mainMenuBtn.addEventListener('click', () => {
+                    celebrationModal.remove();
+                    style.remove();
+                    window.location.reload();
+                });
+            }
+            
+            if (shareBtn) {
+                shareBtn.addEventListener('click', () => {
+                    this.shareResults(finalStats);
+                });
+            }
+        }, 100);
         
         // Ses efekti çal
         if (this.soundEnabled) {
