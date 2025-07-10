@@ -7457,47 +7457,27 @@ const quizApp = {
                 <p style="font-size: 1.4rem; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin: 20px 0; font-weight: 600;">
                     ${motivationText}
                 </p>
-            </div>
+                        </div>
             
-            <div style="background: rgba(255,255,255,0.95); border-radius: 20px; padding: 30px; margin: 30px 0; box-shadow: 0 20px 40px rgba(0,0,0,0.2); animation: slideInUp 0.8s ease-out 0.5s both;">
-                <h2 style="color: #4a148c; margin-bottom: 25px; font-size: 1.8rem; font-weight: 700;">
-                    ${celebrationTexts.gameSummary}
-                </h2>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; margin: 25px 0;">
-                    <div style="background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 15px; padding: 20px; color: white; box-shadow: 0 8px 16px rgba(0,0,0,0.1);">
-                        <div style="font-size: 2.2rem; font-weight: bold; margin-bottom: 5px;">🎯</div>
-                        <div style="font-size: 1.6rem; font-weight: bold;">${finalStats.correctAnswers}/${finalStats.totalQuestions}</div>
-                        <div style="font-size: 0.9rem; opacity: 0.9;">${celebrationTexts.correctAnswersLabel}</div>
-                    </div>
-                    
-                    <div style="background: linear-gradient(135deg, #f093fb, #f5576c); border-radius: 15px; padding: 20px; color: white; box-shadow: 0 8px 16px rgba(0,0,0,0.1);">
-                        <div style="font-size: 2.2rem; font-weight: bold; margin-bottom: 5px;">⭐</div>
-                        <div style="font-size: 1.6rem; font-weight: bold;">${finalStats.score}</div>
-                        <div style="font-size: 0.9rem; opacity: 0.9;">${celebrationTexts.totalPointsLabel}</div>
-                    </div>
-                    
-                    <div style="background: linear-gradient(135deg, #4facfe, #00f2fe); border-radius: 15px; padding: 20px; color: white; box-shadow: 0 8px 16px rgba(0,0,0,0.1);">
-                        <div style="font-size: 2.2rem; font-weight: bold; margin-bottom: 5px;">⏱️</div>
-                        <div style="font-size: 1.6rem; font-weight: bold;">${finalStats.avgTime}s</div>
-                        <div style="font-size: 0.9rem; opacity: 0.9;">${celebrationTexts.averageTimeLabel}</div>
-                    </div>
-                    
-                    <div style="background: linear-gradient(135deg, #fa709a, #fee140); border-radius: 15px; padding: 20px; color: white; box-shadow: 0 8px 16px rgba(0,0,0,0.1);">
-                        <div style="font-size: 2.2rem; font-weight: bold; margin-bottom: 5px;">❤️</div>
-                        <div style="font-size: 1.6rem; font-weight: bold;">${finalStats.lives}</div>
-                        <div style="font-size: 0.9rem; opacity: 0.9;">${celebrationTexts.remainingLivesLabel}</div>
-                    </div>
-                </div>
-                
-                <div style="margin: 25px 0;">
-                    <div style="background: linear-gradient(90deg, #667eea, #764ba2); height: 10px; border-radius: 20px; overflow: hidden;">
-                        <div style="background: linear-gradient(90deg, #FFD700, #FFA500); height: 100%; width: ${successRate}%; border-radius: 20px; animation: fillBar 2s ease-out 1s both;"></div>
-                    </div>
-                    <p style="color: #4a148c; font-weight: bold; margin-top: 10px; font-size: 1.1rem;">
-                        ${celebrationTexts.successRateLabel}: %${Math.round(successRate)}
-                    </p>
-                </div>
+            <div style="background: rgba(255,255,255,0.95); border-radius: 20px; padding: 40px; margin: 30px 0; box-shadow: 0 20px 40px rgba(0,0,0,0.2); animation: slideInUp 0.8s ease-out 0.5s both;">
+                ${(() => {
+                    // Rastgele motive edici mesaj seç
+                    const motivationalMessages = celebrationTexts.motivationalMessages || [];
+                    const randomMessage = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
+                    return `
+                        <div style="text-align: center;">
+                            <div style="font-size: 2.5rem; margin-bottom: 20px; animation: pulse 2s infinite;">
+                                ✨💫⭐
+                            </div>
+                            <h2 style="color: #4a148c; font-size: 1.8rem; font-weight: 700; margin-bottom: 25px; line-height: 1.4;">
+                                ${randomMessage}
+                            </h2>
+                            <div style="font-size: 1.5rem; color: #667eea; margin-top: 20px;">
+                                🌟 ${celebrationTexts.youAreAwesome} 🌟
+                            </div>
+                        </div>
+                    `;
+                })()}
             </div>
             
             <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; animation: fadeInUp 0.8s ease-out 1s both;">
@@ -7581,9 +7561,15 @@ const quizApp = {
                 0% { transform: translateY(30px); opacity: 0; }
                 100% { transform: translateY(0); opacity: 1; }
             }
-            @keyframes fillBar {
-                0% { width: 0%; }
-                100% { width: ${successRate}%; }
+            @keyframes pulse {
+                0%, 100% { 
+                    transform: scale(1); 
+                    opacity: 1; 
+                }
+                50% { 
+                    transform: scale(1.1); 
+                    opacity: 0.8; 
+                }
             }
             button:hover {
                 transform: translateY(-3px) scale(1.05) !important;
