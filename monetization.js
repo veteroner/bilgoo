@@ -1,4 +1,14 @@
 // Monetization ve Çerez Yönetimi
+// AdMob Plugin Import (sadece Capacitor environment'ta çalışır)
+let AdMob = null;
+try {
+    if (window.Capacitor && window.Capacitor.Plugins) {
+        AdMob = window.Capacitor.Plugins.AdMob;
+    }
+} catch (e) {
+    console.log('AdMob plugin bulunamadı - web environment');
+}
+
 const MonetizationManager = {
     // Çerez tercihlerini sakla
     cookiePreferences: {
@@ -692,23 +702,102 @@ const MonetizationManager = {
 
     // Mobil reklam yönetimi
     initMobileAds: function() {
-        // Mobil cihaz kontrolü
-        const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        // Platform kontrolü
+        const isAndroidApp = window.Capacitor && window.Capacitor.getPlatform() === 'android';
+        const isMobileWeb = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         
-        if (!isMobile) {
+        if (isAndroidApp) {
+            console.log('Android uygulaması tespit edildi, AdMob reklamları başlatılıyor...');
+            this.initAdMob();
+        } else if (isMobileWeb) {
+            console.log('Mobil web tespit edildi, AdSense reklamları başlatılıyor...');
+            // Üst banner reklam oluştur
+            this.createMobileTopBanner();
+            
+            // Sayfa yüklendikten sonra inline reklamlar ekle
+            setTimeout(() => {
+                this.addMobileInlineAds();
+            }, 3000);
+        } else {
             console.log('Masaüstü cihaz tespit edildi, mobil reklamlar atlanıyor');
             return;
         }
-        
-        console.log('Mobil cihaz tespit edildi, mobil reklamlar başlatılıyor...');
-        
-        // Üst banner reklam oluştur
-        this.createMobileTopBanner();
-        
-        // Sayfa yüklendikten sonra inline reklamlar ekle
-        setTimeout(() => {
-            this.addMobileInlineAds();
-        }, 3000);
+    },
+
+    // AdMob Android reklamları başlat
+    initAdMob: function() {
+        if (!AdMob) {
+            console.log('AdMob plugin bulunamadı');
+            return;
+        }
+
+        // AdMob'u başlat
+        AdMob.initialize({
+            requestTrackingAuthorization: true,
+            testingDevices: ['YOUR_DEVICE_ID'], // Test için
+            initializeForTesting: true
+        }).then(() => {
+            console.log('✅ AdMob başarıyla başlatıldı');
+            
+            // Banner reklam göster
+            this.showAdMobBanner();
+            
+            // Interstitial reklamı hazırla
+            this.prepareInterstitialAd();
+            
+        }).catch((error) => {
+            console.error('❌ AdMob başlatılamadı:', error);
+        });
+    },
+
+    // AdMob Banner reklamı göster
+    showAdMobBanner: function() {
+        if (!AdMob) return;
+
+        const bannerOptions = {
+            adId: 'ca-app-pub-7610338885240453/1309283981', // Google'dan aldığınız ID
+            adSize: 'BANNER',
+            position: 'TOP_CENTER',
+            margin: 0,
+            isTesting: true // Yayına çıkarken false yapın
+        };
+
+        AdMob.showBanner(bannerOptions).then(() => {
+            console.log('✅ AdMob Banner gösterildi');
+        }).catch((error) => {
+            console.error('❌ AdMob Banner gösterilemedi:', error);
+        });
+    },
+
+    // Interstitial reklam hazırla
+    prepareInterstitialAd: function() {
+        if (!AdMob) return;
+
+        const interstitialOptions = {
+            adId: 'ca-app-pub-7610338885240453/1309283981', // Aynı ID kullanabilirsiniz veya farklı bir tane alabilirsiniz
+            isTesting: true // Yayına çıkarken false yapın
+        };
+
+        AdMob.prepareInterstitial(interstitialOptions).then(() => {
+            console.log('✅ AdMob Interstitial hazırlandı');
+        }).catch((error) => {
+            console.error('❌ AdMob Interstitial hazırlanamadı:', error);
+        });
+    },
+
+    // Interstitial reklam göster (oyun aralarında kullanın)
+    showInterstitialAd: function() {
+        if (!AdMob) return;
+
+        AdMob.showInterstitial().then(() => {
+            console.log('✅ AdMob Interstitial gösterildi');
+            // Yeni interstitial hazırla
+            setTimeout(() => {
+                this.prepareInterstitialAd();
+            }, 1000);
+        }).catch((error) => {
+            console.error('❌ AdMob Interstitial gösterilemedi:', error);
+        });
     },
 
     // Mobil üst banner oluştur
