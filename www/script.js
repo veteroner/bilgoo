@@ -9072,22 +9072,24 @@ const quizApp = {
                 // this.showToast('Tarayıcı ayarlarınız veritabanı erişimine izin vermiyor. Tek oyunculu modda oynayabilirsiniz.', 'toast-warning');
             };
             
-            // Firestore bağlantısını daha nazik test et
+            // Firestore bağlantısını test et (izin hatalarını kontrol et)
             if (firebase.firestore) {
-                // Firestore bağlantısını ping ile test et
-                firebase.firestore().collection('test').doc('test')
+                // Firestore kurallarını test et
+                firebase.firestore().collection('highScores').limit(1)
                     .get()
                     .then(() => {
-                        console.log('Firestore bağlantısı başarılı');
+                        console.log('✅ Firestore bağlantısı ve izinleri başarılı');
                     })
                     .catch(error => {
-                        // Bağlantı hatası oluşursa
-                        console.warn('Firestore bağlantı sorunu: ' + error.message);
+                        console.warn('⚠️ Firestore bağlantı sorunu:', error.message);
                         
-                        // Firebase uyarısı kaldırıldı - artık gösterilmeyecek
-                        // if (error.code === 'unavailable' || error.code === 'failed-precondition') {
-                        //     this.showToast('Firebase sunucularına bağlanılamadı. İnternet bağlantınızı kontrol edin veya tek oyunculu modda oynayın.', 'toast-info');
-                        // }
+                        if (error.message.includes('Missing or insufficient permissions')) {
+                            console.error('🔒 Firestore güvenlik kuralları yetersiz! Admin panelinden kuralları güncelleyin.');
+                            this.showToast('Veri tabanı izinleri güncellenmeli - Admin ile iletişime geçin', 'toast-warning');
+                        } else if (error.code === 'unavailable') {
+                            console.warn('📡 Firebase sunucularına ulaşılamıyor');
+                            this.showToast('Sunucu bağlantısı kurulamadı, tek oyunculu modda oynayın', 'toast-info');
+                        }
                     });
             }
         } catch (error) {

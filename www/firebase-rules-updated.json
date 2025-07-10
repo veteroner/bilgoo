@@ -1,1 +1,210 @@
- 
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ========== HELPER FUNCTIONS ==========
+    // Admin kontrolü fonksiyonu
+    function isAdmin() {
+      return request.auth != null && 
+             exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+             request.auth.token.email == 'wet_oner@hotmail.com';
+    }
+    
+    // Kullanıcı kimlik doğrulaması
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Kendi verisi mi kontrolü
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+    
+    // ========== SKORLAR ve İSTATİSTİKLER ==========
+    // Herkes okuyabilir, herkes yazabilir (oyun sistemi için)
+    match /highScores/{document} {
+      allow read: if true;
+      allow write: if true;
+    }
+    
+    match /gameStats/{document} {
+      allow read: if true;
+      allow write: if true;
+    }
+    
+    // ========== KULLANICI VERİLERİ ==========
+    // Sadece kendi verilerini okuyup yazabilir
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+      
+      // Kişisel skorlar alt koleksiyonu
+      match /personalScores/{scoreId} {
+        allow read, write: if isOwner(userId);
+      }
+      
+      // Aktiviteler alt koleksiyonu
+      match /activities/{activityId} {
+        allow read, write: if isOwner(userId);
+      }
+      
+      // Kullanıcı istatistikleri
+      match /stats/{statId} {
+        allow read, write: if isOwner(userId);
+      }
+      
+      // Rozetler
+      match /badges/{badgeId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+    
+    // ========== SORULAR ==========
+    // Herkes okuyabilir, sadece admin yazabilir
+    match /questions/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /adminQuestions/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // Bekleyen sorular - kullanıcılar ekleyebilir, adminler yönetebilir
+    match /pendingQuestions/{document} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+      allow delete: if isAdmin();
+    }
+    
+    // ========== ADMIN İŞLEMLERİ ==========
+    // Admin koleksiyonu
+    match /admins/{adminId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+    
+    // Admin ayarları
+    match /admin-settings/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /adminSettings/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // Audit logları
+    match /audit-logs/{document} {
+      allow read: if isAdmin();
+      allow write: if isAuthenticated();
+    }
+    
+    match /auditLogs/{document} {
+      allow read: if isAdmin();
+      allow write: if isAuthenticated();
+    }
+    
+    // ========== OYUN SESSİYONLARI ==========
+    // Online oyun için
+    match /game-sessions/{document} {
+      allow read, write: if true;
+    }
+    
+    match /gameSessions/{document} {
+      allow read, write: if true;
+    }
+    
+    // Oyun davetleri
+    match /game-invites/{document} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    match /gameInvites/{document} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    match /invites/{document} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    // ========== VERİ YÖNETİMİ ==========
+    // Veri saklama ve temizleme
+    match /data-retention/{document} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
+    
+    match /dataRetention/{document} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
+    
+    // Kullanıcı raporları
+    match /reports/{document} {
+      allow read: if isAdmin();
+      allow write: if isAuthenticated();
+    }
+    
+    // ========== ARKADAŞLIK SİSTEMİ ==========
+    // Arkadaş istekleri
+    match /friend-requests/{document} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    match /friendRequests/{document} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    // Arkadaş listeleri
+    match /friends/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+    
+    // ========== GÜNLÜK GÖREVLER ==========
+    match /daily-tasks/{document} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    match /dailyTasks/{document} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    // ========== GENEL ERİŞİM ==========
+    // Genel sistem ayarları
+    match /app-settings/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // Leaderboard
+    match /leaderboard/{document} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+    
+    // Feedback
+    match /feedback/{document} {
+      allow read: if isAdmin();
+      allow write: if isAuthenticated();
+    }
+    
+    // ========== CATCH-ALL RULE ==========
+    // Diğer tüm dökümanlar için güvenli varsayılan
+    match /{document=**} {
+      allow read: if false;
+      allow write: if false;
+    }
+  }
+}
+
+// ========== REALTIME DATABASE RULES ==========
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+} 
