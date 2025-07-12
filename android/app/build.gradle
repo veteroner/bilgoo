@@ -40,16 +40,14 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-    
-    // Lint kontrollerini yapılandır
-    lintOptions {
-        checkReleaseBuilds false
+    lint {
         abortOnError false
-        disable 'InvalidPackage', 'UnusedResources', 'IconLocation', 'IconDensities', 
-                'IconMissingDensityFolder', 'GoogleAppIndexingWarning', 'DuplicateIds',
-                'MissingConstraints', 'ContentDescription', 'LabelFor'
+        checkReleaseBuilds false
+        disable 'InvalidPackage', 'UnusedResources', 'IconLocation', 'IconDensities', 'IconMissingDensityFolder', 'GoogleAppIndexingWarning', 'DuplicateIds', 'MissingConstraints', 'ContentDescription', 'LabelFor'
         warningsAsErrors false
     }
+
+    // Lint kontrollerini yapılandır
 }
 
 repositories {
