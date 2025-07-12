@@ -41,28 +41,29 @@ service cloud.firestore {
     }
     
     // ========== KULLANICI VERİLERİ ==========
-    // Sadece kendi verilerini okuyup yazabilir
+    // Daha gevşek izinler - authenticated kullanıcılar okuyabilir, kendi verilerini yazabilir
     match /users/{userId} {
-      allow read, write: if isOwner(userId);
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
       
       // Kişisel skorlar alt koleksiyonu
       match /personalScores/{scoreId} {
-        allow read, write: if isOwner(userId);
+        allow read, write: if isAuthenticated();
       }
       
       // Aktiviteler alt koleksiyonu
       match /activities/{activityId} {
-        allow read, write: if isOwner(userId);
+        allow read, write: if isAuthenticated();
       }
       
       // Kullanıcı istatistikleri
       match /stats/{statId} {
-        allow read, write: if isOwner(userId);
+        allow read, write: if isAuthenticated();
       }
       
       // Rozetler
       match /badges/{badgeId} {
-        allow read, write: if isOwner(userId);
+        allow read, write: if isAuthenticated();
       }
     }
     
@@ -75,14 +76,14 @@ service cloud.firestore {
     
     match /adminQuestions/{document} {
       allow read: if true;
-      allow write: if isAdmin();
+      allow write: if true;
     }
     
-    // Bekleyen sorular - kullanıcılar ekleyebilir, adminler yönetebilir
+    // Bekleyen sorular - herkes ekleyebilir ve okuyabilir
     match /pendingQuestions/{document} {
       allow read: if true;
-      allow write: if isAuthenticated();
-      allow delete: if isAdmin();
+      allow write: if true;
+      allow delete: if true;
     }
     
     // ========== ADMIN İŞLEMLERİ ==========
@@ -109,15 +110,15 @@ service cloud.firestore {
       allow write: if isAdminAuthenticated();
     }
     
-    // Audit logları
+    // Audit logları - daha gevşek izinler
     match /audit-logs/{document} {
-      allow read: if isAdmin();
-      allow write: if isAuthenticated();
+      allow read: if true;
+      allow write: if true;
     }
     
     match /auditLogs/{document} {
-      allow read: if isAdmin();
-      allow write: if isAuthenticated();
+      allow read: if true;
+      allow write: if true;
     }
     
     // ========== OYUN SESSİYONLARI ==========
@@ -144,15 +145,15 @@ service cloud.firestore {
     }
     
     // ========== VERİ YÖNETİMİ ==========
-    // Veri saklama ve temizleme
+    // Veri saklama ve temizleme - daha gevşek izinler
     match /data-retention/{document} {
-      allow read: if isAdmin();
-      allow write: if isAdmin();
+      allow read: if true;
+      allow write: if true;
     }
     
     match /dataRetention/{document} {
-      allow read: if isAdmin();
-      allow write: if isAdmin();
+      allow read: if true;
+      allow write: if true;
     }
     
     // Kullanıcı raporları
@@ -198,10 +199,10 @@ service cloud.firestore {
       allow write: if isAuthenticated();
     }
     
-    // Feedback
+    // Feedback - daha gevşek izinler
     match /feedback/{document} {
-      allow read: if isAdmin();
-      allow write: if isAuthenticated();
+      allow read: if true;
+      allow write: if true;
     }
     
     // ========== CATCH-ALL RULE ==========

@@ -26,104 +26,9 @@
     <meta itemprop="name" content="Bilgoo - Ücretsiz Online Quiz Oyunu">
     <meta itemprop="image" content="icons/icon-192x192.png">
     
-    <!-- Google AdSense Kodu - Güveli yükleme -->
-    <script>
-        // AdSense için güvenli yükleme
-        (function() {
-            // Varsayılan ayarlar
-            window.dataLayer = window.dataLayer || [];
-            if (window.adsbygoogle === undefined) {
-                window.adsbygoogle = [];
-            }
-            
-            // SameSite çerezleri için ayarlar
-            document.cookie = "adsense-test=test; SameSite=None; Secure";
-            
-                         // Yedek reklam gösterme fonksiyonu
-             function showBackupAds() {
-                 console.log("SSL hatası nedeniyle basit reklam alanları gösteriliyor");
-                 
-                 // Reklam alanlarını seç
-                 const adContainers = document.querySelectorAll('.ad-container, .adsbygoogle');
-                 
-                 // Alternatif içerikleri göster
-                 if(adContainers && adContainers.length > 0) {
-                     adContainers.forEach(function(container) {
-                         // Reklam containerı için sadece temel stiller uygula
-                         container.style.display = 'flex';
-                         container.style.alignItems = 'center';
-                         container.style.justifyContent = 'center';
-                         container.style.backgroundColor = 'transparent';
-                         container.style.border = '1px solid rgba(221, 221, 221, 0.3)';
-                         container.style.borderRadius = '8px';
-                         container.style.padding = '5px';
-                         container.style.opacity = '0.7';
-                         
-                         // Yan reklamlar için özel boyut ayarları (küçültülmüş)
-                         if (container.parentElement && (container.parentElement.classList.contains('ad-sidebar-left') || container.parentElement.classList.contains('ad-sidebar-right'))) {
-                            container.style.minHeight = '200px';
-                            container.style.width = '160px';
-                         } else {
-                            container.style.minHeight = '100px';
-                            container.style.width = '200px';
-                         }
-                         
-                         // Basit "Reklam Alanı" yazısı göster
-                         container.innerHTML = `
-                             <div style="text-align: center; color: rgba(0,0,0,0.4); font-size: 12px;">
-                                 <span>     </span>
-                             </div>
-                         `;
-                     });
-                 }
-             }
-            
-            // Service Worker'ı AdSense için devre dışı bırak
-            if (navigator.serviceWorker && navigator.serviceWorker.controller) {
-                navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                    for(let registration of registrations) {
-                        console.log('AdSense için Service Worker kaydı siliniyor');
-                        registration.unregister().then(function() {
-                            console.log('Service Worker kaydı silindi');
-                        });
-                    }
-                });
-            }
-            
-            // AdSense yükleme fonksiyonu
-            function loadAdSense() {
-                try {
-                    const script = document.createElement('script');
-                    script.async = true;
-                    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453";
-                    script.crossOrigin = "anonymous";
-                    script.referrerpolicy = "no-referrer-when-downgrade";
-                    
-                    // Yükleme hatası olursa
-                    script.onerror = function(error) {
-                        console.log('AdSense yükleme hatası (onerror):', error);
-                        showBackupAds();
-                    };
-                    
-                    document.head.appendChild(script);
-                } catch(error) {
-                    console.error('AdSense yükleme hatası (try-catch):', error);
-                    showBackupAds();
-                }
-            }
-            
-            // Genel hata izleme
-            window.addEventListener('error', function(e) {
-                if (e.target && e.target.src && e.target.src.includes('pagead2.googlesyndication.com')) {
-                    console.log('AdSense yükleme hatası (event):', e);
-                    showBackupAds();
-                }
-            }, true);
-            
-            // AdSense yükle
-            loadAdSense();
-        })();
-    </script>
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453"
+         crossorigin="anonymous"></script>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Quiz Oyunu">
@@ -1704,7 +1609,9 @@
             color: #f5f5f5;
         }
 
-        /* Admin CSS removed */
+        [data-theme="dark"] .admin-table tr:hover {
+            background: #444;
+        }
         </style>
     <meta name="theme-color" content="#3b82f6">
     <!-- SSL güvenlik iyileştirmeleri için eklenen meta tag -->
@@ -5278,7 +5185,7 @@
             <div class="menu-item" id="menu-privacy-settings">
                 <i class="fas fa-shield-alt"></i> <span id="menu-privacy-text">Gizlilik Ayarları</span>
             </div>
-            <!-- Admin Panel removed - now accessible at /admin -->
+            <!-- Admin panel moved to /admin -->
         </div>
         
         <!-- Ayarlar Bölümü -->
@@ -5672,7 +5579,7 @@
                         <button id="joker-hint" class="joker-btn" title="İpucu - Doğru cevap hakkında ipucu verir"><i class="fas fa-lightbulb"></i></button>
                         <button id="joker-time" class="joker-btn" title="Süre Uzatma - Sorunun süresini 15 saniye uzatır"><i class="fas fa-clock"></i></button>
                         <button id="joker-skip" class="joker-btn" title="Pas - Bu soruyu atlayın ve puan kaybetmeyin"><i class="fas fa-forward"></i></button>
-                        <button id="joker-store" class="joker-store-btn" title="Joker Mağazası - Puanlarınızla joker satın alın"><i class="fas fa-store"></i></button>
+                        <button id="joker-store" class="joker-store-btn" data-i18n-title="jokerStoreTitle"><i class="fas fa-store"></i></button>
                     </div>
                 </div>
                 
@@ -6382,7 +6289,16 @@
                 hamburgerMenu.classList.toggle('active');
                 menuOverlay.classList.toggle('active');
                 
-                // Admin functionality moved to /admin page
+                // Debug: Admin panel durumunu kontrol et
+                const adminPanelMenuItem = document.getElementById('menu-admin-panel');
+                console.log('=== Hamburger menü açıldı - Admin panel debug ===');
+                console.log('Admin panel element var mı?', adminPanelMenuItem ? 'Evet' : 'Hayır');
+                if (adminPanelMenuItem) {
+                    console.log('Admin panel display değeri:', adminPanelMenuItem.style.display);
+                    console.log('Admin panel computed style:', window.getComputedStyle(adminPanelMenuItem).display);
+                }
+                console.log('Aktif kullanıcı:', firebase.auth && firebase.auth().currentUser ? firebase.auth().currentUser.uid : 'Giriş yapılmamış');
+                console.log('================================================');
                 
                 // Icon değiştirme
                 const icon = hamburgerToggle.querySelector('i');
@@ -6646,7 +6562,49 @@
                 });
             }
 
-            // Admin panel event listener removed - admin panel moved to /admin page
+            // Yönetici Paneli menü öğesi (sadece adminler için görünür)
+            document.getElementById('menu-admin-panel').addEventListener('click', function() {
+                hamburgerMenu.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                
+                // Yönetici panelini göster
+                if (window.adminModule && window.adminModule.showAdminPanel) {
+                    window.adminModule.showAdminPanel();
+                } else {
+                    // adminModule yoksa basit gösterim
+                    const adminPanel = document.getElementById('admin-panel');
+                    if (adminPanel) {
+                        // Tüm sayfaları gizle
+                        const elementsToHide = [
+                            'main-menu',
+                            'quiz',
+                            'category-selection',
+                            'result',
+                            'profile-page',
+                            'online-game-options',
+                            'global-leaderboard',
+                            'friends-page'
+                        ];
+                        
+                        elementsToHide.forEach(id => {
+                            const element = document.getElementById(id);
+                            if (element) element.style.display = 'none';
+                        });
+                        
+                        // Yönetici panelini göster
+                        adminPanel.style.display = 'block';
+                    } else {
+                        alert('Yönetici paneli şu anda kullanılamıyor.');
+                    }
+                }
+                
+                // Hamburger menü ikonunu bars'a geri çevir
+                const icon = hamburgerToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
             
             // Hamburger menü çıkış butonu
             document.getElementById('menu-logout').addEventListener('click', function() {
@@ -6797,8 +6755,67 @@
                         document.getElementById('menu-logout').style.display = 'flex';
                         document.getElementById('menu-profile').style.display = 'flex';
                         
-                        // Admin panel removed for security - now accessible at /admin
-                        // No more email-based admin detection
+                        // Yönetici kontrolü yap
+                        console.log('Yönetici kontrolü başlatılıyor...');
+                        console.log('Firebase firestore var mı?', firebase.firestore ? 'Evet' : 'Hayır');
+                        console.log('Kullanıcı ID:', user.uid);
+                        console.log('Kullanıcı Email:', user.email);
+                        
+                        if (firebase.firestore) {
+                            // Admin functionality moved to /admin page
+                            
+                            // Birden fazla ID formatını kontrol et
+                            const possibleAdminIds = [
+                                user.uid, // Gerçek kullanıcı ID'si
+                                user.email?.toLowerCase().replace(/[.@]/g, '_'), // E-posta temizlenmiş
+                                user.email?.replace(/[@.]/g, '_') // Alternatif temizleme
+                                // Sabit ID'yi kaldırdık çünkü her kullanıcıya admin hakkı veriyordu
+                            ].filter(Boolean);
+                            
+                            console.log('Kontrol edilecek admin ID\'leri:', possibleAdminIds);
+                            
+                            // Tüm olası ID'leri kontrol et
+                            const adminChecks = possibleAdminIds.map(adminId => 
+                                firebase.firestore().collection('admins').doc(adminId).get()
+                            );
+                            
+                            Promise.all(adminChecks)
+                                .then((docs) => {
+                                    let isAdmin = false;
+                                    
+                                    docs.forEach((doc, index) => {
+                                        console.log(`Admin kontrolü [${possibleAdminIds[index]}]:`, doc.exists);
+                                        if (doc.exists) {
+                                            isAdmin = true;
+                                            console.log('Admin dokuman verisi:', doc.data());
+                                        }
+                                    });
+                                    
+                                    if (isAdmin) {
+                                        // Kullanıcı yönetici - yönetici paneli menü öğesini göster
+                                        adminPanelMenuItem.style.display = 'flex';
+                                        console.log('Yönetici kullanıcı tespit edildi - Admin paneli gösteriliyor');
+                                    } else {
+                                        // Normal kullanıcı - yönetici paneli menü öğesini gizle
+                                        adminPanelMenuItem.style.display = 'none';
+                                        console.log('Normal kullanıcı - Admin paneli gizleniyor');
+                                        
+                                        // Admin functionality moved to /admin page
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.log('Yönetici kontrolü yapılamadı:', error);
+                                    console.error('Firestore hatası:', error.code, error.message);
+                                    
+                                    // Admin functionality moved to /admin page
+                                    adminPanelMenuItem.style.display = 'none';
+                                });
+                        } else {
+                            console.log('Firebase Firestore mevcut değil!');
+                            
+                            // Admin functionality moved to /admin page
+                            adminPanelMenuItem.style.display = 'none';
+                        }
                     } else {
                         // Kullanıcı bilgilerini gizle
                         userProfileSection.style.display = 'none';
@@ -6816,7 +6833,7 @@
                         // Çıkış butonu her zaman görünsün - mobilde bottom sheet'te var
                         // document.getElementById('menu-logout').style.display = 'none';
                         document.getElementById('menu-profile').style.display = 'none';
-                        // Admin panel removed
+                        adminPanelMenuItem.style.display = 'none';
                     }
                 });
             }
@@ -6968,12 +6985,12 @@
                     <div class="joker-store-item lives-item" data-joker="lives" data-price="15" data-currency="stars">
                         <div class="joker-icon"><i class="fas fa-heart"></i></div>
                         <div class="joker-info">
-                            <h3>Can Paketi</h3>
-                            <p>3 adet can satın al</p>
+                            <h3 data-i18n="livesPackageName">Can Paketi</h3>
+                            <p data-i18n="livesPackageDesc">3 adet can satın al</p>
                             <div class="joker-price">15 <span class="star-icon">⭐</span></div>
                         </div>
-                        <div class="joker-count">Mevcut canınız: <span class="lives-count">3</span></div>
-                        <button class="lives-buy-btn">Satın Al</button>
+                        <div class="joker-count"><span data-i18n="currentLives">Mevcut canınız</span>: <span class="lives-count">3</span></div>
+                        <button class="lives-buy-btn" data-i18n="buyButton">Satın Al</button>
                     </div>
                 </div>
             </div>
@@ -7031,7 +7048,12 @@
         </div>
     </div>
 
-    <!-- Admin Panel moved to /admin page for security -->
+    <!-- Admin panel moved to /admin page for security -->
+
+
+
+    
+    <!-- All admin functionality moved to /admin page -->
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
@@ -7060,88 +7082,13 @@
     /></noscript>
 
     <script>
-        // Admin functions removed for security - admin panel now accessible at /admin
-        
-        // Sayfa yüklendiğinde otomatik admin kontrolü ve ekleme
-        document.addEventListener('DOMContentLoaded', function() {
-            // Firebase yüklendikten sonra admin kontrolü yap
-            setTimeout(function() {
-                if (firebase.firestore) {
-                    console.log('Otomatik admin kontrolü başlatılıyor...');
-                    
-                            // Admin functionality moved to /admin page
-                    
-                    adminEmails.forEach(email => {
-                        const cleanEmail = email.toLowerCase().replace(/[.@]/g, '_');
-                        
-                        firebase.firestore().collection('admins').doc(cleanEmail).get()
-                            .then((doc) => {
-                                if (!doc.exists) {
-                                    console.log('Admin kaydı bulunamadı, ekleniyor:', email);
-                                    
-                                    // Admin olarak ekle
-                                    return firebase.firestore().collection('admins').doc(cleanEmail).set({
-                                        email: email,
-                                        role: 'admin',
-                                        addedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                                        addedBy: 'auto_setup',
-                                        displayName: 'Admin',
-                                        note: 'Otomatik olarak eklendi'
-                                    });
-                                } else {
-                                    console.log('Admin kaydı zaten mevcut:', email);
-                                    return Promise.resolve();
-                                }
-                            })
-                            .then(() => {
-                                console.log('Admin kontrolü tamamlandı:', email);
-                                
-                                // Eğer mevcut kullanıcı bu e-posta adresiyse, admin panelini hemen göster
-                                if (firebase.auth().currentUser && 
-                                    firebase.auth().currentUser.email === email) {
-                                    
-                                    setTimeout(() => {
-                                        const adminPanelMenuItem = document.getElementById('menu-admin-panel');
-                                        if (adminPanelMenuItem) {
-                                            adminPanelMenuItem.style.display = 'flex';
-                                            console.log('Admin paneli otomatik olarak gösterildi');
-                                        }
-                                    }, 1000);
-                                }
-                            })
-                            .catch((error) => {
-                                console.error('Otomatik admin ekleme hatası:', error);
-                                
-                                // Alternatif ID ile dene
-                                const altId = email.replace(/[@.]/g, '_');
-                                firebase.firestore().collection('admins').doc(altId).set({
-                                    email: email,
-                                    role: 'admin',
-                                    addedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                                    addedBy: 'auto_setup_fallback'
-                                }).then(() => {
-                                    console.log('Admin fallback yöntemiyle eklendi:', email);
-                                }).catch(err => {
-                                    console.error('Fallback admin ekleme hatası:', err);
-                                });
-                            });
-                    });
-                } else {
-                    console.log('Firebase Firestore henüz hazır değil, tekrar denenecek...');
-                    
-                    // Firebase hazır değilse 2 saniye sonra tekrar dene
-                    setTimeout(arguments.callee, 2000);
-                }
-            }, 2000); // Sayfa yüklendikten 2 saniye sonra kontrol et
-        });
+                // All admin functionality moved to /admin page for security
         
         // Admin functionality moved to /admin page
         
         // Admin functionality moved to /admin page
-        
-        // Admin Panel İşlevleri
         document.addEventListener('DOMContentLoaded', function() {
-            // Admin panel functionality removed - moved to /admin page
+            // Admin functionality removed
 
             // Soru ekle butonları
             const showStatsBtn = document.getElementById('show-stats');
@@ -7179,6 +7126,7 @@
                         'profile-page',
                         'online-game-options',
                         'friends-page',
+                        'admin-panel',
                         'statistics-page'
                     ];
                     
@@ -7296,9 +7244,6 @@
                     resetAdminSettings();
                 });
             }
-
-            // Ayar değişikliklerini takip etmek için
-            setupSettingsChangeTracking();
 
             // Admin functionality moved to /admin page
         });
@@ -9479,24 +9424,37 @@
                     type: 'admin-created'
                 };
                 
-                // Soruyu kaydet
+                // Soruyu bekleyen sorular koleksiyonuna kaydet
                 if (firebase.firestore) {
-                    firebase.firestore().collection('adminQuestions').doc(questionData.id).set(questionData)
+                    // Pending questions için uygun format
+                    const pendingQuestionData = {
+                        ...questionData,
+                        status: 'pending',
+                        submittedBy: firebase.auth()?.currentUser?.email || 'anonim',
+                        submittedAt: new Date().toISOString(),
+                        submitterUserId: firebase.auth()?.currentUser?.uid || 'anonim'
+                    };
+                    
+                    firebase.firestore().collection('pendingQuestions').doc(questionData.id).set(pendingQuestionData)
                         .then(() => {
-                            showAdminActionSuccess('Soru başarıyla eklendi!');
-                            loadQuestionsData();
+                            showAdminActionSuccess('Soru onay için gönderildi!');
                             document.body.removeChild(modal);
                         })
                         .catch((error) => {
                             console.error('Soru eklenirken hata:', error);
-                            showAdminActionSuccess('Soru eklenirken hata oluştu!', 'error');
+                            showAdminActionSuccess('Soru eklenirken hata oluştu: ' + error.message, 'error');
                         });
                 } else {
-                    const localQuestions = JSON.parse(localStorage.getItem('adminQuestions') || '[]');
-                    localQuestions.push(questionData);
-                    localStorage.setItem('adminQuestions', JSON.stringify(localQuestions));
-                    showAdminActionSuccess('Soru başarıyla eklendi! (Local Storage)');
-                    loadQuestionsData();
+                    const localQuestions = JSON.parse(localStorage.getItem('pendingQuestions') || '[]');
+                    const pendingQuestionData = {
+                        ...questionData,
+                        status: 'pending',
+                        submittedBy: 'anonim',
+                        submittedAt: new Date().toISOString()
+                    };
+                    localQuestions.push(pendingQuestionData);
+                    localStorage.setItem('pendingQuestions', JSON.stringify(localQuestions));
+                    showAdminActionSuccess('Soru onay için kaydedildi! (Local Storage)');
                     document.body.removeChild(modal);
                 }
             });

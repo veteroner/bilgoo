@@ -9424,24 +9424,37 @@
                     type: 'admin-created'
                 };
                 
-                // Soruyu kaydet
+                // Soruyu bekleyen sorular koleksiyonuna kaydet
                 if (firebase.firestore) {
-                    firebase.firestore().collection('adminQuestions').doc(questionData.id).set(questionData)
+                    // Pending questions için uygun format
+                    const pendingQuestionData = {
+                        ...questionData,
+                        status: 'pending',
+                        submittedBy: firebase.auth()?.currentUser?.email || 'anonim',
+                        submittedAt: new Date().toISOString(),
+                        submitterUserId: firebase.auth()?.currentUser?.uid || 'anonim'
+                    };
+                    
+                    firebase.firestore().collection('pendingQuestions').doc(questionData.id).set(pendingQuestionData)
                         .then(() => {
-                            showAdminActionSuccess('Soru başarıyla eklendi!');
-                            loadQuestionsData();
+                            showAdminActionSuccess('Soru onay için gönderildi!');
                             document.body.removeChild(modal);
                         })
                         .catch((error) => {
                             console.error('Soru eklenirken hata:', error);
-                            showAdminActionSuccess('Soru eklenirken hata oluştu!', 'error');
+                            showAdminActionSuccess('Soru eklenirken hata oluştu: ' + error.message, 'error');
                         });
                 } else {
-                    const localQuestions = JSON.parse(localStorage.getItem('adminQuestions') || '[]');
-                    localQuestions.push(questionData);
-                    localStorage.setItem('adminQuestions', JSON.stringify(localQuestions));
-                    showAdminActionSuccess('Soru başarıyla eklendi! (Local Storage)');
-                    loadQuestionsData();
+                    const localQuestions = JSON.parse(localStorage.getItem('pendingQuestions') || '[]');
+                    const pendingQuestionData = {
+                        ...questionData,
+                        status: 'pending',
+                        submittedBy: 'anonim',
+                        submittedAt: new Date().toISOString()
+                    };
+                    localQuestions.push(pendingQuestionData);
+                    localStorage.setItem('pendingQuestions', JSON.stringify(localQuestions));
+                    showAdminActionSuccess('Soru onay için kaydedildi! (Local Storage)');
                     document.body.removeChild(modal);
                 }
             });
