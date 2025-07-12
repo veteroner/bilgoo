@@ -2115,7 +2115,6 @@
                     const firestore = window.firebase.firestore();
                     const pendingSnapshot = await firestore.collection('pendingQuestions')
                         .where('status', '==', 'pending')
-                        .orderBy('submittedAt', 'desc')
                         .get();
 
                     if (pendingSnapshot.empty) {
@@ -2124,9 +2123,22 @@
                     }
 
                     container.innerHTML = '';
+                    
+                    // Convert to array and sort by date (newest first)
+                    const pendingQuestions = [];
                     pendingSnapshot.forEach(doc => {
-                        const question = doc.data();
-                        const questionId = doc.id;
+                        pendingQuestions.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+                    });
+                    
+                    // Sort by submittedAt date (newest first)
+                    pendingQuestions.sort((a, b) => (b.submittedAt || 0) - (a.submittedAt || 0));
+                    
+                    pendingQuestions.forEach(questionData => {
+                        const question = questionData;
+                        const questionId = questionData.id;
                         const questionElement = document.createElement('div');
                         questionElement.className = 'pending-question-item';
                         questionElement.style.cssText = `
