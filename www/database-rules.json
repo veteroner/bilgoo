@@ -3,11 +3,11 @@
     ".read": false,
     ".write": false,
     "users": {
-      ".read": "auth !== null && (auth.token.email === 'wet_oner@hotmail.com' || root.child('admin_sessions').child(auth.uid).exists())",
-      ".write": "auth !== null && (auth.token.email === 'wet_oner@hotmail.com' || root.child('admin_sessions').child(auth.uid).exists())",
+      ".read": "auth !== null",
+      ".write": "auth !== null",
       "$userId": {
-        ".read": "$userId === auth.uid || auth.token.email === 'wet_oner@hotmail.com' || root.child('admin_sessions').child(auth.uid).exists()",
-        ".write": "$userId === auth.uid || auth.token.email === 'wet_oner@hotmail.com' || root.child('admin_sessions').child(auth.uid).exists()",
+        ".read": "auth !== null",
+        ".write": "auth !== null",
         "stats": {
           ".read": "auth !== null",
           ".write": "$userId === auth.uid"
@@ -32,19 +32,19 @@
       }
     },
     "pending_questions": {
-      ".read": "auth !== null && (auth.token.email === 'wet_oner@hotmail.com' || root.child('admin_sessions').child(auth.uid).exists())",
-      ".write": "auth !== null && (auth.token.email === 'wet_oner@hotmail.com' || root.child('admin_sessions').child(auth.uid).exists())",
+      ".read": "auth !== null",
+      ".write": "auth !== null",
       "$questionId": {
-        ".read": "auth !== null && (auth.token.email === 'wet_oner@hotmail.com' || root.child('admin_sessions').child(auth.uid).exists())",
-        ".write": "auth !== null && (auth.token.email === 'wet_oner@hotmail.com' || root.child('admin_sessions').child(auth.uid).exists())"
+        ".read": "auth !== null",
+        ".write": "auth !== null"
       }
     },
     "notifications": {
-      ".read": "auth !== null && (auth.token.email === 'wet_oner@hotmail.com' || root.child('admin_sessions').child(auth.uid).exists())",
-      ".write": "auth !== null && (auth.token.email === 'wet_oner@hotmail.com' || root.child('admin_sessions').child(auth.uid).exists())",
+      ".read": "auth !== null",
+      ".write": "auth !== null",
       "$notificationId": {
-        ".read": "auth !== null && (auth.token.email === 'wet_oner@hotmail.com' || root.child('admin_sessions').child(auth.uid).exists())",
-        ".write": "auth !== null && (auth.token.email === 'wet_oner@hotmail.com' || root.child('admin_sessions').child(auth.uid).exists())"
+        ".read": "auth !== null",
+        ".write": "auth !== null"
       }
     },
     "userNotifications": {
