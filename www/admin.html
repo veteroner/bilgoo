@@ -228,6 +228,66 @@
             z-index: 1000;
         }
 
+        /* Sidebar (hidden by default) */
+        .admin-sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            transform: translateX(-100%);
+        }
+
+        .admin-sidebar.active {
+            transform: translateX(0);
+        }
+
+        .admin-sidebar-header {
+            padding: 30px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        .admin-sidebar-header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .admin-sidebar-header p {
+            opacity: 0.8;
+            font-size: 14px;
+        }
+
+        .admin-sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .admin-sidebar-nav ul {
+            list-style: none;
+        }
+
+        .admin-sidebar-nav li {
+            margin-bottom: 5px;
+        }
+
+        .admin-sidebar-nav a {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-radius: 0 25px 25px 0;
+            margin-right: 20px;
+            font-weight: 500;
+        }
+
         .admin-topbar .admin-nav-link:hover {
             background: rgba(255,255,255,0.1) !important;
         }
@@ -235,6 +295,42 @@
         .admin-topbar .admin-nav-link.active {
             background: rgba(255,255,255,0.2) !important;
             font-weight: 600;
+        }
+
+        .admin-sidebar-nav a i {
+            margin-right: 15px;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .admin-sidebar-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .admin-logout-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .admin-logout-btn:hover {
+            background: rgba(255,255,255,0.2);
         }
 
         /* Main Content */
@@ -547,6 +643,10 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            .admin-sidebar {
+                width: 100%;
+            }
+
             .admin-main-content {
                 padding: 20px;
             }
@@ -575,14 +675,27 @@
             .admin-search-box {
                 flex-direction: column;
             }
+        }
 
-            .admin-topbar nav {
-                overflow-x: auto;
-                white-space: nowrap;
-            }
+        /* Mobile Menu Toggle */
+        .admin-mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
 
-            .admin-topbar a {
-                margin-right: 10px;
+        @media (max-width: 768px) {
+            .admin-mobile-toggle {
+                display: block;
             }
         }
 
@@ -800,6 +913,11 @@
     </style>
 </head>
 <body>
+    <!-- Mobile Menu Toggle -->
+    <button class="admin-mobile-toggle" id="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
     <!-- Login Container -->
     <div id="admin-login-container" class="admin-login-container">
         <div class="admin-login-box">
@@ -1363,6 +1481,11 @@
                     });
                 });
 
+                // Mobile menu toggle
+                document.getElementById('mobile-menu-toggle').addEventListener('click', () => {
+                    document.getElementById('admin-sidebar').classList.toggle('active');
+                });
+
                 // Settings
                 document.getElementById('save-settings-btn').addEventListener('click', () => {
                     this.saveSettings();
@@ -1495,8 +1618,45 @@
             }
 
             async validateCredentials(username, password) {
-                // Simple validation - in production, use proper authentication
-                return username === 'admin' && password === 'bilgoo2024!';
+                try {
+                    // Simple validation
+                    if (username === 'admin' && password === 'bilgoo2024!') {
+                        // Firebase anonim kimlik doğrulaması yap
+                        if (window.firebase && window.firebase.auth) {
+                            const auth = window.firebase.auth();
+                            const database = window.firebase.database();
+                            
+                            // Admin email ile custom token oluştur (simüle et)
+                            // Gerçek üretimde proper authentication kullanın
+                            try {
+                                const userCredential = await auth.signInAnonymously();
+                                const user = userCredential.user;
+                                
+                                // Admin session'ı database'e kaydet
+                                await database.ref('admin_sessions').child(user.uid).set({
+                                    email: 'wet_oner@hotmail.com',
+                                    loginTime: Date.now(),
+                                    isActive: true
+                                });
+                                
+                                // Admin email bilgisini local storage'a kaydet
+                                localStorage.setItem('adminEmail', 'wet_oner@hotmail.com');
+                                
+                                console.log('Firebase admin kimlik doğrulaması başarılı');
+                                return true;
+                            } catch (authError) {
+                                console.error('Firebase auth error:', authError);
+                                // Firebase auth başarısız olsa bile admin giriş yapmaya izin ver
+                                return true;
+                            }
+                        }
+                        return true;
+                    }
+                    return false;
+                } catch (error) {
+                    console.error('Validation error:', error);
+                    return false;
+                }
             }
 
             switchTab(tabName) {
@@ -1530,6 +1690,9 @@
                 } catch (error) {
                     console.error('Error switching tabs:', error);
                 }
+
+                // Close mobile menu
+                document.getElementById('admin-sidebar').classList.remove('active');
             }
 
             async loadTabData(tabName) {
@@ -1562,6 +1725,11 @@
                 try {
                     // Load stats
                     await this.loadStats();
+                    
+                    // Load recent activities
+                    const activityList = document.getElementById('admin-activity-list');
+                    // Activities are already loaded in HTML for demo
+                    
                 } catch (error) {
                     console.error('Error loading dashboard data:', error);
                 }

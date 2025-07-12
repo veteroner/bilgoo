@@ -1624,11 +1624,20 @@
                         // Firebase anonim kimlik doğrulaması yap
                         if (window.firebase && window.firebase.auth) {
                             const auth = window.firebase.auth();
+                            const database = window.firebase.database();
                             
                             // Admin email ile custom token oluştur (simüle et)
                             // Gerçek üretimde proper authentication kullanın
                             try {
-                                await auth.signInAnonymously();
+                                const userCredential = await auth.signInAnonymously();
+                                const user = userCredential.user;
+                                
+                                // Admin session'ı database'e kaydet
+                                await database.ref('admin_sessions').child(user.uid).set({
+                                    email: 'wet_oner@hotmail.com',
+                                    loginTime: Date.now(),
+                                    isActive: true
+                                });
                                 
                                 // Admin email bilgisini local storage'a kaydet
                                 localStorage.setItem('adminEmail', 'wet_oner@hotmail.com');
