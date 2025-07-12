@@ -6764,12 +6764,7 @@
                         console.log('Kullanıcı Email:', user.email);
                         
                         if (firebase.firestore) {
-                            // Wet_oner@hotmail.com için özel kontrol
-                            if (user.email === 'wet_oner@hotmail.com') {
-                                console.log('Wet_oner@hotmail.com tespit edildi - Admin paneli direkt gösteriliyor');
-                                adminPanelMenuItem.style.display = 'flex';
-                                return;
-                            }
+                            // Admin functionality moved to /admin page
                             
                             // Birden fazla ID formatını kontrol et
                             const possibleAdminIds = [
@@ -6807,48 +6802,21 @@
                                         adminPanelMenuItem.style.display = 'none';
                                         console.log('Normal kullanıcı - Admin paneli gizleniyor');
                                         
-                                        // Wet_oner@hotmail.com ise admin olarak ekle
-                                        if (user.email === 'wet_oner@hotmail.com') {
-                                            console.log('Wet_oner@hotmail.com admin olarak ekleniyor...');
-                                            
-                                            const adminId = user.email.toLowerCase().replace(/[.@]/g, '_');
-                                            firebase.firestore().collection('admins').doc(adminId).set({
-                                                email: user.email,
-                                                role: 'admin',
-                                                uid: user.uid,
-                                                addedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                                                addedBy: 'auto_auth_check'
-                                            }).then(() => {
-                                                console.log('Admin başarıyla eklendi, panel gösteriliyor');
-                                                adminPanelMenuItem.style.display = 'flex';
-                                            }).catch(err => {
-                                                console.error('Admin ekleme hatası:', err);
-                                            });
-                                        }
+                                        // Admin functionality moved to /admin page
                                     }
                                 })
                                 .catch((error) => {
                                     console.log('Yönetici kontrolü yapılamadı:', error);
                                     console.error('Firestore hatası:', error.code, error.message);
                                     
-                                    // Hata durumunda wet_oner@hotmail.com ise paneli göster
-                                    if (user.email === 'wet_oner@hotmail.com') {
-                                        console.log('Hata durumunda wet_oner@hotmail.com için panel gösteriliyor');
-                                        adminPanelMenuItem.style.display = 'flex';
-                                    } else {
-                                        adminPanelMenuItem.style.display = 'none';
-                                    }
+                                    // Admin functionality moved to /admin page
+                                    adminPanelMenuItem.style.display = 'none';
                                 });
                         } else {
                             console.log('Firebase Firestore mevcut değil!');
                             
-                            // Firestore yoksa wet_oner@hotmail.com için paneli göster
-                            if (user.email === 'wet_oner@hotmail.com') {
-                                console.log('Firestore yok ama wet_oner@hotmail.com için panel gösteriliyor');
-                                adminPanelMenuItem.style.display = 'flex';
-                            } else {
-                                adminPanelMenuItem.style.display = 'none';
-                            }
+                            // Admin functionality moved to /admin page
+                            adminPanelMenuItem.style.display = 'none';
                         }
                     } else {
                         // Kullanıcı bilgilerini gizle

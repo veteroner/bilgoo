@@ -1704,9 +1704,7 @@
             color: #f5f5f5;
         }
 
-        [data-theme="dark"] .admin-table tr:hover {
-            background: #444;
-        }
+        /* Admin CSS removed */
         </style>
     <meta name="theme-color" content="#3b82f6">
     <!-- SSL güvenlik iyileştirmeleri için eklenen meta tag -->
@@ -5280,9 +5278,7 @@
             <div class="menu-item" id="menu-privacy-settings">
                 <i class="fas fa-shield-alt"></i> <span id="menu-privacy-text">Gizlilik Ayarları</span>
             </div>
-            <div class="menu-item" id="menu-admin-panel" style="display: none;">
-                <i class="fas fa-shield-alt"></i> <span id="menu-admin-text">Yönetici Paneli</span>
-            </div>
+            <!-- Admin Panel removed - now accessible at /admin -->
         </div>
         
         <!-- Ayarlar Bölümü -->
@@ -6386,16 +6382,7 @@
                 hamburgerMenu.classList.toggle('active');
                 menuOverlay.classList.toggle('active');
                 
-                // Debug: Admin panel durumunu kontrol et
-                const adminPanelMenuItem = document.getElementById('menu-admin-panel');
-                console.log('=== Hamburger menü açıldı - Admin panel debug ===');
-                console.log('Admin panel element var mı?', adminPanelMenuItem ? 'Evet' : 'Hayır');
-                if (adminPanelMenuItem) {
-                    console.log('Admin panel display değeri:', adminPanelMenuItem.style.display);
-                    console.log('Admin panel computed style:', window.getComputedStyle(adminPanelMenuItem).display);
-                }
-                console.log('Aktif kullanıcı:', firebase.auth && firebase.auth().currentUser ? firebase.auth().currentUser.uid : 'Giriş yapılmamış');
-                console.log('================================================');
+                // Admin functionality moved to /admin page
                 
                 // Icon değiştirme
                 const icon = hamburgerToggle.querySelector('i');
@@ -6659,49 +6646,7 @@
                 });
             }
 
-            // Yönetici Paneli menü öğesi (sadece adminler için görünür)
-            document.getElementById('menu-admin-panel').addEventListener('click', function() {
-                hamburgerMenu.classList.remove('active');
-                menuOverlay.classList.remove('active');
-                
-                // Yönetici panelini göster
-                if (window.adminModule && window.adminModule.showAdminPanel) {
-                    window.adminModule.showAdminPanel();
-                } else {
-                    // adminModule yoksa basit gösterim
-                    const adminPanel = document.getElementById('admin-panel');
-                    if (adminPanel) {
-                        // Tüm sayfaları gizle
-                        const elementsToHide = [
-                            'main-menu',
-                            'quiz',
-                            'category-selection',
-                            'result',
-                            'profile-page',
-                            'online-game-options',
-                            'global-leaderboard',
-                            'friends-page'
-                        ];
-                        
-                        elementsToHide.forEach(id => {
-                            const element = document.getElementById(id);
-                            if (element) element.style.display = 'none';
-                        });
-                        
-                        // Yönetici panelini göster
-                        adminPanel.style.display = 'block';
-                    } else {
-                        alert('Yönetici paneli şu anda kullanılamıyor.');
-                    }
-                }
-                
-                // Hamburger menü ikonunu bars'a geri çevir
-                const icon = hamburgerToggle.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            });
+            // Admin panel event listener removed - admin panel moved to /admin page
             
             // Hamburger menü çıkış butonu
             document.getElementById('menu-logout').addEventListener('click', function() {
@@ -6852,99 +6797,8 @@
                         document.getElementById('menu-logout').style.display = 'flex';
                         document.getElementById('menu-profile').style.display = 'flex';
                         
-                        // Yönetici kontrolü yap
-                        console.log('Yönetici kontrolü başlatılıyor...');
-                        console.log('Firebase firestore var mı?', firebase.firestore ? 'Evet' : 'Hayır');
-                        console.log('Kullanıcı ID:', user.uid);
-                        console.log('Kullanıcı Email:', user.email);
-                        
-                        if (firebase.firestore) {
-                            // Wet_oner@hotmail.com için özel kontrol
-                            if (user.email === 'wet_oner@hotmail.com') {
-                                console.log('Wet_oner@hotmail.com tespit edildi - Admin paneli direkt gösteriliyor');
-                                adminPanelMenuItem.style.display = 'flex';
-                                return;
-                            }
-                            
-                            // Birden fazla ID formatını kontrol et
-                            const possibleAdminIds = [
-                                user.uid, // Gerçek kullanıcı ID'si
-                                user.email?.toLowerCase().replace(/[.@]/g, '_'), // E-posta temizlenmiş
-                                user.email?.replace(/[@.]/g, '_') // Alternatif temizleme
-                                // Sabit ID'yi kaldırdık çünkü her kullanıcıya admin hakkı veriyordu
-                            ].filter(Boolean);
-                            
-                            console.log('Kontrol edilecek admin ID\'leri:', possibleAdminIds);
-                            
-                            // Tüm olası ID'leri kontrol et
-                            const adminChecks = possibleAdminIds.map(adminId => 
-                                firebase.firestore().collection('admins').doc(adminId).get()
-                            );
-                            
-                            Promise.all(adminChecks)
-                                .then((docs) => {
-                                    let isAdmin = false;
-                                    
-                                    docs.forEach((doc, index) => {
-                                        console.log(`Admin kontrolü [${possibleAdminIds[index]}]:`, doc.exists);
-                                        if (doc.exists) {
-                                            isAdmin = true;
-                                            console.log('Admin dokuman verisi:', doc.data());
-                                        }
-                                    });
-                                    
-                                    if (isAdmin) {
-                                        // Kullanıcı yönetici - yönetici paneli menü öğesini göster
-                                        adminPanelMenuItem.style.display = 'flex';
-                                        console.log('Yönetici kullanıcı tespit edildi - Admin paneli gösteriliyor');
-                                    } else {
-                                        // Normal kullanıcı - yönetici paneli menü öğesini gizle
-                                        adminPanelMenuItem.style.display = 'none';
-                                        console.log('Normal kullanıcı - Admin paneli gizleniyor');
-                                        
-                                        // Wet_oner@hotmail.com ise admin olarak ekle
-                                        if (user.email === 'wet_oner@hotmail.com') {
-                                            console.log('Wet_oner@hotmail.com admin olarak ekleniyor...');
-                                            
-                                            const adminId = user.email.toLowerCase().replace(/[.@]/g, '_');
-                                            firebase.firestore().collection('admins').doc(adminId).set({
-                                                email: user.email,
-                                                role: 'admin',
-                                                uid: user.uid,
-                                                addedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                                                addedBy: 'auto_auth_check'
-                                            }).then(() => {
-                                                console.log('Admin başarıyla eklendi, panel gösteriliyor');
-                                                adminPanelMenuItem.style.display = 'flex';
-                                            }).catch(err => {
-                                                console.error('Admin ekleme hatası:', err);
-                                            });
-                                        }
-                                    }
-                                })
-                                .catch((error) => {
-                                    console.log('Yönetici kontrolü yapılamadı:', error);
-                                    console.error('Firestore hatası:', error.code, error.message);
-                                    
-                                    // Hata durumunda wet_oner@hotmail.com ise paneli göster
-                                    if (user.email === 'wet_oner@hotmail.com') {
-                                        console.log('Hata durumunda wet_oner@hotmail.com için panel gösteriliyor');
-                                        adminPanelMenuItem.style.display = 'flex';
-                                    } else {
-                                        adminPanelMenuItem.style.display = 'none';
-                                    }
-                                });
-                        } else {
-                            console.log('Firebase Firestore mevcut değil!');
-                            
-                            // Firestore yoksa wet_oner@hotmail.com için paneli göster
-                            if (user.email === 'wet_oner@hotmail.com') {
-                                console.log('Firestore yok ama wet_oner@hotmail.com için panel gösteriliyor');
-                                adminPanelMenuItem.style.display = 'flex';
-                            } else {
-                                adminPanelMenuItem.style.display = 'none';
-                            }
-                        }
+                        // Admin panel removed for security - now accessible at /admin
+                        // No more email-based admin detection
                     } else {
                         // Kullanıcı bilgilerini gizle
                         userProfileSection.style.display = 'none';
@@ -6962,7 +6816,7 @@
                         // Çıkış butonu her zaman görünsün - mobilde bottom sheet'te var
                         // document.getElementById('menu-logout').style.display = 'none';
                         document.getElementById('menu-profile').style.display = 'none';
-                        adminPanelMenuItem.style.display = 'none';
+                        // Admin panel removed
                     }
                 });
             }
@@ -7177,227 +7031,7 @@
         </div>
     </div>
 
-    <!-- Yönetici Paneli -->
-    <div id="admin-panel" class="admin-panel" style="display: none;">
-        <div class="admin-panel-header">
-            <h2><i class="fas fa-shield-alt"></i> Yönetici Paneli</h2>
-            <button id="close-admin-panel" class="close-btn"><i class="fas fa-times"></i></button>
-        </div>
-        
-        <div class="admin-tabs">
-            <button class="admin-tab-btn active" data-tab="dashboard">Dashboard</button>
-            <button class="admin-tab-btn" data-tab="users">Kullanıcılar</button>
-            <button class="admin-tab-btn" data-tab="questions">Sorular</button>
-            <button class="admin-tab-btn" data-tab="pending-questions">Bekleyen Sorular</button>
-            <button class="admin-tab-btn" data-tab="reports">Şikayetler</button>
-            <button class="admin-tab-btn" data-tab="settings">Ayarlar</button>
-        </div>
-        
-        <div class="admin-content">
-            <!-- Kontrol Paneli -->
-            <div id="admin-dashboard" class="admin-tab-content active">
-                <div class="admin-stats-cards">
-                    <div class="admin-stat-card">
-                        <div class="stat-icon"><i class="fas fa-users"></i></div>
-                        <div class="stat-value" id="admin-total-users">0</div>
-                        <div class="stat-label">Toplam Kullanıcı</div>
-                    </div>
-                    <div class="admin-stat-card">
-                        <div class="stat-icon"><i class="fas fa-question-circle"></i></div>
-                        <div class="stat-value" id="admin-total-questions">0</div>
-                        <div class="stat-label">Toplam Soru</div>
-                    </div>
-                    <div class="admin-stat-card">
-                        <div class="stat-icon"><i class="fas fa-gamepad"></i></div>
-                        <div class="stat-value" id="admin-total-games">0</div>
-                        <div class="stat-label">Toplam Oyun</div>
-                    </div>
-                    <div class="admin-stat-card">
-                        <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
-                        <div class="stat-value" id="admin-pending-reports">0</div>
-                        <div class="stat-label">Bekleyen Şikayet</div>
-                    </div>
-                </div>
-                
-                <div class="admin-recent-activity">
-                    <h3>Son Aktiviteler</h3>
-                    <div class="admin-activity-list" id="admin-activity-list">
-                        <!-- Aktiviteler buraya yüklenecek -->
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Kullanıcılar -->
-            <div id="admin-users" class="admin-tab-content">
-                <div class="admin-search-box">
-                    <input type="text" id="admin-user-search" placeholder="Kullanıcı ara...">
-                    <button id="admin-user-search-btn" class="admin-btn-secondary"><i class="fas fa-search"></i></button>
-                </div>
-                
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Kullanıcı Adı</th>
-                            <th>E-posta</th>
-                            <th>Kayıt Tarihi</th>
-                            <th>Durum</th>
-                            <th>İşlemler</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-users-list">
-                        <!-- Kullanıcılar burada listelenecek -->
-                    </tbody>
-                </table>
-                
-                <div class="admin-pagination">
-                    <button id="admin-prev-page" class="admin-btn-secondary"><i class="fas fa-chevron-left"></i></button>
-                    <span id="admin-current-page">Sayfa 1</span>
-                    <button id="admin-next-page" class="admin-btn-secondary"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
-            
-            <!-- Sorular -->
-            <div id="admin-questions" class="admin-tab-content">
-                <div class="admin-actions">
-                    <button id="admin-add-question" class="admin-action-btn"><i class="fas fa-plus"></i> Yeni Soru Ekle</button>
-                    <button id="admin-import-questions" class="admin-action-btn"><i class="fas fa-file-import"></i> İçe Aktar</button>
-                    <button id="admin-export-questions" class="admin-action-btn"><i class="fas fa-file-export"></i> Dışa Aktar</button>
-                </div>
-                
-                <div class="admin-search-box">
-                    <select id="admin-question-category">
-                        <option value="all">Tüm Kategoriler</option>
-                    </select>
-                    <input type="text" id="admin-question-search" placeholder="Soru ara...">
-                    <button id="admin-question-search-btn" class="admin-btn-secondary"><i class="fas fa-search"></i></button>
-                </div>
-                
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Soru</th>
-                            <th>Kategori</th>
-                            <th>Zorluk</th>
-                            <th>Ekleyen</th>
-                            <th>İşlemler</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-questions-list">
-                        <!-- Sorular buraya yüklenecek -->
-                    </tbody>
-                </table>
-                
-                <div class="admin-pagination">
-                    <button id="admin-prev-question-page" class="admin-btn-secondary"><i class="fas fa-chevron-left"></i></button>
-                    <span id="admin-current-question-page">Sayfa 1</span>
-                    <button id="admin-next-question-page" class="admin-btn-secondary"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
-            
-            <!-- Bekleyen Sorular -->
-            <div id="admin-pending-questions" class="admin-tab-content">
-                <div class="admin-tab-header">
-                    <h3>Bekleyen Sorular</h3>
-                    <div class="admin-filter">
-                        <button id="admin-refresh-pending" class="admin-btn-secondary">
-                            <i class="fas fa-sync-alt"></i> Yenile
-                        </button>
-                    </div>
-                </div>
-                
-                <div id="admin-pending-questions-list" class="admin-pending-questions-list">
-                    <!-- Bekleyen sorular burada listelenecek -->
-                </div>
-            </div>
-            
-            <!-- Şikayetler -->
-            <div id="admin-reports" class="admin-tab-content">
-                <div class="admin-tab-header">
-                    <h3>Şikayet Yönetimi</h3>
-                    <div class="admin-filter">
-                        <label for="admin-report-filter">Filtrele:</label>
-                        <select id="admin-report-filter">
-                            <option value="all">Tümü</option>
-                            <option value="pending">Bekleyen</option>
-                            <option value="resolved">Çözülmüş</option>
-                            <option value="rejected">Reddedilmiş</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div id="admin-reports-list" class="admin-reports-list">
-                    <!-- Şikayetler burada listelenecek -->
-                </div>
-            </div>
-            
-            <!-- Ayarlar -->
-            <div id="admin-settings" class="admin-tab-content">
-                <div class="admin-settings-section">
-                    <h3>Genel Ayarlar</h3>
-                    <div class="admin-setting-item">
-                        <label for="admin-maintenance-mode">Bakım Modu:</label>
-                        <label class="admin-toggle">
-                            <input type="checkbox" id="admin-maintenance-mode">
-                            <span class="admin-toggle-slider"></span>
-                        </label>
-                    </div>
-                    
-                    <div class="admin-setting-item">
-                        <label for="admin-allow-registrations">Yeni Kayıtlara İzin Ver:</label>
-                        <label class="admin-toggle">
-                            <input type="checkbox" id="admin-allow-registrations" checked>
-                            <span class="admin-toggle-slider"></span>
-                        </label>
-                    </div>
-                    
-                    <div class="admin-setting-item">
-                        <label for="admin-question-approval">Soru Onayı Gerekli:</label>
-                        <label class="admin-toggle">
-                            <input type="checkbox" id="admin-question-approval" checked>
-                            <span class="admin-toggle-slider"></span>
-                        </label>
-                    </div>
-                    
-                    <div class="admin-setting-item">
-                        <label for="admin-max-failed-login">Maksimum Başarısız Giriş:</label>
-                        <input type="number" id="admin-max-failed-login" value="5" min="1" max="10">
-                    </div>
-                </div>
-                
-                <div class="admin-settings-section">
-                    <h3>E-posta Bildirimleri</h3>
-                    <div class="admin-setting-item">
-                        <label for="admin-email-new-user">Yeni Kullanıcı Kaydı:</label>
-                        <label class="admin-toggle">
-                            <input type="checkbox" id="admin-email-new-user" checked>
-                            <span class="admin-toggle-slider"></span>
-                        </label>
-                    </div>
-                    
-                    <div class="admin-setting-item">
-                        <label for="admin-email-new-report">Yeni Şikayet:</label>
-                        <label class="admin-toggle">
-                            <input type="checkbox" id="admin-email-new-report" checked>
-                            <span class="admin-toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-                
-                <div class="admin-settings-actions">
-                    <button id="admin-save-settings" class="admin-btn-primary">Ayarları Kaydet</button>
-                    <button id="admin-reset-settings" class="admin-btn-secondary">Varsayılana Sıfırla</button>
-                    <button id="admin-export-settings" class="admin-btn-secondary" onclick="exportSettings()" style="background: #17a2b8;">
-                        <i class="fas fa-download"></i> Dışa Aktar
-                    </button>
-                    <button id="admin-import-settings" class="admin-btn-secondary" onclick="importSettings()" style="background: #6f42c1;">
-                        <i class="fas fa-upload"></i> İçe Aktar
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Admin Panel moved to /admin page for security -->
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
@@ -7426,125 +7060,7 @@
     /></noscript>
 
     <script>
-        // Manuel admin panel gösterme fonksiyonu (debugging için)
-        window.showAdminPanelManual = function() {
-            const adminPanelMenuItem = document.getElementById('menu-admin-panel');
-            if (adminPanelMenuItem) {
-                adminPanelMenuItem.style.display = 'flex';
-                console.log('Admin panel manuel olarak gösterildi');
-            } else {
-                console.error('Admin panel menü öğesi bulunamadı!');
-            }
-        };
-        
-        // Admin koleksiyonuna kullanıcı ekleme fonksiyonu (debugging için)
-        window.addUserToAdmins = function(userId) {
-            if (!userId && firebase.auth && firebase.auth().currentUser) {
-                userId = firebase.auth().currentUser.uid;
-            }
-            
-            if (!userId) {
-                console.error('Kullanıcı ID belirtilmedi ve aktif kullanıcı bulunamadı');
-                return;
-            }
-            
-            if (firebase.firestore) {
-                firebase.firestore().collection('admins').doc(userId).set({
-                    email: firebase.auth().currentUser ? firebase.auth().currentUser.email : 'test@admin.com',
-                    role: 'admin',
-                    addedAt: firebase.firestore.FieldValue.serverTimestamp()
-                }).then(() => {
-                    console.log('Kullanıcı admin koleksiyonuna eklendi:', userId);
-                    alert('Admin yetkisi verildi! Sayfayı yenileyin.');
-                }).catch((error) => {
-                    console.error('Admin ekleme hatası:', error);
-                    alert('Admin ekleme başarısız: ' + error.message);
-                });
-            } else {
-                console.error('Firestore mevcut değil!');
-            }
-        };
-        
-        // E-posta adresiyle kullanıcıyı admin yapma fonksiyonu
-        window.addUserToAdminsByEmail = function(email) {
-            if (!email) {
-                console.error('E-posta adresi belirtilmedi');
-                return;
-            }
-            
-            if (!firebase.firestore) {
-                console.error('Firestore mevcut değil!');
-                return;
-            }
-            
-            console.log('E-posta adresiyle kullanıcı aranıyor:', email);
-            
-            // Kullanıcıları e-posta adresine göre ara
-            firebase.firestore().collection('users').where('email', '==', email).get()
-                .then((querySnapshot) => {
-                    if (querySnapshot.empty) {
-                        console.log('Bu e-posta adresiyle kullanıcı bulunamadı:', email);
-                        
-                        // Alternatif olarak direkt e-posta ile admin koleksiyonuna ekle
-                        const adminId = email.replace(/[.@]/g, '_'); // E-posta adresini ID'ye çevir
-                        
-                        return firebase.firestore().collection('admins').doc(adminId).set({
-                            email: email,
-                            role: 'admin',
-                            addedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            addedBy: 'manual',
-                            note: 'E-posta adresi ile manuel olarak eklendi'
-                        });
-                    } else {
-                        // Kullanıcı bulundu, admin koleksiyonuna ekle
-                        const userDoc = querySnapshot.docs[0];
-                        const userData = userDoc.data();
-                        const userId = userDoc.id;
-                        
-                        console.log('Kullanıcı bulundu:', userData);
-                        
-                        return firebase.firestore().collection('admins').doc(userId).set({
-                            email: email,
-                            role: 'admin',
-                            displayName: userData.displayName || userData.name || 'Admin',
-                            addedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            addedBy: 'manual'
-                        });
-                    }
-                })
-                .then(() => {
-                    console.log('Kullanıcı admin koleksiyonuna eklendi:', email);
-                    alert('Admin yetkisi verildi: ' + email + '\nSayfayı yenileyin.');
-                })
-                .catch((error) => {
-                    console.error('Admin ekleme hatası:', error);
-                    
-                    // Hata durumunda alternatif yöntem - direkt UID ile ekle
-                    console.log('Alternatif yöntem deneniyor...');
-                    
-                    // E-posta adresini temizle ve UID benzeri string oluştur
-                    const cleanEmail = email.toLowerCase().replace(/[.@]/g, '_');
-                    
-                    firebase.firestore().collection('admins').doc(cleanEmail).set({
-                        email: email,
-                        role: 'admin',
-                        addedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        addedBy: 'manual_fallback',
-                        note: 'E-posta adresi ile fallback yöntemiyle eklendi'
-                    }).then(() => {
-                        console.log('Kullanıcı fallback yöntemiyle admin yapıldı:', email);
-                        alert('Admin yetkisi verildi (alternatif yöntem): ' + email);
-                    }).catch((fallbackError) => {
-                        console.error('Fallback admin ekleme hatası:', fallbackError);
-                        alert('Admin ekleme başarısız: ' + fallbackError.message);
-                    });
-                });
-        };
-        
-        // Wet_oner@hotmail.com adresini admin yap
-        window.makeWetOnerAdmin = function() {
-            addUserToAdminsByEmail('wet_oner@hotmail.com');
-        };
+        // Admin functions removed for security - admin panel now accessible at /admin
         
         // Sayfa yüklendiğinde otomatik admin kontrolü ve ekleme
         document.addEventListener('DOMContentLoaded', function() {
@@ -7553,8 +7069,7 @@
                 if (firebase.firestore) {
                     console.log('Otomatik admin kontrolü başlatılıyor...');
                     
-                    // Önce wet_oner@hotmail.com'un admin olup olmadığını kontrol et
-                    const adminEmails = ['wet_oner@hotmail.com'];
+                            // Admin functionality moved to /admin page
                     
                     adminEmails.forEach(email => {
                         const cleanEmail = email.toLowerCase().replace(/[.@]/g, '_');
@@ -7620,99 +7135,13 @@
             }, 2000); // Sayfa yüklendikten 2 saniye sonra kontrol et
         });
         
-        // Wet_oner@hotmail.com için zorla admin paneli göster
-        window.forceShowAdminPanel = function() {
-            const adminPanelMenuItem = document.getElementById('menu-admin-panel');
-            if (adminPanelMenuItem) {
-                adminPanelMenuItem.style.display = 'flex';
-                adminPanelMenuItem.style.visibility = 'visible';
-                adminPanelMenuItem.style.opacity = '1';
-                console.log('Admin panel zorla gösterildi');
-                
-                // Ayrıca element'i DOM'da en üste taşı
-                const menuSection = adminPanelMenuItem.parentElement;
-                if (menuSection) {
-                    menuSection.appendChild(adminPanelMenuItem);
-                }
-                
-                alert('Admin panel zorla gösterildi! Hamburger menüsünü kontrol edin.');
-            } else {
-                console.error('Admin panel menü öğesi bulunamadı!');
-                alert('Admin panel elementi bulunamadı!');
-            }
-        };
+        // Admin functionality moved to /admin page
         
-        // Sayfa yüklendiğinde wet_oner@hotmail.com kontrolü
-        window.checkCurrentUserForAdmin = function() {
-            if (firebase.auth && firebase.auth().currentUser) {
-                const user = firebase.auth().currentUser;
-                console.log('Mevcut kullanıcı kontrolü:', user.email);
-                
-                if (user.email === 'wet_oner@hotmail.com') {
-                    console.log('Wet_oner@hotmail.com tespit edildi, admin panel gösteriliyor');
-                    const adminPanelMenuItem = document.getElementById('menu-admin-panel');
-                    if (adminPanelMenuItem) {
-                        adminPanelMenuItem.style.display = 'flex';
-                        console.log('Admin panel başarıyla gösterildi');
-                    }
-                } else {
-                    // Eğer kullanıcı wet_oner@hotmail.com değilse, admin panelini gizle
-                    const adminPanelMenuItem = document.getElementById('menu-admin-panel');
-                    if (adminPanelMenuItem) {
-                        adminPanelMenuItem.style.display = 'none';
-                        console.log('Kullanıcı admin olmadığı için panel gizlendi:', user.email);
-                    }
-                }
-            } else {
-                console.log('Henüz giriş yapılmamış');
-            }
-        };
+        // Admin functionality moved to /admin page
         
         // Admin Panel İşlevleri
         document.addEventListener('DOMContentLoaded', function() {
-            // Admin panel initialization
-            initializeAdminPanel();
-            
-            // Admin panel kapatma
-            const closeAdminPanel = document.getElementById('close-admin-panel');
-            if (closeAdminPanel) {
-                closeAdminPanel.addEventListener('click', function() {
-                    const adminPanel = document.getElementById('admin-panel');
-                    if (adminPanel) {
-                        adminPanel.style.display = 'none';
-                    }
-                    
-                    // Ana menüyü göster
-                    const mainMenu = document.getElementById('main-menu');
-                    if (mainMenu) {
-                        mainMenu.style.display = 'block';
-                    }
-                });
-            }
-
-            // Admin tab switching
-            const adminTabBtns = document.querySelectorAll('.admin-tab-btn');
-            const adminTabContents = document.querySelectorAll('.admin-tab-content');
-
-            adminTabBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const tabName = this.getAttribute('data-tab');
-                    
-                    // Remove active class from all tabs and contents
-                    adminTabBtns.forEach(b => b.classList.remove('active'));
-                    adminTabContents.forEach(c => c.classList.remove('active'));
-                    
-                    // Add active class to clicked tab and corresponding content
-                    this.classList.add('active');
-                    const targetContent = document.getElementById(`admin-${tabName}`);
-                    if (targetContent) {
-                        targetContent.classList.add('active');
-                    }
-                    
-                    // Load content based on tab
-                    loadAdminTabContent(tabName);
-                });
-            });
+            // Admin panel functionality removed - moved to /admin page
 
             // Soru ekle butonları
             const showStatsBtn = document.getElementById('show-stats');
@@ -7750,7 +7179,6 @@
                         'profile-page',
                         'online-game-options',
                         'friends-page',
-                        'admin-panel',
                         'statistics-page'
                     ];
                     
@@ -7872,78 +7300,7 @@
             // Ayar değişikliklerini takip etmek için
             setupSettingsChangeTracking();
 
-            // SORULAR YÖNETİMİ EVENT LİSTENER'LARI
-            // Yeni soru ekle butonu
-            const adminAddQuestionBtn = document.getElementById('admin-add-question');
-            if (adminAddQuestionBtn) {
-                adminAddQuestionBtn.addEventListener('click', function() {
-                    showAddQuestionModal();
-                });
-            }
-
-            // Soruları içe aktar butonu
-            const adminImportQuestionsBtn = document.getElementById('admin-import-questions');
-            if (adminImportQuestionsBtn) {
-                adminImportQuestionsBtn.addEventListener('click', function() {
-                    importQuestions();
-                });
-            }
-
-            // Soruları dışa aktar butonu
-            const adminExportQuestionsBtn = document.getElementById('admin-export-questions');
-            if (adminExportQuestionsBtn) {
-                adminExportQuestionsBtn.addEventListener('click', function() {
-                    exportQuestions();
-                });
-            }
-
-            // Soru arama butonu ve enter tuşu
-            const adminQuestionSearchBtn = document.getElementById('admin-question-search-btn');
-            const adminQuestionSearchInput = document.getElementById('admin-question-search');
-            const adminQuestionCategorySelect = document.getElementById('admin-question-category');
-            
-            if (adminQuestionSearchBtn) {
-                adminQuestionSearchBtn.addEventListener('click', function() {
-                    searchQuestions();
-                });
-            }
-            
-            if (adminQuestionSearchInput) {
-                adminQuestionSearchInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        searchQuestions();
-                    }
-                });
-            }
-
-            if (adminQuestionCategorySelect) {
-                adminQuestionCategorySelect.addEventListener('change', function() {
-                    searchQuestions();
-                });
-            }
-
-            // Sorular sayfalama butonları
-            const adminPrevQuestionPageBtn = document.getElementById('admin-prev-question-page');
-            const adminNextQuestionPageBtn = document.getElementById('admin-next-question-page');
-            
-            if (adminPrevQuestionPageBtn) {
-                adminPrevQuestionPageBtn.addEventListener('click', function() {
-                    if (currentQuestionsPage > 1) {
-                        currentQuestionsPage--;
-                        displayQuestions();
-                    }
-                });
-            }
-            
-            if (adminNextQuestionPageBtn) {
-                adminNextQuestionPageBtn.addEventListener('click', function() {
-                    const totalPages = Math.ceil(filteredQuestions.length / questionsPerPage);
-                    if (currentQuestionsPage < totalPages) {
-                        currentQuestionsPage++;
-                        displayQuestions();
-                    }
-                });
-            }
+            // Admin functionality moved to /admin page
         });
 
         // İstatistikler sayfasını göster
