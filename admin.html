@@ -212,10 +212,23 @@
 
         .admin-layout {
             display: flex;
+            flex-direction: column;
             min-height: 100vh;
         }
 
-        /* Sidebar */
+        /* Top Navigation */
+        .admin-topbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        /* Sidebar (hidden by default) */
         .admin-sidebar {
             width: 280px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -227,6 +240,11 @@
             z-index: 1000;
             box-shadow: 4px 0 20px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
+            transform: translateX(-100%);
+        }
+
+        .admin-sidebar.active {
+            transform: translateX(0);
         }
 
         .admin-sidebar-header {
@@ -270,15 +288,13 @@
             font-weight: 500;
         }
 
-        .admin-sidebar-nav a:hover {
-            background: rgba(255,255,255,0.1);
-            transform: translateX(5px);
+        .admin-topbar .admin-nav-link:hover {
+            background: rgba(255,255,255,0.1) !important;
         }
 
-        .admin-sidebar-nav a.active {
-            background: white;
-            color: #667eea;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        .admin-topbar .admin-nav-link.active {
+            background: rgba(255,255,255,0.2) !important;
+            font-weight: 600;
         }
 
         .admin-sidebar-nav a i {
@@ -320,9 +336,9 @@
         /* Main Content */
         .admin-main-content {
             flex: 1;
-            margin-left: 280px;
             padding: 30px;
-            transition: margin-left 0.3s ease;
+            width: 100%;
+            max-width: 100%;
         }
 
         .admin-content-header {
@@ -628,17 +644,15 @@
         /* Responsive */
         @media (max-width: 768px) {
             .admin-sidebar {
-                transform: translateX(-100%);
                 width: 100%;
             }
 
-            .admin-sidebar.active {
-                transform: translateX(0);
+            .admin-main-content {
+                padding: 20px;
             }
 
-            .admin-main-content {
-                margin-left: 0;
-                padding: 20px;
+            .admin-topbar {
+                padding: 10px 20px;
             }
 
             .admin-stats-grid {
@@ -933,42 +947,37 @@
     <!-- Main Admin Panel -->
     <div id="admin-main-container" class="admin-main-container">
         <div class="admin-layout">
-            <!-- Sidebar -->
-            <div class="admin-sidebar" id="admin-sidebar">
-                <div class="admin-sidebar-header">
-                    <h1><i class="fas fa-crown"></i> Bilgoo</h1>
-                    <p>Yönetici Paneli</p>
-                </div>
-                <nav class="admin-sidebar-nav">
-                    <ul>
-                        <li><a href="#" class="admin-nav-link active" data-tab="dashboard">
+            <!-- Top Navigation -->
+            <div class="admin-topbar">
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <h1 style="margin: 0; font-size: 24px;"><i class="fas fa-crown"></i> Bilgoo Yönetici Paneli</h1>
+                    <nav style="display: flex; gap: 30px;">
+                        <a href="#" class="admin-nav-link active" data-tab="dashboard" style="color: white; text-decoration: none; padding: 8px 16px; border-radius: 5px; transition: all 0.3s;">
                             <i class="fas fa-tachometer-alt"></i> Ana Sayfa
-                        </a></li>
-                        <li><a href="#" class="admin-nav-link" data-tab="users">
+                        </a>
+                        <a href="#" class="admin-nav-link" data-tab="users" style="color: white; text-decoration: none; padding: 8px 16px; border-radius: 5px; transition: all 0.3s;">
                             <i class="fas fa-users"></i> Kullanıcılar
-                        </a></li>
-                        <li><a href="#" class="admin-nav-link" data-tab="questions">
+                        </a>
+                        <a href="#" class="admin-nav-link" data-tab="questions" style="color: white; text-decoration: none; padding: 8px 16px; border-radius: 5px; transition: all 0.3s;">
                             <i class="fas fa-question-circle"></i> Sorular
-                        </a></li>
-                        <li><a href="#" class="admin-nav-link" data-tab="pending-questions">
+                        </a>
+                        <a href="#" class="admin-nav-link" data-tab="pending-questions" style="color: white; text-decoration: none; padding: 8px 16px; border-radius: 5px; transition: all 0.3s;">
                             <i class="fas fa-clock"></i> Bekleyen Sorular
-                        </a></li>
-                        <li><a href="#" class="admin-nav-link" data-tab="notifications">
+                        </a>
+                        <a href="#" class="admin-nav-link" data-tab="notifications" style="color: white; text-decoration: none; padding: 8px 16px; border-radius: 5px; transition: all 0.3s;">
                             <i class="fas fa-bell"></i> Bildirimler
-                        </a></li>
-                        <li><a href="#" class="admin-nav-link" data-tab="reports">
+                        </a>
+                        <a href="#" class="admin-nav-link" data-tab="reports" style="color: white; text-decoration: none; padding: 8px 16px; border-radius: 5px; transition: all 0.3s;">
                             <i class="fas fa-flag"></i> Raporlar
-                        </a></li>
-                        <li><a href="#" class="admin-nav-link" data-tab="settings">
+                        </a>
+                        <a href="#" class="admin-nav-link" data-tab="settings" style="color: white; text-decoration: none; padding: 8px 16px; border-radius: 5px; transition: all 0.3s;">
                             <i class="fas fa-cog"></i> Ayarlar
-                        </a></li>
-                    </ul>
-                </nav>
-                <div class="admin-sidebar-footer">
-                    <button class="admin-logout-btn" id="admin-logout-btn">
-                        <i class="fas fa-sign-out-alt"></i> Çıkış Yap
-                    </button>
+                        </a>
+                    </nav>
                 </div>
+                <button class="admin-logout-btn" id="admin-logout-btn" style="background: rgba(255,255,255,0.1); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                    <i class="fas fa-sign-out-alt"></i> Çıkış Yap
+                </button>
             </div>
 
             <!-- Main Content -->
@@ -1681,25 +1690,49 @@
 
             async loadStats() {
                 try {
-                    // Simulate loading stats
-                    const stats = {
-                        totalUsers: Math.floor(Math.random() * 1000) + 500,
-                        totalQuestions: Math.floor(Math.random() * 5000) + 1000,
-                        pendingQuestions: Math.floor(Math.random() * 50) + 10,
-                        dailyActive: Math.floor(Math.random() * 200) + 50
-                    };
+                    if (!window.firebase || !window.firebase.database) {
+                        console.error('Firebase not initialized');
+                        return;
+                    }
+
+                    const database = window.firebase.database();
+                    
+                    // Get users count
+                    const usersSnapshot = await database.ref('users').once('value');
+                    const totalUsers = usersSnapshot.numChildren();
+
+                    // Get questions count
+                    const questionsSnapshot = await database.ref('questions').once('value');
+                    const totalQuestions = questionsSnapshot.numChildren();
+
+                    // Get pending questions count
+                    const pendingSnapshot = await database.ref('pending_questions').once('value');
+                    const pendingQuestions = pendingSnapshot.numChildren();
+
+                    // Get daily active users (last 24 hours)
+                    const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
+                    const dailyActiveSnapshot = await database.ref('users')
+                        .orderByChild('lastActive')
+                        .startAt(oneDayAgo)
+                        .once('value');
+                    const dailyActive = dailyActiveSnapshot.numChildren();
 
                     // Update UI
-                    document.getElementById('total-users').textContent = stats.totalUsers;
-                    document.getElementById('total-questions').textContent = stats.totalQuestions;
-                    document.getElementById('pending-questions').textContent = stats.pendingQuestions;
-                    document.getElementById('daily-active').textContent = stats.dailyActive;
+                    document.getElementById('total-users').textContent = totalUsers;
+                    document.getElementById('total-questions').textContent = totalQuestions;
+                    document.getElementById('pending-questions').textContent = pendingQuestions;
+                    document.getElementById('daily-active').textContent = dailyActive;
 
                     // Animate numbers
                     this.animateNumbers();
 
                 } catch (error) {
                     console.error('Error loading stats:', error);
+                    // Fallback to dummy data
+                    document.getElementById('total-users').textContent = '0';
+                    document.getElementById('total-questions').textContent = '0';
+                    document.getElementById('pending-questions').textContent = '0';
+                    document.getElementById('daily-active').textContent = '0';
                 }
             }
 
@@ -1726,27 +1759,43 @@
                 tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Kullanıcılar yükleniyor...</td></tr>';
 
                 try {
-                    // Simulate loading users
-                    const users = [
-                        { id: 'user1', name: 'Ahmet Yılmaz', email: 'ahmet@example.com', date: '2024-01-15', status: 'active' },
-                        { id: 'user2', name: 'Ayşe Demir', email: 'ayse@example.com', date: '2024-01-20', status: 'active' },
-                        { id: 'user3', name: 'Mehmet Kaya', email: 'mehmet@example.com', date: '2024-01-25', status: 'inactive' }
-                    ];
+                    if (!window.firebase || !window.firebase.database) {
+                        console.error('Firebase not initialized');
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Firebase bağlantısı kurulamadı.</td></tr>';
+                        return;
+                    }
+
+                    const database = window.firebase.database();
+                    const usersSnapshot = await database.ref('users').once('value');
+                    const usersData = usersSnapshot.val();
+
+                    if (!usersData) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Henüz kullanıcı bulunmuyor.</td></tr>';
+                        return;
+                    }
 
                     tbody.innerHTML = '';
-                    users.forEach(user => {
+                    Object.keys(usersData).forEach(userId => {
+                        const user = usersData[userId];
                         const row = document.createElement('tr');
+                        
+                        // Format date
+                        const date = user.createdAt ? new Date(user.createdAt).toLocaleDateString('tr-TR') : 'Bilinmiyor';
+                        
+                        // Check if user is active (last active within 30 days)
+                        const isActive = user.lastActive && (Date.now() - user.lastActive < 30 * 24 * 60 * 60 * 1000);
+                        
                         row.innerHTML = `
-                            <td>${user.id}</td>
-                            <td>${user.name}</td>
-                            <td>${user.email}</td>
-                            <td>${user.date}</td>
-                            <td><span class="admin-badge admin-badge-${user.status === 'active' ? 'success' : 'warning'}">${user.status === 'active' ? 'Aktif' : 'İnaktif'}</span></td>
+                            <td>${userId}</td>
+                            <td>${user.displayName || user.username || 'Anonim'}</td>
+                            <td>${user.email || 'Belirtilmemiş'}</td>
+                            <td>${date}</td>
+                            <td><span class="admin-badge admin-badge-${isActive ? 'success' : 'warning'}">${isActive ? 'Aktif' : 'İnaktif'}</span></td>
                             <td>
-                                <button class="admin-btn admin-btn-secondary" onclick="adminPanel.editUser('${user.id}')">
+                                <button class="admin-btn admin-btn-secondary" onclick="adminPanel.editUser('${userId}')">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="admin-btn admin-btn-danger" onclick="adminPanel.deleteUser('${user.id}')">
+                                <button class="admin-btn admin-btn-danger" onclick="adminPanel.deleteUser('${userId}')">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
@@ -1765,27 +1814,50 @@
                 tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Sorular yükleniyor...</td></tr>';
 
                 try {
-                    // Simulate loading questions
-                    const questions = [
-                        { id: 'q1', question: 'Türkiye\'nin başkenti neresidir?', category: 'Coğrafya', difficulty: 'Kolay', status: 'active' },
-                        { id: 'q2', question: 'Atatürk hangi yılda doğdu?', category: 'Tarih', difficulty: 'Orta', status: 'active' },
-                        { id: 'q3', question: 'H2O neyin kimyasal formülüdür?', category: 'Bilim', difficulty: 'Kolay', status: 'inactive' }
-                    ];
+                    if (!window.firebase || !window.firebase.database) {
+                        console.error('Firebase not initialized');
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Firebase bağlantısı kurulamadı.</td></tr>';
+                        return;
+                    }
+
+                    const database = window.firebase.database();
+                    const questionsSnapshot = await database.ref('questions').once('value');
+                    const questionsData = questionsSnapshot.val();
+
+                    if (!questionsData) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Henüz soru bulunmuyor.</td></tr>';
+                        return;
+                    }
 
                     tbody.innerHTML = '';
-                    questions.forEach(question => {
+                    Object.keys(questionsData).forEach(questionId => {
+                        const question = questionsData[questionId];
                         const row = document.createElement('tr');
+                        
+                        // Get question text
+                        const questionText = question.question || question.soru || 'Soru metni yok';
+                        const displayText = questionText.length > 50 ? questionText.substring(0, 50) + '...' : questionText;
+                        
+                        // Get category
+                        const category = question.category || question.kategori || 'Genel';
+                        
+                        // Get difficulty
+                        const difficulty = question.difficulty || question.zorluk || 'Orta';
+                        
+                        // Status (assuming all loaded questions are active)
+                        const status = question.status || 'active';
+                        
                         row.innerHTML = `
-                            <td>${question.id}</td>
-                            <td>${question.question.substring(0, 50)}...</td>
-                            <td>${question.category}</td>
-                            <td>${question.difficulty}</td>
-                            <td><span class="admin-badge admin-badge-${question.status === 'active' ? 'success' : 'warning'}">${question.status === 'active' ? 'Aktif' : 'İnaktif'}</span></td>
+                            <td>${questionId}</td>
+                            <td>${displayText}</td>
+                            <td>${category}</td>
+                            <td>${difficulty}</td>
+                            <td><span class="admin-badge admin-badge-${status === 'active' ? 'success' : 'warning'}">${status === 'active' ? 'Aktif' : 'İnaktif'}</span></td>
                             <td>
-                                <button class="admin-btn admin-btn-secondary" onclick="adminPanel.editQuestion('${question.id}')">
+                                <button class="admin-btn admin-btn-secondary" onclick="adminPanel.editQuestion('${questionId}')">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="admin-btn admin-btn-danger" onclick="adminPanel.deleteQuestion('${question.id}')">
+                                <button class="admin-btn admin-btn-danger" onclick="adminPanel.deleteQuestion('${questionId}')">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
@@ -1804,27 +1876,24 @@
                 container.innerHTML = '<div style="text-align: center; padding: 40px;"><i class="fas fa-spinner fa-spin" style="font-size: 24px;"></i><p>Bekleyen sorular yükleniyor...</p></div>';
 
                 try {
-                    // Simulate loading pending questions
-                    const pendingQuestions = [
-                        {
-                            id: 'pq1',
-                            question: 'Osmanlı İmparatorluğu hangi yılda kuruldu?',
-                            options: { A: '1299', B: '1300', C: '1301', D: '1302' },
-                            correct: 'A',
-                            category: 'Tarih',
-                            difficulty: 'Orta',
-                            submittedBy: 'user123',
-                            date: '2024-01-25'
-                        }
-                    ];
+                    if (!window.firebase || !window.firebase.database) {
+                        console.error('Firebase not initialized');
+                        container.innerHTML = '<div style="text-align: center; padding: 40px;"><i class="fas fa-exclamation-triangle" style="font-size: 48px; color: #dc3545; margin-bottom: 20px;"></i><p>Firebase bağlantısı kurulamadı.</p></div>';
+                        return;
+                    }
 
-                    if (pendingQuestions.length === 0) {
+                    const database = window.firebase.database();
+                    const pendingSnapshot = await database.ref('pending_questions').once('value');
+                    const pendingData = pendingSnapshot.val();
+
+                    if (!pendingData) {
                         container.innerHTML = '<div style="text-align: center; padding: 40px;"><i class="fas fa-check-circle" style="font-size: 48px; color: #28a745; margin-bottom: 20px;"></i><p>Bekleyen soru bulunmuyor.</p></div>';
                         return;
                     }
 
                     container.innerHTML = '';
-                    pendingQuestions.forEach(question => {
+                    Object.keys(pendingData).forEach(questionId => {
+                        const question = pendingData[questionId];
                         const questionElement = document.createElement('div');
                         questionElement.className = 'pending-question-item';
                         questionElement.style.cssText = `
@@ -1835,29 +1904,38 @@
                             background: #f8f9fa;
                         `;
                         
+                        // Get question data
+                        const questionText = question.question || question.soru || 'Soru metni yok';
+                        const options = question.options || question.cevaplar || { A: '', B: '', C: '', D: '' };
+                        const correct = question.correct || question.dogruCevap || 'A';
+                        const category = question.category || question.kategori || 'Genel';
+                        const difficulty = question.difficulty || question.zorluk || 'Orta';
+                        const submittedBy = question.submittedBy || question.gonderenKullanici || 'Bilinmiyor';
+                        const date = question.createdAt ? new Date(question.createdAt).toLocaleDateString('tr-TR') : 'Bilinmiyor';
+                        
                         questionElement.innerHTML = `
                             <div style="margin-bottom: 15px;">
-                                <h4 style="margin: 0 0 10px 0; color: #333;">${question.question}</h4>
+                                <h4 style="margin: 0 0 10px 0; color: #333;">${questionText}</h4>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
-                                    <div>A) ${question.options.A}</div>
-                                    <div>B) ${question.options.B}</div>
-                                    <div>C) ${question.options.C}</div>
-                                    <div>D) ${question.options.D}</div>
+                                    <div>A) ${options.A || ''}</div>
+                                    <div>B) ${options.B || ''}</div>
+                                    <div>C) ${options.C || ''}</div>
+                                    <div>D) ${options.D || ''}</div>
                                 </div>
-                                <div style="margin-bottom: 10px;"><strong>Doğru Cevap:</strong> ${question.correct}</div>
+                                <div style="margin-bottom: 10px;"><strong>Doğru Cevap:</strong> ${correct}</div>
                                 <div style="font-size: 12px; color: #666;">
-                                    Kategori: ${question.category} | Zorluk: ${question.difficulty} | 
-                                    Gönderen: ${question.submittedBy} | Tarih: ${question.date}
+                                    Kategori: ${category} | Zorluk: ${difficulty} | 
+                                    Gönderen: ${submittedBy} | Tarih: ${date}
                                 </div>
                             </div>
                             <div style="display: flex; gap: 10px;">
-                                <button class="admin-btn admin-btn-success" onclick="adminPanel.approveQuestion('${question.id}')">
+                                <button class="admin-btn admin-btn-success" onclick="adminPanel.approveQuestion('${questionId}')">
                                     <i class="fas fa-check"></i> Onayla
                                 </button>
-                                <button class="admin-btn admin-btn-warning" onclick="adminPanel.editPendingQuestion('${question.id}')">
+                                <button class="admin-btn admin-btn-warning" onclick="adminPanel.editPendingQuestion('${questionId}')">
                                     <i class="fas fa-edit"></i> Düzenle
                                 </button>
-                                <button class="admin-btn admin-btn-danger" onclick="adminPanel.rejectQuestion('${question.id}')">
+                                <button class="admin-btn admin-btn-danger" onclick="adminPanel.rejectQuestion('${questionId}')">
                                     <i class="fas fa-times"></i> Reddet
                                 </button>
                             </div>
@@ -1875,25 +1953,30 @@
                 const container = document.getElementById('notification-history');
                 
                 try {
-                    // Simulate loading notification history
-                    const notifications = [
-                        {
-                            id: 'n1',
-                            title: 'Yeni Özellik',
-                            message: 'Yeni sorular eklendi!',
-                            target: 'all',
-                            status: 'sent',
-                            date: '2024-01-25 10:30'
-                        }
-                    ];
+                    if (!window.firebase || !window.firebase.database) {
+                        console.error('Firebase not initialized');
+                        container.innerHTML = '<div style="text-align: center; padding: 40px;"><i class="fas fa-exclamation-triangle" style="font-size: 48px; color: #dc3545; margin-bottom: 20px;"></i><p>Firebase bağlantısı kurulamadı.</p></div>';
+                        return;
+                    }
 
-                    if (notifications.length === 0) {
+                    const database = window.firebase.database();
+                    const notificationsSnapshot = await database.ref('notifications').orderByChild('createdAt').limitToLast(20).once('value');
+                    const notificationsData = notificationsSnapshot.val();
+
+                    if (!notificationsData) {
                         container.innerHTML = '<div style="text-align: center; padding: 40px;"><i class="fas fa-bell" style="font-size: 48px; color: #ccc; margin-bottom: 20px;"></i><p>Henüz bildirim gönderilmemiş.</p></div>';
                         return;
                     }
 
                     container.innerHTML = '';
-                    notifications.forEach(notification => {
+                    
+                    // Convert to array and sort by date (newest first)
+                    const notificationsArray = Object.keys(notificationsData).map(key => ({
+                        id: key,
+                        ...notificationsData[key]
+                    })).sort((a, b) => b.createdAt - a.createdAt);
+
+                    notificationsArray.forEach(notification => {
                         const notificationElement = document.createElement('div');
                         notificationElement.className = 'notification-item';
                         notificationElement.style.cssText = `
@@ -1907,11 +1990,13 @@
                             align-items: center;
                         `;
                         
+                        const date = new Date(notification.createdAt).toLocaleDateString('tr-TR') + ' ' + new Date(notification.createdAt).toLocaleTimeString('tr-TR');
+                        
                         notificationElement.innerHTML = `
                             <div>
                                 <h5 style="margin: 0 0 5px 0;">${notification.title}</h5>
                                 <p style="margin: 0 0 5px 0; color: #666;">${notification.message}</p>
-                                <small style="color: #999;">Hedef: ${this.getTargetText(notification.target)} | ${notification.date}</small>
+                                <small style="color: #999;">Hedef: ${this.getTargetText(notification.target)} | ${date}</small>
                             </div>
                             <div>
                                 <span class="admin-badge admin-badge-${notification.status === 'sent' ? 'success' : 'warning'}">${notification.status === 'sent' ? 'Gönderildi' : 'Beklemede'}</span>
@@ -1922,6 +2007,7 @@
 
                 } catch (error) {
                     console.error('Error loading notification history:', error);
+                    container.innerHTML = '<div style="text-align: center; padding: 40px;"><i class="fas fa-exclamation-triangle" style="font-size: 48px; color: #dc3545; margin-bottom: 20px;"></i><p>Bildirim geçmişi yüklenirken hata oluştu.</p></div>';
                 }
             }
 
@@ -1949,7 +2035,49 @@
                 }
 
                 try {
-                    // Simulate sending notification
+                    if (!window.firebase || !window.firebase.database) {
+                        this.showError('Firebase bağlantısı kurulamadı.');
+                        return;
+                    }
+
+                    const database = window.firebase.database();
+                    
+                    // Determine send time
+                    let sendTime = Date.now();
+                    if (schedule === '1hour') {
+                        sendTime += 60 * 60 * 1000;
+                    } else if (schedule === '6hours') {
+                        sendTime += 6 * 60 * 60 * 1000;
+                    } else if (schedule === '1day') {
+                        sendTime += 24 * 60 * 60 * 1000;
+                    } else if (schedule === 'custom') {
+                        const customTime = document.getElementById('notification-custom-time').value;
+                        if (customTime) {
+                            sendTime = new Date(customTime).getTime();
+                        }
+                    }
+
+                    // Create notification data
+                    const notificationData = {
+                        title: title,
+                        message: message,
+                        target: target,
+                        schedule: schedule,
+                        sendTime: sendTime,
+                        createdAt: Date.now(),
+                        createdBy: 'admin',
+                        status: schedule === 'now' ? 'sent' : 'scheduled'
+                    };
+
+                    // Save to Firebase
+                    const notificationsRef = database.ref('notifications');
+                    await notificationsRef.push(notificationData);
+
+                    // If sending now, also save to user notifications
+                    if (schedule === 'now') {
+                        await this.sendNotificationToUsers(notificationData);
+                    }
+
                     this.showSuccess('Bildirim başarıyla gönderildi!');
                     
                     // Clear form
@@ -1962,6 +2090,49 @@
                 } catch (error) {
                     console.error('Error sending notification:', error);
                     this.showError('Bildirim gönderilirken hata oluştu.');
+                }
+            }
+
+            async sendNotificationToUsers(notificationData) {
+                try {
+                    const database = window.firebase.database();
+                    const usersRef = database.ref('users');
+                    const usersSnapshot = await usersRef.once('value');
+                    const usersData = usersSnapshot.val();
+
+                    if (!usersData) return;
+
+                    const userNotificationsRef = database.ref('userNotifications');
+                    const notificationId = Date.now().toString();
+
+                    // Send to all users based on target
+                    for (const userId in usersData) {
+                        const user = usersData[userId];
+                        let shouldSend = false;
+
+                        if (notificationData.target === 'all') {
+                            shouldSend = true;
+                        } else if (notificationData.target === 'active') {
+                            const isActive = user.lastActive && (Date.now() - user.lastActive < 30 * 24 * 60 * 60 * 1000);
+                            shouldSend = isActive;
+                        } else if (notificationData.target === 'inactive') {
+                            const isActive = user.lastActive && (Date.now() - user.lastActive < 30 * 24 * 60 * 60 * 1000);
+                            shouldSend = !isActive;
+                        } else if (notificationData.target === 'premium') {
+                            shouldSend = user.isPremium === true;
+                        }
+
+                        if (shouldSend) {
+                            await userNotificationsRef.child(userId).child(notificationId).set({
+                                title: notificationData.title,
+                                message: notificationData.message,
+                                createdAt: Date.now(),
+                                read: false
+                            });
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error sending notification to users:', error);
                 }
             }
 
@@ -2053,14 +2224,66 @@
             }
 
             async approveQuestion(questionId) {
-                this.showSuccess('Soru onaylandı.');
-                await this.loadPendingQuestions();
+                try {
+                    if (!window.firebase || !window.firebase.database) {
+                        this.showError('Firebase bağlantısı kurulamadı.');
+                        return;
+                    }
+
+                    const database = window.firebase.database();
+                    
+                    // Get pending question data
+                    const pendingRef = database.ref(`pending_questions/${questionId}`);
+                    const pendingSnapshot = await pendingRef.once('value');
+                    const questionData = pendingSnapshot.val();
+
+                    if (!questionData) {
+                        this.showError('Soru bulunamadı.');
+                        return;
+                    }
+
+                    // Add to main questions collection
+                    const questionsRef = database.ref('questions');
+                    const newQuestionRef = questionsRef.push();
+                    await newQuestionRef.set({
+                        ...questionData,
+                        status: 'active',
+                        approvedAt: Date.now(),
+                        approvedBy: 'admin'
+                    });
+
+                    // Remove from pending questions
+                    await pendingRef.remove();
+
+                    this.showSuccess('Soru başarıyla onaylandı ve sisteme eklendi.');
+                    await this.loadPendingQuestions();
+                    
+                } catch (error) {
+                    console.error('Error approving question:', error);
+                    this.showError('Soru onaylanırken hata oluştu.');
+                }
             }
 
             async rejectQuestion(questionId) {
                 if (confirm('Bu soruyu reddetmek istediğinizden emin misiniz?')) {
-                    this.showSuccess('Soru reddedildi.');
-                    await this.loadPendingQuestions();
+                    try {
+                        if (!window.firebase || !window.firebase.database) {
+                            this.showError('Firebase bağlantısı kurulamadı.');
+                            return;
+                        }
+
+                        const database = window.firebase.database();
+                        
+                        // Remove from pending questions
+                        await database.ref(`pending_questions/${questionId}`).remove();
+
+                        this.showSuccess('Soru reddedildi.');
+                        await this.loadPendingQuestions();
+                        
+                    } catch (error) {
+                        console.error('Error rejecting question:', error);
+                        this.showError('Soru reddedilirken hata oluştu.');
+                    }
                 }
             }
 
