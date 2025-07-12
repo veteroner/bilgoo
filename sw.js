@@ -203,7 +203,56 @@ function doPeriodicSync() {
   });
 }
 
-// Push notification
+// Firebase Messaging Service Worker
+importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js');
+
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyAbI5Swc136jjPCKeH1erjoDuhG2GUPnn0",
+  authDomain: "bilgisel-3e9a0.firebaseapp.com",
+  databaseURL: "https://bilgisel-3e9a0-default-rtdb.firebaseio.com",
+  projectId: "bilgisel-3e9a0",
+  storageBucket: "bilgisel-3e9a0.appspot.com",
+  messagingSenderId: "921907280109",
+  appId: "1:921907280109:web:7d9b4844067a7a1ac174e4"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Initialize Firebase Messaging
+const messaging = firebase.messaging();
+
+// Handle background messages
+messaging.onBackgroundMessage(function(payload) {
+  console.log('Background message received:', payload);
+  
+  const notificationTitle = payload.notification.title || 'Quiz Oyunu';
+  const notificationOptions = {
+    body: payload.notification.body || 'Yeni bir bildirim var!',
+    icon: '/icons/icon-192x192.png',
+    badge: '/icons/badge-72x72.png',
+    vibrate: [100, 50, 100],
+    data: payload.data || {},
+    actions: [
+      {
+        action: 'explore',
+        title: 'Oyuna Git',
+        icon: '/icons/action-play-128x128.png'
+      },
+      {
+        action: 'close',
+        title: 'Kapat',
+        icon: '/icons/action-close-128x128.png'
+      }
+    ]
+  };
+
+  self.registration.showNotification(notificationTitle, notificationOptions);
+});
+
+// Push notification (fallback)
 self.addEventListener('push', event => {
   const options = {
     body: event.data ? event.data.text() : 'Yeni bir bildirim var!',
