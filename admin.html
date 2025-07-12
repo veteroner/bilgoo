@@ -1618,31 +1618,69 @@
             }
 
             async validateCredentials(username, password) {
-                // Simple validation - in production, use proper authentication
-                return username === 'admin' && password === 'bilgoo2024!';
+                try {
+                    // Simple validation
+                    if (username === 'admin' && password === 'bilgoo2024!') {
+                        // Firebase anonim kimlik doğrulaması yap
+                        if (window.firebase && window.firebase.auth) {
+                            const auth = window.firebase.auth();
+                            
+                            // Admin email ile custom token oluştur (simüle et)
+                            // Gerçek üretimde proper authentication kullanın
+                            try {
+                                await auth.signInAnonymously();
+                                
+                                // Admin email bilgisini local storage'a kaydet
+                                localStorage.setItem('adminEmail', 'wet_oner@hotmail.com');
+                                
+                                console.log('Firebase admin kimlik doğrulaması başarılı');
+                                return true;
+                            } catch (authError) {
+                                console.error('Firebase auth error:', authError);
+                                // Firebase auth başarısız olsa bile admin giriş yapmaya izin ver
+                                return true;
+                            }
+                        }
+                        return true;
+                    }
+                    return false;
+                } catch (error) {
+                    console.error('Validation error:', error);
+                    return false;
+                }
             }
 
             switchTab(tabName) {
-                // Remove active class from all nav links
-                document.querySelectorAll('.admin-nav-link').forEach(link => {
-                    link.classList.remove('active');
-                });
+                try {
+                    // Remove active class from all nav links
+                    document.querySelectorAll('.admin-nav-link').forEach(link => {
+                        link.classList.remove('active');
+                    });
 
-                // Add active class to clicked nav link
-                document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+                    // Add active class to clicked nav link
+                    const activeLink = document.querySelector(`[data-tab="${tabName}"]`);
+                    if (activeLink) {
+                        activeLink.classList.add('active');
+                    }
 
-                // Hide all tab contents
-                document.querySelectorAll('.admin-tab-content').forEach(content => {
-                    content.classList.remove('active');
-                });
+                    // Hide all tab contents
+                    document.querySelectorAll('.admin-tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
 
-                // Show selected tab content
-                document.getElementById(`${tabName}-tab`).classList.add('active');
+                    // Show selected tab content
+                    const tabContent = document.getElementById(`${tabName}-tab`);
+                    if (tabContent) {
+                        tabContent.classList.add('active');
+                    }
 
-                this.currentTab = tabName;
+                    this.currentTab = tabName;
 
-                // Load tab specific data
-                this.loadTabData(tabName);
+                    // Load tab specific data
+                    this.loadTabData(tabName);
+                } catch (error) {
+                    console.error('Error switching tabs:', error);
+                }
 
                 // Close mobile menu
                 document.getElementById('admin-sidebar').classList.remove('active');

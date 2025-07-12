@@ -4,8 +4,8 @@
     ".write": false,
     "users": {
       "$userId": {
-        ".read": "$userId === auth.uid",
-        ".write": "$userId === auth.uid",
+        ".read": "$userId === auth.uid || auth.token.email === 'wet_oner@hotmail.com'",
+        ".write": "$userId === auth.uid || auth.token.email === 'wet_oner@hotmail.com'",
         "stats": {
           ".read": "auth !== null",
           ".write": "$userId === auth.uid"
@@ -19,6 +19,36 @@
           ".write": "$userId === auth.uid",
           ".validate": "newData.hasChildren(['username', 'email'])"
         }
+      }
+    },
+    "questions": {
+      ".read": "auth !== null || auth.token.email === 'wet_oner@hotmail.com'",
+      ".write": "auth !== null && auth.token.email === 'wet_oner@hotmail.com'",
+      "$questionId": {
+        ".read": "auth !== null || auth.token.email === 'wet_oner@hotmail.com'",
+        ".write": "auth !== null && auth.token.email === 'wet_oner@hotmail.com'"
+      }
+    },
+    "pending_questions": {
+      ".read": "auth !== null && auth.token.email === 'wet_oner@hotmail.com'",
+      ".write": "auth !== null",
+      "$questionId": {
+        ".read": "auth !== null && auth.token.email === 'wet_oner@hotmail.com'",
+        ".write": "auth !== null"
+      }
+    },
+    "notifications": {
+      ".read": "auth !== null && auth.token.email === 'wet_oner@hotmail.com'",
+      ".write": "auth !== null && auth.token.email === 'wet_oner@hotmail.com'",
+      "$notificationId": {
+        ".read": "auth !== null && auth.token.email === 'wet_oner@hotmail.com'",
+        ".write": "auth !== null && auth.token.email === 'wet_oner@hotmail.com'"
+      }
+    },
+    "userNotifications": {
+      "$userId": {
+        ".read": "auth !== null && (auth.uid === $userId || auth.token.email === 'wet_oner@hotmail.com')",
+        ".write": "auth !== null && (auth.uid === $userId || auth.token.email === 'wet_oner@hotmail.com')"
       }
     },
     "gameStats": {
@@ -158,12 +188,6 @@
         "$messageId": {
           ".validate": "newData.hasChildren(['userId', 'message', 'timestamp'])"
         }
-      }
-    },
-    "notifications": {
-      "$userId": {
-        ".read": "auth !== null && auth.uid === $userId",
-        ".write": "auth !== null"
       }
     },
     "daily-tasks": {
