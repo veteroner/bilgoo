@@ -508,7 +508,208 @@
 
             <!-- Admin Panel Content Will Be Moved Here -->
             <div id="admin-panel-content">
-                <!-- Admin panel content from main page will be moved here -->
+                <!-- Dashboard Tab -->
+                <div class="admin-tab-content active" id="dashboard-tab">
+                    <div class="admin-stats-cards">
+                        <div class="admin-stat-card">
+                            <div class="stat-icon"><i class="fas fa-users"></i></div>
+                            <div class="stat-value" id="admin-total-users">0</div>
+                            <div class="stat-label">Toplam Kullanıcı</div>
+                        </div>
+                        <div class="admin-stat-card">
+                            <div class="stat-icon"><i class="fas fa-question-circle"></i></div>
+                            <div class="stat-value" id="admin-total-questions">0</div>
+                            <div class="stat-label">Toplam Soru</div>
+                        </div>
+                        <div class="admin-stat-card">
+                            <div class="stat-icon"><i class="fas fa-gamepad"></i></div>
+                            <div class="stat-value" id="admin-total-games">0</div>
+                            <div class="stat-label">Toplam Oyun</div>
+                        </div>
+                        <div class="admin-stat-card">
+                            <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                            <div class="stat-value" id="admin-pending-reports">0</div>
+                            <div class="stat-label">Bekleyen Şikayet</div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-recent-activity">
+                        <h3>Son Aktiviteler</h3>
+                        <div class="admin-activity-list" id="admin-activity-list">
+                            <!-- Aktiviteler buraya yüklenecek -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Users Tab -->
+                <div class="admin-tab-content" id="users-tab">
+                    <div class="admin-search-box">
+                        <input type="text" id="admin-user-search" placeholder="Kullanıcı ara...">
+                        <button id="admin-user-search-btn" class="admin-btn-secondary"><i class="fas fa-search"></i></button>
+                    </div>
+                    
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Kullanıcı Adı</th>
+                                <th>E-posta</th>
+                                <th>Kayıt Tarihi</th>
+                                <th>Durum</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-users-list">
+                            <!-- Kullanıcılar burada listelenecek -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="admin-pagination">
+                        <button id="admin-prev-page" class="admin-btn-secondary"><i class="fas fa-chevron-left"></i></button>
+                        <span id="admin-current-page">Sayfa 1</span>
+                        <button id="admin-next-page" class="admin-btn-secondary"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Questions Tab -->
+                <div class="admin-tab-content" id="questions-tab">
+                    <div class="admin-actions">
+                        <button id="admin-add-question" class="admin-action-btn"><i class="fas fa-plus"></i> Yeni Soru Ekle</button>
+                        <button id="admin-import-questions" class="admin-action-btn"><i class="fas fa-file-import"></i> İçe Aktar</button>
+                        <button id="admin-export-questions" class="admin-action-btn"><i class="fas fa-file-export"></i> Dışa Aktar</button>
+                    </div>
+                    
+                    <div class="admin-search-box">
+                        <select id="admin-question-category">
+                            <option value="all">Tüm Kategoriler</option>
+                        </select>
+                        <input type="text" id="admin-question-search" placeholder="Soru ara...">
+                        <button id="admin-question-search-btn" class="admin-btn-secondary"><i class="fas fa-search"></i></button>
+                    </div>
+                    
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Soru</th>
+                                <th>Kategori</th>
+                                <th>Zorluk</th>
+                                <th>Ekleyen</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-questions-list">
+                            <!-- Sorular buraya yüklenecek -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="admin-pagination">
+                        <button id="admin-prev-question-page" class="admin-btn-secondary"><i class="fas fa-chevron-left"></i></button>
+                        <span id="admin-current-question-page">Sayfa 1</span>
+                        <button id="admin-next-question-page" class="admin-btn-secondary"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Pending Questions Tab -->
+                <div class="admin-tab-content" id="pending-questions-tab">
+                    <div class="admin-tab-header">
+                        <h3>Bekleyen Sorular</h3>
+                        <div class="admin-filter">
+                            <button id="admin-refresh-pending" class="admin-btn-secondary">
+                                <i class="fas fa-sync-alt"></i> Yenile
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="admin-pending-questions-list" class="admin-pending-questions-list">
+                        <!-- Bekleyen sorular burada listelenecek -->
+                    </div>
+                </div>
+
+                <!-- Reports Tab -->
+                <div class="admin-tab-content" id="reports-tab">
+                    <div class="admin-tab-header">
+                        <h3>Şikayet Yönetimi</h3>
+                        <div class="admin-filter">
+                            <label for="admin-report-filter">Filtrele:</label>
+                            <select id="admin-report-filter">
+                                <option value="all">Tümü</option>
+                                <option value="pending">Bekleyen</option>
+                                <option value="resolved">Çözülmüş</option>
+                                <option value="rejected">Reddedilmiş</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="admin-reports-list" class="admin-reports-list">
+                        <!-- Şikayetler burada listelenecek -->
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div class="admin-tab-content" id="settings-tab">
+                    <div class="admin-settings-section">
+                        <h3>Genel Ayarlar</h3>
+                        <div class="admin-setting-item">
+                            <label for="admin-maintenance-mode">Bakım Modu:</label>
+                            <label class="admin-toggle">
+                                <input type="checkbox" id="admin-maintenance-mode">
+                                <span class="admin-toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="admin-setting-item">
+                            <label for="admin-allow-registrations">Yeni Kayıtlara İzin Ver:</label>
+                            <label class="admin-toggle">
+                                <input type="checkbox" id="admin-allow-registrations" checked>
+                                <span class="admin-toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="admin-setting-item">
+                            <label for="admin-question-approval">Soru Onayı Gerekli:</label>
+                            <label class="admin-toggle">
+                                <input type="checkbox" id="admin-question-approval" checked>
+                                <span class="admin-toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="admin-setting-item">
+                            <label for="admin-max-failed-login">Maksimum Başarısız Giriş:</label>
+                            <input type="number" id="admin-max-failed-login" value="5" min="1" max="10">
+                        </div>
+                    </div>
+                    
+                    <div class="admin-settings-section">
+                        <h3>E-posta Bildirimleri</h3>
+                        <div class="admin-setting-item">
+                            <label for="admin-email-new-user">Yeni Kullanıcı Kaydı:</label>
+                            <label class="admin-toggle">
+                                <input type="checkbox" id="admin-email-new-user" checked>
+                                <span class="admin-toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="admin-setting-item">
+                            <label for="admin-email-new-report">Yeni Şikayet:</label>
+                            <label class="admin-toggle">
+                                <input type="checkbox" id="admin-email-new-report" checked>
+                                <span class="admin-toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-settings-actions">
+                        <button id="admin-save-settings" class="admin-btn-primary">Ayarları Kaydet</button>
+                        <button id="admin-reset-settings" class="admin-btn-secondary">Varsayılana Sıfırla</button>
+                        <button id="admin-export-settings" class="admin-btn-secondary" style="background: #17a2b8;">
+                            <i class="fas fa-download"></i> Dışa Aktar
+                        </button>
+                        <button id="admin-import-settings" class="admin-btn-secondary" style="background: #6f42c1;">
+                            <i class="fas fa-upload"></i> İçe Aktar
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -699,15 +900,522 @@
             }
 
             async loadAdminPanelContent() {
-                // Here we'll load the admin panel content from the main page
-                // This will be implemented when we move the admin panel
-                console.log('Loading admin panel content...');
+                // Setup admin panel tabs
+                this.setupAdminTabs();
                 
-                // Load stats
-                await this.loadStats();
+                // Load admin pending questions functionality
+                if (typeof AdminPendingQuestions !== 'undefined') {
+                    this.pendingQuestions = new AdminPendingQuestions();
+                }
+                
+                // Load stats for admin dashboard
+                this.loadAdminStats();
                 
                 // Setup notification system
                 this.setupNotificationSystem();
+                
+                // Setup all admin functionality
+                this.setupAdminFunctionality();
+                
+                console.log('Admin panel content loaded successfully');
+            }
+            
+            setupAdminTabs() {
+                // Admin tab functionality
+                const tabButtons = document.querySelectorAll('.admin-tab-btn');
+                const tabContents = document.querySelectorAll('.admin-tab-content');
+                
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const targetTab = button.getAttribute('data-tab');
+                        
+                        // Remove active class from all tabs
+                        tabButtons.forEach(btn => btn.classList.remove('active'));
+                        tabContents.forEach(content => content.classList.remove('active'));
+                        
+                        // Add active class to clicked tab
+                        button.classList.add('active');
+                        const targetContent = document.getElementById(`${targetTab}-tab`);
+                        if (targetContent) {
+                            targetContent.classList.add('active');
+                        }
+                        
+                        // Load tab-specific content
+                        this.loadTabContent(targetTab);
+                    });
+                });
+            }
+
+            async loadTabContent(tabName) {
+                switch(tabName) {
+                    case 'dashboard':
+                        await this.loadDashboardData();
+                        break;
+                    case 'users':
+                        await this.loadUsersData();
+                        break;
+                    case 'questions':
+                        await this.loadQuestionsData();
+                        break;
+                    case 'pending-questions':
+                        await this.loadPendingQuestionsData();
+                        break;
+                    case 'notifications':
+                        await this.loadNotificationHistory();
+                        break;
+                    case 'reports':
+                        await this.loadReportsData();
+                        break;
+                    case 'settings':
+                        await this.loadSettingsData();
+                        break;
+                }
+            }
+
+            setupAdminFunctionality() {
+                this.setupUserManagement();
+                this.setupQuestionManagement();
+                this.setupPendingQuestions();
+                this.setupReportsManagement();
+                this.setupSettings();
+            }
+
+            setupUserManagement() {
+                // User search functionality
+                const userSearchBtn = document.getElementById('admin-user-search-btn');
+                const userSearchInput = document.getElementById('admin-user-search');
+                
+                if (userSearchBtn && userSearchInput) {
+                    userSearchBtn.addEventListener('click', () => {
+                        this.searchUsers();
+                    });
+                    
+                    userSearchInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            this.searchUsers();
+                        }
+                    });
+                }
+
+                // User pagination
+                const prevPageBtn = document.getElementById('admin-prev-page');
+                const nextPageBtn = document.getElementById('admin-next-page');
+                
+                if (prevPageBtn) {
+                    prevPageBtn.addEventListener('click', () => {
+                        this.loadUsersData(this.currentPage - 1);
+                    });
+                }
+                
+                if (nextPageBtn) {
+                    nextPageBtn.addEventListener('click', () => {
+                        this.loadUsersData(this.currentPage + 1);
+                    });
+                }
+            }
+
+            setupQuestionManagement() {
+                // Question management buttons
+                const addQuestionBtn = document.getElementById('admin-add-question');
+                const importQuestionsBtn = document.getElementById('admin-import-questions');
+                const exportQuestionsBtn = document.getElementById('admin-export-questions');
+                const questionSearchBtn = document.getElementById('admin-question-search-btn');
+                
+                if (addQuestionBtn) {
+                    addQuestionBtn.addEventListener('click', () => {
+                        this.showAddQuestionModal();
+                    });
+                }
+                
+                if (importQuestionsBtn) {
+                    importQuestionsBtn.addEventListener('click', () => {
+                        this.importQuestions();
+                    });
+                }
+                
+                if (exportQuestionsBtn) {
+                    exportQuestionsBtn.addEventListener('click', () => {
+                        this.exportQuestions();
+                    });
+                }
+                
+                if (questionSearchBtn) {
+                    questionSearchBtn.addEventListener('click', () => {
+                        this.searchQuestions();
+                    });
+                }
+            }
+
+            setupPendingQuestions() {
+                const refreshBtn = document.getElementById('admin-refresh-pending');
+                if (refreshBtn) {
+                    refreshBtn.addEventListener('click', () => {
+                        this.loadPendingQuestionsData();
+                    });
+                }
+            }
+
+            setupReportsManagement() {
+                const reportFilter = document.getElementById('admin-report-filter');
+                if (reportFilter) {
+                    reportFilter.addEventListener('change', () => {
+                        this.loadReportsData();
+                    });
+                }
+            }
+
+            setupSettings() {
+                const saveSettingsBtn = document.getElementById('admin-save-settings');
+                const resetSettingsBtn = document.getElementById('admin-reset-settings');
+                const exportSettingsBtn = document.getElementById('admin-export-settings');
+                const importSettingsBtn = document.getElementById('admin-import-settings');
+                
+                if (saveSettingsBtn) {
+                    saveSettingsBtn.addEventListener('click', () => {
+                        this.saveSettings();
+                    });
+                }
+                
+                if (resetSettingsBtn) {
+                    resetSettingsBtn.addEventListener('click', () => {
+                        this.resetSettings();
+                    });
+                }
+                
+                if (exportSettingsBtn) {
+                    exportSettingsBtn.addEventListener('click', () => {
+                        this.exportSettings();
+                    });
+                }
+                
+                if (importSettingsBtn) {
+                    importSettingsBtn.addEventListener('click', () => {
+                        this.importSettings();
+                    });
+                }
+            }
+
+            async loadDashboardData() {
+                // Load recent activities
+                try {
+                    if (!firebase.firestore) return;
+                    
+                    const activitiesList = document.getElementById('admin-activity-list');
+                    if (!activitiesList) return;
+                    
+                    // This would typically load from an activities collection
+                    activitiesList.innerHTML = `
+                        <div class="activity-item">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Yeni kullanıcı kaydı: user@example.com</span>
+                            <small>2 saat önce</small>
+                        </div>
+                        <div class="activity-item">
+                            <i class="fas fa-question"></i>
+                            <span>Yeni soru eklendi: "Türkiye'nin başkenti neresidir?"</span>
+                            <small>4 saat önce</small>
+                        </div>
+                        <div class="activity-item">
+                            <i class="fas fa-flag"></i>
+                            <span>Yeni şikayet alındı</span>
+                            <small>6 saat önce</small>
+                        </div>
+                    `;
+                } catch (error) {
+                    console.error('Error loading dashboard data:', error);
+                }
+            }
+
+            async loadUsersData(page = 1) {
+                try {
+                    if (!firebase.firestore) return;
+                    
+                    this.currentPage = page;
+                    const usersList = document.getElementById('admin-users-list');
+                    if (!usersList) return;
+                    
+                    usersList.innerHTML = '<tr><td colspan="6">Kullanıcılar yükleniyor...</td></tr>';
+                    
+                    // Load users from Firestore
+                    const snapshot = await firebase.firestore()
+                        .collection('users')
+                        .limit(10)
+                        .get();
+                    
+                    usersList.innerHTML = '';
+                    
+                    snapshot.forEach((doc) => {
+                        const user = doc.data();
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${doc.id.substring(0, 8)}...</td>
+                            <td>${user.displayName || user.name || 'N/A'}</td>
+                            <td>${user.email || 'N/A'}</td>
+                            <td>${user.createdAt ? new Date(user.createdAt.seconds * 1000).toLocaleDateString('tr-TR') : 'N/A'}</td>
+                            <td><span class="badge ${user.disabled ? 'badge-danger' : 'badge-success'}">${user.disabled ? 'Yasaklı' : 'Aktif'}</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-primary" onclick="adminAuth.editUser('${doc.id}')">Düzenle</button>
+                                <button class="btn btn-sm btn-danger" onclick="adminAuth.toggleUserStatus('${doc.id}', ${!user.disabled})">${user.disabled ? 'Aktifleştir' : 'Yasakla'}</button>
+                            </td>
+                        `;
+                        usersList.appendChild(row);
+                    });
+                    
+                    // Update page info
+                    const pageInfo = document.getElementById('admin-current-page');
+                    if (pageInfo) {
+                        pageInfo.textContent = `Sayfa ${page}`;
+                    }
+                    
+                } catch (error) {
+                    console.error('Error loading users:', error);
+                    const usersList = document.getElementById('admin-users-list');
+                    if (usersList) {
+                        usersList.innerHTML = '<tr><td colspan="6">Kullanıcılar yüklenirken hata oluştu.</td></tr>';
+                    }
+                }
+            }
+
+            async loadQuestionsData() {
+                try {
+                    if (!firebase.firestore) return;
+                    
+                    const questionsList = document.getElementById('admin-questions-list');
+                    if (!questionsList) return;
+                    
+                    questionsList.innerHTML = '<tr><td colspan="6">Sorular yükleniyor...</td></tr>';
+                    
+                    // This would load questions from a questions collection
+                    questionsList.innerHTML = '<tr><td colspan="6">Soru yönetimi özelliği geliştiriliyor...</td></tr>';
+                    
+                } catch (error) {
+                    console.error('Error loading questions:', error);
+                }
+            }
+
+            async loadPendingQuestionsData() {
+                try {
+                    if (!firebase.firestore) return;
+                    
+                    const pendingList = document.getElementById('admin-pending-questions-list');
+                    if (!pendingList) return;
+                    
+                    pendingList.innerHTML = '<div class="loading">Bekleyen sorular yükleniyor...</div>';
+                    
+                    // Load pending questions
+                    const snapshot = await firebase.firestore()
+                        .collection('pendingQuestions')
+                        .orderBy('createdAt', 'desc')
+                        .limit(20)
+                        .get();
+                    
+                    if (snapshot.empty) {
+                        pendingList.innerHTML = '<div class="no-data">Bekleyen soru bulunmuyor.</div>';
+                        return;
+                    }
+                    
+                    pendingList.innerHTML = '';
+                    
+                    snapshot.forEach((doc) => {
+                        const question = doc.data();
+                        const questionElement = this.createPendingQuestionElement(doc.id, question);
+                        pendingList.appendChild(questionElement);
+                    });
+                    
+                } catch (error) {
+                    console.error('Error loading pending questions:', error);
+                    const pendingList = document.getElementById('admin-pending-questions-list');
+                    if (pendingList) {
+                        pendingList.innerHTML = '<div class="error">Bekleyen sorular yüklenirken hata oluştu.</div>';
+                    }
+                }
+            }
+
+            createPendingQuestionElement(id, question) {
+                const element = document.createElement('div');
+                element.className = 'pending-question-item';
+                element.innerHTML = `
+                    <div class="question-content">
+                        <h4>${question.question}</h4>
+                        <div class="question-options">
+                            <span>A) ${question.options.A}</span>
+                            <span>B) ${question.options.B}</span>
+                            <span>C) ${question.options.C}</span>
+                            <span>D) ${question.options.D}</span>
+                        </div>
+                        <div class="question-answer">Doğru Cevap: ${question.correctAnswer}</div>
+                        <div class="question-meta">
+                            Kategori: ${question.category} | Zorluk: ${question.difficulty} | 
+                            Gönderen: ${question.submittedBy} | 
+                            Tarih: ${question.createdAt ? new Date(question.createdAt.seconds * 1000).toLocaleDateString('tr-TR') : 'N/A'}
+                        </div>
+                    </div>
+                    <div class="question-actions">
+                        <button class="btn btn-success" onclick="adminAuth.approveQuestion('${id}')">Onayla</button>
+                        <button class="btn btn-warning" onclick="adminAuth.editQuestion('${id}')">Düzenle</button>
+                        <button class="btn btn-danger" onclick="adminAuth.rejectQuestion('${id}')">Reddet</button>
+                    </div>
+                `;
+                return element;
+            }
+
+            async loadReportsData() {
+                try {
+                    if (!firebase.firestore) return;
+                    
+                    const reportsList = document.getElementById('admin-reports-list');
+                    if (!reportsList) return;
+                    
+                    reportsList.innerHTML = '<div class="loading">Raporlar yükleniyor...</div>';
+                    
+                    // This would load reports from a reports collection
+                    reportsList.innerHTML = '<div class="no-data">Şu anda aktif rapor bulunmuyor.</div>';
+                    
+                } catch (error) {
+                    console.error('Error loading reports:', error);
+                }
+            }
+
+            async loadSettingsData() {
+                // Load current settings
+                console.log('Settings loaded');
+            }
+
+            // User management functions
+            async searchUsers() {
+                const searchTerm = document.getElementById('admin-user-search').value;
+                console.log('Searching users:', searchTerm);
+                // Implement user search
+            }
+
+            async editUser(userId) {
+                console.log('Edit user:', userId);
+                this.showError('Kullanıcı düzenleme özelliği geliştiriliyor.');
+            }
+
+            async toggleUserStatus(userId, disable) {
+                try {
+                    if (!firebase.firestore) return;
+                    
+                    await firebase.firestore()
+                        .collection('users')
+                        .doc(userId)
+                        .update({
+                            disabled: disable,
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    
+                    this.showSuccess(`Kullanıcı ${disable ? 'yasaklandı' : 'aktifleştirildi'}.`);
+                    this.loadUsersData(this.currentPage);
+                    
+                } catch (error) {
+                    console.error('Error toggling user status:', error);
+                    this.showError('Kullanıcı durumu güncellenirken hata oluştu.');
+                }
+            }
+
+            // Question management functions
+            async showAddQuestionModal() {
+                this.showError('Soru ekleme özelliği geliştiriliyor.');
+            }
+
+            async importQuestions() {
+                this.showError('Soru içe aktarma özelliği geliştiriliyor.');
+            }
+
+            async exportQuestions() {
+                this.showError('Soru dışa aktarma özelliği geliştiriliyor.');
+            }
+
+            async searchQuestions() {
+                this.showError('Soru arama özelliği geliştiriliyor.');
+            }
+
+            // Pending questions functions
+            async approveQuestion(id) {
+                try {
+                    if (!firebase.firestore) return;
+                    
+                    const doc = await firebase.firestore()
+                        .collection('pendingQuestions')
+                        .doc(id)
+                        .get();
+                    
+                    if (!doc.exists) {
+                        this.showError('Soru bulunamadı.');
+                        return;
+                    }
+                    
+                    const questionData = doc.data();
+                    
+                    // Move to main questions collection
+                    await firebase.firestore()
+                        .collection('questions')
+                        .add({
+                            ...questionData,
+                            approved: true,
+                            approvedBy: 'admin',
+                            approvedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    
+                    // Remove from pending
+                    await firebase.firestore()
+                        .collection('pendingQuestions')
+                        .doc(id)
+                        .delete();
+                    
+                    this.showSuccess('Soru onaylandı ve eklendi.');
+                    this.loadPendingQuestionsData();
+                    
+                } catch (error) {
+                    console.error('Error approving question:', error);
+                    this.showError('Soru onaylanırken hata oluştu.');
+                }
+            }
+
+            async rejectQuestion(id) {
+                if (!confirm('Bu soruyu reddetmek istediğinizden emin misiniz?')) {
+                    return;
+                }
+                
+                try {
+                    if (!firebase.firestore) return;
+                    
+                    await firebase.firestore()
+                        .collection('pendingQuestions')
+                        .doc(id)
+                        .delete();
+                    
+                    this.showSuccess('Soru reddedildi.');
+                    this.loadPendingQuestionsData();
+                    
+                } catch (error) {
+                    console.error('Error rejecting question:', error);
+                    this.showError('Soru reddedilirken hata oluştu.');
+                }
+            }
+
+            async editQuestion(id) {
+                this.showError('Soru düzenleme özelliği geliştiriliyor.');
+            }
+
+            // Settings functions
+            async saveSettings() {
+                this.showSuccess('Ayarlar kaydedildi.');
+            }
+
+            async resetSettings() {
+                if (confirm('Ayarları varsayılana döndürmek istediğinizden emin misiniz?')) {
+                    this.showSuccess('Ayarlar sıfırlandı.');
+                }
+            }
+
+            async exportSettings() {
+                this.showError('Ayar dışa aktarma özelliği geliştiriliyor.');
+            }
+
+            async importSettings() {
+                this.showError('Ayar içe aktarma özelliği geliştiriliyor.');
             }
 
             setupNotificationSystem() {
@@ -1140,4 +1848,5 @@
         }, 5 * 60 * 1000);
     </script>
 </body>
+</html> 
 </html> 

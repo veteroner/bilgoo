@@ -524,8 +524,120 @@
                 
                 <!-- Dashboard Tab -->
                 <div class="admin-tab-content active" id="dashboard-tab">
-                    <h3>Genel Bakış</h3>
-                    <p>Admin panel dashboard'u burada görüntülenecek...</p>
+                    <div class="admin-stats-cards">
+                        <div class="admin-stat-card">
+                            <div class="stat-icon"><i class="fas fa-users"></i></div>
+                            <div class="stat-value" id="admin-total-users">0</div>
+                            <div class="stat-label">Toplam Kullanıcı</div>
+                        </div>
+                        <div class="admin-stat-card">
+                            <div class="stat-icon"><i class="fas fa-question-circle"></i></div>
+                            <div class="stat-value" id="admin-total-questions">0</div>
+                            <div class="stat-label">Toplam Soru</div>
+                        </div>
+                        <div class="admin-stat-card">
+                            <div class="stat-icon"><i class="fas fa-gamepad"></i></div>
+                            <div class="stat-value" id="admin-total-games">0</div>
+                            <div class="stat-label">Toplam Oyun</div>
+                        </div>
+                        <div class="admin-stat-card">
+                            <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                            <div class="stat-value" id="admin-pending-reports">0</div>
+                            <div class="stat-label">Bekleyen Şikayet</div>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-recent-activity">
+                        <h3>Son Aktiviteler</h3>
+                        <div class="admin-activity-list" id="admin-activity-list">
+                            <!-- Aktiviteler buraya yüklenecek -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Users Tab -->
+                <div class="admin-tab-content" id="users-tab">
+                    <div class="admin-search-box">
+                        <input type="text" id="admin-user-search" placeholder="Kullanıcı ara...">
+                        <button id="admin-user-search-btn" class="admin-btn-secondary"><i class="fas fa-search"></i></button>
+                    </div>
+                    
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Kullanıcı Adı</th>
+                                <th>E-posta</th>
+                                <th>Kayıt Tarihi</th>
+                                <th>Durum</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-users-list">
+                            <!-- Kullanıcılar burada listelenecek -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="admin-pagination">
+                        <button id="admin-prev-page" class="admin-btn-secondary"><i class="fas fa-chevron-left"></i></button>
+                        <span id="admin-current-page">Sayfa 1</span>
+                        <button id="admin-next-page" class="admin-btn-secondary"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Questions Tab -->
+                <div class="admin-tab-content" id="questions-tab">
+                    <div class="admin-actions">
+                        <button id="admin-add-question" class="admin-action-btn"><i class="fas fa-plus"></i> Yeni Soru Ekle</button>
+                        <button id="admin-import-questions" class="admin-action-btn"><i class="fas fa-file-import"></i> İçe Aktar</button>
+                        <button id="admin-export-questions" class="admin-action-btn"><i class="fas fa-file-export"></i> Dışa Aktar</button>
+                    </div>
+                    
+                    <div class="admin-search-box">
+                        <select id="admin-question-category">
+                            <option value="all">Tüm Kategoriler</option>
+                        </select>
+                        <input type="text" id="admin-question-search" placeholder="Soru ara...">
+                        <button id="admin-question-search-btn" class="admin-btn-secondary"><i class="fas fa-search"></i></button>
+                    </div>
+                    
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Soru</th>
+                                <th>Kategori</th>
+                                <th>Zorluk</th>
+                                <th>Ekleyen</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-questions-list">
+                            <!-- Sorular buraya yüklenecek -->
+                        </tbody>
+                    </table>
+                    
+                    <div class="admin-pagination">
+                        <button id="admin-prev-question-page" class="admin-btn-secondary"><i class="fas fa-chevron-left"></i></button>
+                        <span id="admin-current-question-page">Sayfa 1</span>
+                        <button id="admin-next-question-page" class="admin-btn-secondary"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Pending Questions Tab -->
+                <div class="admin-tab-content" id="pending-questions-tab">
+                    <div class="admin-tab-header">
+                        <h3>Bekleyen Sorular</h3>
+                        <div class="admin-filter">
+                            <button id="admin-refresh-pending" class="admin-btn-secondary">
+                                <i class="fas fa-sync-alt"></i> Yenile
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="admin-pending-questions-list" class="admin-pending-questions-list">
+                        <!-- Bekleyen sorular burada listelenecek -->
+                    </div>
                 </div>
 
                 <!-- Notifications Tab -->
@@ -587,30 +699,89 @@
                     </div>
                 </div>
 
-                <!-- Other tabs placeholder -->
-                <div class="admin-tab-content" id="users-tab">
-                    <h3>Kullanıcı Yönetimi</h3>
-                    <p>Kullanıcı yönetimi özellikleri burada...</p>
-                </div>
-                
-                <div class="admin-tab-content" id="questions-tab">
-                    <h3>Soru Yönetimi</h3>
-                    <p>Soru yönetimi özellikleri burada...</p>
-                </div>
-                
-                <div class="admin-tab-content" id="pending-questions-tab">
-                    <h3>Bekleyen Sorular</h3>
-                    <p>Bekleyen soru yönetimi özellikleri burada...</p>
-                </div>
-                
+                <!-- Reports Tab -->
                 <div class="admin-tab-content" id="reports-tab">
-                    <h3>Raporlar</h3>
-                    <p>Raporlar burada...</p>
+                    <div class="admin-tab-header">
+                        <h3>Şikayet Yönetimi</h3>
+                        <div class="admin-filter">
+                            <label for="admin-report-filter">Filtrele:</label>
+                            <select id="admin-report-filter">
+                                <option value="all">Tümü</option>
+                                <option value="pending">Bekleyen</option>
+                                <option value="resolved">Çözülmüş</option>
+                                <option value="rejected">Reddedilmiş</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="admin-reports-list" class="admin-reports-list">
+                        <!-- Şikayetler burada listelenecek -->
+                    </div>
                 </div>
-                
+
+                <!-- Settings Tab -->
                 <div class="admin-tab-content" id="settings-tab">
-                    <h3>Ayarlar</h3>
-                    <p>Sistem ayarları burada...</p>
+                    <div class="admin-settings-section">
+                        <h3>Genel Ayarlar</h3>
+                        <div class="admin-setting-item">
+                            <label for="admin-maintenance-mode">Bakım Modu:</label>
+                            <label class="admin-toggle">
+                                <input type="checkbox" id="admin-maintenance-mode">
+                                <span class="admin-toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="admin-setting-item">
+                            <label for="admin-allow-registrations">Yeni Kayıtlara İzin Ver:</label>
+                            <label class="admin-toggle">
+                                <input type="checkbox" id="admin-allow-registrations" checked>
+                                <span class="admin-toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="admin-setting-item">
+                            <label for="admin-question-approval">Soru Onayı Gerekli:</label>
+                            <label class="admin-toggle">
+                                <input type="checkbox" id="admin-question-approval" checked>
+                                <span class="admin-toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="admin-setting-item">
+                            <label for="admin-max-failed-login">Maksimum Başarısız Giriş:</label>
+                            <input type="number" id="admin-max-failed-login" value="5" min="1" max="10">
+                        </div>
+                    </div>
+                    
+                    <div class="admin-settings-section">
+                        <h3>E-posta Bildirimleri</h3>
+                        <div class="admin-setting-item">
+                            <label for="admin-email-new-user">Yeni Kullanıcı Kaydı:</label>
+                            <label class="admin-toggle">
+                                <input type="checkbox" id="admin-email-new-user" checked>
+                                <span class="admin-toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="admin-setting-item">
+                            <label for="admin-email-new-report">Yeni Şikayet:</label>
+                            <label class="admin-toggle">
+                                <input type="checkbox" id="admin-email-new-report" checked>
+                                <span class="admin-toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-settings-actions">
+                        <button id="admin-save-settings" class="admin-btn-primary">Ayarları Kaydet</button>
+                        <button id="admin-reset-settings" class="admin-btn-secondary">Varsayılana Sıfırla</button>
+                        <button id="admin-export-settings" class="admin-btn-secondary" style="background: #17a2b8;">
+                            <i class="fas fa-download"></i> Dışa Aktar
+                        </button>
+                        <button id="admin-import-settings" class="admin-btn-secondary" style="background: #6f42c1;">
+                            <i class="fas fa-upload"></i> İçe Aktar
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
