@@ -6473,9 +6473,8 @@
                             document.getElementById('menu-friends').click();
                             break;
                         case 'tab-settings':
-                            // Ayarlar için bottom sheet menüyü aç
-                            hamburgerMenu.classList.add('active');
-                            menuOverlay.classList.add('active');
+                            // Ayarlar sayfasına git
+                            window.location.href = 'settings.html';
                             break;
                         case 'tab-logout':
                 // Çıkış yap
@@ -6609,28 +6608,67 @@
             });
             
             // Hamburger menü çıkış butonu
-            document.getElementById('menu-logout').addEventListener('click', function() {
-                hamburgerMenu.classList.remove('active');
-                menuOverlay.classList.remove('active');
-                
-                // Çıkış yap
-                if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+            const menuLogoutBtn = document.getElementById('menu-logout');
+            if (menuLogoutBtn) {
+                menuLogoutBtn.addEventListener('click', function() {
+                    console.log('Çıkış butonu tıklandı');
+                    
+                    // Menüyü kapat
+                    const hamburgerMenu = document.querySelector('.hamburger-menu');
+                    const menuOverlay = document.querySelector('.menu-overlay');
+                    if (hamburgerMenu) hamburgerMenu.classList.remove('active');
+                    if (menuOverlay) menuOverlay.classList.remove('active');
+                    
+                    // Çıkış yap
+                    if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                        performLogout();
+                    }
+                });
+            } else {
+                console.error('menu-logout elementi bulunamadı');
+            }
+            
+            // Çıkış fonksiyonu
+            function performLogout() {
+                try {
                     // Firebase'den çıkış yap
-                    if (firebase.auth) {
+                    if (window.firebase && firebase.auth && firebase.auth()) {
                         firebase.auth().signOut().then(() => {
-                            // Çıkış başarılı
-                            localStorage.removeItem('currentUser');
-                            window.location.href = 'login.html';
+                            console.log('Firebase çıkış başarılı');
+                            completeLogout();
                         }).catch((error) => {
-                            console.error('Çıkış hatası:', error);
-                            alert('Çıkış yapılırken bir hata oluştu.');
+                            console.error('Firebase çıkış hatası:', error);
+                            completeLogout(); // Hata olsa bile çıkış yapmaya devam et
                         });
                     } else {
-                        // Firebase yoksa sadece local storage'ı temizle
-                        localStorage.removeItem('currentUser');
-                        window.location.href = 'login.html';
+                        console.log('Firebase mevcut değil, local çıkış yapılıyor');
+                        completeLogout();
                     }
+                } catch (error) {
+                    console.error('Çıkış işlemi hatası:', error);
+                    completeLogout();
                 }
+            }
+            
+            // Çıkış işlemini tamamla
+            function completeLogout() {
+                try {
+                    // Tüm kullanıcı verilerini temizle
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('userStats');
+                    localStorage.removeItem('gameProgress');
+                    
+                    // Session storage'ı da temizle
+                    sessionStorage.clear();
+                    
+                    // Login sayfasına yönlendir
+                    console.log('Login sayfasına yönlendiriliyor...');
+                    window.location.href = 'login.html';
+                } catch (error) {
+                    console.error('Çıkış tamamlama hatası:', error);
+                    alert('Çıkış yapılırken bir hata oluştu.');
+                }
+            }
                 
                 // Hamburger menü ikonunu bars'a geri çevir
                 const icon = hamburgerToggle.querySelector('i');
