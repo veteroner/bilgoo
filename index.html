@@ -5191,6 +5191,10 @@
         <!-- Ayarlar Bölümü -->
         <div class="menu-section">
             <h3 id="menu-settings-title">Ayarlar</h3>
+            <!-- Tüm Ayarlar Butonu -->
+            <div class="menu-item" id="menu-all-settings">
+                <i class="fas fa-cog"></i> <span id="menu-all-settings-text">Tüm Ayarlar</span>
+            </div>
             <!-- Ses Ayarları -->
             <div class="menu-item">
                 <i class="fas fa-volume-up"></i> <span id="menu-sound-text">Ses</span>
@@ -6473,9 +6477,8 @@
                             document.getElementById('menu-friends').click();
                             break;
                         case 'tab-settings':
-                            // Ayarlar için bottom sheet menüyü aç
-                            hamburgerMenu.classList.add('active');
-                            menuOverlay.classList.add('active');
+                            // Ayarlar sayfasına yönlendir
+                            window.location.href = 'settings.html';
                             break;
                         case 'tab-logout':
                 // Çıkış yap
@@ -6565,48 +6568,51 @@
             }
 
             // Yönetici Paneli menü öğesi (sadece adminler için görünür)
-            document.getElementById('menu-admin-panel').addEventListener('click', function() {
-                hamburgerMenu.classList.remove('active');
-                menuOverlay.classList.remove('active');
-                
-                // Yönetici panelini göster
-                if (window.adminModule && window.adminModule.showAdminPanel) {
-                    window.adminModule.showAdminPanel();
-                } else {
-                    // adminModule yoksa basit gösterim
-                    const adminPanel = document.getElementById('admin-panel');
-                    if (adminPanel) {
-                        // Tüm sayfaları gizle
-                        const elementsToHide = [
-                            'main-menu',
-                            'quiz',
-                            'category-selection',
-                            'result',
-                            'profile-page',
-                            'online-game-options',
-                            'global-leaderboard',
-                            'friends-page'
-                        ];
-                        
-                        elementsToHide.forEach(id => {
-                            const element = document.getElementById(id);
-                            if (element) element.style.display = 'none';
-                        });
-                        
-                        // Yönetici panelini göster
-                        adminPanel.style.display = 'block';
+            const adminPanelBtn = document.getElementById('menu-admin-panel');
+            if (adminPanelBtn) {
+                adminPanelBtn.addEventListener('click', function() {
+                    hamburgerMenu.classList.remove('active');
+                    menuOverlay.classList.remove('active');
+                    
+                    // Yönetici panelini göster
+                    if (window.adminModule && window.adminModule.showAdminPanel) {
+                        window.adminModule.showAdminPanel();
                     } else {
-                        alert('Yönetici paneli şu anda kullanılamıyor.');
+                        // adminModule yoksa basit gösterim
+                        const adminPanel = document.getElementById('admin-panel');
+                        if (adminPanel) {
+                            // Tüm sayfaları gizle
+                            const elementsToHide = [
+                                'main-menu',
+                                'quiz',
+                                'category-selection',
+                                'result',
+                                'profile-page',
+                                'online-game-options',
+                                'global-leaderboard',
+                                'friends-page'
+                            ];
+                            
+                            elementsToHide.forEach(id => {
+                                const element = document.getElementById(id);
+                                if (element) element.style.display = 'none';
+                            });
+                            
+                            // Yönetici panelini göster
+                            adminPanel.style.display = 'block';
+                        } else {
+                            alert('Yönetici paneli şu anda kullanılamıyor.');
+                        }
                     }
-                }
-                
-                // Hamburger menü ikonunu bars'a geri çevir
-                const icon = hamburgerToggle.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            });
+                    
+                    // Hamburger menü ikonunu bars'a geri çevir
+                    const icon = hamburgerToggle.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+            }
             
             // Hamburger menü çıkış butonu
             document.getElementById('menu-logout').addEventListener('click', function() {
@@ -6647,6 +6653,22 @@
                 
                 // Gizlilik ayarları sayfasına yönlendir
                 window.location.href = 'privacy/privacy-settings.html';
+                
+                // Hamburger menü ikonunu bars'a geri çevir
+                const icon = hamburgerToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+            // Tüm Ayarlar menü öğesi
+            document.getElementById('menu-all-settings').addEventListener('click', function() {
+                hamburgerMenu.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                
+                // Ayarlar sayfasına yönlendir
+                window.location.href = 'settings.html';
                 
                 // Hamburger menü ikonunu bars'a geri çevir
                 const icon = hamburgerToggle.querySelector('i');
@@ -8925,7 +8947,7 @@
         function loadQuestionsData() {
             const questionsList = document.getElementById('admin-questions-list');
             if (!questionsList) return;
-
+            
             // Loading indicator göster
             questionsList.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Sorular yükleniyor...</td></tr>';
 
