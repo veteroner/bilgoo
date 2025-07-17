@@ -4,9 +4,6 @@
     <item android:drawable="@drawable/ic_splash_background" />
     
     <!-- Ana ikon - küçük ekranlar için -->
-    <item 
-        android:drawable="@drawable/splash" 
-        android:gravity="center"
-        android:width="80dp"
-        android:height="80dp" />
+    <item android:drawable="@drawable/splash" 
+          android:gravity="center" />
 </layer-list>

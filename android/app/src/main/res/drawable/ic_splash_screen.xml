@@ -4,9 +4,6 @@
     <item android:drawable="@drawable/ic_splash_background" />
     
     <!-- Ana ikon - Safe area uyumlu -->
-    <item 
-        android:drawable="@drawable/splash" 
-        android:gravity="center"
-        android:width="96dp"
-        android:height="96dp" />
+    <item android:drawable="@drawable/splash" 
+          android:gravity="center" />
 </layer-list> 
