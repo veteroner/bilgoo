@@ -2439,7 +2439,7 @@ const quizApp = {
             z-index: 10000;
             text-align: center;
             min-width: 300px;
-            animation: fadeInScale 0.3s ease-out;
+            animation: smoothZoomIn 0.5s ease-out;
         `;
         
         // Background overlay ekle
@@ -2452,7 +2452,7 @@ const quizApp = {
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
             z-index: 9999;
-            animation: fadeInScale 0.3s ease-out;
+            animation: fadeIn 0.3s ease-out;
         `;
         
         // Overlay'i modalDiv'den önce ekle
@@ -2481,7 +2481,7 @@ const quizApp = {
         iconDiv.style.cssText = `
             font-size: 40px;
             margin-bottom: 15px;
-            animation: pulse 1s infinite;
+            animation: gentlePulse 2s infinite;
         `;
         
         // Başlık stilini ayarla
@@ -2502,20 +2502,46 @@ const quizApp = {
         // Animasyonlar için stil ekle
         const style = document.createElement('style');
         style.textContent = `
-            @keyframes fadeInScale {
-                0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-                100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            @keyframes smoothZoomIn {
+                0% { 
+                    opacity: 0; 
+                    transform: translate(-50%, -50%) scale(0.7);
+                }
+                50% { 
+                    opacity: 0.8; 
+                    transform: translate(-50%, -50%) scale(1.05);
+                }
+                100% { 
+                    opacity: 1; 
+                    transform: translate(-50%, -50%) scale(1);
+                }
             }
             
-            @keyframes fadeOutScale {
-                0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-                100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            @keyframes smoothZoomOut {
+                0% { 
+                    opacity: 1; 
+                    transform: translate(-50%, -50%) scale(1);
+                }
+                100% { 
+                    opacity: 0; 
+                    transform: translate(-50%, -50%) scale(0.7);
+                }
             }
             
-            @keyframes pulse {
+            @keyframes gentlePulse {
                 0% { transform: scale(1); }
-                50% { transform: scale(1.1); }
+                50% { transform: scale(1.08); }
                 100% { transform: scale(1); }
+            }
+            
+            @keyframes fadeIn {
+                0% { opacity: 0; }
+                100% { opacity: 1; }
+            }
+            
+            @keyframes fadeOut {
+                0% { opacity: 1; }
+                100% { opacity: 0; }
             }
         `;
         document.head.appendChild(style);
@@ -2528,8 +2554,8 @@ const quizApp = {
         const displayTime = jokerType === 'hint' ? 3000 : 2000;
         
         setTimeout(() => {
-            modalDiv.style.animation = 'fadeOutScale 0.3s ease-out';
-            overlay.style.animation = 'fadeOutScale 0.3s ease-out';
+            modalDiv.style.animation = 'smoothZoomOut 0.4s ease-out';
+            overlay.style.animation = 'fadeOut 0.4s ease-out';
             setTimeout(() => {
                 if (document.body.contains(modalDiv)) {
                     document.body.removeChild(modalDiv);
@@ -3115,6 +3141,14 @@ const quizApp = {
     
     // Sonraki soruyu göster
     showNextQuestion: function() {
+        // Mevcut modalları temizle - güvenlik önlemi
+        const existingModals = document.querySelectorAll('.correct-modal, .wrong-modal, .timeout-modal');
+        existingModals.forEach(modal => {
+            if (modal && modal.parentNode) {
+                modal.remove();
+            }
+        });
+        
         // Yeni soruya geçerken joker kullanımlarını sıfırla
         this.resetJokerUsage();
         // Önceki sonuç ve seçili şıkları temizle
@@ -3606,6 +3640,30 @@ const quizApp = {
         // İstatistikleri kaydet
         this.saveStats(this.selectedCategory, this.score, this.answeredQuestions, 
             this.answerTimes.length > 0 ? Math.round(this.answerTimes.reduce((a, b) => a + b, 0) / this.answerTimes.length) : 0);
+    },
+    
+    // Geçiş ekranını gizle
+    hideRestartTransition: function(transitionOverlay) {
+        // Eğer transitionOverlay parametresi verilmişse, onu kullan
+        if (transitionOverlay) {
+            if (transitionOverlay.parentNode) {
+                transitionOverlay.parentNode.removeChild(transitionOverlay);
+            }
+            return;
+        }
+        
+        // Aksi halde, mevcut geçiş ekranlarını bul ve kaldır
+        const existingTransitions = document.querySelectorAll('.section-transition, .restart-transition, .transition-overlay');
+        existingTransitions.forEach(transition => {
+            if (transition.parentNode) {
+                transition.parentNode.removeChild(transition);
+            }
+        });
+        
+        // Quiz ekranını göster
+        if (this.quizElement) {
+            this.quizElement.style.display = 'block';
+        }
     },
     
     // Bölüm geçiş ekranını göster
@@ -7690,7 +7748,7 @@ const quizApp = {
                     gap: 20px;
                     margin-top: 40px;
                 ">
-                    <button id="play-again-btn" style="
+                    <button id="share-btn" style="
                         background: linear-gradient(135deg, ${primaryColor}, ${secondaryColor});
                         border: none;
                         color: white;
@@ -7710,8 +7768,8 @@ const quizApp = {
                         letter-spacing: 1px;
                     " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 35px rgba(0, 0, 0, 0.25)'"
                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0, 0, 0, 0.2)'">
-                        <i class="fas fa-redo"></i>
-                        ${languages[this.currentLanguage].playAgain}
+                        <i class="fas fa-share"></i>
+                        ${languages[this.currentLanguage].share}
                     </button>
                     
                     <button id="main-menu-btn" style="
@@ -7790,15 +7848,13 @@ const quizApp = {
         this.startConfetti(confettiCanvas);
         
         // Butonlara event listener ekle
-        const playAgainBtn = celebrationModal.querySelector('#play-again-btn');
         const mainMenuBtn = celebrationModal.querySelector('#main-menu-btn');
         const shareBtn = celebrationModal.querySelector('#share-btn');
         
-        if (playAgainBtn) {
-            playAgainBtn.addEventListener('click', () => {
-                console.log('🎮 Play again button clicked');
-                console.log('📋 Current selectedCategory:', this.selectedCategory);
-                this.restartGame();
+        if (shareBtn) {
+            shareBtn.addEventListener('click', () => {
+                console.log('🔄 Share button clicked');
+                this.shareResults(finalStats);
             });
         }
         

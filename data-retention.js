@@ -78,14 +78,43 @@ const DataRetentionManager = {
         console.log('Veri saklama süresi kontrolü başlatılıyor...');
         
         try {
-            await this.cleanupExpiredData();
-            await this.cleanupInactiveUsers();
-            await this.cleanupOldLogs();
-            await this.updateRetentionMetrics();
-            
+            // Sadece client-side kontroller yapılacak
+            // Admin izinleri gerektiren işlemler atlanacak
+            await this.cleanupLocalData();
             console.log('Veri saklama süresi kontrolü tamamlandı');
         } catch (error) {
             console.error('Veri temizleme hatası:', error);
+            // Hata durumunda sadece uyarı ver, uygulama çalışmaya devam etsin
+        }
+    },
+
+    // Sadece local storage temizleme
+    async cleanupLocalData() {
+        try {
+            // LocalStorage'daki eski verileri temizle
+            const storageKeys = Object.keys(localStorage);
+            const now = Date.now();
+            const oneWeekAgo = now - (7 * 24 * 60 * 60 * 1000);
+            
+            storageKeys.forEach(key => {
+                if (key.startsWith('temp_') || key.startsWith('cache_')) {
+                    const item = localStorage.getItem(key);
+                    if (item) {
+                        try {
+                            const data = JSON.parse(item);
+                            if (data.timestamp && data.timestamp < oneWeekAgo) {
+                                localStorage.removeItem(key);
+                                console.log(`Eski cache verisi temizlendi: ${key}`);
+                            }
+                        } catch (e) {
+                            // JSON parse hatası varsa da sil
+                            localStorage.removeItem(key);
+                        }
+                    }
+                }
+            });
+        } catch (error) {
+            console.warn('LocalStorage temizleme hatası:', error);
         }
     },
     

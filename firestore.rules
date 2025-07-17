@@ -149,11 +149,27 @@ service cloud.firestore {
     match /data-retention/{document} {
       allow read: if true;
       allow write: if true;
+      allow delete: if true;
     }
     
     match /dataRetention/{document} {
       allow read: if true;
       allow write: if true;
+      allow delete: if true;
+    }
+    
+    // Eski verilerin temizlenmesi için
+    match /old-data/{document} {
+      allow read: if true;
+      allow write: if true;
+      allow delete: if true;
+    }
+    
+    // Geçici veriler
+    match /temp-data/{document} {
+      allow read: if true;
+      allow write: if true;
+      allow delete: if true;
     }
     
     // Kullanıcı raporları

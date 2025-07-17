@@ -7539,7 +7539,7 @@ const quizApp = {
             </div>
             
             <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; animation: fadeInUp 0.8s ease-out 1s both;">
-                <button id="play-again-btn" style="
+                <button id="share-btn" style="
                     background: linear-gradient(135deg, #667eea, #764ba2);
                     border: none;
                     color: white;
@@ -7554,7 +7554,7 @@ const quizApp = {
                     align-items: center;
                     gap: 10px;
                 ">
-                    ${celebrationTexts.playAgainBtn}
+                    <i class="fas fa-share"></i> ${languages[this.currentLanguage].share}
                 </button>
                 
                 <button id="main-menu-btn" style="
@@ -7646,21 +7646,13 @@ const quizApp = {
         
         // DOM'a eklendikten sonra buton event listeners - setTimeout ile DOM'un hazır olmasını bekle
         setTimeout(() => {
-            const playAgainBtn = document.getElementById('play-again-btn');
             const mainMenuBtn = document.getElementById('main-menu-btn');
             const shareBtn = document.getElementById('share-btn');
             
-            if (playAgainBtn) {
-                playAgainBtn.addEventListener('click', () => {
-                    console.log('🎮 Play again button clicked');
-                    console.log('📋 Current selectedCategory:', this.selectedCategory);
-                    
-                    // Celebration modal'ını kaldır
-                    celebrationModal.remove();
-                    style.remove();
-                    
-                    // Geçiş ekranı ile oyunu yeniden başlat
-                    this.restartGame();
+            if (shareBtn) {
+                shareBtn.addEventListener('click', () => {
+                    console.log('🔄 Share button clicked');
+                    this.shareResults(finalStats);
                 });
             }
             
@@ -7669,12 +7661,6 @@ const quizApp = {
                     celebrationModal.remove();
                     style.remove();
                     window.location.reload();
-                });
-            }
-            
-            if (shareBtn) {
-                shareBtn.addEventListener('click', () => {
-                    this.shareResults(finalStats);
                 });
             }
         }, 100);
