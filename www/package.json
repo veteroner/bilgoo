@@ -1,6 +1,6 @@
 {
   "name": "quiz-oyunu",
-  "version": "4.1.0",
+  "version": "10.0.0",
   "description": "Bilgoo uygulaması, kullanıcıların bilgilerini çeşitli kategorilerde test edebilecekleri interaktif bir web uygulamasıdır.",
   "main": "achievements.js",
   "scripts": {
@@ -10,9 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@capacitor-community/admob": "^5.0.0",
     "@capacitor/android": "^5.6.0",
     "@capacitor/cli": "^5.6.0",
     "@capacitor/core": "^5.6.0",
+    "@capacitor/push-notifications": "^5.1.2",
     "@capacitor/splash-screen": "^5.0.6",
     "@capacitor/status-bar": "^5.0.6"
   }

@@ -444,7 +444,7 @@
             if (missionText) missionText.textContent = t.missionText;
 
             // Bilgoo Nedir bölümü
-            const rocketHeading = document.querySelector('h2 i.fas.fa-rocket');
+        const rocketHeading = document.querySelector('h2 i.fas.fa-rocket');
             if (rocketHeading && rocketHeading.parentElement) {
                 const icon = rocketHeading.outerHTML;
                 rocketHeading.parentElement.innerHTML = icon + ' ' + t.whatIsTitle;
@@ -452,23 +452,23 @@
                 if (nextP && nextP.tagName === 'P') {
                     nextP.textContent = t.whatIsText;
                 }
-            }
+        }
 
             // İstatistik etiketleri
-            const statLabels = document.querySelectorAll('.stat-label');
+        const statLabels = document.querySelectorAll('.stat-label');
             const statKeys = ['statsActiveUsers', 'statsQuestionPool', 'statsCategories', 'statsQuizSolved'];
             statLabels.forEach((label, index) => {
                 if (t[statKeys[index]]) {
                     label.textContent = t[statKeys[index]];
-                }
+        }
             });
 
             // Özellikler başlığı
-            const starHeading = document.querySelector('h2 i.fas.fa-star');
+        const starHeading = document.querySelector('h2 i.fas.fa-star');
             if (starHeading && starHeading.parentElement) {
                 const icon = starHeading.outerHTML;
                 starHeading.parentElement.innerHTML = icon + ' ' + t.featuresTitle;
-            }
+        }
 
             // Özellik kartları
             const featureCards = document.querySelectorAll('.features .feature');
@@ -479,7 +479,7 @@
                 { title: 'featureAchievementsTitle', text: 'featureAchievementsText' },
                 { title: 'featureMultiTitle', text: 'featureMultiText' },
                 { title: 'featureSecurityTitle', text: 'featureSecurityText' }
-            ];
+        ];
 
             featureCards.forEach((card, index) => {
                 if (featureKeys[index]) {
@@ -495,7 +495,7 @@
             });
 
             // Vizyon
-            const eyeHeading = document.querySelector('h2 i.fas.fa-eye');
+        const eyeHeading = document.querySelector('h2 i.fas.fa-eye');
             if (eyeHeading && eyeHeading.parentElement) {
                 const icon = eyeHeading.outerHTML;
                 eyeHeading.parentElement.innerHTML = icon + ' ' + t.visionTitle;
@@ -503,7 +503,7 @@
                 if (nextP && nextP.tagName === 'P') {
                     nextP.textContent = t.visionText;
                 }
-            }
+        }
 
             // Hedefler
             const bullseyeHeading = document.querySelector('h2 i.fas.fa-bullseye');
@@ -513,15 +513,15 @@
                 const nextUl = bullseyeHeading.parentElement.nextElementSibling;
                 if (nextUl && nextUl.tagName === 'UL') {
                     nextUl.innerHTML = '';
-                    for (let i = 1; i <= 6; i++) {
+                for (let i = 1; i <= 6; i++) {
                         if (t['goal' + i]) {
-                            const li = document.createElement('li');
+                    const li = document.createElement('li');
                             li.textContent = t['goal' + i];
                             nextUl.appendChild(li);
                         }
-                    }
                 }
             }
+        }
 
             // Ekip bilgisi
             const teamTitle = document.querySelector('.team-info h3');
@@ -536,48 +536,48 @@
             if (teamP2) teamP2.innerHTML = t.teamText2;
 
             // Kalite ve Güvenilirlik
-            const awardHeading = document.querySelector('h2 i.fas.fa-award');
+        const awardHeading = document.querySelector('h2 i.fas.fa-award');
             if (awardHeading && awardHeading.parentElement) {
                 const icon = awardHeading.outerHTML;
                 awardHeading.parentElement.innerHTML = icon + ' ' + t.qualityTitle;
-                const introP = awardHeading.parentElement.nextElementSibling;
+            const introP = awardHeading.parentElement.nextElementSibling;
                 if (introP && introP.tagName === 'P') {
                     introP.textContent = t.qualityIntro;
                     const nextUl = introP.nextElementSibling;
                     if (nextUl && nextUl.tagName === 'UL') {
                         nextUl.innerHTML = '';
-                        for (let i = 1; i <= 5; i++) {
+                for (let i = 1; i <= 5; i++) {
                             if (t['quality' + i]) {
-                                const li = document.createElement('li');
+                    const li = document.createElement('li');
                                 li.textContent = t['quality' + i];
                                 nextUl.appendChild(li);
                             }
                         }
-                    }
                 }
             }
+        }
 
             // Sosyal Sorumluluk
-            const leafHeading = document.querySelector('h2 i.fas.fa-leaf');
+        const leafHeading = document.querySelector('h2 i.fas.fa-leaf');
             if (leafHeading && leafHeading.parentElement) {
                 const icon = leafHeading.outerHTML;
                 leafHeading.parentElement.innerHTML = icon + ' ' + t.socialTitle;
-                const introP = leafHeading.parentElement.nextElementSibling;
+            const introP = leafHeading.parentElement.nextElementSibling;
                 if (introP && introP.tagName === 'P') {
                     introP.textContent = t.socialIntro;
                     const nextUl = introP.nextElementSibling;
                     if (nextUl && nextUl.tagName === 'UL') {
                         nextUl.innerHTML = '';
-                        for (let i = 1; i <= 4; i++) {
+                for (let i = 1; i <= 4; i++) {
                             if (t['social' + i]) {
-                                const li = document.createElement('li');
+                    const li = document.createElement('li');
                                 li.textContent = t['social' + i];
                                 nextUl.appendChild(li);
                             }
                         }
-                    }
                 }
             }
+        }
 
             // İletişim
             const contactTitle = document.querySelector('.contact-info h3');
@@ -604,17 +604,17 @@
                     const webStrong = webP.querySelector('strong');
                     if (webStrong) webStrong.textContent = t.contactWebLabel + ':';
                 }
-                                if (supportP) {
+                if (supportP) {
                     const supportStrong = supportP.querySelector('strong');
                     if (supportStrong) supportStrong.textContent = t.contactSupportLabel + ':';
                 }
-            }
+        }
 
             // Geri dön butonu
-            const backLink = document.querySelector('.back-link');
-            if (backLink) {
-                backLink.innerHTML = '<i class="fas fa-arrow-left"></i> ' + t.backLink;
-            }
+        const backLink = document.querySelector('.back-link');
+        if (backLink) {
+            backLink.innerHTML = '<i class="fas fa-arrow-left"></i> ' + t.backLink;
+        }
         }
 
         // Dil seçim dropdown'u işlevselliği

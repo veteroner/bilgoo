@@ -6857,7 +6857,7 @@
                         // Çıkış butonu her zaman görünsün - mobilde bottom sheet'te var
                         // document.getElementById('menu-logout').style.display = 'none';
                         document.getElementById('menu-profile').style.display = 'none';
-                        adminPanelMenuItem.style.display = 'none';
+                        if (adminPanelMenuItem) adminPanelMenuItem.style.display = 'none';
                     }
                 });
             }
