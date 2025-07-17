@@ -1,0 +1,86 @@
+[build]
+  # The directory to serve from
+  publish = "."
+  
+  # Commands to run before deployment
+  command = "echo 'No build command needed for static site'"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[redirects]]
+  # Redirect all routes to index.html for SPA routing
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  conditions = {Role = ["admin"]}
+
+[[redirects]]
+  # Handle admin routes
+  from = "/admin/*"
+  to = "/admin.html"
+  status = 200
+
+[[redirects]]
+  # Handle settings routes
+  from = "/settings/*"
+  to = "/settings.html"
+  status = 200
+
+[[redirects]]
+  # Handle about routes
+  from = "/about/*"
+  to = "/about.html"
+  status = 200
+
+[[redirects]]
+  # Handle contact routes
+  from = "/contact/*"
+  to = "/contact.html"
+  status = 200
+
+[[redirects]]
+  # Handle login routes
+  from = "/login/*"
+  to = "/login.html"
+  status = 200
+
+[[redirects]]
+  # Handle privacy policy routes
+  from = "/privacy/*"
+  to = "/privacy-policy.html"
+  status = 200
+
+[[headers]]
+  # Cache static assets
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  # Cache CSS files
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  # Cache images
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  # Cache icons
+  for = "/icons/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  # Security headers for all pages
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
