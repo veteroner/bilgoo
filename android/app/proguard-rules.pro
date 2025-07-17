@@ -32,3 +32,20 @@
 # Web içeriği için
 -keep class android.webkit.** { *; }
 -dontwarn android.webkit.**
+
+# Google AdMob SDK rules
+-keep class com.google.android.gms.** { *; }
+-dontwarn com.google.android.gms.**
+-keep class com.google.android.gms.ads.** { *; }
+-dontwarn com.google.android.gms.ads.**
+
+# AdMob mediation
+-keep class com.google.ads.** { *; }
+-dontwarn com.google.ads.**
+
+# Missing classes from newer Android versions
+-dontwarn android.media.LoudnessCodecController
+-dontwarn android.media.LoudnessCodecController$OnLoudnessCodecUpdateListener
+
+# Kotlin metadata
+-dontwarn kotlin.Metadata
