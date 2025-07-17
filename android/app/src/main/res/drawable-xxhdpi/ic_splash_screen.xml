@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Arka plan rengi -->
+    <item android:drawable="@drawable/ic_splash_background" />
+    
+    <!-- Ana ikon - büyük ekranlar için -->
+    <item 
+        android:drawable="@drawable/splash" 
+        android:gravity="center"
+        android:width="110dp"
+        android:height="110dp" />
+</layer-list>
