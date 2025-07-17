@@ -2990,30 +2990,66 @@ const quizApp = {
     
     // Restartlama işlevi
     restartGame: function() {
+        console.log('🔄 RestartGame çağrıldı!');
+        console.log('📋 Mevcut selectedCategory:', this.selectedCategory);
+        
+        // Geçiş ekranını göster
+        const transitionOverlay = this.showRestartTransition();
+        
+        // Mevcut celebration modal'ını kaldır
+        const existingModal = document.querySelector('.celebration-modal');
+        if (existingModal) {
+            existingModal.remove();
+            console.log('🗑️ Mevcut celebration modal kaldırıldı');
+        }
+        
+        // Badge style'ını da kaldır
+        const badgeStyle = document.querySelector('style');
+        if (badgeStyle) {
+            badgeStyle.remove();
+        }
+        
+        // Değişkenleri sıfırla
         this.currentQuestionIndex = 0;
         this.score = 0;
-        this.correctAnswers = 0; // <-- EKLENDİ: Doğru cevap sayısını sıfırla
-        this.sessionScore = 0; // Oturum puanını sıfırla
+        this.correctAnswers = 0;
+        this.sessionScore = 0;
         this.lives = 5;
         this.answeredQuestions = 0;
         this.answerTimes = [];
-        this.currentSection = 1; // Bölüm sayısını da sıfırla
+        this.currentSection = 1;
         this.resetJokers();
         
-        // Body'den quiz ve kategori class'larını kaldır - logo tekrar görünsün
-        document.body.classList.remove('quiz-active', 'category-selection');
-        
-        // Tekli oyun modunda chat ekranını gizle
-        const gameChatContainer = document.getElementById('game-chat-container');
-        if (gameChatContainer) {
-            gameChatContainer.style.display = 'none';
-        }
-        
-        // Kategorileri yeniden göster
-        this.displayCategories();
-        
-        // İstatistikleri sıfırla
-        this.updateScoreDisplay();
+        // Kısa bir gecikme ile gerçekçi yükleme deneyimi
+        setTimeout(() => {
+            // Eğer mevcut kategori varsa, aynı kategoride oyunu yeniden başlat
+            if (this.selectedCategory) {
+                console.log('✅ Seçili kategori mevcut, aynı kategoride oyuna devam ediliyor:', this.selectedCategory);
+                // Seçili kategori ile oyuna devam et
+                this.loadQuestionsForCategory(this.selectedCategory);
+            } else {
+                console.log('❌ Seçili kategori bulunamadı, kategori seçimine dönülüyor');
+                // Body'den quiz ve kategori class'larını kaldır - logo tekrar görünsün
+                document.body.classList.remove('quiz-active', 'category-selection');
+                
+                // Tekli oyun modunda chat ekranını gizle
+                const gameChatContainer = document.getElementById('game-chat-container');
+                if (gameChatContainer) {
+                    gameChatContainer.style.display = 'none';
+                }
+                
+                // Kategorileri yeniden göster
+                this.displayCategories();
+            }
+            
+            // İstatistikleri sıfırla
+            this.updateScoreDisplay();
+            
+            // Geçiş ekranını gizle
+            setTimeout(() => {
+                this.hideRestartTransition(transitionOverlay);
+            }, 500);
+        }, 1000);
     },
     
     // Sonraki soruyu göster
@@ -7616,8 +7652,14 @@ const quizApp = {
             
             if (playAgainBtn) {
                 playAgainBtn.addEventListener('click', () => {
+                    console.log('🎮 Play again button clicked');
+                    console.log('📋 Current selectedCategory:', this.selectedCategory);
+                    
+                    // Celebration modal'ını kaldır
                     celebrationModal.remove();
                     style.remove();
+                    
+                    // Geçiş ekranı ile oyunu yeniden başlat
                     this.restartGame();
                 });
             }

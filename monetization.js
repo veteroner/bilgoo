@@ -831,6 +831,11 @@ const MonetizationManager = {
         if (container) {
             container.parentNode.insertBefore(banner, container);
             console.log('✅ Mobil üst banner container üstüne eklendi');
+            
+            // Container'a otomatik padding ekle
+            container.style.paddingTop = '80px';
+            container.style.marginTop = '0';
+            console.log('📏 Container padding-top: 80px eklendi');
         } else {
             document.body.insertBefore(banner, document.body.firstChild);
             console.log('✅ Mobil üst banner body başına eklendi');
@@ -923,6 +928,15 @@ const MonetizationManager = {
         if (banner) {
             banner.style.display = 'none';
             
+            // Eğer üst banner gizleniyorsa container padding'i kaldır
+            if (position === 'top') {
+                const container = document.querySelector('.container');
+                if (container) {
+                    container.style.paddingTop = '15px';
+                    console.log('📏 Container padding-top sıfırlandı');
+                }
+            }
+            
             console.log(`Mobil ${position} banner gizlendi`);
             
             // Kullanıcı tercihini kaydet
@@ -936,6 +950,13 @@ const MonetizationManager = {
             const topBanner = document.querySelector('.mobile-top-banner');
             if (topBanner) {
                 topBanner.style.display = 'none';
+                
+                // Container padding'i de kaldır
+                const container = document.querySelector('.container');
+                if (container) {
+                    container.style.paddingTop = '15px';
+                    console.log('📏 Container padding-top sıfırlandı (tercihler)');
+                }
             }
         }
         

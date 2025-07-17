@@ -27,7 +27,13 @@ const progressChart = {
     
     // Grafikleri güncelle
     updateCharts: function() {
-        const stats = window.quizApp.getStats();
+        const stats = window.quizApp && window.quizApp.getStats ? window.quizApp.getStats() : {
+            totalQuestions: 0,
+            correctAnswers: 0,
+            totalGames: 0,
+            categoryStats: {},
+            recentGames: []
+        };
         
         if (this.categoryChartCanvas) {
             this.updateCategoryChart(stats);

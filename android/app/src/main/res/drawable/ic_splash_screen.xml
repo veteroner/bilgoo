@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Arka plan rengi -->
-    <item android:drawable="@color/ic_launcher_background" />
+    <item android:drawable="@drawable/ic_splash_background" />
     
-    <!-- Ana ikon -->
-    <item android:gravity="center">
-        <bitmap android:src="@drawable/splash" 
-                android:gravity="center" />
-    </item>
+    <!-- Ana ikon - Safe area uyumlu -->
+    <item 
+        android:drawable="@drawable/splash" 
+        android:gravity="center"
+        android:width="96dp"
+        android:height="96dp" />
 </layer-list> 

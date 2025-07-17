@@ -2403,6 +2403,22 @@ const quizApp = {
             animation: fadeInScale 0.3s ease-out;
         `;
         
+        // Background overlay ekle
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            animation: fadeInScale 0.3s ease-out;
+        `;
+        
+        // Overlay'i modalDiv'den önce ekle
+        document.body.appendChild(overlay);
+        
         // Joker tipine göre farklı renk şeması
         if (jokerType === 'fifty') {
             modalDiv.style.background = 'linear-gradient(135deg, #74b9ff, #0984e3)';
@@ -2467,15 +2483,21 @@ const quizApp = {
         
         // Modalı DOM'a ekle
         document.body.appendChild(modalDiv);
+        console.log(`${jokerType} joker modalı DOM'a eklendi`);
         
         // Modalı kısa süre sonra kaldır (ip ucu jokeri için biraz daha uzun süre)
-        const displayTime = jokerType === 'hint' ? 2000 : 1500;
+        const displayTime = jokerType === 'hint' ? 3000 : 2000;
         
         setTimeout(() => {
             modalDiv.style.animation = 'fadeOutScale 0.3s ease-out';
+            overlay.style.animation = 'fadeOutScale 0.3s ease-out';
             setTimeout(() => {
                 if (document.body.contains(modalDiv)) {
                     document.body.removeChild(modalDiv);
+                }
+                
+                if (document.body.contains(overlay)) {
+                    document.body.removeChild(overlay);
                 }
                 
                 if (document.head.contains(style)) {
@@ -2990,30 +3012,66 @@ const quizApp = {
     
     // Restartlama işlevi
     restartGame: function() {
+        console.log('🔄 RestartGame çağrıldı!');
+        console.log('📋 Mevcut selectedCategory:', this.selectedCategory);
+        
+        // Geçiş ekranını göster
+        const transitionOverlay = this.showRestartTransition();
+        
+        // Mevcut celebration modal'ını kaldır
+        const existingModal = document.querySelector('.celebration-modal');
+        if (existingModal) {
+            existingModal.remove();
+            console.log('🗑️ Mevcut celebration modal kaldırıldı');
+        }
+        
+        // Badge style'ını da kaldır
+        const badgeStyle = document.querySelector('style');
+        if (badgeStyle) {
+            badgeStyle.remove();
+        }
+        
+        // Değişkenleri sıfırla
         this.currentQuestionIndex = 0;
         this.score = 0;
-        this.correctAnswers = 0; // <-- EKLENDİ: Doğru cevap sayısını sıfırla
-        this.sessionScore = 0; // Oturum puanını sıfırla
+        this.correctAnswers = 0;
+        this.sessionScore = 0;
         this.lives = 5;
         this.answeredQuestions = 0;
         this.answerTimes = [];
-        this.currentSection = 1; // Bölüm sayısını da sıfırla
+        this.currentSection = 1;
         this.resetJokers();
         
-        // Body'den quiz ve kategori class'larını kaldır - logo tekrar görünsün
-        document.body.classList.remove('quiz-active', 'category-selection');
-        
-        // Tekli oyun modunda chat ekranını gizle
-        const gameChatContainer = document.getElementById('game-chat-container');
-        if (gameChatContainer) {
-            gameChatContainer.style.display = 'none';
-        }
-        
-        // Kategorileri yeniden göster
-        this.displayCategories();
-        
-        // İstatistikleri sıfırla
-        this.updateScoreDisplay();
+        // Kısa bir gecikme ile gerçekçi yükleme deneyimi
+        setTimeout(() => {
+            // Eğer mevcut kategori varsa, aynı kategoride oyunu yeniden başlat
+            if (this.selectedCategory) {
+                console.log('✅ Seçili kategori mevcut, aynı kategoride oyuna devam ediliyor:', this.selectedCategory);
+                // Seçili kategori ile oyuna devam et
+                this.loadQuestionsForCategory(this.selectedCategory);
+            } else {
+                console.log('❌ Seçili kategori bulunamadı, kategori seçimine dönülüyor');
+                // Body'den quiz ve kategori class'larını kaldır - logo tekrar görünsün
+                document.body.classList.remove('quiz-active', 'category-selection');
+                
+                // Tekli oyun modunda chat ekranını gizle
+                const gameChatContainer = document.getElementById('game-chat-container');
+                if (gameChatContainer) {
+                    gameChatContainer.style.display = 'none';
+                }
+                
+                // Kategorileri yeniden göster
+                this.displayCategories();
+            }
+            
+            // İstatistikleri sıfırla
+            this.updateScoreDisplay();
+            
+            // Geçiş ekranını gizle
+            setTimeout(() => {
+                this.hideRestartTransition(transitionOverlay);
+            }, 500);
+        }, 1000);
     },
     
     // Sonraki soruyu göster
@@ -7392,6 +7450,39 @@ const quizApp = {
     
     // Yeni Kutlama Modalı Fonksiyonu
     createCelebrationModal: function(finalStats) {
+        // CSS animations for the modal
+        const animations = `
+            @keyframes scaleIn {
+                0% { transform: scale(0.3); opacity: 0; }
+                100% { transform: scale(1); opacity: 1; }
+            }
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); }
+                50% { transform: scale(1.05); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); }
+            }
+            @keyframes bounce {
+                0% { transform: translateY(0px); }
+                100% { transform: translateY(-10px); }
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+                20%, 40%, 60%, 80% { transform: translateX(10px); }
+            }
+            @keyframes confetti {
+                0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+                100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+            }
+        `;
+
+        const style = document.createElement('style');
+        style.textContent = animations;
+        document.head.appendChild(style);
+
         // Tam ekran modal oluştur
         const celebrationModal = document.createElement('div');
         celebrationModal.className = 'celebration-modal';
@@ -7443,119 +7534,161 @@ const quizApp = {
             flex-direction: column;
             justify-content: center;
         `;
-        
-        // Başarı oranına göre kutlama mesajları (dil desteği ile)
+          // Başarı oranına göre kutlama mesajları ve rastgele atasözü seç
         const successRate = (finalStats.correctAnswers / finalStats.totalQuestions) * 100;
-        let congratsMessage, emoji, motivationText;
+        let congratsMessage, primaryColor, secondaryColor;
         
         const celebrationTexts = languages[this.currentLanguage].celebration;
         
+        // Rastgele atasözü seç
+        const randomWisdom = celebrationTexts.wisdomQuotes[Math.floor(Math.random() * celebrationTexts.wisdomQuotes.length)];
+        
         if (successRate >= 90) {
             congratsMessage = celebrationTexts.perfect;
-            emoji = "🏆✨🌟";
-            motivationText = celebrationTexts.perfectMsg;
+            primaryColor = "#FFD700";
+            secondaryColor = "#FF6B35";
         } else if (successRate >= 75) {
             congratsMessage = celebrationTexts.excellent;
-            emoji = "🥇🔥💪";
-            motivationText = celebrationTexts.excellentMsg;
+            primaryColor = "#4ECDC4";
+            secondaryColor = "#44A08D";
         } else if (successRate >= 50) {
             congratsMessage = celebrationTexts.good;
-            emoji = "🎯⭐💫";
-            motivationText = celebrationTexts.goodMsg;
+            primaryColor = "#667eea";
+            secondaryColor = "#764ba2";
         } else {
             congratsMessage = celebrationTexts.keepGoing;
-            emoji = "🚀🌈🎪";
-            motivationText = celebrationTexts.keepGoingMsg;
+            primaryColor = "#f093fb";
+            secondaryColor = "#f5576c";
         }
         
         modalContent.innerHTML = `
-            <div style="animation: bounceIn 1s ease-out;">
-                <h1 style="font-size: 3.5rem; color: #FFD700; text-shadow: 3px 3px 0px #FF6B35; margin: 0; font-weight: 900;">
-                    ${congratsMessage}
-                </h1>
-                <div style="font-size: 4rem; margin: 20px 0; animation: swing 2s ease-in-out infinite;">
-                    ${emoji}
+            <div style="
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                border-radius: 24px;
+                padding: 50px 40px;
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+                animation: scaleIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                max-width: 600px;
+                margin: 0 auto;
+                text-align: center;
+            ">
+                <!-- Large Owl Icon -->
+                <div style="
+                    width: 120px;
+                    height: 120px;
+                    background: linear-gradient(135deg, ${primaryColor}, ${secondaryColor});
+                    border-radius: 50%;
+                    margin: 0 auto 30px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    animation: bounce 1s ease-in-out infinite alternate;
+                    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+                ">
+                    <div style="
+                        color: white;
+                        font-size: 64px;
+                        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+                    ">🦉</div>
                 </div>
-                <p style="font-size: 1.4rem; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin: 20px 0; font-weight: 600;">
-                    ${motivationText}
-                </p>
-                        </div>
-            
-            <div style="background: rgba(255,255,255,0.95); border-radius: 20px; padding: 40px; margin: 30px 0; box-shadow: 0 20px 40px rgba(0,0,0,0.2); animation: slideInUp 0.8s ease-out 0.5s both;">
-                ${(() => {
-                    // Rastgele motive edici mesaj seç
-                    const motivationalMessages = celebrationTexts.motivationalMessages || [];
-                    const randomMessage = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
-                    return `
-                        <div style="text-align: center;">
-                            <div style="font-size: 2.5rem; margin-bottom: 20px; animation: pulse 2s infinite;">
-                                ✨💫⭐
-                            </div>
-                            <h2 style="color: #4a148c; font-size: 1.8rem; font-weight: 700; margin-bottom: 25px; line-height: 1.4;">
-                                ${randomMessage}
-                            </h2>
-                            <div style="font-size: 1.5rem; color: #667eea; margin-top: 20px;">
-                                🌟 ${celebrationTexts.youAreAwesome} 🌟
-                            </div>
-                        </div>
-                    `;
-                })()}
-            </div>
-            
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; animation: fadeInUp 0.8s ease-out 1s both;">
-                <button id="play-again-btn" style="
-                    background: linear-gradient(135deg, #667eea, #764ba2);
-                    border: none;
-                    color: white;
-                    padding: 15px 30px;
-                    border-radius: 50px;
-                    font-size: 1.1rem;
-                    font-weight: 600;
-                    cursor: pointer;
-                    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-                    transition: all 0.3s ease;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                ">
-                    ${celebrationTexts.playAgainBtn}
-                </button>
                 
-                <button id="main-menu-btn" style="
-                    background: linear-gradient(135deg, #f093fb, #f5576c);
-                    border: none;
-                    color: white;
-                    padding: 15px 30px;
-                    border-radius: 50px;
-                    font-size: 1.1rem;
-                    font-weight: 600;
-                    cursor: pointer;
-                    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-                    transition: all 0.3s ease;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
+                <!-- Wisdom Quote -->
+                <div style="
+                    background: linear-gradient(135deg, rgba(${primaryColor.replace('#', '').match(/.{2}/g).map(x => parseInt(x, 16)).join(', ')}, 0.1), rgba(${secondaryColor.replace('#', '').match(/.{2}/g).map(x => parseInt(x, 16)).join(', ')}, 0.1));
+                    padding: 30px;
+                    border-radius: 20px;
+                    margin: 30px 0;
+                    border: 3px solid rgba(${primaryColor.replace('#', '').match(/.{2}/g).map(x => parseInt(x, 16)).join(', ')}, 0.2);
+                    position: relative;
+                    overflow: hidden;
                 ">
-                    ${celebrationTexts.mainMenuBtn}
-                </button>
-                
-                <button id="share-btn" style="
-                    background: linear-gradient(135deg, #4facfe, #00f2fe);
-                    border: none;
-                    color: white;
-                    padding: 15px 30px;
-                    border-radius: 50px;
-                    font-size: 1.1rem;
-                    font-weight: 600;
-                    cursor: pointer;
-                    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-                    transition: all 0.3s ease;
+                    <div style="
+                        position: absolute;
+                        top: 15px;
+                        left: 20px;
+                        font-size: 40px;
+                        color: rgba(${primaryColor.replace('#', '').match(/.{2}/g).map(x => parseInt(x, 16)).join(', ')}, 0.3);
+                        font-family: serif;
+                        line-height: 1;
+                    ">"</div>
+                    <p style="
+                        font-size: 1.3rem;
+                        color: #333;
+                        margin: 0;
+                        line-height: 1.8;
+                        font-weight: 600;
+                        font-style: italic;
+                        text-align: center;
+                        padding: 0 20px;
+                    ">
+                        ${randomWisdom}
+                    </p>
+                    <div style="
+                        position: absolute;
+                        bottom: 15px;
+                        right: 20px;
+                        font-size: 40px;
+                        color: rgba(${primaryColor.replace('#', '').match(/.{2}/g).map(x => parseInt(x, 16)).join(', ')}, 0.3);
+                        font-family: serif;
+                        line-height: 1;
+                    ">"</div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="
                     display: flex;
-                    align-items: center;
-                    gap: 10px;
+                    flex-direction: column;
+                    gap: 20px;
+                    margin-top: 40px;
                 ">
-                    ${celebrationTexts.shareBtn}
-                </button>
+                    <button id="play-again-btn" style="
+                        background: linear-gradient(135deg, ${primaryColor}, ${secondaryColor});
+                        border: none;
+                        color: white;
+                        padding: 20px 40px;
+                        border-radius: 60px;
+                        font-size: 1.2rem;
+                        font-weight: 700;
+                        cursor: pointer;
+                        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                        transition: all 0.3s ease;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 15px;
+                        width: 100%;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 35px rgba(0, 0, 0, 0.25)'"
+                       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0, 0, 0, 0.2)'">
+                        <i class="fas fa-redo"></i>
+                        ${languages[this.currentLanguage].playAgain}
+                    </button>
+                    
+                    <button id="main-menu-btn" style="
+                        background: rgba(255, 255, 255, 0.9);
+                        border: 3px solid ${primaryColor};
+                        color: ${primaryColor};
+                        padding: 20px 40px;
+                        border-radius: 60px;
+                        font-size: 1.2rem;
+                        font-weight: 700;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 15px;
+                        width: 100%;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    " onmouseover="this.style.background='${primaryColor}'; this.style.color='white'"
+                       onmouseout="this.style.background='rgba(255, 255, 255, 0.9)'; this.style.color='${primaryColor}'">
+                        <i class="fas fa-home"></i>
+                        ${languages[this.currentLanguage].mainMenu}
+                    </button>
+                </div>
             </div>
         `;
         
@@ -7609,6 +7742,7 @@ const quizApp = {
         this.startConfetti(confettiCanvas);
         
         // DOM'a eklendikten sonra buton event listeners - setTimeout ile DOM'un hazır olmasını bekle
+        const self = this;
         setTimeout(() => {
             const playAgainBtn = document.getElementById('play-again-btn');
             const mainMenuBtn = document.getElementById('main-menu-btn');
@@ -7616,14 +7750,16 @@ const quizApp = {
             
             if (playAgainBtn) {
                 playAgainBtn.addEventListener('click', () => {
+                    console.log('Play again button clicked');
                     celebrationModal.remove();
                     style.remove();
-                    this.restartGame();
+                    self.restartGame();
                 });
             }
             
             if (mainMenuBtn) {
                 mainMenuBtn.addEventListener('click', () => {
+                    console.log('Main menu button clicked');
                     celebrationModal.remove();
                     style.remove();
                     window.location.reload();
@@ -7632,7 +7768,7 @@ const quizApp = {
             
             if (shareBtn) {
                 shareBtn.addEventListener('click', () => {
-                    this.shareResults(finalStats);
+                    self.shareResults(finalStats);
                 });
             }
         }, 100);

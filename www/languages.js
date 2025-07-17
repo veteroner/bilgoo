@@ -241,6 +241,31 @@ const languages = {
             excellentMsg: 'Çok başarılı bir performans seriledin! Tebrikler!',
             goodMsg: 'Güzel bir oyun oynadın! Devam et, daha da iyisini yapabilirsin!',
             keepGoingMsg: 'Her oyun bir öğrenme deneyimi! Bir sonrakinde daha iyisini yapacaksın!',
+            
+            // Oyunla ilgili atasözleri ve motive edici sözler
+            wisdomQuotes: [
+                '🦉 "Bilgi güçtür, öğrenmek ise özgürlük."',
+                '🦉 "Okumak ve öğrenmek aklın gıdasıdır."',
+                '🦉 "Bilgili kişi yolunu şaşırmaz."',
+                '🦉 "Öğrenmek asla geç değildir."',
+                '🦉 "Bir kitap bin arkadaşa bedeldir."',
+                '🦉 "Bilgi ne kadar çok paylaşılırsa o kadar çoğalır."',
+                '🦉 "Pratik yapmadan ustalık olmaz."',
+                '🦉 "Sabır ile çalışan her şeyi başarır."',
+                '🦉 "Bilim ile amel, kılıç ile kalkan gibidir."',
+                '🦉 "Öğrenmeye devam eden asla yaşlanmaz."',
+                '🦉 "Başarı, hazırlık ile fırsatın buluşmasıdır."',
+                '🦉 "Her hatadan bir ders çıkar."',
+                '🦉 "Bilgi birikir, tecrübe öğretir."',
+                '🦉 "Çalışkan karınca soğuk kışta aç kalmaz."',
+                '🦉 "Damlaya damlaya göl olur."',
+                '🦉 "Yavaş yavaş dağlar aşılır."',
+                '🦉 "Bilginin anahtarı sorumaktır."',
+                '🦉 "Merak bilginin başlangıcıdır."',
+                '🦉 "Öğrenmek istemeyen öğretemez."',
+                '🦉 "Her yeni gün yeni bir öğrenme fırsatıdır."'
+            ],
+            
             gameSummary: '🎮 Oyun Özeti',
             correctAnswersLabel: 'Doğru Cevap',
             totalPointsLabel: 'Toplam Puan',

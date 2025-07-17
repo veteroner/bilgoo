@@ -594,6 +594,22 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const quizApp = {
+    // Güvenli audit log fonksiyonu
+    safeAuditLog: function(level, category, action, details = {}) {
+        try {
+            if (typeof AuditLogger !== 'undefined' && AuditLogger.log) {
+                // Async olarak çağır ama await etme (non-blocking)
+                AuditLogger.log(level, category, action, details).catch(error => {
+                    // Hata durumunda sessizce logla
+                    console.warn('Audit log failed silently:', error.message);
+                });
+            }
+        } catch (error) {
+            // Tamamen başarısız olursa da sessizce devam et
+            console.warn('Audit logger not available:', error.message);
+        }
+    },
+
     // DOM Elements
     questionElement: document.getElementById('question'),
     optionsElement: document.getElementById('options'),
@@ -673,6 +689,11 @@ const quizApp = {
         console.log('- Firebase nesnesi:', typeof firebase !== 'undefined' ? 'VAR' : 'YOK');
         console.log('- Firebase.auth:', firebase && firebase.auth ? 'VAR' : 'YOK');
         console.log('- Firebase.firestore:', firebase && firebase.firestore ? 'VAR' : 'YOK');
+        
+        // Audit Logger'ı başlat
+        if (typeof AuditLogger !== 'undefined') {
+            AuditLogger.init();
+        }
         
         // Tarayıcı özelliklerini kontrol et
         this.checkBrowserSupport();
@@ -1676,6 +1697,12 @@ const quizApp = {
             this.jokerFiftyBtn.addEventListener('click', () => {
                 if (this.jokerFiftyBtn.disabled) return;
                 
+                // Envanter kontrolü - 50:50 jokeri yoksa çıkış yap
+                if (this.jokerInventory.fifty <= 0) {
+                    console.warn('50:50 jokeri envanterinde yok!');
+                    return;
+                }
+                
                 console.log('50:50 joker kullanılıyor...');
                 
                 // Mevcut sorunun doğru cevabını al
@@ -1783,6 +1810,12 @@ const quizApp = {
             this.jokerHintBtn.addEventListener('click', () => {
                 if (this.jokerHintBtn.disabled) return;
                 
+                // Envanter kontrolü - ipucu jokeri yoksa çıkış yap
+                if (this.jokerInventory.hint <= 0) {
+                    console.warn('İpucu jokeri envanterinde yok!');
+                    return;
+                }
+                
                 console.log('İpucu joker kullanılıyor...');
                 
                 // Mevcut soru için bir ipucu göster
@@ -1863,6 +1896,12 @@ const quizApp = {
         if (this.jokerTimeBtn) {
             this.jokerTimeBtn.addEventListener('click', () => {
                 if (this.jokerTimeBtn.disabled) return;
+                
+                // Envanter kontrolü - süre jokeri yoksa çıkış yap
+                if (this.jokerInventory.time <= 0) {
+                    console.warn('Süre jokeri envanterinde yok!');
+                    return;
+                }
                 
                 console.log('Süre joker kullanılıyor...');
                 console.log('Kullanım öncesi süre:', this.timeLeft);
@@ -2352,7 +2391,7 @@ const quizApp = {
         let modalIcon = "";
         
         // Get current language
-        const currentLang = this.getCurrentLanguage();
+        const currentLang = getCurrentLanguage();
         const langData = window.languages && window.languages[currentLang] ? window.languages[currentLang] : window.languages.tr;
 
         // Joker tipine göre içeriği ayarla
@@ -2402,6 +2441,22 @@ const quizApp = {
             min-width: 300px;
             animation: fadeInScale 0.3s ease-out;
         `;
+        
+        // Background overlay ekle
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            animation: fadeInScale 0.3s ease-out;
+        `;
+        
+        // Overlay'i modalDiv'den önce ekle
+        document.body.appendChild(overlay);
         
         // Joker tipine göre farklı renk şeması
         if (jokerType === 'fifty') {
@@ -2467,15 +2522,21 @@ const quizApp = {
         
         // Modalı DOM'a ekle
         document.body.appendChild(modalDiv);
+        console.log(`${jokerType} joker modalı DOM'a eklendi`);
         
         // Modalı kısa süre sonra kaldır (ip ucu jokeri için biraz daha uzun süre)
-        const displayTime = jokerType === 'hint' ? 2000 : 1500;
+        const displayTime = jokerType === 'hint' ? 3000 : 2000;
         
         setTimeout(() => {
             modalDiv.style.animation = 'fadeOutScale 0.3s ease-out';
+            overlay.style.animation = 'fadeOutScale 0.3s ease-out';
             setTimeout(() => {
                 if (document.body.contains(modalDiv)) {
                     document.body.removeChild(modalDiv);
+                }
+                
+                if (document.body.contains(overlay)) {
+                    document.body.removeChild(overlay);
                 }
                 
                 if (document.head.contains(style)) {
@@ -2990,30 +3051,66 @@ const quizApp = {
     
     // Restartlama işlevi
     restartGame: function() {
+        console.log('🔄 RestartGame çağrıldı!');
+        console.log('📋 Mevcut selectedCategory:', this.selectedCategory);
+        
+        // Geçiş ekranını göster
+        this.showRestartTransition();
+        
+        // Mevcut celebration modal'ını kaldır
+        const existingModal = document.querySelector('.celebration-modal');
+        if (existingModal) {
+            existingModal.remove();
+            console.log('🗑️ Mevcut celebration modal kaldırıldı');
+        }
+        
+        // Badge style'ını da kaldır
+        const badgeStyle = document.querySelector('style');
+        if (badgeStyle) {
+            badgeStyle.remove();
+        }
+        
+        // Değişkenleri sıfırla
         this.currentQuestionIndex = 0;
         this.score = 0;
-        this.correctAnswers = 0; // <-- EKLENDİ: Doğru cevap sayısını sıfırla
-        this.sessionScore = 0; // Oturum puanını sıfırla
+        this.correctAnswers = 0;
+        this.sessionScore = 0;
         this.lives = 5;
         this.answeredQuestions = 0;
         this.answerTimes = [];
-        this.currentSection = 1; // Bölüm sayısını da sıfırla
+        this.currentSection = 1;
         this.resetJokers();
         
-        // Body'den quiz ve kategori class'larını kaldır - logo tekrar görünsün
-        document.body.classList.remove('quiz-active', 'category-selection');
-        
-        // Tekli oyun modunda chat ekranını gizle
-        const gameChatContainer = document.getElementById('game-chat-container');
-        if (gameChatContainer) {
-            gameChatContainer.style.display = 'none';
-        }
-        
-        // Kategorileri yeniden göster
-        this.displayCategories();
-        
-        // İstatistikleri sıfırla
-        this.updateScoreDisplay();
+        // Kısa bir gecikme ile gerçekçi yükleme deneyimi
+        setTimeout(() => {
+            // Eğer mevcut kategori varsa, aynı kategoride oyunu yeniden başlat
+            if (this.selectedCategory) {
+                console.log('✅ Seçili kategori mevcut, aynı kategoride oyuna devam ediliyor:', this.selectedCategory);
+                // Seçili kategori ile oyuna devam et
+                this.loadQuestionsForCategory(this.selectedCategory);
+            } else {
+                console.log('❌ Seçili kategori bulunamadı, kategori seçimine dönülüyor');
+                // Body'den quiz ve kategori class'larını kaldır - logo tekrar görünsün
+                document.body.classList.remove('quiz-active', 'category-selection');
+                
+                // Tekli oyun modunda chat ekranını gizle
+                const gameChatContainer = document.getElementById('game-chat-container');
+                if (gameChatContainer) {
+                    gameChatContainer.style.display = 'none';
+                }
+                
+                // Kategorileri yeniden göster
+                this.displayCategories();
+            }
+            
+            // İstatistikleri sıfırla
+            this.updateScoreDisplay();
+            
+            // Geçiş ekranını gizle
+            setTimeout(() => {
+                this.hideRestartTransition(transitionOverlay);
+            }, 500);
+        }, 1000);
     },
     
     // Sonraki soruyu göster
@@ -3121,7 +3218,11 @@ const quizApp = {
             // Bölüm geçiş ekranını göster
             this.showSectionTransition();
         } else if (this.currentQuestionIndex < this.questions.length) {
-            this.displayQuestion(this.questions[this.currentQuestionIndex]);
+            // Geçiş ekranını göster ve ardından soruyu göster
+            setTimeout(() => {
+                this.displayQuestion(this.questions[this.currentQuestionIndex]);
+                this.hideRestartTransition();
+            }, 500);
         } else {
             // Tüm sorular cevaplandı - yeni bölüm için sorular yükle
             console.log("Bölümdeki sorular tamamlandı, bir sonraki bölüm için sorular yükleniyor...");
@@ -3193,6 +3294,11 @@ const quizApp = {
             // Bölüm geçiş ekranını göster
             this.showSectionTransition();
         }
+        
+        // Geçiş ekranını gizle
+        setTimeout(() => {
+            this.hideRestartTransition();
+        }, 1000);
     },
     
     // Kategoriye göre maksimum bölüm sayısını belirle
@@ -3414,7 +3520,7 @@ const quizApp = {
             }
         }, 10000);
         
-        // Konfeti efekti ekle
+        // Konfeti efekti eklenebilir
         console.log(`${this.selectedCategory} kategorisi ${this.getMaxSectionsForCategory()} bölüm ile tamamlandı!`);
     },
 
@@ -3745,7 +3851,7 @@ const quizApp = {
             console.log("Seçilen kategori:", category);
             this.selectedCategory = category;
             
-            // Yeni oyun başlıyor!
+            // Yeni oyun başladığında değişkenleri sıfırla
             this.currentQuestionIndex = 0;
             this.score = 0;
             this.correctAnswers = 0; // <-- EKLENDİ: Doğru cevap sayısını sıfırla
@@ -3882,7 +3988,7 @@ const quizApp = {
         if (tabBar) tabBar.style.display = 'none';
         
         document.body.classList.add('quiz-active');
-        // Quiz modunda olduğumuzu localStorage'a kaydet
+        // Quiz moduna olduğumuzu localStorage'a kaydet
         localStorage.setItem('quizModeActive', 'true');
     },
     
@@ -4994,7 +5100,7 @@ const quizApp = {
                 const date = new Date(user.metadata.creationTime);
                 joinDate.textContent = date.toLocaleDateString('tr-TR');
             }
-        }
+            }
             
         // Firebase'den kullanıcı verilerini yükle (puan, istatistikler vs.)
         this.loadFirebaseUserStats(userId);
@@ -7392,10 +7498,43 @@ const quizApp = {
     
     // Yeni Kutlama Modalı Fonksiyonu
     createCelebrationModal: function(finalStats) {
+        // CSS animations for the modal
+        const animations = `
+            @keyframes scaleIn {
+                0% { transform: scale(0.3); opacity: 0; }
+                100% { transform: scale(1); opacity: 1; }
+            }
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); }
+                50% { transform: scale(1.05); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); }
+            }
+            @keyframes bounce {
+                0% { transform: translateY(0px); }
+                100% { transform: translateY(-10px); }
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+                20%, 40%, 60%, 80% { transform: translateX(10px); }
+            }
+            @keyframes confetti {
+                0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+                100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+            }
+        `;
+
+        const style = document.createElement('style');
+        style.textContent = animations;
+        document.head.appendChild(style);
+
         // Tam ekran modal oluştur
         const celebrationModal = document.createElement('div');
         celebrationModal.className = 'celebration-modal';
-        celebrationModal.style.cssText = `
+                celebrationModal.style.cssText = `
             position: fixed;
             top: 0;
             left: 0;
@@ -7430,7 +7569,7 @@ const quizApp = {
         
         // Modal İçeriği
         const modalContent = document.createElement('div');
-        modalContent.style.cssText = `
+                modalContent.style.cssText = `
             position: relative;
             z-index: 2;
             text-align: center;
@@ -7443,125 +7582,167 @@ const quizApp = {
             flex-direction: column;
             justify-content: center;
         `;
-        
-        // Başarı oranına göre kutlama mesajları (dil desteği ile)
+          // Başarı oranına göre kutlama mesajları ve rastgele atasözü seç
         const successRate = (finalStats.correctAnswers / finalStats.totalQuestions) * 100;
-        let congratsMessage, emoji, motivationText;
+        let congratsMessage, primaryColor, secondaryColor;
         
         const celebrationTexts = languages[this.currentLanguage].celebration;
         
+        // Rastgele atasözü seç
+        const randomWisdom = celebrationTexts.wisdomQuotes[Math.floor(Math.random() * celebrationTexts.wisdomQuotes.length)];
+        
         if (successRate >= 90) {
             congratsMessage = celebrationTexts.perfect;
-            emoji = "🏆✨🌟";
-            motivationText = celebrationTexts.perfectMsg;
+            primaryColor = "#FFD700";
+            secondaryColor = "#FF6B35";
         } else if (successRate >= 75) {
             congratsMessage = celebrationTexts.excellent;
-            emoji = "🥇🔥💪";
-            motivationText = celebrationTexts.excellentMsg;
+            primaryColor = "#4ECDC4";
+            secondaryColor = "#44A08D";
         } else if (successRate >= 50) {
             congratsMessage = celebrationTexts.good;
-            emoji = "🎯⭐💫";
-            motivationText = celebrationTexts.goodMsg;
-            } else {
+            primaryColor = "#667eea";
+            secondaryColor = "#764ba2";
+        } else {
             congratsMessage = celebrationTexts.keepGoing;
-            emoji = "🚀🌈🎪";
-            motivationText = celebrationTexts.keepGoingMsg;
+            primaryColor = "#f093fb";
+            secondaryColor = "#f5576c";
         }
         
         modalContent.innerHTML = `
-            <div style="animation: bounceIn 1s ease-out;">
-                <h1 style="font-size: 3.5rem; color: #FFD700; text-shadow: 3px 3px 0px #FF6B35; margin: 0; font-weight: 900;">
-                    ${congratsMessage}
-                </h1>
-                <div style="font-size: 4rem; margin: 20px 0; animation: swing 2s ease-in-out infinite;">
-                    ${emoji}
-                </div>
-                <p style="font-size: 1.4rem; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin: 20px 0; font-weight: 600;">
-                    ${motivationText}
-                </p>
-            </div>
-            
-            <div style="background: rgba(255,255,255,0.95); border-radius: 20px; padding: 40px; margin: 30px 0; box-shadow: 0 20px 40px rgba(0,0,0,0.2); animation: slideInUp 0.8s ease-out 0.5s both;">
-                ${(() => {
-                    // Rastgele motive edici mesaj seç
-                    const motivationalMessages = celebrationTexts.motivationalMessages || [];
-                    const randomMessage = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
-                    return `
-                        <div style="text-align: center;">
-                            <div style="font-size: 2.5rem; margin-bottom: 20px; animation: pulse 2s infinite;">
-                                ✨💫⭐
-                            </div>
-                            <h2 style="color: #4a148c; font-size: 1.8rem; font-weight: 700; margin-bottom: 25px; line-height: 1.4;">
-                                ${randomMessage}
-                            </h2>
-                            <div style="font-size: 1.5rem; color: #667eea; margin-top: 20px;">
-                                🌟 ${celebrationTexts.youAreAwesome} 🌟
-                            </div>
-                        </div>
-                    `;
-                })()}
-            </div>
-            
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; animation: fadeInUp 0.8s ease-out 1s both;">
-                <button id="play-again-btn" style="
-                    background: linear-gradient(135deg, #667eea, #764ba2);
-                    border: none;
-                    color: white;
-                    padding: 15px 30px;
-                    border-radius: 50px;
-                    font-size: 1.1rem;
-                    font-weight: 600;
-                    cursor: pointer;
-                    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-                    transition: all 0.3s ease;
-                display: flex;
+            <div style="
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(20px);
+                border-radius: 24px;
+                padding: 50px 40px;
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+                animation: scaleIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                max-width: 600px;
+                margin: 0 auto;
+                text-align: center;
+            ">
+                <!-- Large Owl Icon -->
+                <div style="
+                    width: 120px;
+                    height: 120px;
+                    background: linear-gradient(135deg, ${primaryColor}, ${secondaryColor});
+                    border-radius: 50%;
+                    margin: 0 auto 30px;
+                    display: flex;
                     align-items: center;
-                    gap: 10px;
+                    justify-content: center;
+                    animation: bounce 1s ease-in-out infinite alternate;
+                    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
                 ">
-                    ${celebrationTexts.playAgainBtn}
-                </button>
+                    <div style="
+                        color: white;
+                        font-size: 64px;
+                        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+                    ">🦉</div>
+                </div>
                 
-                <button id="main-menu-btn" style="
-                    background: linear-gradient(135deg, #f093fb, #f5576c);
-                border: none;
-                color: white;
-                    padding: 15px 30px;
-                    border-radius: 50px;
-                    font-size: 1.1rem;
-                    font-weight: 600;
-                cursor: pointer;
-                    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-                    transition: all 0.3s ease;
-                display: flex;
-                align-items: center;
-                    gap: 10px;
+                <!-- Wisdom Quote -->
+                <div style="
+                    background: linear-gradient(135deg, rgba(${primaryColor.replace('#', '').match(/.{2}/g).map(x => parseInt(x, 16)).join(', ')}, 0.1), rgba(${secondaryColor.replace('#', '').match(/.{2}/g).map(x => parseInt(x, 16)).join(', ')}, 0.1));
+                    padding: 30px;
+                    border-radius: 20px;
+                    margin: 30px 0;
+                    border: 3px solid rgba(${primaryColor.replace('#', '').match(/.{2}/g).map(x => parseInt(x, 16)).join(', ')}, 0.2);
+                    position: relative;
+                    overflow: hidden;
                 ">
-                    ${celebrationTexts.mainMenuBtn}
-                </button>
-                
-                <button id="share-btn" style="
-                    background: linear-gradient(135deg, #4facfe, #00f2fe);
-                border: none;
-                color: white;
-                    padding: 15px 30px;
-                    border-radius: 50px;
-                    font-size: 1.1rem;
-                    font-weight: 600;
-                cursor: pointer;
-                    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-                    transition: all 0.3s ease;
-                display: flex;
-                align-items: center;
-                    gap: 10px;
+                    <div style="
+                        position: absolute;
+                        top: 15px;
+                        left: 20px;
+                        font-size: 40px;
+                        color: rgba(${primaryColor.replace('#', '').match(/.{2}/g).map(x => parseInt(x, 16)).join(', ')}, 0.3);
+                        font-family: serif;
+                        line-height: 1;
+                    ">"</div>
+                    <p style="
+                        font-size: 1.3rem;
+                        color: #333;
+                        margin: 0;
+                        line-height: 1.8;
+                        font-weight: 600;
+                        font-style: italic;
+                        text-align: center;
+                        padding: 0 20px;
+                    ">
+                        ${randomWisdom}
+                    </p>
+                    <div style="
+                        position: absolute;
+                        bottom: 15px;
+                        right: 20px;
+                        font-size: 40px;
+                        color: rgba(${primaryColor.replace('#', '').match(/.{2}/g).map(x => parseInt(x, 16)).join(', ')}, 0.3);
+                        font-family: serif;
+                        line-height: 1;
+                    ">"</div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+                    margin-top: 40px;
                 ">
-                    ${celebrationTexts.shareBtn}
-                </button>
+                    <button id="play-again-btn" style="
+                        background: linear-gradient(135deg, ${primaryColor}, ${secondaryColor});
+                        border: none;
+                        color: white;
+                        padding: 20px 40px;
+                        border-radius: 60px;
+                        font-size: 1.2rem;
+                        font-weight: 700;
+                        cursor: pointer;
+                        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                        transition: all 0.3s ease;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 15px;
+                        width: 100%;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 35px rgba(0, 0, 0, 0.25)'"
+                       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0, 0, 0, 0.2)'">
+                        <i class="fas fa-redo"></i>
+                        ${languages[this.currentLanguage].playAgain}
+                    </button>
+                    
+                    <button id="main-menu-btn" style="
+                        background: rgba(255, 255, 255, 0.9);
+                        border: 3px solid ${primaryColor};
+                        color: ${primaryColor};
+                        padding: 20px 40px;
+                        border-radius: 60px;
+                        font-size: 1.2rem;
+                        font-weight: 700;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 15px;
+                        width: 100%;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    " onmouseover="this.style.background='${primaryColor}'; this.style.color='white'"
+                       onmouseout="this.style.background='rgba(255, 255, 255, 0.9)'; this.style.color='${primaryColor}'">
+                        <i class="fas fa-home"></i>
+                        ${languages[this.currentLanguage].mainMenu}
+                    </button>
+                </div>
             </div>
         `;
         
         // CSS Animasyonları ekle
-        const style = document.createElement('style');
-        style.textContent = `
+        const badgeStyle = document.createElement('style');
+        badgeStyle.textContent = `
             @keyframes bounceIn {
                 0% { transform: scale(0.3); opacity: 0; }
                 50% { transform: scale(1.05); }
@@ -7598,7 +7779,7 @@ const quizApp = {
                 box-shadow: 0 12px 24px rgba(0,0,0,0.3) !important;
             }
         `;
-        document.head.appendChild(style);
+        document.head.appendChild(badgeStyle);
         
         // Modalı ekle
         celebrationModal.appendChild(confettiCanvas);
@@ -7608,34 +7789,33 @@ const quizApp = {
         // Konfeti animasyonu başlat
         this.startConfetti(confettiCanvas);
         
-        // DOM'a eklendikten sonra buton event listeners - setTimeout ile DOM'un hazır olmasını bekle
-        setTimeout(() => {
-            const playAgainBtn = document.getElementById('play-again-btn');
-            const mainMenuBtn = document.getElementById('main-menu-btn');
-            const shareBtn = document.getElementById('share-btn');
-            
-            if (playAgainBtn) {
-                playAgainBtn.addEventListener('click', () => {
-                    celebrationModal.remove();
-                    style.remove();
-                    this.restartGame();
-                });
-            }
-            
-            if (mainMenuBtn) {
-                mainMenuBtn.addEventListener('click', () => {
-                    celebrationModal.remove();
-                    style.remove();
-                    window.location.reload();
-                });
-            }
-            
-            if (shareBtn) {
-                shareBtn.addEventListener('click', () => {
-                    this.shareResults(finalStats);
-                });
-            }
-        }, 100);
+        // Butonlara event listener ekle
+        const playAgainBtn = celebrationModal.querySelector('#play-again-btn');
+        const mainMenuBtn = celebrationModal.querySelector('#main-menu-btn');
+        const shareBtn = celebrationModal.querySelector('#share-btn');
+        
+        if (playAgainBtn) {
+            playAgainBtn.addEventListener('click', () => {
+                console.log('🎮 Play again button clicked');
+                console.log('📋 Current selectedCategory:', this.selectedCategory);
+                this.restartGame();
+            });
+        }
+        
+        if (mainMenuBtn) {
+            mainMenuBtn.addEventListener('click', () => {
+                console.log('Main menu button clicked');
+                celebrationModal.remove();
+                badgeStyle.remove();
+                window.location.reload();
+            });
+        }
+        
+        if (shareBtn) {
+            shareBtn.addEventListener('click', () => {
+                this.shareResults(finalStats);
+            });
+        }
         
         // Ses efekti çal
         if (this.soundEnabled) {
@@ -7768,7 +7948,7 @@ const quizApp = {
             });
         }
     },
-    
+
     // Sesi güvenli şekilde çal
     playSoundSafely: function(audioElement) {
         if (audioElement && this.soundEnabled) {
@@ -8399,9 +8579,6 @@ const quizApp = {
         // Oyuncunun puanını kontrol et
         const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
         
-        // Dil çevirilerini al
-        const buyLivesTexts = languages[this.currentLanguage].buyLives;
-        
         // Modal oluştur
         const buyLivesModal = document.createElement('div');
         buyLivesModal.className = 'buy-lives-modal';
@@ -8411,8 +8588,8 @@ const quizApp = {
                     <div class="lives-out-icon">
                         <i class="fas fa-heart-broken"></i>
                     </div>
-                    <h2>${buyLivesTexts.title}</h2>
-                    <p class="lives-out-message">${buyLivesTexts.message}</p>
+                    <h2>Canlarınız Bitti!</h2>
+                    <p class="lives-out-message">Oyuna devam etmek için can satın alabilirsiniz.</p>
                 </div>
                 
                 <div class="buy-lives-offer">
@@ -8423,8 +8600,8 @@ const quizApp = {
                             <i class="fas fa-heart"></i>
                         </div>
                         <div class="package-details">
-                            <h3>${buyLivesTexts.packageTitle}</h3>
-                            <p class="package-description">${buyLivesTexts.packageDescription}</p>
+                            <h3>3 Can Paketi</h3>
+                            <p class="package-description">Oyuna 3 canla devam edin!</p>
                             <div class="package-price">
                                 <span class="price-amount">${LIVES_PRICE}</span>
                                 <i class="fas fa-coins"></i>
@@ -8434,7 +8611,7 @@ const quizApp = {
                     
                     <div class="current-points">
                         <i class="fas fa-wallet"></i>
-                        <span>${buyLivesTexts.currentPoints}: ${currentPoints}</span>
+                        <span>Mevcut Puanınız: ${currentPoints}</span>
                     </div>
                 </div>
                 
@@ -8442,16 +8619,16 @@ const quizApp = {
                     ${currentPoints >= LIVES_PRICE ? 
                         `<button id="confirm-buy-lives" class="btn-buy-lives">
                             <i class="fas fa-shopping-cart"></i>
-                            ${buyLivesTexts.buyButton.replace('{price}', LIVES_PRICE)}
+                            3 Can Satın Al (${LIVES_PRICE} Puan)
                         </button>` : 
                         `<button class="btn-buy-lives disabled" disabled>
                             <i class="fas fa-times"></i>
-                            ${buyLivesTexts.insufficientPoints.replace('{price}', LIVES_PRICE)}
+                            Yetersiz Puan (${LIVES_PRICE} Gerekli)
                         </button>`
                     }
                     <button id="decline-buy-lives" class="btn-decline-lives">
                         <i class="fas fa-flag-checkered"></i>
-                        ${buyLivesTexts.finishGame}
+                        Oyunu Bitir
                     </button>
                 </div>
             </div>
@@ -8495,12 +8672,9 @@ const quizApp = {
     buyLives: function(livesAmount, price) {
         const currentPoints = this.isLoggedIn ? this.totalScore : this.sessionScore;
         
-        // Dil çevirilerini al
-        const buyLivesTexts = languages[this.currentLanguage].buyLives;
-        
         // Puan kontrolü
         if (currentPoints < price) {
-            this.showToast(buyLivesTexts.insufficientPuan, 'toast-error');
+            this.showToast('Yetersiz puan!', 'toast-error');
             return false;
         }
         
@@ -8521,7 +8695,7 @@ const quizApp = {
         this.updateTotalScoreDisplay();
         
         // Başarı mesajı göster
-        this.showToast(buyLivesTexts.purchaseSuccess.replace('{amount}', livesAmount), 'toast-success');
+        this.showToast(`${livesAmount} can satın alındı! Oyun devam ediyor...`, 'toast-success');
         
         // Kısa bir gecikme ile oyunu devam ettir
         setTimeout(() => {
@@ -10219,27 +10393,6 @@ window.updateCookieConsentLanguage = function() {
     if (saveBtn) saveBtn.textContent = cookieTexts.save;
 };
 
-// Çerez bildirimi butonlarının dil desteğini güncelle
-window.updateCookieButtonTexts = function() {
-    const currentLang = getCurrentLanguage();
-    const cookieTexts = languages[currentLang]?.cookies || languages['tr'].cookies;
-    
-    const acceptEssential = document.getElementById('accept-essential');
-    const acceptAll = document.getElementById('accept-all');
-    const cookieSettings = document.getElementById('cookie-settings');
-    
-    if (acceptEssential) acceptEssential.textContent = cookieTexts.acceptEssential;
-    if (acceptAll) acceptAll.textContent = cookieTexts.acceptAll;
-    if (cookieSettings) cookieSettings.textContent = cookieTexts.settings;
-};
-
-// Dil değiştirildiğinde çerez bildirimi güncelle
-window.addEventListener('storage', function(e) {
-    if (e.key === 'selectedLanguage') {
-        window.updateCookieConsentLanguage?.();
-    }
-});
-
 // languageChanged eventini dinle
 document.addEventListener('languageChanged', function() {
     console.log('🌐 Dil değişti, çerez bildirimi güncelleniyor...');
@@ -10254,3 +10407,5 @@ document.addEventListener('DOMContentLoaded', function() {
         window.updateCookieConsentLanguage?.();
     }, 500);
 });
+
+ 

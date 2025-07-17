@@ -4,12 +4,17 @@ const languages = {
         appName: 'Bilgoo',
         loading: 'Yükleniyor...',
         restart: 'Yeniden Başlat',
+        playAgain: 'Yeniden Oyna',
+        mainMenu: 'Ana Menü',
         next: 'Sonraki Soru',
         score: 'Puan',
         correct: 'Doğru!',
         wrong: 'Yanlış!',
         timeUp: 'Süre doldu!',
         correctAnswer: 'Doğru cevap',
+        restartingGame: 'Oyun yeniden başlatılıyor...',
+        preparingQuestions: 'Sorular hazırlanıyor...',
+        pleaseWait: 'Lütfen bekleyiniz...',
         
         // Login/Register
         registerButton: 'Kayıt Ol',
@@ -224,7 +229,7 @@ const languages = {
         addQuestionFeature: 'Soru ekleme özelliği',
         jokerCards: 'Joker kartları',
         questionPool: '50,000+ Soru Havuzu',
-        categories: '25+ Kategori',
+        categories: 'Kategoriler',
         multiLanguage: 'Çoklu Dil Desteği',
         offlineSupport: 'Offline Çalışma Desteği',
         socialCompetition: 'Sosyal Yarışma',
@@ -267,6 +272,31 @@ const languages = {
             excellentMsg: 'Çok başarılı bir performans seriledin! Tebrikler!',
             goodMsg: 'Güzel bir oyun oynadın! Devam et, daha da iyisini yapabilirsin!',
             keepGoingMsg: 'Her oyun bir öğrenme deneyimi! Bir sonrakinde daha iyisini yapacaksın!',
+            
+            // Oyunla ilgili atasözleri ve motive edici sözler
+            wisdomQuotes: [
+                '🦉 "Bilgi güçtür, öğrenmek ise özgürlük."',
+                '🦉 "Okumak ve öğrenmek aklın gıdasıdır."',
+                '🦉 "Bilgili kişi yolunu şaşırmaz."',
+                '🦉 "Öğrenmek asla geç değildir."',
+                '🦉 "Bir kitap bin arkadaşa bedeldir."',
+                '🦉 "Bilgi ne kadar çok paylaşılırsa o kadar çoğalır."',
+                '🦉 "Pratik yapmadan ustalık olmaz."',
+                '🦉 "Sabır ile çalışan her şeyi başarır."',
+                '🦉 "Bilim ile amel, kılıç ile kalkan gibidir."',
+                '🦉 "Öğrenmeye devam eden asla yaşlanmaz."',
+                '🦉 "Başarı, hazırlık ile fırsatın buluşmasıdır."',
+                '🦉 "Her hatadan bir ders çıkar."',
+                '🦉 "Bilgi birikir, tecrübe öğretir."',
+                '🦉 "Çalışkan karınca soğuk kışta aç kalmaz."',
+                '🦉 "Damlaya damlaya göl olur."',
+                '🦉 "Yavaş yavaş dağlar aşılır."',
+                '🦉 "Bilginin anahtarı sorumaktır."',
+                '🦉 "Merak bilginin başlangıcıdır."',
+                '🦉 "Öğrenmek istemeyen öğretemez."',
+                '🦉 "Her yeni gün yeni bir öğrenme fırsatıdır."'
+            ],
+            
             // Rastgele motive edici mesajlar
             motivationalMessages: [
                 '🌟 Sen harikasın! Her soru seni daha da güçlü yapıyor!',
@@ -489,12 +519,17 @@ const languages = {
         appName: 'Knowledge Quiz',
         loading: 'Loading...',
         restart: 'Restart',
+        playAgain: 'Play Again',
+        mainMenu: 'Main Menu',
         next: 'Next Question',
         score: 'Score',
         correct: 'Correct!',
         wrong: 'Wrong!',
         timeUp: 'Time\'s up!',
         correctAnswer: 'Correct answer',
+        restartingGame: 'Restarting game...',
+        preparingQuestions: 'Preparing questions...',
+        pleaseWait: 'Please wait...',
         
         // Login/Register
         registerButton: 'Register',
@@ -709,7 +744,7 @@ const languages = {
         addQuestionFeature: 'Add question feature',
         jokerCards: 'Joker cards',
         questionPool: '50,000+ Question Pool',
-        categories: '25+ Categories',
+        categories: 'Categories',
         multiLanguage: 'Multi-Language Support',
         offlineSupport: 'Offline Support',
         socialCompetition: 'Social Competition',
@@ -735,7 +770,7 @@ const languages = {
         addQuestionFeature: 'Add question feature',
         jokerCards: 'Joker cards',
         questionPool: '50,000+ Question Pool',
-        categories: '25+ Categories',
+        categories: 'Categories',
         multiLanguage: 'Multi-Language Support',
         offlineSupport: 'Offline Support',
         socialCompetition: 'Social Competition',
@@ -1037,6 +1072,8 @@ const languages = {
         appName: 'Wissensquiz',
         loading: 'Wird geladen...',
         restart: 'Neustart',
+        playAgain: 'Nochmal spielen',
+        mainMenu: 'Hauptmenü',
         next: 'Nächste Frage',
         score: 'Punkte',
         correct: 'Richtig!',
@@ -1166,17 +1203,17 @@ const languages = {
         
         // Spielabschluss
         gameCompletion: 'Herzlichen Glückwunsch! Sie haben das Spiel abgeschlossen!',
-        completedAllSections: 'Sie haben alle 50 Abschnitte erfolgreich abgeschlossen!',
+        completedAllSections: 'Sie haben alle 50 Abschnitte başarıyla tamamladınız!',
         totalPoints: 'Gesamtpunktzahl',
         congratsMessage: 'Wir gratulieren Ihnen zu dieser herausragenden Leistung!',
         playAgain: 'Erneut spielen',
         shareResult: 'Ergebnis teilen',
         
-        // Wahr/Falsch Fragen
+        // Doğru Yanlış soruları
         true: 'WAHR',
         false: 'FALSCH',
         
-        // Lückentext
+        // Boşluk doldurma
         delete: 'Löschen',
         clear: 'Zurücksetzen',
         check: 'Prüfen',
@@ -1184,19 +1221,19 @@ const languages = {
         firstLetter: 'Hinweis: Der erste Buchstabe der richtigen Antwort ist',
         lastLetter: 'und der letzte Buchstabe ist',
         
-        // Warnungen
+        // Uyarılar
         browserWarning: 'Ihr Browser unterstützt einige Funktionen dieser Anwendung nicht. Für ein besseres Erlebnis verwenden Sie bitte die neuesten Versionen von Chrome, Firefox oder Edge.',
         understood: 'Verstanden',
         questionLoadError: 'Fehler beim Laden der Fragedaten: Bitte aktualisieren Sie die Seite.',
         imageLoadError: 'Bild konnte nicht geladen werden, wechsle zu einer anderen Frage...',
         emptyAnswer: 'Bitte geben Sie eine Antwort ein!',
         
-        // Sonstiges
+        // Diğer
         seconds: 'Sekunden',
         second: 'Sekunde',
         language: 'Sprache',
         
-        // Hauptmenü
+        // Ana menü
         quiz: 'Quiz-Spiel',
         singlePlayer: 'Einzelspieler',
         multiPlayer: 'Mehrspieler',
@@ -1247,7 +1284,7 @@ const languages = {
         addQuestionFeature: 'Fragen hinzufügen',
         jokerCards: 'Joker-Karten',
         questionPool: '50.000+ Fragenpoll',
-        categories: '25+ Kategorien',
+        categories: 'Kategoriler',
         multiLanguage: 'Mehrsprachiger Support',
         offlineSupport: 'Offline-Unterstützung',
         socialCompetition: 'Sozialer Wettbewerb',
@@ -1357,7 +1394,7 @@ const languages = {
         livesPackageName: 'Leben-Paket',
         livesPackageDesc: '3 Leben kaufen',
         jokerOwned: 'Sie besitzen',
-        currentLives: 'Aktuelle Leben',
+        currentLives: 'Aktuelle leben',
         buyButton: 'Kaufen',
         
         // Joker-Verwendungsnachrichten
@@ -1481,7 +1518,7 @@ const languages = {
             goal2: 'Ein künstlich intelligenter adaptiver Lernsystem entwickeln',
             goal3: 'Partner mit Bildungseinrichtungen eingehen',
             goal4: 'Internationale Märkte betreten',
-            goal5: "Mobilapp-Downloads auf 500.000 erhöhen",
+                       goal5: "Mobilapp-Downloads auf 500.000 erhöhen",
             goal6: 'Ein dauerhaftes Einkommensmodell mit einem Premium-Mitgliedschaftssystem erstellen',
             teamTitle: 'Unser Team',
             teamText1: 'Unser Bilgoo-Team besteht aus Experten im Bereich Bildungstechnologie, Softwareentwicklung und Benutzererfahrung.',
@@ -1639,7 +1676,7 @@ const reverseCategoryMappings = {
         tr: "Diğer",
         en: "Other"
     },
-    // Alman kategorilerinden türkçe ve ingilizceye çevrimler
+    // Alman kategorilerinden türkçe ve ingilizceye çevirimler
     "Allgemeinwissen": {
         tr: "Genel Kültür",
         en: "General Knowledge"
@@ -1746,4 +1783,4 @@ const questionWithTranslations = {
         }
     }
 }
-*/ 
+*/
