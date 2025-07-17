@@ -5328,7 +5328,6 @@
                 <button id="back-to-main" class="online-btn"><i class="fas fa-arrow-left"></i> <span data-i18n="back">Geri</span></button>
             </div>
             <div id="room-creation" style="display: none;">
-                <label for="room-name">Oda Adı:</label>
                 <input type="text" id="room-name" placeholder="Oda adı" maxlength="20">
                 <div class="room-capacity-container">
                     <label for="room-capacity">Oda Kapasitesi:</label>
@@ -5350,7 +5349,6 @@
                 <button id="create-room-submit" class="btn-primary"><i class="fas fa-check-circle"></i> <span data-i18n="create">Oluştur</span></button>
             </div>
             <div id="room-join" style="display: none;">
-                <label for="room-code">Oda Kodu:</label>
                 <input type="text" id="room-code" placeholder="Oda kodu" maxlength="6">
                 <button id="join-room-submit" class="btn-primary"><i class="fas fa-sign-in-alt"></i> <span data-i18n="join">Katıl</span></button>
             </div>
@@ -5835,7 +5833,7 @@
                     </div>
                     
                     <!-- İlerleme Sekmesi -->
-                    <div class="tab-pane" id="progress-tab-content">
+                    <div class="tab-pane" id="progress-tab">
                         <div class="charts-container">
                             <div class="chart-section">
                                 <h3><i class="fas fa-chart-bar"></i> Kategori Başarısı</h3>
@@ -5971,10 +5969,10 @@
         </div>
 
         <!-- İstatistikler Sayfası (Duplikasyon) -->
-        <div id="statistics-page-duplicate" style="display: none;">
+        <div id="statistics-page" style="display: none;">
             <div class="page-header">
                 <h2><i class="fas fa-chart-bar"></i> İstatistiklerim</h2>
-                <button id="back-from-stats-duplicate" class="btn-secondary">
+                <button id="back-from-stats" class="btn-secondary">
                     <i class="fas fa-arrow-left"></i> Ana Menüye Dön
                 </button>
             </div>
@@ -5989,7 +5987,7 @@
                                 <i class="fas fa-gamepad"></i>
                             </div>
                             <div class="stat-content">
-                                <span class="stat-value" id="total-games-stat-duplicate">0</span>
+                                <span class="stat-value" id="total-games-stat">0</span>
                                 <span class="stat-label">Toplam Oyun</span>
                             </div>
                         </div>

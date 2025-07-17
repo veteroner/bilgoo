@@ -7008,15 +7008,12 @@ body.quiz-active .main-logo-container svg {
     width: 100vw;
     height: 100vh;
     background: rgba(40, 167, 69, 0.92);
-    z-index: 99999; /* Z-index artırıldı */
+    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
     animation: fadeIn 0.3s;
     backdrop-filter: blur(2px);
-    /* Tam ekran modla uyumluluk için */
-    overflow-y: auto;
-    overflow-x: hidden;
 }
 
 .correct-modal-content {
@@ -7031,10 +7028,7 @@ body.quiz-active .main-logo-container svg {
     min-width: 260px;
     max-width: 90vw;
     min-height: 220px;
-    animation: pop-in 0.3s cubic-bezier(0.68,-0.6,0.32,1.6);
-    /* Tam ekran modla uyumluluk için */
-    transform: translateZ(0);
-    will-change: transform;
+    animation: pop-in 0.5s cubic-bezier(0.68,-0.6,0.32,1.6);
 }
 
 .correct-modal-icon {
@@ -7757,15 +7751,12 @@ body.quiz-active .main-logo-container svg {
     width: 100vw;
     height: 100vh;
     background: rgba(220, 53, 69, 0.92);
-    z-index: 99999; /* Z-index artırıldı */
+    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
     animation: fadeIn 0.3s;
     backdrop-filter: blur(2px);
-    /* Tam ekran modla uyumluluk için */
-    overflow-y: auto;
-    overflow-x: hidden;
 }
 
 .wrong-modal-content {
@@ -7780,10 +7771,7 @@ body.quiz-active .main-logo-container svg {
     min-width: 260px;
     max-width: 90vw;
     min-height: 220px;
-    animation: pop-in 0.3s cubic-bezier(0.68,-0.6,0.32,1.6);
-    /* Tam ekran modla uyumluluk için */
-    transform: translateZ(0);
-    will-change: transform;
+    animation: pop-in 0.5s cubic-bezier(0.68,-0.6,0.32,1.6);
 }
 
 .wrong-modal-icon {
@@ -7943,15 +7931,12 @@ body.quiz-active .main-logo-container svg {
     width: 100vw;
     height: 100vh;
     background: rgba(255, 193, 7, 0.92);
-    z-index: 99999; /* Z-index artırıldı */
+    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
     animation: fadeIn 0.3s;
     backdrop-filter: blur(2px);
-    /* Tam ekran modla uyumluluk için */
-    overflow-y: auto;
-    overflow-x: hidden;
 }
 
 .timeout-modal-content {
@@ -7966,10 +7951,7 @@ body.quiz-active .main-logo-container svg {
     min-width: 260px;
     max-width: 90vw;
     min-height: 220px;
-    animation: pop-in 0.3s cubic-bezier(0.68,-0.6,0.32,1.6);
-    /* Tam ekran modla uyumluluk için */
-    transform: translateZ(0);
-    will-change: transform;
+    animation: pop-in 0.5s cubic-bezier(0.68,-0.6,0.32,1.6);
 }
 
 .timeout-modal-icon {

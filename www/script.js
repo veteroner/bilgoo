@@ -4504,18 +4504,15 @@ const quizApp = {
                     </div>
                 `;
                 document.body.appendChild(correctModal);
-                
-                // Modal kapatma işlemi için güvenli fonksiyon
-                const closeCorrectModal = () => {
-                    if (correctModal && correctModal.parentNode) {
-                        correctModal.remove();
-                    }
+                correctModal.querySelector('#next-question').onclick = () => {
+                    correctModal.remove();
                     this.showNextQuestion();
                 };
-                
-                correctModal.querySelector('#next-question').onclick = closeCorrectModal;
                 correctModal.onclick = (e) => {
-                    if (e.target === correctModal) closeCorrectModal();
+                    if (e.target === correctModal) {
+                        correctModal.remove();
+                        this.showNextQuestion();
+                    }
                 };
                 this.resultElement.style.display = 'none';
                 this.resultElement.innerHTML = '';
@@ -4544,18 +4541,15 @@ const quizApp = {
                     </div>
                 `;
                 document.body.appendChild(wrongModal);
-                
-                // Modal kapatma işlemi için güvenli fonksiyon
-                const closeWrongModal = () => {
-                    if (wrongModal && wrongModal.parentNode) {
-                        wrongModal.remove();
-                    }
+                wrongModal.querySelector('#next-question').onclick = () => {
+                    wrongModal.remove();
                     this.showNextQuestion();
                 };
-                
-                wrongModal.querySelector('#next-question').onclick = closeWrongModal;
                 wrongModal.onclick = (e) => {
-                    if (e.target === wrongModal) closeWrongModal();
+                    if (e.target === wrongModal) {
+                        wrongModal.remove();
+                        this.showNextQuestion();
+                    }
                 };
                 this.resultElement.style.display = 'none';
                 this.resultElement.innerHTML = '';
@@ -7136,19 +7130,14 @@ const quizApp = {
                 </div>
             `;
             document.body.appendChild(timeoutModal);
-            
-            // Modal kapatma işlemi için güvenli fonksiyon
-            const closeTimeoutModal = () => {
-                if (timeoutModal && timeoutModal.parentNode) {
-                    timeoutModal.remove();
-                }
+            timeoutModal.querySelector('#next-question').onclick = () => {
+                timeoutModal.remove();
                 this.showNextQuestion();
             };
-            
-            timeoutModal.querySelector('#next-question').onclick = closeTimeoutModal;
             timeoutModal.onclick = (e) => {
                 if (e.target === timeoutModal) {
-                    closeTimeoutModal();
+                    timeoutModal.remove();
+                    this.showNextQuestion();
                 }
             };
             if (this.resultElement) {
@@ -7271,18 +7260,12 @@ const quizApp = {
             </div>
         `;
         document.body.appendChild(correctModal);
-        
-        // Modal kapatma işlemi için güvenli fonksiyon
-        const closeCorrectModal = () => {
-            if (correctModal && correctModal.parentNode) {
-                correctModal.remove();
-            }
+        correctModal.querySelector('#next-question').onclick = () => {
+            correctModal.remove();
             this.showNextQuestion();
         };
-        
-        correctModal.querySelector('#next-question').onclick = closeCorrectModal;
         correctModal.onclick = (e) => {
-            if (e.target === correctModal) closeCorrectModal();
+            if (e.target === correctModal) correctModal.remove();
         };
         // Skor ve istatistikler
         const timeSpent = this.TIME_PER_BLANK_FILLING_QUESTION - this.timeLeft;
@@ -7319,18 +7302,12 @@ const quizApp = {
             </div>
         `;
         document.body.appendChild(wrongModal);
-        
-        // Modal kapatma işlemi için güvenli fonksiyon
-        const closeWrongModal = () => {
-            if (wrongModal && wrongModal.parentNode) {
-                wrongModal.remove();
-            }
+        wrongModal.querySelector('#next-question').onclick = () => {
+            wrongModal.remove();
             this.showNextQuestion();
         };
-        
-        wrongModal.querySelector('#next-question').onclick = closeWrongModal;
         wrongModal.onclick = (e) => {
-            if (e.target === wrongModal) closeWrongModal();
+            if (e.target === wrongModal) wrongModal.remove();
         };
         // Skor ve istatistikler
         const timeSpent = this.TIME_PER_BLANK_FILLING_QUESTION - this.timeLeft;
