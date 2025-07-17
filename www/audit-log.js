@@ -18,11 +18,16 @@ const AuditLogger = {
     
     // Sistemi başlat
     init() {
-        if (firebase && firebase.firestore) {
-            this.db = firebase.firestore();
-            this.setupUserActivityTracking();
-        } else {
-            console.error('Firebase Firestore bulunamadı');
+        try {
+            if (firebase && firebase.firestore) {
+                this.db = firebase.firestore();
+                this.setupUserActivityTracking();
+                console.log('✅ Audit Logger başarıyla başlatıldı');
+            } else {
+                console.warn('⚠️ Firebase Firestore bulunamadı - Audit logging devre dışı');
+            }
+        } catch (error) {
+            console.error('❌ Audit Logger başlatılırken hata:', error);
         }
     },
     
@@ -62,6 +67,12 @@ const AuditLogger = {
     // Genel log fonksiyonu
     async log(level, category, action, details = {}, userId = null) {
         try {
+            // Firestore bağlantısı kontrolü
+            if (!this.db) {
+                console.warn('Firestore bağlantısı yok, audit log atlanıyor');
+                return;
+            }
+
             const logEntry = {
                 level: level,
                 category: category,
@@ -77,15 +88,38 @@ const AuditLogger = {
             };
             
             // Firestore'a kaydet
-            await this.db.collection('audit_logs').add(logEntry);
+            await this.db.collection('audit-logs').add(logEntry);
             
             // Konsola da yazdır (development için)
-            if (process.env.NODE_ENV === 'development') {
+            if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'development') {
+                console.log(`[AUDIT] ${level.toUpperCase()}: ${category} - ${action}`, details);
+            } else if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                // Localhost'ta çalışıyorsak development modunda sayabiliriz
                 console.log(`[AUDIT] ${level.toUpperCase()}: ${category} - ${action}`, details);
             }
             
         } catch (error) {
-            console.error('Audit log kaydedilemedi:', error);
+            // Hata durumunda sadece console'a yazdır, kullanıcıyı rahatsız etme
+            console.warn('Audit log kaydedilemedi:', error.message);
+            
+            // Kritik olmayan hataları localStorage'a da kaydet
+            try {
+                const failedLogs = JSON.parse(localStorage.getItem('failed_audit_logs') || '[]');
+                failedLogs.push({
+                    level, category, action, details,
+                    timestamp: new Date().toISOString(),
+                    error: error.message
+                });
+                
+                // Maksimum 100 failed log tut
+                if (failedLogs.length > 100) {
+                    failedLogs.splice(0, failedLogs.length - 100);
+                }
+                
+                localStorage.setItem('failed_audit_logs', JSON.stringify(failedLogs));
+            } catch (storageError) {
+                console.warn('Failed audit log localStorage\'a kaydedilemedi:', storageError);
+            }
         }
     },
     

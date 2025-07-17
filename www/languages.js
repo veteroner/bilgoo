@@ -4,12 +4,17 @@ const languages = {
         appName: 'Bilgoo',
         loading: 'Yükleniyor...',
         restart: 'Yeniden Başlat',
+        playAgain: 'Yeniden Oyna',
+        mainMenu: 'Ana Menü',
         next: 'Sonraki Soru',
         score: 'Puan',
         correct: 'Doğru!',
         wrong: 'Yanlış!',
         timeUp: 'Süre doldu!',
         correctAnswer: 'Doğru cevap',
+        restartingGame: 'Oyun yeniden başlatılıyor...',
+        preparingQuestions: 'Sorular hazırlanıyor...',
+        pleaseWait: 'Lütfen bekleyiniz...',
         
         // Login/Register
         registerButton: 'Kayıt Ol',
@@ -212,6 +217,32 @@ const languages = {
         profile: 'Profilim',
         privacySettings: 'Gizlilik Ayarları',
         
+        // Ana sayfa hakkında bölümü
+        aboutBilgoo: 'Bilgoo Hakkında',
+        aboutQuizGame: 'Bilgoo Quiz Oyunu',
+        aboutDescription: 'Bilgoo, eğlenceli ve eğitici bir quiz oyunu platformudur. Binlerce soru ile bilginizi test edin, arkadaşlarınızla yarışın ve yeni şeyler öğrenin!',
+        features: 'Özellikler',
+        singlePlayerMode: 'Tekli oyun modu',
+        multiplayerMode: 'Çok oyunculu online yarışmalar',
+        globalLeaderboard: 'Küresel skor tablosu',
+        detailedStats: 'Detaylı istatistikler',
+        addQuestionFeature: 'Soru ekleme özelliği',
+        jokerCards: 'Joker kartları',
+        questionPool: '50,000+ Soru Havuzu',
+        categories: 'Kategoriler',
+        multiLanguage: 'Çoklu Dil Desteği',
+        offlineSupport: 'Offline Çalışma Desteği',
+        socialCompetition: 'Sosyal Yarışma',
+        contactInfo: 'İletişim Bilgileri',
+        developer: 'Geliştirici',
+        quickLinks: 'Hızlı Linkler',
+        privacyPolicy: 'Gizlilik Politikası',
+        contact: 'İletişim',
+        backToMenu: 'Ana Menüye Dön',
+        onlineSupport: '7/24 Çevrimiçi Destek',
+        allRightsReserved: 'Tüm hakları saklıdır',
+        gameFeatures: 'Oyun Özellikleri',
+        
         // Soru tipleri
         questionImage: 'Soru görseli',
         trueOption: 'DOĞRU',
@@ -266,12 +297,30 @@ const languages = {
                 '🦉 "Her yeni gün yeni bir öğrenme fırsatıdır."'
             ],
             
-            gameSummary: '🎮 Oyun Özeti',
-            correctAnswersLabel: 'Doğru Cevap',
-            totalPointsLabel: 'Toplam Puan',
-            averageTimeLabel: 'Ortalama Süre',
-            remainingLivesLabel: 'Kalan Can',
-            successRateLabel: 'Başarı Oranı',
+            // Rastgele motive edici mesajlar
+            motivationalMessages: [
+                '🌟 Sen harikasın! Her soru seni daha da güçlü yapıyor!',
+                '🔥 Bu enerjin beni çok etkiledi! Hayal gücün sınırsız!',
+                '⚡ Zekân gerçekten parıl parıl parlıyor! Muhteşemsin!',
+                '🚀 Sadece sen değil, bütün evren senin başarınla gurur duyuyor!',
+                '💎 Sen gerçek bir cevher gibisin! Değerin paha biçilemez!',
+                '🌈 Her doğru cevabın yeni bir gökkuşağı yaratıyor!',
+                '⭐ Yıldızlar bile senin zekânla yarışamaz!',
+                '🎯 Hedefine odaklanman beni hayran bırakıyor!',
+                '🎨 Düşünce tarzın bir sanat eseri gibi güzel!',
+                '🏆 Şampiyonlar senin gibi doğar, seninle büyür!',
+                '🌸 Her soruyla birlikte biraz daha çiçek açıyorsun!',
+                '🎪 Zekan gerçek bir sirk gösterisi gibi büyüleyici!',
+                '🦋 Her cevabınla birlikte metamorfoza uğruyorsun!',
+                '💫 Sen bir yıldız kadar parlak, bir komete kadar hızlısın!',
+                '🎭 Her hamlen bir başyapıt, her düşüncen bir şiir!',
+                '🎼 Beynin en güzel melodi çalıyor şu anda!',
+                '🌊 Bilgi okyanusunda yüzme şeklin harika!',
+                '🗻 Zor soruları aşma gücün dağları sarsar!',
+                '🌺 Çaba gösterme şeklin bir çiçek gibi güzel!',
+                '🎨 Hayal gücün Picasso\'yu bile kıskandırır!'
+            ],
+            youAreAwesome: 'Sen Harikasın!',
             playAgainBtn: '🎮 Tekrar Oyna',
             mainMenuBtn: '🏠 Ana Menü',
             shareBtn: '📤 Paylaş'
@@ -327,7 +376,7 @@ const languages = {
         skipJokerUsedTitle: 'Pas Jokeri Kullanıldı',
         skipJokerUsedMessage: 'Soru pas geçildi!',
 
-        // Privacy settings texts
+        // Gizlilik ayarları metinleri
         privacy: {
             title: 'Gizlilik Ayarları',
             subtitle: 'Kişisel verilerinizi nasıl kullandığımızı kontrol edin',
@@ -366,7 +415,7 @@ const languages = {
             deleteAccountDesc: 'Hesabınızı ve tüm verilerinizi kalıcı olarak silin'
         },
 
-        // Cookie consent texts
+        // Çerez bildirimi metinleri
         cookies: {
             title: 'Çerez Bildirimi',
             message: 'Web sitemiz, size daha iyi hizmet verebilmek ve reklamları kişiselleştirmek için çerezler kullanır. Detaylı bilgi için Gizlilik Politikamızı inceleyebilirsiniz.',
@@ -470,12 +519,17 @@ const languages = {
         appName: 'Knowledge Quiz',
         loading: 'Loading...',
         restart: 'Restart',
+        playAgain: 'Play Again',
+        mainMenu: 'Main Menu',
         next: 'Next Question',
         score: 'Score',
         correct: 'Correct!',
         wrong: 'Wrong!',
         timeUp: 'Time\'s up!',
         correctAnswer: 'Correct answer',
+        restartingGame: 'Restarting game...',
+        preparingQuestions: 'Preparing questions...',
+        pleaseWait: 'Please wait...',
         
         // Login/Register
         registerButton: 'Register',
@@ -690,7 +744,7 @@ const languages = {
         addQuestionFeature: 'Add question feature',
         jokerCards: 'Joker cards',
         questionPool: '50,000+ Question Pool',
-        categories: '25+ Categories',
+        categories: 'Categories',
         multiLanguage: 'Multi-Language Support',
         offlineSupport: 'Offline Support',
         socialCompetition: 'Social Competition',
@@ -700,6 +754,32 @@ const languages = {
         privacyPolicy: 'Privacy Policy',
         contact: 'Contact',
         backToMenu: 'Back to Main Menu',
+        onlineSupport: '24/7 Online Support',
+        allRightsReserved: 'All rights reserved',
+        gameFeatures: 'Game Features',
+        
+        // Ana sayfa hakkında bölümü
+        aboutBilgoo: 'About Bilgoo',
+        aboutQuizGame: 'Bilgoo Quiz Game',
+        aboutDescription: 'Bilgoo is a fun and educational quiz game platform. Test your knowledge with thousands of questions, compete with your friends and learn new things!',
+        features: 'Features',
+        singlePlayerMode: 'Single player mode',
+        multiplayerMode: 'Multiplayer online competitions',
+        globalLeaderboard: 'Global leaderboard',
+        detailedStats: 'Detailed statistics',
+        addQuestionFeature: 'Add question feature',
+        jokerCards: 'Joker cards',
+        questionPool: '50,000+ Question Pool',
+        categories: 'Categories',
+        multiLanguage: 'Multi-Language Support',
+        offlineSupport: 'Offline Support',
+        socialCompetition: 'Social Competition',
+        contactInfo: 'Contact Information',
+        developer: 'Developer',
+        quickLinks: 'Quick Links',
+        privacyPolicy: 'Privacy Policy',
+        contact: 'Contact',
+        backToMenu: 'Back to Menu',
         onlineSupport: '24/7 Online Support',
         allRightsReserved: 'All rights reserved',
         gameFeatures: 'Game Features',
@@ -770,12 +850,30 @@ const languages = {
             excellentMsg: 'You delivered a very successful performance! Congratulations!',
             goodMsg: 'You played a great game! Keep going, you can do even better!',
             keepGoingMsg: 'Every game is a learning experience! You will do better next time!',
-            gameSummary: '🎮 Game Summary',
-            correctAnswersLabel: 'Correct Answers',
-            totalPointsLabel: 'Total Points',
-            averageTimeLabel: 'Average Time',
-            remainingLivesLabel: 'Remaining Lives',
-            successRateLabel: 'Success Rate',
+            // Random motivational messages
+            motivationalMessages: [
+                '🌟 You are amazing! Every question makes you stronger!',
+                '🔥 Your energy impresses me so much! Your imagination is limitless!',
+                '⚡ Your intelligence truly shines bright! You are awesome!',
+                '🚀 Not just you, the entire universe is proud of your success!',
+                '💎 You are like a real gem! Your value is priceless!',
+                '🌈 Every correct answer creates a new rainbow!',
+                '⭐ Even the stars cannot compete with your intelligence!',
+                '🎯 Your focus on the goal amazes me!',
+                '🎨 Your way of thinking is beautiful like a work of art!',
+                '🏆 Champions are born like you, grow up with you!',
+                '🌸 You bloom a little more with each question!',
+                '🎪 Your intelligence is fascinating like a circus show!',
+                '🦋 You transform with each answer!',
+                '💫 You are bright as a star, fast as a comet!',
+                '🎭 Every move is a masterpiece, every thought is a poem!',
+                '🎼 Your brain is playing the most beautiful melody right now!',
+                '🌊 Your way of swimming in the ocean of knowledge is wonderful!',
+                '🗻 Your power to overcome difficult questions shakes mountains!',
+                '🌺 Your way of showing effort is beautiful like a flower!',
+                '🎨 Your imagination would make even Picasso jealous!'
+            ],
+            youAreAwesome: 'You Are Awesome!',
             playAgainBtn: '🎮 Play Again',
             mainMenuBtn: '🏠 Main Menu',
             shareBtn: '📤 Share'
@@ -974,6 +1072,8 @@ const languages = {
         appName: 'Wissensquiz',
         loading: 'Wird geladen...',
         restart: 'Neustart',
+        playAgain: 'Nochmal spielen',
+        mainMenu: 'Hauptmenü',
         next: 'Nächste Frage',
         score: 'Punkte',
         correct: 'Richtig!',
@@ -1103,17 +1203,17 @@ const languages = {
         
         // Spielabschluss
         gameCompletion: 'Herzlichen Glückwunsch! Sie haben das Spiel abgeschlossen!',
-        completedAllSections: 'Sie haben alle 50 Abschnitte erfolgreich abgeschlossen!',
+        completedAllSections: 'Sie haben alle 50 Abschnitte başarıyla tamamladınız!',
         totalPoints: 'Gesamtpunktzahl',
         congratsMessage: 'Wir gratulieren Ihnen zu dieser herausragenden Leistung!',
         playAgain: 'Erneut spielen',
         shareResult: 'Ergebnis teilen',
         
-        // Wahr/Falsch Fragen
+        // Doğru Yanlış soruları
         true: 'WAHR',
         false: 'FALSCH',
         
-        // Lückentext
+        // Boşluk doldurma
         delete: 'Löschen',
         clear: 'Zurücksetzen',
         check: 'Prüfen',
@@ -1121,19 +1221,19 @@ const languages = {
         firstLetter: 'Hinweis: Der erste Buchstabe der richtigen Antwort ist',
         lastLetter: 'und der letzte Buchstabe ist',
         
-        // Warnungen
+        // Uyarılar
         browserWarning: 'Ihr Browser unterstützt einige Funktionen dieser Anwendung nicht. Für ein besseres Erlebnis verwenden Sie bitte die neuesten Versionen von Chrome, Firefox oder Edge.',
         understood: 'Verstanden',
         questionLoadError: 'Fehler beim Laden der Fragedaten: Bitte aktualisieren Sie die Seite.',
         imageLoadError: 'Bild konnte nicht geladen werden, wechsle zu einer anderen Frage...',
         emptyAnswer: 'Bitte geben Sie eine Antwort ein!',
         
-        // Sonstiges
+        // Diğer
         seconds: 'Sekunden',
         second: 'Sekunde',
         language: 'Sprache',
         
-        // Hauptmenü
+        // Ana menü
         quiz: 'Quiz-Spiel',
         singlePlayer: 'Einzelspieler',
         multiPlayer: 'Mehrspieler',
@@ -1145,7 +1245,7 @@ const languages = {
         modalLivesEndedTitle: 'Keine Leben mehr!',
         modalLivesEndedMessage: 'Sie können Leben kaufen, um fortzufahren.',
         modalLivesPackageTitle: '3-Leben-Paket',
-        modalLivesPackageDescription: 'Spielen Sie mit 3 Leben weiter!',
+        modalLivesPackageDescription: 'Spielen Sie mit 3 zusätzlichen Leben weiter!',
         modalCurrentPoints: 'Ihre Punkte',
         modalBuyLivesButton: '3 Leben kaufen ({price} Punkte)',
         modalInsufficientPoints: 'Unzureichende Punkte ({price} benötigt)',
@@ -1184,7 +1284,7 @@ const languages = {
         addQuestionFeature: 'Fragen hinzufügen',
         jokerCards: 'Joker-Karten',
         questionPool: '50.000+ Fragenpoll',
-        categories: '25+ Kategorien',
+        categories: 'Kategoriler',
         multiLanguage: 'Mehrsprachiger Support',
         offlineSupport: 'Offline-Unterstützung',
         socialCompetition: 'Sozialer Wettbewerb',
@@ -1228,12 +1328,30 @@ const languages = {
             excellentMsg: 'Du hast eine sehr erfolgreiche Leistung erbracht! Glückwunsch!',
             goodMsg: 'Du hast ein tolles Spiel gespielt! Mach weiter, du kannst noch besser werden!',
             keepGoingMsg: 'Jedes Spiel ist eine Lernerfahrung! Du wirst es das nächste Mal besser machen!',
-            gameSummary: '🎮 Spiel Zusammenfassung',
-            correctAnswersLabel: 'Richtige Antworten',
-            totalPointsLabel: 'Gesamtpunkte',
-            averageTimeLabel: 'Durchschnittszeit',
-            remainingLivesLabel: 'Verbleibende Leben',
-            successRateLabel: 'Erfolgsrate',
+            // Zufällige motivierende Nachrichten
+            motivationalMessages: [
+                '🌟 Du bist großartig! Jede Frage macht dich stärker!',
+                '🔥 Deine Energie beeindruckt mich so sehr! Deine Fantasie ist grenzenlos!',
+                '⚡ Deine Intelligenz strahlt wirklich hell! Du bist fantastisch!',
+                '🚀 Nicht nur du, das ganze Universum ist stolz auf deinen Erfolg!',
+                '💎 Du bist wie ein echtes Juwel! Dein Wert ist unbezahlbar!',
+                '🌈 Jede richtige Antwort erschafft einen neuen Regenbogen!',
+                '⭐ Selbst die Sterne können nicht mit deiner Intelligenz konkurrieren!',
+                '🎯 Dein Fokus auf das Ziel beeindruckt mich!',
+                '🎨 Deine Denkweise ist schön wie ein Kunstwerk!',
+                '🏆 Champions werden wie du geboren, wachsen mit dir auf!',
+                '🌸 Du blühst ein wenig mehr mit jeder Frage!',
+                '🎪 Deine Intelligenz ist faszinierend wie eine Zirkusshow!',
+                '🦋 Du verwandelst dich mit jeder Antwort!',
+                '💫 Du bist hell wie ein Stern, schnell wie ein Komet!',
+                '🎭 Jeder Zug ist ein Meisterwerk, jeder Gedanke ein Gedicht!',
+                '🎼 Dein Gehirn spielt gerade die schönste Melodie!',
+                '🌊 Deine Art im Ozean des Wissens zu schwimmen ist wunderbar!',
+                '🗻 Deine Kraft schwierige Fragen zu überwinden erschüttert Berge!',
+                '🌺 Deine Art Anstrengung zu zeigen ist schön wie eine Blume!',
+                '🎨 Deine Fantasie würde sogar Picasso neidisch machen!'
+            ],
+            youAreAwesome: 'Du Bist Großartig!',
             playAgainBtn: '🎮 Nochmal Spielen',
             mainMenuBtn: '🏠 Hauptmenü',
             shareBtn: '📤 Teilen'
@@ -1242,17 +1360,17 @@ const languages = {
         // Leben kaufen Modal Texte
         buyLives: {
             title: 'Keine Leben mehr!',
-            message: 'Du kannst Leben kaufen, um weiterzuspielen.',
+            message: 'Sie können Leben kaufen, um weiterzuspielen.',
             packageTitle: '3 Leben Paket',
-            packageDescription: 'Spiele mit 3 Leben weiter!',
-            currentPoints: 'Deine aktuellen Punkte',
+            packageDescription: 'Spiel mit 3 Leben fortsetzen!',
+            currentPoints: 'Ihre aktuellen Punkte',
             buyButton: '3 Leben kaufen ({price} Punkte)',
             insufficientPoints: 'Unzureichende Punkte ({price} erforderlich)',
             finishGame: 'Spiel beenden',
             livesPackage: 'Leben Paket',
             livesPackageStore: '3 Leben kaufen',
             buyButtonStore: 'Kaufen',
-            currentLives: 'Deine aktuellen Leben',
+            currentLives: 'Ihre aktuellen Leben',
             lifesPurchased: '3 Leben gekauft! ❤️❤️❤️',
             insufficientStars: 'Nicht genug Sterne! (15 Sterne erforderlich)',
             purchaseSuccess: '{amount} Leben gekauft! Spiel geht weiter...',
@@ -1276,7 +1394,7 @@ const languages = {
         livesPackageName: 'Leben-Paket',
         livesPackageDesc: '3 Leben kaufen',
         jokerOwned: 'Sie besitzen',
-        currentLives: 'Aktuelle Leben',
+        currentLives: 'Aktuelle leben',
         buyButton: 'Kaufen',
         
         // Joker-Verwendungsnachrichten
@@ -1288,6 +1406,63 @@ const languages = {
         timeJokerUsedMessage: '15 Sekunden hinzugefügt!',
         skipJokerUsedTitle: 'Überspringen-Joker Verwendet',
         skipJokerUsedMessage: 'Frage übersprungen!',
+
+        // Datenschutz-Einstellungen Texte
+        privacy: {
+            title: 'Datenschutz-Einstellungen',
+            subtitle: 'Kontrollieren Sie, wie wir Ihre persönlichen Daten verwenden',
+            backLink: 'Zurück zur Startseite',
+            cookieSettings: 'Cookie-Einstellungen',
+            essentialCookies: 'Notwendige Cookies',
+            essentialCookiesDesc: 'Cookies, die für die Funktionalität der Website erforderlich sind (immer aktiv)',
+            analyticsCookies: 'Analyse-Cookies',
+            analyticsCookiesDesc: 'Helfen uns bei der Analyse der Website-Nutzung',
+            advertisingCookies: 'Werbe-Cookies',
+            advertisingCookiesDesc: 'Werden für personalisierte Werbung verwendet',
+            saveCookieSettings: 'Cookie-Einstellungen speichern',
+            dataManagement: 'Datenverwaltung',
+            downloadData: 'Ihre Daten herunterladen',
+            downloadDataDesc: 'Sie können alle Daten über Sie im JSON-Format herunterladen',
+            downloadMyData: 'Meine Daten herunterladen',
+            dataRetention: 'Datenspeicherdauer',
+            dataRetentionDesc: 'Wie lange Ihre Daten gespeichert werden',
+            oneYear: '1 Jahr',
+            twoYears: '2 Jahre',
+            fiveYears: '5 Jahre',
+            forever: 'Unbegrenzt',
+            saveDataSettings: 'Dateneinstellungen speichern',
+            privacyControl: 'Datenschutzkontrolle',
+            profileVisibility: 'Profil-Sichtbarkeit',
+            profileVisibilityDesc: 'Soll Ihr Profil für andere Benutzer sichtbar sein?',
+            statsSharing: 'Statistik-Freigabe',
+            statsSharingDesc: 'Sollen Ihre Statistiken in der Bestenliste angezeigt werden?',
+            friendRequests: 'Freundschaftsanfragen',
+            friendRequestsDesc: 'Können andere Benutzer Ihnen Freundschaftsanfragen senden?',
+            savePrivacySettings: 'Datenschutz-Einstellungen speichern',
+            consentHistory: 'Einverständnis-Verlauf',
+            consentHistoryDesc: 'Verlauf Ihrer Datenschutzrichtlinien-Genehmigungen',
+            accountOperations: 'Konto-Operationen',
+            deleteAccount: 'Mein Konto löschen',
+            deleteAccountDesc: 'Löschen Sie Ihr Konto und alle Ihre Daten dauerhaft'
+        },
+
+        // Cookie-Zustimmung Texte
+        cookies: {
+            title: 'Cookie-Hinweis',
+            message: 'Unsere Website verwendet Cookies, um Ihnen einen besseren Service zu bieten und Werbung zu personalisieren. Für detaillierte Informationen lesen Sie bitte unsere Datenschutzrichtlinie.',
+            acceptEssential: 'Nur Notwendige',
+            acceptAll: 'Alle akzeptieren',
+            settings: 'Einstellungen',
+            settingsTitle: 'Cookie-Einstellungen',
+            essentialCookies: 'Notwendige Cookies',
+            essentialCookiesDesc: 'Cookies, die für die Funktionalität der Website erforderlich sind',
+            analyticsCookies: 'Analyse-Cookies',
+            analyticsCookiesDesc: 'Werden zur Analyse der Website-Nutzung verwendet',
+            advertisingCookies: 'Werbe-Cookies',
+            advertisingCookiesDesc: 'Werden verwendet, um personalisierte Werbung anzuzeigen',
+            save: 'Speichern',
+            privacyPolicy: 'unsere Datenschutzrichtlinie'
+        },
         
         // Add question modal
         addQuestionModal: 'Neue Frage hinzufügen',
@@ -1343,7 +1518,7 @@ const languages = {
             goal2: 'Ein künstlich intelligenter adaptiver Lernsystem entwickeln',
             goal3: 'Partner mit Bildungseinrichtungen eingehen',
             goal4: 'Internationale Märkte betreten',
-            goal5: "Mobilapp-Downloads auf 500.000 erhöhen",
+                       goal5: "Mobilapp-Downloads auf 500.000 erhöhen",
             goal6: 'Ein dauerhaftes Einkommensmodell mit einem Premium-Mitgliedschaftssystem erstellen',
             teamTitle: 'Unser Team',
             teamText1: 'Unser Bilgoo-Team besteht aus Experten im Bereich Bildungstechnologie, Softwareentwicklung und Benutzererfahrung.',
@@ -1455,43 +1630,43 @@ const reverseCategoryMappings = {
     },
     "Sports": {
         tr: "Spor",
-        en: "Sports"
+        de: "Sport"
     },
     "Music": {
         tr: "Müzik",
-        en: "Music"
+        de: "Musik"
     },
     "History": {
         tr: "Tarih",
-        en: "History"
+        de: "Geschichte"
     },
     "Geography": {
         tr: "Coğrafya",
-        en: "Geography"
+        de: "Geographie"
     },
     "Art": {
         tr: "Sanat",
-        en: "Art"
+        de: "Kunst"
     },
     "Literature": {
         tr: "Edebiyat",
-        en: "Literature"
+        de: "Literatur"
     },
     "Movies": {
         tr: "Sinema",
-        en: "Movies"
+        de: "Filme"
     },
     "Food": {
         tr: "Yemek",
-        en: "Food"
+        de: "Essen"
     },
     "Computer": {
         tr: "Bilgisayar",
-        en: "Computer"
+        de: "Computer"
     },
     "Mathematics": {
         tr: "Matematik",
-        en: "Mathematics"
+        de: "Mathematik"
     },
     "Fill in the Blank": {
         tr: "Boşluk Doldurma",
@@ -1501,7 +1676,7 @@ const reverseCategoryMappings = {
         tr: "Diğer",
         en: "Other"
     },
-    // Alman kategorilerinden türkçe ve ingilizceye çevrimler
+    // Alman kategorilerinden türkçe ve ingilizceye çevirimler
     "Allgemeinwissen": {
         tr: "Genel Kültür",
         en: "General Knowledge"
@@ -1608,4 +1783,4 @@ const questionWithTranslations = {
         }
     }
 }
-*/ 
+*/

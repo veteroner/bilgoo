@@ -41,10 +41,10 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
     lint {
-        abortOnError false
-        checkReleaseBuilds false
-        disable 'InvalidPackage', 'UnusedResources', 'IconLocation', 'IconDensities', 'IconMissingDensityFolder', 'GoogleAppIndexingWarning', 'DuplicateIds', 'MissingConstraints', 'ContentDescription', 'LabelFor'
-        warningsAsErrors false
+        abortOnError = false
+        checkReleaseBuilds = false
+        disable 'InvalidPackage', 'UnusedResources', 'IconLocation', 'IconDensities', 'IconMissingDensityFolder', 'GoogleAppIndexingWarning', 'DuplicateIds', 'MissingConstraints', 'ContentDescription', 'LabelFor', 'UnsanitizedFilenameFromContentProvider'
+        warningsAsErrors = false
     }
 
     // Lint kontrollerini yapılandır

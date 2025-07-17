@@ -594,6 +594,22 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const quizApp = {
+    // Güvenli audit log fonksiyonu
+    safeAuditLog: function(level, category, action, details = {}) {
+        try {
+            if (typeof AuditLogger !== 'undefined' && AuditLogger.log) {
+                // Async olarak çağır ama await etme (non-blocking)
+                AuditLogger.log(level, category, action, details).catch(error => {
+                    // Hata durumunda sessizce logla
+                    console.warn('Audit log failed silently:', error.message);
+                });
+            }
+        } catch (error) {
+            // Tamamen başarısız olursa da sessizce devam et
+            console.warn('Audit logger not available:', error.message);
+        }
+    },
+
     // DOM Elements
     questionElement: document.getElementById('question'),
     optionsElement: document.getElementById('options'),
@@ -673,6 +689,11 @@ const quizApp = {
         console.log('- Firebase nesnesi:', typeof firebase !== 'undefined' ? 'VAR' : 'YOK');
         console.log('- Firebase.auth:', firebase && firebase.auth ? 'VAR' : 'YOK');
         console.log('- Firebase.firestore:', firebase && firebase.firestore ? 'VAR' : 'YOK');
+        
+        // Audit Logger'ı başlat
+        if (typeof AuditLogger !== 'undefined') {
+            AuditLogger.init();
+        }
         
         // Tarayıcı özelliklerini kontrol et
         this.checkBrowserSupport();
@@ -1676,6 +1697,12 @@ const quizApp = {
             this.jokerFiftyBtn.addEventListener('click', () => {
                 if (this.jokerFiftyBtn.disabled) return;
                 
+                // Envanter kontrolü - 50:50 jokeri yoksa çıkış yap
+                if (this.jokerInventory.fifty <= 0) {
+                    console.warn('50:50 jokeri envanterinde yok!');
+                    return;
+                }
+                
                 console.log('50:50 joker kullanılıyor...');
                 
                 // Mevcut sorunun doğru cevabını al
@@ -1783,6 +1810,12 @@ const quizApp = {
             this.jokerHintBtn.addEventListener('click', () => {
                 if (this.jokerHintBtn.disabled) return;
                 
+                // Envanter kontrolü - ipucu jokeri yoksa çıkış yap
+                if (this.jokerInventory.hint <= 0) {
+                    console.warn('İpucu jokeri envanterinde yok!');
+                    return;
+                }
+                
                 console.log('İpucu joker kullanılıyor...');
                 
                 // Mevcut soru için bir ipucu göster
@@ -1863,6 +1896,12 @@ const quizApp = {
         if (this.jokerTimeBtn) {
             this.jokerTimeBtn.addEventListener('click', () => {
                 if (this.jokerTimeBtn.disabled) return;
+                
+                // Envanter kontrolü - süre jokeri yoksa çıkış yap
+                if (this.jokerInventory.time <= 0) {
+                    console.warn('Süre jokeri envanterinde yok!');
+                    return;
+                }
                 
                 console.log('Süre joker kullanılıyor...');
                 console.log('Kullanım öncesi süre:', this.timeLeft);
@@ -2352,7 +2391,7 @@ const quizApp = {
         let modalIcon = "";
         
         // Get current language
-        const currentLang = this.getCurrentLanguage();
+        const currentLang = getCurrentLanguage();
         const langData = window.languages && window.languages[currentLang] ? window.languages[currentLang] : window.languages.tr;
 
         // Joker tipine göre içeriği ayarla
@@ -3016,7 +3055,7 @@ const quizApp = {
         console.log('📋 Mevcut selectedCategory:', this.selectedCategory);
         
         // Geçiş ekranını göster
-        const transitionOverlay = this.showRestartTransition();
+        this.showRestartTransition();
         
         // Mevcut celebration modal'ını kaldır
         const existingModal = document.querySelector('.celebration-modal');
@@ -3179,7 +3218,11 @@ const quizApp = {
             // Bölüm geçiş ekranını göster
             this.showSectionTransition();
         } else if (this.currentQuestionIndex < this.questions.length) {
-            this.displayQuestion(this.questions[this.currentQuestionIndex]);
+            // Geçiş ekranını göster ve ardından soruyu göster
+            setTimeout(() => {
+                this.displayQuestion(this.questions[this.currentQuestionIndex]);
+                this.hideRestartTransition();
+            }, 500);
         } else {
             // Tüm sorular cevaplandı - yeni bölüm için sorular yükle
             console.log("Bölümdeki sorular tamamlandı, bir sonraki bölüm için sorular yükleniyor...");
@@ -3251,6 +3294,11 @@ const quizApp = {
             // Bölüm geçiş ekranını göster
             this.showSectionTransition();
         }
+        
+        // Geçiş ekranını gizle
+        setTimeout(() => {
+            this.hideRestartTransition();
+        }, 1000);
     },
     
     // Kategoriye göre maksimum bölüm sayısını belirle
@@ -7693,8 +7741,8 @@ const quizApp = {
         `;
         
         // CSS Animasyonları ekle
-        const style = document.createElement('style');
-        style.textContent = `
+        const badgeStyle = document.createElement('style');
+        badgeStyle.textContent = `
             @keyframes bounceIn {
                 0% { transform: scale(0.3); opacity: 0; }
                 50% { transform: scale(1.05); }
@@ -7731,7 +7779,7 @@ const quizApp = {
                 box-shadow: 0 12px 24px rgba(0,0,0,0.3) !important;
             }
         `;
-        document.head.appendChild(style);
+        document.head.appendChild(badgeStyle);
         
         // Modalı ekle
         celebrationModal.appendChild(confettiCanvas);
@@ -7741,37 +7789,33 @@ const quizApp = {
         // Konfeti animasyonu başlat
         this.startConfetti(confettiCanvas);
         
-        // DOM'a eklendikten sonra buton event listeners - setTimeout ile DOM'un hazır olmasını bekle
-        const self = this;
-        setTimeout(() => {
-            const playAgainBtn = document.getElementById('play-again-btn');
-            const mainMenuBtn = document.getElementById('main-menu-btn');
-            const shareBtn = document.getElementById('share-btn');
-            
-            if (playAgainBtn) {
-                playAgainBtn.addEventListener('click', () => {
-                    console.log('Play again button clicked');
-                    celebrationModal.remove();
-                    style.remove();
-                    self.restartGame();
-                });
-            }
-            
-            if (mainMenuBtn) {
-                mainMenuBtn.addEventListener('click', () => {
-                    console.log('Main menu button clicked');
-                    celebrationModal.remove();
-                    style.remove();
-                    window.location.reload();
-                });
-            }
-            
-            if (shareBtn) {
-                shareBtn.addEventListener('click', () => {
-                    self.shareResults(finalStats);
-                });
-            }
-        }, 100);
+        // Butonlara event listener ekle
+        const playAgainBtn = celebrationModal.querySelector('#play-again-btn');
+        const mainMenuBtn = celebrationModal.querySelector('#main-menu-btn');
+        const shareBtn = celebrationModal.querySelector('#share-btn');
+        
+        if (playAgainBtn) {
+            playAgainBtn.addEventListener('click', () => {
+                console.log('🎮 Play again button clicked');
+                console.log('📋 Current selectedCategory:', this.selectedCategory);
+                this.restartGame();
+            });
+        }
+        
+        if (mainMenuBtn) {
+            mainMenuBtn.addEventListener('click', () => {
+                console.log('Main menu button clicked');
+                celebrationModal.remove();
+                badgeStyle.remove();
+                window.location.reload();
+            });
+        }
+        
+        if (shareBtn) {
+            shareBtn.addEventListener('click', () => {
+                this.shareResults(finalStats);
+            });
+        }
         
         // Ses efekti çal
         if (this.soundEnabled) {
