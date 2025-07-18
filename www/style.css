@@ -80,6 +80,31 @@
     .profile-container .container {
         padding-top: 90px !important;
     }
+    
+    /* Oyun başladığında tüm game-header'ı (can, süre, puan, yıldız) reklam alanının altına kaydır */
+    .game-header {
+        margin-top: 5px !important; /* Reklam alanı için yeterli boşluk */
+        padding-top: 10px !important;
+        position: relative !important;
+        z-index: 10 !important;
+    }
+    
+    /* Quiz container'ının kendisini de aşağı kaydır */
+    #quiz {
+        padding-top: 0 !important; /* Önceki ayarı sıfırla */
+    }
+    
+    /* Quiz container içindeki elemanları düzenle */
+    .quiz-container {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+    
+    /* Soru container'ını da düzenle */
+    #question-container,
+    .question-container {
+        margin-top: 10px !important;
+    }
 }
 
 /* Mobil Inline Reklamlar */

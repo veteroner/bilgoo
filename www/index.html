@@ -5328,7 +5328,10 @@
                 <button id="back-to-main" class="online-btn"><i class="fas fa-arrow-left"></i> <span data-i18n="back">Geri</span></button>
             </div>
             <div id="room-creation" style="display: none;">
-                <input type="text" id="room-name" placeholder="Oda adı" maxlength="20">
+                <div class="room-name-container">
+                    <label for="room-name">Oda Adı:</label>
+                    <input type="text" id="room-name" placeholder="Oda adı" maxlength="20">
+                </div>
                 <div class="room-capacity-container">
                     <label for="room-capacity">Oda Kapasitesi:</label>
                     <select id="room-capacity">
@@ -5349,7 +5352,10 @@
                 <button id="create-room-submit" class="btn-primary"><i class="fas fa-check-circle"></i> <span data-i18n="create">Oluştur</span></button>
             </div>
             <div id="room-join" style="display: none;">
-                <input type="text" id="room-code" placeholder="Oda kodu" maxlength="6">
+                <div class="room-code-container">
+                    <label for="room-code">Oda Kodu:</label>
+                    <input type="text" id="room-code" placeholder="Oda kodu" maxlength="6">
+                </div>
                 <button id="join-room-submit" class="btn-primary"><i class="fas fa-sign-in-alt"></i> <span data-i18n="join">Katıl</span></button>
             </div>
         </div>
@@ -5386,6 +5392,7 @@
                     </div>
                     <div class="chat-controls">
                         <div class="chat-input-container">
+                            <label for="chat-input" class="visually-hidden">Mesaj yazın</label>
                             <input type="text" id="chat-input" placeholder="Bir mesaj yazın..." maxlength="100" disabled>
                             <button id="send-message-btn" disabled><i class="fas fa-paper-plane"></i></button>
                         </div>
@@ -5604,6 +5611,7 @@
                     </div>
                     <div class="chat-controls">
                         <div class="chat-input-container">
+                            <label for="game-chat-input" class="visually-hidden">Mesaj yazın</label>
                             <input type="text" id="game-chat-input" placeholder="Bir mesaj yazın..." maxlength="100" disabled>
                             <button id="game-send-message-btn" disabled><i class="fas fa-paper-plane"></i></button>
                         </div>
@@ -6245,7 +6253,7 @@
             </div>
             <div class="cookie-modal-body">
                 <div class="cookie-category">
-                    <label class="cookie-toggle">
+                    <label class="cookie-toggle" for="essential-cookies">
                         <input type="checkbox" id="essential-cookies" checked disabled>
                         <span class="cookie-slider"></span>
                         <div class="cookie-info">
@@ -6255,7 +6263,7 @@
                     </label>
                 </div>
                 <div class="cookie-category">
-                    <label class="cookie-toggle">
+                    <label class="cookie-toggle" for="analytics-cookies">
                         <input type="checkbox" id="analytics-cookies">
                         <span class="cookie-slider"></span>
                         <div class="cookie-info">
@@ -6265,7 +6273,7 @@
                     </label>
                 </div>
                 <div class="cookie-category">
-                    <label class="cookie-toggle">
+                    <label class="cookie-toggle" for="advertising-cookies">
                         <input type="checkbox" id="advertising-cookies">
                         <span class="cookie-slider"></span>
                         <div class="cookie-info">
