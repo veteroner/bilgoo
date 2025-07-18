@@ -1145,6 +1145,7 @@ const onlineGame = {
             name: roomName,
             hostId: this.userId,
             hostName: this.username,
+            host: this.username, // Database kuralları için
             status: 'waiting',
             maxPlayers: playerCount,
             createdAt: firebase.database.ServerValue.TIMESTAMP,
