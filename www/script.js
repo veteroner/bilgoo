@@ -650,6 +650,7 @@ const quizApp = {
     answerTimes: [],
     jokersUsed: {fifty: false, hint: false, time: false, skip: false},
     jokerInventory: {fifty: 0, hint: 0, time: 0, skip: 0},
+    currentHintMessage: null, // <-- EKLENDİ: Şu anki ipucu mesajı
     soundEnabled: true,
     lives: 5,
     currentLevel: 1,
@@ -3251,8 +3252,9 @@ const quizApp = {
             
             // Bölüm geçiş ekranını göster
             this.showSectionTransition();
+            return; // Bölüm geçiş ekranı gösterildi, fonksiyonu bitir
         } else if (this.currentQuestionIndex < this.questions.length) {
-            // Geçiş ekranını göster ve ardından soruyu göster
+            // Normal soru geçişi - geçiş ekranını göster ve ardından soruyu göster
             setTimeout(() => {
                 this.displayQuestion(this.questions[this.currentQuestionIndex]);
                 this.hideRestartTransition();
@@ -3327,12 +3329,8 @@ const quizApp = {
             
             // Bölüm geçiş ekranını göster
             this.showSectionTransition();
+            return; // Bölüm geçiş ekranı gösterildi, fonksiyonu bitir
         }
-        
-        // Geçiş ekranını gizle
-        setTimeout(() => {
-            this.hideRestartTransition();
-        }, 1000);
     },
     
     // Kategoriye göre maksimum bölüm sayısını belirle
@@ -4251,11 +4249,13 @@ const quizApp = {
             return;
         }
         
-        // Önceki ipucu mesajlarını temizle
-        const existingHintMessages = document.querySelectorAll('.hint-message');
-        existingHintMessages.forEach(element => {
-            element.remove();
-        });
+        // Önceki ipucu mesajlarını temizle (sadece hint jokeri kullanılmamışsa)
+        if (!this.jokersUsed.hint) {
+            const existingHintMessages = document.querySelectorAll('.hint-message');
+            existingHintMessages.forEach(element => {
+                element.remove();
+            });
+        }
         
         // Eğer soru boşluk doldurma ise farklı göster
         if (questionData.type === "BlankFilling") {

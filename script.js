@@ -650,6 +650,7 @@ const quizApp = {
     answerTimes: [],
     jokersUsed: {fifty: false, hint: false, time: false, skip: false},
     jokerInventory: {fifty: 0, hint: 0, time: 0, skip: 0},
+    currentHintMessage: null, // <-- EKLENDİ: Şu anki ipucu mesajı
     soundEnabled: true,
     lives: 5,
     currentLevel: 1,
@@ -1847,6 +1848,9 @@ const quizApp = {
                 
                 console.log('Oluşturulan ipucu:', hint);
                 
+                // İpucu mesajını sakla
+                this.currentHintMessage = hint;
+                
                 // İpucunu göster
                 const hintElement = document.createElement('div');
                 hintElement.className = 'hint-message';
@@ -2603,6 +2607,7 @@ const quizApp = {
         // Kullanılmış jokerleri sıfırla
         this.jokersUsed = {fifty: false, hint: false, time: false, skip: false};
         this.skipJokerActive = false;
+        this.currentHintMessage = null; // <-- EKLENDİ: Hint mesajını da sıfırla
         
         // 50:50 joker ile devre dışı bırakılan seçenekleri tekrar aktif et
         this.resetDisabledOptions();
@@ -2661,11 +2666,13 @@ const quizApp = {
             option.classList.remove('disabled-option');
         });
         
-        // İpucu mesajlarını da temizle
-        const hintMessages = document.querySelectorAll('.hint-message');
-        hintMessages.forEach(hint => {
-            hint.remove();
-        });
+        // İpucu mesajlarını da temizle (sadece hint jokeri kullanılmamışsa)
+        if (!this.jokersUsed.hint) {
+            const hintMessages = document.querySelectorAll('.hint-message');
+            hintMessages.forEach(hint => {
+                hint.remove();
+            });
+        }
     },
     
     // Kullanıcı ayarlarını yükle
@@ -3251,8 +3258,9 @@ const quizApp = {
             
             // Bölüm geçiş ekranını göster
             this.showSectionTransition();
+            return; // Bölüm geçiş ekranı gösterildi, fonksiyonu bitir
         } else if (this.currentQuestionIndex < this.questions.length) {
-            // Geçiş ekranını göster ve ardından soruyu göster
+            // Normal soru geçişi - geçiş ekranını göster ve ardından soruyu göster
             setTimeout(() => {
                 this.displayQuestion(this.questions[this.currentQuestionIndex]);
                 this.hideRestartTransition();
@@ -3327,12 +3335,8 @@ const quizApp = {
             
             // Bölüm geçiş ekranını göster
             this.showSectionTransition();
+            return; // Bölüm geçiş ekranı gösterildi, fonksiyonu bitir
         }
-        
-        // Geçiş ekranını gizle
-        setTimeout(() => {
-            this.hideRestartTransition();
-        }, 1000);
     },
     
     // Kategoriye göre maksimum bölüm sayısını belirle
@@ -4251,11 +4255,13 @@ const quizApp = {
             return;
         }
         
-        // Önceki ipucu mesajlarını temizle
-        const existingHintMessages = document.querySelectorAll('.hint-message');
-        existingHintMessages.forEach(element => {
-            element.remove();
-        });
+        // Önceki ipucu mesajlarını temizle (sadece hint jokeri kullanılmamışsa)
+        if (!this.jokersUsed.hint) {
+            const existingHintMessages = document.querySelectorAll('.hint-message');
+            existingHintMessages.forEach(element => {
+                element.remove();
+            });
+        }
         
         // Eğer soru boşluk doldurma ise farklı göster
         if (questionData.type === "BlankFilling") {
@@ -4350,6 +4356,34 @@ const quizApp = {
         
         // Joker butonlarının durumunu güncelle
         this.updateJokerButtons();
+        
+        // Eğer hint joker kullanılmışsa ve hint mesajı varsa, ipucunu tekrar göster
+        if (this.jokersUsed.hint && this.currentHintMessage) {
+            const existingHint = document.querySelector('.hint-message');
+            if (!existingHint) {
+                const hintElement = document.createElement('div');
+                hintElement.className = 'hint-message';
+                hintElement.innerHTML = '<i class="fas fa-lightbulb"></i> ' + this.currentHintMessage;
+                hintElement.style.cssText = `
+                    background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+                    color: #2d3436;
+                    padding: 15px 20px;
+                    margin: 15px 0;
+                    border-radius: 10px;
+                    border-left: 4px solid #e17055;
+                    box-shadow: 0 4px 15px rgba(253, 203, 110, 0.3);
+                    animation: fadeInUp 0.5s ease;
+                    font-weight: 600;
+                    text-align: center;
+                `;
+                
+                // İpucunu soru elementinin altına ekle
+                const questionElement = document.getElementById('question');
+                if (questionElement && questionElement.parentNode) {
+                    questionElement.parentNode.insertBefore(hintElement, questionElement.nextSibling);
+                }
+            }
+        }
 
         // Sayacı başlat
         this.startTimer();
@@ -9117,11 +9151,13 @@ const quizApp = {
     
     // Önceki sorunun kalıntılarını temizleyen fonksiyon
     cleanupPreviousQuestion: function() {
-        // Önceki ipucu mesajlarını temizle
-        const existingHintMessages = document.querySelectorAll('.hint-message');
-        existingHintMessages.forEach(element => {
-            element.remove();
-        });
+        // Önceki ipucu mesajlarını temizle (sadece hint jokeri kullanılmamışsa)
+        if (!this.jokersUsed.hint) {
+            const existingHintMessages = document.querySelectorAll('.hint-message');
+            existingHintMessages.forEach(element => {
+                element.remove();
+            });
+        }
         
         // "Doğru!" veya "Yanlış!" mesajlarını temizle
         const correctMessageElements = document.querySelectorAll('.correct-answer-container');

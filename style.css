@@ -80,6 +80,31 @@
     .profile-container .container {
         padding-top: 90px !important;
     }
+    
+    /* Oyun başladığında tüm game-header'ı (can, süre, puan, yıldız) reklam alanının altına kaydır */
+    .game-header {
+        margin-top: 5px !important; /* Reklam alanı için yeterli boşluk */
+        padding-top: 10px !important;
+        position: relative !important;
+        z-index: 10 !important;
+    }
+    
+    /* Quiz container'ının kendisini de aşağı kaydır */
+    #quiz {
+        padding-top: 0 !important; /* Önceki ayarı sıfırla */
+    }
+    
+    /* Quiz container içindeki elemanları düzenle */
+    .quiz-container {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+    
+    /* Soru container'ını da düzenle */
+    #question-container,
+    .question-container {
+        margin-top: 10px !important;
+    }
 }
 
 /* Mobil Inline Reklamlar */
@@ -1817,8 +1842,7 @@ button:disabled {
 
 /* Hint Mesajı */
 .hint-message {
-    display: none !important;
-    /* padding: 0.6rem 1rem;
+    padding: 0.6rem 1rem;
     margin: 0.6rem 0;
     background-color: #fff8e1;
     color: #856404;
@@ -1826,7 +1850,7 @@ button:disabled {
     font-weight: 500;
     font-size: 0.9rem;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    animation: fadeInUp 0.4s ease-out; */
+    animation: fadeInUp 0.4s ease-out;
 }
 
 /* Çevrimiçi Oyun Göstergeleri */
