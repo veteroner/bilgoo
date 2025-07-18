@@ -633,6 +633,7 @@ const quizApp = {
     
     // State Variables
     currentQuestionIndex: 0,
+    answerProcessing: false, // Çoklu cevap işlemini önlemek için flag
     score: 0,
     totalScore: 0, // <-- EKLENDİ: Toplam birikmiş puan
     sessionScore: 0, // <-- EKLENDİ: Bu oturumdaki toplam puan
@@ -3148,6 +3149,11 @@ const quizApp = {
     
     // Sonraki soruyu göster
     showNextQuestion: function() {
+        // Eğer şu anda cevap işlemi devam ediyorsa bekle
+        if (this.answerProcessing) {
+            return;
+        }
+        
         // Mevcut modalları temizle - güvenlik önlemi
         const existingModals = document.querySelectorAll('.correct-modal, .wrong-modal, .timeout-modal');
         existingModals.forEach(modal => {
@@ -3155,6 +3161,9 @@ const quizApp = {
                 modal.remove();
             }
         });
+        
+        // Cevap işlemini sıfırla
+        this.answerProcessing = false;
         
         // Yeni soruya geçerken joker kullanımlarını sıfırla
         this.resetJokerUsage();
@@ -4169,8 +4178,14 @@ const quizApp = {
         console.log('🚀 Quiz başlıyor - Progressive Zorluk Sistemi aktif, bölüm:', this.currentSection);
         
         // Önce tüm ana bölümleri gizle, sadece quiz ekranını göster
-        if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'none';
-        if (this.quizElement) this.quizElement.style.display = 'block';
+        if (this.categorySelectionElement) {
+            this.categorySelectionElement.style.display = 'none';
+            console.log("✅ Kategori seçim ekranı gizlendi");
+        }
+        if (this.quizElement) {
+            this.quizElement.style.display = 'block';
+            console.log("✅ Quiz ekranı gösterildi");
+        }
         if (this.resultElement) this.resultElement.style.display = 'none';
         
         // Oyun arayüzüne kalan diğer elemanları da gizle
@@ -4255,6 +4270,9 @@ const quizApp = {
             return;
         }
         
+        // Yeni soru gösterilirken cevap işlemi flag'ini sıfırla
+        this.answerProcessing = false;
+        
         // Önceki ipucu mesajlarını temizle (sadece hint jokeri kullanılmamışsa)
         if (!this.jokersUsed.hint) {
             const existingHintMessages = document.querySelectorAll('.hint-message');
@@ -4271,6 +4289,7 @@ const quizApp = {
         
         // Eğer soru doğru/yanlış tipindeyse farklı göster
         if (questionData.type === "DoğruYanlış" || questionData.type === "TrueFalse") {
+            console.log("🎯 Doğru/Yanlış soru tespit edildi:", questionData.type);
             this.loadTrueFalseQuestion(questionData);
             return;
         }
@@ -4428,6 +4447,12 @@ const quizApp = {
         this.timeLeft = isBlankFilling ? this.TIME_PER_BLANK_FILLING_QUESTION : this.TIME_PER_QUESTION;
         this.updateTimeDisplay();
         this.timerInterval = setInterval(() => {
+            // Eğer cevap işlemi devam ediyorsa timer'ı durdur
+            if (this.answerProcessing) {
+                clearInterval(this.timerInterval);
+                return;
+            }
+            
             this.timeLeft--;
             this.updateTimeDisplay();
             if (this.timeLeft <= 0) {
@@ -4457,6 +4482,12 @@ const quizApp = {
         if (document.querySelector('.result').style.display === 'block') {
             return;
         }
+        
+        // Çoklu tıklamayı önlemek için kontrol
+        if (this.answerProcessing) {
+            return;
+        }
+        this.answerProcessing = true;
         
         // Sayacı durdur
         clearInterval(this.timerInterval);
@@ -4514,104 +4545,126 @@ const quizApp = {
             });
         }
         
-        // Sonucu göster
+        // Result elementini gizle
         const resultElement = document.getElementById('result');
-        if (!resultElement) {
-            console.warn('Result elementi bulunamadı, oluşturuluyor...');
-            this.createResultElement();
+        if (resultElement) {
+            resultElement.style.display = 'none';
+            resultElement.innerHTML = '';
+            resultElement.className = 'result';
         }
         
-        if (resultElement) {
-            if (isCorrect) {
-                // Tam ekran doğru modalı
-                const correctModal = document.createElement('div');
-                correctModal.className = 'correct-modal';
-                const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
-                correctModal.innerHTML = `
-                    <div class="correct-modal-content">
-                        <div class="correct-modal-icon">
-                            <i class="fas fa-crown"></i>
-                        </div>
-                        <div class="correct-modal-text">${this.getTranslation('correct')}</div>
-                        <div class="correct-modal-score">+${scoreForQuestion}</div>
-                        <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
+        // Modal oluştur ve göster
+        if (isCorrect) {
+            // Tam ekran doğru modalı
+            const correctModal = document.createElement('div');
+            correctModal.className = 'correct-modal';
+            const scoreForQuestion = Math.max(1, Math.ceil(this.timeLeft / 5));
+            correctModal.innerHTML = `
+                <div class="correct-modal-content">
+                    <div class="correct-modal-icon">
+                        <i class="fas fa-crown"></i>
                     </div>
-                `;
-                document.body.appendChild(correctModal);
-                correctModal.querySelector('#next-question').onclick = () => {
+                    <div class="correct-modal-text">${this.getTranslation('correct')}</div>
+                    <div class="correct-modal-score">+${scoreForQuestion}</div>
+                    <button id="modal-next-question" class="next-button">${this.getTranslation('next')}</button>
+                </div>
+            `;
+            document.body.appendChild(correctModal);
+            
+            // Event listener ekle - sadece bir kez çalışacak şekilde
+            const nextBtn = correctModal.querySelector('#modal-next-question');
+            nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (correctModal.parentNode) {
                     correctModal.remove();
-                    this.showNextQuestion();
-                };
-                correctModal.onclick = (e) => {
-                    if (e.target === correctModal) {
+                }
+                this.answerProcessing = false;
+                this.showNextQuestion();
+            }, { once: true });
+            
+            correctModal.addEventListener('click', (e) => {
+                if (e.target === correctModal) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (correctModal.parentNode) {
                         correctModal.remove();
-                        this.showNextQuestion();
                     }
-                };
-                this.resultElement.style.display = 'none';
-                this.resultElement.innerHTML = '';
-                this.resultElement.className = 'result';
-                // Puanı artır
-                this.addScore(scoreForQuestion);
-                this.correctAnswers++;
-                // Ses efekti çal
-                if (this.soundEnabled) {
-                    const correctSound = document.getElementById('sound-correct');
-                    if (correctSound) correctSound.play().catch(e => console.error("Ses çalınamadı:", e));
-                }
-            } else {
-                // Tam ekran yanlış modalı
-                this.loseLife();
-                const wrongModal = document.createElement('div');
-                wrongModal.className = 'wrong-modal';
-                wrongModal.innerHTML = `
-                    <div class="wrong-modal-content">
-                        <div class="wrong-modal-icon">
-                            <i class="fas fa-times-circle"></i>
-                        </div>
-                        <div class="wrong-modal-text">${this.getTranslation('wrong')}</div>
-                        <div class="wrong-modal-correct">${this.getTranslation('correctAnswer')}: <strong>${correctAnswer}</strong></div>
-                        <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
-                    </div>
-                `;
-                document.body.appendChild(wrongModal);
-                wrongModal.querySelector('#next-question').onclick = () => {
-                    wrongModal.remove();
+                    this.answerProcessing = false;
                     this.showNextQuestion();
-                };
-                wrongModal.onclick = (e) => {
-                    if (e.target === wrongModal) {
-                        wrongModal.remove();
-                        this.showNextQuestion();
-                    }
-                };
-                this.resultElement.style.display = 'none';
-                this.resultElement.innerHTML = '';
-                this.resultElement.className = 'result';
-                // Ses efekti çal
-                if (this.soundEnabled) {
-                    const wrongSound = document.getElementById('sound-wrong');
-                    if (wrongSound) wrongSound.play().catch(e => console.error("Ses çalınamadı:", e));
                 }
+            }, { once: true });
+            
+            // Puanı artır
+            this.addScore(scoreForQuestion);
+            this.correctAnswers++;
+            // Ses efekti çal
+            if (this.soundEnabled) {
+                const correctSound = document.getElementById('sound-correct');
+                if (correctSound) correctSound.play().catch(e => console.error("Ses çalınamadı:", e));
+            }
+        } else {
+            // Tam ekran yanlış modalı
+            this.loseLife();
+            const wrongModal = document.createElement('div');
+            wrongModal.className = 'wrong-modal';
+            wrongModal.innerHTML = `
+                <div class="wrong-modal-content">
+                    <div class="wrong-modal-icon">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div class="wrong-modal-text">${this.getTranslation('wrong')}</div>
+                    <div class="wrong-modal-correct">${this.getTranslation('correctAnswer')}: <strong>${correctAnswer}</strong></div>
+                    <button id="modal-next-question" class="next-button">${this.getTranslation('next')}</button>
+                </div>
+            `;
+            document.body.appendChild(wrongModal);
+            
+            // Event listener ekle - sadece bir kez çalışacak şekilde
+            const nextBtn = wrongModal.querySelector('#modal-next-question');
+            nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (wrongModal.parentNode) {
+                    wrongModal.remove();
+                }
+                this.answerProcessing = false;
+                this.showNextQuestion();
+            }, { once: true });
+            
+            wrongModal.addEventListener('click', (e) => {
+                if (e.target === wrongModal) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (wrongModal.parentNode) {
+                        wrongModal.remove();
+                    }
+                    this.answerProcessing = false;
+                    this.showNextQuestion();
+                }
+            }, { once: true });
+            
+            // Ses efekti çal
+            if (this.soundEnabled) {
+                const wrongSound = document.getElementById('sound-wrong');
+                if (wrongSound) wrongSound.play().catch(e => console.error("Ses çalınamadı:", e));
             }
         }
         
-        // Sonuc elementini görünür yap
-        resultElement.style.display = 'block';
-        
-        // Sonraki soru butonuna olay dinleyicisi ekle
-        const nextBtn = resultElement.querySelector('#next-question');
-        if (nextBtn) {
-            nextBtn.id = 'next-question';
-            nextBtn.className = 'next-button';
-            nextBtn.textContent = this.getTranslation('next');
-            nextBtn.addEventListener('click', () => this.showNextQuestion());
-            resultElement.appendChild(nextBtn);
-        }
+        // İstatistiği güncelle
+        this.answeredQuestions++;
+        this.answerTimes.push(this.TIME_PER_QUESTION - this.timeLeft);
+        this.updateScoreDisplay();
     },
     
     // Boşluk doldurma cevabını kontrol et
     checkBlankFillingAnswer: function(userAnswer, correctAnswer) {
+        // Çoklu tıklamayı önlemek için kontrol
+        if (this.answerProcessing) {
+            return;
+        }
+        this.answerProcessing = true;
+        
         clearInterval(this.timerInterval);
         const isCorrect = userAnswer.toLowerCase() === correctAnswer.toLowerCase();
         this.recordAnswer(isCorrect);
@@ -4632,17 +4685,35 @@ const quizApp = {
                     <div class="correct-modal-icon"><i class="fas fa-crown"></i></div>
                     <div class="correct-modal-text">${this.getTranslation('correct')}</div>
                     <div class="correct-modal-score">+${scoreForQuestion}</div>
-                    <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
+                    <button id="blank-modal-next-question" class="next-button">${this.getTranslation('next')}</button>
                 </div>
             `;
             document.body.appendChild(correctModal);
-            correctModal.querySelector('#next-question').onclick = () => {
-                correctModal.remove();
+            
+            // Event listener ekle - sadece bir kez çalışacak şekilde
+            const nextBtn = correctModal.querySelector('#blank-modal-next-question');
+            nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (correctModal.parentNode) {
+                    correctModal.remove();
+                }
+                this.answerProcessing = false;
                 this.showNextQuestion();
-            };
-            correctModal.onclick = (e) => {
-                if (e.target === correctModal) correctModal.remove();
-            };
+            }, { once: true });
+            
+            correctModal.addEventListener('click', (e) => {
+                if (e.target === correctModal) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (correctModal.parentNode) {
+                        correctModal.remove();
+                    }
+                    this.answerProcessing = false;
+                    this.showNextQuestion();
+                }
+            }, { once: true });
+            
             // Puanı artır
             this.addScore(scoreForQuestion);
             this.correctAnswers++;
@@ -4660,17 +4731,35 @@ const quizApp = {
                     <div class="wrong-modal-icon"><i class="fas fa-times-circle"></i></div>
                     <div class="wrong-modal-text">${this.getTranslation('wrong')}</div>
                     <div class="wrong-modal-correct">${this.getTranslation('correctAnswer')}: <strong>${correctAnswer}</strong></div>
-                    <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
+                    <button id="blank-modal-next-question" class="next-button">${this.getTranslation('next')}</button>
                 </div>
             `;
             document.body.appendChild(wrongModal);
-            wrongModal.querySelector('#next-question').onclick = () => {
-                wrongModal.remove();
+            
+            // Event listener ekle - sadece bir kez çalışacak şekilde
+            const nextBtn = wrongModal.querySelector('#blank-modal-next-question');
+            nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (wrongModal.parentNode) {
+                    wrongModal.remove();
+                }
+                this.answerProcessing = false;
                 this.showNextQuestion();
-            };
-            wrongModal.onclick = (e) => {
-                if (e.target === wrongModal) wrongModal.remove();
-            };
+            }, { once: true });
+            
+            wrongModal.addEventListener('click', (e) => {
+                if (e.target === wrongModal) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (wrongModal.parentNode) {
+                        wrongModal.remove();
+                    }
+                    this.answerProcessing = false;
+                    this.showNextQuestion();
+                }
+            }, { once: true });
+            
             if (this.soundEnabled) {
                 const wrongSound = document.getElementById('sound-wrong');
                 if (wrongSound) wrongSound.play().catch(e => {});
@@ -4869,6 +4958,11 @@ const quizApp = {
     
     // Doğru/Yanlış tipi soruları göster
     loadTrueFalseQuestion: function(questionData) {
+        console.log("📋 loadTrueFalseQuestion çağrıldı:", questionData);
+        
+        // Yeni soru gösterilirken cevap işlemi flag'ini sıfırla
+        this.answerProcessing = false;
+        
         // Sonuç alanını temizle
         if (this.resultElement) {
             this.resultElement.innerHTML = '';
@@ -4910,6 +5004,7 @@ const quizApp = {
         
         // Doğru/Yanlış seçeneklerini göster
         if (this.optionsElement) {
+            console.log("🎮 Options element bulundu, UI oluşturuluyor...");
             this.optionsElement.innerHTML = '';
             this.optionsElement.style.display = 'flex';
             this.optionsElement.style.flexDirection = 'column';
@@ -4917,47 +5012,95 @@ const quizApp = {
             this.optionsElement.style.justifyContent = 'center';
             this.optionsElement.style.width = '100%';
             
-            // Seçenekler
-            const trueOption = document.createElement('button');
-            trueOption.className = 'true-false-option true';
-            trueOption.innerHTML = `<i class="fas fa-check"></i> ${this.getTranslation('trueOption')}`;
+            // Resim varlığını kontrol et
+            const hasImage = questionData.imageUrl && questionData.imageUrl.trim() !== '';
             
-            const falseOption = document.createElement('button');
-            falseOption.className = 'true-false-option false';
-            falseOption.innerHTML = `<i class="fas fa-times"></i> ${this.getTranslation('falseOption')}`;
+            // Mobil cihaz kontrolü
+            const isMobile = window.innerWidth <= 768;
             
-            // Tıklama olayları
-            trueOption.addEventListener('click', (e) => {
-                // Zaten cevaplandıysa işlem yapma
-                if (e.target.disabled || e.target.classList.contains('selected') || 
-                    document.querySelector('.true-false-option.selected') || 
-                    document.querySelector('.result').style.display === 'block') {
-                    return;
+            if (isMobile) {
+                // MOBİL: Kaydırma çubuğu
+                const swipeContainer = document.createElement('div');
+                swipeContainer.className = 'swipe-container mobile-swipe';
+                swipeContainer.innerHTML = `
+                    <div class="swipe-area">
+                        <div class="swipe-hint">
+                            <div class="swipe-text">${this.getTranslation('swipeHint') || 'Sola kaydır: Yanlış • Sağa kaydır: Doğru'}</div>
+                            <div class="swipe-icons">
+                                <span class="swipe-left"><i class="fas fa-arrow-left"></i> <i class="fas fa-times"></i></span>
+                                <span class="swipe-right"><i class="fas fa-check"></i> <i class="fas fa-arrow-right"></i></span>
+                            </div>
+                        </div>
+                        <div class="horizontal-swipe-bar">
+                            <div class="swipe-track">
+                                <div class="swipe-handle">
+                                    <i class="fas fa-grip-horizontal"></i>
+                                </div>
+                                <div class="swipe-feedback swipe-feedback-left">
+                                    <i class="fas fa-times"></i>
+                                    <span>YANLIŞ</span>
+                                </div>
+                                <div class="swipe-feedback swipe-feedback-right">
+                                    <i class="fas fa-check"></i>
+                                    <span>DOĞRU</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Pozisyon ayarlama
+                if (hasImage) {
+                    swipeContainer.style.marginTop = '15px';
+                } else {
+                    swipeContainer.style.marginTop = '80px';
                 }
                 
-                // Tıklanan şıkı işaretle
-                e.target.classList.add('selected');
+                // Kaydırma olaylarını ekle
+                this.setupSwipeEvents(swipeContainer);
+                this.optionsElement.appendChild(swipeContainer);
                 
-                this.checkAnswer(this.getTranslation('trueOption'));
-            });
-            
-            falseOption.addEventListener('click', (e) => {
-                // Zaten cevaplandıysa işlem yapma
-                if (e.target.disabled || e.target.classList.contains('selected') || 
-                    document.querySelector('.true-false-option.selected') || 
-                    document.querySelector('.result').style.display === 'block') {
-                    return;
+            } else {
+                // WEB: Butonlar
+                const buttonContainer = document.createElement('div');
+                buttonContainer.className = 'true-false-buttons-container';
+                
+                // Pozisyon ayarlama
+                if (hasImage) {
+                    buttonContainer.style.marginTop = '20px';
+                } else {
+                    buttonContainer.style.marginTop = '100px';
                 }
                 
-                // Tıklanan şıkı işaretle
-                e.target.classList.add('selected');
+                const falseButton = document.createElement('button');
+                falseButton.className = 'true-false-btn false-btn';
+                falseButton.innerHTML = `<i class="fas fa-times"></i> ${this.getTranslation('falseOption')}`;
                 
-                this.checkAnswer(this.getTranslation('falseOption'));
-            });
-            
-            // Seçenekleri ekle
-            this.optionsElement.appendChild(trueOption);
-            this.optionsElement.appendChild(falseOption);
+                const trueButton = document.createElement('button');
+                trueButton.className = 'true-false-btn true-btn';
+                trueButton.innerHTML = `<i class="fas fa-check"></i> ${this.getTranslation('trueOption')}`;
+                
+                // Event listeners
+                falseButton.addEventListener('click', () => {
+                    if (!falseButton.disabled) {
+                        falseButton.disabled = true;
+                        trueButton.disabled = true;
+                        this.checkAnswer(this.getTranslation('falseOption'));
+                    }
+                });
+                
+                trueButton.addEventListener('click', () => {
+                    if (!trueButton.disabled) {
+                        falseButton.disabled = true;
+                        trueButton.disabled = true;
+                        this.checkAnswer(this.getTranslation('trueOption'));
+                    }
+                });
+                
+                buttonContainer.appendChild(falseButton);
+                buttonContainer.appendChild(trueButton);
+                this.optionsElement.appendChild(buttonContainer);
+            }
         }
         
         // Sayacı başlat
@@ -5043,6 +5186,167 @@ const quizApp = {
         this.answerTimes.push(this.TIME_PER_QUESTION - this.timeLeft);
         
         // Can kontrolü kaldırıldı - loseLife fonksiyonu kendi başına can satın alma modalını handle ediyor
+    },
+
+    // Kaydırma olaylarını ayarla
+    setupSwipeEvents: function(container) {
+        console.log("🎯 setupSwipeEvents çağrıldı, container:", container);
+        const swipeHandle = container.querySelector('.swipe-handle');
+        const swipeTrack = container.querySelector('.swipe-track');
+        const feedbackLeft = container.querySelector('.swipe-feedback-left');
+        const feedbackRight = container.querySelector('.swipe-feedback-right');
+        
+        if (!swipeHandle || !swipeTrack) {
+            console.error("❌ Swipe handle veya track bulunamadı!");
+            return;
+        }
+        
+        let isDragging = false;
+        let hasAnswered = false;
+        let startX = 0;
+        
+        // Başlangıçta handle'ı ortaya koy
+        setTimeout(() => {
+            const trackWidth = swipeTrack.offsetWidth;
+            const handleWidth = swipeHandle.offsetWidth;
+            const centerPosition = (trackWidth - handleWidth) / 2;
+            swipeHandle.style.left = centerPosition + 'px';
+        }, 100);
+        
+        function startDrag(clientX) {
+            if (hasAnswered) return;
+            isDragging = true;
+            startX = clientX - swipeHandle.offsetLeft;
+            swipeHandle.style.transition = 'none';
+            document.body.style.userSelect = 'none';
+        }
+        
+        function updateDrag(clientX) {
+            if (!isDragging || hasAnswered) return;
+            
+            const trackWidth = swipeTrack.offsetWidth;
+            const handleWidth = swipeHandle.offsetWidth;
+            const maxLeft = trackWidth - handleWidth;
+            
+            let newLeft = clientX - startX;
+            newLeft = Math.max(0, Math.min(maxLeft, newLeft));
+            
+            swipeHandle.style.left = newLeft + 'px';
+            
+            // Progress hesapla (0 = sol, 1 = sağ)
+            const progress = newLeft / maxLeft;
+            
+            // Feedback göster ve renklendirme yap
+            if (progress < 0.3) {
+                feedbackLeft.style.opacity = '1';
+                feedbackRight.style.opacity = '0';
+                swipeTrack.classList.add('swiping-left');
+                swipeTrack.classList.remove('swiping-right');
+            } else if (progress > 0.7) {
+                feedbackLeft.style.opacity = '0';
+                feedbackRight.style.opacity = '1';
+                swipeTrack.classList.add('swiping-right');
+                swipeTrack.classList.remove('swiping-left');
+            } else {
+                feedbackLeft.style.opacity = '0';
+                feedbackRight.style.opacity = '0';
+                swipeTrack.classList.remove('swiping-left', 'swiping-right');
+            }
+        }
+        
+        function endDrag() {
+            if (!isDragging || hasAnswered) return;
+            isDragging = false;
+            document.body.style.userSelect = '';
+            swipeHandle.style.transition = 'left 0.3s ease';
+            
+            const trackWidth = swipeTrack.offsetWidth;
+            const handleWidth = swipeHandle.offsetWidth;
+            const maxLeft = trackWidth - handleWidth;
+            const currentLeft = parseInt(swipeHandle.style.left) || 0;
+            const progress = currentLeft / maxLeft;
+            
+            if (progress < 0.2) {
+                // Sol tarafa kaydırıldı - Yanlış
+                console.log("❌ Yanlış seçildi");
+                hasAnswered = true;
+                swipeHandle.style.left = '0px';
+                this.handleSwipeAnswer(false, swipeHandle, container);
+            } else if (progress > 0.8) {
+                // Sağ tarafa kaydırıldı - Doğru
+                console.log("✅ Doğru seçildi");
+                hasAnswered = true;
+                swipeHandle.style.left = maxLeft + 'px';
+                this.handleSwipeAnswer(true, swipeHandle, container);
+            } else {
+                // Ortaya geri döndür
+                const centerPosition = (trackWidth - handleWidth) / 2;
+                swipeHandle.style.left = centerPosition + 'px';
+                feedbackLeft.style.opacity = '0';
+                feedbackRight.style.opacity = '0';
+                swipeTrack.classList.remove('swiping-left', 'swiping-right');
+            }
+        }
+        
+        // Touch events
+        swipeHandle.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startDrag(e.touches[0].clientX);
+        });
+        
+        document.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                e.preventDefault();
+                updateDrag(e.touches[0].clientX);
+            }
+        });
+        
+        document.addEventListener('touchend', () => {
+            endDrag.call(this);
+        });
+        
+        // Mouse events
+        swipeHandle.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            startDrag(e.clientX);
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                e.preventDefault();
+                updateDrag(e.clientX);
+            }
+        });
+        
+        document.addEventListener('mouseup', () => {
+            endDrag.call(this);
+        });
+    },
+    
+    // Kaydırma cevabını işle
+    handleSwipeAnswer: function(isTrue, card, container) {
+        console.log("🎯 handleSwipeAnswer çağrıldı, isTrue:", isTrue);
+        const answer = isTrue ? this.getTranslation('trueOption') : this.getTranslation('falseOption');
+        console.log("Seçilen cevap:", answer);
+        
+        // Kartı animasyonla kaybet
+        if (isTrue) {
+            card.style.transform = 'translateX(300px) rotate(20deg)';
+            card.classList.add('swiped-right');
+        } else {
+            card.style.transform = 'translateX(-300px) rotate(-20deg)';
+            card.classList.add('swiped-left');
+        }
+        
+        card.style.opacity = '0';
+        
+        // Konteyneri gizle
+        setTimeout(() => {
+            container.style.display = 'none';
+        }, 300);
+        
+        // Cevabı kontrol et
+        this.checkAnswer(answer);
     },
     
     // Profil sayfasını göster
@@ -7125,6 +7429,14 @@ const quizApp = {
     
     // Süre dolduğunda yapılacaklar
     handleTimeUp: function() {
+        // Eğer zaten cevap işlemi devam ediyorsa veya süre zaten durdurulmuşsa çıkış yap
+        if (this.answerProcessing || this.timeLeft > 0) {
+            return;
+        }
+        
+        // Çoklu çağrıyı önlemek için flag set et
+        this.answerProcessing = true;
+        
         this.stopTimer();
         this.timeLeftElement.textContent = "Süre Bitti!";
         const optionButtons = this.optionsElement.querySelectorAll('.option');
@@ -7144,6 +7456,7 @@ const quizApp = {
             this.skipJokerActive = false;
             // Pas jokeri kullanıldıysa can eksilmesin, modal çıkmasın, direkt sonraki soruya geç
             setTimeout(() => {
+                this.answerProcessing = false;
                 this.showNextQuestion();
             }, 800);
             return;
@@ -7160,20 +7473,35 @@ const quizApp = {
                     </div>
                     <div class="timeout-modal-text">Süre Doldu!</div>
                     <div class="timeout-modal-correct">Doğru cevap: <strong>${currentQuestion.correctAnswer}</strong></div>
-                    <button id="next-question" class="next-button">${this.getTranslation('next')}</button>
+                    <button id="timeout-modal-next-question" class="next-button">${this.getTranslation('next')}</button>
                 </div>
             `;
             document.body.appendChild(timeoutModal);
-            timeoutModal.querySelector('#next-question').onclick = () => {
-                timeoutModal.remove();
-                this.showNextQuestion();
-            };
-            timeoutModal.onclick = (e) => {
-                if (e.target === timeoutModal) {
+            
+            // Event listener ekle - sadece bir kez çalışacak şekilde
+            const nextBtn = timeoutModal.querySelector('#timeout-modal-next-question');
+            nextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (timeoutModal.parentNode) {
                     timeoutModal.remove();
+                }
+                this.answerProcessing = false;
+                this.showNextQuestion();
+            }, { once: true });
+            
+            timeoutModal.addEventListener('click', (e) => {
+                if (e.target === timeoutModal) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (timeoutModal.parentNode) {
+                        timeoutModal.remove();
+                    }
+                    this.answerProcessing = false;
                     this.showNextQuestion();
                 }
-            };
+            }, { once: true });
+            
             if (this.resultElement) {
                 this.resultElement.style.display = 'none';
                 this.resultElement.innerHTML = '';
@@ -7186,14 +7514,6 @@ const quizApp = {
             if (typeof onlineGame !== 'undefined' && onlineGame && onlineGame.gameStarted) {
                 onlineGame.submitAnswer(false);
             }
-        }
-        
-        if (this.nextButton) {
-            this.nextButton.style.display = 'block';
-        } else {
-            setTimeout(() => {
-                this.showNextQuestion();
-            }, 2000);
         }
     },
     
@@ -8099,6 +8419,9 @@ const quizApp = {
     // Boşluk doldurma sorusunu yükle
     loadBlankFillingQuestion: function(question) {
         console.log("Boşluk doldurma sorusu yükleniyor:", question);
+        
+        // Yeni soru gösterilirken cevap işlemi flag'ini sıfırla
+        this.answerProcessing = false;
         
         // Önceki sorunun kalıntılarını temizle
         this.cleanupPreviousQuestion();

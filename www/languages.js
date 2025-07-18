@@ -248,6 +248,8 @@ const languages = {
         questionImage: 'Soru görseli',
         trueOption: 'DOĞRU',
         falseOption: 'YANLIŞ',
+        swipeHint: 'Sola kaydır: Yanlış • Sağa kaydır: Doğru',
+        categorySelectionError: 'Kategori seçiminde hata oluştu',
         
         // Sonuç mesajları
         pointsEarned: 'kazanılan puan',
@@ -826,6 +828,8 @@ const languages = {
         questionImage: 'Question image',
         trueOption: 'TRUE',
         falseOption: 'FALSE',
+        swipeHint: 'Swipe left: False • Swipe right: True',
+        categorySelectionError: 'Category selection error occurred',
         
         // Result messages
         pointsEarned: 'points earned',
@@ -1305,6 +1309,8 @@ const languages = {
         questionImage: 'Fragebild',
         trueOption: 'WAHR',
         falseOption: 'FALSCH',
+        swipeHint: 'Nach links wischen: Falsch • Nach rechts wischen: Wahr',
+        categorySelectionError: 'Fehler bei der Kategorieauswahl',
         
         // Sonuç mesajları
         pointsEarned: 'Punkte verdient',
