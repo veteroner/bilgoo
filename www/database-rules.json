@@ -1,0 +1,242 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "users": {
+      ".read": "auth !== null",
+      ".write": "auth !== null",
+      "$userId": {
+        ".read": "auth !== null",
+        ".write": "auth !== null",
+        "stats": {
+          ".read": "auth !== null",
+          ".write": "$userId === auth.uid"
+        },
+        "badges": {
+          ".read": "auth !== null", 
+          ".write": "$userId === auth.uid"
+        },
+        "profile": {
+          ".read": "$userId === auth.uid",
+          ".write": "$userId === auth.uid",
+          ".validate": "newData.hasChildren(['username', 'email'])"
+        }
+      }
+    },
+    "questions": {
+      ".read": "auth !== null || auth.token.email === 'wet_oner@hotmail.com'",
+      ".write": "auth !== null && auth.token.email === 'wet_oner@hotmail.com'",
+      "$questionId": {
+        ".read": "auth !== null || auth.token.email === 'wet_oner@hotmail.com'",
+        ".write": "auth !== null && auth.token.email === 'wet_oner@hotmail.com'"
+      }
+    },
+    "pending_questions": {
+      ".read": "auth !== null",
+      ".write": "auth !== null",
+      "$questionId": {
+        ".read": "auth !== null",
+        ".write": "auth !== null"
+      }
+    },
+    "notifications": {
+      ".read": "auth !== null",
+      ".write": "auth !== null",
+      "$notificationId": {
+        ".read": "auth !== null",
+        ".write": "auth !== null"
+      }
+    },
+    "userNotifications": {
+      "$userId": {
+        ".read": "auth !== null && (auth.uid === $userId || auth.token.email === 'wet_oner@hotmail.com')",
+        ".write": "auth !== null && (auth.uid === $userId || auth.token.email === 'wet_oner@hotmail.com')"
+      }
+    },
+    "gameStats": {
+      ".read": "auth !== null",
+      ".write": "auth !== null",
+      "$gameId": {
+        ".read": "auth !== null",
+        ".write": "auth !== null && (!data.exists() || data.child('userId').val() === auth.uid)"
+      }
+    },
+    "highScores": {
+      ".read": true,
+      ".write": "auth !== null",
+      "$scoreId": {
+        ".read": true,
+        ".write": "auth !== null && (!data.exists() || data.child('userId').val() === auth.uid)"
+      }
+    },
+    "userStats": {
+      "$userId": {
+        ".read": "auth !== null",
+        ".write": "$userId === auth.uid"
+      }
+    },
+    "userBadges": {
+      "$userId": {
+        ".read": "auth !== null",
+        ".write": "$userId === auth.uid"
+      }
+    },
+    "badges": {
+      ".read": "auth !== null",
+      ".write": "auth !== null && (auth.token.email === 'wet_oner@hotmail.com' || root.child('users').child(auth.uid).child('isAdmin').val() === true)"
+    },
+    "scores": {
+      ".read": "auth !== null",
+      "$userId": {
+        ".write": "$userId === auth.uid"
+      }
+    },
+    "rooms": {
+      ".read": true,
+      ".write": "auth !== null",
+      ".indexOn": ["createdAt", "status", "lastActivity"],
+      "$roomId": {
+        ".read": true,
+        ".write": "auth !== null && (data.child('hostId').val() === auth.uid || !data.exists())",
+        "players": {
+          "$playerId": {
+            ".read": true,
+            ".write": "$playerId === auth.uid || data.parent().parent().child('hostId').val() === auth.uid"
+          }
+        },
+        "gameState": {
+          ".read": true,
+          ".write": "data.parent().child('players').hasChild(auth.uid) || data.parent().child('hostId').val() === auth.uid"
+        },
+        "messages": {
+          ".read": "auth !== null",
+          ".write": "auth !== null",
+          "$messageId": {
+            ".validate": "newData.hasChildren(['userId', 'message', 'timestamp'])"
+          }
+        }
+      }
+    },
+    "invites": {
+      ".read": "auth !== null",
+      ".write": "auth !== null",
+      "$userId": {
+        ".read": "auth !== null && (auth.uid === $userId || auth.uid === data.child('from').val())",
+        ".write": "auth !== null && (auth.uid === $userId || auth.uid === data.child('from').val())"
+      }
+    },
+    "game-invites": {
+      ".read": "auth !== null", 
+      ".write": "auth !== null",
+      "$inviteId": {
+        ".validate": "newData.hasChildren(['from', 'to', 'roomId', 'timestamp'])"
+      }
+    },
+    "friendRequests": {
+      "$userId": {
+        ".read": "$userId === auth.uid",
+        ".write": "auth !== null",
+        "$requestId": {
+          ".validate": "newData.hasChildren(['from', 'status', 'timestamp'])"
+        }
+      }
+    },
+    "friends": {
+      "$userId": {
+        ".read": "$userId === auth.uid",
+        ".write": "$userId === auth.uid",
+        "$friendId": {
+          ".validate": "root.child('users').hasChild($friendId)"
+        }
+      }
+    },
+    "presence": {
+      ".read": true,
+      "$userId": {
+        ".write": "$userId === auth.uid"
+      }
+    },
+    "leaderboards": {
+      ".read": "auth !== null",
+      "$leaderboardId": {
+        ".write": "auth !== null && (auth.token.email === 'wet_oner@hotmail.com' || root.child('users').child(auth.uid).child('isAdmin').val() === true)",
+        "scores": {
+          "$userId": {
+            ".write": "$userId === auth.uid"
+          }
+        }
+      }
+    },
+    "leaderboard": {
+      ".read": true,
+      ".write": "auth !== null",
+      "$entryId": {
+        ".validate": "newData.hasChildren(['username', 'score', 'category', 'timestamp'])"
+      }
+    },
+    "categoryLeaderboard": {
+      "$category": {
+        ".read": true,
+        ".write": "auth !== null",
+        "$entryId": {
+          ".validate": "newData.hasChildren(['username', 'score', 'category', 'timestamp'])"
+        }
+      }
+    },
+    "chat": {
+      ".read": "auth !== null",
+      ".write": "auth !== null",
+      "$roomId": {
+        ".read": "auth !== null",
+        ".write": "auth !== null",
+        "$messageId": {
+          ".validate": "newData.hasChildren(['userId', 'message', 'timestamp'])"
+        }
+      }
+    },
+    "daily-tasks": {
+      "$userId": {
+        ".read": "auth !== null && auth.uid === $userId",
+        ".write": "auth !== null && auth.uid === $userId"
+      }
+    },
+    "dailyTasks": {
+      "$userId": {
+        ".read": "auth !== null && auth.uid === $userId", 
+        ".write": "auth !== null && auth.uid === $userId"
+      }
+    },
+    "admin": {
+      ".read": "auth !== null && auth.token.email === 'wet_oner@hotmail.com'",
+      ".write": "auth !== null && auth.token.email === 'wet_oner@hotmail.com'"
+    },
+    "admins": {
+      ".read": "auth !== null",
+      ".write": "auth !== null && auth.token.email === 'wet_oner@hotmail.com'"
+    },
+    "admin_sessions": {
+      ".read": "auth !== null",
+      ".write": "auth !== null",
+      "$sessionId": {
+        ".read": "auth !== null",
+        ".write": "auth !== null"
+      }
+    },
+    "settings": {
+      ".read": true,
+      ".write": "auth !== null && auth.token.email === 'wet_oner@hotmail.com'"
+    },
+    "app-settings": {
+      ".read": true,
+      ".write": "auth !== null && auth.token.email === 'wet_oner@hotmail.com'"
+    },
+    "reports": {
+      ".read": "auth !== null && auth.token.email === 'wet_oner@hotmail.com'",
+      ".write": "auth !== null"
+    },
+    "feedback": {
+      ".read": "auth !== null && auth.token.email === 'wet_oner@hotmail.com'",
+      ".write": "auth !== null"
+    }
+  }
+} 
