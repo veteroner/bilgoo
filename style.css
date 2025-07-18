@@ -4612,6 +4612,414 @@ input:checked + .switch-label:before {
 
 /* ... existing code ... */
 
+/* Yatay Kaydırma Barı Stilleri */
+.horizontal-swipe-bar {
+    width: 100%;
+    max-width: 350px;
+    margin: 0px auto 10px auto;
+    padding: 5px;
+}
+
+.swipe-track {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(90deg, #f8f9fa 0%, #e9ecef 50%, #f8f9fa 100%);
+    border: 2px solid #6c757d;
+    border-radius: 25px;
+    box-shadow: 
+        inset 0 2px 4px rgba(0,0,0,0.1),
+        0 2px 8px rgba(0,0,0,0.05);
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+/* Renklendirme sınıfları */
+.swipe-track.swiping-left {
+    background: linear-gradient(90deg, #ff6b6b 0%, #ff8e8e 50%, #f8f9fa 100%);
+    border-color: #dc3545;
+    box-shadow: 
+        inset 0 2px 4px rgba(220,53,69,0.2),
+        0 0 10px rgba(220,53,69,0.3);
+}
+
+.swipe-track.swiping-right {
+    background: linear-gradient(90deg, #f8f9fa 0%, #51cf66 50%, #51cf66 100%);
+    border-color: #28a745;
+    box-shadow: 
+        inset 0 2px 4px rgba(40,167,69,0.2),
+        0 0 10px rgba(40,167,69,0.3);
+}
+
+.swipe-handle {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(145deg, #ffffff 0%, #f1f3f4 100%);
+    border: 2px solid #495057;
+    border-radius: 50%;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #495057;
+    font-size: 16px;
+    box-shadow: 
+        0 4px 12px rgba(0,0,0,0.15),
+        inset 0 1px 3px rgba(255,255,255,0.9);
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.swipe-handle:hover {
+    transform: translateY(-50%) scale(1.1);
+    border-color: #343a40;
+    box-shadow: 
+        0 8px 25px rgba(0,0,0,0.2),
+        inset 0 2px 4px rgba(255,255,255,0.9);
+    background: linear-gradient(145deg, #ffffff 0%, #e9ecef 100%);
+}
+
+.swipe-handle:active {
+    cursor: grabbing;
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 
+        0 4px 15px rgba(0,0,0,0.25),
+        inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.horizontal-swipe-bar .swipe-feedback {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 5;
+    padding: 8px 12px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.horizontal-swipe-bar .swipe-feedback-left {
+    left: 20px;
+    color: #ffffff;
+    background: rgba(220, 53, 69, 0.9);
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+}
+
+.horizontal-swipe-bar .swipe-feedback-right {
+    right: 20px;
+    color: #ffffff;
+    background: rgba(40, 167, 69, 0.9);
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.horizontal-swipe-bar .swipe-feedback i {
+    font-size: 18px;
+}
+
+/* Responsive tasarım */
+@media (max-width: 480px) {
+    .horizontal-swipe-bar {
+        max-width: 95%;
+        padding: 5px;
+        margin: 0px auto 5px auto;
+    }
+    
+    .swipe-track {
+        height: 45px;
+        border-width: 2px;
+    }
+    
+    .swipe-handle {
+        width: 38px;
+        height: 38px;
+        font-size: 14px;
+        border-width: 2px;
+    }
+    
+    .horizontal-swipe-bar .swipe-feedback {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+    
+    .horizontal-swipe-bar .swipe-feedback i {
+        font-size: 14px;
+    }
+}
+
+/* Kaydırmalı cevap sistemi stilleri */
+.swipe-container {
+    width: 100%;
+    max-width: 350px;
+    margin: 5px auto;
+    padding: 10px;
+}
+
+.swipe-area {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.swipe-hint {
+    margin-bottom: 5px;
+    text-align: center;
+    color: var(--text-color, #666);
+}
+
+.swipe-text {
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.swipe-icons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.swipe-left, .swipe-right {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.swipe-left {
+    color: #dc3545;
+}
+
+.swipe-right {
+    color: #28a745;
+}
+
+.swipe-card {
+    position: relative;
+    width: 250px;
+    height: 150px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid transparent;
+    overflow: hidden;
+}
+
+[data-theme="dark"] .swipe-card {
+    background: linear-gradient(145deg, #333, #2a2a2a);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.swipe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.swipe-card:active {
+    cursor: grabbing;
+}
+
+.card-content {
+    text-align: center;
+    z-index: 2;
+    transition: opacity 0.3s ease;
+}
+
+.card-icon {
+    font-size: 40px;
+    color: var(--primary-color, #7b4397);
+    margin-bottom: 10px;
+}
+
+.card-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color, #333);
+}
+
+[data-theme="dark"] .card-text {
+    color: #f5f5f5;
+}
+
+.swipe-feedback {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.swipe-feedback-left {
+    color: #dc3545;
+}
+
+.swipe-feedback-right {
+    color: #28a745;
+}
+
+.swipe-feedback i {
+    font-size: 40px;
+}
+
+.swipe-feedback span {
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.swipe-card.swiping-left {
+    border-color: #dc3545;
+    box-shadow: 0 10px 30px rgba(220, 53, 69, 0.3);
+}
+
+.swipe-card.swiping-right {
+    border-color: #28a745;
+    box-shadow: 0 10px 30px rgba(40, 167, 69, 0.3);
+}
+
+.swipe-card.swiping-left .card-content,
+.swipe-card.swiping-right .card-content {
+    opacity: 0.3;
+}
+
+.swipe-card.swiped-left,
+.swipe-card.swiped-right {
+    pointer-events: none;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 300px;
+    margin: 20px auto;
+}
+
+.toggle-mode-btn {
+    background: linear-gradient(145deg, #6c757d, #5a6268);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.toggle-mode-btn:hover {
+    background: linear-gradient(145deg, #5a6268, #495057);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-mode-btn:active {
+    transform: translateY(0);
+}
+
+[data-theme="dark"] .toggle-mode-btn {
+    background: linear-gradient(145deg, #495057, #343a40);
+}
+
+[data-theme="dark"] .toggle-mode-btn:hover {
+    background: linear-gradient(145deg, #343a40, #23272b);
+}
+
+/* Mobil uyumluluk */
+@media (max-width: 768px) {
+    .swipe-container {
+        max-width: 320px;
+        padding: 15px;
+    }
+    
+    .swipe-card {
+        width: 220px;
+        height: 130px;
+    }
+    
+    .card-icon {
+        font-size: 35px;
+    }
+    
+    .card-text {
+        font-size: 14px;
+    }
+    
+    .swipe-text {
+        font-size: 13px;
+    }
+    
+    .swipe-feedback {
+        font-size: 20px;
+    }
+    
+    .swipe-feedback i {
+        font-size: 35px;
+    }
+    
+    .swipe-feedback span {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .swipe-container {
+        max-width: 280px;
+        margin: 3px auto;
+        padding: 5px;
+    }
+    
+    .swipe-card {
+        width: 200px;
+        height: 120px;
+    }
+    
+    .swipe-hint {
+        margin-bottom: 5px;
+    }
+    
+    .swipe-icons {
+        gap: 15px;
+    }
+}
+
 /* Toast Bildirimleri */
 #toast-container {
     position: fixed;

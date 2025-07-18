@@ -4169,8 +4169,14 @@ const quizApp = {
         console.log('🚀 Quiz başlıyor - Progressive Zorluk Sistemi aktif, bölüm:', this.currentSection);
         
         // Önce tüm ana bölümleri gizle, sadece quiz ekranını göster
-        if (this.categorySelectionElement) this.categorySelectionElement.style.display = 'none';
-        if (this.quizElement) this.quizElement.style.display = 'block';
+        if (this.categorySelectionElement) {
+            this.categorySelectionElement.style.display = 'none';
+            console.log("✅ Kategori seçim ekranı gizlendi");
+        }
+        if (this.quizElement) {
+            this.quizElement.style.display = 'block';
+            console.log("✅ Quiz ekranı gösterildi");
+        }
         if (this.resultElement) this.resultElement.style.display = 'none';
         
         // Oyun arayüzüne kalan diğer elemanları da gizle
@@ -4271,6 +4277,7 @@ const quizApp = {
         
         // Eğer soru doğru/yanlış tipindeyse farklı göster
         if (questionData.type === "DoğruYanlış" || questionData.type === "TrueFalse") {
+            console.log("🎯 Doğru/Yanlış soru tespit edildi:", questionData.type);
             this.loadTrueFalseQuestion(questionData);
             return;
         }
@@ -4869,6 +4876,8 @@ const quizApp = {
     
     // Doğru/Yanlış tipi soruları göster
     loadTrueFalseQuestion: function(questionData) {
+        console.log("📋 loadTrueFalseQuestion çağrıldı:", questionData);
+        
         // Sonuç alanını temizle
         if (this.resultElement) {
             this.resultElement.innerHTML = '';
@@ -4910,6 +4919,7 @@ const quizApp = {
         
         // Doğru/Yanlış seçeneklerini göster
         if (this.optionsElement) {
+            console.log("🎮 Options element bulundu, kaydırma alanı oluşturuluyor...");
             this.optionsElement.innerHTML = '';
             this.optionsElement.style.display = 'flex';
             this.optionsElement.style.flexDirection = 'column';
@@ -4917,47 +4927,41 @@ const quizApp = {
             this.optionsElement.style.justifyContent = 'center';
             this.optionsElement.style.width = '100%';
             
-            // Seçenekler
-            const trueOption = document.createElement('button');
-            trueOption.className = 'true-false-option true';
-            trueOption.innerHTML = `<i class="fas fa-check"></i> ${this.getTranslation('trueOption')}`;
+            // Kaydırmalı cevap konteyneri oluştur
+            const swipeContainer = document.createElement('div');
+            swipeContainer.className = 'swipe-container';
+            swipeContainer.innerHTML = `
+                <div class="swipe-area">
+                    <div class="swipe-hint">
+                        <div class="swipe-text">${this.getTranslation('swipeHint') || 'Sola kaydır: Yanlış • Sağa kaydır: Doğru'}</div>
+                        <div class="swipe-icons">
+                            <span class="swipe-left"><i class="fas fa-arrow-left"></i> <i class="fas fa-times"></i></span>
+                            <span class="swipe-right"><i class="fas fa-check"></i> <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                    <div class="horizontal-swipe-bar">
+                        <div class="swipe-track">
+                            <div class="swipe-handle">
+                                <i class="fas fa-grip-horizontal"></i>
+                            </div>
+                            <div class="swipe-feedback swipe-feedback-left">
+                                <i class="fas fa-times"></i>
+                                <span>YANLIŞ</span>
+                            </div>
+                            <div class="swipe-feedback swipe-feedback-right">
+                                <i class="fas fa-check"></i>
+                                <span>DOĞRU</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
             
-            const falseOption = document.createElement('button');
-            falseOption.className = 'true-false-option false';
-            falseOption.innerHTML = `<i class="fas fa-times"></i> ${this.getTranslation('falseOption')}`;
+            // Kaydırma olaylarını ekle
+            this.setupSwipeEvents(swipeContainer);
             
-            // Tıklama olayları
-            trueOption.addEventListener('click', (e) => {
-                // Zaten cevaplandıysa işlem yapma
-                if (e.target.disabled || e.target.classList.contains('selected') || 
-                    document.querySelector('.true-false-option.selected') || 
-                    document.querySelector('.result').style.display === 'block') {
-                    return;
-                }
-                
-                // Tıklanan şıkı işaretle
-                e.target.classList.add('selected');
-                
-                this.checkAnswer(this.getTranslation('trueOption'));
-            });
-            
-            falseOption.addEventListener('click', (e) => {
-                // Zaten cevaplandıysa işlem yapma
-                if (e.target.disabled || e.target.classList.contains('selected') || 
-                    document.querySelector('.true-false-option.selected') || 
-                    document.querySelector('.result').style.display === 'block') {
-                    return;
-                }
-                
-                // Tıklanan şıkı işaretle
-                e.target.classList.add('selected');
-                
-                this.checkAnswer(this.getTranslation('falseOption'));
-            });
-            
-            // Seçenekleri ekle
-            this.optionsElement.appendChild(trueOption);
-            this.optionsElement.appendChild(falseOption);
+            // Elementleri ekle
+            this.optionsElement.appendChild(swipeContainer);
         }
         
         // Sayacı başlat
@@ -5043,6 +5047,167 @@ const quizApp = {
         this.answerTimes.push(this.TIME_PER_QUESTION - this.timeLeft);
         
         // Can kontrolü kaldırıldı - loseLife fonksiyonu kendi başına can satın alma modalını handle ediyor
+    },
+
+    // Kaydırma olaylarını ayarla
+    setupSwipeEvents: function(container) {
+        console.log("🎯 setupSwipeEvents çağrıldı, container:", container);
+        const swipeHandle = container.querySelector('.swipe-handle');
+        const swipeTrack = container.querySelector('.swipe-track');
+        const feedbackLeft = container.querySelector('.swipe-feedback-left');
+        const feedbackRight = container.querySelector('.swipe-feedback-right');
+        
+        if (!swipeHandle || !swipeTrack) {
+            console.error("❌ Swipe handle veya track bulunamadı!");
+            return;
+        }
+        
+        let isDragging = false;
+        let hasAnswered = false;
+        let startX = 0;
+        
+        // Başlangıçta handle'ı ortaya koy
+        setTimeout(() => {
+            const trackWidth = swipeTrack.offsetWidth;
+            const handleWidth = swipeHandle.offsetWidth;
+            const centerPosition = (trackWidth - handleWidth) / 2;
+            swipeHandle.style.left = centerPosition + 'px';
+        }, 100);
+        
+        function startDrag(clientX) {
+            if (hasAnswered) return;
+            isDragging = true;
+            startX = clientX - swipeHandle.offsetLeft;
+            swipeHandle.style.transition = 'none';
+            document.body.style.userSelect = 'none';
+        }
+        
+        function updateDrag(clientX) {
+            if (!isDragging || hasAnswered) return;
+            
+            const trackWidth = swipeTrack.offsetWidth;
+            const handleWidth = swipeHandle.offsetWidth;
+            const maxLeft = trackWidth - handleWidth;
+            
+            let newLeft = clientX - startX;
+            newLeft = Math.max(0, Math.min(maxLeft, newLeft));
+            
+            swipeHandle.style.left = newLeft + 'px';
+            
+            // Progress hesapla (0 = sol, 1 = sağ)
+            const progress = newLeft / maxLeft;
+            
+            // Feedback göster ve renklendirme yap
+            if (progress < 0.3) {
+                feedbackLeft.style.opacity = '1';
+                feedbackRight.style.opacity = '0';
+                swipeTrack.classList.add('swiping-left');
+                swipeTrack.classList.remove('swiping-right');
+            } else if (progress > 0.7) {
+                feedbackLeft.style.opacity = '0';
+                feedbackRight.style.opacity = '1';
+                swipeTrack.classList.add('swiping-right');
+                swipeTrack.classList.remove('swiping-left');
+            } else {
+                feedbackLeft.style.opacity = '0';
+                feedbackRight.style.opacity = '0';
+                swipeTrack.classList.remove('swiping-left', 'swiping-right');
+            }
+        }
+        
+        function endDrag() {
+            if (!isDragging || hasAnswered) return;
+            isDragging = false;
+            document.body.style.userSelect = '';
+            swipeHandle.style.transition = 'left 0.3s ease';
+            
+            const trackWidth = swipeTrack.offsetWidth;
+            const handleWidth = swipeHandle.offsetWidth;
+            const maxLeft = trackWidth - handleWidth;
+            const currentLeft = parseInt(swipeHandle.style.left) || 0;
+            const progress = currentLeft / maxLeft;
+            
+            if (progress < 0.2) {
+                // Sol tarafa kaydırıldı - Yanlış
+                console.log("❌ Yanlış seçildi");
+                hasAnswered = true;
+                swipeHandle.style.left = '0px';
+                this.handleSwipeAnswer(false, swipeHandle, container);
+            } else if (progress > 0.8) {
+                // Sağ tarafa kaydırıldı - Doğru
+                console.log("✅ Doğru seçildi");
+                hasAnswered = true;
+                swipeHandle.style.left = maxLeft + 'px';
+                this.handleSwipeAnswer(true, swipeHandle, container);
+            } else {
+                // Ortaya geri döndür
+                const centerPosition = (trackWidth - handleWidth) / 2;
+                swipeHandle.style.left = centerPosition + 'px';
+                feedbackLeft.style.opacity = '0';
+                feedbackRight.style.opacity = '0';
+                swipeTrack.classList.remove('swiping-left', 'swiping-right');
+            }
+        }
+        
+        // Touch events
+        swipeHandle.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startDrag(e.touches[0].clientX);
+        });
+        
+        document.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                e.preventDefault();
+                updateDrag(e.touches[0].clientX);
+            }
+        });
+        
+        document.addEventListener('touchend', () => {
+            endDrag.call(this);
+        });
+        
+        // Mouse events
+        swipeHandle.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            startDrag(e.clientX);
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                e.preventDefault();
+                updateDrag(e.clientX);
+            }
+        });
+        
+        document.addEventListener('mouseup', () => {
+            endDrag.call(this);
+        });
+    },
+    
+    // Kaydırma cevabını işle
+    handleSwipeAnswer: function(isTrue, card, container) {
+        console.log("🎯 handleSwipeAnswer çağrıldı, isTrue:", isTrue);
+        const answer = isTrue ? this.getTranslation('trueOption') : this.getTranslation('falseOption');
+        console.log("Seçilen cevap:", answer);
+        
+        // Kartı animasyonla kaybet
+        if (isTrue) {
+            card.style.transform = 'translateX(300px) rotate(20deg)';
+            card.classList.add('swiped-right');
+        } else {
+            card.style.transform = 'translateX(-300px) rotate(-20deg)';
+            card.classList.add('swiped-left');
+        }
+        
+        card.style.opacity = '0';
+        
+        // Konteyneri gizle
+        setTimeout(() => {
+            container.style.display = 'none';
+        }, 300);
+        
+        // Cevabı kontrol et
+        this.checkAnswer(answer);
     },
     
     // Profil sayfasını göster
