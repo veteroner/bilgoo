@@ -9,11 +9,10 @@
   NODE_VERSION = "18"
 
 [[redirects]]
-  # Redirect all routes to index.html for SPA routing
+  # Redirect all routes to index.html for SPA routing (catch-all)
   from = "/*"
   to = "/index.html"
   status = 200
-  conditions = {Role = ["admin"]}
 
 [[redirects]]
   # Handle admin routes
