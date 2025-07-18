@@ -1,12 +1,20 @@
 {
   "appId": "com.bilgoo.quizapp",
   "appName": "Quiz Oyunu - Bilgoo",
-  "version": "14.0.0",
+  "version": "14.2.0",
   "webDir": "www",
   "server": {
     "androidScheme": "https"
   },
   "plugins": {
+    "AdMob": {
+      "appId": "ca-app-pub-7610338885240453~5183201967",
+      "testingDevices": [],
+      "tagForChildDirectedTreatment": false,
+      "tagForUnderAgeOfConsent": false,
+      "maxAdContentRating": "MA",
+      "autobind": true
+    },
     "SplashScreen": {
       "launchShowDuration": 3000,
       "launchAutoHide": true,
