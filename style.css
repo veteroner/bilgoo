@@ -4612,6 +4612,116 @@ input:checked + .switch-label:before {
 
 /* ... existing code ... */
 
+/* Web için Doğru/Yanlış Butonları */
+.true-false-buttons-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.true-false-btn {
+    flex: 1;
+    padding: 0.9rem 2.5rem;
+    border: 2px solid transparent;
+    border-radius: 15px;
+    font-size: clamp(1rem, 3.5vw, 1.2rem);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 190px;
+    line-height: 1.6;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.true-false-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.true-false-btn:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.true-false-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.false-btn {
+    background: linear-gradient(145deg, #ffebee, #ffcdd2);
+    border-color: #f44336;
+    color: #d32f2f;
+}
+
+.false-btn:hover:not(:disabled) {
+    background: linear-gradient(145deg, #ffcdd2, #ef9a9a);
+    border-color: #d32f2f;
+    box-shadow: 0 6px 16px rgba(244,67,54,0.3);
+}
+
+.true-btn {
+    background: linear-gradient(145deg, #e8f5e8, #c8e6c9);
+    border-color: #4caf50;
+    color: #2e7d32;
+}
+
+.true-btn:hover:not(:disabled) {
+    background: linear-gradient(145deg, #c8e6c9, #a5d6a7);
+    border-color: #2e7d32;
+    box-shadow: 0 6px 16px rgba(76,175,80,0.3);
+}
+
+/* Mobil için kaydırma çubuğu boyutları */
+.mobile-swipe .horizontal-swipe-bar {
+    max-width: 400px;
+    margin: 0px auto 10px auto;
+}
+
+.mobile-swipe .swipe-track {
+    height: 60px;
+}
+
+.mobile-swipe .swipe-handle {
+    width: 50px;
+    height: 50px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .true-false-buttons-container {
+        display: none !important;
+    }
+    
+    .mobile-swipe {
+        display: block !important;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-swipe {
+        display: none !important;
+    }
+    
+    .true-false-buttons-container {
+        display: flex !important;
+    }
+}
+
 /* Yatay Kaydırma Barı Stilleri */
 .horizontal-swipe-bar {
     width: 100%;
@@ -4623,73 +4733,130 @@ input:checked + .switch-label:before {
 .swipe-track {
     position: relative;
     width: 100%;
-    height: 50px;
-    background: linear-gradient(90deg, #f8f9fa 0%, #e9ecef 50%, #f8f9fa 100%);
-    border: 2px solid #6c757d;
-    border-radius: 25px;
+    height: 66px;
+    background: linear-gradient(135deg, 
+        #f3e5f5 0%, 
+        #e1bee7 25%, 
+        #ce93d8 50%, 
+        #ba68c8 75%, 
+        #ab47bc 100%);
+    border: 3px solid transparent;
+    border-radius: 15px;
+    background-clip: padding-box;
     box-shadow: 
-        inset 0 2px 4px rgba(0,0,0,0.1),
-        0 2px 8px rgba(0,0,0,0.05);
+        0 4px 15px rgba(171,71,188,0.2),
+        inset 0 2px 6px rgba(255,255,255,0.3),
+        inset 0 -2px 6px rgba(142,36,170,0.2);
     overflow: visible;
     display: flex;
     align-items: center;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.swipe-track::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(135deg, #8e24aa, #ba68c8, #ce93d8, #e1bee7);
+    border-radius: 28px;
+    z-index: -1;
 }
 
 /* Renklendirme sınıfları */
 .swipe-track.swiping-left {
-    background: linear-gradient(90deg, #ff6b6b 0%, #ff8e8e 50%, #f8f9fa 100%);
-    border-color: #dc3545;
+    background: linear-gradient(135deg, 
+        #ffcdd2 0%, 
+        #ef9a9a 25%, 
+        #e57373 50%, 
+        #ef5350 75%, 
+        #f44336 100%);
     box-shadow: 
-        inset 0 2px 4px rgba(220,53,69,0.2),
-        0 0 10px rgba(220,53,69,0.3);
+        0 6px 20px rgba(244,67,54,0.4),
+        inset 0 2px 6px rgba(255,255,255,0.2),
+        inset 0 -2px 6px rgba(211,47,47,0.3);
+}
+
+.swipe-track.swiping-left::before {
+    background: linear-gradient(135deg, #d32f2f, #f44336, #e57373, #ffcdd2);
 }
 
 .swipe-track.swiping-right {
-    background: linear-gradient(90deg, #f8f9fa 0%, #51cf66 50%, #51cf66 100%);
-    border-color: #28a745;
+    background: linear-gradient(135deg, 
+        #c8e6c9 0%, 
+        #a5d6a7 25%, 
+        #81c784 50%, 
+        #66bb6a 75%, 
+        #4caf50 100%);
     box-shadow: 
-        inset 0 2px 4px rgba(40,167,69,0.2),
-        0 0 10px rgba(40,167,69,0.3);
+        0 6px 20px rgba(76,175,80,0.4),
+        inset 0 2px 6px rgba(255,255,255,0.2),
+        inset 0 -2px 6px rgba(56,142,60,0.3);
+}
+
+.swipe-track.swiping-right::before {
+    background: linear-gradient(135deg, #388e3c, #4caf50, #81c784, #c8e6c9);
 }
 
 .swipe-handle {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 44px;
-    height: 44px;
-    background: linear-gradient(145deg, #ffffff 0%, #f1f3f4 100%);
-    border: 2px solid #495057;
+    width: 58px;
+    height: 58px;
+    background: linear-gradient(145deg, 
+        #ffffff 0%, 
+        #fafafa 25%, 
+        #f5f5f5 50%, 
+        #f3e5f5 75%, 
+        #e8eaf6 100%);
+    border: 3px solid transparent;
     border-radius: 50%;
     cursor: grab;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #495057;
-    font-size: 16px;
+    color: #7b1fa2;
+    font-size: 18px;
     box-shadow: 
-        0 4px 12px rgba(0,0,0,0.15),
-        inset 0 1px 3px rgba(255,255,255,0.9);
-    transition: all 0.2s ease;
+        0 6px 20px rgba(123,31,162,0.25),
+        inset 0 2px 4px rgba(255,255,255,0.9),
+        inset 0 -1px 2px rgba(123,31,162,0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 10;
+    position: relative;
+}
+
+.swipe-handle::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(145deg, #7b1fa2, #9c27b0, #ba68c8);
+    border-radius: 50%;
+    z-index: -1;
 }
 
 .swipe-handle:hover {
     transform: translateY(-50%) scale(1.1);
-    border-color: #343a40;
+    border-color: #4a148c;
     box-shadow: 
-        0 8px 25px rgba(0,0,0,0.2),
+        0 8px 25px rgba(123,31,162,0.3),
         inset 0 2px 4px rgba(255,255,255,0.9);
-    background: linear-gradient(145deg, #ffffff 0%, #e9ecef 100%);
+    background: linear-gradient(145deg, #ffffff 0%, #f3e5f5 100%);
 }
 
 .swipe-handle:active {
     cursor: grabbing;
     transform: translateY(-50%) scale(1.05);
     box-shadow: 
-        0 4px 15px rgba(0,0,0,0.25),
-        inset 0 1px 3px rgba(0,0,0,0.1);
+        0 4px 15px rgba(123,31,162,0.3),
+        inset 0 1px 3px rgba(123,31,162,0.1);
 }
 
 .horizontal-swipe-bar .swipe-feedback {
@@ -7492,7 +7659,7 @@ body.quiz-active .main-logo-container svg {
 }
 
 .correct-modal .next-button {
-    background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+    background: linear-gradient(90deg, #ffc107 0%, #ff9800 100%);
     color: #fff;
     font-size: 1.1rem;
     font-weight: 600;
@@ -7500,13 +7667,13 @@ body.quiz-active .main-logo-container svg {
     border-radius: 20px;
     padding: 12px 32px;
     margin-top: 10px;
-    box-shadow: 0 2px 8px #38f9d755;
+    box-shadow: 0 2px 8px rgba(255, 152, 0, 0.4);
     cursor: pointer;
     transition: background 0.2s, transform 0.2s;
 }
 
 .correct-modal .next-button:hover {
-    background: linear-gradient(90deg, #38f9d7 0%, #43e97b 100%);
+    background: linear-gradient(90deg, #ff9800 0%, #ffc107 100%);
     transform: scale(1.04);
 }
 
@@ -8235,7 +8402,7 @@ body.quiz-active .main-logo-container svg {
 }
 
 .wrong-modal .next-button {
-    background: linear-gradient(90deg, #ff5858 0%, #f857a6 100%);
+    background: linear-gradient(90deg, #ffc107 0%, #ff9800 100%);
     color: #fff;
     font-size: 1.1rem;
     font-weight: 600;
@@ -8243,13 +8410,13 @@ body.quiz-active .main-logo-container svg {
     border-radius: 20px;
     padding: 12px 32px;
     margin-top: 10px;
-    box-shadow: 0 2px 8px #f857a655;
+    box-shadow: 0 2px 8px rgba(255, 152, 0, 0.4);
     cursor: pointer;
     transition: background 0.2s, transform 0.2s;
 }
 
 .wrong-modal .next-button:hover {
-    background: linear-gradient(90deg, #f857a6 0%, #ff5858 100%);
+    background: linear-gradient(90deg, #ff9800 0%, #ffc107 100%);
     transform: scale(1.04);
 }
 
