@@ -5023,29 +5023,15 @@ const quizApp = {
                 const swipeContainer = document.createElement('div');
                 swipeContainer.className = 'swipe-container mobile-swipe';
                 swipeContainer.innerHTML = `
-                    <div class="swipe-area">
-                        <div class="swipe-hint">
-                            <div class="swipe-text">${this.getTranslation('swipeHint') || 'Sola kaydır: Yanlış • Sağa kaydır: Doğru'}</div>
-                            <div class="swipe-icons">
-                                <span class="swipe-left"><i class="fas fa-arrow-left"></i> <i class="fas fa-times"></i></span>
-                                <span class="swipe-right"><i class="fas fa-check"></i> <i class="fas fa-arrow-right"></i></span>
+                    <div class="horizontal-swipe-bar">
+                        <div class="swipe-track">
+                            <div class="swipe-label-left"></div>
+                            <div class="swipe-label-right"></div>
+                            <div class="swipe-handle">
+                                <i class="fas fa-grip-horizontal"></i>
                             </div>
                         </div>
-                        <div class="horizontal-swipe-bar">
-                            <div class="swipe-track">
-                                <div class="swipe-handle">
-                                    <i class="fas fa-grip-horizontal"></i>
-                                </div>
-                                <div class="swipe-feedback swipe-feedback-left">
-                                    <i class="fas fa-times"></i>
-                                    <span>YANLIŞ</span>
-                                </div>
-                                <div class="swipe-feedback swipe-feedback-right">
-                                    <i class="fas fa-check"></i>
-                                    <span>DOĞRU</span>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="swipe-bar-note">Kaydırarak cevapla</div>
                     </div>
                 `;
                 
@@ -5238,18 +5224,18 @@ const quizApp = {
             
             // Feedback göster ve renklendirme yap
             if (progress < 0.3) {
-                feedbackLeft.style.opacity = '1';
-                feedbackRight.style.opacity = '0';
+                if (feedbackLeft) feedbackLeft.style.opacity = '1';
+                if (feedbackRight) feedbackRight.style.opacity = '0';
                 swipeTrack.classList.add('swiping-left');
                 swipeTrack.classList.remove('swiping-right');
             } else if (progress > 0.7) {
-                feedbackLeft.style.opacity = '0';
-                feedbackRight.style.opacity = '1';
+                if (feedbackLeft) feedbackLeft.style.opacity = '0';
+                if (feedbackRight) feedbackRight.style.opacity = '1';
                 swipeTrack.classList.add('swiping-right');
                 swipeTrack.classList.remove('swiping-left');
             } else {
-                feedbackLeft.style.opacity = '0';
-                feedbackRight.style.opacity = '0';
+                if (feedbackLeft) feedbackLeft.style.opacity = '0';
+                if (feedbackRight) feedbackRight.style.opacity = '0';
                 swipeTrack.classList.remove('swiping-left', 'swiping-right');
             }
         }
@@ -5282,8 +5268,8 @@ const quizApp = {
                 // Ortaya geri döndür
                 const centerPosition = (trackWidth - handleWidth) / 2;
                 swipeHandle.style.left = centerPosition + 'px';
-                feedbackLeft.style.opacity = '0';
-                feedbackRight.style.opacity = '0';
+                if (feedbackLeft) feedbackLeft.style.opacity = '0';
+                if (feedbackRight) feedbackRight.style.opacity = '0';
                 swipeTrack.classList.remove('swiping-left', 'swiping-right');
             }
         }
@@ -5292,14 +5278,14 @@ const quizApp = {
         swipeHandle.addEventListener('touchstart', (e) => {
             e.preventDefault();
             startDrag(e.touches[0].clientX);
-        });
+        }, {passive: false});
         
         document.addEventListener('touchmove', (e) => {
             if (isDragging) {
                 e.preventDefault();
                 updateDrag(e.touches[0].clientX);
             }
-        });
+        }, {passive: false});
         
         document.addEventListener('touchend', () => {
             endDrag.call(this);

@@ -4734,19 +4734,18 @@ input:checked + .switch-label:before {
     position: relative;
     width: 100%;
     height: 66px;
-    background: linear-gradient(135deg, 
-        #f3e5f5 0%, 
-        #e1bee7 25%, 
-        #ce93d8 50%, 
-        #ba68c8 75%, 
-        #ab47bc 100%);
-    border: 3px solid transparent;
+    background: linear-gradient(90deg, 
+        #f44336 0%, 
+        #f44336 50%, 
+        #4caf50 50%, 
+        #4caf50 100%);
+    border: 2px solid rgba(255,255,255,0.3);
     border-radius: 15px;
     background-clip: padding-box;
     box-shadow: 
-        0 4px 15px rgba(171,71,188,0.2),
-        inset 0 2px 6px rgba(255,255,255,0.3),
-        inset 0 -2px 6px rgba(142,36,170,0.2);
+        0 4px 15px rgba(0,0,0,0.15),
+        inset 0 2px 6px rgba(255,255,255,0.4),
+        inset 0 -2px 6px rgba(0,0,0,0.1);
     overflow: visible;
     display: flex;
     align-items: center;
@@ -4805,29 +4804,26 @@ input:checked + .switch-label:before {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 58px;
-    height: 58px;
+    width: 60px;
+    height: 60px;
     background: linear-gradient(145deg, 
-        #ffffff 0%, 
-        #fafafa 25%, 
-        #f5f5f5 50%, 
-        #f3e5f5 75%, 
-        #e8eaf6 100%);
-    border: 3px solid transparent;
+        #ff9800 0%, 
+        #ff6f00 50%, 
+        #ff5722 100%);
+    border: 4px solid rgba(255,255,255,1);
     border-radius: 50%;
     cursor: grab;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #7b1fa2;
-    font-size: 18px;
+    color: #ffffff;
+    font-size: 24px;
     box-shadow: 
-        0 6px 20px rgba(123,31,162,0.25),
-        inset 0 2px 4px rgba(255,255,255,0.9),
-        inset 0 -1px 2px rgba(123,31,162,0.1);
+        0 8px 25px rgba(255,152,0,0.5),
+        inset 0 2px 4px rgba(255,255,255,0.3),
+        inset 0 -1px 2px rgba(255,87,34,0.3);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 10;
-    position: relative;
 }
 
 .swipe-handle::before {
@@ -4844,19 +4840,67 @@ input:checked + .switch-label:before {
 
 .swipe-handle:hover {
     transform: translateY(-50%) scale(1.1);
-    border-color: #4a148c;
+    border-color: rgba(255,255,255,0.9);
     box-shadow: 
-        0 8px 25px rgba(123,31,162,0.3),
+        0 8px 25px rgba(255,152,0,0.4),
         inset 0 2px 4px rgba(255,255,255,0.9);
-    background: linear-gradient(145deg, #ffffff 0%, #f3e5f5 100%);
+    background: linear-gradient(145deg, #ffa726 0%, #ff8f00 100%);
 }
 
 .swipe-handle:active {
     cursor: grabbing;
     transform: translateY(-50%) scale(1.05);
     box-shadow: 
-        0 4px 15px rgba(123,31,162,0.3),
-        inset 0 1px 3px rgba(123,31,162,0.1);
+        0 4px 15px rgba(255,152,0,0.4),
+        inset 0 1px 3px rgba(255,87,34,0.2);
+}
+
+.swipe-label-left, .swipe-label-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    font-weight: 800;
+    opacity: 0.95;
+    pointer-events: none;
+    user-select: none;
+    text-shadow: 0 3px 10px rgba(0,0,0,0.4);
+    letter-spacing: 1px;
+}
+
+.swipe-label-left {
+    left: 18px;
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+}
+
+.swipe-label-left::before {
+    content: '← ✗';
+    font-size: 1.5rem;
+    text-shadow: 0 3px 10px rgba(0,0,0,0.4);
+}
+
+.swipe-label-right {
+    right: 18px;
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+}
+
+.swipe-label-right::after {
+    content: '✓ →';
+    font-size: 1.5rem;
+    text-shadow: 0 3px 10px rgba(0,0,0,0.4);
+}
+
+.swipe-bar-note {
+    display: block;
+    text-align: center;
+    font-size: 0.95rem;
+    color: #888;
+    margin-top: 6px;
+    font-family: 'Poppins', sans-serif;
+    opacity: 0.8;
+    letter-spacing: 0.5px;
 }
 
 .horizontal-swipe-bar .swipe-feedback {
