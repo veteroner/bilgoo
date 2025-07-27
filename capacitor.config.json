@@ -1,7 +1,7 @@
 {
   "appId": "com.bilgoo.quizapp",
   "appName": "Quiz Oyunu - Bilgoo",
-  "version": "14.2.0",
+  "version": "14.3.0",
   "webDir": "www",
   "server": {
     "androidScheme": "https"
@@ -19,8 +19,8 @@
       "launchShowDuration": 3000,
       "launchAutoHide": true,
       "backgroundColor": "#ffffff",
-      "androidSplashResourceName": "splash",
-      "androidScaleType": "CENTER_CROP",
+      "androidSplashResourceName": "ic_splash_screen",
+      "androidScaleType": "CENTER",
       "showSpinner": false,
       "splashFullScreen": true,
       "splashImmersive": true,
