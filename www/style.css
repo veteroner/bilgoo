@@ -64,7 +64,11 @@
     
     .container {
         margin-top: 0 !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
         padding-top: 90px !important; /* Reklam alanı için üst boşluk artırıldı */
+        width: min(90%, 600px) !important;
+        max-width: 600px !important;
     }
     
     /* Diğer elementleri normal konumuna getir */
@@ -79,6 +83,9 @@
     .quiz-container .container,
     .profile-container .container {
         padding-top: 90px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        text-align: center !important;
     }
     
     /* Oyun başladığında tüm game-header'ı (can, süre, puan, yıldız) reklam alanının altına kaydır */

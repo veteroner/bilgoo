@@ -2,7 +2,7 @@
   "id": "/",
   "name": "Quiz Oyunu - Bilgoo",
   "short_name": "Bilgoo",
-  "version": "14.0.0",
+  "version": "14.4.0",
   "description": "Eğlenceli ve öğretici Türkçe quiz oyunu. Çoktan seçmeli sorular, jokerler ve çevrimiçi yarışma modları ile bilginizi test edin.",
   "start_url": "/",
   "display": "standalone",

@@ -64,7 +64,11 @@
     
     .container {
         margin-top: 0 !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
         padding-top: 90px !important; /* Reklam alanı için üst boşluk artırıldı */
+        width: min(90%, 600px) !important;
+        max-width: 600px !important;
     }
     
     /* Diğer elementleri normal konumuna getir */
@@ -79,6 +83,9 @@
     .quiz-container .container,
     .profile-container .container {
         padding-top: 90px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        text-align: center !important;
     }
     
     /* Oyun başladığında tüm game-header'ı (can, süre, puan, yıldız) reklam alanının altına kaydır */
@@ -4753,26 +4760,6 @@ input:checked + .switch-label:before {
     position: relative;
 }
 
-.swipe-label-left, .swipe-label-right {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.1rem;
-    font-weight: 600;
-    opacity: 0.85;
-    pointer-events: none;
-    user-select: none;
-    text-shadow: 0 2px 8px rgba(255,255,255,0.7);
-}
-.swipe-label-left {
-    left: 18px;
-    color: #f44336;
-}
-.swipe-label-right {
-    right: 18px;
-    color: #4caf50;
-}
-
 .swipe-track::before {
     content: '';
     position: absolute;
@@ -4853,12 +4840,26 @@ input:checked + .switch-label:before {
     left: -3px;
     right: -3px;
     bottom: -3px;
-    background: linear-gradient(145deg, 
-        rgba(255,152,0,0.3), 
-        rgba(255,111,0,0.4), 
-        rgba(255,87,34,0.3));
+    background: linear-gradient(145deg, #7b1fa2, #9c27b0, #ba68c8);
     border-radius: 50%;
     z-index: -1;
+}
+
+.swipe-handle:hover {
+    transform: translateY(-50%) scale(1.1);
+    border-color: rgba(255,255,255,0.9);
+    box-shadow: 
+        0 8px 25px rgba(255,152,0,0.4),
+        inset 0 2px 4px rgba(255,255,255,0.9);
+    background: linear-gradient(145deg, #ffa726 0%, #ff8f00 100%);
+}
+
+.swipe-handle:active {
+    cursor: grabbing;
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 
+        0 4px 15px rgba(255,152,0,0.4),
+        inset 0 1px 3px rgba(255,87,34,0.2);
 }
 
 .swipe-label-left, .swipe-label-right {
@@ -4881,7 +4882,7 @@ input:checked + .switch-label:before {
 }
 
 .swipe-label-left::before {
-    content: '← ✗'; /* ← ✗ */
+    content: '← ✗';
     font-size: 1.5rem;
     text-shadow: 0 3px 10px rgba(0,0,0,0.4);
 }
@@ -4893,7 +4894,7 @@ input:checked + .switch-label:before {
 }
 
 .swipe-label-right::after {
-    content: '✓ →'; /* ✓ → */
+    content: '✓ →';
     font-size: 1.5rem;
     text-shadow: 0 3px 10px rgba(0,0,0,0.4);
 }
@@ -4907,31 +4908,6 @@ input:checked + .switch-label:before {
     font-family: 'Poppins', sans-serif;
     opacity: 0.8;
     letter-spacing: 0.5px;
-}
-
-.swipe-handle:hover {
-    transform: translateY(-50%) scale(1.1);
-    border-color: rgba(255,255,255,0.9);
-    box-shadow: 
-        0 8px 25px rgba(255,152,0,0.4),
-        inset 0 2px 4px rgba(255,255,255,0.9);
-    background: linear-gradient(145deg, #ffa726 0%, #ff8f00 100%);
-}
-
-.swipe-handle:active {
-    cursor: grabbing;
-    transform: translateY(-50%) scale(1.05);
-    box-shadow: 
-        0 4px 15px rgba(255,152,0,0.4),
-        inset 0 1px 3px rgba(255,87,34,0.2);
-}
-
-.swipe-handle:active {
-    cursor: grabbing;
-    transform: translateY(-50%) scale(1.05);
-    box-shadow: 
-        0 4px 15px rgba(255,152,0,0.4),
-        inset 0 1px 3px rgba(255,87,34,0.2);
 }
 
 .horizontal-swipe-bar .swipe-feedback {
@@ -5018,53 +4994,38 @@ input:checked + .switch-label:before {
 }
 
 .swipe-hint {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     text-align: center;
     color: var(--text-color, #666);
-    background: rgba(255,255,255,0.9);
-    padding: 8px 12px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .swipe-text {
-    font-size: 16px;
-    margin-bottom: 15px;
-    font-weight: 600;
-    text-align: center;
-    color: #333;
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: 500;
 }
 
 .swipe-icons {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 30px;
-    margin-bottom: 10px;
-    padding: 0 20px;
+    gap: 20px;
 }
 
 .swipe-left, .swipe-right {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    opacity: 0.9;
-    font-weight: 600;
-    background: rgba(255,255,255,0.9);
-    padding: 6px 12px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    gap: 5px;
+    font-size: 12px;
+    opacity: 0.7;
 }
 
 .swipe-left {
-    color: #f44336;
-    border-left: 3px solid #f44336;
+    color: #dc3545;
 }
 
 .swipe-right {
-    color: #4caf50;
-    border-left: 3px solid #4caf50;
+    color: #28a745;
 }
 
 .swipe-card {
@@ -5240,8 +5201,7 @@ input:checked + .switch-label:before {
     }
     
     .swipe-text {
-        font-size: 16px;
-        font-weight: 600;
+        font-size: 13px;
     }
     
     .swipe-feedback {
@@ -5270,25 +5230,7 @@ input:checked + .switch-label:before {
     }
     
     .swipe-hint {
-        margin-bottom: 12px;
-        padding: 6px 10px;
-        font-size: 14px;
-    }
-    
-    .swipe-text {
-        font-size: 14px;
-        margin-bottom: 12px;
-    }
-    
-    .swipe-icons {
-        gap: 20px;
-        padding: 0 10px;
-    }
-    
-    .swipe-left, .swipe-right {
-        font-size: 12px;
-        gap: 6px;
-        padding: 4px 8px;
+        margin-bottom: 5px;
     }
     
     .swipe-icons {

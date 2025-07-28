@@ -1,6 +1,6 @@
 {
   "name": "quiz-oyunu",
-  "version": "14.3.0",
+  "version": "14.4.0",
   "description": "Bilgoo uygulaması, kullanıcıların bilgilerini çeşitli kategorilerde test edebilecekleri interaktif bir web uygulamasıdır.",
   "main": "achievements.js",
   "scripts": {
