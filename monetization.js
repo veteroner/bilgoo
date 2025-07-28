@@ -708,7 +708,7 @@ const MonetizationManager = {
                 adContainer.style.width = '100%';
                 adContainer.style.overflow = 'hidden';
                 
-                // Mobil banner için özel kontrol
+                // Mobil banner için özel kontrol - container margin'e dokunma
                 if (adContainer.classList.contains('mobile-top-banner')) {
                     adContainer.style.display = 'block';
                     adContainer.style.position = 'fixed';
@@ -716,6 +716,7 @@ const MonetizationManager = {
                     adContainer.style.left = '0';
                     adContainer.style.width = '100%';
                     adContainer.style.zIndex = '1000';
+                    // Ana container'ın margin ayarlarını değiştirme
                 }
             }
         });
@@ -954,9 +955,11 @@ const MonetizationManager = {
             container.parentNode.insertBefore(banner, container);
             console.log('✅ Mobil üst banner container üstüne eklendi');
             
-            // Container'a otomatik padding ekle
-            container.style.paddingTop = '80px';
-            container.style.marginTop = '0';
+            // Container'a otomatik padding ekle - CSS'i bozmadan
+            if (!container.style.paddingTop || container.style.paddingTop === '0px') {
+                container.style.paddingTop = '80px';
+            }
+            // marginTop'u değiştirme - CSS merkezlemeyi bozar
             console.log('📏 Container padding-top: 80px eklendi');
         } else {
             document.body.insertBefore(banner, document.body.firstChild);
@@ -1055,6 +1058,7 @@ const MonetizationManager = {
                 const container = document.querySelector('.container');
                 if (container) {
                     container.style.paddingTop = '15px';
+                    // marginTop'u resetleme - CSS merkezlemeyi bozar
                     console.log('📏 Container padding-top sıfırlandı');
                 }
             }
@@ -1077,6 +1081,7 @@ const MonetizationManager = {
                 const container = document.querySelector('.container');
                 if (container) {
                     container.style.paddingTop = '15px';
+                    // marginTop'u resetleme - CSS merkezlemeyi bozar
                     console.log('📏 Container padding-top sıfırlandı (tercihler)');
                 }
             }
@@ -1109,10 +1114,11 @@ const MonetizationManager = {
                 console.log('🔄 Mobil banner tekrar gösteriliyor...');
                 topBanner.style.display = 'block';
                 
-                // Container padding'i de düzelt
+                // Container padding'i de düzelt - margin'e dokunma
                 const container = document.querySelector('.container');
                 if (container) {
                     container.style.paddingTop = '80px';
+                    // marginTop'u değiştirme - CSS merkezlemeyi bozar
                 }
             }
                  }
