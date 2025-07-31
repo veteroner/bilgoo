@@ -17,21 +17,37 @@ const MonetizationManager = {
         advertising: false
     },
 
+    // İnitialization durumu
+    isInitialized: false,
+    adsLoaded: false,
+    mobileAdsInitialized: false,
+
     // Sayfa yüklendiğinde başlat
     init: function() {
+        // Çoklu init'i önle
+        if (this.isInitialized) {
+            console.log('⚠️ MonetizationManager zaten başlatılmış, tekrar başlatılmayacak');
+            return;
+        }
+        
         this.checkCookieConsent();
         this.setupEventListeners();
         
         // Mobil reklamları başlat
         this.initMobileAds();
         
-        // AdSense init için gecikme ekle
+        // AdSense init için gecikme ekle (sadece bir kez)
         setTimeout(() => {
-            this.initializeAds();
+            if (!this.adsLoaded) {
+                this.initializeAds();
+            }
         }, 3000); // 3 saniye gecikme
         
         // Mobil banner tercihlerini kontrol et
         this.checkMobileBannerPreferences();
+        
+        this.isInitialized = true;
+        console.log('✅ MonetizationManager başarıyla başlatıldı');
     },
 
     // Çerez onayını kontrol et
@@ -315,6 +331,12 @@ const MonetizationManager = {
             this.showCookieBanner();
             return;
         }
+
+        // Tekrar yükleme kontrolü
+        if (this.adsLoaded) {
+            console.log('⚠️ AdSense zaten yüklenmiş, tekrar yüklenmeyecek');
+            return;
+        }
         
         // Tracking Prevention kontrolü
         try {
@@ -344,6 +366,7 @@ const MonetizationManager = {
         // AdSense script'i index.html'de zaten yükleniyor, sadece elementleri yükle
         setTimeout(() => {
             this.loadAdsWhenReady();
+            this.adsLoaded = true; // Yükleme bayrağını set et
         }, 3000); // 3 saniye gecikme
     },
 
@@ -573,19 +596,29 @@ const MonetizationManager = {
     refreshAds: function() {
         console.log('🔄 Reklamlar yenileniyor...');
         
+        // Çoklu yenileme kontrolü
+        if (this.refreshInProgress) {
+            console.log('⚠️ Zaten bir yenileme işlemi devam ediyor, atlanıyor');
+            return;
+        }
+        
+        this.refreshInProgress = true;
+        
         try {
             // Çerez onayını kontrol et
             if (!this.cookiePreferences.advertising) {
                 console.log('⚠️ Reklam çerezleri onaylanmamış, reklamlar yenilenmeyecek');
+                this.refreshInProgress = false;
                 return;
             }
             
             // AdSense'in yüklü olduğundan emin ol (script index.html'de yükleniyor)
             if (typeof adsbygoogle === 'undefined') {
                 console.log('⚠️ AdSense objesi tanımlı değil, 3 saniye sonra tekrar denenecek');
-                    setTimeout(() => {
-                        this.refreshAds();
-                    }, 3000);
+                setTimeout(() => {
+                    this.refreshInProgress = false;
+                    this.refreshAds();
+                }, 3000);
                 return;
             }
             
@@ -594,10 +627,16 @@ const MonetizationManager = {
             
             if (adElements.length === 0) {
                 console.log('Yenilenecek reklam alanı bulunamadı veya tüm reklamlar zaten yüklenmiş');
+                this.refreshInProgress = false;
                 return;
             }
             
             console.log(`${adElements.length} adet reklam bulundu, yenileme işlemi başlatılıyor...`);
+            
+            // Yenileme işlemi tamamlandıktan sonra flag'i sıfırla
+            setTimeout(() => {
+                this.refreshInProgress = false;
+            }, adElements.length * 500 + 2000); // Tüm reklamlar + 2 saniye buffer
             
             adElements.forEach((ad, index) => {
                 // Reklam boyutlarını kontrol et ve düzelt
@@ -702,6 +741,12 @@ const MonetizationManager = {
 
     // Mobil reklam yönetimi
     initMobileAds: function() {
+        // Çoklu başlatma kontrolü
+        if (this.mobileAdsInitialized) {
+            console.log('⚠️ Mobil reklamlar zaten başlatılmış, tekrar başlatılmayacak');
+            return;
+        }
+        
         // Platform kontrolü
         const isAndroidApp = window.Capacitor && window.Capacitor.getPlatform() === 'android';
         const isMobileWeb = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -727,6 +772,8 @@ const MonetizationManager = {
             console.log('Masaüstü cihaz tespit edildi, mobil reklamlar atlanıyor');
             return;
         }
+        
+        this.mobileAdsInitialized = true;
     },
 
     // AdMob Test ve Debug Fonksiyonu
