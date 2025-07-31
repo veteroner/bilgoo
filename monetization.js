@@ -1,12 +1,30 @@
 // Monetization ve Çerez Yönetimi
-// AdMob Plugin Import (sadece Capacitor environment'ta çalışır)
+// AdMob Plugin Import - DÜZELTME
 let AdMob = null;
 try {
+    // Capacitor 3+ için doğru import
     if (window.Capacitor && window.Capacitor.Plugins) {
+        // Yeni Capacitor plugin sistemi
         AdMob = window.Capacitor.Plugins.AdMob;
+        console.log('🎯 AdMob plugin Capacitor.Plugins üzerinden yüklendi');
+    } else if (window.CapacitorCommunityAdmob) {
+        // Community plugin direkt erişim
+        AdMob = window.CapacitorCommunityAdmob;
+        console.log('🎯 AdMob plugin CapacitorCommunityAdmob üzerinden yüklendi');
+    } else if (window.AdMob) {
+        // Global AdMob objesi
+        AdMob = window.AdMob;
+        console.log('🎯 AdMob plugin global obje üzerinden yüklendi');
+    }
+    
+    if (AdMob) {
+        console.log('✅ AdMob plugin başarıyla yüklendi:', typeof AdMob);
+        console.log('📋 Mevcut metodlar:', Object.getOwnPropertyNames(AdMob));
+    } else {
+        console.log('❌ AdMob plugin bulunamadı - web environment veya plugin kurulu değil');
     }
 } catch (e) {
-    console.log('AdMob plugin bulunamadı - web environment');
+    console.error('❌ AdMob plugin yükleme hatası:', e);
 }
 
 const MonetizationManager = {
@@ -776,116 +794,415 @@ const MonetizationManager = {
         this.mobileAdsInitialized = true;
     },
 
-    // AdMob Test ve Debug Fonksiyonu
+    // AdMob Test ve Debug Fonksiyonu - GELİŞTİRİLMİŞ VERSİYON
     testAdMobConnection: function() {
-        console.log('🔧 AdMob Bağlantı Testi Başlatılıyor...');
-        console.log('========================');
+        console.log('🔧 KAPSAMLI AdMob TEŞHİS RAPORU');
+        console.log('=====================================');
         
-        // 1. Capacitor kontrolü
-        console.log('1. Capacitor Durumu:');
-        console.log('   - window.Capacitor:', !!window.Capacitor);
-        console.log('   - Platform:', window.Capacitor?.getPlatform());
-        console.log('   - Plugins:', Object.keys(window.Capacitor?.Plugins || {}));
+        // 1. Ortam Tespiti
+        console.log('1️⃣ ORTAM TESPİTİ:');
+        console.log('   📱 Platform:', window.Capacitor?.getPlatform() || 'Web');
+        console.log('   🌐 User Agent:', navigator.userAgent);
+        console.log('   📏 Ekran:', `${window.innerWidth}x${window.innerHeight}`);
+        console.log('   🔧 Capacitor:', !!window.Capacitor);
+        console.log('   🔗 Capacitor Plugins:', Object.keys(window.Capacitor?.Plugins || {}));
         
-        // 2. AdMob plugin kontrolü
-        console.log('2. AdMob Plugin Durumu:');
-        console.log('   - AdMob Plugin:', !!AdMob);
-        console.log('   - Plugin Type:', typeof AdMob);
+        // 2. AdMob Plugin Detaylı Kontrolü
+        console.log('\n2️⃣ ADMOB PLUGIN DURUMU:');
+        const pluginSources = [
+            { name: 'Capacitor.Plugins.AdMob', obj: window.Capacitor?.Plugins?.AdMob },
+            { name: 'CapacitorCommunityAdmob', obj: window.CapacitorCommunityAdmob },
+            { name: 'window.AdMob', obj: window.AdMob },
+            { name: 'Global AdMob', obj: AdMob }
+        ];
         
+        pluginSources.forEach(source => {
+            if (source.obj) {
+                console.log(`   ✅ ${source.name}:`, typeof source.obj);
+                console.log(`      📋 Methods:`, Object.getOwnPropertyNames(source.obj));
+            } else {
+                console.log(`   ❌ ${source.name}: Bulunamadı`);
+            }
+        });
+        
+        // 3. Aktif AdMob Plugin Test
+        console.log('\n3️⃣ AKTİF PLUGIN TEST:');
         if (AdMob) {
-            console.log('   - Plugin Methods:', Object.getOwnPropertyNames(AdMob));
-        }
-        
-        // 3. Test reklamını göstermeyi dene
-        if (AdMob) {
-            console.log('3. Test Banner Reklamı Deneniyor...');
+            console.log('   🎯 Plugin Hazır:', typeof AdMob);
             
-            const testBannerOptions = {
-                adId: 'ca-app-pub-7610338885240453/6081192537', // Gerçek Banner Unit ID
+            // Plugin metodlarını kontrol et
+            const requiredMethods = ['initialize', 'showBanner', 'hideBanner', 'prepareInterstitial'];
+            requiredMethods.forEach(method => {
+                if (typeof AdMob[method] === 'function') {
+                    console.log(`   ✅ ${method}: Mevcut`);
+                } else {
+                    console.log(`   ❌ ${method}: Eksik!`);
+                }
+            });
+            
+            // 4. Test Banner Denemeleri
+            console.log('\n4️⃣ BANNER TEST SÜRECİ:');
+            
+            // Önce Google test banner'ı dene
+            console.log('   🧪 Google Test Banner deneniyor...');
+            const googleTestBanner = {
+                adId: 'ca-app-pub-3940256099942544/6300978111', // Google test ID
                 adSize: 'BANNER',
                 position: 'TOP_CENTER',
                 margin: 0,
-                isTesting: false
+                isTesting: true
             };
             
-            AdMob.showBanner(testBannerOptions).then(() => {
-                console.log('✅ TEST BANNER BAŞARILI! AdMob çalışıyor.');
-                console.log('🎯 Şimdi kendi reklam ID\'nizle deneyin.');
+            AdMob.showBanner(googleTestBanner).then(() => {
+                console.log('   ✅ GOOGLE TEST BANNER BAŞARILI!');
+                
+                // 2 saniye sonra kendi banner'ınızı dene
+                setTimeout(() => {
+                    console.log('   🎯 Gerçek Banner deneniyor...');
+                    this.testRealBanner();
+                }, 2000);
+                
             }).catch((error) => {
-                console.error('❌ TEST BANNER BAŞARISIZ:', error);
-                console.log('🔍 Hata detayları:', JSON.stringify(error));
+                console.error('   ❌ Google Test Banner Başarısız:', error);
+                console.log('   🔍 Plugin kurulumu kontrol edin!');
+                
+                // Yine de gerçek banner'ı dene
+                setTimeout(() => {
+                    this.testRealBanner();
+                }, 1000);
             });
+            
         } else {
-            console.log('❌ AdMob plugin bulunamadı! Plugin kurulumu gerekli.');
+            console.log('   ❌ AdMob Plugin Bulunamadı!');
+            console.log('   💡 Çözüm Önerileri:');
+            console.log('      1. npm install @capacitor-community/admob');
+            console.log('      2. npx cap sync android');
+            console.log('      3. Android Studio\'da rebuild yapın');
         }
         
-        console.log('========================');
+        // 5. AdMob Konfigürasyon Kontrolü
+        console.log('\n5️⃣ KONFIGÜRASYON KONTROL:');
+        console.log('   📄 capacitor.config.json AdMob ayarları kontrol ediliyor...');
+        
+        fetch('./capacitor.config.json')
+            .then(response => response.json())
+            .then(config => {
+                if (config.plugins?.AdMob) {
+                    console.log('   ✅ AdMob config bulundu:', config.plugins.AdMob);
+                } else {
+                    console.log('   ⚠️ AdMob config eksik!');
+                }
+            })
+            .catch(() => {
+                console.log('   ⚠️ Config dosyası okunamadı');
+            });
+        
+        console.log('\n=====================================');
     },
 
-    // AdMob Android reklamları başlat
+    // Gerçek banner test fonksiyonu
+    testRealBanner: function() {
+        console.log('🎯 GERÇEK BANNER TEST:');
+        
+        const realBannerOptions = {
+            adId: 'ca-app-pub-7610338885240453/6081192537', // Sizin Banner Unit ID
+            adSize: 'ADAPTIVE_BANNER',
+            position: 'TOP_CENTER',
+            margin: 0,
+            isTesting: false
+        };
+        
+        AdMob.showBanner(realBannerOptions).then((result) => {
+            console.log('✅ GERÇEK BANNER BAŞARILI!');
+            console.log('📊 Banner sonucu:', result);
+            console.log('🎉 Banner reklamlarınız çalışıyor!');
+        }).catch((error) => {
+            console.error('❌ Gerçek Banner Başarısız:', error);
+            console.log('🔍 Hata analizi:', JSON.stringify(error, null, 2));
+            
+            // Alternatif banner boyutları dene
+            console.log('🔄 Alternatif banner boyutları deneniyor...');
+            this.tryAlternativeBanners();
+        });
+    },
+
+    // Alternatif banner boyutları test et
+    tryAlternativeBanners: function() {
+        const alternatives = [
+            { adSize: 'BANNER', position: 'BOTTOM_CENTER' },
+            { adSize: 'BANNER', position: 'TOP_CENTER' },
+            { adSize: 'SMART_BANNER', position: 'TOP_CENTER' }
+        ];
+        
+        let index = 0;
+        const tryNext = () => {
+            if (index >= alternatives.length) {
+                console.log('❌ Tüm alternatif banner testleri başarısız');
+                return;
+            }
+            
+            const option = alternatives[index];
+            console.log(`🔄 Test ${index + 1}: ${option.adSize} - ${option.position}`);
+            
+            AdMob.showBanner({
+                adId: 'ca-app-pub-7610338885240453/6081192537',
+                ...option,
+                margin: 0,
+                isTesting: false
+            }).then(() => {
+                console.log(`✅ Banner başarılı: ${option.adSize} - ${option.position}`);
+            }).catch(() => {
+                index++;
+                setTimeout(tryNext, 1000);
+            });
+        };
+        
+        tryNext();
+    },
+
+    // AdMob Android reklamları başlat - İYİLEŞTİRİLMİŞ VERSİYON
     initAdMob: function() {
         if (!AdMob) {
-            console.log('❌ AdMob plugin bulunamadı - Capacitor plugini yüklü mü kontrol edin');
-            console.log('Debug: window.Capacitor:', window.Capacitor);
-            console.log('Debug: window.Capacitor.Plugins:', window.Capacitor?.Plugins);
+            console.error('❌ AdMob plugin bulunamadı - Capacitor plugini yüklü mü kontrol edin');
+            console.log('🔍 Debug bilgileri:');
+            console.log('   - window.Capacitor:', !!window.Capacitor);
+            console.log('   - Platform:', window.Capacitor?.getPlatform());
+            console.log('   - Capacitor.Plugins:', window.Capacitor?.Plugins);
+            console.log('   - Plugin Keys:', Object.keys(window.Capacitor?.Plugins || {}));
+            
+            // Plugin eksikse kullanıcıya detaylı bilgi ver
+            console.log('💡 ÇÖZÜM ADIMLARı:');
+            console.log('   1. npm install @capacitor-community/admob');
+            console.log('   2. npx cap sync android');
+            console.log('   3. Android Studio\'da proje rebuild');
+            console.log('   4. Uygulamayı tekrar build edin');
             return;
         }
 
         console.log('🚀 AdMob başlatılıyor...');
+        console.log('📱 Platform:', window.Capacitor?.getPlatform());
+        console.log('🔧 AdMob Plugin:', typeof AdMob);
 
-        // AdMob'u başlat - GERÇEK REKLAMLAR
-        AdMob.initialize({
+        // AdMob'u başlat - GELİŞTİRİLMİŞ AYARLAR
+        const initOptions = {
             requestTrackingAuthorization: true,
-            testingDevices: [], // Test cihaz listesi boşaltıldı
-            initializeForTesting: false // TEST MODU KAPALI - GERÇEK REKLAMLAR!
-        }).then(() => {
-            console.log('✅ AdMob başarıyla başlatıldı (Gerçek Reklamlar)');
-            console.log('🎯 Gerçek reklamlar gösterilecek');
+            testingDevices: [], // Gerçek reklamlar için boş
+            initializeForTesting: false, // Gerçek reklamlar aktif
+            tagForChildDirectedTreatment: false,
+            tagForUnderAgeOfConsent: false,
+            maxAdContentRating: 'MA' // Mature content allowed
+        };
+
+        console.log('⚙️ AdMob ayarları:', initOptions);
+
+        AdMob.initialize(initOptions).then((result) => {
+            console.log('✅ AdMob başarıyla başlatıldı!');
+            console.log('📊 Initialize sonucu:', result);
             
-            // 2 saniye bekle, sonra banner reklam göster
-            setTimeout(() => {
-                this.showAdMobBanner();
-            }, 2000);
-            
-            // 3 saniye bekle, sonra interstitial reklamı hazırla
-            setTimeout(() => {
-                this.prepareInterstitialAd();
-            }, 3000);
+            // AdMob başarılı, şimdi banner'ları yükle
+            this.onAdMobReady();
             
         }).catch((error) => {
             console.error('❌ AdMob başlatılamadı:', error);
-            console.log('Debug: AdMob Initialize Error Details:', JSON.stringify(error));
+            console.log('🔍 Hata detayları:', JSON.stringify(error, null, 2));
             
-            // Eğer plugin eksikse kullanıcıya bildir
-            if (error.message && error.message.includes('Plugin')) {
-                console.log('💡 Çözüm: npm install @capacitor-community/admob komutu ile AdMob plugin\'i kurun');
-                console.log('💡 Sonrasında: npx cap sync android komutu çalıştırın');
+            // Hata türüne göre spesifik çözümler
+            if (error.message) {
+                console.log('📝 Hata mesajı:', error.message);
+                
+                if (error.message.includes('Plugin')) {
+                    console.log('🔧 Plugin kurulum sorunu tespit edildi');
+                } else if (error.message.includes('network')) {
+                    console.log('🌐 Ağ bağlantısı sorunu olabilir');
+                } else if (error.message.includes('configuration')) {
+                    console.log('⚙️ AdMob konfigürasyon sorunu');
+                }
             }
+            
+            // 5 saniye sonra tekrar dene
+            console.log('🔄 5 saniye sonra AdMob tekrar denenecek...');
+            setTimeout(() => {
+                this.retryAdMobInit();
+            }, 5000);
         });
     },
 
-    // AdMob Banner reklamı göster
+    // AdMob hazır olduğunda çalışacak fonksiyon
+    onAdMobReady: function() {
+        console.log('🎯 AdMob hazır, reklamlar yükleniyor...');
+        
+        // 1 saniye bekle, sonra banner göster
+        setTimeout(() => {
+            console.log('📱 Banner reklam gösteriliyor...');
+            this.showAdMobBanner();
+        }, 1000);
+        
+        // 2 saniye bekle, sonra interstitial hazırla
+        setTimeout(() => {
+            console.log('🎬 Interstitial reklam hazırlanıyor...');
+            this.prepareInterstitialAd();
+        }, 2000);
+        
+        // 3 saniye bekle, sonra rewarded hazırla (varsa)
+        setTimeout(() => {
+            if (typeof this.prepareRewardedAd === 'function') {
+                console.log('🎁 Rewarded reklam hazırlanıyor...');
+                this.prepareRewardedAd();
+            }
+        }, 3000);
+    },
+
+    // AdMob tekrar başlatma
+    retryAdMobInit: function() {
+        console.log('🔄 AdMob tekrar başlatılıyor...');
+        
+        // Daha basit ayarlarla tekrar dene
+        const simpleOptions = {
+            requestTrackingAuthorization: false, // İzin isteme
+            testingDevices: [],
+            initializeForTesting: false
+        };
+        
+        AdMob.initialize(simpleOptions).then(() => {
+            console.log('✅ AdMob ikinci denemede başarılı!');
+            this.onAdMobReady();
+        }).catch((error) => {
+            console.error('❌ AdMob ikinci deneme de başarısız:', error);
+            
+            // Son çare: Test modu ile dene
+            console.log('🧪 Test modu ile deneniyor...');
+            this.tryTestMode();
+        });
+    },
+
+    // Test modu denemesi
+    tryTestMode: function() {
+        const testOptions = {
+            requestTrackingAuthorization: false,
+            testingDevices: ['DEVICE_ID_FOR_TESTING'], // Gerçek device ID gerekmez
+            initializeForTesting: true // Test modu açık
+        };
+        
+        AdMob.initialize(testOptions).then(() => {
+            console.log('✅ AdMob test modunda başarılı!');
+            console.log('⚠️ Test modunda çalışıyor, gerçek reklamlar için konfigürasyonu kontrol edin');
+            
+            // Test banner göster
+            this.showTestBanner();
+        }).catch((error) => {
+            console.error('❌ Test modu da başarısız, plugin kurulumu kontrol edin:', error);
+        });
+    },
+
+    // AdMob Banner reklamı göster - İYİLEŞTİRİLMİŞ VERSİYON
     showAdMobBanner: function() {
-        if (!AdMob) return;
+        if (!AdMob) {
+            console.error('❌ AdMob plugin bulunamadı, banner gösterilemiyor');
+            return;
+        }
+
+        // Önce mevcut banner'ları temizle
+        this.hideAdMobBanner();
 
         const bannerOptions = {
             adId: 'ca-app-pub-7610338885240453/6081192537', // Gerçek Banner Unit ID
-            adSize: 'BANNER',
+            adSize: 'ADAPTIVE_BANNER', // ADAPTIVE_BANNER daha iyi performans
             position: 'TOP_CENTER',
             margin: 0,
-            isTesting: false // Gerçek reklamlar aktif!
+            isTesting: false, // Gerçek reklamlar aktif!
+            npa: '0' // Non-personalized ads = 0 (kişiselleştirilmiş reklamlar)
         };
 
         console.log('🎯 AdMob Banner gösteriliyor...', bannerOptions);
+        console.log('📱 Platform:', window.Capacitor?.getPlatform());
+        console.log('🔧 AdMob Plugin Methods:', Object.keys(AdMob));
 
-        AdMob.showBanner(bannerOptions).then(() => {
+        AdMob.showBanner(bannerOptions).then((result) => {
             console.log('✅ AdMob Banner başarıyla gösterildi');
+            console.log('📊 Banner sonucu:', result);
+            
+            // Banner gösterildiğinde layout'u ayarla
+            setTimeout(() => {
+                const body = document.body;
+                if (body) {
+                    body.style.paddingTop = '60px'; // Banner için üst boşluk
+                    console.log('📏 Body padding-top: 60px eklendi');
+                }
+            }, 500);
+            
         }).catch((error) => {
             console.error('❌ AdMob Banner gösterilemedi:', error);
+            console.log('🔍 Hata detayları:', JSON.stringify(error, null, 2));
+            
             // Hata durumunda debug bilgileri
             console.log('Debug: Banner Options:', bannerOptions);
-            console.log('Debug: AdMob Plugin Status:', AdMob);
+            console.log('Debug: AdMob Plugin Status:', !!AdMob);
+            console.log('Debug: Platform:', window.Capacitor?.getPlatform());
+            
+            // Eğer banner yüklenemezse 5 saniye sonra tekrar dene
+            setTimeout(() => {
+                console.log('🔄 Banner tekrar deneniyor...');
+                this.retryBanner();
+            }, 5000);
         });
+    },
+
+    // Banner'ı gizle
+    hideAdMobBanner: function() {
+        if (!AdMob) return;
+        
+        AdMob.hideBanner().then(() => {
+            console.log('🙈 AdMob Banner gizlendi');
+        }).catch((error) => {
+            console.log('⚠️ Banner gizleme hatası:', error);
+        });
+    },
+
+    // Banner tekrar deneme
+    retryBanner: function() {
+        console.log('🔄 AdMob Banner tekrar deneniyor...');
+        
+        // Farklı banner boyutu ile dene
+        const retryOptions = {
+            adId: 'ca-app-pub-7610338885240453/6081192537',
+            adSize: 'BANNER', // Standart banner boyutu
+            position: 'BOTTOM_CENTER', // Alt konuma dene
+            margin: 0,
+            isTesting: false
+        };
+        
+        if (AdMob) {
+            AdMob.showBanner(retryOptions).then(() => {
+                console.log('✅ AdMob Banner tekrar denemede başarılı (ALT POZİSYON)');
+            }).catch((error) => {
+                console.error('❌ Banner tekrar denemede de başarısız:', error);
+                
+                // Son çare: Test banner dene
+                this.showTestBanner();
+            });
+        }
+    },
+
+    // Test banner göster (sorun giderme için)
+    showTestBanner: function() {
+        console.log('🧪 Test banner deneniyor...');
+        
+        const testOptions = {
+            adId: 'ca-app-pub-3940256099942544/6300978111', // Google test banner ID
+            adSize: 'BANNER',
+            position: 'TOP_CENTER',
+            margin: 0,
+            isTesting: true // Test modu açık
+        };
+        
+        if (AdMob) {
+            AdMob.showBanner(testOptions).then(() => {
+                console.log('✅ TEST BANNER BAŞARILI! AdMob çalışıyor.');
+                console.log('💡 Gerçek banner ID\'nizde sorun olabilir.');
+            }).catch((error) => {
+                console.error('❌ Test banner da başarısız! Plugin sorunu var:', error);
+            });
+        }
     },
 
     // Interstitial reklam hazırla
@@ -1144,4 +1461,4 @@ window.MonetizationManager = MonetizationManager;
 // Test fonksiyonunu global erişim için ayrıca ekle
 window.testAdMobConnection = function() {
     MonetizationManager.testAdMobConnection();
-}; 
+};
