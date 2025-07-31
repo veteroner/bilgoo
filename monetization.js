@@ -32,9 +32,6 @@ const MonetizationManager = {
         
         // Mobil banner tercihlerini kontrol et
         this.checkMobileBannerPreferences();
-        
-        // Periyodik reklam kontrolü başlat
-        this.startPeriodicAdCheck();
     },
 
     // Çerez onayını kontrol et
@@ -572,9 +569,9 @@ const MonetizationManager = {
         }
     },
 
-    // Reklamları yenile - İYİLEŞTİRİLMİŞ VERSİYON
+    // Reklamları yenile
     refreshAds: function() {
-        console.log('🔄 Reklamlar yenileniyor (İyileştirilmiş)...');
+        console.log('🔄 Reklamlar yenileniyor...');
         
         try {
             // Çerez onayını kontrol et
@@ -583,158 +580,124 @@ const MonetizationManager = {
                 return;
             }
             
-            // AdSense'in yüklü olduğundan emin ol
+            // AdSense'in yüklü olduğundan emin ol (script index.html'de yükleniyor)
             if (typeof adsbygoogle === 'undefined') {
                 console.log('⚠️ AdSense objesi tanımlı değil, 3 saniye sonra tekrar denenecek');
-                setTimeout(() => {
-                    this.refreshAds();
-                }, 3000);
+                    setTimeout(() => {
+                        this.refreshAds();
+                    }, 3000);
                 return;
             }
             
-            // TÜM reklam elementlerini bul (yüklenmiş ve yüklenmemiş)
-            const allAdElements = document.querySelectorAll('.adsbygoogle');
-            console.log(`📊 Toplam ${allAdElements.length} reklam elementi bulundu`);
+            // DÜZELTME: Sadece yüklenmemiş reklamları seç (data-adsbygoogle-status="done" olmayanlar)
+            const adElements = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status="done"])');
             
-            // Yüklenmemiş reklamları bul
-            const unloadedAds = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status="done"])');
+            if (adElements.length === 0) {
+                console.log('Yenilenecek reklam alanı bulunamadı veya tüm reklamlar zaten yüklenmiş');
+                return;
+            }
             
-            // Yüklenmiş ama görünmeyen reklamları bul (KAYBOLMUŞ REKLAMLAR)
-            const loadedButHiddenAds = [];
-            document.querySelectorAll('.adsbygoogle[data-adsbygoogle-status="done"]').forEach(ad => {
+            console.log(`${adElements.length} adet reklam bulundu, yenileme işlemi başlatılıyor...`);
+            
+            adElements.forEach((ad, index) => {
+                // Reklam boyutlarını kontrol et ve düzelt
                 const rect = ad.getBoundingClientRect();
-                const computedStyle = window.getComputedStyle(ad);
+                console.log(`Yenileme - Reklam ${index + 1} mevcut boyutları:`, {
+                    width: rect.width,
+                    height: rect.height,
+                    display: ad.style.display,
+                    visibility: ad.style.visibility
+                });
                 
-                // Reklam yüklenmiş ama görünmüyor mu?
-                if (rect.width === 0 || rect.height === 0 || 
-                    computedStyle.display === 'none' || 
-                    computedStyle.visibility === 'hidden' ||
-                    ad.innerHTML.trim() === '') {
+                // Boyut sorunu varsa düzelt
+                if (rect.width === 0 || rect.height === 0) {
+                    console.log(`Yenileme - Reklam ${index + 1} boyut sorunu tespit edildi, düzeltiliyor...`);
                     
-                    console.log('🔍 Kaybolmuş reklam tespit edildi:', {
-                        width: rect.width,
-                        height: rect.height,
-                        display: computedStyle.display,
-                        visibility: computedStyle.visibility,
-                        innerHTML: ad.innerHTML.length
-                    });
+                    // Minimum boyutları ayarla
+                    ad.style.minHeight = '100px';
+                    ad.style.minWidth = '320px';
+                    ad.style.width = '100%';
+                    ad.style.maxWidth = '100%';
+                    ad.style.display = 'block';
+                    ad.style.visibility = 'visible';
                     
-                    loadedButHiddenAds.push(ad);
+                    // Parent container'ı da kontrol et
+                    const parent = ad.parentElement;
+                    if (parent) {
+                        parent.style.width = '100%';
+                        parent.style.minWidth = '320px';
+                        parent.style.display = 'block';
+                        parent.style.visibility = 'visible';
+                    }
+                } else {
+                    // Minimum boyutları yine de ayarla (güvenlik için)
+                    if (!ad.style.minHeight) ad.style.minHeight = '100px';
+                    if (!ad.style.minWidth) ad.style.minWidth = '320px';
                 }
-            });
-            
-            const totalAdsToProcess = unloadedAds.length + loadedButHiddenAds.length;
-            
-            if (totalAdsToProcess === 0) {
-                console.log('✅ Tüm reklamlar düzgün çalışıyor, yenileme gerekmiyor');
-                return;
-            }
-            
-            console.log(`🎯 ${unloadedAds.length} yüklenmemiş + ${loadedButHiddenAds.length} kaybolmuş = ${totalAdsToProcess} reklam işlenecek`);
-            
-            // Yüklenmemiş reklamları işle
-            this.processAdElements(unloadedAds, 'Yüklenmemiş');
-            
-            // Kaybolmuş reklamları işle (önce durumlarını resetle)
-            loadedButHiddenAds.forEach((ad, index) => {
-                console.log(`🔄 Kaybolmuş reklam ${index + 1} resetleniyor...`);
                 
-                // AdSense durumunu resetle
-                ad.removeAttribute('data-adsbygoogle-status');
-                ad.removeAttribute('data-ad-status');
-                
-                // Style'ları resetle
-                ad.style.display = 'block';
-                ad.style.visibility = 'visible';
-                ad.style.width = '100%';
-                ad.style.minWidth = '320px';
-                ad.style.minHeight = '100px';
-                
-                // Parent container'ı da resetle
-                const parent = ad.parentElement;
-                if (parent) {
-                    parent.style.display = 'block';
-                    parent.style.visibility = 'visible';
-                }
-            });
-            
-            // Resetlenmiş reklamları işle
-            setTimeout(() => {
-                this.processAdElements(loadedButHiddenAds, 'Resetlenmiş');
-            }, 1000);
-            
-        } catch (error) {
-            console.error('❌ refreshAds fonksiyonunda hata:', error);
-        }
-    },
-
-    // Reklam elementlerini işle - YENİ YARDIMCI FONKSİYON
-    processAdElements: function(adElements, type) {
-        if (adElements.length === 0) return;
-        
-        console.log(`🎯 ${adElements.length} adet ${type} reklam işleniyor...`);
-        
-        adElements.forEach((ad, index) => {
-            // Reklam boyutlarını kontrol et ve düzelt
-            const rect = ad.getBoundingClientRect();
-            
-            // Boyut sorunu varsa düzelt
-            if (rect.width === 0 || rect.height === 0) {
-                console.log(`📏 ${type} reklam ${index + 1} boyut sorunu düzeltiliyor...`);
-                
-                // Minimum boyutları ayarla
-                ad.style.minHeight = '100px';
-                ad.style.minWidth = '320px';
-                ad.style.width = '100%';
-                ad.style.maxWidth = '100%';
-                ad.style.display = 'block';
-                ad.style.visibility = 'visible';
-                
-                // Parent container'ı da kontrol et
-                const parent = ad.parentElement;
-                if (parent) {
-                    parent.style.width = '100%';
-                    parent.style.minWidth = '320px';
-                    parent.style.display = 'block';
-                    parent.style.visibility = 'visible';
-                }
-            }
-            
-            // Reklam alanının görünür olduğunu doğrula
-            const adContainer = ad.closest('div');
-            if (adContainer) {
-                adContainer.style.display = 'flex';
-                adContainer.style.minHeight = '250px';
-                adContainer.style.width = '100%';
-                adContainer.style.overflow = 'hidden';
-                
-                // Mobil banner için özel kontrol
-                if (adContainer.classList.contains('mobile-top-banner')) {
-                    adContainer.style.display = 'block';
-                    adContainer.style.position = 'fixed';
-                    adContainer.style.top = '0';
-                    adContainer.style.left = '0';
+                // Reklam alanının görünür olduğunu doğrula
+                const adContainer = ad.closest('div');
+                if (adContainer) {
+                    adContainer.style.display = 'flex';
+                    adContainer.style.minHeight = '250px';
                     adContainer.style.width = '100%';
-                    adContainer.style.zIndex = '1000';
-                    // Ana container'a dokunma - layout kaymasını önle
+                    adContainer.style.overflow = 'hidden';
+                    
+                    // Yan panel reklamları için özel stil
+                    if (adContainer.classList.contains('side-ad-container')) {
+                        adContainer.style.flexDirection = 'column';
+                        adContainer.style.alignItems = 'center';
+                        adContainer.style.justifyContent = 'center';
+                        adContainer.style.minHeight = '350px';
+                        adContainer.style.width = '180px';
+                        adContainer.style.margin = '5px';
+                        adContainer.style.borderRadius = '12px';
+                        adContainer.style.background = 'transparent';
+                    }
                 }
+            });
+            
+            // Her reklam için ayrı ayrı push et
+            if (typeof adsbygoogle !== 'undefined' && adElements.length > 0) {
+                adElements.forEach((ad, index) => {
+                    setTimeout(() => {
+                        try {
+                            // Reklam hala yüklenmemiş mi kontrol et
+                            if (!ad.hasAttribute('data-adsbygoogle-status') || ad.getAttribute('data-adsbygoogle-status') !== 'done') {
+                            console.log(`Reklam ${index + 1} yenileniyor...`);
+                            (adsbygoogle = window.adsbygoogle || []).push({
+                                child_safe_ads_targeting: 'enabled'
+                            });
+                            console.log(`Reklam ${index + 1} yenilendi`);
+                            } else {
+                                console.log(`Reklam ${index + 1} zaten yüklenmiş, işlem atlanıyor`);
+                            }
+                        } catch (e) {
+                            console.error(`Reklam ${index + 1} yenilenirken hata:`, e);
+                            // Hata durumunda temizleme işlemleri
+                            if (ad.getAttribute('data-adsbygoogle-status') === 'done') {
+                                // Reklamın durumu "done" olarak işaretlenmişse, ancak yine de hata varsa
+                                ad.removeAttribute('data-adsbygoogle-status');
+                                // Bir süre sonra tekrar deneyelim
+                                setTimeout(() => {
+                                    try {
+                                        (adsbygoogle = window.adsbygoogle || []).push({
+                                            child_safe_ads_targeting: 'enabled'
+                                        });
+                                    } catch (innerError) {
+                                        console.error('İkinci deneme başarısız:', innerError);
+                                    }
+                                }, 5000);
+                            }
+                        }
+                    }, index * 500); // Her reklam için 500ms gecikme
+                });
+            } else {
+                console.error('AdSense objesi bulunamadı veya reklam elementi yok');
             }
-        });
-        
-        // Her reklam için ayrı ayrı push et
-        adElements.forEach((ad, index) => {
-            setTimeout(() => {
-                try {
-                    console.log(`🚀 ${type} reklam ${index + 1} yükleniyor...`);
-                    (adsbygoogle = window.adsbygoogle || []).push({
-                        child_safe_ads_targeting: 'enabled'
-                    });
-                    console.log(`✅ ${type} reklam ${index + 1} yüklendi`);
-                } catch (e) {
-                    console.error(`❌ ${type} reklam ${index + 1} yüklenirken hata:`, e);
-                }
-            }, index * 1000); // Her reklam için 1 saniye gecikme
-        });
+        } catch (error) {
+            console.error('refreshAds fonksiyonunda beklenmeyen hata:', error);
+        }
     },
 
     // Mobil reklam yönetimi
@@ -935,14 +898,7 @@ const MonetizationManager = {
         
         const banner = document.createElement('div');
         banner.className = 'mobile-top-banner';
-        
-        // Banner'ı fixed position ile ayarla - layout'u bozmasın
-        banner.style.position = 'fixed';
-        banner.style.top = '0';
-        banner.style.left = '0';
-        banner.style.width = '100%';
-        banner.style.zIndex = '1000';
-        banner.style.display = 'block';
+        // CSS'teki stilleri kullan, JavaScript ile override etme
         
         // Gerçek AdSense reklamı ekle
         banner.innerHTML = `
@@ -956,16 +912,24 @@ const MonetizationManager = {
             <button class="mobile-ad-close" onclick="MonetizationManager.hideMobileBanner('top')" title="Reklamı Gizle">×</button>
         `;
         
-        // Body'e ekle - container'a dokunmadan
-        document.body.appendChild(banner);
-        console.log('✅ Mobil üst banner body\'e eklendi');
-        
-        // Container'a CSS sınıfı ekle - inline style yerine
+        // Container'ın hemen üstüne ekle (logo üstü)
         const container = document.querySelector('.container');
-        if (container && !container.classList.contains('with-top-banner')) {
-            container.classList.add('with-top-banner');
-            console.log('📏 Container\'a with-top-banner sınıfı eklendi');
+        if (container) {
+            container.parentNode.insertBefore(banner, container);
+            console.log('✅ Mobil üst banner container üstüne eklendi');
+            
+            // Container'a otomatik padding ekle
+            container.style.paddingTop = '80px';
+            container.style.marginTop = '0';
+            console.log('📏 Container padding-top: 80px eklendi');
+        } else {
+            document.body.insertBefore(banner, document.body.firstChild);
+            console.log('✅ Mobil üst banner body başına eklendi');
         }
+        
+        // Body padding'i kaldır - artık gerek yok
+        document.body.style.paddingTop = '';
+        console.log('📏 Body padding kaldırıldı');
         
         // AdSense reklamını yükle
         setTimeout(() => {
@@ -1050,12 +1014,12 @@ const MonetizationManager = {
         if (banner) {
             banner.style.display = 'none';
             
-            // Eğer üst banner gizleniyorsa container sınıfını kaldır
+            // Eğer üst banner gizleniyorsa container padding'i kaldır
             if (position === 'top') {
                 const container = document.querySelector('.container');
                 if (container) {
-                    container.classList.remove('with-top-banner');
-                    console.log('📏 Container\'dan with-top-banner sınıfı kaldırıldı');
+                    container.style.paddingTop = '15px';
+                    console.log('📏 Container padding-top sıfırlandı');
                 }
             }
             
@@ -1073,11 +1037,11 @@ const MonetizationManager = {
             if (topBanner) {
                 topBanner.style.display = 'none';
                 
-                // Container sınıfını kaldır
+                // Container padding'i de kaldır
                 const container = document.querySelector('.container');
                 if (container) {
-                    container.classList.remove('with-top-banner');
-                    console.log('📏 Container\'dan with-top-banner sınıfı kaldırıldı (tercihler)');
+                    container.style.paddingTop = '15px';
+                    console.log('📏 Container padding-top sıfırlandı (tercihler)');
                 }
             }
         }
@@ -1087,95 +1051,6 @@ const MonetizationManager = {
             if (bottomBanner) {
                 bottomBanner.style.display = 'none';
             }
-        }
-    },
-
-    // Mobil banner durumunu kontrol et - YENİ FONKSİYON
-    checkMobileBannerStatus: function() {
-        const topBanner = document.querySelector('.mobile-top-banner');
-        if (topBanner) {
-            const isHidden = localStorage.getItem('hideMobileTopBanner') === 'true';
-            const rect = topBanner.getBoundingClientRect();
-            
-            console.log('📱 Mobil banner durumu:', {
-                hidden: isHidden,
-                width: rect.width,
-                height: rect.height,
-                display: topBanner.style.display
-            });
-            
-            // Eğer banner gizli değilse ama görünmüyorsa tekrar göster
-            if (!isHidden && (rect.width === 0 || rect.height === 0 || topBanner.style.display === 'none')) {
-                console.log('🔄 Mobil banner tekrar gösteriliyor...');
-                topBanner.style.display = 'block';
-                
-                // Container sınıfını ekle - inline style yerine
-                const container = document.querySelector('.container');
-                if (container && !container.classList.contains('with-top-banner')) {
-                    container.classList.add('with-top-banner');
-                }
-            }
-                 }
-     },
-
-    // Periyodik reklam kontrolü başlat - YENİ FONKSİYON
-    startPeriodicAdCheck: function() {
-        console.log('⏰ Periyodik reklam kontrolü başlatıldı (2 dakikada bir)');
-        
-        // İlk kontrol 30 saniye sonra
-        setTimeout(() => {
-            this.performAdHealthCheck();
-        }, 30000);
-        
-        // Her 2 dakikada bir kontrol et
-        setInterval(() => {
-            this.performAdHealthCheck();
-        }, 120000); // 2 dakika = 120000ms
-    },
-
-    // Reklam sağlık kontrolü - YENİ FONKSİYON
-    performAdHealthCheck: function() {
-        if (!this.cookiePreferences.advertising) {
-            return; // Reklam izni yoksa kontrol etme
-        }
-        
-        console.log('🔍 Reklam sağlık kontrolü yapılıyor...');
-        
-        // Mobil banner'ı kontrol et
-        this.checkMobileBannerStatus();
-        
-        // Tüm reklamları kontrol et
-        const allAds = document.querySelectorAll('.adsbygoogle');
-        let problematicAds = 0;
-        
-        allAds.forEach((ad, index) => {
-            const rect = ad.getBoundingClientRect();
-            const computedStyle = window.getComputedStyle(ad);
-            const hasContent = ad.innerHTML.trim().length > 0;
-            
-            // Reklam problemi var mı?
-            const hasIssue = rect.width === 0 || rect.height === 0 || 
-                           computedStyle.display === 'none' || 
-                           computedStyle.visibility === 'hidden' ||
-                           !hasContent;
-            
-            if (hasIssue) {
-                problematicAds++;
-                console.log(`⚠️ Problemli reklam ${index + 1}:`, {
-                    width: rect.width,
-                    height: rect.height,
-                    display: computedStyle.display,
-                    visibility: computedStyle.visibility,
-                    hasContent: hasContent
-                });
-            }
-        });
-        
-        if (problematicAds > 0) {
-            console.log(`🔄 ${problematicAds} problemli reklam bulundu, yenileme başlatılıyor...`);
-            this.refreshAds();
-        } else {
-            console.log('✅ Tüm reklamlar sağlıklı durumda');
         }
     },
 
@@ -1222,51 +1097,4 @@ window.MonetizationManager = MonetizationManager;
 // Test fonksiyonunu global erişim için ayrıca ekle
 window.testAdMobConnection = function() {
     MonetizationManager.testAdMobConnection();
-};
-
-// Debug fonksiyonları - Console'dan kullanım için
-window.debugAds = function() {
-    console.log('🔧 REKLAM DEBUG RAPORU');
-    console.log('======================');
-    
-    const allAds = document.querySelectorAll('.adsbygoogle');
-    console.log(`📊 Toplam reklam sayısı: ${allAds.length}`);
-    
-    allAds.forEach((ad, index) => {
-        const rect = ad.getBoundingClientRect();
-        const computedStyle = window.getComputedStyle(ad);
-        
-        console.log(`🎯 Reklam ${index + 1}:`, {
-            'data-ad-status': ad.getAttribute('data-adsbygoogle-status'),
-            'boyutlar': `${rect.width}x${rect.height}`,
-            'display': computedStyle.display,
-            'visibility': computedStyle.visibility,
-            'innerHTML uzunluğu': ad.innerHTML.length,
-            'parent class': ad.parentElement?.className || 'yok'
-        });
-    });
-    
-    // Mobil banner durumu
-    const banner = document.querySelector('.mobile-top-banner');
-    if (banner) {
-        const bannerRect = banner.getBoundingClientRect();
-        console.log('📱 Mobil Banner:', {
-            'boyutlar': `${bannerRect.width}x${bannerRect.height}`,
-            'display': banner.style.display,
-            'localStorage gizli': localStorage.getItem('hideMobileTopBanner')
-        });
-    }
-    
-    console.log('======================');
-};
-
-window.forceRefreshAds = function() {
-    console.log('🔄 Reklamlar zorla yenileniyor...');
-    MonetizationManager.refreshAds();
-};
-
-window.resetBannerPreferences = function() {
-    localStorage.removeItem('hideMobileTopBanner');
-    localStorage.removeItem('hideMobileBottomBanner');
-    console.log('🔄 Banner tercihleri sıfırlandı, sayfa yenileyin');
 }; 

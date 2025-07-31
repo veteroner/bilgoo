@@ -3,12 +3,7 @@
     <!-- Arka plan rengi -->
     <item android:drawable="@drawable/ic_splash_background" />
     
-    <!-- Ana ikon - Safe area uyumlu, çevre boşlukları ile -->
-    <item 
-        android:drawable="@drawable/splash" 
-        android:gravity="center"
-        android:insetLeft="80dp"
-        android:insetTop="80dp"
-        android:insetRight="80dp"
-        android:insetBottom="80dp" />
+    <!-- Ana ikon - Safe area uyumlu -->
+    <item android:drawable="@drawable/splash" 
+          android:gravity="center" />
 </layer-list> 
