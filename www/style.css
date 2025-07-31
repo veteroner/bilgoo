@@ -64,7 +64,11 @@
     
     .container {
         margin-top: 0 !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
         padding-top: 90px !important; /* Reklam alanı için üst boşluk artırıldı */
+        width: min(90%, 600px) !important;
+        max-width: 600px !important;
     }
     
     /* Diğer elementleri normal konumuna getir */
@@ -79,6 +83,9 @@
     .quiz-container .container,
     .profile-container .container {
         padding-top: 90px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        text-align: center !important;
     }
     
     /* Oyun başladığında tüm game-header'ı (can, süre, puan, yıldız) reklam alanının altına kaydır */
@@ -105,6 +112,13 @@
     .question-container {
         margin-top: 10px !important;
     }
+}
+
+/* Mobil banner için container padding sınıfı */
+.with-top-banner {
+    padding-top: 80px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 /* Mobil Inline Reklamlar */
@@ -169,10 +183,7 @@
     border-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Oyun sırasında reklamları gizle */
-body.quiz-active .mobile-top-banner {
-    display: none !important;
-}
+/* Banner reklamlar herzaman görünür kalacak - quiz sırasında gizleme kuralı kaldırıldı */
 
 /* Küçük ekranlar için responsive */
 @media (max-width: 360px) {
@@ -346,8 +357,9 @@ body.quiz-active .mobile-top-banner {
 body {
     font-family: 'Poppins', sans-serif;
     display: flex;
-    justify-content: center;
+    flex-direction: column; /* new: stack children vertically */
     align-items: center;
+    justify-content: flex-start; /* was center – keep content from centering vertically */
     min-height: 100vh;
     background: var(--bg-gradient);
     position: relative;
@@ -793,7 +805,6 @@ input:checked + .slider:before {
     background: linear-gradient(145deg, #ff9800, #e65100);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
-
 [data-theme="dark"] .joker-btn::before {
     background: linear-gradient(145deg, #ffa726, #ff9800);
 }
@@ -1592,7 +1603,6 @@ h3 {
     font-weight: 600;
     font-size: 1.4rem;
 }
-
 #question {
     margin-bottom: clamp(0.1rem, 0.8vw, 0.25rem); /* 0.15rem'den 0.1rem'e, 0.35rem'den 0.25rem'e azaltıldı */
     min-height: 1em; /* 2em'den 1em'e düşürüldü */
@@ -2392,7 +2402,6 @@ footer p {
     margin-right: 1rem;
     color: #4CAF50;
 }
-
 .notification-title {
     font-weight: 600;
     margin-bottom: 0.2rem;
@@ -3169,7 +3178,6 @@ input:checked + .switch-label:before {
     background: var(--correct-bg);
     color: var(--correct-color);
 }
-
 /* Mobil için ayarlamalar */
 @media (max-width: 768px) {
     .letter-option {
@@ -3945,7 +3953,6 @@ input:checked + .switch-label:before {
 .rotating {
     animation: rotate 1s linear;
 }
-
 /* Mobil cihazlar için font boyutlarını küçültme */
 @media (max-width: 768px) {
     body {
@@ -4729,7 +4736,6 @@ input:checked + .switch-label:before {
     margin: 0px auto 10px auto;
     padding: 5px;
 }
-
 .swipe-track {
     position: relative;
     width: 100%;
@@ -5530,7 +5536,6 @@ input:checked + .switch-label:before {
     gap: 15px;
     margin-top: 20px;
 }
-
 .winner-actions button {
     padding: 12px 20px;
     font-size: 1rem;
@@ -6327,7 +6332,6 @@ input:checked + .switch-label:before {
     z-index: 20000;
     position: relative;
 }
-
 .menu-title {
     font-size: 2.5rem;
     margin-bottom: 2rem;
@@ -7118,7 +7122,6 @@ input:checked + .switch-label:before {
     0% { filter: none; }
     100% { filter: none; }
 }
-
 .splash-loader.modern-loader {
     width: 320px;
     height: 32px;
@@ -7919,7 +7922,6 @@ body.quiz-active .main-logo-container svg {
     box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
     background: linear-gradient(45deg, #2ecc71, #27ae60);
 }
-
 .btn-buy-lives.disabled {
     background: linear-gradient(45deg, #95a5a6, #7f8c8d);
     cursor: not-allowed;
@@ -8720,7 +8722,6 @@ body.quiz-active .main-logo-container svg {
     color: #fff;
     border: 1.5px solid rgba(255,255,255,0.13);
 }
-
 .game-score-label {
     font-size: 13px;
     opacity: 0.85;
@@ -9520,7 +9521,6 @@ body.quiz-active .main-logo-container svg {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(123, 67, 151, 0.4);
 }
-
 .search-results,
 .friend-requests,
 .friends-list {
@@ -10320,7 +10320,6 @@ body.category-selection[data-theme="dark"] .logo {
     justify-content: center;
     align-items: center;
 }
-
 .stat-item::before {
     content: '';
     position: absolute;
@@ -11118,7 +11117,6 @@ body.category-selection[data-theme="dark"] .logo {
     font-size: 1.5rem;
     font-weight: 600;
 }
-
 .close-modal {
     background: none;
     border: none;
@@ -11914,7 +11912,6 @@ body:has(#profile-page[style*="display: block"]) footer {
     align-items: center;
     gap: 8px;
 }
-
 .badge-requirements p {
     margin: 0;
     color: #495057;
