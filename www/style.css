@@ -114,6 +114,13 @@
     }
 }
 
+/* Mobil banner için container padding sınıfı */
+.with-top-banner {
+    padding-top: 80px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
 /* Mobil Inline Reklamlar */
 .mobile-inline-ad {
     width: 100%;

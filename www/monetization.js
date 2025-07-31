@@ -708,7 +708,7 @@ const MonetizationManager = {
                 adContainer.style.width = '100%';
                 adContainer.style.overflow = 'hidden';
                 
-                // Mobil banner için özel kontrol - container margin'e dokunma
+                // Mobil banner için özel kontrol
                 if (adContainer.classList.contains('mobile-top-banner')) {
                     adContainer.style.display = 'block';
                     adContainer.style.position = 'fixed';
@@ -716,7 +716,7 @@ const MonetizationManager = {
                     adContainer.style.left = '0';
                     adContainer.style.width = '100%';
                     adContainer.style.zIndex = '1000';
-                    // Ana container'ın margin ayarlarını değiştirme
+                    // Ana container'a dokunma - layout kaymasını önle
                 }
             }
         });
@@ -935,7 +935,14 @@ const MonetizationManager = {
         
         const banner = document.createElement('div');
         banner.className = 'mobile-top-banner';
-        // CSS'teki stilleri kullan, JavaScript ile override etme
+        
+        // Banner'ı fixed position ile ayarla - layout'u bozmasın
+        banner.style.position = 'fixed';
+        banner.style.top = '0';
+        banner.style.left = '0';
+        banner.style.width = '100%';
+        banner.style.zIndex = '1000';
+        banner.style.display = 'block';
         
         // Gerçek AdSense reklamı ekle
         banner.innerHTML = `
@@ -949,26 +956,16 @@ const MonetizationManager = {
             <button class="mobile-ad-close" onclick="MonetizationManager.hideMobileBanner('top')" title="Reklamı Gizle">×</button>
         `;
         
-        // Container'ın hemen üstüne ekle (logo üstü)
-        const container = document.querySelector('.container');
-        if (container) {
-            container.parentNode.insertBefore(banner, container);
-            console.log('✅ Mobil üst banner container üstüne eklendi');
-            
-            // Container'a otomatik padding ekle - CSS'i bozmadan
-            if (!container.style.paddingTop || container.style.paddingTop === '0px') {
-                container.style.paddingTop = '80px';
-            }
-            // marginTop'u değiştirme - CSS merkezlemeyi bozar
-            console.log('📏 Container padding-top: 80px eklendi');
-        } else {
-            document.body.insertBefore(banner, document.body.firstChild);
-            console.log('✅ Mobil üst banner body başına eklendi');
-        }
+        // Body'e ekle - container'a dokunmadan
+        document.body.appendChild(banner);
+        console.log('✅ Mobil üst banner body\'e eklendi');
         
-        // Body padding'i kaldır - artık gerek yok
-        document.body.style.paddingTop = '';
-        console.log('📏 Body padding kaldırıldı');
+        // Container'a CSS sınıfı ekle - inline style yerine
+        const container = document.querySelector('.container');
+        if (container && !container.classList.contains('with-top-banner')) {
+            container.classList.add('with-top-banner');
+            console.log('📏 Container\'a with-top-banner sınıfı eklendi');
+        }
         
         // AdSense reklamını yükle
         setTimeout(() => {
@@ -1053,13 +1050,12 @@ const MonetizationManager = {
         if (banner) {
             banner.style.display = 'none';
             
-            // Eğer üst banner gizleniyorsa container padding'i kaldır
+            // Eğer üst banner gizleniyorsa container sınıfını kaldır
             if (position === 'top') {
                 const container = document.querySelector('.container');
                 if (container) {
-                    container.style.paddingTop = '15px';
-                    // marginTop'u resetleme - CSS merkezlemeyi bozar
-                    console.log('📏 Container padding-top sıfırlandı');
+                    container.classList.remove('with-top-banner');
+                    console.log('📏 Container\'dan with-top-banner sınıfı kaldırıldı');
                 }
             }
             
@@ -1077,12 +1073,11 @@ const MonetizationManager = {
             if (topBanner) {
                 topBanner.style.display = 'none';
                 
-                // Container padding'i de kaldır
+                // Container sınıfını kaldır
                 const container = document.querySelector('.container');
                 if (container) {
-                    container.style.paddingTop = '15px';
-                    // marginTop'u resetleme - CSS merkezlemeyi bozar
-                    console.log('📏 Container padding-top sıfırlandı (tercihler)');
+                    container.classList.remove('with-top-banner');
+                    console.log('📏 Container\'dan with-top-banner sınıfı kaldırıldı (tercihler)');
                 }
             }
         }
@@ -1114,11 +1109,10 @@ const MonetizationManager = {
                 console.log('🔄 Mobil banner tekrar gösteriliyor...');
                 topBanner.style.display = 'block';
                 
-                // Container padding'i de düzelt - margin'e dokunma
+                // Container sınıfını ekle - inline style yerine
                 const container = document.querySelector('.container');
-                if (container) {
-                    container.style.paddingTop = '80px';
-                    // marginTop'u değiştirme - CSS merkezlemeyi bozar
+                if (container && !container.classList.contains('with-top-banner')) {
+                    container.classList.add('with-top-banner');
                 }
             }
                  }

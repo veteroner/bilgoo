@@ -1,10 +1,15 @@
 {
   "name": "quiz-oyunu",
-  "version": "14.7.0",
+  "version": "14.9.0",
   "description": "Bilgoo uygulaması, kullanıcıların bilgilerini çeşitli kategorilerde test edebilecekleri interaktif bir web uygulamasıdır.",
   "main": "achievements.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "download-images": "node scripts/download-images.js",
+    "update-image-urls": "node scripts/update-image-urls.js",
+    "test-images": "start test-images.html",
+    "backup-questions": "copy www\\languages\\tr\\questions.json www\\languages\\tr\\questions-backup-%date:~-4,4%%date:~-7,2%%date:~-10,2%.json",
+    "restore-questions": "copy www\\languages\\tr\\questions-backup.json www\\languages\\tr\\questions.json"
   },
   "keywords": [],
   "author": "",
