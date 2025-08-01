@@ -357,9 +357,8 @@
 body {
     font-family: 'Poppins', sans-serif;
     display: flex;
-    flex-direction: column; /* new: stack children vertically */
+    justify-content: center;
     align-items: center;
-    justify-content: flex-start; /* was center – keep content from centering vertically */
     min-height: 100vh;
     background: var(--bg-gradient);
     position: relative;
