@@ -807,35 +807,35 @@
       "question": "İstanbul'da bulunan bu tarihi yapı Ayasofya mıdır?",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_001.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Hagia_Sophia_Mars_2013.jpg/800px-Hagia_Sophia_Mars_2013.jpg",
       "difficulty": 1
     },
     {
       "question": "Bu görsel Pamukkale travertenlerini göstermektedir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_002.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/01/Pamukkale_travertenleri_%282%29.jpg",
       "difficulty": 1
     },
     {
       "question": "Bu görseldeki yapı Dolmabahçe Sarayı'dır.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_003.JPG",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/08/Dolmabahce%2C_Istanbul%2C_Turchia.JPG",
       "difficulty": 1
     },
     {
       "question": "Bu görseldeki tarihi yapı Kız Kulesi'dir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_004.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b3/K%C4%B1zKulesi.jpg",
       "difficulty": 1
     },
     {
       "question": "Bu görseldeki yapı Efes Antik Kenti'ndeki Celcus Kütüphanesi'dir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_005.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/64/Celsus_library_in_Ephesus.jpg",
       "difficulty": 1
     },
     {
@@ -2585,21 +2585,21 @@
       "question": "Bu görseldeki gezegen Jüpiter'dir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_006.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Jupiter_and_its_shrunken_Great_Red_Spot.jpg/800px-Jupiter_and_its_shrunken_Great_Red_Spot.jpg",
       "difficulty": 1
     },
     {
       "question": "Bu görseldeki gezegen Mars'tır.",
       "type": "DoğruYanlış",
       "correctAnswer": "YANLIŞ",
-      "imageUrl": "assets/images/questions/img_007.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/OSIRIS_Mars_true_color.jpg/800px-OSIRIS_Mars_true_color.jpg",
       "difficulty": 1
     },
     {
       "question": "Görseldeki hayvan bir memeli türüdür.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_008.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Collage_of_Nine_Dogs.jpg/800px-Collage_of_Nine_Dogs.jpg",
       "difficulty": 1
     },
     {
@@ -3961,14 +3961,14 @@
       "question": "Bu görseldeki ilk iPhone modelidir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_009.png",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/IPhone_1st_Gen.svg/800px-IPhone_1st_Gen.svg.png",
       "difficulty": 1
     },
     {
       "question": "Bu görseldeki, Windows işletim sisteminin ilk sürümüdür.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_010.png",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/4/4e/Windows1.0.png",
       "difficulty": 1
     },
     {
@@ -5234,35 +5234,35 @@
       "question": "Bu görseldeki stadyum, Camp Nou'dur ve FC Barcelona'nın ev sahibi stadyumudur.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_011.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Camp_Nou.jpg/800px-Camp_Nou.jpg",
       "difficulty": 1
     },
     {
       "question": "Bu kişi, Cristiano Ronaldo'dur.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_012.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Cristiano_Ronaldo_2018.jpg/800px-Cristiano_Ronaldo_2018.jpg",
       "difficulty": 1
     },
     {
       "question": "Bu stadyum Beşiktaş'ın Vodafone Park stadyumudur.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_013.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/14/Vodafone_Park.jpg",
       "difficulty": 1
     },
     {
       "question": "Bu görseldeki kişi, Galatasaray'ın en ünlü futbolcularından Metin Oktay'dır.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_014.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c2/Metin_Oktay.jpg",
       "difficulty": 1
     },
     {
       "question": "Bu görselde, bir basketbol sahası görülmektedir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_015.jpg",
+      "imageUrl": "https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
       "difficulty": 1
     },
     {
@@ -6497,7 +6497,7 @@
       "question": "Bu fotoğrafta görülen kişi Mustafa Kemal Atatürk'tür.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_016.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Ataturk1930s.jpg/800px-Ataturk1930s.jpg",
       "difficulty": 1
     },
     {
@@ -6532,7 +6532,7 @@
       "question": "İstiklal Marşı'nın yazarı Yahya Kemal Beyatlı'dır.",
       "type": "DoğruYanlış",
       "correctAnswer": "YANLIŞ",
-      "imageUrl": "assets/images/questions/img_017.png",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Mehmet_%C3%82kif_Ersoy.png",
       "difficulty": 1
     },
     {
@@ -6567,7 +6567,7 @@
       "question": "Bu görseldeki antik kent Efes'tir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_005.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/64/Celsus_library_in_Ephesus.jpg",
       "difficulty": 1
     },
     {
@@ -7791,7 +7791,7 @@
         "Everest Dağı"
       ],
       "correctAnswer": "Grand Canyon",
-      "imageUrl": "assets/images/questions/img_019.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Dawn_on_the_S_rim_of_the_Grand_Canyon_%288645178272%29.jpg/400px-Dawn_on_the_S_rim_of_the_Grand_Canyon_%288645178272%29.jpg",
       "difficulty": 1
     },
     {
@@ -7803,7 +7803,7 @@
         "Vietnam"
       ],
       "correctAnswer": "Japonya",
-      "imageUrl": "assets/images/questions/img_020.png",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/800px-Flag_of_Japan.svg.png",
       "difficulty": 1
     },
     {
@@ -7821,7 +7821,7 @@
       "question": "Bu görselde Alaska bölgesi görülmektedir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_021.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Wonder_Lake_and_Denali.jpg/400px-Wonder_Lake_and_Denali.jpg",
       "difficulty": 1
     },
     {
@@ -7870,7 +7870,7 @@
       "question": "Bu görseldeki ülke Japonya'dır.",
       "type": "DoğruYanlış",
       "correctAnswer": "YANLIŞ",
-      "imageUrl": "assets/images/questions/img_022.png",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/400px-Flag_of_South_Korea.svg.png",
       "difficulty": 1
     },
     {
@@ -8658,7 +8658,7 @@
       "question": "Bu görseldeki kişi, ünlü besteci Wolfgang Amadeus Mozart'tır.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_023.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Wolfgang-amadeus-mozart_1.jpg/800px-Wolfgang-amadeus-mozart_1.jpg",
       "difficulty": 1
     },
     {
@@ -9214,14 +9214,14 @@
       "question": "Bu görseldeki kişi William Shakespeare'dir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_024.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Shakespeare.jpg/800px-Shakespeare.jpg",
       "difficulty": 1
     },
     {
       "question": "Görseldeki eser, J.K. Rowling'in Harry Potter serisinin ilk kitabıdır.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
-      "imageUrl": "assets/images/questions/img_025.jpg",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/thumb/6/6b/Harry_Potter_and_the_Philosopher%27s_Stone_Book_Cover.jpg/800px-Harry_Potter_and_the_Philosopher%27s_Stone_Book_Cover.jpg",
       "difficulty": 1
     },
     {
