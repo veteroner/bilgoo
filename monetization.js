@@ -144,7 +144,7 @@ const MonetizationManager = {
         if (!AdMob) return;
 
         const options = {
-            adId: 'ca-app-pub-7610338885240453/6081192537',
+            adId: 'ca-app-pub-7610338885240453/6081192537', // Production Banner Unit ID
             adSize: 'ADAPTIVE_BANNER',
             position: 'TOP_CENTER',
             margin: 0,
@@ -156,8 +156,10 @@ const MonetizationManager = {
             setTimeout(() => {
                 document.body.style.paddingTop = '60px';
             }, 500);
-        }).catch(() => {
-            // Silent fail - no retry
+        }).catch((error) => {
+            console.error('Banner reklam gösterilemedi:', error);
+            // Retry after 5 seconds
+            setTimeout(() => this.showBanner(), 5000);
         });
     },
 
@@ -170,15 +172,18 @@ const MonetizationManager = {
         if (!AdMob) return;
 
         const options = {
-            adId: 'ca-app-pub-7610338885240453/2112105479', // DÜZELTME: Doğru Interstitial Unit ID
+            adId: 'ca-app-pub-7610338885240453/2112105479', // Production Interstitial Unit ID
             isTesting: false
         };
 
         AdMob.prepareInterstitial(options).then(() => {
             // Interstitial reklam hazır
             this.isInterstitialReady = true;
-        }).catch(() => {
-            // Silent fail - production ready
+            console.log('Interstitial reklam hazırlandı');
+        }).catch((error) => {
+            console.error('Interstitial reklam hazırlanamadı:', error);
+            // Retry after 10 seconds
+            setTimeout(() => this.prepareInterstitial(), 10000);
             this.isInterstitialReady = false;
         });
     },

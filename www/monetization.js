@@ -37,11 +37,16 @@ const MonetizationManager = {
 
     // === COOKIE CONSENT MANAGEMENT ===
     checkCookieConsent: function() {
+        console.log('🍪 Cookie consent kontrol ediliyor...');
         const consent = localStorage.getItem('cookieConsent');
+        console.log('Mevcut consent:', consent);
+        
         if (!consent) {
+            console.log('📋 Cookie banner gösteriliyor');
             this.showCookieBanner();
         } else {
             this.cookiePreferences = JSON.parse(consent);
+            console.log('✅ Cookie preferences yüklendi:', this.cookiePreferences);
             this.loadTracking();
         }
     },
@@ -108,16 +113,40 @@ const MonetizationManager = {
         const isAndroidApp = window.Capacitor && window.Capacitor.getPlatform() === 'android';
         const isMobileWeb = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         
+        console.log('🔍 Platform detection:');
+        console.log('- Capacitor mevcut:', !!window.Capacitor);
+        console.log('- Platform:', window.Capacitor?.getPlatform());
+        console.log('- isAndroidApp:', isAndroidApp);
+        console.log('- isMobileWeb:', isMobileWeb);
+        console.log('- User Agent:', navigator.userAgent);
+        
         if (isAndroidApp) {
+            console.log('📱 Android app tespit edildi - AdMob başlatılıyor');
             this.initAdMob();
         } else if (isMobileWeb) {
+            console.log('🌐 Mobile web tespit edildi - AdSense başlatılıyor');
+            this.initMobileWebAds();
+        } else {
+            console.log('💻 Desktop tespit edildi - AdSense başlatılıyor');
             this.initMobileWebAds();
         }
     },
 
     // === ADMOB (ANDROID) ===
     initAdMob: function() {
-        if (!AdMob || !this.cookiePreferences.advertising) return;
+        console.log('🔍 AdMob init başlatılıyor...');
+        console.log('AdMob plugin mevcut:', !!AdMob);
+        console.log('Reklam izni:', this.cookiePreferences.advertising);
+        
+        if (!AdMob) {
+            console.error('❌ AdMob plugin bulunamadı!');
+            return;
+        }
+        
+        if (!this.cookiePreferences.advertising) {
+            console.error('❌ Reklam izni verilmemiş!');
+            return;
+        }
 
         const initOptions = {
             requestTrackingAuthorization: false,
@@ -128,20 +157,27 @@ const MonetizationManager = {
             maxAdContentRating: 'MA'
         };
 
+        console.log('🚀 AdMob initialize ediliyor...');
         AdMob.initialize(initOptions).then(() => {
+            console.log('✅ AdMob başarıyla initialize edildi');
             // Initialize ads with proper timing
             setTimeout(() => this.showBanner(), 2000);
             setTimeout(() => this.prepareInterstitial(), 4000);
             
             // Track interstitial readiness
             this.isInterstitialReady = false;
-        }).catch(() => {
-            // Silent fail - no retry in production
+        }).catch((error) => {
+            console.error('❌ AdMob initialize hatası:', error);
         });
     },
 
     showBanner: function() {
-        if (!AdMob) return;
+        console.log('🎯 Banner reklam gösteriliyor...');
+        
+        if (!AdMob) {
+            console.error('❌ AdMob plugin bulunamadı - banner gösterilemiyor');
+            return;
+        }
 
         const options = {
             adId: 'ca-app-pub-7610338885240453/6081192537',
@@ -151,13 +187,16 @@ const MonetizationManager = {
             isTesting: false
         };
 
+        console.log('📱 Banner options:', options);
         AdMob.showBanner(options).then(() => {
+            console.log('✅ Banner reklam başarıyla gösterildi');
             // Success - add layout padding
             setTimeout(() => {
                 document.body.style.paddingTop = '60px';
+                console.log('📏 Body padding eklendi');
             }, 500);
-        }).catch(() => {
-            // Silent fail - no retry
+        }).catch((error) => {
+            console.error('❌ Banner reklam hatası:', error);
         });
     },
 

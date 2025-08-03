@@ -33,7 +33,7 @@
 -keep class android.webkit.** { *; }
 -dontwarn android.webkit.**
 
-# Google AdMob SDK rules
+# Google AdMob SDK rules - Updated for 24.5.0
 -keep class com.google.android.gms.** { *; }
 -dontwarn com.google.android.gms.**
 -keep class com.google.android.gms.ads.** { *; }
@@ -42,6 +42,20 @@
 # AdMob mediation
 -keep class com.google.ads.** { *; }
 -dontwarn com.google.ads.**
+
+# AdMob specific rules for better ad matching
+-keep class com.google.android.gms.ads.identifier.AdvertisingIdClient { *; }
+-keep class com.google.android.gms.ads.identifier.AdvertisingIdClient$Info { *; }
+
+# For banner ads specifically
+-keep class com.google.android.gms.ads.AdView { *; }
+-keep class com.google.android.gms.ads.AdRequest { *; }
+-keep class com.google.android.gms.ads.AdSize { *; }
+-keep class com.google.android.gms.ads.AdListener { *; }
+
+# For video ads and hardware acceleration
+-keep class com.google.android.gms.ads.VideoController { *; }
+-keep class com.google.android.gms.ads.VideoOptions { *; }
 
 # Missing classes from newer Android versions
 -dontwarn android.media.LoudnessCodecController
