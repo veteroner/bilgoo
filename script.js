@@ -414,6 +414,7 @@ function initFullscreenMode() {
             height: 100dvh !important;
             margin: 0 !important;
             padding: 0 !important;
+            padding-top: 110px !important; /* Banner reklam için üst boşluk */
             overflow-y: auto !important;
         }
         
@@ -479,8 +480,8 @@ function detectPlatform() {
                         navigator.userAgent.includes('generic') ||
                         window.location.href.includes('10.0.2.2'));
     
-    // TABLET ZORLA TESPİTİ - 600px üzeri Android cihazlar için
-    const isTablet = isAndroid && window.innerWidth >= 600;
+    // TABLET ZORLA TESPİTİ - 1px üzeri tüm cihazlar için (tabletler de mobil)
+    const isTablet = window.innerWidth >= 1;
     
     // ZORLA ANDROID APP TESPİTİ - HER ANDROID CİHAZ İÇİN
     // Bu satır her Android cihazda mobile tab bar'ı aktif hale getirir
@@ -2121,8 +2122,10 @@ const quizApp = {
             };
             
             // Hem click hem de touch event'lerini ekle
+            // Sadece click kullanıyoruz (mobil tarayıcılar da click tetikler)
+            // Daha önce touchend + click birlikte kullanıldığı ve modal her açıldığında
+            // yeni touchend handler eklendiği için tek dokunuşta birden fazla satın alma oluyordu.
             btn.onclick = purchaseJoker;
-            btn.addEventListener('touchend', purchaseJoker);
             
             // Mobil cihazlar için ek optimizasyonlar
             btn.style.touchAction = 'manipulation';
@@ -2175,9 +2178,8 @@ const quizApp = {
                 }
             };
             
-            // Event listeners ekle
+            // Event listeners ekle (sadece click yeterli, çift satın alma hatasını önler)
             livesBuyBtn.onclick = purchaseLives;
-            livesBuyBtn.addEventListener('touchend', purchaseLives);
             livesBuyBtn.style.touchAction = 'manipulation';
             livesBuyBtn.style.webkitTapHighlightColor = 'transparent';
         }
@@ -2236,14 +2238,9 @@ const quizApp = {
             }
         });
         
-        // Satın alma butonlarına da touch event ekle (mobil)
-        buyButtons.forEach(function(btn) {
-            btn.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                // onclick event'i zaten çalışacak, sadece touch'u handle ediyoruz
-            });
-        });
+    // NOT: Önceden burada touchend listener ekleniyordu; her mağaza açılışında birikerek
+    // tek tıklamada çoklu satın alma (tüm bakiye harcama / 2 joker alma) sorununa yol açıyordu.
+    // Bu bölüm kaldırıldı.
     },
     
     // Joker butonlarını güncelle
@@ -4231,6 +4228,15 @@ const quizApp = {
         // Joker butonlarını başlangıç durumuna getir
         this.updateJokerButtons();
         
+        // Tabletlerde üstteki joker butonlarını gizle
+        const isMobile = window.innerWidth <= 1920;
+        if (isMobile) {
+            const jokersContainer = document.getElementById('jokers');
+            if (jokersContainer) {
+                jokersContainer.style.display = 'none';
+            }
+        }
+        
         // İlk soruyu göster
         // Debug: İlk soru gösterilmeden önce zorluk seviyesini kontrol et
         const difficulty = this.getProgressiveDifficulty();
@@ -4442,6 +4448,10 @@ const quizApp = {
         if (this.timerInterval) {
             clearInterval(this.timerInterval);
         }
+        // Arka plan modunda tekrar başlatma
+        if (this.isAppBackgrounded) {
+            return; // görünür değilken çalıştırma
+        }
         const currentQuestion = this.questions[this.currentQuestionIndex];
         const isBlankFilling = currentQuestion.type === "BlankFilling";
         this.timeLeft = isBlankFilling ? this.TIME_PER_BLANK_FILLING_QUESTION : this.TIME_PER_QUESTION;
@@ -4452,7 +4462,12 @@ const quizApp = {
                 clearInterval(this.timerInterval);
                 return;
             }
-            
+            // Arka plana geçtiyse durdur
+            if (this.isAppBackgrounded) {
+                clearInterval(this.timerInterval);
+                this.timerInterval = null;
+                return;
+            }
             this.timeLeft--;
             this.updateTimeDisplay();
             if (this.timeLeft <= 0) {
@@ -4460,6 +4475,72 @@ const quizApp = {
                 this.handleTimeUp(); // Tüm soru tiplerinde handleTimeUp çağrılacak
             }
         }, 1000);
+    },
+
+    // Arka plan / öne gelme olaylarını kur
+    setupBackgroundHandlers: function() {
+        if (this._backgroundHandlersSet) return;
+        this._backgroundHandlersSet = true;
+        this.isAppBackgrounded = false;
+        this.remainingTimeSnapshot = null;
+
+        const pauseTimer = () => {
+            if (this.timerInterval) {
+                clearInterval(this.timerInterval);
+                this.timerInterval = null;
+            }
+            if (typeof this.timeLeft === 'number') {
+                this.remainingTimeSnapshot = this.timeLeft;
+            }
+            this.isAppBackgrounded = true;
+            console.log('[PAUSE] Uygulama arka plana geçti. Sayaç durdu. Kalan süre:', this.remainingTimeSnapshot);
+        };
+
+        const resumeTimer = () => {
+            if (!this.isAppBackgrounded) return;
+            this.isAppBackgrounded = false;
+            // Quiz aktif mi ve cevap işleme yok mu?
+            if (this.currentQuestionIndex != null && !this.answerProcessing && typeof this.remainingTimeSnapshot === 'number') {
+                // timeLeft'i snapshot ile devam ettir
+                this.timeLeft = this.remainingTimeSnapshot;
+                this.updateTimeDisplay();
+                this.startTimer();
+                console.log('[RESUME] Uygulama öne geldi. Sayaç kaldığı yerden devam ediyor. Kalan süre:', this.timeLeft);
+            }
+        };
+
+        // Document visibility
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                pauseTimer();
+            } else {
+                resumeTimer();
+            }
+        });
+
+        // Pencere odağı (tarayıcı)
+        window.addEventListener('blur', () => {
+            // Mobilde blur çok sık gelebilir; yine de koruyucu
+            pauseTimer();
+        });
+        window.addEventListener('focus', () => {
+            resumeTimer();
+        });
+
+        // Capacitor AppState (varsa)
+        if (window && window.Capacitor && window.Capacitor.App) {
+            try {
+                window.Capacitor.App.addListener('appStateChange', (state) => {
+                    if (!state.isActive) {
+                        pauseTimer();
+                    } else {
+                        resumeTimer();
+                    }
+                });
+            } catch (e) {
+                console.warn('AppState listener eklenemedi:', e);
+            }
+        }
     },
     
     // Zaman göstergesini güncelle
@@ -5015,8 +5096,8 @@ const quizApp = {
             // Resim varlığını kontrol et
             const hasImage = questionData.imageUrl && questionData.imageUrl.trim() !== '';
             
-            // Mobil cihaz kontrolü
-            const isMobile = window.innerWidth <= 768;
+            // Mobil cihaz kontrolü - Tabletler de mobil gibi davransın
+            const isMobile = window.innerWidth <= 1920;
             
             if (isMobile) {
                 // MOBİL: Kaydırma çubuğu

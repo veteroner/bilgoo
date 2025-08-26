@@ -37,16 +37,11 @@ const MonetizationManager = {
 
     // === COOKIE CONSENT MANAGEMENT ===
     checkCookieConsent: function() {
-        console.log('🍪 Cookie consent kontrol ediliyor...');
         const consent = localStorage.getItem('cookieConsent');
-        console.log('Mevcut consent:', consent);
-        
         if (!consent) {
-            console.log('📋 Cookie banner gösteriliyor');
             this.showCookieBanner();
         } else {
             this.cookiePreferences = JSON.parse(consent);
-            console.log('✅ Cookie preferences yüklendi:', this.cookiePreferences);
             this.loadTracking();
         }
     },
@@ -80,6 +75,11 @@ const MonetizationManager = {
         this.saveCookiePreferences();
         this.hideCookieBanner();
         this.loadTracking();
+        
+        // AdSense'i yükle
+        if (window.loadAdSense) {
+            window.loadAdSense();
+        }
     },
 
     acceptEssentialOnly: function() {
@@ -99,8 +99,19 @@ const MonetizationManager = {
 
     // === TRACKING SERVICES ===
     loadTracking: function() {
-        if (this.cookiePreferences.analytics && typeof gtag !== 'undefined') {
-            gtag('consent', 'update', { 'analytics_storage': 'granted' });
+        if (this.cookiePreferences.analytics) {
+            // Firebase Analytics'i yükle ve aktifleştir
+            if (window.loadFirebaseAnalytics) {
+                window.loadFirebaseAnalytics();
+            }
+            if (window.enableFirebaseAnalytics) {
+                window.enableFirebaseAnalytics();
+            }
+            
+            // Google Analytics (eğer varsa)
+            if (typeof gtag !== 'undefined') {
+                gtag('consent', 'update', { 'analytics_storage': 'granted' });
+            }
         }
         
         if (this.cookiePreferences.advertising) {
@@ -110,44 +121,145 @@ const MonetizationManager = {
 
     // === PLATFORM DETECTION & ADS ===
     initPlatformAds: function() {
-        const isAndroidApp = window.Capacitor && window.Capacitor.getPlatform() === 'android';
-        const isMobileWeb = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        
-        console.log('🔍 Platform detection:');
-        console.log('- Capacitor mevcut:', !!window.Capacitor);
-        console.log('- Platform:', window.Capacitor?.getPlatform());
-        console.log('- isAndroidApp:', isAndroidApp);
-        console.log('- isMobileWeb:', isMobileWeb);
-        console.log('- User Agent:', navigator.userAgent);
-        
-        if (isAndroidApp) {
-            console.log('📱 Android app tespit edildi - AdMob başlatılıyor');
+        const platform = window.Capacitor ? window.Capacitor.getPlatform() : null; // 'ios' | 'android' | 'web'
+        const isNativeApp = platform === 'ios' || platform === 'android';
+        const isMobileWeb = !isNativeApp && (window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+
+        // iOS path previously skipped -> caused ATT uyarısı. Now both iOS & Android handled here.
+        if (isNativeApp) {
             this.initAdMob();
         } else if (isMobileWeb) {
-            console.log('🌐 Mobile web tespit edildi - AdSense başlatılıyor');
-            this.initMobileWebAds();
-        } else {
-            console.log('💻 Desktop tespit edildi - AdSense başlatılıyor');
             this.initMobileWebAds();
         }
     },
 
-    // === ADMOB (ANDROID) ===
+    // === ADMOB (ANDROID/iOS) ===
     initAdMob: function() {
-        console.log('🔍 AdMob init başlatılıyor...');
-        console.log('AdMob plugin mevcut:', !!AdMob);
-        console.log('Reklam izni:', this.cookiePreferences.advertising);
-        
-        if (!AdMob) {
-            console.error('❌ AdMob plugin bulunamadı!');
-            return;
-        }
-        
-        if (!this.cookiePreferences.advertising) {
-            console.error('❌ Reklam izni verilmemiş!');
-            return;
-        }
+        if (!AdMob || !this.cookiePreferences.advertising) return;
 
+        // iOS App Tracking Transparency kontrolü
+        const isIOS = window.Capacitor && window.Capacitor.getPlatform() === 'ios';
+        
+        if (isIOS) {
+            // iOS'ta ATT framework kullan - yeni ATTManager ile
+            console.log('iOS detected, initializing ATT...');
+            
+            // ATT Manager'ı başlat
+            if (window.ATTManager) {
+                window.ATTManager.init().then(() => {
+                    // ATT hazır, izin iste
+                    return window.ATTManager.requestPermissionIfNeeded();
+                }).then((attStatus) => {
+                    console.log('ATT Permission process completed:', attStatus);
+                    this.initializeAdMobWithATT(attStatus);
+                }).catch((error) => {
+                    console.error('ATT process failed:', error);
+                    // ATT başarısız olsa bile temel işlevsellik için AdMob'u başlat
+                    this.initializeAdMobWithoutTracking();
+                });
+            } else {
+                console.error('ATT Manager not available');
+                // Fallback to legacy method
+                this.requestATTPermission().then((attStatus) => {
+                    console.log('Legacy ATT Status:', attStatus);
+                    this.initializeAdMobWithATT(attStatus);
+                }).catch((error) => {
+                    console.error('Legacy ATT Permission error:', error);
+                    this.initializeAdMobWithoutTracking();
+                });
+            }
+        } else {
+            // Android veya web için normal initialization
+            this.initializeAdMobNormal();
+        }
+    },
+
+    requestATTPermission: function() {
+        return new Promise((resolve, reject) => {
+            // Correct plugin reference for capacitor-plugin-app-tracking-transparency
+            if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.AppTrackingTransparency) {
+                const { AppTrackingTransparency } = window.Capacitor.Plugins;
+                
+                console.log('ATT Plugin found, requesting permission...');
+                
+                // Önce tracking authorization status'u kontrol et
+                AppTrackingTransparency.getTrackingAuthorizationStatus().then((result) => {
+                    console.log('Current ATT status:', result);
+                    
+                    if (result.status === 'authorized') {
+                        resolve('authorized');
+                    } else if (result.status === 'notDetermined') {
+                        // Kullanıcıdan izin iste - bu noktada popup gösterilmeli
+                        console.log('Requesting ATT authorization...');
+                        AppTrackingTransparency.requestTrackingAuthorization().then((result) => {
+                            console.log('ATT authorization result:', result);
+                            resolve(result.status);
+                        }).catch((error) => {
+                            console.error('ATT authorization request failed:', error);
+                            reject(error);
+                        });
+                    } else {
+                        // denied, restricted, notDetermined
+                        resolve(result.status);
+                    }
+                }).catch((error) => {
+                    console.error('ATT status check failed:', error);
+                    reject(error);
+                });
+            } else {
+                console.log('ATT plugin not available, platform:', window.Capacitor?.getPlatform());
+                // ATT plugin mevcut değil, web/android
+                resolve('notRequired');
+            }
+        });
+    },
+
+    initializeAdMobWithATT: function(attStatus) {
+        const trackingEnabled = (attStatus === 'authorized');
+        
+        const initOptions = {
+            requestTrackingAuthorization: false, // Zaten yukarıda yaptık
+            testingDevices: [],
+            initializeForTesting: false,
+            tagForChildDirectedTreatment: false,
+            tagForUnderAgeOfConsent: false,
+            maxAdContentRating: 'MA',
+            // ATT status'a göre tracking ayarları
+            npa: trackingEnabled ? '0' : '1' // Non-personalized ads if no tracking
+        };
+
+        AdMob.initialize(initOptions).then(() => {
+            console.log('AdMob initialized with ATT status:', attStatus);
+            setTimeout(() => this.showBanner(), 2000);
+            setTimeout(() => this.prepareInterstitial(), 4000);
+            this.isInterstitialReady = false;
+        }).catch((error) => {
+            console.error('AdMob initialization failed:', error);
+        });
+    },
+
+    initializeAdMobWithoutTracking: function() {
+        const initOptions = {
+            requestTrackingAuthorization: false,
+            testingDevices: [],
+            initializeForTesting: false,
+            tagForChildDirectedTreatment: false,
+            tagForUnderAgeOfConsent: false,
+            maxAdContentRating: 'MA',
+            npa: '1' // Non-personalized ads only
+        };
+
+        AdMob.initialize(initOptions).then(() => {
+            console.log('AdMob initialized without tracking');
+            setTimeout(() => this.showBanner(), 2000);
+            setTimeout(() => this.prepareInterstitial(), 4000);
+            this.isInterstitialReady = false;
+        }).catch((error) => {
+            console.error('AdMob initialization failed:', error);
+        });
+    },
+
+    initializeAdMobNormal: function() {
         const initOptions = {
             requestTrackingAuthorization: false,
             testingDevices: [],
@@ -157,46 +269,36 @@ const MonetizationManager = {
             maxAdContentRating: 'MA'
         };
 
-        console.log('🚀 AdMob initialize ediliyor...');
         AdMob.initialize(initOptions).then(() => {
-            console.log('✅ AdMob başarıyla initialize edildi');
-            // Initialize ads with proper timing
+            console.log('AdMob initialized normally');
             setTimeout(() => this.showBanner(), 2000);
             setTimeout(() => this.prepareInterstitial(), 4000);
-            
-            // Track interstitial readiness
             this.isInterstitialReady = false;
         }).catch((error) => {
-            console.error('❌ AdMob initialize hatası:', error);
+            console.error('AdMob initialization failed:', error);
         });
     },
 
     showBanner: function() {
-        console.log('🎯 Banner reklam gösteriliyor...');
-        
-        if (!AdMob) {
-            console.error('❌ AdMob plugin bulunamadı - banner gösterilemiyor');
-            return;
-        }
+        if (!AdMob) return;
 
         const options = {
-            adId: 'ca-app-pub-7610338885240453/6081192537',
+            adId: 'ca-app-pub-7610338885240453/6081192537', // Production Banner Unit ID
             adSize: 'ADAPTIVE_BANNER',
             position: 'TOP_CENTER',
             margin: 0,
             isTesting: false
         };
 
-        console.log('📱 Banner options:', options);
         AdMob.showBanner(options).then(() => {
-            console.log('✅ Banner reklam başarıyla gösterildi');
             // Success - add layout padding
             setTimeout(() => {
                 document.body.style.paddingTop = '60px';
-                console.log('📏 Body padding eklendi');
             }, 500);
         }).catch((error) => {
-            console.error('❌ Banner reklam hatası:', error);
+            console.error('Banner reklam gösterilemedi:', error);
+            // Retry after 5 seconds
+            setTimeout(() => this.showBanner(), 5000);
         });
     },
 
@@ -209,15 +311,18 @@ const MonetizationManager = {
         if (!AdMob) return;
 
         const options = {
-            adId: 'ca-app-pub-7610338885240453/2112105479', // DÜZELTME: Doğru Interstitial Unit ID
+            adId: 'ca-app-pub-7610338885240453/2112105479', // Production Interstitial Unit ID
             isTesting: false
         };
 
         AdMob.prepareInterstitial(options).then(() => {
             // Interstitial reklam hazır
             this.isInterstitialReady = true;
-        }).catch(() => {
-            // Silent fail - production ready
+            console.log('Interstitial reklam hazırlandı');
+        }).catch((error) => {
+            console.error('Interstitial reklam hazırlanamadı:', error);
+            // Retry after 10 seconds
+            setTimeout(() => this.prepareInterstitial(), 10000);
             this.isInterstitialReady = false;
         });
     },
@@ -246,37 +351,8 @@ const MonetizationManager = {
     },
 
     createMobileTopBanner: function() {
-        if (document.querySelector('.mobile-top-banner')) return;
-        
-        const banner = document.createElement('div');
-        banner.className = 'mobile-top-banner';
-        banner.innerHTML = `
-            <ins class="adsbygoogle mobile-banner"
-                 style="display:block; width: 320px; height: 50px;"
-                 data-ad-client="ca-pub-7610338885240453"
-                 data-ad-slot="6081192537"
-                 data-ad-format="banner"
-                 data-full-width-responsive="false"
-                 data-child-safe-ads-targeting="enabled"></ins>
-            <button class="mobile-ad-close" onclick="MonetizationManager.hideMobileBanner()" title="Reklamı Gizle">×</button>
-        `;
-        
-        const container = document.querySelector('.container');
-        if (container) {
-            container.parentNode.insertBefore(banner, container);
-            container.style.paddingTop = '80px';
-        } else {
-            document.body.insertBefore(banner, document.body.firstChild);
-        }
-        
-        // Load AdSense ad
-        setTimeout(() => {
-            try {
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            } catch (e) {
-                // Silent fail
-            }
-        }, 1000);
+    // Reklam alanı devre dışı bırakıldı. Artık hiçbir şey eklenmiyor.
+    return;
     },
 
     hideMobileBanner: function() {

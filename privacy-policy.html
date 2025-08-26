@@ -92,13 +92,36 @@
         <p>Bu gizlilik politikası, Bilgoo Quiz Oyunu uygulamasının kullanımı sırasında toplanan bilgileri ve bu bilgilerin nasıl kullanıldığını açıklamaktadır.</p>
         
         <h2>Topladığımız Bilgiler</h2>
-        <p>Bilgoo Quiz Oyunu aşağıdaki bilgileri toplayabilir:</p>
+        <p>Bilgoo Quiz Oyunu, yalnızca uygulama işlevselliği için gerekli olan minimum düzeyde veri toplar. Hiçbir kişisel veri üçüncü taraflarla pazarlama amaçlı paylaşılmaz. Topladığımız bilgiler:</p>
+        
+        <h3>Zorunlu Bilgiler (Uygulama Çalışması İçin Gerekli)</h3>
         <ul>
-            <li><strong>Hesap Bilgileri:</strong> E-posta adresi, kullanıcı adı ve şifre (şifreli olarak saklanır)</li>
-            <li><strong>Kullanıcı İstatistikleri:</strong> Oyun performansı, doğru/yanlış cevap sayısı, tamamlanan seviyeler</li>
-            <li><strong>Cihaz Bilgileri:</strong> İşletim sistemi, tarayıcı türü, dil ayarları ve diğer teknik bilgiler</li>
-            <li><strong>Çerez ve Yerel Depolama Verileri:</strong> Oyun ilerlemesi, ayarlar ve tercihler</li>
-            <li><strong>Arkadaş Listesi:</strong> Uygulama içinde eklediğiniz arkadaşlar ve etkileşimler</li>
+            <li><strong>Hesap Bilgileri:</strong> E-posta adresi (giriş için), kullanıcı adı (görüntüleme için) ve şifre (güvenli giriş için - AES-256 şifreleme ile korunur)</li>
+            <li><strong>Oyun İstatistikleri:</strong> Oyun performansı, doğru/yanlış cevap sayısı, tamamlanan seviyeler (yalnızca ilerleme takibi için)</li>
+            <li><strong>Yerel Oyun Verileri:</strong> Oyun tercihleri, ayarlar ve ilerleme bilgileri (cihazınızda yerel olarak saklanır)</li>
+        </ul>
+        
+        <h3>İsteğe Bağlı Bilgiler (Kullanıcı İzni İle)</h3>
+        <ul>
+            <li><strong>Arkadaş Listesi:</strong> Yalnızca sosyal özellikler kullanmayı seçerseniz, uygulama içinde eklediğiniz arkadaşlar</li>
+            <li><strong>Profil Bilgileri:</strong> İsteğe bağlı profil fotoğrafı ve açıklama</li>
+        </ul>
+        
+        <h3>Otomatik Teknik Bilgiler</h3>
+        <ul>
+            <li><strong>Cihaz Bilgileri:</strong> İşletim sistemi türü (iOS/Android), tarayıcı türü, dil ayarları (yalnızca uyumlu deneyim sunmak için)</li>
+            <li><strong>Analiz Verileri:</strong> Uygulama kullanım istatistikleri (kişisel bilgiler içermez, yalnızca performans iyileştirmesi için)</li>
+            <li><strong>Hata Raporları:</strong> Uygulama çökmelerini tespit etmek için teknik loglar (kişisel veri içermez)</li>
+        </ul>
+        
+        <h3>Toplamadığımız Bilgiler</h3>
+        <ul>
+            <li>Konum bilgileri</li>
+            <li>Kamera veya mikrofon erişimi</li>
+            <li>Rehber bilgileri</li>
+            <li>Diğer uygulamalardaki veriler</li>
+            <li>Biyometrik veriler</li>
+            <li>Hassas kişisel bilgiler (sağlık, din, siyasi görüş vb.)</li>
         </ul>
         
         <h2>Bilgilerinizi Nasıl Kullanıyoruz</h2>
@@ -116,13 +139,53 @@
         <h2>Veri Güvenliği</h2>
         <p>Bilgilerinizi korumak için teknik, fiziksel ve idari güvenlik önlemleri uyguluyoruz. Kullanıcı hesapları için şifreleme kullanıyor ve hassas verileri korumak için Firebase'in güvenlik protokollerini uyguluyoruz.</p>
         
-        <h2>Veri Paylaşımı</h2>
-        <p>Bilgilerinizi aşağıdaki durumlarda paylaşabiliriz:</p>
+        <h2>Veri Paylaşımı ve Üçüncü Taraflar</h2>
+        <p><strong>ÖNEMLİ: Kişisel bilgilerinizi ASLA satmıyoruz veya pazarlama amaçlı paylaşmıyoruz.</strong></p>
+        
+        <p>Bilgilerinizi yalnızca aşağıdaki sınırlı durumlarda ve yasal gereklilikler çerçevesinde paylaşabiliriz:</p>
+        
+        <h3>Hizmet Sağlayıcıları (Veri İşlemciler)</h3>
         <ul>
-            <li><strong>Hizmet Sağlayıcılarımız:</strong> Uygulamamızı destekleyen ve bize teknik altyapı, analiz ve depolama hizmetleri sunan üçüncü taraf hizmet sağlayıcıları (örn. Firebase)</li>
-            <li><strong>Reklam Ortakları:</strong> Google AdSense ve diğer reklam partnerleri ile reklam gösterimi için gerekli veriler (anonim kullanım verileri, çerez bilgileri)</li>
-            <li><strong>Oyun İçi Sosyal Özellikler:</strong> Sıralama listeleri, arkadaş listeleri veya çok oyunculu özellikler gibi sosyal oyun deneyimleri için</li>
-            <li><strong>Yasal Gereklilikler:</strong> Yasal bir yükümlülüğe uymak, haklarımızı korumak veya yasal süreçlere yanıt vermek için gerekli olduğunda</li>
+            <li><strong>Firebase (Google):</strong> Güvenli veri depolama ve kimlik doğrulama hizmetleri
+                <ul>
+                    <li>Amacı: Hesap yönetimi, oyun verilerinin senkronizasyonu</li>
+                    <li>Veri türü: Hesap bilgileri, oyun istatistikleri</li>
+                    <li>Güvenlik: End-to-end şifreleme, Google Cloud Security standardları</li>
+                    <li>Konum: Avrupa (GDPR uyumlu sunucular)</li>
+                </ul>
+            </li>
+        </ul>
+        
+        <h3>Reklam Hizmetleri</h3>
+        <ul>
+            <li><strong>Google AdSense:</strong> Uygun reklamların gösterilmesi
+                <ul>
+                    <li>Paylaşılan veri: Yalnızca anonim kullanım istatistikleri, reklam tıklama verileri</li>
+                    <li>Kişisel bilgiler paylaşılmaz: E-posta, isim, telefon vb. hiçbir kişisel veri paylaşılmaz</li>
+                    <li>Kontrol: Kişiselleştirilmiş reklamları <a href="https://www.google.com/settings/ads" target="_blank">Google Reklam Ayarları</a>'ndan kapatabilirsiniz</li>
+                </ul>
+            </li>
+        </ul>
+        
+        <h3>Oyun İçi Sosyal Özellikler</h3>
+        <ul>
+            <li><strong>Lider Tabloları:</strong> Yalnızca kullanıcı adı ve skor bilgileri (diğer oyuncularla paylaşılır)</li>
+            <li><strong>Arkadaş Sistemi:</strong> Yalnızca uygulama içi kullanıcı adları (e-posta adresleri paylaşılmaz)</li>
+        </ul>
+        
+        <h3>Yasal Gereklilikler</h3>
+        <ul>
+            <li>Mahkeme kararı veya yasal yükümlülük durumunda</li>
+            <li>Dolandırıcılık veya güvenlik ihlali tespit edildiğinde</li>
+            <li>Kullanım şartları ihlali durumunda (yalnızca ihlal ile ilgili veriler)</li>
+        </ul>
+        
+        <h3>Hiçbir Zaman Paylaşmadığımız Bilgiler</h3>
+        <ul>
+            <li>E-posta adresleri ve kişisel iletişim bilgileri</li>
+            <li>Şifreler ve güvenlik bilgileri</li>
+            <li>Özel mesajlar ve kişisel veriler</li>
+            <li>Demografik bilgiler ve kişisel tercihler</li>
         </ul>
         
         <h3>Google AdSense ve Reklam Verileri</h3>
@@ -201,7 +264,49 @@
         <p>Gizlilik politikamızla ilgili sorularınız varsa, lütfen aşağıdaki e-posta adresi üzerinden bizimle iletişime geçin:</p>
         <p>E-posta: bilgoo.quiz@gmail.com</p>
         
-        <div class="date">Son Güncelleme Tarihi: 1 Temmuz 2025</div>
+        <h2>Apple App Store ve iOS Kullanıcıları İçin Özel Bilgiler</h2>
+        <p>iOS cihazlarda Bilgoo uygulamasını kullanırken aşağıdaki ek gizlilik korumaları geçerlidir:</p>
+        
+        <h3>iOS İzinleri ve Veri Erişimi</h3>
+        <ul>
+            <li><strong>İnternet Erişimi:</strong> Çevrimiçi quiz özellikleri ve veri senkronizasyonu için gereklidir</li>
+            <li><strong>Bildirim İzni:</strong> Push notification gönderebilmek için kullanıcı onayı istenir (isteğe bağlı)</li>
+            <li><strong>Local Storage:</strong> Oyun ilerlemesi ve ayarları cihazda güvenli şekilde saklanır</li>
+        </ul>
+        
+        <h3>Apple'ın Gizlilik Standartlarına Uyum</h3>
+        <ul>
+            <li>App Tracking Transparency (ATT) framework'üne tam uyum</li>
+            <li>Advertising identifier (IDFA) kullanımında kullanıcı izni</li>
+            <li>Sign in with Apple entegrasyonu (gelecek sürümlerde)</li>
+            <li>iOS 14.5+ gizlilik özelliklerine tam destek</li>
+        </ul>
+        
+        <h3>Apple App Store Privacy Labels</h3>
+        <p>Apple App Store'da listelenen veri toplama kategorilerimiz:</p>
+        <ul>
+            <li><strong>İletişim Bilgileri:</strong> E-posta adresi (hesap oluşturma için)</li>
+            <li><strong>Kullanıcı İçeriği:</strong> Kullanıcı adı, oyun skorları</li>
+            <li><strong>Kullanım Verileri:</strong> Oyun istatistikleri ve performans analizi</li>
+            <li><strong>Tanımlayıcılar:</strong> Kullanıcı ID (kişisel bilgilerle bağlantılı değil)</li>
+        </ul>
+        
+        <h3>iOS Cihazlarda Veri Silme</h3>
+        <p>iOS kullanıcıları aşağıdaki yöntemlerle verilerini silebilir:</p>
+        <ul>
+            <li>Uygulama içi "Hesap Sil" özelliği</li>
+            <li>Ayarlar > Genel > iPhone/iPad Depolama > Bilgoo > Uygulamayı Sil</li>
+            <li>E-posta ile bilgoo.quiz@gmail.com adresine veri silme talebi</li>
+        </ul>
+        
+        <h3>Üçüncü Taraf SDK'lar (iOS)</h3>
+        <ul>
+            <li><strong>Firebase iOS SDK:</strong> Hesap yönetimi ve veri depolama</li>
+            <li><strong>Google Mobile Ads SDK:</strong> Reklam gösterimi (kullanıcı izni ile)</li>
+            <li><strong>Capacitor Framework:</strong> Native iOS özellikleri erişimi</li>
+        </ul>
+        
+        <div class="date">Son Güncelleme Tarihi: 19 Ağustos 2025</div>
         
         <a href="index.html" class="back-link">Ana Sayfaya Dön</a>
     </div>

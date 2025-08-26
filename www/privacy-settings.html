@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gizlilik Ayarları - Bilgoo Quiz</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+        
+        .settings-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 20px;
+        }
+        
+        .settings-header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin: 0;
+        }
+        
+        .settings-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .settings-section h2 {
+            color: #495057;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #667eea;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .setting-info {
+            flex: 1;
+        }
+        
+        .setting-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.1em;
+            color: #495057;
+        }
+        
+        .setting-info p {
+            margin: 0;
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+        }
+        
+        .data-export {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .status-message {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .back-link:hover {
+            color: #5a67d8;
+        }
+        
+        .consent-history {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            background: white;
+        }
+        
+        .consent-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .consent-item:last-child {
+            border-bottom: none;
+        }
+        
+        .consent-date {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .consent-action {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">
+            <span>←</span> <span id="back-link-text">Ana Sayfaya Dön</span>
+        </a>
+        
+        <div class="settings-header">
+            <h1>🔒 <span id="page-title">Gizlilik Ayarları</span></h1>
+            <p id="page-subtitle">Kişisel verilerinizi nasıl kullandığımızı kontrol edin</p>
+            
+            <!-- Dil Seçim Dropdown -->
+            <div class="language-selector" style="margin-top: 20px;">
+                <select id="language-select" style="padding: 10px; border-radius: 8px; border: 2px solid #e2e8f0; background: white; color: #374151; font-size: 14px; cursor: pointer;">
+                    <option value="tr">🇹🇷 Türkçe</option>
+                    <option value="en">🇬🇧 English</option>
+                    <option value="de">🇩🇪 Deutsch</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Çerez Ayarları -->
+        <div class="settings-section">
+            <h2>🍪 <span id="cookie-settings-title">Çerez Ayarları</span></h2>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3 id="essential-cookies-title">Gerekli Çerezler</h3>
+                    <p id="essential-cookies-desc">Sitenin çalışması için gerekli çerezler (her zaman aktif)</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="essential-cookies" checked disabled>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3 id="analytics-cookies-title">Analitik Çerezler</h3>
+                    <p id="analytics-cookies-desc">Site kullanımını analiz etmemize yardımcı olur</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="analytics-cookies">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3 id="advertising-cookies-title">Reklam Çerezleri</h3>
+                    <p id="advertising-cookies-desc">Kişiselleştirilmiş reklamlar için kullanılır</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="advertising-cookies">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            
+            <button class="btn btn-primary" id="save-cookie-settings">Çerez Ayarlarını Kaydet</button>
+        </div>
+        
+        <!-- Veri Yönetimi -->
+        <div class="settings-section">
+            <h2>📊 <span id="data-management-title">Veri Yönetimi</span></h2>
+            
+            <div class="data-export">
+                <h3 id="download-data-title">Verilerinizi İndirin</h3>
+                <p id="download-data-desc">Sizin hakkınızdaki tüm verileri JSON formatında indirebilirsiniz</p>
+                <button class="btn btn-success" id="export-data">Verilerimi İndir</button>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3 id="data-retention-title">Veri Saklama Süresi</h3>
+                    <p id="data-retention-desc">Verileriniz ne kadar süre saklanacak</p>
+                </div>
+                <select id="data-retention" class="form-control">
+                    <option value="1year">1 Yıl</option>
+                    <option value="2years" selected>2 Yıl</option>
+                    <option value="5years">5 Yıl</option>
+                    <option value="forever">Süresiz</option>
+                </select>
+            </div>
+            
+            <button class="btn btn-primary" id="save-data-settings">Veri Ayarlarını Kaydet</button>
+        </div>
+        
+        <!-- Gizlilik Kontrolü -->
+        <div class="settings-section">
+            <h2>🛡️ <span id="privacy-control-title">Gizlilik Kontrolü</span></h2>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3 id="profile-visibility-title">Profil Görünürlüğü</h3>
+                    <p id="profile-visibility-desc">Profiliniz diğer kullanıcılara görünsün mü?</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="profile-visibility" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3 id="stats-sharing-title">İstatistik Paylaşımı</h3>
+                    <p id="stats-sharing-desc">İstatistikleriniz leaderboard'da gösterilsin mi?</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="stats-sharing" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3 id="friend-requests-title">Arkadaş İstekleri</h3>
+                    <p id="friend-requests-desc">Diğer kullanıcılar size arkadaşlık isteği gönderebilsin mi?</p>
+                </div>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="friend-requests" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            
+            <button class="btn btn-primary" id="save-privacy-settings">Gizlilik Ayarlarını Kaydet</button>
+        </div>
+        
+        <!-- Rıza Geçmişi -->
+        <div class="settings-section">
+            <h2>📋 <span id="consent-history-title">Rıza Geçmişi</span></h2>
+            <p id="consent-history-desc">Gizlilik politikası onaylarınızın geçmişi</p>
+            <div class="consent-history" id="consent-history">
+                <div class="consent-item">
+                    <div class="consent-date">Yükleniyor...</div>
+                    <div class="consent-action">Rıza geçmişi yükleniyor</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tehlikeli İşlemler -->
+        <div class="settings-section">
+            <h2>⚠️ <span id="account-operations-title">Hesap İşlemleri</span></h2>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3 id="delete-account-title">Hesabımı Sil</h3>
+                    <p id="delete-account-desc">Hesabınızı ve tüm verilerinizi kalıcı olarak silin</p>
+                </div>
+                <a href="delete-account.html" class="btn btn-danger" id="delete-account-btn">Hesabımı Sil</a>
+            </div>
+        </div>
+        
+        <div id="status-message" class="status-message"></div>
+    </div>
+    
+    <!-- Languages Script -->
+    <script src="../languages.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="../firebase-sdk/firebase-app.js"></script>
+    <script src="../firebase-sdk/firebase-auth.js"></script>
+    <script src="../firebase-sdk/firebase-firestore.js"></script>
+    <script src="../firebase-config.js"></script>
+    
+    <script>
+        // Dil desteği fonksiyonları (ana sistemle uyumlu)
+        function getCurrentLanguage() {
+            // Ana sistemle uyumlu dil alma
+            return localStorage.getItem('user_language') || 
+                   localStorage.getItem('language') || 
+                   localStorage.getItem('selectedLanguage') ||
+                   navigator.language.substring(0, 2) || 'tr';
+        }
+        
+        // Dil seçim dropdown'u işlevselliği
+        function initLanguageSelector() {
+            const languageSelect = document.getElementById('language-select');
+            if (languageSelect) {
+                // Mevcut dili ayarla
+                const currentLang = getCurrentLanguage();
+                languageSelect.value = currentLang;
+                
+                // Dil değişimini dinle
+                languageSelect.addEventListener('change', function() {
+                    const selectedLang = this.value;
+                    // Ana sistemle uyumlu dil kaydetme
+                    localStorage.setItem('language', selectedLang);
+                    localStorage.setItem('user_language', selectedLang);
+                    localStorage.setItem('selectedLanguage', selectedLang);
+                    updatePageContent();
+                    
+                    // Ana sistemi de bilgilendir
+                    window.dispatchEvent(new StorageEvent('storage', {
+                        key: 'language',
+                        newValue: selectedLang
+                    }));
+                    window.dispatchEvent(new StorageEvent('storage', {
+                        key: 'user_language',
+                        newValue: selectedLang
+                    }));
+                    
+                    console.log('🌐 Gizlilik ayarları sayfası: Dil değiştirildi ->', selectedLang);
+                });
+            }
+        }
+
+        function updatePageContent() {
+            const currentLang = getCurrentLanguage();
+            console.log('🌐 Gizlilik ayarları: Sayfa içeriği güncelleniyor, dil:', currentLang);
+            
+            if (!window.languages) {
+                console.warn('⚠️ Languages objesi yüklenmemiş, bekliyor...');
+                setTimeout(updatePageContent, 100);
+                return;
+            }
+            
+            const privacyTexts = window.languages[currentLang]?.privacy || window.languages['tr'].privacy;
+            
+            if (!privacyTexts) {
+                console.warn('⚠️ Dil çevirileri bulunamadı:', currentLang);
+                return;
+            }
+            
+            // Sayfa başlığı ve lang attribute
+            document.title = `${privacyTexts.title} - Bilgoo Quiz`;
+            document.documentElement.lang = currentLang;
+            
+            // Ana içerik
+            document.getElementById('back-link-text').textContent = privacyTexts.backLink;
+            document.getElementById('page-title').textContent = privacyTexts.title;
+            document.getElementById('page-subtitle').textContent = privacyTexts.subtitle;
+            
+            // Çerez ayarları
+            document.getElementById('cookie-settings-title').textContent = privacyTexts.cookieSettings;
+            document.getElementById('essential-cookies-title').textContent = privacyTexts.essentialCookies;
+            document.getElementById('essential-cookies-desc').textContent = privacyTexts.essentialCookiesDesc;
+            document.getElementById('analytics-cookies-title').textContent = privacyTexts.analyticsCookies;
+            document.getElementById('analytics-cookies-desc').textContent = privacyTexts.analyticsCookiesDesc;
+            document.getElementById('advertising-cookies-title').textContent = privacyTexts.advertisingCookies;
+            document.getElementById('advertising-cookies-desc').textContent = privacyTexts.advertisingCookiesDesc;
+            document.getElementById('save-cookie-settings').textContent = privacyTexts.saveCookieSettings;
+            
+            // Veri yönetimi
+            document.getElementById('data-management-title').textContent = privacyTexts.dataManagement;
+            document.getElementById('download-data-title').textContent = privacyTexts.downloadData;
+            document.getElementById('download-data-desc').textContent = privacyTexts.downloadDataDesc;
+            document.getElementById('export-data').textContent = privacyTexts.downloadMyData;
+            document.getElementById('data-retention-title').textContent = privacyTexts.dataRetention;
+            document.getElementById('data-retention-desc').textContent = privacyTexts.dataRetentionDesc;
+            document.getElementById('save-data-settings').textContent = privacyTexts.saveDataSettings;
+            
+            // Select options
+            const retentionSelect = document.getElementById('data-retention');
+            retentionSelect.options[0].textContent = privacyTexts.oneYear;
+            retentionSelect.options[1].textContent = privacyTexts.twoYears;
+            retentionSelect.options[2].textContent = privacyTexts.fiveYears;
+            retentionSelect.options[3].textContent = privacyTexts.forever;
+            
+            // Gizlilik kontrolü
+            document.getElementById('privacy-control-title').textContent = privacyTexts.privacyControl;
+            document.getElementById('profile-visibility-title').textContent = privacyTexts.profileVisibility;
+            document.getElementById('profile-visibility-desc').textContent = privacyTexts.profileVisibilityDesc;
+            document.getElementById('stats-sharing-title').textContent = privacyTexts.statsSharing;
+            document.getElementById('stats-sharing-desc').textContent = privacyTexts.statsSharingDesc;
+            document.getElementById('friend-requests-title').textContent = privacyTexts.friendRequests;
+            document.getElementById('friend-requests-desc').textContent = privacyTexts.friendRequestsDesc;
+            document.getElementById('save-privacy-settings').textContent = privacyTexts.savePrivacySettings;
+            
+            // Rıza geçmişi
+            document.getElementById('consent-history-title').textContent = privacyTexts.consentHistory;
+            document.getElementById('consent-history-desc').textContent = privacyTexts.consentHistoryDesc;
+            
+            // Hesap işlemleri
+            document.getElementById('account-operations-title').textContent = privacyTexts.accountOperations;
+            document.getElementById('delete-account-title').textContent = privacyTexts.deleteAccount;
+            document.getElementById('delete-account-desc').textContent = privacyTexts.deleteAccountDesc;
+            document.getElementById('delete-account-btn').textContent = privacyTexts.deleteAccount;
+        }
+
+        // Dil değişikliğini dinle (ana sistemle uyumlu)
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'language' || e.key === 'user_language' || e.key === 'selectedLanguage') {
+                console.log('🌐 Storage event alındı:', e.key, '->', e.newValue);
+                setTimeout(updatePageContent, 100);
+            }
+        });
+        
+        // Ana sistemden gelen languageChanged eventini dinle
+        window.addEventListener('message', function(e) {
+            if (e.data.type === 'languageChanged') {
+                console.log('🌐 Ana sistemden dil değişikliği alındı:', e.data.language);
+                setTimeout(updatePageContent, 100);
+            }
+        });
+
+        // Sayfa yüklendiğinde içeriği güncelle
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePageContent();
+            initLanguageSelector();
+        });
+
+        // Gizlilik ayarları yönetimi
+        const privacySettings = {
+            currentUser: null,
+            db: null,
+            
+            init() {
+                this.db = firebase.firestore();
+                
+                firebase.auth().onAuthStateChanged((user) => {
+                    if (user) {
+                        this.currentUser = user;
+                        this.loadSettings();
+                        this.loadConsentHistory();
+                    } else {
+                        window.location.href = '../login.html';
+                    }
+                });
+                
+                this.setupEventListeners();
+            },
+            
+            setupEventListeners() {
+                document.getElementById('save-cookie-settings').addEventListener('click', () => {
+                    this.saveCookieSettings();
+                });
+                
+                document.getElementById('export-data').addEventListener('click', () => {
+                    this.exportUserData();
+                });
+                
+                document.getElementById('save-data-settings').addEventListener('click', () => {
+                    this.saveDataSettings();
+                });
+                
+                document.getElementById('save-privacy-settings').addEventListener('click', () => {
+                    this.savePrivacySettings();
+                });
+            },
+            
+            async loadSettings() {
+                try {
+                    const doc = await this.db.collection('privacy_settings').doc(this.currentUser.uid).get();
+                    
+                    if (doc.exists) {
+                        const data = doc.data();
+                        
+                        // Çerez ayarlarını yükle
+                        document.getElementById('analytics-cookies').checked = data.analyticsEnabled || false;
+                        document.getElementById('advertising-cookies').checked = data.advertisingEnabled || false;
+                        
+                        // Veri ayarlarını yükle
+                        document.getElementById('data-retention').value = data.dataRetention || '2years';
+                        
+                        // Gizlilik ayarlarını yükle
+                        document.getElementById('profile-visibility').checked = data.profileVisible !== false;
+                        document.getElementById('stats-sharing').checked = data.statsSharing !== false;
+                        document.getElementById('friend-requests').checked = data.friendRequests !== false;
+                    }
+                } catch (error) {
+                    console.error('Ayarlar yüklenirken hata:', error);
+                }
+            },
+            
+            async saveCookieSettings() {
+                const settings = {
+                    analyticsEnabled: document.getElementById('analytics-cookies').checked,
+                    advertisingEnabled: document.getElementById('advertising-cookies').checked,
+                    lastUpdated: new Date()
+                };
+                
+                await this.saveSettings(settings);
+                this.showMessage('Çerez ayarları kaydedildi!', 'success');
+                
+                // Çerez ayarlarını localStorage'a da kaydet
+                const cookiePreferences = {
+                    essential: true,
+                    analytics: settings.analyticsEnabled,
+                    advertising: settings.advertisingEnabled
+                };
+                localStorage.setItem('cookieConsent', JSON.stringify(cookiePreferences));
+                
+                // Rıza geçmişine kaydet
+                await this.saveConsentRecord('cookie_settings', settings);
+            },
+            
+            async saveDataSettings() {
+                const settings = {
+                    dataRetention: document.getElementById('data-retention').value,
+                    lastUpdated: new Date()
+                };
+                
+                await this.saveSettings(settings);
+                this.showMessage('Veri ayarları kaydedildi!', 'success');
+                
+                // Rıza geçmişine kaydet
+                await this.saveConsentRecord('data_settings', settings);
+            },
+            
+            async savePrivacySettings() {
+                const settings = {
+                    profileVisible: document.getElementById('profile-visibility').checked,
+                    statsSharing: document.getElementById('stats-sharing').checked,
+                    friendRequests: document.getElementById('friend-requests').checked,
+                    lastUpdated: new Date()
+                };
+                
+                await this.saveSettings(settings);
+                this.showMessage('Gizlilik ayarları kaydedildi!', 'success');
+                
+                // Rıza geçmişine kaydet
+                await this.saveConsentRecord('privacy_settings', settings);
+            },
+            
+            async saveSettings(newSettings) {
+                try {
+                    await this.db.collection('privacy_settings').doc(this.currentUser.uid).set(newSettings, { merge: true });
+                } catch (error) {
+                    console.error('Ayarlar kaydedilemedi:', error);
+                    this.showMessage('Ayarlar kaydedilirken hata oluştu!', 'error');
+                }
+            },
+            
+            async saveConsentRecord(type, settings) {
+                try {
+                    await this.db.collection('consent_history').add({
+                        userId: this.currentUser.uid,
+                        type: type,
+                        settings: settings,
+                        timestamp: new Date(),
+                        userAgent: navigator.userAgent,
+                        ipAddress: 'hidden' // Güvenlik için IP saklamıyoruz
+                    });
+                } catch (error) {
+                    console.error('Rıza kaydı kaydedilemedi:', error);
+                }
+            },
+            
+            async loadConsentHistory() {
+                try {
+                    const snapshot = await this.db.collection('consent_history')
+                        .where('userId', '==', this.currentUser.uid)
+                        .orderBy('timestamp', 'desc')
+                        .limit(20)
+                        .get();
+                    
+                    const historyHtml = snapshot.docs.map(doc => {
+                        const data = doc.data();
+                        const date = data.timestamp.toDate();
+                        return `
+                            <div class="consent-item">
+                                <div class="consent-date">${date.toLocaleDateString('tr-TR')} ${date.toLocaleTimeString('tr-TR')}</div>
+                                <div class="consent-action">${this.getConsentTypeText(data.type)}</div>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    document.getElementById('consent-history').innerHTML = historyHtml || '<div class="consent-item"><div class="consent-date">Henüz rıza geçmişi yok</div></div>';
+                } catch (error) {
+                    console.error('Rıza geçmişi yüklenirken hata:', error);
+                    document.getElementById('consent-history').innerHTML = '<div class="consent-item"><div class="consent-date">Geçmiş yüklenemedi</div></div>';
+                }
+            },
+            
+            getConsentTypeText(type) {
+                const types = {
+                    'cookie_settings': 'Çerez ayarları güncellendi',
+                    'data_settings': 'Veri ayarları güncellendi',
+                    'privacy_settings': 'Gizlilik ayarları güncellendi',
+                    'privacy_policy': 'Gizlilik politikası onaylandı',
+                    'terms_of_service': 'Hizmet koşulları onaylandı'
+                };
+                return types[type] || 'Bilinmeyen işlem';
+            },
+            
+            async exportUserData() {
+                try {
+                    this.showMessage('Verileriniz hazırlanıyor...', 'info');
+                    
+                    const userData = {
+                        profile: {
+                            uid: this.currentUser.uid,
+                            email: this.currentUser.email,
+                            displayName: this.currentUser.displayName,
+                            createdAt: this.currentUser.metadata.creationTime
+                        },
+                        gameStats: {},
+                        friends: [],
+                        achievements: [],
+                        privacySettings: {},
+                        consentHistory: [],
+                        exportDate: new Date().toISOString()
+                    };
+                    
+                    // Kullanıcı verilerini al
+                    const userDoc = await this.db.collection('users').doc(this.currentUser.uid).get();
+                    if (userDoc.exists) {
+                        userData.gameStats = userDoc.data().stats || {};
+                    }
+                    
+                    // Gizlilik ayarlarını al
+                    const privacyDoc = await this.db.collection('privacy_settings').doc(this.currentUser.uid).get();
+                    if (privacyDoc.exists) {
+                        userData.privacySettings = privacyDoc.data();
+                    }
+                    
+                    // Rıza geçmişini al
+                    const consentSnapshot = await this.db.collection('consent_history')
+                        .where('userId', '==', this.currentUser.uid)
+                        .orderBy('timestamp', 'desc')
+                        .get();
+                    
+                    userData.consentHistory = consentSnapshot.docs.map(doc => doc.data());
+                    
+                    // Arkadaş listesini al
+                    const friendsSnapshot = await this.db.collection('friends')
+                        .where('userId', '==', this.currentUser.uid)
+                        .get();
+                    
+                    userData.friends = friendsSnapshot.docs.map(doc => doc.data());
+                    
+                    // Yerel verileri de ekle
+                    userData.localStorage = {
+                        gameHistory: JSON.parse(localStorage.getItem('gameHistory') || '[]'),
+                        userStats: JSON.parse(localStorage.getItem('userStats') || '{}'),
+                        cookieConsent: JSON.parse(localStorage.getItem('cookieConsent') || '{}')
+                    };
+                    
+                    // JSON dosyasını indir
+                    const blob = new Blob([JSON.stringify(userData, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `bilgoo-quiz-data-${new Date().toISOString().split('T')[0]}.json`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                    
+                    this.showMessage('Verileriniz başarıyla indirildi!', 'success');
+                } catch (error) {
+                    console.error('Veri dışa aktarma hatası:', error);
+                    this.showMessage('Veri dışa aktarılırken hata oluştu!', 'error');
+                }
+            },
+            
+            showMessage(message, type) {
+                const messageElement = document.getElementById('status-message');
+                messageElement.textContent = message;
+                messageElement.className = `status-message ${type}`;
+                messageElement.style.display = 'block';
+                
+                setTimeout(() => {
+                    messageElement.style.display = 'none';
+                }, 5000);
+            }
+        };
+        
+        // Sayfa yüklendiğinde başlat
+        document.addEventListener('DOMContentLoaded', () => {
+            privacySettings.init();
+        });
+    </script>
+</body>
+</html> 

@@ -1,10 +1,13 @@
 {
   "appId": "com.bilgoo.quizapp",
-  "appName": "Quiz Oyunu - Bilgoo",
-  "version": "14.13.0",
+  "appName": "Bilgoo - Quiz Oyunu",
+  "version": "14.14.0",
   "webDir": "www",
   "server": {
     "androidScheme": "https"
+  },
+  "ios": {
+    "contentInset": "automatic"
   },
   "plugins": {
     "AdMob": {
@@ -14,6 +17,9 @@
       "tagForUnderAgeOfConsent": false,
       "maxAdContentRating": "MA",
       "autobind": true
+    },
+    "ATTrackingManager": {
+      "requestAuthorizationMessage": "Bu uygulama, size daha alakalı ve kişiselleştirilmiş reklamlar gösterebilmek için diğer şirketlerin uygulama ve web sitelerinden gelen verilerinizi kullanmak istiyor. Bu izni vermezseniz de uygulamayı tam olarak kullanabilirsiniz."
     },
     "SplashScreen": {
       "launchShowDuration": 3000,
@@ -32,7 +38,10 @@
       "backgroundColor": "#3b82f6"
     },
     "PushNotifications": {
-      "presentationOptions": ["badge", "sound", "alert"]
+      "presentationOptions": ["badge", "sound", "banner", "list"]
+    },
+    "App": {
+      "launchUrl": "index.html"
     }
   }
 } 

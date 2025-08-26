@@ -3,8 +3,8 @@
 /* Mobil Reklam Stilleri */
 
 /* Mobil cihazlarda normal reklam alanlarını gizle */
-/* 7 inç ve 10 inç tabletlerde de mobil görünüm uygula (1280px'e kadar) */
-@media (max-width: 1280px) {
+/* Tabletlerde de mobil görünüm uygula (1920px'e kadar - tablet ve telefon aynı) */
+@media (max-width: 1920px) {
     .ad-container, 
     .adsbygoogle:not(.mobile-banner):not(.mobile-inline) {
         display: none !important;
@@ -55,8 +55,8 @@
 }
 
 /* Ana container'ı reklam alanı için aşağı kaydır */
-/* 7 inç ve 10 inç tabletlerde de mobil görünüm uygula (1280px'e kadar) */
-@media (max-width: 1280px) {
+/* Tabletlerde de mobil görünüm uygula (1920px'e kadar - tablet ve telefon aynı) */
+@media (max-width: 1920px) {
     body {
         padding-top: 0 !important;
         margin-top: 0 !important;
@@ -66,7 +66,7 @@
         margin-top: 0 !important;
         margin-left: auto !important;
         margin-right: auto !important;
-        padding-top: 90px !important; /* Reklam alanı için üst boşluk artırıldı */
+        padding-top: 110px !important; /* Reklam alanı için üst boşluk artırıldı (+20px toplam) */
         width: min(90%, 600px) !important;
         max-width: 600px !important;
     }
@@ -279,8 +279,8 @@
 }
 
 /* Mobil cihazlarda kenar reklamlarını gizle */
-/* 7 inç ve 10 inç tabletlerde de kenar reklamlarını gizle (1280px'e kadar) */
-@media (max-width: 1280px) {
+/* Tabletlerde de kenar reklamlarını gizle (1920px'e kadar - tablet ve telefon aynı) */
+@media (max-width: 1920px) {
     .ad-sidebar-left, .ad-sidebar-right {
         display: none;
     }
@@ -405,7 +405,7 @@ body.profile-active footer .company-info {
 }
 
 /* Mobil cihazlarda overflow problemlerini çöz */
-@media (max-width: 768px) {
+@media (max-width: 1920px) {
     body.profile-active {
         overflow-x: hidden;
     }
@@ -2148,7 +2148,7 @@ footer p {
 }
 
 /* Medya Sorguları */
-@media (min-width: 600px) {
+@media (min-width: 600px) and (max-width: 1920px) {
     #options {
         grid-template-columns: 1fr;
         gap: 0.4rem;
@@ -2186,16 +2186,56 @@ footer p {
     }
 }
 
-@media (min-width: 992px) {
+/* Büyük desktop ekranlar için özgün web görünümü (1920px+) */
+@media (min-width: 1921px) {
+    #options {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+        margin: 2.5rem 0;
+    }
+    
+    .option {
+        padding: 1rem 3rem;
+        font-size: clamp(1rem, 3vw, 1.15rem);
+        border-radius: 18px;
+        min-height: 45px;
+        width: 520px;
+    }
+    
+    #categories {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    h1 {
+        font-size: 2.6rem;
+    }
+    h2 {
+        font-size: 1.8rem;
+    }
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .main-options {
+        grid-template-columns: repeat(4, 1fr);
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .online-options {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    
     .container {
-        padding: 1.5rem; /* 2rem'den 1.5rem'e azaltıldı */
+        padding: 1.5rem;
+        max-width: 750px;
+        width: 90%;
     }
     
     #options {
         grid-template-columns: 1fr;
         gap: 0.5rem;
-        margin: 2rem 0; /* 3rem'den 2rem'e azaltıldı */
-        max-width: 700px; /* 900px'den 700px'e küçültüldü */
+        margin: 2rem 0;
+        max-width: 900px;
         margin-left: auto;
         margin-right: auto;
     }
@@ -2205,22 +2245,11 @@ footer p {
         font-size: 1.2rem;
         border-radius: 20px;
         min-height: 47px;
-        width: 460px; /* 560px'den 460px'e küçültüldü */
+        width: 560px;
         display: flex;
         align-items: center;
     }
-    
-    }
-    
-    #categories {
-        grid-template-columns: repeat(3, 1fr);
-    }
-    
-    .main-options {
-        grid-template-columns: repeat(4, 1fr);
-        max-width: 800px;
-        margin: 0 auto;
-    }
+}
 
 
 /* Sekme Sistemi */
@@ -3954,7 +3983,7 @@ input:checked + .switch-label:before {
     animation: rotate 1s linear;
 }
 /* Mobil cihazlar için font boyutlarını küçültme */
-@media (max-width: 768px) {
+@media (max-width: 1920px) {
     body {
         font-size: 13px;
     }
@@ -4062,8 +4091,8 @@ input:checked + .switch-label:before {
     }
 }
 
-/* Daha küçük mobil cihazlar için ek düzenlemeler */
-@media (max-width: 480px) {
+/* Daha küçük mobil cihazlar ve küçük tabletler için ek düzenlemeler */
+@media (max-width: 1024px) {
     body {
         font-size: 12px;
     }
@@ -4153,146 +4182,48 @@ input:checked + .switch-label:before {
         margin-top: 0.5rem;
     }
     
-    /* Mobil ve tablet yönlendirme için adaptive düzen */
-    @media screen and (orientation: landscape) and (max-height: 500px) {
-        .container {
-            padding: 0.4rem;  /* Daha küçük padding */
-            margin: 0.2rem auto;  /* Daha küçük margin */
-            min-height: 320px;  /* Düşük ekranlarda daha küçük yükseklik */
-        }
-        
-        #question {
-            margin-bottom: 0.3rem;  /* Daha küçük margin */
-            font-size: 0.85rem;  /* Daha küçük font */
-            padding: 0.5rem;  /* Daha küçük padding */
-        }
-        
-        .option {
-            padding: 0.4rem 0.6rem;  /* Daha küçük padding */
-            margin-bottom: 0.2rem;  /* Daha küçük margin */
-        }
-        
-        .category-btn {
-            font-size: 0.75rem;  /* Landscape'de kategori butonlarını daha da küçült */
-            padding: 1rem 0.9rem;  /* padding arttırıldı: 0.7rem 0.9rem'den 1rem 0.9rem'e - landscape'de bile yükseklik arttı */
-            min-height: 55px; /* minimum yükseklik arttırıldı: 45px'den 55px'e */
-        }
-        
-        #categories {
-            gap: 0.8rem;  /* gap arttırıldı: 0.6rem'den 0.8rem'e */
-            margin-top: 1.3rem;  /* margin-top arttırıldı: 1rem'den 1.3rem'e */
-        }
-        
-        #jokers {
-            position: absolute;
-            right: 0.5rem;
-            top: 0.5rem;
-            flex-direction: column;
-            gap: 2px;
-        }
-        
-        .timer-display {
-            position: absolute;
-            left: 0.5rem;
-            top: 0.5rem;
-            font-size: 0.8rem;
-            padding: 0.2rem 0.4rem;
-        }
-    }
-
-/* 7 inç ve 10 inç tablet landscape mode optimizasyonu */
-@media screen and (orientation: landscape) and (min-width: 769px) and (max-width: 1280px) and (max-height: 850px) {
+/* Mobil ve tablet yönlendirme için adaptive düzen - Artık tabletler de mobil gibi */
+@media screen and (orientation: landscape) and (max-height: 500px) {
     .container {
-        padding: 0.5rem;
-        margin: 0.3rem auto;
-        min-height: 350px;
-        max-height: 90vh;
-    }
-    
-    .quiz-container {
-        padding: 0.5rem;
-        gap: 0.5rem;
+        padding: 0.4rem;  /* Daha küçük padding */
+        margin: 0.2rem auto;  /* Daha küçük margin */
+        min-height: 320px;  /* Düşük ekranlarda daha küçük yükseklik */
     }
     
     #question {
-        font-size: 1rem;
-        line-height: 1.3;
-        padding: 0.6rem;
-        margin-bottom: 0.4rem;
-        max-height: 120px;
-        overflow-y: auto;
-    }
-    
-    #question img {
-        max-height: 160px !important;
-        width: auto;
-        max-width: 100%;
-        object-fit: contain;
-    }
-    
-    #options {
-        gap: 0.4rem;
-        margin: 0.4rem 0;
+        margin-bottom: 0.3rem;  /* Daha küçük margin */
+        font-size: 0.85rem;  /* Daha küçük font */
+        padding: 0.5rem;  /* Daha küçük padding */
     }
     
     .option {
-        padding: 0.5rem 0.7rem;
-        margin-bottom: 0.3rem;
-        font-size: 0.9rem;
-        min-height: 45px;
-        line-height: 1.2;
+        padding: 0.4rem 0.6rem;  /* Daha küçük padding */
+        margin-bottom: 0.2rem;  /* Daha küçük margin */
     }
     
     .category-btn {
-        font-size: 0.8rem;
-        padding: 0.8rem 0.9rem;
-        min-height: 50px;
+        font-size: 0.75rem;  /* Landscape'de kategori butonlarını daha da küçült */
+        padding: 1rem 0.9rem;  /* padding arttırıldı: 0.7rem 0.9rem'den 1rem 0.9rem'e - landscape'de bile yükseklik arttı */
+        min-height: 55px; /* minimum yükseklik arttırıldı: 45px'den 55px'e */
     }
     
     #categories {
-        gap: 0.6rem;
-        margin-top: 0.8rem;
-    }
-    
-    .timer-display {
-        font-size: 0.85rem;
-        padding: 0.3rem 0.5rem;
+        gap: 0.8rem;  /* gap arttırıldı: 0.6rem'den 0.8rem'e */
+        margin-top: 1.3rem;  /* margin-top arttırıldı: 1rem'den 1.3rem'e */
     }
     
     #jokers {
+        display: none !important; /* Mobil ve tablette joker butonlarını tamamen gizle */
+    }
+    
+    .timer-display {
         position: absolute;
-        right: 0.5rem;
+        left: 0.5rem;
         top: 0.5rem;
-        flex-direction: row;
-        gap: 4px;
-        z-index: 1000;
-    }
-    
-    .joker-btn {
-        width: 45px;
-        height: 45px;
         font-size: 0.8rem;
+        padding: 0.2rem 0.4rem;
     }
-    
-    /* Game header optimizasyonu */
-    .game-header {
-        padding: 0.3rem;
-        gap: 0.5rem;
-    }
-    
-    .total-score-display, .current-game-score {
-        font-size: 0.8rem;
-        padding: 0.3rem 0.5rem;
-    }
-    
-    .lives-container {
-        gap: 0.3rem;
-    }
-    
-    .life-display {
-        font-size: 0.8rem;
-        }
-    }
+}
 }
 
 /* Çevrimiçi Oyun Stilleri - Yeni ve İyileştirilmiş */
@@ -4709,7 +4640,7 @@ input:checked + .switch-label:before {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 1920px) {
     .true-false-buttons-container {
         display: none !important;
     }
@@ -4719,7 +4650,7 @@ input:checked + .switch-label:before {
     }
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1921px) {
     .mobile-swipe {
         display: none !important;
     }
@@ -11339,8 +11270,8 @@ body.platform-android .mobile-tab-bar {
     z-index: 9999 !important;
 }
 
-/* TABLET ZORLA MOBİL GÖRÜNÜM - Android 600px+ */
-@media screen and (min-width: 600px) {
+/* TABLET ZORLA MOBİL GÖRÜNÜM - Android Tüm Boyutlar */
+@media screen and (min-width: 1px) {
     .platform-android .hamburger-toggle,
     body.platform-android .hamburger-toggle {
         display: none !important;
@@ -11370,6 +11301,8 @@ body.platform-android .mobile-tab-bar {
         padding-bottom: 80px !important;
         padding-top: 90px !important; /* Reklam alanı için üst boşluk artırıldı */
         height: calc(100vh - 170px) !important; /* Üst ve alt boşluk düşülerek */
+        width: min(90%, 600px) !important; /* Mobil genişlik */
+        max-width: 600px !important; /* Mobil maksimum genişlik */
     }
 }
 
@@ -11431,7 +11364,7 @@ body[data-platform="capacitor"] .container {
 }
 
 /* Mobile Browser Tam Ekran */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1920px) {
     html.pwa-fullscreen,
     body.pwa-fullscreen {
         height: 100vh !important;
@@ -11773,7 +11706,7 @@ body:has(#profile-page[style*="display: block"]) footer {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1920px) {
     .badge-earned-inner {
         padding: 20px;
     }
@@ -12064,8 +11997,8 @@ body.quiz-active .joker-tab-bar {
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
 }
 
-/* Sadece mobil cihazlarda tab-bar ve joker-tab-bar görünsün */
-@media (max-width: 767px) {
+/* Sadece mobil cihazlarda ve tabletlerde tab-bar ve joker-tab-bar görünsün */
+@media (max-width: 1920px) {
     .mobile-tab-bar {
         display: flex;
     }
@@ -12075,7 +12008,7 @@ body.quiz-active .joker-tab-bar {
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1921px) {
     /* Web görünümünde mobil tab bar ve joker tab bar gizlenecek */
     .mobile-tab-bar {
         display: none !important;
@@ -12113,7 +12046,7 @@ body.quiz-active .quiz-main {
 }
 
 /* Arkadaşlar sayfasında mobil tab menü gözüksün */
-@media (max-width: 767px) {
+@media (max-width: 1920px) {
     body.friends-active .mobile-tab-bar {
         display: flex !important;
         z-index: 1500;
@@ -12279,7 +12212,7 @@ body.friends-active .hamburger-menu {
     font-size: 0.9rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1920px) {
     #about-page {
         padding: 1rem;
     }

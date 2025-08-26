@@ -214,6 +214,14 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isAuthenticated();
     }
+
+    // ========== USER SCORE RECORDS ==========
+    // "scores" koleksiyonu (kullanıcıya ait eski/ek skor kayıtları)
+    // Kullanıcı oturum açmışsa kendi skor dokümanlarını okuyup yazabilmeli.
+    match /scores/{scoreId} {
+      allow read: if isAuthenticated();
+      allow write, delete: if isAuthenticated();
+    }
     
     // Feedback - daha gevşek izinler
     match /feedback/{document} {

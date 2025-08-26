@@ -26,9 +26,22 @@
     <meta itemprop="name" content="Bilgoo - Ücretsiz Online Quiz Oyunu">
     <meta itemprop="image" content="icons/icon-192x192.png">
     
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453"
-         crossorigin="anonymous"></script>
+    <!-- Google AdSense - Conditional Loading -->
+    <script type="text/javascript">
+    // AdSense yalnızca kullanıcı izni verirse yüklenir
+    window.loadAdSense = function() {
+        if (localStorage.getItem('cookieConsent')) {
+            const consent = JSON.parse(localStorage.getItem('cookieConsent'));
+            if (consent.advertising) {
+                const script = document.createElement('script');
+                script.async = true;
+                script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453';
+                script.crossOrigin = 'anonymous';
+                document.head.appendChild(script);
+            }
+        }
+    };
+    </script>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="Quiz Oyunu">
@@ -4844,15 +4857,17 @@
         .modal {
             display: none;
             position: fixed;
-            z-index: 1000;
+            z-index: 999999 !important;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(0, 0, 0, 0.8) !important;
             backdrop-filter: blur(5px);
             animation: fadeIn 0.3s ease-out;
+            justify-content: center;
+            align-items: center;
         }
 
         @keyframes fadeIn {
@@ -4877,6 +4892,7 @@
             position: relative;
             animation: slideIn 0.4s ease-out;
             overflow: hidden;
+            z-index: 999999 !important;
         }
 
         @keyframes slideIn {
@@ -4935,6 +4951,36 @@
 
         #question-form {
             padding: 30px;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 20px 20px 0 0;
+            position: relative;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 30px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            border-radius: 0 0 20px 20px;
+            background: #f9fafb;
         }
 
         .form-group {
@@ -5194,6 +5240,11 @@
             <!-- Tüm Ayarlar Butonu -->
             <div class="menu-item" id="menu-all-settings">
                 <i class="fas fa-cog"></i> <span id="menu-all-settings-text">Tüm Ayarlar</span>
+            </div>
+            
+            <!-- Hesap Silme Butonu -->
+            <div class="menu-item" id="menu-delete-account" style="color: #dc2626;">
+                <i class="fas fa-trash-alt"></i> <span id="menu-delete-account-text">Hesabımı Sil</span>
             </div>
             <!-- Ses Ayarları -->
             <div class="menu-item">
@@ -5764,6 +5815,7 @@
                 <div class="profile-actions">
                     <button class="btn-primary" id="back-from-profile"><i class="fas fa-arrow-left"></i> Ana Menüye Dön</button>
                     <button class="btn-danger" id="logout-from-profile"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</button>
+                    <button class="btn-warning" id="delete-account-button" style="background: #dc2626; margin-top: 10px;"><i class="fas fa-trash-alt"></i> Hesabımı Sil</button>
                 </div>
             </div>
         </div>
@@ -6205,12 +6257,26 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <!-- Chart.js için CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Firebase için CDN -->
+    <!-- Firebase için CDN - Privacy Compliant Loading -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script>
+    <!-- Firebase Analytics - Conditional Loading -->
+    <script type="text/javascript">
+    // Firebase Analytics yalnızca kullanıcı izni verirse yüklenir
+    window.loadFirebaseAnalytics = function() {
+        if (localStorage.getItem('cookieConsent')) {
+            const consent = JSON.parse(localStorage.getItem('cookieConsent'));
+            if (consent.analytics) {
+                const script = document.createElement('script');
+                script.src = 'https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js';
+                document.head.appendChild(script);
+            }
+        }
+    };
+    </script>
     <script src="firebase-config.js"></script>
     <!-- Diğer JS dosyaları -->
     <!-- Dil dosyası -->
@@ -6223,6 +6289,7 @@
     <script src="progress-chart.js"></script>
     <script src="feedback.js"></script>
     <script src="admin-pending-questions.js"></script>
+    <script src="att-manager.js"></script>
     <script src="monetization.js"></script>
     <script src="push-notifications.js"></script>
     <script src="data-retention.js"></script>
@@ -6233,8 +6300,21 @@
         <div class="cookie-content">
             <div class="cookie-text">
                 <h3>🍪 <span id="cookie-banner-title">Çerez Bildirimi</span></h3>
-                <p id="cookie-banner-message">Web sitemiz, size daha iyi hizmet verebilmek ve reklamları kişiselleştirmek için çerezler kullanır. 
+                <p id="cookie-banner-message">Bu uygulama, size daha iyi hizmet verebilmek için zorunlu çerezler kullanır. Reklamları kişiselleştirmek için de isteğe bağlı çerezler kullanabiliriz. 
+                <strong>Hiçbir kişisel bilginiz üçüncü taraflarla paylaşılmaz.</strong>
                 Detaylı bilgi için <a href="privacy-policy.html" target="_blank" id="privacy-policy-link">Gizlilik Politikamızı</a> inceleyebilirsiniz.</p>
+                
+                <div class="privacy-summary">
+                    <h4>Toplanan Veriler:</h4>
+                    <ul>
+                        <li>✅ E-posta adresi (giriş için)</li>
+                        <li>✅ Kullanıcı adı (görüntüleme için)</li>
+                        <li>✅ Oyun istatistikleri (ilerleme için)</li>
+                        <li>❌ Konum bilgisi toplamıyoruz</li>
+                        <li>❌ Kişisel dosyalarınıza erişmiyoruz</li>
+                        <li>❌ Diğer uygulamalarınızı izlemiyoruz</li>
+                    </ul>
+                </div>
             </div>
             <div class="cookie-buttons">
                 <button id="accept-essential" class="cookie-btn cookie-btn-secondary">Sadece Gerekli</button>
@@ -6285,6 +6365,64 @@
             </div>
             <div class="cookie-modal-footer">
                 <button id="save-cookie-preferences" class="cookie-btn cookie-btn-primary">Kaydet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Account Deletion Modal -->
+    <div id="account-deletion-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle" style="color: #dc2626;"></i> Hesap Silme</h3>
+                <button class="close" id="close-deletion-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="background: #fee2e2; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #dc2626;">
+                    <h4 style="color: #991b1b; margin: 0 0 10px 0;">⚠️ DİKKAT: Bu işlem geri alınamaz!</h4>
+                    <p style="color: #7f1d1d; margin: 0;">Hesabınızı sildiğinizde tüm verileriniz kalıcı olarak silinecektir.</p>
+                </div>
+                
+                <h4>Silinecek Veriler:</h4>
+                <ul style="margin: 15px 0; padding-left: 20px;">
+                    <li>✅ Hesap bilgileri (e-posta, kullanıcı adı)</li>
+                    <li>✅ Oyun istatistikleri ve skorlar</li>
+                    <li>✅ Arkadaş listesi</li>
+                    <li>✅ Başarımlar ve rozetler</li>
+                    <li>✅ Oyun tercihleri</li>
+                    <li>✅ Tüm kişisel veriler</li>
+                </ul>
+
+                <h4>Hesap Silme Yöntemleri:</h4>
+                <div style="background: #f3f4f6; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                    <h5>1. Anında Silme (Önerilen)</h5>
+                    <p>Hesabınız şimdi silinecek ve tüm verileriniz kalıcı olarak kaldırılacak.</p>
+                    <button id="delete-account-now" class="btn-danger" style="width: 100%; margin-top: 10px;">
+                        <i class="fas fa-trash-alt"></i> Hesabımı Şimdi Sil
+                    </button>
+                </div>
+
+                <div style="background: #f3f4f6; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                    <h5>2. E-posta ile Talep</h5>
+                    <p>Hesap silme talebinizi e-posta ile gönderebilirsiniz. 48 saat içinde işlenecektir.</p>
+                    <button id="email-deletion-request" class="btn-secondary" style="width: 100%; margin-top: 10px;">
+                        <i class="fas fa-envelope"></i> E-posta Gönder
+                    </button>
+                </div>
+
+                <div style="background: #fef3c7; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 4px solid #f59e0b;">
+                    <h5>🔒 Gizlilik Haklarınız</h5>
+                    <p style="margin: 0; font-size: 0.9rem;">GDPR ve CCPA hakları kapsamında hesabınızı istediğiniz zaman silebilirsiniz. Silme işlemi 30 gün içinde tamamlanır.</p>
+                </div>
+
+                <h4>Onay:</h4>
+                <label style="display: flex; align-items: center; margin: 15px 0;">
+                    <input type="checkbox" id="deletion-confirmation" style="margin-right: 10px;">
+                    <span>Hesabımı silmek istediğimi ve bu işlemin geri alınamaz olduğunu anlıyorum.</span>
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel-deletion" class="btn-secondary">İptal</button>
+                <button id="confirm-deletion" class="btn-danger" disabled>Hesabı Sil</button>
             </div>
         </div>
     </div>
@@ -6686,6 +6824,29 @@
                 }
             });
             
+            // Hesap Silme menü öğesi
+            document.getElementById('menu-delete-account').addEventListener('click', function() {
+                hamburgerMenu.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                
+                // Hamburger menü ikonunu bars'a geri çevir
+                const icon = hamburgerToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+                
+                // Hesap silme modalını aç
+                const deletionModal = document.getElementById('account-deletion-modal');
+                if (deletionModal) {
+                    deletionModal.style.display = 'flex';
+                    console.log('Hesap silme modalı menüden açıldı');
+                } else {
+                    console.error('Hesap silme modalı bulunamadı');
+                    alert('Hesap silme özelliği yüklenemedi. Lütfen sayfayı yenileyin.');
+                }
+            });
+            
             // Hamburger menüdeki tema toggle işlevi
             const themeToggle = document.getElementById('checkbox');
             if (themeToggle) {
@@ -6913,8 +7074,251 @@
                     }
                 });
             }
-            
-            // Çıkış butonu kaldırıldı
+
+            // Account Deletion - Firebase hazır olduğunda initialize et
+            window.initializeAccountDeletion = function() {
+                const deleteAccountBtn = document.getElementById('delete-account-button');
+                const deletionModal = document.getElementById('account-deletion-modal');
+                const closeDeletionModal = document.getElementById('close-deletion-modal');
+                const cancelDeletion = document.getElementById('cancel-deletion');
+                const confirmDeletion = document.getElementById('confirm-deletion');
+                const deletionConfirmation = document.getElementById('deletion-confirmation');
+                const deleteAccountNow = document.getElementById('delete-account-now');
+                const emailDeletionRequest = document.getElementById('email-deletion-request');
+
+                console.log('Account deletion initialization starting...');
+                console.log('Elements found:', {
+                    deleteAccountBtn: !!deleteAccountBtn,
+                    deletionModal: !!deletionModal,
+                    closeDeletionModal: !!closeDeletionModal,
+                    confirmDeletion: !!confirmDeletion,
+                    deleteAccountNow: !!deleteAccountNow
+                });
+
+                // Hesap silme butonunu göster
+                if (deleteAccountBtn) {
+                    deleteAccountBtn.addEventListener('click', function() {
+                        console.log('Delete account button clicked');
+                        if (deletionModal) {
+                            // Modal'ı zorla görünür yap
+                            // Varsayılan modal animasyon sistemini kullan
+                            // Önce önceki inline zorlamaları kaldır (varsa)
+                            deletionModal.removeAttribute('style');
+                            // Görünürlük için "show" sınıfını ekle
+                            deletionModal.classList.add('show');
+                            // Güvenlik amacıyla kritik görünürlük stillerini yine de ayarla
+                            deletionModal.style.display = 'flex';
+                            deletionModal.style.opacity = '1';
+                            deletionModal.style.visibility = 'visible';
+                            console.log('Account deletion modal opened (show class applied)');
+                        } else {
+                            console.error('Deletion modal not found!');
+                        }
+                    });
+                    console.log('Delete account button listener added');
+                } else {
+                    console.error('Delete account button not found!');
+                }
+
+                // Modal'ı kapat
+                if (closeDeletionModal) {
+                    closeDeletionModal.addEventListener('click', function() {
+                        console.log('Close modal button clicked');
+                        if (deletionModal) {
+                            deletionModal.style.display = 'none';
+                        }
+                    });
+                }
+
+                if (cancelDeletion) {
+                    cancelDeletion.addEventListener('click', function() {
+                        console.log('Cancel deletion clicked');
+                        if (deletionModal) {
+                            deletionModal.style.display = 'none';
+                        }
+                    });
+                }
+
+                // Confirmation checkbox
+                if (deletionConfirmation) {
+                    deletionConfirmation.addEventListener('change', function() {
+                        console.log('Confirmation checkbox changed:', this.checked);
+                        if (confirmDeletion) confirmDeletion.disabled = !this.checked;
+                        if (deleteAccountNow) deleteAccountNow.disabled = !this.checked;
+                    });
+                }
+
+                // Ortak silme işlemi fonksiyonu (üst ve alt butonlar için)
+                async function executeAccountDeletion(trigger, isRetry = false) {
+                    console.log(trigger + ' clicked');
+                    
+                    // İlk seferde onayları kontrol et
+                    if (!isRetry) {
+                        if (!deletionConfirmation || !deletionConfirmation.checked) {
+                            alert('Lütfen onay kutucuğunu işaretleyin.');
+                            return;
+                        }
+                        if (!confirm('SON UYARI: Hesabınız kalıcı olarak silinecek. Bu işlem geri alınamaz. Devam etmek istiyor musunuz?')) {
+                            return;
+                        }
+                    }
+                    
+                    console.log('User confirmed account deletion');
+                    if (typeof firebase === 'undefined') {
+                        console.error('Firebase not loaded');
+                        alert('Firebase yüklenemedi. Lütfen sayfayı yenileyin.');
+                        return;
+                    }
+                    const auth = firebase.auth();
+                    if (!auth) {
+                        console.error('Firebase Auth not available');
+                        alert('Firebase Auth yüklenemedi. Lütfen sayfayı yenileyin.');
+                        return;
+                    }
+                    const user = auth.currentUser;
+                    if (!user) {
+                        console.error('No user signed in');
+                        alert('Oturum bulunamadı. Lütfen tekrar giriş yapın.');
+                        return;
+                    }
+                    console.log('Starting account deletion for user:', user.uid);
+                    
+                    try {
+                        // Sadece ilk seferde Firestore temizliği yap
+                        if (!isRetry) {
+                            console.log('Deleting user data from Firestore...');
+                            try {
+                                await firebase.firestore().collection('users').doc(user.uid).delete();
+                                console.log('User document deleted');
+                            } catch (userDocErr) {
+                                console.warn('User doc deletion failed (devam):', userDocErr.message);
+                            }
+                            
+                            try {
+                                const scoresSnapshot = await firebase.firestore().collection('scores').where('userId', '==', user.uid).get();
+                                if (!scoresSnapshot.empty) {
+                                    const batch = firebase.firestore().batch();
+                                    scoresSnapshot.docs.forEach(doc => batch.delete(doc.ref));
+                                    await batch.commit();
+                                    console.log('User scores deleted');
+                                } else {
+                                    console.log('No scores to delete');
+                                }
+                            } catch (scoreErr) {
+                                console.warn('Scores deletion skipped or failed (devam ediliyor):', scoreErr.message);
+                            }
+                            
+                            localStorage.clear();
+                            sessionStorage.clear();
+                            console.log('Local storage cleared');
+                        }
+                        
+                        // Kritik adım: Firebase Auth hesabını sil
+                        await user.delete();
+                        console.log('User account deleted from Firebase Auth');
+                        alert('Hesabınız başarıyla silindi. Ana sayfaya yönlendiriliyorsunuz.');
+                        window.location.href = 'index.html';
+                        
+                    } catch (error) {
+                        console.error('Account deletion error:', error);
+                        
+                        if (error.code === 'auth/requires-recent-login' && !isRetry) {
+                            console.log('Auth requires recent login, attempting reauthentication...');
+                            
+                            try {
+                                const providerData = user.providerData && user.providerData.length > 0 ? user.providerData[0] : null;
+                                console.log('Provider data:', providerData);
+                                
+                                if (providerData && providerData.providerId === 'google.com') {
+                                    console.log('Attempting Google reauthentication...');
+                                    if (firebase.auth.GoogleAuthProvider) {
+                                        const googleProvider = new firebase.auth.GoogleAuthProvider();
+                                        await user.reauthenticateWithPopup(googleProvider);
+                                        console.log('Google reauth successful');
+                                    } else {
+                                        throw new Error('Google provider not available');
+                                    }
+                                } else if (user.email) {
+                                    console.log('Attempting email/password reauthentication...');
+                                    const password = prompt('Güvenlik için şifrenizi tekrar girin:');
+                                    if (!password) {
+                                        alert('Şifre girilmedi. İşlem iptal edildi.');
+                                        return;
+                                    }
+                                    const credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
+                                    await user.reauthenticateWithCredential(credential);
+                                    console.log('Email/password reauth successful');
+                                } else {
+                                    throw new Error('No suitable reauthentication method found');
+                                }
+                                
+                                // Reauth başarılıysa sadece user.delete() kısmını tekrar dene
+                                console.log('Reauthentication successful, retrying user deletion...');
+                                await executeAccountDeletion(trigger + ' (retry)', true);
+                                
+                            } catch (reauthError) {
+                                console.error('Reauthentication failed:', reauthError);
+                                if (reauthError.code === 'auth/popup-closed-by-user') {
+                                    alert('Popup kapatıldı. Lütfen tekrar deneyin.');
+                                } else if (reauthError.code === 'auth/wrong-password') {
+                                    alert('Yanlış şifre. Lütfen doğru şifreyi girin.');
+                                } else {
+                                    alert('Yeniden kimlik doğrulama başarısız: ' + (reauthError.message || 'Bilinmeyen hata') + '\nLütfen sayfayı yenileyin ve tekrar giriş yapın.');
+                                }
+                            }
+                        } else {
+                            alert('Hesap silinirken bir hata oluştu: ' + error.message + '\nCode: ' + (error.code || 'unknown') + '\nLütfen daha sonra tekrar deneyin veya e-posta ile iletişime geçin.');
+                        }
+                    }
+                }
+
+                // Anında hesap silme
+                if (deleteAccountNow) {
+                    deleteAccountNow.addEventListener('click', function() {
+                        executeAccountDeletion('Delete account now');
+                    });
+                }
+
+                // Alt kısımdaki "Hesabı Sil" butonu
+                if (confirmDeletion) {
+                    confirmDeletion.addEventListener('click', function() {
+                        executeAccountDeletion('Footer confirm deletion');
+                    });
+                }
+
+                // E-posta ile silme talebi
+                if (emailDeletionRequest) {
+                    emailDeletionRequest.addEventListener('click', function() {
+                        console.log('Email deletion request clicked');
+                        
+                        const auth = firebase.auth();
+                        const user = auth ? auth.currentUser : null;
+                        const userEmail = user ? user.email : 'bilinmiyor';
+                        const userUid = user ? user.uid : 'bilinmiyor';
+
+                        const subject = encodeURIComponent('Hesap Silme Talebi - Bilgoo Quiz');
+                        const body = encodeURIComponent(
+                            `Merhaba Bilgoo Ekibi,\n\n` +
+                            `Hesabımın kalıcı olarak silinmesini talep ediyorum.\n\n` +
+                            `Kullanıcı Bilgileri:\n` +
+                            `- E-posta: ${userEmail}\n` +
+                            `- User ID: ${userUid}\n` +
+                            `- Tarih: ${new Date().toLocaleDateString('tr-TR')}\n\n` +
+                            `Lütfen hesabımı ve tüm verilerimi kalıcı olarak silin.\n\n` +
+                            `Teşekkürler.`
+                        );
+
+                        const mailtoLink = `mailto:support@bilgoo.com?subject=${subject}&body=${body}`;
+                        window.location.href = mailtoLink;
+
+                        if (deletionModal) {
+                            deletionModal.style.display = 'none';
+                        }
+                    });
+                }
+
+                console.log('Account deletion initialization completed');
+            };
             
             // Profil düzenleme butonu için olay dinleyici
             const editProfileBtn = document.getElementById('edit-profile-btn');

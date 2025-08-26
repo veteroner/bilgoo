@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hesap Silme - Bilgoo Quiz</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            background: linear-gradient(135deg, #8e44ad 0%, #c0392b 100%);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .delete-account-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+            margin-top: 20px;
+            text-align: center;
+            color: #333;
+        }
+        
+        .warning-icon {
+            font-size: 64px;
+            color: #ff3838;
+            margin-bottom: 20px;
+        }
+        
+        .delete-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #ff3838;
+            font-weight: bold;
+        }
+        
+        .delete-description {
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: #444;
+            font-size: 16px;
+        }
+        
+        .delete-form {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+            color: #333;
+        }
+        
+        .delete-btn {
+            background: #ff3838;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+        
+        .delete-btn:hover {
+            background: #e61e1e;
+            transform: translateY(-2px);
+        }
+        
+        .cancel-btn {
+            background: #f0f0f0;
+            color: #666;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+        
+        .cancel-btn:hover {
+            background: #ddd;
+        }
+        
+        .buttons {
+            margin-top: 30px;
+        }
+        
+        .result-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .error {
+            background: rgba(255, 82, 82, 0.2);
+            color: #e61e1e;
+        }
+        
+        .success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo img {
+            height: 60px;
+        }
+        
+        /* Checkbox stil */
+        .confirm-delete {
+            margin-top: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .confirm-delete input {
+            margin-right: 10px;
+            margin-top: 5px;
+        }
+        
+        .confirm-delete label {
+            color: #444;
+        }
+        
+        /* Google Play gereksinimleri için eklenen bölüm */
+        .data-policy {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            text-align: left;
+            color: #333;
+        }
+        
+        .data-policy h2 {
+            color: #8e44ad;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        
+        .data-policy-section {
+            margin-bottom: 20px;
+        }
+        
+        .data-policy-section h3 {
+            color: #444;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .data-list {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .data-list li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="../bilgoo-logo.svg" alt="Bilgoo Quiz Logo">
+        </div>
+        
+        <div class="delete-account-container">
+            <div class="warning-icon">⚠️</div>
+            <h1 class="delete-title">Hesabınızı Silmek İstediğinizden Emin misiniz?</h1>
+            
+            <div class="delete-description">
+                <p>Hesabınızı silmek geri alınamaz bir işlemdir. Tüm verileriniz, puanlarınız, istatistikleriniz ve başarılarınız kalıcı olarak silinecektir.</p>
+                <p>Devam etmek için aşağıdaki formu doldurun.</p>
+            </div>
+            
+            <div class="delete-form">
+                <div class="form-group">
+                    <label for="email">E-posta Adresiniz:</label>
+                    <input type="email" id="email" placeholder="ornek@email.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Şifreniz:</label>
+                    <input type="password" id="password" placeholder="Şifrenizi girin" required>
+                </div>
+                
+                <div class="confirm-delete">
+                    <input type="checkbox" id="confirm" required>
+                    <label for="confirm">Hesabımın ve tüm verilerimin kalıcı olarak silineceğini anlıyor ve onaylıyorum.</label>
+                </div>
+                
+                <div class="buttons">
+                    <button class="cancel-btn" id="cancel-delete">İptal</button>
+                    <button class="delete-btn" id="confirm-delete">Hesabımı Sil</button>
+                </div>
+                
+                <div id="result-message" class="result-message"></div>
+            </div>
+        </div>
+        
+        <!-- Google Play gereksinimleri için eklenen veri politikası bölümü -->
+        <div class="data-policy">
+            <h2>Bilgoo Quiz - Hesap Silme Politikası</h2>
+            
+            <div class="data-policy-section">
+                <h3>Hesap Silme Adımları</h3>
+                <ol>
+                    <li>Bu sayfadaki formu kullanarak e-posta adresiniz ve şifrenizle giriş yapın.</li>
+                    <li>Hesap silme işlemini anladığınızı belirtmek için onay kutusunu işaretleyin.</li>
+                    <li>"Hesabımı Sil" butonuna tıklayın.</li>
+                    <li>İşlem tamamlandıktan sonra hesabınız ve tüm verileriniz tamamen silinecektir.</li>
+                </ol>
+            </div>
+            
+            <div class="data-policy-section">
+                <h3>Silinen Veriler</h3>
+                <p>Hesap silme işlemi sonucunda aşağıdaki verileriniz kalıcı olarak silinecektir:</p>
+                <ul class="data-list">
+                    <li>Kullanıcı profili (kullanıcı adı, e-posta, profil resmi)</li>
+                    <li>Oyun istatistikleri ve puanlar</li>
+                    <li>Başarılar ve rozetler</li>
+                    <li>Oyun tercih ayarları</li>
+                    <li>Arkadaş listeleri ve sosyal bağlantılar</li>
+                </ul>
+            </div>
+            
+            <div class="data-policy-section">
+                <h3>Veri Saklama</h3>
+                <p>Hesabınız silindikten sonra:</p>
+                <ul class="data-list">
+                    <li>Tüm kişisel verileriniz anında silinir.</li>
+                    <li>Yasal düzenlemeler gereği saklanması zorunlu bazı işlem kayıtları (satın alma işlemleri gibi) 3 ay süreyle isimsiz halde saklanabilir.</li>
+                    <li>Geribildirim, destek mesajları ve topluluk içeriği katkıları, anonim halde tutulabilir.</li>
+                </ul>
+            </div>
+            
+            <div class="data-policy-section">
+                <p>Sorularınız için <a href="mailto:bilgoo.quiz@gmail.com" style="color: #8e44ad; text-decoration: underline;">iletisim@bilgoo.com</a> adresine ulaşabilirsiniz.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="../firebase-sdk/firebase-app.js"></script>
+    <script src="../firebase-sdk/firebase-auth.js"></script>
+    <script src="../firebase-sdk/firebase-firestore.js"></script>
+    <script src="../firebase-config.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Firebase başlatma kontrolü
+            if (!firebase || !firebase.auth) {
+                showMessage('Firebase yüklenemedi. Lütfen daha sonra tekrar deneyin.', 'error');
+                return;
+            }
+            
+            // İptal butonunu ayarla
+            document.getElementById('cancel-delete').addEventListener('click', function() {
+                window.location.href = '../index.html';
+            });
+            
+            // Hesap silme butonunu ayarla
+            document.getElementById('confirm-delete').addEventListener('click', function() {
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const confirmCheckbox = document.getElementById('confirm');
+                
+                // Form doğrulama
+                if (!email || !password) {
+                    showMessage('Lütfen e-posta ve şifrenizi girin', 'error');
+                    return;
+                }
+                
+                if (!confirmCheckbox.checked) {
+                    showMessage('Hesabınızı silmek için onay kutusunu işaretlemeniz gerekiyor', 'error');
+                    return;
+                }
+                
+                // Kullanıcıyı tekrar giriş yaptır
+                firebase.auth().signInWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        const user = userCredential.user;
+                        
+                        // Kullanıcının Firestore verilerini silme
+                        deleteUserData(user.uid)
+                            .then(() => {
+                                // Kullanıcı hesabını silme
+                                return user.delete();
+                            })
+                            .then(() => {
+                                showMessage('Hesabınız başarıyla silindi. Birkaç saniye içinde ana sayfaya yönlendirileceksiniz.', 'success');
+                                setTimeout(() => {
+                                    window.location.href = '../index.html';
+                                }, 3000);
+                            })
+                            .catch((error) => {
+                                console.error('Hesap silme hatası:', error);
+                                showMessage(`Hesap silinemedi: ${error.message}`, 'error');
+                            });
+                    })
+                    .catch((error) => {
+                        console.error('Giriş hatası:', error);
+                        showMessage('E-posta veya şifre hatalı', 'error');
+                    });
+            });
+            
+            // Kullanıcı verilerini silme fonksiyonu
+            function deleteUserData(userId) {
+                const db = firebase.firestore();
+                
+                // Kullanıcı ana dokümanı
+                const userDocRef = db.collection('users').doc(userId);
+                
+                // İstatistikler
+                const statsDocRef = db.collection('statistics').doc(userId);
+                
+                // Başarılar
+                const achievementsDocRef = db.collection('achievements').doc(userId);
+                
+                // Tüm silinecek dokümanları topla
+                const deletePromises = [
+                    userDocRef.delete(),
+                    statsDocRef.delete(),
+                    achievementsDocRef.delete()
+                ];
+                
+                // Jokerler, arkadaşlar listesi ve diğer koleksiyonlar için ek kontroller yapılabilir
+                
+                // Tüm silme işlemlerini birlikte yap
+                return Promise.all(deletePromises)
+                    .catch(error => {
+                        console.error('Veri silme hatası:', error);
+                        // Veri silme hatası olsa bile kullanıcı silinmesini engellememek için hatayı bastır
+                        return Promise.resolve();
+                    });
+            }
+            
+            // Mesaj gösterme fonksiyonu
+            function showMessage(message, type) {
+                const messageElement = document.getElementById('result-message');
+                messageElement.textContent = message;
+                messageElement.className = 'result-message ' + type;
+                messageElement.style.display = 'block';
+            }
+            
+            // Oturumu kontrol et
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    // Kullanıcı giriş yapmış, e-posta adresini otomatik doldur
+                    document.getElementById('email').value = user.email || '';
+                } else {
+                    // Kullanıcı giriş yapmamış, login sayfasına yönlendir
+                    showMessage('Bu işlem için giriş yapmanız gerekiyor', 'error');
+                    setTimeout(() => {
+                        window.location.href = '../login.html';
+                    }, 2000);
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -32,7 +32,7 @@
       "backgroundColor": "#3b82f6"
     },
     "PushNotifications": {
-      "presentationOptions": ["badge", "sound", "alert"]
+      "presentationOptions": ["badge", "sound", "banner", "list"]
     }
   }
 } 
