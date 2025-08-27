@@ -1,10 +1,17 @@
 {
   "name": "quiz-oyunu",
-  "version": "14.13.0",
+  "version": "14.14.0",
   "description": "Bilgoo uygulaması, kullanıcıların bilgilerini çeşitli kategorilerde test edebilecekleri interaktif bir web uygulamasıdır.",
   "main": "achievements.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:ios": "npx cap sync ios && npx cap open ios",
+    "sync:ios": "npx cap sync ios",
+    "open:ios": "npx cap open ios",
+    "build:android": "npx cap sync android && npx cap open android",
+    "sync:android": "npx cap sync android",
+    "open:android": "npx cap open android",
+    "copy:www": "cp -r *.html *.css *.js *.json *.ico *.svg *.png *.md icons/ languages/ www/ 2>/dev/null || true"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +24,7 @@
     "@capacitor/ios": "^5.7.8",
     "@capacitor/push-notifications": "^5.1.2",
     "@capacitor/splash-screen": "^5.0.6",
-    "@capacitor/status-bar": "^5.0.6"
+    "@capacitor/status-bar": "^5.0.6",
+    "capacitor-plugin-app-tracking-transparency": "^2.0.5"
   }
 }

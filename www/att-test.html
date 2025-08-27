@@ -6,276 +6,246 @@
     <title>ATT Test - Bilgoo</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
             max-width: 600px;
             margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        .status {
-            padding: 15px;
-            margin: 10px 0;
+        
+        .status-card {
+            background: #e8f4fd;
+            border: 1px solid #bee5eb;
             border-radius: 8px;
-            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 15px 0;
         }
-        .success { background: #d4edda; border-color: #c3e6cb; color: #155724; }
-        .error { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
-        .warning { background: #fff3cd; border-color: #ffeaa7; color: #856404; }
-        .info { background: #d1ecf1; border-color: #bee5eb; color: #0c5460; }
-        button {
-            background: #007bff;
+        
+        .button {
+            background: #007AFF;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
             cursor: pointer;
             margin: 10px 5px;
         }
-        button:hover { background: #0056b3; }
+        
+        .button:hover {
+            background: #0056b3;
+        }
+        
+        .button.secondary {
+            background: #6c757d;
+        }
+        
         .log {
             background: #f8f9fa;
-            border: 1px solid #e9ecef;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
             padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
             font-family: monospace;
-            white-space: pre-wrap;
+            font-size: 14px;
             max-height: 300px;
             overflow-y: auto;
+            white-space: pre-wrap;
         }
+        
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .warning { color: #ffc107; }
+        .info { color: #17a2b8; }
+        
+        h1 { color: #343a40; }
+        h2 { color: #495057; border-bottom: 2px solid #007AFF; padding-bottom: 5px; }
     </style>
 </head>
 <body>
-    <h1>🍎 App Tracking Transparency Test</h1>
-    <p>Bu sayfa iOS'ta ATT framework'ünün doğru çalışıp çalışmadığını test eder.</p>
+    <div class="container">
+        <h1>🔒 App Tracking Transparency Test</h1>
+        <p>Bu sayfa iOS üzerinde ATT (App Tracking Transparency) implementasyonunu test etmek için kullanılır.</p>
+        
+        <div class="status-card">
+            <h2>Platform Bilgisi</h2>
+            <p><strong>Platform:</strong> <span id="platform">Tespit ediliyor...</span></p>
+            <p><strong>ATT Plugin:</strong> <span id="att-plugin">Kontrol ediliyor...</span></p>
+            <p><strong>Capacitor:</strong> <span id="capacitor-info">Kontrol ediliyor...</span></p>
+        </div>
 
-    <div id="platform-info" class="status info">
-        <strong>Platform:</strong> <span id="platform">Kontrol ediliyor...</span><br>
-        <strong>Capacitor:</strong> <span id="capacitor">Kontrol ediliyor...</span><br>
-        <strong>ATT Plugin:</strong> <span id="att-plugin">Kontrol ediliyor...</span>
+        <div class="status-card">
+            <h2>ATT Durumu</h2>
+            <p><strong>Mevcut Durum:</strong> <span id="att-status">Bilinmiyor</span></p>
+            <p><strong>Son Güncelleme:</strong> <span id="last-update">-</span></p>
+        </div>
+
+        <div style="text-align: center; margin: 20px 0;">
+            <button class="button" onclick="initATT()">ATT Manager'ı Başlat</button>
+            <button class="button" onclick="checkStatus()">Durumu Kontrol Et</button>
+            <button class="button" onclick="requestPermission()">İzin İste</button>
+            <button class="button secondary" onclick="showDebugInfo()">Debug Bilgisi</button>
+            <button class="button secondary" onclick="clearLog()">Log'u Temizle</button>
+        </div>
+
+        <h2>Test Logları</h2>
+        <div id="log" class="log">Test başlatılıyor...\n</div>
     </div>
 
-    <div id="att-status" class="status warning">
-        <strong>ATT Durumu:</strong> <span id="status-text">Henüz kontrol edilmedi</span>
-    </div>
-
-    <div class="controls">
-        <button onclick="checkATTStatus()">ATT Durumunu Kontrol Et</button>
-        <button onclick="requestATTPermission()">ATT İzni İste</button>
-        <button onclick="testAdMob()">AdMob Test Et</button>
-        <button onclick="clearLog()">Logi Temizle</button>
-    </div>
-
-    <div id="log" class="log">Test logları burada görünecek...\n</div>
+    <!-- Capacitor scripts -->
+    <script src="https://unpkg.com/@capacitor/core@latest/dist/capacitor.js"></script>
+    <script src="att-manager.js"></script>
 
     <script>
         let logElement = document.getElementById('log');
         
-        function log(message) {
+        function log(message, type = 'info') {
             const timestamp = new Date().toLocaleTimeString();
-            logElement.textContent += `[${timestamp}] ${message}\n`;
+            const className = type;
+            const logLine = `[${timestamp}] ${message}\n`;
+            
+            logElement.innerHTML += `<span class="${className}">${logLine}</span>`;
             logElement.scrollTop = logElement.scrollHeight;
-            console.log(message);
+            
+            console.log(`ATT Test - ${message}`);
+        }
+        
+        function updateStatus(status) {
+            document.getElementById('att-status').textContent = status || 'Bilinmiyor';
+            document.getElementById('last-update').textContent = new Date().toLocaleTimeString();
         }
         
         function clearLog() {
-            logElement.textContent = 'Log temizlendi...\n';
+            logElement.innerHTML = '';
+            log('Log temizlendi', 'info');
         }
         
-        // Platform bilgilerini kontrol et
-        function checkPlatform() {
+        // Platform detection
+        function detectPlatform() {
             const platform = window.Capacitor ? window.Capacitor.getPlatform() : 'web';
             const isCapacitorAvailable = !!window.Capacitor;
-            const isATTAvailable = !!(window.Capacitor?.Plugins?.ATTrackingManager);
+            const isATTPluginAvailable = !!(window.Capacitor && 
+                                           window.Capacitor.Plugins && 
+                                           window.Capacitor.Plugins.AppTrackingTransparency);
             
             document.getElementById('platform').textContent = platform;
-            document.getElementById('capacitor').textContent = isCapacitorAvailable ? '✅ Mevcut' : '❌ Mevcut değil';
-            document.getElementById('att-plugin').textContent = isATTAvailable ? '✅ Mevcut' : '❌ Mevcut değil';
+            document.getElementById('capacitor-info').textContent = isCapacitorAvailable ? 'Mevcut' : 'Mevcut Değil';
+            document.getElementById('att-plugin').textContent = isATTPluginAvailable ? 'Mevcut' : 'Mevcut Değil';
             
-            log(`Platform: ${platform}`);
-            log(`Capacitor: ${isCapacitorAvailable ? 'Mevcut' : 'Mevcut değil'}`);
-            log(`ATT Plugin: ${isATTAvailable ? 'Mevcut' : 'Mevcut değil'}`);
+            log(`Platform tespit edildi: ${platform}`, 'info');
+            log(`Capacitor: ${isCapacitorAvailable ? 'Mevcut' : 'Mevcut Değil'}`, isCapacitorAvailable ? 'success' : 'warning');
+            log(`ATT Plugin: ${isATTPluginAvailable ? 'Mevcut' : 'Mevcut Değil'}`, isATTPluginAvailable ? 'success' : 'error');
             
-            if (platform !== 'ios') {
-                log('⚠️ ATT sadece iOS\'ta çalışır');
-            }
-            
-            return { platform, isCapacitorAvailable, isATTAvailable };
+            return { platform, isCapacitorAvailable, isATTPluginAvailable };
         }
         
-        // ATT durumunu kontrol et
-        async function checkATTStatus() {
-            log('🔍 ATT durumu kontrol ediliyor...');
+        async function initATT() {
+            log('ATT Manager başlatılıyor...', 'info');
             
-            const platformInfo = checkPlatform();
-            
-            if (platformInfo.platform !== 'ios') {
-                updateStatus('warning', 'iOS olmayan platform - ATT gerekmiyor');
-                return;
-            }
-            
-            if (!platformInfo.isATTAvailable) {
-                updateStatus('error', 'ATT Plugin bulunamadı');
-                log('❌ ATTrackingManager plugin yüklü değil');
+            if (!window.ATTManager) {
+                log('ATT Manager mevcut değil!', 'error');
                 return;
             }
             
             try {
-                const ATTrackingManager = window.Capacitor.Plugins.ATTrackingManager;
-                const result = await ATTrackingManager.getTrackingAuthorizationStatus();
+                const result = await window.ATTManager.init();
+                log(`ATT Manager başlatıldı: ${result}`, 'success');
+                updateStatus(window.ATTManager.currentStatus);
+            } catch (error) {
+                log(`ATT Manager başlatma hatası: ${error.message}`, 'error');
+            }
+        }
+        
+        async function checkStatus() {
+            log('ATT durumu kontrol ediliyor...', 'info');
+            
+            if (!window.ATTManager) {
+                log('ATT Manager mevcut değil!', 'error');
+                return;
+            }
+            
+            try {
+                const status = await window.ATTManager.getTrackingStatus();
+                log(`Mevcut ATT durumu: ${status}`, 'info');
+                updateStatus(status);
                 
-                log(`📊 ATT Durumu: ${result.status}`);
-                
-                let statusClass, statusText;
-                switch (result.status) {
-                    case 'authorized':
-                        statusClass = 'success';
-                        statusText = '✅ İzin verildi - Tracking aktif';
-                        break;
-                    case 'denied':
-                        statusClass = 'error';
-                        statusText = '❌ İzin reddedildi - Tracking devre dışı';
-                        break;
-                    case 'restricted':
-                        statusClass = 'error';
-                        statusText = '🚫 Kısıtlanmış - Tracking devre dışı';
-                        break;
-                    case 'notDetermined':
-                        statusClass = 'warning';
-                        statusText = '❓ Henüz sorulmadı - İzin iste butonunu kullan';
-                        break;
-                    default:
-                        statusClass = 'error';
-                        statusText = `❓ Bilinmeyen durum: ${result.status}`;
+                if (window.ATTManager.isInitialized) {
+                    log(`Tracking izinli: ${window.ATTManager.isTrackingAuthorized()}`, 'info');
+                    log(`Kişiselleştirilmiş reklamlar: ${window.ATTManager.canShowPersonalizedAds()}`, 'info');
                 }
-                
-                updateStatus(statusClass, statusText);
-                
             } catch (error) {
-                log(`❌ ATT durum kontrolü hatası: ${error.message}`);
-                updateStatus('error', `Hata: ${error.message}`);
+                log(`Durum kontrol hatası: ${error.message}`, 'error');
             }
         }
         
-        // ATT izni iste
-        async function requestATTPermission() {
-            log('🙋‍♂️ ATT izni isteniyor...');
+        async function requestPermission() {
+            log('ATT izni isteniyor...', 'warning');
             
-            const platformInfo = checkPlatform();
-            
-            if (platformInfo.platform !== 'ios') {
-                log('⚠️ ATT izni sadece iOS\'ta istenebilir');
+            if (!window.ATTManager) {
+                log('ATT Manager mevcut değil!', 'error');
                 return;
             }
             
-            if (!platformInfo.isATTAvailable) {
-                log('❌ ATTrackingManager plugin yüklü değil');
+            if (!window.ATTManager.isInitialized) {
+                log('ATT Manager henüz başlatılmamış, önce başlatılıyor...', 'warning');
+                await initATT();
+            }
+            
+            try {
+                log('İzin popup\'ı gösterilecek...', 'warning');
+                const result = await window.ATTManager.requestPermissionIfNeeded();
+                log(`İzin isteği sonucu: ${result}`, result === 'authorized' ? 'success' : 'warning');
+                updateStatus(result);
+                
+                const adConfig = window.ATTManager.getAdConfig();
+                log(`Reklam konfigürasyonu: ${JSON.stringify(adConfig)}`, 'info');
+                
+            } catch (error) {
+                log(`İzin isteği hatası: ${error.message}`, 'error');
+            }
+        }
+        
+        function showDebugInfo() {
+            if (!window.ATTManager) {
+                log('ATT Manager mevcut değil!', 'error');
                 return;
             }
             
-            try {
-                const ATTrackingManager = window.Capacitor.Plugins.ATTrackingManager;
-                
-                // Önce mevcut durumu kontrol et
-                const currentStatus = await ATTrackingManager.getTrackingAuthorizationStatus();
-                log(`📊 Mevcut durum: ${currentStatus.status}`);
-                
-                if (currentStatus.status !== 'notDetermined') {
-                    log('⚠️ İzin daha önce cevaplanmış, tekrar sorulmayacak');
-                    log('💡 Settings > Privacy & Security > Tracking\'den manuel olarak değiştirilebilir');
-                    return;
-                }
-                
-                // İzin iste
-                log('📱 ATT izin dialogu gösteriliyor...');
-                const result = await ATTrackingManager.requestTrackingAuthorization();
-                
-                log(`📋 İzin sonucu: ${result.status}`);
-                
-                // Durumu güncelle
-                await checkATTStatus();
-                
-            } catch (error) {
-                log(`❌ ATT izin isteği hatası: ${error.message}`);
-            }
+            const debugInfo = window.ATTManager.getDebugInfo();
+            log('=== DEBUG BİLGİSİ ===', 'info');
+            log(`Platform: ${debugInfo.platform}`, 'info');
+            log(`iOS Platform: ${debugInfo.isIOSPlatform}`, 'info');
+            log(`ATT Plugin Mevcut: ${debugInfo.isATTPluginAvailable}`, 'info');
+            log(`Başlatılmış: ${debugInfo.isInitialized}`, 'info');
+            log(`Mevcut Durum: ${debugInfo.currentStatus}`, 'info');
+            log(`Tracking İzinli: ${debugInfo.isTrackingAuthorized}`, 'info');
+            log(`Kişiselleştirilmiş Reklamlar: ${debugInfo.canShowPersonalizedAds}`, 'info');
+            log('================', 'info');
         }
         
-        // AdMob test et
-        async function testAdMob() {
-            log('🎯 AdMob test ediliyor...');
-            
-            if (!window.Capacitor?.Plugins?.AdMob) {
-                log('❌ AdMob plugin bulunamadı');
-                return;
-            }
-            
-            try {
-                const AdMob = window.Capacitor.Plugins.AdMob;
-                
-                // ATT durumuna göre initialize et
-                const attStatus = await getCurrentATTStatus();
-                const trackingAllowed = attStatus === 'authorized' || attStatus === 'notRequired';
-                
-                log(`📊 Tracking allowed: ${trackingAllowed}`);
-                
-                const initOptions = {
-                    requestTrackingAuthorization: false, // Manuel olarak hallediyoruz
-                    testingDevices: [],
-                    initializeForTesting: false,
-                    tagForChildDirectedTreatment: false,
-                    tagForUnderAgeOfConsent: false,
-                    maxAdContentRating: 'MA',
-                    npa: trackingAllowed ? '0' : '1'
-                };
-                
-                log('🚀 AdMob başlatılıyor...');
-                await AdMob.initialize(initOptions);
-                log('✅ AdMob başarıyla başlatıldı');
-                
-            } catch (error) {
-                log(`❌ AdMob test hatası: ${error.message}`);
-            }
-        }
-        
-        // Helper fonksiyon
-        async function getCurrentATTStatus() {
-            try {
-                const platform = window.Capacitor ? window.Capacitor.getPlatform() : 'web';
-                if (platform !== 'ios') return 'notRequired';
-                
-                const ATTrackingManager = window.Capacitor?.Plugins?.ATTrackingManager;
-                if (!ATTrackingManager) return 'unavailable';
-                
-                const result = await ATTrackingManager.getTrackingAuthorizationStatus();
-                return result.status;
-            } catch (error) {
-                return 'error';
-            }
-        }
-        
-        function updateStatus(className, text) {
-            const statusElement = document.getElementById('att-status');
-            statusElement.className = `status ${className}`;
-            document.getElementById('status-text').textContent = text;
-        }
-        
-        // Sayfa yüklendiğinde otomatik kontrol
+        // Sayfa yüklendiğinde otomatik platform tespiti
         document.addEventListener('DOMContentLoaded', function() {
-            log('🚀 ATT Test sayfası yüklendi');
+            log('Sayfa yüklendi, platform tespit ediliyor...', 'info');
+            detectPlatform();
             
-            // Capacitor ready'i bekle
-            if (window.Capacitor) {
-                checkPlatform();
-            } else {
-                setTimeout(() => {
-                    log('⏰ Capacitor bekleniyor...');
-                    checkPlatform();
-                }, 1000);
+            // Eğer iOS ise otomatik olarak ATT Manager'ı başlat
+            const platform = window.Capacitor ? window.Capacitor.getPlatform() : 'web';
+            if (platform === 'ios') {
+                log('iOS tespit edildi, ATT Manager otomatik başlatılıyor...', 'info');
+                setTimeout(initATT, 1000);
             }
         });
         
-        // ATTManager event'ini dinle
-        window.addEventListener('attStatusReady', function(event) {
-            log(`🎉 ATTManager event alındı: ${event.detail.status}`);
+        // Capacitor ready event
+        document.addEventListener('capacitorReady', function() {
+            log('Capacitor hazır!', 'success');
+            detectPlatform();
         });
     </script>
 </body>
