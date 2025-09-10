@@ -216,6 +216,9 @@ const PushNotificationManager = {
         try {
             const audio = new Audio('/sounds/notification.mp3');
             audio.volume = 0.5;
+            // Audio objelerini global array'e ekle
+            if (!window.currentAudioObjects) window.currentAudioObjects = [];
+            window.currentAudioObjects.push(audio);
             audio.play().catch(e => console.log('Ses çalma hatası:', e));
         } catch (error) {
             console.error('Ses çalma hatası:', error);

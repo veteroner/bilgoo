@@ -41,7 +41,9 @@
       "presentationOptions": ["badge", "sound", "banner", "list"]
     },
     "App": {
-      "launchUrl": "index.html"
+      "launchUrl": "index.html",
+      "handleAppUrlOpen": true,
+      "appUrlOpen": true
     }
   }
 } 

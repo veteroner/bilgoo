@@ -40,6 +40,12 @@ service cloud.firestore {
       allow write: if true;
     }
     
+    // Kategori leaderboard'ları
+    match /categoryLeaderboard/{category}/{document} {
+      allow read: if true;
+      allow write: if true;
+    }
+    
     // ========== KULLANICI VERİLERİ ==========
     // Daha gevşek izinler - authenticated kullanıcılar okuyabilir, kendi verilerini yazabilir
     match /users/{userId} {
@@ -209,10 +215,10 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
     
-    // Leaderboard
+    // Leaderboard - herkes okuyabilir ve yazabilir
     match /leaderboard/{document} {
       allow read: if true;
-      allow write: if isAuthenticated();
+      allow write: if true;
     }
 
     // ========== USER SCORE RECORDS ==========

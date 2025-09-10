@@ -23,16 +23,146 @@ const MonetizationManager = {
         analytics: false,
         advertising: false
     },
+    
+    // Top padding management
+    defaultTopOffset: 60, // Base offset: 60px (+20px extra to avoid overlap)
 
     // === INITIALIZATION ===
     init: function() {
         if (this.isInitialized) return;
         
-        this.checkCookieConsent();
-        this.setupEventListeners();
-        this.initPlatformAds();
+        // Platform tespiti
+        const platform = window.Capacitor ? window.Capacitor.getPlatform() : 'web';
+        const isNativeApp = platform === 'ios' || platform === 'android';
+        
+        if (isNativeApp) {
+            // Native uygulamalar: Çerez bildirimi yok, direkt ATT + reklam
+            console.log('[Monetization Debug] Native app detected, enabling ads directly');
+            this.cookiePreferences.advertising = true; // Native'de reklam izni varsayılan
+            this.setupEventListeners();
+            this.ensureEarlyATTOnIOS();
+            this.setupAdMobListeners();
+            this.initPlatformAds();
+        } else {
+            // Web: GDPR için çerez bildirimi gerekli
+            console.log('[Monetization Debug] Web platform detected, checking cookie consent');
+            this.checkCookieConsent();
+            this.setupEventListeners();
+            this.setupAdMobListeners();
+            this.initPlatformAds();
+        }
         
         this.isInitialized = true;
+    },
+
+    // === EARLY ATT REQUEST (iOS) ===
+    ensureEarlyATTOnIOS: function() {
+        try {
+            const isIOS = !!(window.Capacitor && window.Capacitor.getPlatform && window.Capacitor.getPlatform() === 'ios');
+            console.log('[Monetization Debug] ATT check:', {
+                hasCapacitor: !!window.Capacitor,
+                platform: window.Capacitor?.getPlatform?.() || 'unknown',
+                isIOS: isIOS,
+                hasATTManager: !!window.ATTManager
+            });
+            
+            if (!isIOS) {
+                console.log('[Monetization Debug] Not iOS platform, skipping ATT');
+                return;
+            }
+            
+            if (!window.ATTManager) {
+                console.log('[Monetization Debug] ATTManager not available, will try later');
+                // ATTManager henüz yüklenmemiş olabilir, biraz bekleyip tekrar dene
+                setTimeout(() => {
+                    if (window.ATTManager) {
+                        console.log('[Monetization Debug] ATTManager now available, retrying...');
+                        this.ensureEarlyATTOnIOS();
+                    } else {
+                        console.error('[Monetization Debug] ATTManager still not available after delay');
+                    }
+                }, 1000);
+                return;
+            }
+            
+            const alreadyAsked = localStorage.getItem('attAskedOnce');
+            console.log('[Monetization Debug] ATT already asked once:', alreadyAsked);
+            
+            if (alreadyAsked === 'true') {
+                console.log('[Monetization Debug] ATT already requested once, skipping');
+                return;
+            }
+
+            console.log('[Monetization Debug] Starting ATT request process...');
+            
+            // Uygulama aktif olduğundan emin olmak için küçük bir gecikme
+            setTimeout(() => {
+                console.log('[Monetization Debug] Timeout triggered, requesting ATT...');
+                // ATT durumunu başlat ve gerekirse izni iste
+                window.ATTManager.init()
+                    .then(() => {
+                        console.log('[Monetization Debug] ATTManager.init() completed');
+                        return window.ATTManager.requestPermissionIfNeeded();
+                    })
+                    .then((result) => {
+                        console.log('[Monetization Debug] requestPermissionIfNeeded result:', result);
+                    })
+                    .catch((error) => {
+                        console.error('[Monetization Debug] Error in ATT process:', error);
+                    })
+                    .finally(() => {
+                        try { 
+                            localStorage.setItem('attAskedOnce', 'true');
+                            console.log('[Monetization Debug] Marked ATT as asked');
+                        } catch(_) { 
+                            console.warn('[Monetization Debug] Could not set localStorage flag');
+                        }
+                    });
+            }, 800);
+        } catch (error) {
+            console.error('[Monetization Debug] Exception in ensureEarlyATTOnIOS:', error);
+        }
+    },
+
+    // === TOP PADDING MANAGEMENT ===
+    applyTopPadding: function(extraHeight = 0) {
+        const totalPadding = this.defaultTopOffset + extraHeight;
+        // Apply to body to push all content below the native banner
+        document.body.style.paddingTop = totalPadding + 'px';
+        // Also expose as CSS variable for any layout that prefers CSS-driven spacing
+        try {
+            document.documentElement.style.setProperty('--top-banner-offset', totalPadding + 'px');
+        } catch (_) { /* no-op */ }
+        console.log(`Applied top padding: ${totalPadding}px (base: ${this.defaultTopOffset}px + banner: ${extraHeight}px)`);
+    },
+
+    // === ADMOB EVENT LISTENERS ===
+    setupAdMobListeners: function() {
+        if (!AdMob) return;
+
+        // Listen for banner load events (correct event name)
+        AdMob.addListener('bannerAdLoaded', (info) => {
+            console.log('Banner ad loaded:', info);
+            const bannerHeight = info?.height || 0;
+            this.applyTopPadding(bannerHeight);
+            document.body.classList.add('has-top-banner');
+        });
+
+        // Listen for banner size changes (correct event name)
+        AdMob.addListener('bannerAdSizeChanged', (info) => {
+            console.log('Banner ad size changed:', info);
+            const bannerHeight = info?.height || 0;
+            this.applyTopPadding(bannerHeight);
+            document.body.classList.add('has-top-banner');
+        });
+
+        // Listen for banner failures (correct event name)
+        AdMob.addListener('bannerAdFailedToLoad', (error) => {
+            console.log('Banner ad failed to load:', error);
+            // Apply default padding when banner fails
+            this.applyTopPadding(0);
+            document.body.classList.remove('has-top-banner');
+        });
     },
 
     // === COOKIE CONSENT MANAGEMENT ===
@@ -79,6 +209,14 @@ const MonetizationManager = {
         // AdSense'i yükle
         if (window.loadAdSense) {
             window.loadAdSense();
+        }
+
+        // Kullanıcı reklam iznini verdiğinde platform reklamlarını hemen başlat
+        // (iOS'ta ATT isteği bu noktada tetiklenecek)
+        try {
+            this.initPlatformAds();
+        } catch (e) {
+            // production: sessiz geç
         }
     },
 
@@ -135,7 +273,7 @@ const MonetizationManager = {
 
     // === ADMOB (ANDROID/iOS) ===
     initAdMob: function() {
-        if (!AdMob || !this.cookiePreferences.advertising) return;
+        if (!AdMob) return;
 
         // iOS App Tracking Transparency kontrolü
         const isIOS = window.Capacitor && window.Capacitor.getPlatform() === 'ios';
@@ -235,6 +373,8 @@ const MonetizationManager = {
             this.isInterstitialReady = false;
         }).catch((error) => {
             console.error('AdMob initialization failed:', error);
+            // Apply default padding if AdMob fails
+            this.applyTopPadding(0);
         });
     },
 
@@ -256,6 +396,8 @@ const MonetizationManager = {
             this.isInterstitialReady = false;
         }).catch((error) => {
             console.error('AdMob initialization failed:', error);
+            // Apply default padding if AdMob fails
+            this.applyTopPadding(0);
         });
     },
 
@@ -276,6 +418,8 @@ const MonetizationManager = {
             this.isInterstitialReady = false;
         }).catch((error) => {
             console.error('AdMob initialization failed:', error);
+            // Apply default padding if AdMob fails
+            this.applyTopPadding(0);
         });
     },
 
@@ -291,12 +435,16 @@ const MonetizationManager = {
         };
 
         AdMob.showBanner(options).then(() => {
-            // Success - add layout padding
+            // Initial fallback: apply 40px base padding
             setTimeout(() => {
-                document.body.style.paddingTop = '60px';
+                this.applyTopPadding(0); // Base 40px will be applied
+                // Mark that a top banner is visible for container spacing
+                document.body.classList.add('has-top-banner');
             }, 500);
         }).catch((error) => {
             console.error('Banner reklam gösterilemedi:', error);
+            // Apply default padding when banner fails
+            this.applyTopPadding(0);
             // Retry after 5 seconds
             setTimeout(() => this.showBanner(), 5000);
         });
@@ -304,7 +452,15 @@ const MonetizationManager = {
 
     hideBanner: function() {
         if (!AdMob) return;
-        AdMob.hideBanner().catch(() => {});
+        AdMob.hideBanner().then(() => {
+            // Reset to default padding when banner is hidden
+            this.applyTopPadding(0);
+            document.body.classList.remove('has-top-banner');
+        }).catch(() => {
+            // Apply default padding even if hide fails
+            this.applyTopPadding(0);
+            document.body.classList.remove('has-top-banner');
+        });
     },
 
     prepareInterstitial: function() {
@@ -344,6 +500,7 @@ const MonetizationManager = {
 
     // === MOBILE WEB ADS ===
     initMobileWebAds: function() {
+        // Web'de çerez izni kontrolü
         if (!this.cookiePreferences.advertising) return;
         
         // Only create top banner for mobile web
@@ -360,13 +517,14 @@ const MonetizationManager = {
         if (banner) {
             banner.style.display = 'none';
             const container = document.querySelector('.container');
-            if (container) container.style.paddingTop = '15px';
+            if (container) container.style.paddingTop = '40px'; // Updated to use 40px default
             localStorage.setItem('hideMobileTopBanner', 'true');
         }
     },
 
     // === ADSENSE (WEB) ===
     initAds: function() {
+        // Web'de çerez izni kontrolü
         if (!this.cookiePreferences.advertising) return;
         
         // Simple AdSense initialization
@@ -432,7 +590,7 @@ const MonetizationManager = {
             if (banner) {
                 banner.style.display = 'none';
                 const container = document.querySelector('.container');
-                if (container) container.style.paddingTop = '15px';
+                if (container) container.style.paddingTop = '40px'; // Updated to use 40px default
             }
         }
     }

@@ -1,6 +1,7 @@
 import UIKit
 import Capacitor
 import GoogleMobileAds
+import WebKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,6 +25,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        
+        // Web view'daki tüm medya oynatımını duraklat
+        if let window = self.window,
+           let rootViewController = window.rootViewController as? CAPBridgeViewController {
+            
+            // iOS 14.0+ için medya oynatımını duraklat
+            if #available(iOS 14.0, *) {
+                if #available(iOS 15.0, *) {
+                    rootViewController.bridge?.webView?.setAllMediaPlaybackSuspended(true, completionHandler: {
+                        print("Media playback suspended")
+                    })
+                } else {
+                    // Fallback on earlier versions
+                }
+            } else {
+                // iOS 13.0 ve öncesi için JavaScript ile kontrol
+                rootViewController.bridge?.webView?.evaluateJavaScript("""
+                    if (window.quizApp && typeof window.quizApp.pauseAllAudio === 'function') {
+                        window.quizApp.pauseAllAudio();
+                    }
+                """, completionHandler: nil)
+                print("Media pause handled via JavaScript")
+            }
+        }
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {

@@ -35,6 +35,35 @@ class StatisticsManager {
     
     // İstatistikler sayfasını göster
     showStatistics() {
+        // Diğer sayfaları gizle
+        const mainMenu = document.getElementById('main-menu');
+        if (mainMenu) mainMenu.style.display = 'none';
+        
+        const profilePage = document.getElementById('profile-page');
+        if (profilePage) profilePage.style.display = 'none';
+        
+        const quizElement = document.getElementById('quiz');
+        if (quizElement) quizElement.style.display = 'none';
+        
+        const categorySelection = document.getElementById('category-selection');
+        if (categorySelection) categorySelection.style.display = 'none';
+        
+        const resultElement = document.getElementById('result');
+        if (resultElement) resultElement.style.display = 'none';
+        
+        const onlineGameOptions = document.getElementById('online-game-options');
+        if (onlineGameOptions) onlineGameOptions.style.display = 'none';
+        
+        const globalLeaderboard = document.getElementById('global-leaderboard');
+        if (globalLeaderboard) globalLeaderboard.style.display = 'none';
+        
+        const friendsPage = document.getElementById('friends-page');
+        if (friendsPage) friendsPage.style.display = 'none';
+        
+        const adminPanel = document.getElementById('admin-panel');
+        if (adminPanel) adminPanel.style.display = 'none';
+        
+        // İstatistikler sayfasını göster
         const statsPage = document.getElementById('statistics-page');
         if (statsPage) {
             statsPage.style.display = 'block';
@@ -47,6 +76,12 @@ class StatisticsManager {
         const statsPage = document.getElementById('statistics-page');
         if (statsPage) {
             statsPage.style.display = 'none';
+        }
+        
+        // Ana menüyü göster
+        const mainMenu = document.getElementById('main-menu');
+        if (mainMenu) {
+            mainMenu.style.display = 'block';
         }
     }
     

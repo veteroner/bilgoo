@@ -30,32 +30,6 @@
             color: white;
             padding: 20px;
             text-align: center;
-            position: relative;
-        }
-        
-        .back-button {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 16px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        
-        .back-button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-50%) scale(1.05);
         }
         
         .settings-header h1 {
@@ -316,9 +290,6 @@
 <body>
     <div class="settings-container">
         <div class="settings-header">
-            <button class="back-button" onclick="goBack()">
-                <i class="fas fa-arrow-left"></i>
-            </button>
             <h1>Ayarlar</h1>
         </div>
         
@@ -519,6 +490,9 @@
             </button>
             <button class="btn btn-secondary" onclick="resetSettings()">
                 <i class="fas fa-undo"></i> Sıfırla
+            </button>
+            <button class="btn btn-secondary" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Geri Dön
             </button>
         </div>
     </div>

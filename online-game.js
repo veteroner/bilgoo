@@ -1447,6 +1447,9 @@ const onlineGame = {
                     // Oyuncu katıldı ses efekti
                     const joinSound = new Audio('https://assets.mixkit.co/active_storage/sfx/254/254.wav');
                     joinSound.volume = 0.5;
+                    // Audio objelerini global array'e ekle
+                    if (!window.currentAudioObjects) window.currentAudioObjects = [];
+                    window.currentAudioObjects.push(joinSound);
                     joinSound.play().catch(e => console.log('Ses çalma hatası:', e));
                 }
             }
@@ -2067,6 +2070,12 @@ const onlineGame = {
             
                     // Soruları karıştır ve ilk 10 soruyu seç
                     const shuffledQuestions = this.shuffleArray(questions).slice(0, 10);
+                    
+                    // Seçilen soruları "görüldü" olarak işaretle
+                    if (window.quizApp && window.quizApp.markQuestionsAsSeen) {
+                        window.quizApp.markQuestionsAsSeen(selectedCategory, shuffledQuestions);
+                        console.log(`🎮 Online ${selectedCategory}: ${shuffledQuestions.length} soru görüldü olarak işaretlendi`);
+                    }
             
             const gameData = {
                 category: selectedCategory,
@@ -2103,6 +2112,9 @@ const onlineGame = {
                                 // Oyun başlatma sesi çal
                                 const gameStartSound = new Audio('https://assets.mixkit.co/active_storage/sfx/249/249.wav');
                                 gameStartSound.volume = 0.5;
+                                // Audio objelerini global array'e ekle
+                                if (!window.currentAudioObjects) window.currentAudioObjects = [];
+                                window.currentAudioObjects.push(gameStartSound);
                                 gameStartSound.play().catch(e => console.log('Ses çalma hatası:', e));
                                 
                                 // Bekleme odasını gizle ve oyun ekranını göster
@@ -2459,11 +2471,28 @@ const onlineGame = {
         }
     },
     
-    // Soruları yükle
+    // Soruları yükle (online mod için seen-tracking ile)
     loadQuestions: function(category) {
         return new Promise((resolve, reject) => {
             if (window.quizApp && window.quizApp.allQuestionsData && window.quizApp.allQuestionsData[category]) {
-                resolve(window.quizApp.allQuestionsData[category]);
+                // Online oyunda da tekrar önleme sistemini kullan
+                let allQuestions = [...window.quizApp.allQuestionsData[category]];
+                
+                // Görülmeyen soruları öncelikle filtrele
+                if (window.quizApp.filterUnseen && window.quizApp.getSeenQuestionKeys) {
+                    const unseenQuestions = window.quizApp.filterUnseen(category, allQuestions);
+                    if (unseenQuestions.length > 0) {
+                        allQuestions = unseenQuestions;
+                        console.log(`🎮 Online ${category}: ${unseenQuestions.length} görülmemiş soru kullanılıyor`);
+                    } else {
+                        console.log(`⚠️ Online ${category}: Tüm sorular görülmüş, cache temizleniyor`);
+                        // Tüm sorular görülmüşse cache'i temizle
+                        window.quizApp.clearSeenQuestionsForCategory(category);
+                        allQuestions = [...window.quizApp.allQuestionsData[category]];
+                    }
+                }
+                
+                resolve(allQuestions);
             } else {
                 // Kategoriye özel soruları yükle
                 this.loadCategoryQuestions(category)
@@ -2834,6 +2863,9 @@ const onlineGame = {
             try {
                 const startSound = new Audio('https://assets.mixkit.co/active_storage/sfx/250/250.wav');
                 startSound.volume = 0.7;
+                // Audio objelerini global array'e ekle
+                if (!window.currentAudioObjects) window.currentAudioObjects = [];
+                window.currentAudioObjects.push(startSound);
                 startSound.play().catch(e => console.log('Ses çalma hatası:', e));
             } catch (soundError) {
                 console.warn('Ses efekti çalınamadı:', soundError);
@@ -2875,10 +2907,16 @@ const onlineGame = {
                 if (count > 0) {
                     const beepSound = new Audio('https://assets.mixkit.co/active_storage/sfx/270/270.wav');
                     beepSound.volume = 0.5;
+                    // Audio objelerini global array'e ekle
+                    if (!window.currentAudioObjects) window.currentAudioObjects = [];
+                    window.currentAudioObjects.push(beepSound);
                     beepSound.play().catch(e => console.log('Ses çalma hatası:', e));
                 } else {
                     const goSound = new Audio('https://assets.mixkit.co/active_storage/sfx/221/221.wav');
                     goSound.volume = 0.6;
+                    // Audio objelerini global array'e ekle
+                    if (!window.currentAudioObjects) window.currentAudioObjects = [];
+                    window.currentAudioObjects.push(goSound);
                     goSound.play().catch(e => console.log('Ses çalma hatası:', e));
                 }
             } catch (soundError) {

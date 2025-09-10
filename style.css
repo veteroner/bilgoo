@@ -70,6 +70,18 @@
         width: min(90%, 600px) !important;
         max-width: 600px !important;
     }
+
+    /* Banner görünürken ana konteyneri 20px daha aşağı kaydır (toplam +20px) */
+    body.has-top-banner .container {
+        padding-top: 130px !important;
+        margin-top: 20px !important; /* Banner ile konteyner arasında boşluk */
+    }
+
+    /* PWA fullscreen modunda en yüksek öncelik: dinamik stilleri geçersiz kıl */
+    body.pwa-fullscreen.has-top-banner .container {
+        padding-top: 130px !important;
+        margin-top: 20px !important;
+    }
     
     /* Diğer elementleri normal konumuna getir */
     .main-menu, .quiz-container, .profile-container {
@@ -1955,12 +1967,88 @@ button:disabled {
 .category-btn:nth-child(6) { animation-delay: 0.6s; }
 .category-btn:nth-child(7) { animation-delay: 0.7s; }
 
-/* Kategori Grid */
-#categories {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Desktop için 3 sütun */
-    gap: 1rem; /* 1.2rem'den 1rem'e azaltıldı */
-    margin-top: 1.5rem; /* 2rem'den 1.5rem'e azaltıldı */
+/* Mobil telefonlar için: Kategori butonlarını da tek sütun alt alta büyük yap */
+@media (max-width: 767px) {
+    #categories {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.8rem !important; /* Biraz daha boşluk */
+        margin-top: 1rem !important;
+        width: 100% !important;
+    }
+
+    .category-btn {
+        width: 100% !important;
+        height: 55px !important; /* Mobile için biraz daha küçük */
+        font-size: 1.2rem !important; /* Mobile için biraz daha küçük font */
+        font-family: 'Poppins', sans-serif !important; /* Ana sayfa ile aynı font */
+        font-weight: 600 !important; /* Ana sayfa ile aynı kalınlık */
+        padding: 0 !important;
+        margin-bottom: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 10px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+        background: var(--btn-primary) !important; /* Ana sayfa ile aynı mor renk */
+        color: white !important;
+        border: none !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .category-btn:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25) !important;
+        background: var(--primary-hover) !important;
+    }
+
+    .category-btn i {
+        margin-right: 0.5rem !important;
+        font-size: 1.1rem !important; /* Mobile için biraz daha küçük ikon */
+    }
+}
+
+/* Tablet ve üstü için: Kategori butonlarını da tek sütun alt alta büyük yap */
+@media (min-width: 768px) {
+    #categories {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.8rem !important; /* Biraz daha boşluk */
+        margin-top: 1rem !important;
+        width: 100% !important;
+    }
+
+    .category-btn {
+        width: 100% !important;
+        height: 60px !important; /* Sabit yükseklik */
+        font-size: 1.3rem !important;
+        font-family: 'Poppins', sans-serif !important; /* Ana sayfa ile aynı font */
+        font-weight: 600 !important; /* Ana sayfa ile aynı kalınlık */
+        padding: 0 !important;
+        margin-bottom: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 10px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+        background: var(--btn-primary) !important; /* Ana sayfa ile aynı mor renk */
+        color: white !important;
+        border: none !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .category-btn:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25) !important;
+        background: var(--primary-hover) !important;
+    }
+
+    .category-btn i {
+        margin-right: 0.5rem !important;
+        font-size: 1.2rem !important;
+    }
 }
 
 /* Skor Tablosu Stilleri */
@@ -3439,6 +3527,56 @@ input:checked + .switch-label:before {
 
 .btn-danger:hover {
     background-color: #bd2130;
+}
+
+/* Login UI size tweaks: make login/register screen elements slightly larger */
+.login-container .auth-box {
+    padding: 36px; /* 30px -> 36px */
+}
+
+.login-container.container {
+    max-width: 680px; /* 600px container cap -> 680px only for login */
+    width: min(92%, 680px);
+}
+
+/* Remove outer white panel on login screen */
+.container.login-container {
+    background: transparent;
+    box-shadow: none;
+}
+.container.login-container::before {
+    display: none;
+}
+
+.login-container .main-logo svg,
+.user-preferences-container .main-logo svg {
+    width: clamp(320px, 40vw, 380px); /* 300px -> up to 380px responsively */
+    height: auto;
+}
+
+.login-container .auth-box h2 {
+    font-size: clamp(1.4rem, 4.5vw, 1.9rem);
+}
+
+.login-container .form-group label {
+    font-size: 1.05rem;
+}
+
+.login-container .form-group input {
+    padding: 14px 18px; /* 12x15 -> 14x18 */
+    font-size: 18px; /* 16px -> 18px */
+    border-radius: 10px;
+}
+
+.login-container .btn-primary {
+    padding: 14px; /* 12px -> 14px */
+    font-size: 18px; /* 16px -> 18px */
+    border-radius: 10px;
+}
+
+.login-container .auth-options .btn-primary {
+    padding: 12px;
+    font-size: 17px;
 }
 
 /* Profil sayfası stilleri */
@@ -6303,6 +6441,78 @@ input:checked + .switch-label:before {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
+/* Mobil telefonlar için: Ana menü butonlarını tek sütun alt alta büyük yapacağız */
+@media (max-width: 767px) {
+    .main-menu {
+        max-width: none;
+        width: 100%;
+        height: auto; /* Otomatik yükseklik */
+        margin: 1rem 0;
+        padding: 1rem 1.5rem; /* Mobile için biraz daha az padding */
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* Üstten başla */
+    }
+
+    .menu-buttons {
+        display: flex !important;
+        flex-direction: column; /* Alt alta dizilim */
+        gap: 0.8rem; /* Biraz daha boşluk */
+        width: 100%;
+    }
+
+    .menu-button {
+        width: 100% !important;
+        height: 60px !important; /* Mobile için biraz daha küçük */
+        font-size: 1.2rem !important;   /* Mobile için biraz daha küçük font */
+        font-family: 'Poppins', sans-serif !important; /* Açık font belirtimi */
+        font-weight: 600 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    }
+}
+
+/* Tablet ve üstü için: Ana menü butonlarını tek sütun alt alta büyük yapacağız */
+@media (min-width: 768px) {
+    .main-menu {
+        max-width: none;
+        width: 100%;
+        height: auto; /* Otomatik yükseklik */
+        margin: 1rem 0;
+        padding: 1rem 2rem; /* Daha az padding */
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* Üstten başla */
+    }
+
+    .menu-buttons {
+        display: flex !important;
+        flex-direction: column; /* Alt alta dizilim */
+        gap: 0.8rem; /* Biraz daha boşluk */
+        width: 100%;
+    }
+
+    .menu-button {
+        width: 100% !important;
+        height: 65px !important; /* Sabit yükseklik */
+        font-size: 1.3rem !important;   
+        font-family: 'Poppins', sans-serif !important; /* Açık font belirtimi */
+        font-weight: 600 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    }
+}
+
 .room-capacity-container {
     margin: 10px 0;
     display: flex;
@@ -9082,6 +9292,8 @@ body.quiz-active .main-logo-container svg {
     .star-icon {
         font-size: 22px !important;
     }
+
+    /* Removed container margin-top; spacing handled by body padding now */
     
     .coin-display, .star-display {
         font-size: 14px;
@@ -9098,7 +9310,7 @@ body.quiz-active .main-logo-container svg {
     }
     
     .quiz-container {
-        padding-top: 60px;
+        padding-top: 40px;
     }
     
     .quiz-main {

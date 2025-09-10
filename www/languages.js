@@ -88,6 +88,7 @@ const languages = {
         categoryMath: 'Matematik',
         categoryBlankFilling: 'Boşluk Doldurma',
         categoryOther: 'Diğer',
+        categoryImageQuestions: 'Resimli Sorular',
         
         // Jokerler
         jokerFifty: '50:50',
@@ -606,6 +607,7 @@ const languages = {
         categoryMath: 'Mathematics',
         categoryBlankFilling: 'Fill in the Blank',
         categoryOther: 'Other',
+        categoryImageQuestions: 'Image Questions',
         
         // Jokerler
         jokerFifty: '50:50',
@@ -1149,6 +1151,7 @@ const languages = {
         categoryMath: 'Mathematik',
         categoryBlankFilling: 'Lückentext',
         categoryOther: 'Sonstiges',
+        categoryImageQuestions: 'Bildfragen',
         
         // Jokers
         jokerFifty: '50:50',
@@ -1620,6 +1623,10 @@ const categoryMappings = {
     "Diğer": {
         en: "Other",
         de: "Sonstiges"
+    },
+    "Resimli Sorular": {
+        en: "Image Questions",
+        de: "Bildfragen"
     }
 };
 
@@ -1741,6 +1748,14 @@ const reverseCategoryMappings = {
     "Sonstiges": {
         tr: "Diğer",
         en: "Other"
+    },
+    "Image Questions": {
+        tr: "Resimli Sorular",
+        de: "Bildfragen"
+    },
+    "Bildfragen": {
+        tr: "Resimli Sorular",
+        en: "Image Questions"
     }
 };
 

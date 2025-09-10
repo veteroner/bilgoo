@@ -5964,108 +5964,6 @@
             </div>
         </div>
 
-        <!-- İstatistikler Sayfası (Duplikasyon) -->
-        <div id="statistics-page" style="display: none;">
-            <div class="page-header">
-                <h2><i class="fas fa-chart-bar"></i> İstatistiklerim</h2>
-                <button id="back-from-stats" class="btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Ana Menüye Dön
-                </button>
-            </div>
-            
-            <div class="statistics-container">
-                <!-- Genel İstatistikler -->
-                <div class="stats-section">
-                    <h3><i class="fas fa-trophy"></i> Genel İstatistikler</h3>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-gamepad"></i>
-                            </div>
-                            <div class="stat-content">
-                                <span class="stat-value" id="total-games-stat">0</span>
-                                <span class="stat-label">Toplam Oyun</span>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-question-circle"></i>
-                            </div>
-                            <div class="stat-content">
-                                <span class="stat-value" id="total-questions-stat">0</span>
-                                <span class="stat-label">Toplam Soru</span>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                            <div class="stat-content">
-                                <span class="stat-value" id="correct-answers-stat">0</span>
-                                <span class="stat-label">Doğru Cevap</span>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-percentage"></i>
-                            </div>
-                            <div class="stat-content">
-                                <span class="stat-value" id="accuracy-stat">%0</span>
-                                <span class="stat-label">Doğruluk Oranı</span>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <div class="stat-content">
-                                <span class="stat-value" id="highest-score-stat">0</span>
-                                <span class="stat-label">En Yüksek Skor</span>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <div class="stat-content">
-                                <span class="stat-value" id="average-score-stat">0</span>
-                                <span class="stat-label">Ortalama Skor</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Kategori İstatistikleri -->
-                <div class="stats-section">
-                    <h3><i class="fas fa-th-list"></i> Kategori Başarıları</h3>
-                    <div id="category-stats" class="category-stats">
-                        <!-- Kategori istatistikleri JavaScript ile eklenecek -->
-                    </div>
-                </div>
-                
-                <!-- Son Oyunlar -->
-                <div class="stats-section">
-                    <h3><i class="fas fa-history"></i> Son Oyunlar</h3>
-                    <div id="recent-games" class="recent-games">
-                        <!-- Son oyunlar JavaScript ile eklenecek -->
-                    </div>
-                </div>
-                
-                <!-- Rozetler -->
-                <div class="stats-section">
-                    <h3><i class="fas fa-award"></i> Rozetlerim</h3>
-                    <div id="user-badges" class="user-badges">
-                        <div class="loading-text">Rozetler yükleniyor...</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Soru Ekleme Formu -->
         <div id="add-question-form" class="modal" style="display: none;">
             <div class="modal-content">
@@ -6376,6 +6274,7 @@
                     'quiz',
                     'result',
                     'profile-page',
+                    'statistics-page',
                     'online-game-options',
                     'global-leaderboard',
                     'friends-page',
@@ -6859,6 +6758,19 @@
                     // Lider tablosunu gizle
                     const leaderboard = document.getElementById('global-leaderboard');
                     if (leaderboard) leaderboard.style.display = 'none';
+                    
+                    // Diğer tüm sayfaları da gizle
+                    const statisticsPage = document.getElementById('statistics-page');
+                    if (statisticsPage) statisticsPage.style.display = 'none';
+                    
+                    const profilePage = document.getElementById('profile-page');
+                    if (profilePage) profilePage.style.display = 'none';
+                    
+                    const friendsPage = document.getElementById('friends-page');
+                    if (friendsPage) friendsPage.style.display = 'none';
+                    
+                    const adminPanel = document.getElementById('admin-panel');
+                    if (adminPanel) adminPanel.style.display = 'none';
                     
                     // Ana menüyü göster
                     const mainMenu = document.getElementById('main-menu');

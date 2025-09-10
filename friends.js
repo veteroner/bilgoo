@@ -892,6 +892,9 @@ const friendsModule = {
         notificationSound.src = 'https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3'; // Bildirim sesi
         notificationSound.volume = 0.6;
         document.body.appendChild(notificationSound);
+        // Audio objelerini global array'e ekle
+        if (!window.currentAudioObjects) window.currentAudioObjects = [];
+        window.currentAudioObjects.push(notificationSound);
         notificationSound.play().catch(e => console.log('Ses çalma hatası:', e));
         
         // Modal konteyner oluştur
