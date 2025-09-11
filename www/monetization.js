@@ -502,8 +502,23 @@ const MonetizationManager = {
     initMobileWebAds: function() {
         // Web'de çerez izni kontrolü
         if (!this.cookiePreferences.advertising) return;
-        
-        // Only create top banner for mobile web
+
+        // Android mobil web'de AdSense Auto Ads anchor (üst sabit reklam)
+        // içerik üstüne binebiliyor. Bunu dengelemek için güvenli bir üst padding uygula.
+        const isAndroidWeb = (!window.Capacitor || window.Capacitor.getPlatform?.() === 'web') && /Android/i.test(navigator.userAgent);
+        if (isAndroidWeb) {
+            // Varsayılan anchor yüksekliği ~60px; biraz boşluk için +10 ekle
+            this.applyTopPadding(70);
+            document.body.classList.add('has-top-banner');
+
+            // Anchor reklamı geç yüklenirse diye ufak bir tekrar denemesi yap
+            setTimeout(() => {
+                this.applyTopPadding(70);
+                document.body.classList.add('has-top-banner');
+            }, 2500);
+        }
+
+        // Önceden kullanılan mobil top banner artık devre dışı; sadece güvenli padding uyguluyoruz
         setTimeout(() => this.createMobileTopBanner(), 1000);
     },
 

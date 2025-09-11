@@ -415,14 +415,14 @@ function initFullscreenMode() {
             height: 100dvh !important;
             margin: 0 !important;
             padding: 0 !important;
-            padding-top: 20px !important; /* Android banner reklamı kaldırıldığı için azaltıldı */
+            /* Üst boşluk MonetizationManager.applyTopPadding ile yönetilecek */
             overflow-y: auto !important;
         }
         
         /* Safe area için padding ekle */
         @supports (padding: max(0px)) {
             .pwa-fullscreen .container {
-                padding-top: max(env(safe-area-inset-top), 20px) !important;
+                padding-top: max(env(safe-area-inset-top), 0px) !important;
                 padding-bottom: max(env(safe-area-inset-bottom), 0px) !important;
                 padding-left: max(env(safe-area-inset-left), 0px) !important;
                 padding-right: max(env(safe-area-inset-right), 0px) !important;

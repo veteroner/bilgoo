@@ -71,15 +71,15 @@
         max-width: 600px !important;
     }
 
-    /* Banner görünürken ana konteyneri normal konumda tut */
+    /* Banner görünürken ana konteyner için sabit büyük padding uygulama; üst boşluğu JS yönetir */
     body.has-top-banner .container {
-        padding-top: 20px !important; /* Android ile iOS tutarlılığı için aynı yapıldı */
+        padding-top: 20px !important; /* minimum */
         margin-top: 0 !important;
     }
 
     /* PWA fullscreen modunda en yüksek öncelik: dinamik stilleri geçersiz kıl */
     body.pwa-fullscreen.has-top-banner .container {
-        padding-top: 20px !important; /* Android ile iOS tutarlılığı için aynı yapıldı */
+        padding-top: 20px !important; /* minimum */
         margin-top: 0 !important;
     }
     
