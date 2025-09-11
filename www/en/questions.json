@@ -2541,6 +2541,54 @@
         "Statistical mechanics"
       ],
       "correctAnswer": "BCS theory"
+    },
+    {
+      "question": "What is the hardest natural substance on Earth?",
+      "difficulty": 1,
+      "id": "Q0805",
+      "options": [
+        "Gold",
+        "Iron",
+        "Diamond",
+        "Platinum"
+      ],
+      "correctAnswer": "Diamond"
+    },
+    {
+      "question": "Which gas makes up about 78% of Earth's atmosphere?",
+      "difficulty": 2,
+      "id": "Q0806",
+      "options": [
+        "Oxygen",
+        "Carbon dioxide",
+        "Nitrogen",
+        "Hydrogen"
+      ],
+      "correctAnswer": "Nitrogen"
+    },
+    {
+      "question": "What is the study of earthquakes called?",
+      "difficulty": 2,
+      "id": "Q0807",
+      "options": [
+        "Meteorology",
+        "Seismology",
+        "Geology",
+        "Astronomy"
+      ],
+      "correctAnswer": "Seismology"
+    },
+    {
+      "question": "Which planet has the most moons?",
+      "difficulty": 2,
+      "id": "Q0808",
+      "options": [
+        "Jupiter",
+        "Saturn",
+        "Neptune",
+        "Uranus"
+      ],
+      "correctAnswer": "Saturn"
     }
   ],
   "Technology": [
@@ -3035,18 +3083,6 @@
         "Home Text Transfer Protocol"
       ],
       "correctAnswer": "Hyper Text Transfer Protocol"
-    },
-    {
-      "question": "Which one is NOT a programming language?",
-      "difficulty": 1,
-      "id": "Q0253",
-      "options": [
-        "PHP",
-        "Ruby",
-        "Photoshop",
-        "Swift"
-      ],
-      "correctAnswer": "Photoshop"
     },
     {
       "question": "What does 'LAN' stand for in computer networks?",
@@ -3679,6 +3715,106 @@
         "3f+1 (f: faulty node)"
       ],
       "correctAnswer": "3f+1 (f: faulty node)"
+    },
+    {
+      "question": "What does API stand for?",
+      "difficulty": 1,
+      "id": "Q0810",
+      "options": [
+        "Application Programming Interface",
+        "Advanced Programming Integration",
+        "Automated Program Instruction",
+        "Application Process Integration"
+      ],
+      "correctAnswer": "Application Programming Interface"
+    },
+    {
+      "question": "Which company developed the iOS operating system?",
+      "difficulty": 2,
+      "id": "Q0811",
+      "options": [
+        "Apple",
+        "Microsoft",
+        "Google",
+        "Samsung"
+      ],
+      "correctAnswer": "Apple"
+    },
+    {
+      "question": "What does RAM stand for?",
+      "difficulty": 1,
+      "id": "Q0812",
+      "options": [
+        "Random Access Memory",
+        "Read Access Memory",
+        "Rapid Access Memory",
+        "Real Access Memory"
+      ],
+      "correctAnswer": "Random Access Memory"
+    },
+    {
+      "question": "Which programming language is known as the 'mother of all languages'?",
+      "difficulty": 2,
+      "id": "Q0813",
+      "options": [
+        "FORTRAN",
+        "COBOL",
+        "C",
+        "Assembly"
+      ],
+      "correctAnswer": "C"
+    },
+    {
+      "question": "Which programming language runs in web browsers?",
+      "type": "MultipleChoice",
+      "options": [
+        "Python",
+        "JavaScript",
+        "C++",
+        "Java"
+      ],
+      "correctAnswer": "JavaScript",
+      "difficulty": 2,
+      "id": "Q1032"
+    },
+    {
+      "question": "What does SSD stand for?",
+      "type": "MultipleChoice",
+      "options": [
+        "Super Storage Device",
+        "Solid State Drive",
+        "System Storage Disk",
+        "Secure Storage Device"
+      ],
+      "correctAnswer": "Solid State Drive",
+      "difficulty": 2,
+      "id": "Q1033"
+    },
+    {
+      "question": "What is the most well-known application of blockchain technology?",
+      "type": "MultipleChoice",
+      "options": [
+        "Bitcoin",
+        "Instagram",
+        "WhatsApp",
+        "YouTube"
+      ],
+      "correctAnswer": "Bitcoin",
+      "difficulty": 2,
+      "id": "Q1035"
+    },
+    {
+      "question": "Which file format compresses images?",
+      "type": "MultipleChoice",
+      "options": [
+        "BMP",
+        "PNG",
+        "JPEG",
+        "TIFF"
+      ],
+      "correctAnswer": "JPEG",
+      "difficulty": 2,
+      "id": "Q1036"
     }
   ],
   "Sports": [
@@ -4576,7 +4712,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/sports_boxing.jpg"
+      "imageUrl": "assets/images/questions/sports_golf.jpg"
     },
     {
       "question": "Water polo is a sport played only in outdoor pools.",
@@ -4852,6 +4988,94 @@
         "Butterfly"
       ],
       "correctAnswer": "Butterfly"
+    },
+    {
+      "question": "How many points is a touchdown worth in American football?",
+      "difficulty": 1,
+      "id": "Q0814",
+      "options": [
+        "3",
+        "6",
+        "7",
+        "8"
+      ],
+      "correctAnswer": "6"
+    },
+    {
+      "question": "In which sport would you perform a slam dunk?",
+      "difficulty": 1,
+      "id": "Q0815",
+      "options": [
+        "Volleyball",
+        "Basketball",
+        "Tennis",
+        "Badminton"
+      ],
+      "correctAnswer": "Basketball"
+    },
+    {
+      "question": "What is the maximum score possible in ten-pin bowling?",
+      "difficulty": 2,
+      "id": "Q0816",
+      "options": [
+        "250",
+        "300",
+        "350",
+        "400"
+      ],
+      "correctAnswer": "300"
+    },
+    {
+      "question": "How often are the Olympic Games held?",
+      "type": "MultipleChoice",
+      "options": [
+        "Every 2 years",
+        "Every 3 years",
+        "Every 4 years",
+        "Every 5 years"
+      ],
+      "correctAnswer": "Every 4 years",
+      "difficulty": 1,
+      "id": "Q1037"
+    },
+    {
+      "question": "In which sport is the term 'birdie' used?",
+      "type": "MultipleChoice",
+      "options": [
+        "Tennis",
+        "Golf",
+        "Badminton",
+        "Table tennis"
+      ],
+      "correctAnswer": "Golf",
+      "difficulty": 2,
+      "id": "Q1038"
+    },
+    {
+      "question": "NBA is the basketball league of which country?",
+      "type": "MultipleChoice",
+      "options": [
+        "Canada",
+        "America",
+        "England",
+        "Australia"
+      ],
+      "correctAnswer": "America",
+      "difficulty": 1,
+      "id": "Q1039"
+    },
+    {
+      "question": "When is the 'offside' rule applied in football?",
+      "type": "MultipleChoice",
+      "options": [
+        "Player in wrong position",
+        "Ball goes out",
+        "Foul committed",
+        "Game stopped"
+      ],
+      "correctAnswer": "Player in wrong position",
+      "difficulty": 2,
+      "id": "Q1040"
     }
   ],
   "History": [
@@ -6070,6 +6294,42 @@
         "Early 19th century"
       ],
       "correctAnswer": "Late 18th century"
+    },
+    {
+      "question": "In what year did the Berlin Wall fall?",
+      "difficulty": 2,
+      "id": "Q0818",
+      "options": [
+        "1987",
+        "1989",
+        "1991",
+        "1993"
+      ],
+      "correctAnswer": "1989"
+    },
+    {
+      "question": "Who was the first President of the United States?",
+      "difficulty": 1,
+      "id": "Q0819",
+      "options": [
+        "Thomas Jefferson",
+        "John Adams",
+        "George Washington",
+        "Benjamin Franklin"
+      ],
+      "correctAnswer": "George Washington"
+    },
+    {
+      "question": "Which ancient wonder of the world was located in Alexandria?",
+      "difficulty": 2,
+      "id": "Q0820",
+      "options": [
+        "Hanging Gardens",
+        "Lighthouse of Alexandria",
+        "Colossus of Rhodes",
+        "Temple of Artemis"
+      ],
+      "correctAnswer": "Lighthouse of Alexandria"
     }
   ],
   "Geography": [
@@ -6139,18 +6399,6 @@
       "id": "Q0493",
       "options": [],
       "correctAnswer": "ANGEL FALLS"
-    },
-    {
-      "question": "What is the world's highest waterfall?",
-      "difficulty": 1,
-      "id": "Q0494",
-      "options": [
-        "Niagara Falls",
-        "Victoria Falls",
-        "Angel Falls",
-        "Iguazu Falls"
-      ],
-      "correctAnswer": "Angel Falls"
     },
     {
       "question": "Which countries span two continents?",
@@ -6283,30 +6531,6 @@
         "Greenland"
       ],
       "correctAnswer": "Greenland"
-    },
-    {
-      "question": "What is the capital of Australia?",
-      "difficulty": 1,
-      "id": "Q0506",
-      "options": [
-        "Sydney",
-        "Melbourne",
-        "Canberra",
-        "Perth"
-      ],
-      "correctAnswer": "Canberra"
-    },
-    {
-      "question": "Which country is NOT a member of the European Union?",
-      "difficulty": 1,
-      "id": "Q0507",
-      "options": [
-        "Sweden",
-        "Denmark",
-        "Norway",
-        "Finland"
-      ],
-      "correctAnswer": "Norway"
     },
     {
       "question": "What is the second highest mountain in the United States?",
@@ -6547,18 +6771,6 @@
         "West Coast"
       ],
       "correctAnswer": "Northeast"
-    },
-    {
-      "question": "Which one is NOT an island country?",
-      "difficulty": 1,
-      "id": "Q0528",
-      "options": [
-        "New Zealand",
-        "Ireland",
-        "Switzerland",
-        "Madagascar"
-      ],
-      "correctAnswer": "Switzerland"
     },
     {
       "question": "In which mountain range is Mount Everest located?",
@@ -7132,13 +7344,6 @@
       "correctAnswer": "ASIA"
     },
     {
-      "question": "The capital of Italy is _____.",
-      "difficulty": 2,
-      "id": "Q0569",
-      "options": [],
-      "correctAnswer": "ROME"
-    },
-    {
       "question": "The capital of France is _____.",
       "difficulty": 2,
       "id": "Q0570",
@@ -7526,22 +7731,6 @@
       "imageUrl": "assets/images/questions/img_109.jpg"
     },
     {
-      "question": "This is the flag of Japan.",
-      "difficulty": 1,
-      "id": "Q0718",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_109.jpg"
-    },
-    {
       "question": "This flag belongs to Australia.",
       "difficulty": 1,
       "id": "Q0719",
@@ -7686,22 +7875,6 @@
       "imageUrl": "assets/images/questions/img_118.jpg"
     },
     {
-      "question": "The capital of the United Kingdom is Manchester.",
-      "difficulty": 1,
-      "id": "Q0728",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_119.jpg"
-    },
-    {
       "question": "The capital of the United States is New York.",
       "difficulty": 1,
       "id": "Q0729",
@@ -7748,6 +7921,54 @@
         "False"
       ],
       "imageUrl": "assets/images/questions/img_122.jpg"
+    },
+    {
+      "question": "Which is the longest river in the world?",
+      "difficulty": 2,
+      "id": "Q0821",
+      "options": [
+        "Amazon River",
+        "Nile River",
+        "Mississippi River",
+        "Yangtze River"
+      ],
+      "correctAnswer": "Nile River"
+    },
+    {
+      "question": "What is the capital of Canada?",
+      "difficulty": 2,
+      "id": "Q0822",
+      "options": [
+        "Toronto",
+        "Vancouver",
+        "Montreal",
+        "Ottawa"
+      ],
+      "correctAnswer": "Ottawa"
+    },
+    {
+      "question": "Which continent has the most countries?",
+      "difficulty": 2,
+      "id": "Q0823",
+      "options": [
+        "Asia",
+        "Europe",
+        "Africa",
+        "South America"
+      ],
+      "correctAnswer": "Africa"
+    },
+    {
+      "question": "Mount Everest is located on the border of which two countries?",
+      "difficulty": 3,
+      "id": "Q0824",
+      "options": [
+        "India and China",
+        "Nepal and China",
+        "Nepal and India",
+        "Bhutan and China"
+      ],
+      "correctAnswer": "Nepal and China"
     }
   ],
   "Music": [
@@ -7870,18 +8091,6 @@
         "92"
       ],
       "correctAnswer": "88"
-    },
-    {
-      "question": "What is Michael Jackson's best-selling album?",
-      "difficulty": 2,
-      "id": "Q0601",
-      "options": [
-        "Bad",
-        "Thriller",
-        "Dangerous",
-        "HIStory"
-      ],
-      "correctAnswer": "Thriller"
     },
     {
       "question": "At what age did Mozart die?",
@@ -8394,6 +8603,146 @@
         "12"
       ],
       "correctAnswer": "10 (Thaat)"
+    },
+    {
+      "question": "Which instrument did Beethoven primarily compose for?",
+      "difficulty": 2,
+      "id": "Q0825",
+      "options": [
+        "Violin",
+        "Piano",
+        "Orchestra",
+        "Cello"
+      ],
+      "correctAnswer": "Piano"
+    },
+    {
+      "question": "How many movements does a typical symphony have?",
+      "difficulty": 2,
+      "id": "Q0826",
+      "options": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "correctAnswer": "4"
+    },
+    {
+      "question": "Which band released the album 'Abbey Road'?",
+      "difficulty": 2,
+      "id": "Q0827",
+      "options": [
+        "The Rolling Stones",
+        "The Beatles",
+        "Led Zeppelin",
+        "Pink Floyd"
+      ],
+      "correctAnswer": "The Beatles"
+    },
+    {
+      "question": "Which musical instrument belongs to the 'wind instruments' group?",
+      "type": "MultipleChoice",
+      "options": [
+        "Piano",
+        "Violin",
+        "Flute",
+        "Guitar"
+      ],
+      "correctAnswer": "Flute",
+      "difficulty": 1,
+      "id": "Q1017"
+    },
+    {
+      "question": "How many movements does a classical symphony have?",
+      "type": "MultipleChoice",
+      "options": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "correctAnswer": "4",
+      "difficulty": 2,
+      "id": "Q1018"
+    },
+    {
+      "question": "In Turkish Folk Music, what does 'türkü' mean?",
+      "type": "MultipleChoice",
+      "options": [
+        "Dance",
+        "Song",
+        "Instrument",
+        "Rhythm"
+      ],
+      "correctAnswer": "Song",
+      "difficulty": 1,
+      "id": "Q1019"
+    },
+    {
+      "question": "Which composer wrote 'The Blue Danube'?",
+      "type": "MultipleChoice",
+      "options": [
+        "Johann Strauss",
+        "Mozart",
+        "Beethoven",
+        "Bach"
+      ],
+      "correctAnswer": "Johann Strauss",
+      "difficulty": 2,
+      "id": "Q1020"
+    },
+    {
+      "question": "In which country was rock music born?",
+      "type": "MultipleChoice",
+      "options": [
+        "England",
+        "America",
+        "Germany",
+        "France"
+      ],
+      "correctAnswer": "America",
+      "difficulty": 2,
+      "id": "Q1021"
+    },
+    {
+      "question": "Which is the most commonly used string instrument in an orchestra?",
+      "type": "MultipleChoice",
+      "options": [
+        "Viola",
+        "Cello",
+        "Violin",
+        "Double bass"
+      ],
+      "correctAnswer": "Violin",
+      "difficulty": 1,
+      "id": "Q1022"
+    },
+    {
+      "question": "In which country was opera born?",
+      "type": "MultipleChoice",
+      "options": [
+        "France",
+        "Germany",
+        "Italy",
+        "Austria"
+      ],
+      "correctAnswer": "Italy",
+      "difficulty": 2,
+      "id": "Q1023"
+    },
+    {
+      "question": "Which note value represents the longest duration?",
+      "type": "MultipleChoice",
+      "options": [
+        "Quarter note",
+        "Half note",
+        "Whole note",
+        "Eighth note"
+      ],
+      "correctAnswer": "Whole note",
+      "difficulty": 2,
+      "id": "Q1024"
     }
   ],
   "Literature": [
@@ -8930,22 +9279,6 @@
       "imageUrl": "assets/images/questions/literature_kurk_mantolu.jpg"
     },
     {
-      "question": "Cervantes is the author of the novel 'Don Quixote'.",
-      "difficulty": 1,
-      "id": "Q0675",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_cervantes.jpg"
-    },
-    {
       "question": "Kazuo Ishiguro was the first Japanese-born writer to win the Nobel Prize in Literature.",
       "difficulty": 2,
       "id": "Q0676",
@@ -9381,3595 +9714,377 @@
         "Text-centered meaning"
       ],
       "correctAnswer": "Reader-centered meaning"
+    },
+    {
+      "question": "Who wrote the novel '1984'?",
+      "difficulty": 2,
+      "id": "Q0828",
+      "options": [
+        "Aldous Huxley",
+        "George Orwell",
+        "Ray Bradbury",
+        "Kurt Vonnegut"
+      ],
+      "correctAnswer": "George Orwell"
+    },
+    {
+      "question": "Which Shakespeare play features the character Hamlet?",
+      "difficulty": 1,
+      "id": "Q0829",
+      "options": [
+        "Macbeth",
+        "Romeo and Juliet",
+        "Hamlet",
+        "King Lear"
+      ],
+      "correctAnswer": "Hamlet"
+    },
+    {
+      "question": "Who wrote 'The Great Gatsby'?",
+      "difficulty": 2,
+      "id": "Q0830",
+      "options": [
+        "Ernest Hemingway",
+        "F. Scott Fitzgerald",
+        "John Steinbeck",
+        "William Faulkner"
+      ],
+      "correctAnswer": "F. Scott Fitzgerald"
+    },
+    {
+      "question": "In which century was William Shakespeare born?",
+      "difficulty": 2,
+      "id": "Q0831",
+      "options": [
+        "15th century",
+        "16th century",
+        "17th century",
+        "14th century"
+      ],
+      "correctAnswer": "16th century"
+    },
+    {
+      "question": "Who founded the 'Büyük Doğu' magazine in Turkish literature?",
+      "type": "MultipleChoice",
+      "options": [
+        "Necip Fazıl Kısakürek",
+        "Sezai Karakoç",
+        "Cahit Zarifoğlu",
+        "Mehmet Akif Ersoy"
+      ],
+      "correctAnswer": "Necip Fazıl Kısakürek",
+      "difficulty": 3,
+      "id": "Q1025"
+    },
+    {
+      "question": "In which city does 'Romeo and Juliet' take place?",
+      "type": "MultipleChoice",
+      "options": [
+        "Rome",
+        "Venice",
+        "Verona",
+        "Florence"
+      ],
+      "correctAnswer": "Verona",
+      "difficulty": 2,
+      "id": "Q1026"
+    },
+    {
+      "question": "Which author wrote 'Crime and Punishment'?",
+      "type": "MultipleChoice",
+      "options": [
+        "Tolstoy",
+        "Dostoyevsky",
+        "Turgenev",
+        "Chekhov"
+      ],
+      "correctAnswer": "Dostoyevsky",
+      "difficulty": 2,
+      "id": "Q1027"
+    },
+    {
+      "question": "Who is the author of 'Araba Sevdası' (The Carriage Affair)?",
+      "type": "MultipleChoice",
+      "options": [
+        "Ahmet Mithat Efendi",
+        "Recaizade Mahmut Ekrem",
+        "Namık Kemal",
+        "Ziya Paşa"
+      ],
+      "correctAnswer": "Recaizade Mahmut Ekrem",
+      "difficulty": 3,
+      "id": "Q1028"
+    },
+    {
+      "question": "Which literary movement advocates 'art for art's sake'?",
+      "type": "MultipleChoice",
+      "options": [
+        "Realism",
+        "Romanticism",
+        "Parnassianism",
+        "Symbolism"
+      ],
+      "correctAnswer": "Parnassianism",
+      "difficulty": 3,
+      "id": "Q1029"
+    },
+    {
+      "question": "Who is the author of the play 'Şair Evlenmesi' (The Poet's Marriage)?",
+      "type": "MultipleChoice",
+      "options": [
+        "Namık Kemal",
+        "Ahmet Vefik Paşa",
+        "Ziya Paşa",
+        "Recaizade Mahmut Ekrem"
+      ],
+      "correctAnswer": "Namık Kemal",
+      "difficulty": 2,
+      "id": "Q1030"
+    },
+    {
+      "question": "What is the first Turkish novel?",
+      "type": "MultipleChoice",
+      "options": [
+        "Taaşşuk-u Talat ve Fitnat",
+        "Araba Sevdası",
+        "İntibah",
+        "Felâtun Bey ile Râkım Efendi"
+      ],
+      "correctAnswer": "Taaşşuk-u Talat ve Fitnat",
+      "difficulty": 3,
+      "id": "Q1031"
     }
   ],
   "Image Questions": [
     {
-      "question": "Is this historic building located in London Big Ben?",
-      "difficulty": 1,
-      "id": "Q0054",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_026.jpg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "This image shows Yellowstone National Park's hot springs.",
-      "difficulty": 1,
-      "id": "Q0055",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_027.jpg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "The structure in this image is Buckingham Palace.",
-      "difficulty": 1,
-      "id": "Q0056",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_028.jpg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "The historical structure in this image is the Tower of London.",
-      "difficulty": 1,
-      "id": "Q0057",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_029.jpg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "The structure in this image is the Parthenon in ancient Athens.",
-      "difficulty": 1,
-      "id": "Q0058",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_030.jpg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "The world's tallest building, Burj Khalifa, is in Dubai.",
-      "difficulty": 1,
-      "id": "Q0059",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_burj_khalifa.jpg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "Nobel Prizes have been awarded since 1901 according to Alfred Nobel's will.",
-      "difficulty": 1,
-      "id": "Q0060",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_nobel_medal.jpg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "The capital of the USA is New York.",
-      "difficulty": 1,
-      "id": "Q0061",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_069.jpg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "The Red Sea gets its name from the algae it contains.",
-      "difficulty": 1,
-      "id": "Q0062",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_red_sea.jpg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "China is the most populous country in the world.",
-      "difficulty": 1,
-      "id": "Q0063",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_china_population.jpg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "The 50 stars on the US flag represent the 50 states of America.",
-      "difficulty": 1,
-      "id": "Q0064",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_031.png",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "Da Vinci's 'The Last Supper' painting is displayed in the Louvre Museum.",
-      "difficulty": 1,
-      "id": "Q0065",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_louvre.jpg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "E. coli, a type of bacteria, naturally exists in the healthy human body.",
-      "difficulty": 1,
-      "id": "Q0066",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_bacteria_ecoli.svg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "The Eiffel Tower was built for the 1889 Paris World's Fair.",
-      "difficulty": 2,
-      "id": "Q0067",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_032.jpg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "The longest bone in the human body is the arm bone.",
-      "difficulty": 1,
-      "id": "Q0068",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_human_bones.jpg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "London is the largest city in the United Kingdom.",
-      "difficulty": 1,
-      "id": "Q0069",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_london.jpg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "The British Grenadiers is one of the world's oldest known military marches.",
-      "difficulty": 1,
-      "id": "Q0070",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_british_march.jpg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "The Giant's Causeway is located in Northern Ireland.",
-      "difficulty": 1,
-      "id": "Q0071",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_giants_causeway.jpg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "Humans have 23 pairs of chromosomes.",
-      "difficulty": 1,
-      "id": "Q0072",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_chromosome.jpg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "The Euro, which is the official currency of the European Union, is used in all member countries.",
-      "difficulty": 1,
-      "id": "Q0073",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_033.png",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "The sport of golf has its roots in Scotland.",
-      "difficulty": 1,
-      "id": "Q0083",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_golf.jpg",
-      "originalCategory": "General Knowledge"
-    },
-    {
-      "question": "Protons and neutrons are located in the central nucleus of the atom.",
-      "difficulty": 2,
-      "id": "Q0173",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_070.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "The planet in this image is Jupiter.",
-      "difficulty": 1,
-      "id": "Q0174",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_034.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "The planet in this image is Mars.",
-      "difficulty": 1,
-      "id": "Q0175",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_035.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "The animal in this image is a mammal species.",
-      "difficulty": 1,
-      "id": "Q0176",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_036.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "The skin is the largest organ in the human body.",
-      "difficulty": 1,
-      "id": "Q0177",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "Human DNA is approximately 99% identical to that of chimpanzees.",
-      "difficulty": 1,
-      "id": "Q0178",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "Earth's magnetic north pole is exactly at the same point as the geographic north pole.",
-      "difficulty": 1,
-      "id": "Q0179",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/science_magnetic_pole.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "The strongest muscle in the human body is the jaw muscle.",
-      "difficulty": 1,
-      "id": "Q0180",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_071.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "All spiders are venomous.",
-      "difficulty": 1,
-      "id": "Q0181",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/science_spiders.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "A blue whale's heart is so large that a human could swim through its arteries.",
-      "difficulty": 1,
-      "id": "Q0182",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/science_blue_whale.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "Fire does not burn in space.",
-      "difficulty": 1,
-      "id": "Q0183",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_072.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "Earth's core is in solid state.",
-      "difficulty": 1,
-      "id": "Q0184",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/science_earth_core.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "Sharks do not get cancer.",
-      "difficulty": 1,
-      "id": "Q0185",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_037.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "Light travels faster than sound.",
-      "difficulty": 1,
-      "id": "Q0186",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/science_light_speed.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "Venus rotates around the Sun in a counterclockwise direction.",
-      "difficulty": 1,
-      "id": "Q0187",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/science_venus_rotation.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "Bats are actually blind.",
-      "difficulty": 1,
-      "id": "Q0188",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/science_bats.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "The human brain is more active while sleeping.",
-      "difficulty": 1,
-      "id": "Q0189",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "Ostriches bury their heads in sand when in danger.",
-      "difficulty": 1,
-      "id": "Q0190",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "This image shows the first iPhone model.",
-      "difficulty": 1,
-      "id": "Q0265",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_038.png",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "This image shows the first version of the Windows operating system.",
-      "difficulty": 1,
-      "id": "Q0266",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_039.png",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "This image shows the Apple II model, one of the first personal computers.",
-      "difficulty": 1,
-      "id": "Q0267",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/technology_apple_ii.jpg",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "This image shows a computer produced by Microsoft.",
-      "difficulty": 1,
-      "id": "Q0268",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_040.png",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "PNG file format is a format type that does not use compression.",
-      "difficulty": 1,
-      "id": "Q0269",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_041.png",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "HTML is a programming language.",
-      "difficulty": 1,
-      "id": "Q0270",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_042.png",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "The Python programming language takes its name from a species of snake.",
-      "difficulty": 1,
-      "id": "Q0271",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_043.png",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "Artificial intelligence is a new technology that has only emerged in the last 10 years.",
-      "difficulty": 1,
-      "id": "Q0272",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_073.jpg",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "The 'Wi' in WiFi stands for 'Wireless'.",
-      "difficulty": 1,
-      "id": "Q0273",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/technology_wifi.jpg",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "Blockchain technology is only used for cryptocurrencies.",
-      "difficulty": 1,
-      "id": "Q0274",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/technology_blockchain.jpg",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "RAM (Random Access Memory) is a type of memory that can preserve data after computers are turned off.",
-      "difficulty": 1,
-      "id": "Q0275",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_074.png",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "Google was founded in 1998.",
-      "difficulty": 1,
-      "id": "Q0276",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_044.png",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "SSDs (Solid State Drives) are faster than HDDs (Hard Disk Drives).",
-      "difficulty": 1,
-      "id": "Q0277",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_045.jpg",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "The first 1 GB capacity hard disk was released to the market in 1980.",
-      "difficulty": 1,
-      "id": "Q0278",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/technology_hard_disk.jpg",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "The HTTPS protocol is more secure than HTTP.",
-      "difficulty": 1,
-      "id": "Q0279",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/technology_https.jpg",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "The Android operating system was developed by Apple.",
-      "difficulty": 1,
-      "id": "Q0280",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_046.png",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "The F keys on keyboards stand for function keys.",
-      "difficulty": 1,
-      "id": "Q0281",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/technology_keyboard.jpg",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "Adobe Photoshop is a video editing software.",
-      "difficulty": 1,
-      "id": "Q0282",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_047.png",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "The 'WWW' expression in URLs is a mandatory component for websites to function.",
-      "difficulty": 1,
-      "id": "Q0283",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_075.jpg",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "The first mobile phone was invented in the 1990s.",
-      "difficulty": 1,
-      "id": "Q0284",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_076.jpg",
-      "originalCategory": "Technology"
-    },
-    {
-      "question": "The stadium in this image is Camp Nou, the home stadium of FC Barcelona.",
-      "difficulty": 1,
-      "id": "Q0352",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_048.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "This person is Cristiano Ronaldo.",
-      "difficulty": 1,
-      "id": "Q0353",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_049.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "This stadium is Chelsea's Stamford Bridge stadium.",
-      "difficulty": 1,
-      "id": "Q0354",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_050.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "This person in the image is Bobby Charlton, one of Manchester United's most famous footballers.",
-      "difficulty": 1,
-      "id": "Q0355",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_051.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "This image shows a basketball court.",
-      "difficulty": 1,
-      "id": "Q0356",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "A marathon race is run on a 45-kilometer course.",
-      "difficulty": 1,
-      "id": "Q0357",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/sports_marathon.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "NBA is the abbreviation for European Basketball League.",
-      "difficulty": 1,
-      "id": "Q0358",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/sports_nba.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "In a football match, goalkeepers can hold the ball with their hands within their own penalty area.",
-      "difficulty": 1,
-      "id": "Q0359",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/sports_football_goalkeeper.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "In Formula 1 races, the driver who earns the most points in a race weekend receives 25 points.",
-      "difficulty": 1,
-      "id": "Q0360",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_sports_general.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "Tennis is a sport that emerged in England in the 18th century.",
-      "difficulty": 1,
-      "id": "Q0361",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/sports_tennis.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "Volleyball is not a sport included in the Olympic Games program.",
-      "difficulty": 1,
-      "id": "Q0362",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_sports_general.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "The height of a basketball hoop from the ground is 3.05 meters.",
-      "difficulty": 1,
-      "id": "Q0363",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/sports_basketball_hoop.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "FIFA is the abbreviation for the International Federation of Association Football.",
-      "difficulty": 2,
-      "id": "Q0364",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/sports_fifa.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "In a football match, a team can make a maximum of 5 player substitutions.",
-      "difficulty": 1,
-      "id": "Q0365",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/sports_football_substitution.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "Baseball is one of the traditional sports of the United States.",
-      "difficulty": 1,
-      "id": "Q0366",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/sports_oil_wrestling.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "In women's tennis, Grand Slam tournaments are played over 5 sets.",
-      "difficulty": 1,
-      "id": "Q0367",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/sports_swimming.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "The sport of golf has its origins in Scotland.",
-      "difficulty": 1,
-      "id": "Q0368",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/sports_boxing.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "Water polo is a sport played only in outdoor pools.",
-      "difficulty": 1,
-      "id": "Q0369",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_sports_general.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "In boxing matches, kicking is allowed in addition to punching according to the rules.",
-      "difficulty": 1,
-      "id": "Q0370",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/sports_athletics.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "Weightlifting is one of the oldest sports in the Olympic Games.",
-      "difficulty": 1,
-      "id": "Q0371",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/sports_weightlifting.jpg",
-      "originalCategory": "Sports"
-    },
-    {
-      "question": "The person shown in this photograph is Winston Churchill.",
-      "difficulty": 1,
-      "id": "Q0445",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_052.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "Large cannons were used in the siege of London during WWII.",
-      "difficulty": 1,
-      "id": "Q0446",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/history_london_wwii.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "The building shown is the Houses of Parliament in London.",
-      "difficulty": 1,
-      "id": "Q0447",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/history_tbmm_first.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "The author of 'God Save the Queen' is Henry Carey.",
-      "difficulty": 1,
-      "id": "Q0448",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_053.png",
-      "originalCategory": "History"
-    },
-    {
-      "question": "The Western Front is shown.",
-      "difficulty": 1,
-      "id": "Q0449",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_077.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "The Republic of Ireland was declared on April 18, 1949.",
-      "difficulty": 1,
-      "id": "Q0450",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/history_republic_proclamation.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "The ancient city in this image is Pompeii.",
-      "difficulty": 1,
-      "id": "Q0451",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_054.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "The first President of the United States was George Washington.",
-      "difficulty": 1,
-      "id": "Q0452",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/history_ataturk_president.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "World War I took place between 1914-1918.",
-      "difficulty": 1,
-      "id": "Q0453",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/history_wwi.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "The founder of the British Empire was Queen Elizabeth I.",
-      "difficulty": 2,
-      "id": "Q0454",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/history_osman_bey.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "King Henry VIII was 17 years old when he became king of England.",
-      "difficulty": 1,
-      "id": "Q0455",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/history_fatih_sultan.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "The American War of Independence took place between 1775-1783.",
-      "difficulty": 1,
-      "id": "Q0456",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/history_independence_war.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "The United States Congress was established on March 4, 1789.",
-      "difficulty": 1,
-      "id": "Q0457",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/history_tbmm_opening.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "The Treaty of Versailles was signed in 1919.",
-      "difficulty": 1,
-      "id": "Q0458",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/history_lausanne_treaty.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "United Kingdom standardized spelling was established in 1923.",
-      "difficulty": 1,
-      "id": "Q0459",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/history_french_revolution.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "The Cold War period lasted from after World War II until 1991.",
-      "difficulty": 1,
-      "id": "Q0460",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/history_alexander_great.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "Queen Victoria was the longest-reigning monarch of the British Empire.",
-      "difficulty": 2,
-      "id": "Q0461",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/history_crusades.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "Women were granted full suffrage in the United Kingdom in 1928.",
-      "difficulty": 1,
-      "id": "Q0462",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/history_columbus.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "World War II took place between 1939-1945.",
-      "difficulty": 1,
-      "id": "Q0463",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/history_napoleon.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "The Battle of Hastings took place in 1066.",
-      "difficulty": 1,
-      "id": "Q0464",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/history_berlin_wall.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "The Battle of the Somme took place during World War I.",
-      "difficulty": 1,
-      "id": "Q0465",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_078.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "The signing of the Declaration of Independence was on July 4, 1776.",
-      "difficulty": 2,
-      "id": "Q0466",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/history_ancient_egypt.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "The Treaty of Versailles was never fully implemented.",
-      "difficulty": 1,
-      "id": "Q0467",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/history_renaissance.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "The Berlin Wall was torn down in 1989.",
-      "difficulty": 1,
-      "id": "Q0468",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_history_ancient.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "The Nile River is shown.",
-      "difficulty": 1,
-      "id": "Q0541",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_nile_river.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The Alaska region is shown in this image.",
-      "difficulty": 1,
-      "id": "Q0545",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_057.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "Mount Vesuvius is shown.",
-      "difficulty": 1,
-      "id": "Q0546",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_vesuvius.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "London city is shown.",
-      "difficulty": 1,
-      "id": "Q0547",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_istanbul.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The Grand Canyon is located in Arizona.",
-      "difficulty": 1,
-      "id": "Q0548",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_cappadocia.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The country in this image is Japan.",
-      "difficulty": 1,
-      "id": "Q0549",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_058.png",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "United Kingdom is divided into four constituent countries.",
-      "difficulty": 1,
-      "id": "Q0550",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_turkey_regions.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The highest mountain in the United Kingdom is Ben Nevis.",
-      "difficulty": 1,
-      "id": "Q0551",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_mount_ararat.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The English Channel is located south of the United Kingdom.",
-      "difficulty": 1,
-      "id": "Q0552",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_mediterranean.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The North Sea is located east of the United Kingdom.",
-      "difficulty": 1,
-      "id": "Q0553",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_black_sea.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The Nile River is the world's longest river.",
-      "difficulty": 1,
-      "id": "Q0554",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_nile_longest.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The Amazon River is the world's widest river.",
-      "difficulty": 1,
-      "id": "Q0555",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_079.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "Everest is the world's highest mountain.",
-      "difficulty": 1,
-      "id": "Q0556",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_everest.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "Australia is both a continent and a country.",
-      "difficulty": 1,
-      "id": "Q0557",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_sahara.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The Sahara Desert is the world's largest desert.",
-      "difficulty": 1,
-      "id": "Q0558",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_amazon.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The Mariana Trench is the world's deepest point.",
-      "difficulty": 1,
-      "id": "Q0559",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_antarctica.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The United Kingdom has only one neighboring country.",
-      "difficulty": 1,
-      "id": "Q0560",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_pacific.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The English Channel separates the United Kingdom and France from each other.",
-      "difficulty": 1,
-      "id": "Q0561",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_bosphorus.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The capital of the United Kingdom is Manchester.",
-      "difficulty": 1,
-      "id": "Q0562",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_antalya.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "Antarctica is the only continent on Earth that belongs to no country.",
-      "difficulty": 1,
-      "id": "Q0563",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_van_lake.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The largest lake in the United Kingdom is Lough Neagh.",
-      "difficulty": 1,
-      "id": "Q0564",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_marmara.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The Pacific Ocean is the world's largest ocean.",
-      "difficulty": 1,
-      "id": "Q0565",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_aegean.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "Russia borders more countries than any other nation in the world.",
-      "difficulty": 1,
-      "id": "Q0566",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_asia_largest.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The United Kingdom consists of four constituent countries.",
-      "difficulty": 1,
-      "id": "Q0567",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/geography_russia_largest.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "This flag belongs to Canada.",
-      "difficulty": 1,
-      "id": "Q0708",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_100.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "This flag belongs to Germany.",
-      "difficulty": 1,
-      "id": "Q0709",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_101.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "This flag belongs to France.",
-      "difficulty": 1,
-      "id": "Q0710",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_102.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "This flag belongs to the United Kingdom.",
-      "difficulty": 1,
-      "id": "Q0711",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_103.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "This is the flag of Italy.",
-      "difficulty": 1,
-      "id": "Q0712",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_104.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "This is the flag of Spain.",
-      "difficulty": 1,
-      "id": "Q0713",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_105.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "This is the flag of Russia.",
-      "difficulty": 1,
-      "id": "Q0714",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_106.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "This is the flag of China.",
-      "difficulty": 1,
-      "id": "Q0715",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_107.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "This is the flag of Japan.",
-      "difficulty": 1,
-      "id": "Q0716",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_108.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "This flag belongs to South Korea.",
-      "difficulty": 1,
-      "id": "Q0717",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_109.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "This is the flag of Japan.",
-      "difficulty": 1,
-      "id": "Q0718",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_109.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "This flag belongs to Australia.",
-      "difficulty": 1,
-      "id": "Q0719",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_110.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The capital of Australia is Canberra.",
-      "difficulty": 1,
-      "id": "Q0720",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_111.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The capital of France is Paris.",
-      "difficulty": 1,
-      "id": "Q0721",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_112.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The capital of the United Kingdom is London.",
-      "difficulty": 1,
-      "id": "Q0722",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_113.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The capital of Germany is Berlin.",
-      "difficulty": 1,
-      "id": "Q0723",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_114.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The capital of Italy is Rome.",
-      "difficulty": 1,
-      "id": "Q0724",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_115.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The capital of Spain is Madrid.",
-      "difficulty": 1,
-      "id": "Q0725",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_116.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The capital of Russia is Moscow.",
-      "difficulty": 1,
-      "id": "Q0726",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_117.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The capital of Japan is Tokyo.",
-      "difficulty": 1,
-      "id": "Q0727",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_118.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The capital of the United Kingdom is Manchester.",
-      "difficulty": 1,
-      "id": "Q0728",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_119.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The capital of the United States is New York.",
-      "difficulty": 1,
-      "id": "Q0729",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_120.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The capital of Canada is Toronto.",
-      "difficulty": 1,
-      "id": "Q0730",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_121.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The capital of Australia is Sydney.",
-      "difficulty": 1,
-      "id": "Q0731",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
+      "question": "What is the name of this musical instrument?",
+      "type": "MultipleChoice",
       "options": [
-        "True",
-        "False"
+        "Violin",
+        "Viola",
+        "Cello",
+        "Double bass"
       ],
-      "imageUrl": "assets/images/questions/img_122.jpg",
-      "originalCategory": "Geography"
-    },
-    {
-      "question": "The violin is a musical instrument.",
+      "correctAnswer": "Violin",
       "difficulty": 1,
-      "id": "Q0606",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
+      "id": "Q1009",
       "imageUrl": "assets/images/questions/music_violin.jpg",
       "originalCategory": "Music"
     },
     {
-      "question": "The guitar is a musical instrument.",
-      "difficulty": 1,
-      "id": "Q0607",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
+      "question": "Who is this composer?",
+      "type": "MultipleChoice",
       "options": [
-        "True",
-        "False"
+        "Mozart",
+        "Beethoven",
+        "Bach",
+        "Chopin"
       ],
-      "imageUrl": "assets/images/questions/music_kemence.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "This person is the world-famous tenor Luciano Pavarotti.",
-      "difficulty": 1,
-      "id": "Q0608",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/music_pavarotti.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "The person in this image is the famous composer Wolfgang Amadeus Mozart.",
-      "difficulty": 1,
-      "id": "Q0609",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_059.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "Guitar is a stringed musical instrument.",
-      "difficulty": 1,
-      "id": "Q0610",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/music_baglama.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "A classical guitar has 7 strings as standard.",
-      "difficulty": 1,
-      "id": "Q0611",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/music_guitar.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "Beethoven continued composing music in the final years of his life despite being completely deaf.",
-      "difficulty": 1,
-      "id": "Q0612",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_060.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "The piano belongs to the string instrument family.",
-      "difficulty": 1,
-      "id": "Q0613",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/music_piano.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "Johann Sebastian Bach is a classical period composer.",
-      "difficulty": 1,
-      "id": "Q0614",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_061.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "Michael Jackson's 'Thriller' album is one of the best-selling albums of all time.",
-      "difficulty": 1,
-      "id": "Q0615",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_062.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "The bagpipe is a primary instrument used in British folk music.",
-      "difficulty": 1,
-      "id": "Q0616",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/music_turkish_folk.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "Soprano, erkek sound sınıflandırmasıdır.",
-      "difficulty": 1,
-      "id": "Q0617",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/music_soprano.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "The Beatles consisted of 5 members.",
-      "difficulty": 1,
-      "id": "Q0618",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/music_beatles.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "The harp is a traditional stringed instrument used in Celtic music.",
-      "difficulty": 1,
-      "id": "Q0619",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/music_kanun_strings.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "Opera as an art form originated in Italy.",
-      "difficulty": 1,
-      "id": "Q0620",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/music_violin.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "Beethoven's work known as the 'Moonlight Sonata' is actually Sonata No. 14.",
-      "difficulty": 1,
-      "id": "Q0621",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_063.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "Rap music emerged in the United States in the 1970s.",
-      "difficulty": 1,
-      "id": "Q0622",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_music_instruments.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "The standard length of a symphony is 10 minutes.",
-      "difficulty": 1,
-      "id": "Q0623",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_music_instruments.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "The flute belongs to the woodwind instrument group.",
-      "difficulty": 1,
-      "id": "Q0624",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/music_orchestra.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "Flute is an important wind instrument used in classical music.",
-      "difficulty": 1,
-      "id": "Q0625",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_music_instruments.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "This person is Dostoyevsky.",
-      "difficulty": 1,
-      "id": "Q0653",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_dostoyevski.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "The person in this image is William Shakespeare.",
-      "difficulty": 1,
-      "id": "Q0654",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_064.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "The book shown is the first book in J.K. Rowling's Harry Potter series.",
-      "difficulty": 1,
-      "id": "Q0655",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_065.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "The person in this image is Robert Frost.",
-      "difficulty": 1,
-      "id": "Q0656",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_fuzuli_portrait.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "Dostoyevsky is the author of 'Crime and Punishment'.",
-      "difficulty": 1,
-      "id": "Q0657",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_dostoyevski.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "In English Literature, the novel 'Pride and Prejudice' belongs to Jane Austen.",
+      "correctAnswer": "Mozart",
       "difficulty": 2,
-      "id": "Q0658",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_calikusu.jpg",
-      "originalCategory": "Literature"
+      "id": "Q1010",
+      "imageUrl": "assets/images/questions/music_mozart.jpg",
+      "originalCategory": "Music"
     },
     {
-      "question": "Charles Dickens, 'Wuthering Heights' romanının yazarıdır.",
-      "difficulty": 1,
-      "id": "Q0659",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
+      "question": "Who is this famous writer?",
+      "type": "MultipleChoice",
       "options": [
-        "True",
-        "False"
+        "Orhan Pamuk",
+        "Yaşar Kemal",
+        "Nazım Hikmet",
+        "Sabahattin Ali"
       ],
-      "imageUrl": "assets/images/questions/literature_nazim_hikmet.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "Cervantes is the author of the novel 'Don Quixote'.",
-      "difficulty": 1,
-      "id": "Q0660",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_don_quixote.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "Winston Churchill was the first British Prime Minister to win the Nobel Prize in Literature.",
+      "correctAnswer": "Orhan Pamuk",
       "difficulty": 2,
-      "id": "Q0661",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_nobel_prize.jpg",
+      "id": "Q1011",
+      "imageUrl": "assets/images/questions/literature_orhan_pamuk.jpg",
       "originalCategory": "Literature"
     },
     {
-      "question": "Shakespeare wrote a total of 37 plays.",
-      "difficulty": 1,
-      "id": "Q0662",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
+      "question": "Which author wrote this classic work?",
+      "type": "MultipleChoice",
       "options": [
-        "True",
-        "False"
+        "William Shakespeare",
+        "Charles Dickens",
+        "Mark Twain",
+        "Oscar Wilde"
       ],
-      "imageUrl": "assets/images/questions/img_066.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "The Canterbury Tales is a work by Geoffrey Chaucer.",
-      "difficulty": 1,
-      "id": "Q0663",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_mevlana.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "'To Kill a Mockingbird' is one of Harper Lee's most well-known works.",
-      "difficulty": 1,
-      "id": "Q0664",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_yasar_kemal.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "Franz Kafka is one of the important writers of Russian literature.",
-      "difficulty": 1,
-      "id": "Q0665",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_kafka.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "The main character of Dostoyevsky's novel 'Crime and Punishment' is Raskolnikov.",
-      "difficulty": 1,
-      "id": "Q0666",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_crime_punishment.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "Haiku is a type of poem that originated in China.",
-      "difficulty": 1,
-      "id": "Q0667",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_haiku.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "Gabriel Garcia Marquez is the author of the novel 'One Hundred Years of Solitude'.",
-      "difficulty": 1,
-      "id": "Q0668",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_garcia_marquez.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "The 'Modernist Movement' in English literature emerged in the 1950s.",
+      "correctAnswer": "William Shakespeare",
       "difficulty": 2,
-      "id": "Q0669",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_garip_movement.jpg",
+      "id": "Q1012",
+      "imageUrl": "assets/images/questions/literature_hamlet.jpg",
       "originalCategory": "Literature"
     },
     {
-      "question": "Victor Hugo, 'Sefiller' romanının yazarıdır.",
-      "difficulty": 1,
-      "id": "Q0670",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
+      "question": "Which planet is shown in this image?",
+      "type": "MultipleChoice",
       "options": [
-        "True",
-        "False"
+        "Mars",
+        "Venus",
+        "Jupiter",
+        "Saturn"
       ],
-      "imageUrl": "assets/images/questions/literature_victor_hugo.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "Homer is accepted as the author of the epic 'Odyssey'.",
-      "difficulty": 1,
-      "id": "Q0671",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_homer.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "'Brave New World' was written by Aldous Huxley.",
-      "difficulty": 1,
-      "id": "Q0672",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_oguz_atay.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "'Pride and Prejudice' was written by Jane Austen.",
+      "correctAnswer": "Mars",
       "difficulty": 2,
-      "id": "Q0673",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_calikusu_book.jpg",
-      "originalCategory": "Literature"
+      "id": "Q1013",
+      "imageUrl": "assets/images/questions/science_mars.jpg",
+      "originalCategory": "Science"
     },
     {
-      "question": "Ernest Hemingway is the author of 'The Great Gatsby'.",
-      "difficulty": 1,
-      "id": "Q0674",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
+      "question": "Which civilization does this historical structure belong to?",
+      "type": "MultipleChoice",
       "options": [
-        "True",
-        "False"
+        "Roman",
+        "Greek",
+        "Egyptian",
+        "Babylonian"
       ],
-      "imageUrl": "assets/images/questions/literature_kurk_mantolu.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "Cervantes is the author of the novel 'Don Quixote'.",
-      "difficulty": 1,
-      "id": "Q0675",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_cervantes.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "Kazuo Ishiguro was the first Japanese-born writer to win the Nobel Prize in Literature.",
+      "correctAnswer": "Roman",
       "difficulty": 2,
-      "id": "Q0676",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_orhan_pamuk_nobel.jpg",
-      "originalCategory": "Literature"
+      "id": "Q1014",
+      "imageUrl": "assets/images/questions/history_colosseum.jpg",
+      "originalCategory": "History"
     },
     {
-      "question": "Geoffrey Chaucer is one of the important poets of Victorian Literature.",
+      "question": "Which ball is used in this sport?",
+      "type": "MultipleChoice",
+      "options": [
+        "Basketball",
+        "Football",
+        "Tennis ball",
+        "Volleyball"
+      ],
+      "correctAnswer": "Basketball",
       "difficulty": 1,
-      "id": "Q0677",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_yunus_emre.jpg",
-      "originalCategory": "Literature"
+      "id": "Q1015",
+      "imageUrl": "assets/images/questions/sports_basketball.jpg",
+      "originalCategory": "Sports"
     },
     {
-      "question": "The novel 'Crime and Punishment' belongs to Tolstoy.",
-      "difficulty": 1,
-      "id": "Q0678",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
+      "question": "What is this technological device?",
+      "type": "MultipleChoice",
       "options": [
-        "True",
-        "False"
+        "SSD Drive",
+        "RAM Memory",
+        "Processor",
+        "Motherboard"
       ],
-      "imageUrl": "assets/images/questions/img_067.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "The novel 'The Great Gatsby' belongs to F. Scott Fitzgerald.",
-      "difficulty": 1,
-      "id": "Q0679",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_halit_ziya.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "Mark Twain is the author of the work 'The Adventures of Huckleberry Finn'.",
-      "difficulty": 1,
-      "id": "Q0680",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_tanpinar.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "The poet known as the 'Founder of the Republic of Poetry' is Yahya Kemal Beyatlı.",
-      "difficulty": 1,
-      "id": "Q0681",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_yahya_kemal.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "Francis Scott Key is the author of 'The Star-Spangled Banner'.",
-      "difficulty": 1,
-      "id": "Q0682",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_mehmet_akif.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "The first rural novel in English literature is 'Far from the Madding Crowd'.",
-      "difficulty": 1,
-      "id": "Q0683",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_yaban.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "Shakespeare is the author of 'Romeo and Juliet'.",
-      "difficulty": 1,
-      "id": "Q0684",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/img_068.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "Robert Burns is an important poet in Scottish folk literature.",
-      "difficulty": 1,
-      "id": "Q0685",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
-      "options": [
-        "True",
-        "False"
-      ],
-      "imageUrl": "assets/images/questions/literature_fuzuli_divan.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "The 'Imagist Movement' in English poetry was founded by Ezra Pound, T.S. Eliot, and H.D.",
+      "correctAnswer": "SSD Drive",
       "difficulty": 2,
-      "id": "Q0686",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
+      "id": "Q1016",
+      "imageUrl": "assets/images/questions/tech_ssd.jpg",
+      "originalCategory": "Technology"
+    }
+  ],
+  "General Knowledge Extended": [
+    {
+      "question": "What is the largest ocean on Earth?",
+      "difficulty": 1,
+      "id": "Q0800",
       "options": [
-        "True",
-        "False"
+        "Atlantic Ocean",
+        "Indian Ocean",
+        "Pacific Ocean",
+        "Arctic Ocean"
       ],
-      "imageUrl": "assets/images/questions/literature_orhan_veli.jpg",
-      "originalCategory": "Literature"
+      "correctAnswer": "Pacific Ocean"
     },
     {
-      "question": "Edgar Allan Poe is known for his works in the novel genre.",
-      "difficulty": 1,
-      "id": "Q0687",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
+      "question": "Which vitamin is produced when skin is exposed to sunlight?",
+      "difficulty": 2,
+      "id": "Q0801",
       "options": [
-        "True",
-        "False"
+        "Vitamin A",
+        "Vitamin B",
+        "Vitamin C",
+        "Vitamin D"
       ],
-      "imageUrl": "assets/images/questions/literature_sait_faik.jpg",
-      "originalCategory": "Literature"
+      "correctAnswer": "Vitamin D"
     },
     {
-      "question": "The poetry book 'Leaves of Grass' belongs to Walt Whitman.",
-      "difficulty": 1,
-      "id": "Q0688",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
+      "question": "What is the smallest country in the world?",
+      "difficulty": 2,
+      "id": "Q0802",
       "options": [
-        "True",
-        "False"
+        "Monaco",
+        "Vatican City",
+        "San Marino",
+        "Liechtenstein"
       ],
-      "imageUrl": "assets/images/questions/literature_necip_fazil.jpg",
-      "originalCategory": "Literature"
+      "correctAnswer": "Vatican City"
     },
     {
-      "question": "Charles Dickens is the author of the novel 'A Tale of Two Cities'.",
-      "difficulty": 1,
-      "id": "Q0689",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
+      "question": "Which element has the chemical symbol 'Au'?",
+      "difficulty": 2,
+      "id": "Q0803",
       "options": [
-        "True",
-        "False"
+        "Silver",
+        "Gold",
+        "Aluminum",
+        "Argon"
       ],
-      "imageUrl": "assets/images/questions/literature_peyami_safa.jpg",
-      "originalCategory": "Literature"
+      "correctAnswer": "Gold"
     },
     {
-      "question": "Virginia Woolf's 'Mrs. Dalloway' was the first English novel to win the Nobel Prize in Literature.",
+      "question": "What is the fastest land animal?",
       "difficulty": 1,
-      "id": "Q0690",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "True",
-        "False"
-      ],
+      "id": "Q0804",
       "options": [
-        "True",
-        "False"
+        "Lion",
+        "Cheetah",
+        "Leopard",
+        "Gazelle"
       ],
-      "imageUrl": "assets/images/questions/literature_halide_edip.jpg",
-      "originalCategory": "Literature"
+      "correctAnswer": "Cheetah"
     },
     {
-      "question": "Robert Frost is known for his poem 'The Road Not Taken'.",
-      "difficulty": 1,
-      "id": "Q0691",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
+      "question": "Who invented the telephone?",
+      "difficulty": 2,
+      "id": "Q0900",
       "options": [
-        "True",
-        "False"
+        "Thomas Edison",
+        "Alexander Graham Bell",
+        "Nikola Tesla",
+        "Benjamin Franklin"
       ],
-      "imageUrl": "assets/images/questions/literature_cahit_sitki.jpg",
-      "originalCategory": "Literature"
+      "correctAnswer": "Alexander Graham Bell"
     },
     {
-      "question": "George Orwell's '1984' is considered an important work of world literature.",
+      "question": "What is the currency of Japan?",
       "difficulty": 1,
-      "id": "Q0692",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "True",
-        "False"
-      ],
+      "id": "Q0901",
       "options": [
-        "True",
-        "False"
+        "Yuan",
+        "Won",
+        "Yen",
+        "Rupee"
       ],
-      "imageUrl": "assets/images/questions/literature_yasar_kemal_book.jpg",
-      "originalCategory": "Literature"
+      "correctAnswer": "Yen"
+    },
+    {
+      "question": "Which planet is closest to the Sun?",
+      "difficulty": 1,
+      "id": "Q0902",
+      "options": [
+        "Venus",
+        "Earth",
+        "Mercury",
+        "Mars"
+      ],
+      "correctAnswer": "Mercury"
+    },
+    {
+      "question": "What does UNESCO stand for?",
+      "difficulty": 3,
+      "id": "Q0903",
+      "options": [
+        "United Nations Educational, Scientific and Cultural Organization",
+        "Universal Network for Education, Science and Culture Organization",
+        "United Nations Economic, Social and Cultural Organization",
+        "Universal Nations Educational, Scientific and Cultural Organization"
+      ],
+      "correctAnswer": "United Nations Educational, Scientific and Cultural Organization"
     }
   ]
 }

@@ -18,8 +18,8 @@ end
 
 target 'App' do
   capacitor_pods
-  # Force older UserMessagingPlatform version
-  pod 'GoogleUserMessagingPlatform', '~> 2.4.0'
+  # Updated UserMessagingPlatform version for compatibility with AdMob 7.0.3
+  pod 'GoogleUserMessagingPlatform', '~> 2.7.0'
   # Add your Pods here
 end
 

@@ -415,14 +415,14 @@ function initFullscreenMode() {
             height: 100dvh !important;
             margin: 0 !important;
             padding: 0 !important;
-            padding-top: 110px !important; /* Banner reklam için üst boşluk */
+            padding-top: 20px !important; /* Android banner reklamı kaldırıldığı için azaltıldı */
             overflow-y: auto !important;
         }
         
         /* Safe area için padding ekle */
         @supports (padding: max(0px)) {
             .pwa-fullscreen .container {
-                padding-top: max(env(safe-area-inset-top), 0px) !important;
+                padding-top: max(env(safe-area-inset-top), 20px) !important;
                 padding-bottom: max(env(safe-area-inset-bottom), 0px) !important;
                 padding-left: max(env(safe-area-inset-left), 0px) !important;
                 padding-right: max(env(safe-area-inset-right), 0px) !important;
@@ -861,27 +861,127 @@ const quizApp = {
         return selectedQuestions;
     },
 
-    // Akıllı soru seçim algoritması
+    // Akıllı soru seçim algoritması - Tip dengeli sistem
     selectQuestionsIntelligently: function(category, allQuestions, seenQuestions, targetCount) {
         const totalQuestions = allQuestions.length;
         const seenCount = seenQuestions.size;
         const unseenCount = totalQuestions - seenCount;
         
-        // Eğer hiç görülmemiş soru yoksa, "soğuma süresi" sistemini kullan
-        if (unseenCount === 0) {
-            console.log(`🔄 ${category}: Tüm sorular görüldü, soğuma sistemi devreye giriyor`);
-            return this.selectWithCooldownSystem(category, allQuestions, targetCount);
+        // Resimli Sorular kategorisi için eski algoritma
+        if (category === 'Resimli Sorular') {
+            if (unseenCount === 0) {
+                console.log(`🔄 ${category}: Tüm sorular görüldü, soğuma sistemi devreye giriyor`);
+                return this.selectWithCooldownSystem(category, allQuestions, targetCount);
+            }
+            
+            if (unseenCount >= targetCount) {
+                const unseenQuestions = allQuestions.filter(q => !seenQuestions.has(this.computeQuestionKey(q)));
+                return this.shuffleArray([...unseenQuestions]).slice(0, targetCount);
+            }
+            
+            console.log(`⚠️ Sadece ${unseenCount} görülmemiş soru var, karma sistem devreye giriyor`);
+            return this.selectMixedQuestions(category, allQuestions, seenQuestions, targetCount);
         }
         
-        // Eğer yeterli görülmemiş soru varsa, onlardan seç
-        if (unseenCount >= targetCount) {
-            const unseenQuestions = allQuestions.filter(q => !seenQuestions.has(this.computeQuestionKey(q)));
-            return this.shuffleArray([...unseenQuestions]).slice(0, targetCount);
+        // Normal kategoriler için dengeli tip seçimi (3 Çoktan seçmeli + 1 Boşluk doldurma + 1 Doğru/Yanlış)
+        console.log(`🎯 ${category}: Dengeli tip seçimi yapılıyor...`);
+        return this.selectBalancedQuestions(category, allQuestions, seenQuestions, targetCount);
+    },
+
+    // Dengeli soru seçim sistemi - Tip bazlı
+    selectBalancedQuestions: function(category, allQuestions, seenQuestions, targetCount) {
+        // İdeal dağılım: 5 soru için
+        const targetDistribution = {
+            'ÇokSeçenekli': 3,      // 3 çoktan seçmeli (normalize edilmiş tip adı)
+            'BlankFilling': 1,       // 1 boşluk doldurma
+            'DoğruYanlış': 1         // 1 doğru/yanlış
+        };
+        
+        // Soru tiplerini normalize et
+        const normalizedQuestions = allQuestions.map(q => ({
+            ...q,
+            normalizedType: this.normalizeQuestionType(q.type || 'ÇokSeçenekli')
+        }));
+        
+        // Tip bazında soruları grupla
+        const questionsByType = {
+            'ÇokSeçenekli': [],
+            'BlankFilling': [],
+            'DoğruYanlış': []
+        };
+        
+        normalizedQuestions.forEach(q => {
+            if (questionsByType[q.normalizedType]) {
+                questionsByType[q.normalizedType].push(q);
+            } else {
+                // Bilinmeyen tip varsa çoktan seçmeliye ekle
+                questionsByType['ÇokSeçenekli'].push(q);
+            }
+        });
+        
+        console.log(`📊 Soru dağılımı:`, {
+            'ÇokSeçenekli': questionsByType['ÇokSeçenekli'].length,
+            'BlankFilling': questionsByType['BlankFilling'].length,
+            'DoğruYanlış': questionsByType['DoğruYanlış'].length
+        });
+        
+        const selectedQuestions = [];
+        
+        // Her tip için hedef sayıda soru seç
+        for (const [type, targetCount] of Object.entries(targetDistribution)) {
+            const availableQuestions = questionsByType[type] || [];
+            const unseenQuestions = availableQuestions.filter(q => !seenQuestions.has(this.computeQuestionKey(q)));
+            
+            let selectedFromType = [];
+            
+            if (unseenQuestions.length >= targetCount) {
+                // Yeterli görülmemiş soru var
+                selectedFromType = this.shuffleArray([...unseenQuestions]).slice(0, targetCount);
+            } else if (availableQuestions.length >= targetCount) {
+                // Görülmemiş soru yeterli değil, karma seçim
+                selectedFromType = [...unseenQuestions];
+                const needed = targetCount - unseenQuestions.length;
+                const seenQuestionsOfType = availableQuestions.filter(q => seenQuestions.has(this.computeQuestionKey(q)));
+                selectedFromType.push(...this.shuffleArray([...seenQuestionsOfType]).slice(0, needed));
+            } else {
+                // Bu tipte yeterli soru yok, mevcut hepsini al
+                selectedFromType = [...availableQuestions];
+            }
+            
+            selectedQuestions.push(...selectedFromType);
+            console.log(`✅ ${type}: ${selectedFromType.length}/${targetCount} soru seçildi`);
         }
         
-        // Yeterli görülmemiş soru yoksa, karma sistem kullan
-        console.log(`⚠️ Sadece ${unseenCount} görülmemiş soru var, karma sistem devreye giriyor`);
-        return this.selectMixedQuestions(category, allQuestions, seenQuestions, targetCount);
+        // Eğer hedef sayıya ulaşamadıysak, eksik kısmı çoktan seçmeliyle tamamla
+        const remaining = targetCount - selectedQuestions.length;
+        if (remaining > 0) {
+            console.log(`⚠️ ${remaining} soru eksik, çoktan seçmeliyle tamamlanıyor...`);
+            const availableMultiple = questionsByType['ÇokSeçenekli'].filter(q => 
+                !selectedQuestions.some(sq => sq.id === q.id)
+            );
+            const additionalQuestions = this.shuffleArray([...availableMultiple]).slice(0, remaining);
+            selectedQuestions.push(...additionalQuestions);
+        }
+        
+        return this.shuffleArray(selectedQuestions).slice(0, targetCount);
+    },
+
+    // Soru tipini normalize et
+    normalizeQuestionType: function(type) {
+        if (!type) return 'ÇokSeçenekli';
+        
+        switch (type) {
+            case 'ÇokSeçenekli':
+            case 'Çoktan seçmeli':
+                return 'ÇokSeçenekli';
+            case 'BlankFilling':
+            case 'Boşluk doldurma':
+                return 'BlankFilling';
+            case 'DoğruYanlış':
+                return 'DoğruYanlış';
+            default:
+                return 'ÇokSeçenekli';
+        }
     },
 
     // Soğuma süresi sistemi - görülen soruları zamana göre tekrar kullan

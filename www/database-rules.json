@@ -54,19 +54,21 @@
       }
     },
     "gameStats": {
-      ".read": "auth !== null",
-      ".write": "auth !== null",
+      ".read": true,
+      ".write": true,
+      ".indexOn": ["userId", "timestamp", "category"],
       "$gameId": {
-        ".read": "auth !== null",
-        ".write": "auth !== null && (!data.exists() || data.child('userId').val() === auth.uid)"
+        ".read": true,
+        ".write": true
       }
     },
     "highScores": {
       ".read": true,
-      ".write": "auth !== null",
+      ".write": true,
+      ".indexOn": ["userId", "timestamp", "score", "category"],
       "$scoreId": {
         ".read": true,
-        ".write": "auth !== null && (!data.exists() || data.child('userId').val() === auth.uid)"
+        ".write": true
       }
     },
     "userStats": {
@@ -169,7 +171,8 @@
     },
     "leaderboard": {
       ".read": true,
-      ".write": "auth !== null",
+      ".write": true,
+      ".indexOn": ["timestamp", "score", "category", "userId"],
       "$entryId": {
         ".validate": "newData.hasChildren(['username', 'score', 'category', 'timestamp'])"
       }
@@ -177,7 +180,8 @@
     "categoryLeaderboard": {
       "$category": {
         ".read": true,
-        ".write": "auth !== null",
+        ".write": true,
+        ".indexOn": ["timestamp", "score", "userId"],
         "$entryId": {
           ".validate": "newData.hasChildren(['username', 'score', 'category', 'timestamp'])"
         }

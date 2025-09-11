@@ -1126,6 +1126,42 @@
         "Selbsttäuschung"
       ],
       "correctAnswer": "Flucht vor der Freiheit"
+    },
+    {
+      "question": "Was ist die Hauptstadt von Frankreich?",
+      "difficulty": 1,
+      "id": "Q0900",
+      "options": [
+        "Lyon",
+        "Marseille",
+        "Paris",
+        "Nizza"
+      ],
+      "correctAnswer": "Paris"
+    },
+    {
+      "question": "Welcher Ozean ist der größte?",
+      "difficulty": 1,
+      "id": "Q0901",
+      "options": [
+        "Atlantischer Ozean",
+        "Indischer Ozean",
+        "Pazifischer Ozean",
+        "Arktischer Ozean"
+      ],
+      "correctAnswer": "Pazifischer Ozean"
+    },
+    {
+      "question": "Wer malte die Mona Lisa?",
+      "difficulty": 2,
+      "id": "Q0902",
+      "options": [
+        "Michelangelo",
+        "Leonardo da Vinci",
+        "Raphael",
+        "Donatello"
+      ],
+      "correctAnswer": "Leonardo da Vinci"
     }
   ],
   "Wissenschaft": [
@@ -2277,6 +2313,42 @@
         "Statistische Mechanik"
       ],
       "correctAnswer": "BCS-Theorie"
+    },
+    {
+      "question": "Was ist die härteste natürliche Substanz auf der Erde?",
+      "difficulty": 1,
+      "id": "Q0903",
+      "options": [
+        "Gold",
+        "Eisen",
+        "Diamant",
+        "Platin"
+      ],
+      "correctAnswer": "Diamant"
+    },
+    {
+      "question": "Welches Gas macht etwa 78% der Erdatmosphäre aus?",
+      "difficulty": 2,
+      "id": "Q0904",
+      "options": [
+        "Sauerstoff",
+        "Kohlendioxid",
+        "Stickstoff",
+        "Wasserstoff"
+      ],
+      "correctAnswer": "Stickstoff"
+    },
+    {
+      "question": "Wie nennt man die Wissenschaft, die Erdbeben untersucht?",
+      "difficulty": 2,
+      "id": "Q0905",
+      "options": [
+        "Meteorologie",
+        "Seismologie",
+        "Geologie",
+        "Astronomie"
+      ],
+      "correctAnswer": "Seismologie"
     }
   ],
   "Technologie": [
@@ -2771,18 +2843,6 @@
         "Home Text Transfer Protocol"
       ],
       "correctAnswer": "Hyper Text Transfer Protocol"
-    },
-    {
-      "question": "Welches davon ist keine Programmiersprache?",
-      "difficulty": 1,
-      "id": "Q0253",
-      "options": [
-        "PHP",
-        "Ruby",
-        "Photoshop",
-        "Swift"
-      ],
-      "correctAnswer": "Photoshop"
     },
     {
       "question": "Wofür steht 'LAN' in Computernetzwerken?",
@@ -3415,6 +3475,71 @@
         "3f+1 (f: faulty node)"
       ],
       "correctAnswer": "3f+1 (f: faulty node)"
+    },
+    {
+      "question": "Welche Programmiersprache läuft in Webbrowsern?",
+      "type": "MultipleChoice",
+      "options": [
+        "Python",
+        "JavaScript",
+        "C++",
+        "Java"
+      ],
+      "correctAnswer": "JavaScript",
+      "difficulty": 2,
+      "id": "Q1032"
+    },
+    {
+      "question": "Wofür steht SSD?",
+      "type": "MultipleChoice",
+      "options": [
+        "Super Storage Device",
+        "Solid State Drive",
+        "System Storage Disk",
+        "Secure Storage Device"
+      ],
+      "correctAnswer": "Solid State Drive",
+      "difficulty": 2,
+      "id": "Q1033"
+    },
+    {
+      "question": "Welches Unternehmen produzierte den ersten Personal Computer?",
+      "type": "MultipleChoice",
+      "options": [
+        "IBM",
+        "Apple",
+        "Microsoft",
+        "Intel"
+      ],
+      "correctAnswer": "IBM",
+      "difficulty": 3,
+      "id": "Q1034"
+    },
+    {
+      "question": "Was ist die bekannteste Anwendung der Blockchain-Technologie?",
+      "type": "MultipleChoice",
+      "options": [
+        "Bitcoin",
+        "Instagram",
+        "WhatsApp",
+        "YouTube"
+      ],
+      "correctAnswer": "Bitcoin",
+      "difficulty": 2,
+      "id": "Q1035"
+    },
+    {
+      "question": "Welches Dateiformat komprimiert Bilder?",
+      "type": "MultipleChoice",
+      "options": [
+        "BMP",
+        "PNG",
+        "JPEG",
+        "TIFF"
+      ],
+      "correctAnswer": "JPEG",
+      "difficulty": 2,
+      "id": "Q1036"
     }
   ],
   "Sport": [
@@ -3549,18 +3674,6 @@
         "5"
       ],
       "correctAnswer": "4"
-    },
-    {
-      "question": "In welchem Jahr wurde Deutschland zuletzt Fußball‑Weltmeister?",
-      "difficulty": 1,
-      "id": "Q0311",
-      "options": [
-        "1990",
-        "1998",
-        "2006",
-        "2014"
-      ],
-      "correctAnswer": "2014"
     },
     {
       "question": "Wie viele Ringe sind auf der olympischen Flagge?",
@@ -4287,22 +4400,6 @@
       "imageUrl": "assets/images/questions/sports_swimming.jpg"
     },
     {
-      "question": "Die Wurzeln des Golfsports liegen in Schottland.",
-      "difficulty": 1,
-      "id": "Q0368",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/sports_boxing.jpg"
-    },
-    {
       "question": "Wasserball wird nur in Freibädern gespielt.",
       "difficulty": 1,
       "id": "Q0369",
@@ -4576,6 +4673,58 @@
         "Schmetterling"
       ],
       "correctAnswer": "Schmetterling"
+    },
+    {
+      "question": "Wie oft finden die Olympischen Spiele statt?",
+      "type": "MultipleChoice",
+      "options": [
+        "Alle 2 Jahre",
+        "Alle 3 Jahre",
+        "Alle 4 Jahre",
+        "Alle 5 Jahre"
+      ],
+      "correctAnswer": "Alle 4 Jahre",
+      "difficulty": 1,
+      "id": "Q1037"
+    },
+    {
+      "question": "In welcher Sportart wird der Begriff 'Birdie' verwendet?",
+      "type": "MultipleChoice",
+      "options": [
+        "Tennis",
+        "Golf",
+        "Badminton",
+        "Tischtennis"
+      ],
+      "correctAnswer": "Golf",
+      "difficulty": 2,
+      "id": "Q1038"
+    },
+    {
+      "question": "Die NBA ist die Basketball-Liga welches Landes?",
+      "type": "MultipleChoice",
+      "options": [
+        "Kanada",
+        "Amerika",
+        "England",
+        "Australien"
+      ],
+      "correctAnswer": "Amerika",
+      "difficulty": 1,
+      "id": "Q1039"
+    },
+    {
+      "question": "Wann wird die 'Abseits'-Regel im Fußball angewendet?",
+      "type": "MultipleChoice",
+      "options": [
+        "Spieler in falscher Position",
+        "Ball geht ins Aus",
+        "Foul begangen",
+        "Spiel unterbrochen"
+      ],
+      "correctAnswer": "Spieler in falscher Position",
+      "difficulty": 2,
+      "id": "Q1040"
     }
   ],
   "Geschichte": [
@@ -4770,18 +4919,6 @@
         "Walter Scheel"
       ],
       "correctAnswer": "Theodor Heuss"
-    },
-    {
-      "question": "In welchem Jahr fiel die Berliner Mauer?",
-      "difficulty": 1,
-      "id": "Q0409",
-      "options": [
-        "1979",
-        "1989",
-        "1991",
-        "1999"
-      ],
-      "correctAnswer": "1989"
     },
     {
       "question": "In welchem Jahrhundert fand die Französische Revolution statt?",
@@ -5870,18 +6007,6 @@
       "correctAnswer": "Angel Falls"
     },
     {
-      "question": "Wie heißt der höchste Wasserfall der Welt?",
-      "difficulty": 1,
-      "id": "Q0494",
-      "options": [
-        "Niagarafälle",
-        "Victoriafälle",
-        "Angel Falls",
-        "Iguazú-Wasserfälle"
-      ],
-      "correctAnswer": "Angel Falls"
-    },
-    {
       "question": "Welches Land liegt auf zwei Kontinenten?",
       "difficulty": 1,
       "id": "Q0495",
@@ -6278,18 +6403,6 @@
       "correctAnswer": "Berlin"
     },
     {
-      "question": "Welches davon ist kein Inselstaat?",
-      "difficulty": 1,
-      "id": "Q0528",
-      "options": [
-        "Zypern",
-        "Malta",
-        "Paraguay",
-        "Sri Lanka"
-      ],
-      "correctAnswer": "Paraguay"
-    },
-    {
       "question": "In welchem Gebirge liegt der Mount Everest?",
       "difficulty": 1,
       "id": "Q0529",
@@ -6408,18 +6521,6 @@
         "Leipzig"
       ],
       "correctAnswer": "Leipzig"
-    },
-    {
-      "question": "Welcher Fluss fließt durch Wien?",
-      "difficulty": 1,
-      "id": "Q0539",
-      "options": [
-        "Donau",
-        "Inn",
-        "Mur",
-        "Drau"
-      ],
-      "correctAnswer": "Donau"
     },
     {
       "question": "Welches Land ist das bevölkerungsreichste der Welt?",
@@ -6887,13 +6988,6 @@
       "correctAnswer": "Universität Heidelberg"
     },
     {
-      "question": "Der größte See Afrikas ist _____.",
-      "difficulty": 2,
-      "id": "Q0572",
-      "options": [],
-      "correctAnswer": "VICTORIASEE"
-    },
-    {
       "question": "Der erste Mensch auf dem Mond war _____. Armstrong.",
       "difficulty": 2,
       "id": "Q0573",
@@ -7255,38 +7349,6 @@
       "imageUrl": "assets/images/questions/img_109.jpg"
     },
     {
-      "question": "Diese Flagge gehört zu Japan.",
-      "difficulty": 1,
-      "id": "Q0718",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_109.jpg"
-    },
-    {
-      "question": "Diese Flagge gehört zur Türkei.",
-      "difficulty": 1,
-      "id": "Q0719",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_110.jpg"
-    },
-    {
       "question": "Die Hauptstadt der Türkei ist Ankara.",
       "difficulty": 1,
       "id": "Q0720",
@@ -7333,22 +7395,6 @@
         "Falsch"
       ],
       "imageUrl": "assets/images/questions/img_113.jpg"
-    },
-    {
-      "question": "Die Hauptstadt Deutschlands ist Berlin.",
-      "difficulty": 1,
-      "id": "Q0723",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_114.jpg"
     },
     {
       "question": "Die Hauptstadt Italiens ist Rom.",
@@ -7429,22 +7475,6 @@
         "Falsch"
       ],
       "imageUrl": "assets/images/questions/img_119.jpg"
-    },
-    {
-      "question": "Die Hauptstadt der USA ist New York.",
-      "difficulty": 1,
-      "id": "Q0729",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_120.jpg"
     },
     {
       "question": "Die Hauptstadt Kanadas ist Toronto.",
@@ -8633,22 +8663,6 @@
       "imageUrl": "assets/images/questions/literature_kurk_mantolu.jpg"
     },
     {
-      "question": "Cervantes ist der Autor von „Don Quijote“.",
-      "difficulty": 1,
-      "id": "Q0675",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/literature_cervantes.jpg"
-    },
-    {
       "question": "Günter Grass erhielt 1999 den Literaturnobelpreis.",
       "difficulty": 2,
       "id": "Q0676",
@@ -9084,2099 +9098,361 @@
         "Textzentrierte Bedeutung"
       ],
       "correctAnswer": "Leserzentrierte Bedeutung"
+    },
+    {
+      "question": "Wer erfand das Telefon?",
+      "difficulty": 2,
+      "id": "Q0906",
+      "options": [
+        "Thomas Edison",
+        "Alexander Graham Bell",
+        "Nikola Tesla",
+        "Benjamin Franklin"
+      ],
+      "correctAnswer": "Alexander Graham Bell"
+    },
+    {
+      "question": "Was ist die Währung von Japan?",
+      "difficulty": 1,
+      "id": "Q0907",
+      "options": [
+        "Yuan",
+        "Won",
+        "Yen",
+        "Rupie"
+      ],
+      "correctAnswer": "Yen"
+    },
+    {
+      "question": "Welcher Planet ist der Sonne am nächsten?",
+      "difficulty": 1,
+      "id": "Q0908",
+      "options": [
+        "Venus",
+        "Erde",
+        "Merkur",
+        "Mars"
+      ],
+      "correctAnswer": "Merkur"
+    },
+    {
+      "question": "Welches Musikinstrument gehört zur Gruppe der 'Blasinstrumente'?",
+      "type": "MultipleChoice",
+      "options": [
+        "Klavier",
+        "Geige",
+        "Flöte",
+        "Gitarre"
+      ],
+      "correctAnswer": "Flöte",
+      "difficulty": 1,
+      "id": "Q1017"
+    },
+    {
+      "question": "Wie viele Sätze hat eine klassische Symphonie?",
+      "type": "MultipleChoice",
+      "options": [
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "correctAnswer": "4",
+      "difficulty": 2,
+      "id": "Q1018"
+    },
+    {
+      "question": "Was bedeutet 'türkü' in der türkischen Volksmusik?",
+      "type": "MultipleChoice",
+      "options": [
+        "Tanz",
+        "Lied",
+        "Instrument",
+        "Rhythmus"
+      ],
+      "correctAnswer": "Lied",
+      "difficulty": 1,
+      "id": "Q1019"
+    },
+    {
+      "question": "Welcher Komponist schrieb 'An der schönen blauen Donau'?",
+      "type": "MultipleChoice",
+      "options": [
+        "Johann Strauss",
+        "Mozart",
+        "Beethoven",
+        "Bach"
+      ],
+      "correctAnswer": "Johann Strauss",
+      "difficulty": 2,
+      "id": "Q1020"
+    },
+    {
+      "question": "In welchem Land entstand die Rockmusik?",
+      "type": "MultipleChoice",
+      "options": [
+        "England",
+        "Amerika",
+        "Deutschland",
+        "Frankreich"
+      ],
+      "correctAnswer": "Amerika",
+      "difficulty": 2,
+      "id": "Q1021"
+    },
+    {
+      "question": "Welches ist das am häufigsten verwendete Streichinstrument im Orchester?",
+      "type": "MultipleChoice",
+      "options": [
+        "Bratsche",
+        "Cello",
+        "Geige",
+        "Kontrabass"
+      ],
+      "correctAnswer": "Geige",
+      "difficulty": 1,
+      "id": "Q1022"
+    },
+    {
+      "question": "In welchem Land entstand die Oper?",
+      "type": "MultipleChoice",
+      "options": [
+        "Frankreich",
+        "Deutschland",
+        "Italien",
+        "Österreich"
+      ],
+      "correctAnswer": "Italien",
+      "difficulty": 2,
+      "id": "Q1023"
+    },
+    {
+      "question": "Welcher Notenwert hat die längste Dauer?",
+      "type": "MultipleChoice",
+      "options": [
+        "Viertelnote",
+        "Halbe Note",
+        "Ganze Note",
+        "Achtelnote"
+      ],
+      "correctAnswer": "Ganze Note",
+      "difficulty": 2,
+      "id": "Q1024"
     }
   ],
   "Bildfragen": [
     {
-      "question": "Befindet sich das Brandenburger Tor in Berlin?",
-      "difficulty": 1,
-      "id": "Q0054",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_026.jpg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Dieses Bild zeigt die Travertine von Pamukkale.",
-      "difficulty": 1,
-      "id": "Q0055",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_027.jpg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Das Bauwerk auf diesem Bild ist der Schloss Neuschwanstein.",
-      "difficulty": 1,
-      "id": "Q0056",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_028.jpg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Das historische Bauwerk auf diesem Bild ist der Kölner Dom.",
-      "difficulty": 1,
-      "id": "Q0057",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_029.jpg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Das Bauwerk auf diesem Bild ist die Celsus-Bibliothek in Ephesos.",
-      "difficulty": 1,
-      "id": "Q0058",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_030.jpg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Das höchste Gebäude der Welt, der Burj Khalifa, steht in Dubai.",
-      "difficulty": 1,
-      "id": "Q0059",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_burj_khalifa.jpg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Die Nobelpreise werden gemäß dem Testament Alfred Nobels seit 1901 verliehen.",
-      "difficulty": 1,
-      "id": "Q0060",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_nobel_medal.jpg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Die Hauptstadt der USA ist New York.",
-      "difficulty": 1,
-      "id": "Q0061",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_069.jpg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Das Rote Meer hat seinen Namen wegen der darin vorkommenden Algen.",
-      "difficulty": 1,
-      "id": "Q0062",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_red_sea.jpg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "China ist das bevölkerungsreichste Land der Welt.",
-      "difficulty": 1,
-      "id": "Q0063",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/geography_china_population.jpg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Die Schweiz hat vier Amtssprachen.",
-      "difficulty": 1,
-      "id": "Q0064",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_031.png",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Da Vincis Gemälde 'Das letzte Abendmahl' wird im Louvre ausgestellt.",
-      "difficulty": 1,
-      "id": "Q0065",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_louvre.jpg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Die Bakterienart E. coli kommt natürlicherweise im gesunden menschlichen Körper vor.",
-      "difficulty": 1,
-      "id": "Q0066",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_bacteria_ecoli.svg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Der Eiffelturm wurde für die Weltausstellung 1889 in Paris errichtet.",
-      "difficulty": 2,
-      "id": "Q0067",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_032.jpg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Der längste Knochen des menschlichen Körpers ist der Oberarmknochen.",
-      "difficulty": 1,
-      "id": "Q0068",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_human_bones.jpg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "London ist die größte Stadt des Vereinigten Königreichs.",
-      "difficulty": 1,
-      "id": "Q0069",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_london.jpg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Der 'Radetzkymarsch' stammt von Johann Strauss (Vater).",
-      "difficulty": 1,
-      "id": "Q0070",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_austrian_march.jpg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Das Matterhorn liegt an der Grenze zwischen der Schweiz und Italien.",
-      "difficulty": 1,
-      "id": "Q0071",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_matterhorn.jpg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Menschen haben 23 Chromosomenpaare.",
-      "difficulty": 1,
-      "id": "Q0072",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_chromosome.jpg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Der Euro, die offizielle Währung der EU, wird in allen Mitgliedstaaten verwendet.",
-      "difficulty": 1,
-      "id": "Q0073",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_033.png",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Die Wurzeln des Golfsports liegen in Schottland.",
-      "difficulty": 1,
-      "id": "Q0083",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_golf.jpg",
-      "originalCategory": "Allgemeinwissen"
-    },
-    {
-      "question": "Im Atomkern befinden sich Protonen und Neutronen.",
-      "difficulty": 2,
-      "id": "Q0173",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_070.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Der abgebildete Planet ist Jupiter.",
-      "difficulty": 1,
-      "id": "Q0174",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_034.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Der abgebildete Planet ist Mars.",
-      "difficulty": 1,
-      "id": "Q0175",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_035.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Das abgebildete Tier ist ein Säugetier.",
-      "difficulty": 1,
-      "id": "Q0176",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_036.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Das größte Organ des menschlichen Körpers ist die Haut.",
-      "difficulty": 1,
-      "id": "Q0177",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Die menschliche DNA ist zu etwa 99% mit der von Schimpansen identisch.",
-      "difficulty": 1,
-      "id": "Q0178",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Der magnetische Nordpol der Erde befindet sich genau am geografischen Nordpol.",
-      "difficulty": 1,
-      "id": "Q0179",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/science_magnetic_pole.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Der stärkste Muskel im menschlichen Körper ist der Kaumuskel.",
-      "difficulty": 1,
-      "id": "Q0180",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_071.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Alle Spinnen sind giftig.",
-      "difficulty": 1,
-      "id": "Q0181",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/science_spiders.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Das Herz eines Blauwals ist so groß, dass ein Mensch in seinen Arterien schwimmen könnte.",
-      "difficulty": 1,
-      "id": "Q0182",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/science_blue_whale.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Im Weltraum brennt Feuer nicht.",
-      "difficulty": 1,
-      "id": "Q0183",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_072.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Der Erdkern ist fest.",
-      "difficulty": 1,
-      "id": "Q0184",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/science_earth_core.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Haie bekommen keinen Krebs.",
-      "difficulty": 1,
-      "id": "Q0185",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_037.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Licht bewegt sich schneller als Schall.",
-      "difficulty": 1,
-      "id": "Q0186",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/science_light_speed.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Die Venus umkreist die Sonne gegen den Uhrzeigersinn.",
-      "difficulty": 1,
-      "id": "Q0187",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/science_venus_rotation.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Fledermäuse sind tatsächlich blind.",
-      "difficulty": 1,
-      "id": "Q0188",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/science_bats.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Das menschliche Gehirn ist im Schlaf aktiver.",
-      "difficulty": 1,
-      "id": "Q0189",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Strauße stecken bei Gefahr den Kopf in den Sand.",
-      "difficulty": 1,
-      "id": "Q0190",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Das abgebildete Gerät ist das erste iPhone‑Modell.",
-      "difficulty": 1,
-      "id": "Q0265",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_038.png",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "Das Abgebildete zeigt die erste Version des Windows‑Betriebssystems.",
-      "difficulty": 1,
-      "id": "Q0266",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_039.png",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "Dies ist das Modell Apple II, einer der ersten Personal Computer.",
-      "difficulty": 1,
-      "id": "Q0267",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/technology_apple_ii.jpg",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "Dies ist ein von Microsoft hergestellter Computer.",
-      "difficulty": 1,
-      "id": "Q0268",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_040.png",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "Das PNG‑Dateiformat ist ein Format, das nicht für Komprimierung verwendet wird.",
-      "difficulty": 1,
-      "id": "Q0269",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_041.png",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "HTML ist eine Programmiersprache.",
-      "difficulty": 1,
-      "id": "Q0270",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_042.png",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "Die Programmiersprache Python hat ihren Namen von einer Schlangenart.",
-      "difficulty": 1,
-      "id": "Q0271",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_043.png",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "Künstliche Intelligenz ist eine neue Technologie, die erst in den letzten 10 Jahren entstanden ist.",
-      "difficulty": 1,
-      "id": "Q0272",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_073.jpg",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "Im Begriff Wi‑Fi steht 'Wi' für 'Wireless'.",
-      "difficulty": 1,
-      "id": "Q0273",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/technology_wifi.jpg",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "Blockchain‑Technologie wird ausschließlich für Kryptowährungen verwendet.",
-      "difficulty": 1,
-      "id": "Q0274",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/technology_blockchain.jpg",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "RAM (Random Access Memory) ist ein Speichertyp, der Daten auch nach dem Ausschalten des Computers behalten kann.",
-      "difficulty": 1,
-      "id": "Q0275",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_074.png",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "Google wurde im Jahr 1998 gegründet.",
-      "difficulty": 1,
-      "id": "Q0276",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_044.png",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "SSDs (Solid State Drives) sind schneller als HDDs (Hard Disk Drives).",
-      "difficulty": 1,
-      "id": "Q0277",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_045.jpg",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "Die erste Festplatte mit 1 GB Kapazität kam 1980 auf den Markt.",
-      "difficulty": 1,
-      "id": "Q0278",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/technology_hard_disk.jpg",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "Das HTTPS‑Protokoll ist sicherer als HTTP.",
-      "difficulty": 1,
-      "id": "Q0279",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/technology_https.jpg",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "Das Betriebssystem Android wurde von Apple entwickelt.",
-      "difficulty": 1,
-      "id": "Q0280",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_046.png",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "Die F‑Tasten auf Tastaturen sind Funktionstasten (Function Keys).",
-      "difficulty": 1,
-      "id": "Q0281",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/technology_keyboard.jpg",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "Adobe Photoshop ist eine Videobearbeitungssoftware.",
-      "difficulty": 1,
-      "id": "Q0282",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_047.png",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "Die Angabe 'WWW' in einer URL ist eine zwingende Komponente für das Funktionieren von Websites.",
-      "difficulty": 1,
-      "id": "Q0283",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_075.jpg",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "Das erste Mobiltelefon wurde in den 1990er‑Jahren erfunden.",
-      "difficulty": 1,
-      "id": "Q0284",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_076.jpg",
-      "originalCategory": "Technologie"
-    },
-    {
-      "question": "Das Stadion auf dem Bild ist das Camp Nou, die Heimstätte des FC Barcelona.",
-      "difficulty": 1,
-      "id": "Q0352",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_048.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "Die abgebildete Person ist Cristiano Ronaldo.",
-      "difficulty": 1,
-      "id": "Q0353",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_049.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "Dieses Stadion ist die Allianz Arena von Bayern München.",
-      "difficulty": 1,
-      "id": "Q0354",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_050.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "Die Person auf dem Bild ist Metin Oktay, einer der berühmtesten Spieler von Galatasaray.",
-      "difficulty": 1,
-      "id": "Q0355",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_051.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "Auf dem Bild ist ein Basketballfeld zu sehen.",
-      "difficulty": 1,
-      "id": "Q0356",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "Ein Marathon wird auf einer 45‑Kilometer‑Strecke gelaufen.",
-      "difficulty": 1,
-      "id": "Q0357",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/sports_marathon.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "NBA ist die Abkürzung für die Europäische Basketballliga.",
-      "difficulty": 1,
-      "id": "Q0358",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/sports_nba.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "Im Fußball dürfen Torhüter den Ball innerhalb ihres Strafraums mit den Händen spielen.",
-      "difficulty": 1,
-      "id": "Q0359",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/sports_football_goalkeeper.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "In der Formel 1 erhält der Fahrer mit den meisten Punkten an einem Rennwochenende 25 Punkte.",
-      "difficulty": 1,
-      "id": "Q0360",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_sports_general.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "Tennis entstand im 18. Jahrhundert in England.",
-      "difficulty": 1,
-      "id": "Q0361",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/sports_tennis.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "Volleyball ist keine olympische Sportart.",
-      "difficulty": 1,
-      "id": "Q0362",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_sports_general.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "Die Höhe eines Basketballkorbs über dem Boden beträgt 3,05 Meter.",
-      "difficulty": 1,
-      "id": "Q0363",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/sports_basketball_hoop.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "FIFA ist die Abkürzung für den Weltfußballverband.",
-      "difficulty": 2,
-      "id": "Q0364",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/sports_fifa.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "In einem Fußballspiel darf eine Mannschaft maximal 5 Spielerwechsel vornehmen.",
-      "difficulty": 1,
-      "id": "Q0365",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/sports_football_substitution.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "Oktoberfest ist eine der traditionellen Feste Deutschlands.",
-      "difficulty": 1,
-      "id": "Q0366",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/sports_oil_wrestling.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "Im Damentennis werden Grand‑Slam‑Matches über 5 Sätze gespielt.",
-      "difficulty": 1,
-      "id": "Q0367",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/sports_swimming.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "Die Wurzeln des Golfsports liegen in Schottland.",
-      "difficulty": 1,
-      "id": "Q0368",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/sports_boxing.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "Wasserball wird nur in Freibädern gespielt.",
-      "difficulty": 1,
-      "id": "Q0369",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_sports_general.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "Im Boxen sind neben Schlägen auch Tritte erlaubt.",
-      "difficulty": 1,
-      "id": "Q0370",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/sports_athletics.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "Gewichtheben ist eine der ältesten olympischen Sportarten.",
-      "difficulty": 1,
-      "id": "Q0371",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/sports_weightlifting.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "Die auf dem Foto zu sehende Person ist Konrad Adenauer.",
-      "difficulty": 1,
-      "id": "Q0445",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_052.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Bei der Berliner Luftbrücke wurden große Transportflugzeuge eingesetzt.",
-      "difficulty": 1,
-      "id": "Q0446",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/history_berlin_airlift.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Zu sehen ist das Reichstagsgebäude in Berlin.",
-      "difficulty": 1,
-      "id": "Q0447",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/history_tbmm_first.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Der Text der deutschen Nationalhymne wurde von Heinrich Hoffmann von Fallersleben verfasst.",
-      "difficulty": 1,
-      "id": "Q0448",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_053.png",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Zu sehen ist die Front von Verdun.",
-      "difficulty": 1,
-      "id": "Q0449",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_077.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Die Republik wurde am 29. Oktober 1923 ausgerufen.",
-      "difficulty": 1,
-      "id": "Q0450",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/history_republic_proclamation.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Die auf dem Bild gezeigte antike Stadt ist Ephesos.",
-      "difficulty": 1,
-      "id": "Q0451",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_054.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Der erste Bundeskanzler der Bundesrepublik Deutschland war Konrad Adenauer.",
-      "difficulty": 1,
-      "id": "Q0452",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/history_ataturk_president.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Der Erste Weltkrieg fand zwischen 1914 und 1918 statt.",
-      "difficulty": 1,
-      "id": "Q0453",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
+      "question": "Wie heißt dieses Musikinstrument?",
+      "type": "MultipleChoice",
       "options": [
-        "Richtig",
-        "Falsch"
+        "Geige",
+        "Bratsche",
+        "Cello",
+        "Kontrabass"
       ],
-      "imageUrl": "assets/images/questions/history_wwi.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Der Gründer des Osmanischen Reiches ist Osman Bey.",
-      "difficulty": 2,
-      "id": "Q0454",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/history_osman_bey.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Otto von Bismarck war der erste Reichskanzler des Deutschen Reiches.",
-      "difficulty": 1,
-      "id": "Q0455",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/history_fatih_sultan.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Der Befreiungskrieg fand zwischen 1919 und 1922 statt.",
-      "difficulty": 1,
-      "id": "Q0456",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/history_independence_war.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Der Deutsche Bundestag wurde am 7. September 1949 konstituiert.",
-      "difficulty": 1,
-      "id": "Q0457",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/history_tbmm_opening.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Der Vertrag von Lausanne wurde im Jahr 1923 unterzeichnet.",
-      "difficulty": 1,
-      "id": "Q0458",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/history_lausanne_treaty.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Die deutsche Wiedervereinigung fand im Jahr 1990 statt.",
-      "difficulty": 1,
-      "id": "Q0459",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/history_french_revolution.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Die Zeit des Kalten Krieges dauerte nach dem Zweiten Weltkrieg bis 1991 an.",
-      "difficulty": 1,
-      "id": "Q0460",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/history_alexander_great.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Süleyman der Prächtige ist der am längsten herrschende Sultan des Osmanischen Reiches.",
-      "difficulty": 2,
-      "id": "Q0461",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/history_crusades.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "In Deutschland wurde Frauen das aktive und passive Wahlrecht im Jahr 1918 gewährt.",
-      "difficulty": 1,
-      "id": "Q0462",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/history_columbus.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Der Zweite Weltkrieg fand zwischen 1939 und 1945 statt.",
-      "difficulty": 1,
-      "id": "Q0463",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/history_napoleon.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Die Schlacht von Malazgirt fand im Jahr 1071 statt.",
-      "difficulty": 1,
-      "id": "Q0464",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/history_berlin_wall.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Die Schlacht von Gallipoli fand während des Ersten Weltkriegs statt.",
-      "difficulty": 1,
-      "id": "Q0465",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_078.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Der Mauerfall in Berlin fand am 9. November 1989 statt.",
-      "difficulty": 2,
-      "id": "Q0466",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/history_ancient_egypt.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Der Vertrag von Sèvres wurde niemals umgesetzt.",
-      "difficulty": 1,
-      "id": "Q0467",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/history_renaissance.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Die Berliner Mauer wurde im Jahr 1989 abgerissen.",
-      "difficulty": 1,
-      "id": "Q0468",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_history_ancient.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Die Trompete ist ein Blechblasinstrument.",
-      "difficulty": 1,
-      "id": "Q0606",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/music_trumpet.jpg",
-      "originalCategory": "Musik"
-    },
-    {
-      "question": "Die Oboe ist ein Holzblasinstrument.",
-      "difficulty": 1,
-      "id": "Q0607",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/music_kemence.jpg",
-      "originalCategory": "Musik"
-    },
-    {
-      "question": "Diese Person ist der weltberühmte Tenor Luciano Pavarotti.",
-      "difficulty": 1,
-      "id": "Q0608",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/music_pavarotti.jpg",
-      "originalCategory": "Musik"
-    },
-    {
-      "question": "Die Person auf diesem Bild ist der berühmte Komponist Wolfgang Amadeus Mozart.",
-      "difficulty": 1,
-      "id": "Q0609",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_059.jpg",
-      "originalCategory": "Musik"
-    },
-    {
-      "question": "Die Tuba ist ein Blechblasinstrument.",
-      "difficulty": 1,
-      "id": "Q0610",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/music_baglama.jpg",
-      "originalCategory": "Musik"
-    },
-    {
-      "question": "Eine klassische Gitarre hat standardmäßig 7 Saiten.",
-      "difficulty": 1,
-      "id": "Q0611",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/music_guitar.jpg",
-      "originalCategory": "Musik"
-    },
-    {
-      "question": "Beethoven komponierte weiter, obwohl er in den letzten Jahren seines Lebens völlig taub war.",
-      "difficulty": 1,
-      "id": "Q0612",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_060.jpg",
-      "originalCategory": "Musik"
-    },
-    {
-      "question": "Das Klavier gehört zur Familie der Saiteninstrumente.",
-      "difficulty": 1,
-      "id": "Q0613",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/music_piano.jpg",
-      "originalCategory": "Musik"
-    },
-    {
-      "question": "Johann Sebastian Bach ist ein Komponist der Klassik.",
-      "difficulty": 1,
-      "id": "Q0614",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_061.jpg",
-      "originalCategory": "Musik"
-    },
-    {
-      "question": "Michael Jacksons Album „Thriller“ ist eines der meistverkauften Alben aller Zeiten.",
-      "difficulty": 1,
-      "id": "Q0615",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/img_062.jpg",
-      "originalCategory": "Musik"
-    },
-    {
-      "question": "Die Geige gehört zur Familie der Streichinstrumente.",
-      "difficulty": 1,
-      "id": "Q0616",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/music_turkish_folk.jpg",
-      "originalCategory": "Musik"
-    },
-    {
-      "question": "Sopran ist eine männliche Stimmgattung.",
+      "correctAnswer": "Geige",
       "difficulty": 1,
-      "id": "Q0617",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/music_soprano.jpg",
-      "originalCategory": "Musik"
-    },
-    {
-      "question": "Die Beatles bestanden aus fünf Mitgliedern.",
-      "difficulty": 1,
-      "id": "Q0618",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/music_beatles.jpg",
-      "originalCategory": "Musik"
-    },
-    {
-      "question": "Die Kanun ist ein Saiteninstrument der türkischen Musik.",
-      "difficulty": 1,
-      "id": "Q0619",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
-      "imageUrl": "assets/images/questions/music_kanun_strings.jpg",
-      "originalCategory": "Musik"
-    },
-    {
-      "question": "Die Oper entstand in Italien.",
-      "difficulty": 1,
-      "id": "Q0620",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
-      "options": [
-        "Richtig",
-        "Falsch"
-      ],
+      "id": "Q1009",
       "imageUrl": "assets/images/questions/music_violin.jpg",
       "originalCategory": "Musik"
     },
     {
-      "question": "Beethovens als „Mondscheinsonate“ bekanntes Werk ist tatsächlich die Sonate Nr. 14.",
-      "difficulty": 1,
-      "id": "Q0621",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
+      "question": "Wer ist dieser Komponist?",
+      "type": "MultipleChoice",
       "options": [
-        "Richtig",
-        "Falsch"
+        "Mozart",
+        "Beethoven",
+        "Bach",
+        "Chopin"
       ],
-      "imageUrl": "assets/images/questions/img_063.jpg",
+      "correctAnswer": "Mozart",
+      "difficulty": 2,
+      "id": "Q1010",
+      "imageUrl": "assets/images/questions/music_mozart.jpg",
       "originalCategory": "Musik"
     },
     {
-      "question": "Rap‑Musik entstand in den 1970er‑Jahren in den USA.",
-      "difficulty": 1,
-      "id": "Q0622",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
+      "question": "Wer ist dieser berühmte Schriftsteller?",
+      "type": "MultipleChoice",
       "options": [
-        "Richtig",
-        "Falsch"
+        "Orhan Pamuk",
+        "Yaşar Kemal",
+        "Nazım Hikmet",
+        "Sabahattin Ali"
       ],
-      "imageUrl": "assets/images/questions/img_music_instruments.jpg",
-      "originalCategory": "Musik"
+      "correctAnswer": "Orhan Pamuk",
+      "difficulty": 2,
+      "id": "Q1011",
+      "imageUrl": "assets/images/questions/literature_orhan_pamuk.jpg",
+      "originalCategory": "Literatur"
     },
     {
-      "question": "Eine Sinfonie dauert standardmäßig 10 Minuten.",
-      "difficulty": 1,
-      "id": "Q0623",
-      "type": "TrueFalse",
-      "correctAnswer": "FALSE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
+      "question": "Welcher Autor schrieb dieses klassische Werk?",
+      "type": "MultipleChoice",
       "options": [
-        "Richtig",
-        "Falsch"
+        "William Shakespeare",
+        "Charles Dickens",
+        "Mark Twain",
+        "Oscar Wilde"
       ],
-      "imageUrl": "assets/images/questions/img_music_instruments.jpg",
-      "originalCategory": "Musik"
+      "correctAnswer": "William Shakespeare",
+      "difficulty": 2,
+      "id": "Q1012",
+      "imageUrl": "assets/images/questions/literature_hamlet.jpg",
+      "originalCategory": "Literatur"
     },
     {
-      "question": "Die Flöte gehört zur Familie der Holzblasinstrumente.",
-      "difficulty": 1,
-      "id": "Q0624",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
+      "question": "Welcher Planet ist in diesem Bild zu sehen?",
+      "type": "MultipleChoice",
       "options": [
-        "Richtig",
-        "Falsch"
+        "Mars",
+        "Venus",
+        "Jupiter",
+        "Saturn"
       ],
-      "imageUrl": "assets/images/questions/music_orchestra.jpg",
-      "originalCategory": "Musik"
+      "correctAnswer": "Mars",
+      "difficulty": 2,
+      "id": "Q1013",
+      "imageUrl": "assets/images/questions/science_mars.jpg",
+      "originalCategory": "Wissenschaft"
     },
     {
-      "question": "Die Klarinette ist ein Holzblasinstrument.",
-      "difficulty": 1,
-      "id": "Q0625",
-      "type": "TrueFalse",
-      "correctAnswer": "TRUE",
-      "choices": [
-        "Richtig",
-        "Falsch"
-      ],
+      "question": "Zu welcher Zivilisation gehört dieses historische Bauwerk?",
+      "type": "MultipleChoice",
       "options": [
-        "Richtig",
-        "Falsch"
+        "Römisch",
+        "Griechisch",
+        "Ägyptisch",
+        "Babylonisch"
       ],
-      "imageUrl": "assets/images/questions/img_music_instruments.jpg",
-      "originalCategory": "Musik"
+      "correctAnswer": "Römisch",
+      "difficulty": 2,
+      "id": "Q1014",
+      "imageUrl": "assets/images/questions/history_colosseum.jpg",
+      "originalCategory": "Geschichte"
+    },
+    {
+      "question": "Welcher Ball wird in dieser Sportart verwendet?",
+      "type": "MultipleChoice",
+      "options": [
+        "Basketball",
+        "Fußball",
+        "Tennisball",
+        "Volleyball"
+      ],
+      "correctAnswer": "Basketball",
+      "difficulty": 1,
+      "id": "Q1015",
+      "imageUrl": "assets/images/questions/sports_basketball.jpg",
+      "originalCategory": "Sport"
+    },
+    {
+      "question": "Was ist dieses technologische Gerät?",
+      "type": "MultipleChoice",
+      "options": [
+        "SSD-Laufwerk",
+        "RAM-Speicher",
+        "Prozessor",
+        "Motherboard"
+      ],
+      "correctAnswer": "SSD-Laufwerk",
+      "difficulty": 2,
+      "id": "Q1016",
+      "imageUrl": "assets/images/questions/tech_ssd.jpg",
+      "originalCategory": "Technologie"
+    }
+  ],
+  "Literatur": [
+    {
+      "question": "Wer gründete die Zeitschrift 'Büyük Doğu' in der türkischen Literatur?",
+      "type": "MultipleChoice",
+      "options": [
+        "Necip Fazıl Kısakürek",
+        "Sezai Karakoç",
+        "Cahit Zarifoğlu",
+        "Mehmet Akif Ersoy"
+      ],
+      "correctAnswer": "Necip Fazıl Kısakürek",
+      "difficulty": 3,
+      "id": "Q1025"
+    },
+    {
+      "question": "In welcher Stadt spielt 'Romeo und Julia'?",
+      "type": "MultipleChoice",
+      "options": [
+        "Rom",
+        "Venedig",
+        "Verona",
+        "Florenz"
+      ],
+      "correctAnswer": "Verona",
+      "difficulty": 2,
+      "id": "Q1026"
+    },
+    {
+      "question": "Welcher Autor schrieb 'Schuld und Sühne'?",
+      "type": "MultipleChoice",
+      "options": [
+        "Tolstoi",
+        "Dostojewski",
+        "Turgenew",
+        "Tschechow"
+      ],
+      "correctAnswer": "Dostojewski",
+      "difficulty": 2,
+      "id": "Q1027"
+    },
+    {
+      "question": "Wer ist der Autor von 'Araba Sevdası' (Die Kutschenaffäre)?",
+      "type": "MultipleChoice",
+      "options": [
+        "Ahmet Mithat Efendi",
+        "Recaizade Mahmut Ekrem",
+        "Namık Kemal",
+        "Ziya Paşa"
+      ],
+      "correctAnswer": "Recaizade Mahmut Ekrem",
+      "difficulty": 3,
+      "id": "Q1028"
+    },
+    {
+      "question": "Welche literarische Bewegung vertritt 'l'art pour l'art'?",
+      "type": "MultipleChoice",
+      "options": [
+        "Realismus",
+        "Romantik",
+        "Parnassismus",
+        "Symbolismus"
+      ],
+      "correctAnswer": "Parnassismus",
+      "difficulty": 3,
+      "id": "Q1029"
+    },
+    {
+      "question": "Wer ist der Autor des Theaterstücks 'Şair Evlenmesi' (Die Hochzeit des Dichters)?",
+      "type": "MultipleChoice",
+      "options": [
+        "Namık Kemal",
+        "Ahmet Vefik Paşa",
+        "Ziya Paşa",
+        "Recaizade Mahmut Ekrem"
+      ],
+      "correctAnswer": "Namık Kemal",
+      "difficulty": 2,
+      "id": "Q1030"
+    },
+    {
+      "question": "Was ist der erste türkische Roman?",
+      "type": "MultipleChoice",
+      "options": [
+        "Taaşşuk-u Talat ve Fitnat",
+        "Araba Sevdası",
+        "İntibah",
+        "Felâtun Bey ile Râkım Efendi"
+      ],
+      "correctAnswer": "Taaşşuk-u Talat ve Fitnat",
+      "difficulty": 3,
+      "id": "Q1031"
     }
   ]
 }
