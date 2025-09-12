@@ -141,6 +141,421 @@
       "type": "ÇokSeçenekli"
     },
     {
+      "question": "Bu görseldeki yapı Efes Antik Kenti'ndeki Celcus Kütüphanesi'dir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/ephesus_celsus_library.jpg",
+      "difficulty": 1,
+      "id": "GENE_Q0058",
+      "image": "assets/images/questions/ephesus_celsus_library.jpg"
+    },
+    {
+      "question": "Dünyanın en yüksek binası Burj Khalifa, Dubai'dedir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0059",
+      "imageUrl": "assets/images/questions/burj_khalifa_dubai.jpg",
+      "image": "assets/images/questions/burj_khalifa_dubai.jpg"
+    },
+    {
+      "question": "Da Vinci'nin 'Son Akşam Yemeği' tablosu Louvre Müzesi'nde sergilenmektedir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "GENE_Q0065",
+      "imageUrl": "assets/images/questions/last_supper_davinci.jpg",
+      "image": "assets/images/questions/last_supper_davinci.jpg"
+    },
+    {
+      "question": "Bir bakteri türü olan E. coli, sağlıklı insan vücudunda doğal olarak bulunur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0066",
+      "imageUrl": "assets/images/questions/ecoli_bacteria.jpg",
+      "image": "assets/images/questions/ecoli_bacteria.jpg"
+    },
+    {
+      "question": "Londra, Birleşik Krallık'ın en büyük şehridir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0069",
+      "imageUrl": "assets/images/questions/london_big_ben.jpg",
+      "image": "assets/images/questions/london_big_ben.jpg"
+    },
+    {
+      "question": "Mehter Marşı, dünyanın bilinen en eski askeri marşıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0070",
+      "imageUrl": "assets/images/questions/ottoman_mehter_band.jpg",
+      "image": "assets/images/questions/ottoman_mehter_band.jpg"
+    },
+    {
+      "question": "İnsanlarda 23 çift kromozom bulunur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0072",
+      "imageUrl": "assets/images/questions/human_chromosomes.jpg",
+      "image": "assets/images/questions/human_chromosomes.jpg"
+    },
+    {
+      "question": "Dünya'nın çekirdeği katı haldedir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0184",
+      "imageUrl": "assets/images/questions/earth_core.jpg"
+    },
+    {
+      "question": "Işık, sesten daha hızlı hareket eder.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0186",
+      "imageUrl": "assets/images/questions/light_speed.jpg"
+    },
+    {
+      "question": "Yarasalar gerçekte kördür.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "GENE_Q0188",
+      "imageUrl": "assets/images/questions/bat_echolocation.jpg"
+    },
+    {
+      "question": "İnsan beyni uyurken daha aktiftir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "GENE_Q0189",
+      "imageUrl": "assets/images/questions/brain_sleep.jpg"
+    },
+    {
+      "question": "Devekuşlar, tehlike anında başlarını kuma gömerler.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "GENE_Q0190",
+      "imageUrl": "assets/images/questions/ostrich_myth.jpg"
+    },
+    {
+      "question": "Python programlama dili, adını bir yılan türünden almıştır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0271",
+      "imageUrl": "assets/images/questions/python_programming.jpg"
+    },
+    {
+      "question": "Google'ın kuruluş tarihi 1998'dir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0276",
+      "imageUrl": "assets/images/questions/google_company.png"
+    },
+    {
+      "question": "Klavyelerde F tuşları, işlevsel (function) tuşlar anlamına gelir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0281",
+      "imageUrl": "assets/images/questions/keyboard_function_keys.jpg"
+    },
+    {
+      "question": "Adobe Photoshop, bir video düzenleme yazılımıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "GENE_Q0282",
+      "imageUrl": "assets/images/questions/adobe_photoshop.jpg"
+    },
+    {
+      "question": "Bu görseldeki stadyum, Camp Nou'dur ve FC Barcelona'nın ev sahibi stadyumudur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/camp_nou_stadium.jpg",
+      "difficulty": 1,
+      "id": "GENE_Q0352"
+    },
+    {
+      "question": "Bu kişi, Cristiano Ronaldo'dur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/cristiano_ronaldo.jpg",
+      "difficulty": 1,
+      "id": "GENE_Q0353"
+    },
+    {
+      "question": "Bu stadyum Beşiktaş'ın Vodafone Park stadyumudur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/vodafone_park.jpg",
+      "difficulty": 1,
+      "id": "GENE_Q0354"
+    },
+    {
+      "question": "Formula 1 yarışlarında, bir yarış hafta sonunda en fazla puan alan sürücüye 25 puan verilir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0360",
+      "imageUrl": "assets/images/questions/formula1_racing.jpg"
+    },
+    {
+      "question": "Yağlı güreş, Türkiye'nin geleneksel sporlarından biridir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0366",
+      "imageUrl": "assets/images/questions/oil_wrestling.jpg"
+    },
+    {
+      "question": "Su topu, sadece açık havuzlarda oynanan bir spordur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "GENE_Q0369",
+      "imageUrl": "assets/images/questions/water_polo_sport.jpg"
+    },
+    {
+      "question": "İstanbul'un fethinde büyük toplar kullanılmıştır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "id": "GENE_Q0446",
+      "imageUrl": "assets/images/questions/istanbul_conquest.jpg"
+    },
+    {
+      "question": "Bu görselde Çanakkale Cephesi görülmektedir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "id": "GENE_Q0449",
+      "imageUrl": "assets/images/questions/gallipoli_battle.jpg"
+    },
+    {
+      "question": "Bu görseldeki antik kent Efes'tir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/ephesus_ruins.jpg",
+      "difficulty": 1,
+      "id": "GENE_Q0451"
+    },
+    {
+      "question": "Lozan Antlaşması 1923 yılında imzalanmıştır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0458",
+      "imageUrl": "assets/images/questions/lausanne_treaty.jpg"
+    },
+    {
+      "question": "Türkiye'de Latin alfabesine geçiş 1923 yılında olmuştur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "GENE_Q0459",
+      "imageUrl": "assets/images/questions/alphabet_reform.jpg"
+    },
+    {
+      "question": "Türkiye'de kadınlara seçme ve seçilme hakkı 1934 yılında verilmiştir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0462",
+      "imageUrl": "assets/images/questions/women_voting_rights.jpg"
+    },
+    {
+      "question": "Sevr Antlaşması hiçbir zaman uygulanmamıştır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0467",
+      "imageUrl": "assets/images/questions/sevres_treaty.jpg"
+    },
+    {
+      "question": "Bu görselde İstanbul şehri görülmektedir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "id": "GENE_Q0547",
+      "imageUrl": "assets/images/questions/istanbul_city.jpg"
+    },
+    {
+      "question": "Amazon Nehri, dünyanın en geniş nehridir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0555",
+      "imageUrl": "assets/images/questions/amazon_river_wide.jpg"
+    },
+    {
+      "question": "Sahara Çölü, dünyanın en büyük çölüdür.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0558",
+      "imageUrl": "assets/images/questions/sahara_largest_desert.jpg"
+    },
+    {
+      "question": "Mariana Çukuru, dünyanın en derin noktasıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0559",
+      "imageUrl": "assets/images/questions/mariana_trench.jpg"
+    },
+    {
+      "question": "Pasifik Okyanusu, dünyanın en büyük okyanusudur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0565",
+      "imageUrl": "assets/images/questions/pacific_ocean_largest.jpg"
+    },
+    {
+      "question": "Türkiye, 81 ilden oluşmaktadır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0567",
+      "imageUrl": "assets/images/questions/turkey_provinces.jpg"
+    },
+    {
+      "question": "Bu kişi dünyaca ünlü tenor Luciano Pavarotti'dir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "id": "GENE_Q0608",
+      "imageUrl": "assets/images/questions/music_pavarotti.jpg"
+    },
+    {
+      "question": "Michael Jackson'ın 'Thriller' albümü, tüm zamanların en çok satan albümlerinden biridir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0615",
+      "imageUrl": "assets/images/questions/michael_jackson_real.jpg"
+    },
+    {
+      "question": "Soprano, erkek ses sınıflandırmasıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "GENE_Q0617",
+      "imageUrl": "assets/images/questions/music_soprano.jpg"
+    },
+    {
+      "question": "Bir senfoninin standart uzunluğu 10 dakikadır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "GENE_Q0623",
+      "imageUrl": "assets/images/questions/classical_orchestra.jpg"
+    },
+    {
+      "question": "Flüt, tahta üflemeli çalgılar grubunda yer alır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0624",
+      "imageUrl": "assets/images/questions/music_orchestra.jpg"
+    },
+    {
+      "question": "Bu kişi Dostoyevski'dir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "id": "GENE_Q0653",
+      "imageUrl": "assets/images/questions/literature_dostoyevski.jpg"
+    },
+    {
+      "question": "Bu görseldeki kişi William Shakespeare'dir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/edebiyat_q0654.jpg",
+      "difficulty": 1,
+      "id": "GENE_Q0654"
+    },
+    {
+      "question": "Kişi, Muhammed Fuzuli'dir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "id": "GENE_Q0656",
+      "imageUrl": "assets/images/questions/literature_fuzuli_portrait.jpg"
+    },
+    {
+      "question": "Shakespeare, toplam 37 oyun yazmıştır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0662",
+      "imageUrl": "assets/images/questions/edebiyat_q0654.jpg"
+    },
+    {
+      "question": "Mesnevi, Mevlana Celaleddin Rumi'nin bir eseridir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "GENE_Q0663",
+      "imageUrl": "assets/images/questions/literature_mevlana.jpg"
+    },
+    {
       "question": "Osmanlı İmparatorluğu'nun kurucusu kimdir?",
       "options": [
         "Fatih Sultan Mehmet",
@@ -1938,6 +2353,46 @@
       "correctAnswer": "Descartes",
       "difficulty": 3,
       "id": "Q1185"
+    },
+    {
+      "question": "Atomun merkezi çekirdeğinde protonlar ve nötronlar bulunur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 2,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "id": "GENE_Q0173",
+      "imageUrl": "assets/images/questions/atom_nucleus.jpg"
+    },
+    {
+      "question": "Dünya'nın çekirdeği demir ve nikelden oluşur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 2,
+      "id": "GENE_Q1148",
+      "imageUrl": "assets/images/questions/earth_core_iron.jpg"
+    },
+    {
+      "question": "İnternet 1991 yılında halka açık hale gelmiştir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 2,
+      "id": "GENE_Q1153",
+      "imageUrl": "assets/images/questions/internet_history.jpg"
+    },
+    {
+      "question": "Ney ahşaptan yapılır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 2,
+      "id": "GENE_Q1143",
+      "imageUrl": "assets/images/questions/music_ney.JPG"
     }
   ],
   "Bilim": [
@@ -1975,6 +2430,274 @@
       "difficulty": 1,
       "id": "Q0121",
       "type": "ÇokSeçenekli"
+    },
+    {
+      "question": "Cumhurbaşkanlığı forsundaki 16 yıldız, Türk tarihindeki 16 büyük Türk devletini temsil eder.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "BILI_Q0064",
+      "imageUrl": "assets/images/questions/presidential_flag_turkey.JPG",
+      "image": "assets/images/questions/presidential_flag_turkey.JPG"
+    },
+    {
+      "question": "İnsan vücudundaki en uzun kemik, kol kemiğidir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "BILI_Q0068",
+      "imageUrl": "assets/images/questions/human_femur_bone.jpg",
+      "image": "assets/images/questions/human_femur_bone.jpg"
+    },
+    {
+      "question": "Golf sporunun kökleri İskoçya'ya dayanmaktadır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "BILI_Q0083",
+      "imageUrl": "assets/images/questions/golf_scotland.jpg"
+    },
+    {
+      "question": "Bu görseldeki gezegen Jüpiter'dir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/jupiter_planet.jpg",
+      "difficulty": 1,
+      "id": "BILI_Q0174"
+    },
+    {
+      "question": "Bu görseldeki gezegen Mars'tır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/mars_planet.jpg",
+      "difficulty": 1,
+      "id": "BILI_Q0175"
+    },
+    {
+      "question": "Görseldeki hayvan bir memeli türüdür.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/mammal_animal.jpg",
+      "difficulty": 1,
+      "id": "BILI_Q0176"
+    },
+    {
+      "question": "İnsan vücudunda en büyük organ deridir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "BILI_Q0177",
+      "imageUrl": "assets/images/questions/human_skin.jpg"
+    },
+    {
+      "question": "İnsan DNA'sı yaklaşık olarak %99 oranında şempanzelerle aynıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "BILI_Q0178",
+      "imageUrl": "assets/images/questions/dna_genetics.jpg"
+    },
+    {
+      "question": "İnsan vücudundaki en güçlü kas, çene kasıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "BILI_Q0180",
+      "imageUrl": "assets/images/questions/jaw_muscle.jpg"
+    },
+    {
+      "question": "Tüm örümcekler zehirlidir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "BILI_Q0181",
+      "imageUrl": "assets/images/questions/spider_venomous.jpg"
+    },
+    {
+      "question": "Uzayda ateş yanmaz.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "BILI_Q0183",
+      "imageUrl": "assets/images/questions/space_fire.jpg"
+    },
+    {
+      "question": "Köpekbalıkları kanser olmaz.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "BILI_Q0185",
+      "imageUrl": "assets/images/questions/shark_immunity.jpg"
+    },
+    {
+      "question": "Venüs, Güneş'in etrafında saat yönünün tersine döner.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "BILI_Q0187",
+      "imageUrl": "assets/images/questions/venus_planet_real.jpg"
+    },
+    {
+      "question": "Vitamin D güneş ışığı ile üretilir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "BILI_Q1150",
+      "imageUrl": "assets/images/questions/vitamin_d_sunlight.jpg"
+    },
+    {
+      "question": "Ki, ilk kişisel bilgisayarlardan biri olan Apple II modelidir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "id": "BILI_Q0267",
+      "imageUrl": "assets/images/questions/apple_ii_computer.jpg"
+    },
+    {
+      "question": "Ki, Microsoft'un ürettiği bir bilgisayardır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "id": "BILI_Q0268",
+      "imageUrl": "assets/images/questions/microsoft_computer.jpg"
+    },
+    {
+      "question": "Yapay zeka, sadece son 10 yılda ortaya çıkan yeni bir teknolojidir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "BILI_Q0272",
+      "imageUrl": "assets/images/questions/artificial_intelligence.jpg"
+    },
+    {
+      "question": "RAM (Random Access Memory), bilgisayarlar kapatıldıktan sonra verileri koruyabilen bir hafıza türüdür.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "BILI_Q0275",
+      "imageUrl": "assets/images/questions/ram_memory.jpg"
+    },
+    {
+      "question": "İlk 1 GB kapasiteli sabit disk 1980'de piyasaya sürülmüştür.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "BILI_Q0278",
+      "imageUrl": "assets/images/questions/hard_disk_drive.jpg"
+    },
+    {
+      "question": "Tenis, 18. yüzyılda İngiltere'de ortaya çıkmış bir spordur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "BILI_Q0361",
+      "imageUrl": "assets/images/questions/tennis_sport.jpg"
+    },
+    {
+      "question": "Bayanlar tenisinde, Grand Slam turnuvalarında 5 set üzerinden maç oynanır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "BILI_Q0367",
+      "imageUrl": "assets/images/questions/women_tennis.jpg"
+    },
+    {
+      "question": "Fatih Sultan Mehmet, İstanbul'u fethettiğinde 21 yaşındaydı.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "BILI_Q0455",
+      "imageUrl": "assets/images/questions/fatih_sultan.jpg"
+    },
+    {
+      "question": "Kanun bir müzik aletidir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "id": "BILI_Q0606",
+      "imageUrl": "assets/images/questions/music_kanun.jpg"
+    },
+    {
+      "question": "Beethoven, hayatının son yıllarında tamamen sağır olmasına rağmen beste yapmaya devam etmiştir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "BILI_Q0612",
+      "imageUrl": "assets/images/questions/muzik_q0612_fixed.jpg"
+    },
+    {
+      "question": "Piyano, yaylı çalgılar ailesine aittir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "BILI_Q0613",
+      "imageUrl": "assets/images/questions/music_piano.jpg"
+    },
+    {
+      "question": "Kanun, Türk Müziği'nde kullanılan telli bir enstrümandır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "BILI_Q0619",
+      "imageUrl": "assets/images/questions/music_kanun_strings.jpg"
+    },
+    {
+      "question": "Beethoven'ın 'Ay Işığı Sonatı' olarak bilinen eseri, aslında Sonata No. 14'tür.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "BILI_Q0621",
+      "imageUrl": "assets/images/questions/muzik_q0621_fixed.jpg"
+    },
+    {
+      "question": "Türk Edebiyatı'nda 'Tutunamayanlar' romanı Oğuz Atay'a aittir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "BILI_Q0672",
+      "imageUrl": "assets/images/questions/literature_oguz_atay.jpg"
+    },
+    {
+      "question": "Ahmet Hamdi Tanpınar, 'Saatleri Ayarlama Enstitüsü' adlı eserin yazarıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "BILI_Q0680",
+      "imageUrl": "assets/images/questions/literature_tanpinar.jpg"
+    },
+    {
+      "question": "İstanbul Boğazı, Asya ve Avrupa'yı birbirinden ayırır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "BILI_Q0561",
+      "imageUrl": "assets/images/questions/istanbul_city.jpg",
+      "originalCategory": "Coğrafya",
+      "image": "assets/images/questions/istanbul_city.jpg"
     },
     {
       "question": "Suyun kimyasal formülü nedir?",
@@ -3518,6 +4241,46 @@
       "correctAnswer": "Au",
       "difficulty": 2,
       "id": "Q1137"
+    },
+    {
+      "question": "Satürn gezegeninin en çok uydusu vardır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 2,
+      "id": "BILI_Q1149",
+      "imageUrl": "assets/images/questions/saturn_planet.jpg"
+    },
+    {
+      "question": "İlk bilgisayar virüsü 1980'de ortaya çıkmıştır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 3,
+      "id": "BILI_Q1154",
+      "imageUrl": "assets/images/questions/computer_virus.jpg"
+    },
+    {
+      "question": "Türk Edebiyatı'nda 'Garip Akımı', 1950'lerde ortaya çıkmıştır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 2,
+      "id": "BILI_Q0669",
+      "imageUrl": "assets/images/questions/literature_garip_movement.jpg"
+    },
+    {
+      "question": "Türk Edebiyatı'nda 'Garip Akımı' Orhan Veli Kanık, Oktay Rifat ve Melih Cevdet Anday tarafından kurulmuştur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 2,
+      "id": "BILI_Q0686",
+      "imageUrl": "assets/images/questions/literature_orhan_veli.jpg"
+    },
+    {
+      "question": "Mesnevi uzun manzum hikaye türüdür.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 3,
+      "id": "BILI_Q1147",
+      "imageUrl": "assets/images/questions/literature_mesnevi.jpg"
     }
   ],
   "Teknoloji": [
@@ -3555,6 +4318,110 @@
       "difficulty": 1,
       "id": "Q0212",
       "type": "ÇokSeçenekli"
+    },
+    {
+      "question": "Bu görseldeki ilk iPhone modelidir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/first_iphone.jpg",
+      "difficulty": 1,
+      "id": "TEKN_Q0265"
+    },
+    {
+      "question": "Bu görseldeki, Windows işletim sisteminin ilk sürümüdür.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/windows_os.PNG",
+      "difficulty": 1,
+      "id": "TEKN_Q0266"
+    },
+    {
+      "question": "HTML, bir programlama dilidir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "TEKN_Q0270",
+      "imageUrl": "assets/images/questions/html_code.jpg"
+    },
+    {
+      "question": "WiFi terimindeki 'Wi' sözcüğünün açılımı 'Wireless'tır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "TEKN_Q0273",
+      "imageUrl": "assets/images/questions/wifi_wireless.jpg"
+    },
+    {
+      "question": "SSD'ler (Solid State Drive), HDD'lere (Hard Disk Drive) göre daha hızlıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "TEKN_Q0277",
+      "imageUrl": "assets/images/questions/ssd_drive.jpg"
+    },
+    {
+      "question": "HTTPS protokolü, HTTP'ye göre daha güvenlidir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "TEKN_Q0279",
+      "imageUrl": "assets/images/questions/https_security.jpg"
+    },
+    {
+      "question": "Android işletim sistemi, Apple tarafından geliştirilmiştir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "TEKN_Q0280",
+      "imageUrl": "assets/images/questions/android_os.jpg"
+    },
+    {
+      "question": "İlk cep telefonu 1990'larda icat edilmiştir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "TEKN_Q0284",
+      "imageUrl": "assets/images/questions/first_mobile_phone.jpg"
+    },
+    {
+      "id": "TEKN_NEW_Q003",
+      "question": "Bu görseldeki teknoloji VR (Sanal Gerçeklik) gözlüğüdür.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 1,
+      "imageUrl": "assets/images/questions/teknoloji_yeni/vr_headset.jpg"
+    },
+    {
+      "id": "TEKN_NEW_Q004",
+      "question": "Bu görseldeki cihaz drone (insansız hava aracı) dır.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 1,
+      "imageUrl": "assets/images/questions/teknoloji_yeni/drone_quadcopter.jpg"
+    },
+    {
+      "id": "TEKN_NEW_Q005",
+      "question": "Bu görseldeki enerji sistemi solar panel (güneş paneli) dir.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 1,
+      "imageUrl": "assets/images/questions/teknoloji_yeni/solar_panels.jpg"
+    },
+    {
+      "id": "TEKN_NEW_Q006",
+      "question": "Bu görseldeki elektrikli araç Tesla elektrikli otomobildir.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 1,
+      "imageUrl": "assets/images/questions/teknoloji_yeni/electric_car.jpg"
+    },
+    {
+      "id": "TEKN_NEW_Q008",
+      "question": "Bu görseldeki enerji türbini rüzgar enerjisi üretir.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 1,
+      "imageUrl": "assets/images/questions/teknoloji_yeni/wind_turbine.jpg"
     },
     {
       "question": "HTML'in açılımı nedir?",
@@ -4983,6 +5850,46 @@
       "correctAnswer": "Fidelity",
       "difficulty": 3,
       "id": "Q1139"
+    },
+    {
+      "id": "TEKN_NEW_Q001",
+      "question": "Bu görseldeki robot endüstriyel otomasyon robotudur.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 2,
+      "imageUrl": "assets/images/questions/teknoloji_yeni/industrial_robot.jpg"
+    },
+    {
+      "id": "TEKN_NEW_Q002",
+      "question": "Bu görseldeki uzay aracı uydu türündendir.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 2,
+      "imageUrl": "assets/images/questions/teknoloji_yeni/satellite_space.jpg"
+    },
+    {
+      "id": "TEKN_NEW_Q007",
+      "question": "Bu görseldeki bilgisayar bileşeni CPU (İşlemci) dir.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 2,
+      "imageUrl": "assets/images/questions/teknoloji_yeni/cpu_processor.jpg"
+    },
+    {
+      "id": "TEKN_NEW_Q009",
+      "question": "Bu görseldeki teknoloji fiber optik kablo dır.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 2,
+      "imageUrl": "assets/images/questions/teknoloji_yeni/fiber_optic_cable.jpg"
+    },
+    {
+      "id": "TEKN_NEW_Q010",
+      "question": "Bu görseldeki tıbbi cihaz MRI (Manyetik Rezonans Görüntüleme) makinesidir.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 2,
+      "imageUrl": "assets/images/questions/teknoloji_yeni/mri_machine.jpg"
     }
   ],
   "Spor": [
@@ -5090,6 +5997,142 @@
       "difficulty": 1,
       "id": "Q0302",
       "type": "ÇokSeçenekli"
+    },
+    {
+      "question": "Bu görselde, bir basketbol sahası görülmektedir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/basketball_court.jpg",
+      "difficulty": 1,
+      "id": "SPOR_Q0356"
+    },
+    {
+      "question": "Bir maraton yarışı, 45 kilometre uzunluğunda bir parkurda koşulur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "SPOR_Q0357",
+      "imageUrl": "assets/images/questions/marathon_race.jpg"
+    },
+    {
+      "question": "NBA, Avrupa Basketbol Ligi'nin kısaltmasıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "SPOR_Q0358",
+      "imageUrl": "assets/images/questions/basketball_court.jpg"
+    },
+    {
+      "question": "Voleybol, Olimpiyat Oyunları programında yer alan bir spor değildir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "SPOR_Q0362",
+      "imageUrl": "assets/images/questions/volleyball_olympic.jpg"
+    },
+    {
+      "question": "Bir basketbol potasının yerden yüksekliği 3.05 metredir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "SPOR_Q0363",
+      "imageUrl": "assets/images/questions/basketball_hoop.jpg"
+    },
+    {
+      "question": "Bir futbol maçında, bir takım en fazla 5 oyuncu değişikliği yapabilir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "SPOR_Q0365",
+      "imageUrl": "assets/images/questions/football_substitution.jpg"
+    },
+    {
+      "question": "Boks maçlarında yumruk atmak dışında tekme atmak da kurallara uygundur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "SPOR_Q0370",
+      "imageUrl": "assets/images/questions/boxing_match.jpg"
+    },
+    {
+      "question": "Halter, Olimpiyat Oyunları'nda yer alan en eski sporlardan biridir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "SPOR_Q0371",
+      "imageUrl": "assets/images/questions/weightlifting_sport.JPG"
+    },
+    {
+      "question": "Olimpiyat Oyunları her 4 yılda bir düzenlenir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "SPOR_Q1151",
+      "imageUrl": "assets/images/questions/olympic_games.jpg"
+    },
+    {
+      "id": "SPOR_NEW_Q001",
+      "question": "Bu görseldeki spor jimnastiktir.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 1,
+      "imageUrl": "assets/images/questions/spor_yeni/gymnastics_competition.jpg"
+    },
+    {
+      "id": "SPOR_NEW_Q002",
+      "question": "Bu görseldeki spor dalı artistik patinajdır.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 1,
+      "imageUrl": "assets/images/questions/spor_yeni/figure_skating.jpg"
+    },
+    {
+      "id": "SPOR_NEW_Q003",
+      "question": "Bu görseldeki spor ekipmanı kayak takımıdır.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 1,
+      "imageUrl": "assets/images/questions/spor_yeni/ski_equipment.jpg"
+    },
+    {
+      "id": "SPOR_NEW_Q004",
+      "question": "Bu görseldeki ekstrem spor tırmanıştır.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 1,
+      "imageUrl": "assets/images/questions/spor_yeni/rock_climbing.jpg"
+    },
+    {
+      "id": "SPOR_NEW_Q005",
+      "question": "Bu görseldeki su sporu sörftür.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 1,
+      "imageUrl": "assets/images/questions/spor_yeni/surfing_sport.jpg"
+    },
+    {
+      "id": "SPOR_NEW_Q006",
+      "question": "Bu görseldeki dövüş sanatı judodur.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 1,
+      "imageUrl": "assets/images/questions/spor_yeni/judo_match.jpg"
+    },
+    {
+      "id": "SPOR_NEW_Q007",
+      "question": "Bu görseldeki spor dalı okçuluktur.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 1,
+      "imageUrl": "assets/images/questions/spor_yeni/archery_sport.jpg"
+    },
+    {
+      "id": "SPOR_NEW_Q010",
+      "question": "Bu görseldeki spor ekipmanı badminton raketi ve topu (shuttlecock) dur.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 1,
+      "imageUrl": "assets/images/questions/spor_yeni/badminton_equipment.jpg"
     },
     {
       "question": "Galatasaray hangi yılda UEFA Kupası'nı kazanmıştır?",
@@ -6532,9 +7575,196 @@
       "correctAnswer": "6",
       "difficulty": 2,
       "id": "Q1189"
+    },
+    {
+      "question": "FIFA, Uluslararası Futbol Federasyonları Birliği'nin kısaltmasıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 2,
+      "id": "SPOR_Q0364",
+      "imageUrl": "assets/images/questions/fifa_football.jpg"
+    },
+    {
+      "question": "Futbolda penaltı atışı 12 metreden atılır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 2,
+      "id": "SPOR_Q1152",
+      "imageUrl": "assets/images/questions/football_penalty.jpg"
+    },
+    {
+      "id": "SPOR_NEW_Q008",
+      "question": "Bu görseldeki kış sporu bobsleddir.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 2,
+      "imageUrl": "assets/images/questions/spor_yeni/bobsled_track.jpg"
+    },
+    {
+      "id": "SPOR_NEW_Q009",
+      "question": "Bu görseldeki atletizm branşı disk atma yarışıdır.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 2,
+      "imageUrl": "assets/images/questions/spor_yeni/discus_throw.jpg"
     }
   ],
   "Tarih": [
+    {
+      "question": "İstanbul'da bulunan bu tarihi yapı Ayasofya mıdır?",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/hagia_sophia_istanbul.jpg",
+      "difficulty": 1,
+      "id": "TARI_Q0054",
+      "image": "assets/images/questions/hagia_sophia_istanbul.jpg"
+    },
+    {
+      "question": "Bu görseldeki yapı Dolmabahçe Sarayı'dır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/dolmabahce_palace.jpg",
+      "difficulty": 1,
+      "id": "TARI_Q0056",
+      "image": "assets/images/questions/dolmabahce_palace.jpg"
+    },
+    {
+      "question": "Bu görseldeki tarihi yapı Kız Kulesi'dir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/maiden_tower_istanbul.jpg",
+      "difficulty": 1,
+      "id": "TARI_Q0057",
+      "image": "assets/images/questions/maiden_tower_istanbul.jpg"
+    },
+    {
+      "question": "Bu görseldeki kişi, Galatasaray'ın en ünlü futbolcularından Metin Oktay'dır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/metin_oktay_real.jpg",
+      "difficulty": 1,
+      "id": "TARI_Q0355"
+    },
+    {
+      "question": "Bu fotoğrafta görülen kişi Mustafa Kemal Atatürk'tür.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/ataturk_portrait.jpg",
+      "difficulty": 1,
+      "id": "TARI_Q0445"
+    },
+    {
+      "question": "Bu görselde TBMM'nin ilk binası görülmektedir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "id": "TARI_Q0447",
+      "imageUrl": "assets/images/questions/tbmm_building.jpg"
+    },
+    {
+      "question": "Cumhuriyet 29 Ekim 1923'te ilan edilmiştir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "id": "TARI_Q0450",
+      "imageUrl": "assets/images/questions/republic_proclamation.jpg"
+    },
+    {
+      "question": "Türkiye Cumhuriyeti'nin ilk cumhurbaşkanı Mustafa Kemal Atatürk'tür.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "TARI_Q0452",
+      "imageUrl": "assets/images/questions/ataturk_portrait.jpg"
+    },
+    {
+      "question": "I. Dünya Savaşı 1914-1918 yılları arasında gerçekleşmiştir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "TARI_Q0453",
+      "imageUrl": "assets/images/questions/world_war_1.jpg"
+    },
+    {
+      "question": "Kurtuluş Savaşı 1919-1922 yılları arasında gerçekleşmiştir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "TARI_Q0456",
+      "imageUrl": "assets/images/questions/independence_war.jpg"
+    },
+    {
+      "question": "TBMM, 23 Nisan 1920'de açılmıştır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "TARI_Q0457",
+      "imageUrl": "assets/images/questions/parliament_opening.jpg"
+    },
+    {
+      "question": "Soğuk Savaş dönemi, II. Dünya Savaşı sonrası 1991 yılına kadar sürmüştür.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "TARI_Q0460",
+      "imageUrl": "assets/images/questions/cold_war_period.JPG"
+    },
+    {
+      "question": "II. Dünya Savaşı 1939-1945 yılları arasında gerçekleşmiştir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "TARI_Q0463",
+      "imageUrl": "assets/images/questions/world_war_2.jpg"
+    },
+    {
+      "question": "Malazgirt Savaşı 1071 yılında gerçekleşmiştir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "TARI_Q0464",
+      "imageUrl": "assets/images/questions/manzikert_battle.JPG"
+    },
+    {
+      "question": "Çanakkale Savaşı I. Dünya Savaşı sırasında gerçekleşmiştir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "TARI_Q0465",
+      "imageUrl": "assets/images/questions/gallipoli_campaign.jpg"
+    },
+    {
+      "question": "Berlin Duvarı 1989 yılında yıkılmıştır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "TARI_Q0468",
+      "imageUrl": "assets/images/questions/berlin_wall_fall.jpg"
+    },
+    {
+      "question": "'Şiir Cumhuriyeti'nin Kurucusu' olarak anılan şair Yahya Kemal Beyatlı'dır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "TARI_Q0681",
+      "imageUrl": "assets/images/questions/literature_yahya_kemal.jpg"
+    },
     {
       "question": "I. Dünya Savaşı hangi yıllar arasında gerçekleşmiştir?",
       "options": [
@@ -7990,6 +9220,30 @@
       "correctAnswer": "Güç ve koruma",
       "difficulty": 3,
       "id": "Q1217"
+    },
+    {
+      "question": "Osmanlı İmparatorluğu'nun kurucusu Osman Bey'dir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 2,
+      "id": "TARI_Q0454",
+      "imageUrl": "assets/images/questions/ottoman_founder.jpg"
+    },
+    {
+      "question": "Kanuni Sultan Süleyman, Osmanlı'nın en uzun hüküm süren padişahıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 2,
+      "id": "TARI_Q0461",
+      "imageUrl": "assets/images/questions/suleiman_magnificent.jpg"
+    },
+    {
+      "question": "Atatürk'ün Samsun'a çıkış tarihi 19 Mayıs 1919'dur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 2,
+      "id": "TARI_Q0466",
+      "imageUrl": "assets/images/questions/samsun_independence.JPG"
     }
   ],
   "Coğrafya": [
@@ -8062,6 +9316,647 @@
       "difficulty": 1,
       "id": "Q0489",
       "type": "ÇokSeçenekli"
+    },
+    {
+      "question": "Bu görsel Pamukkale travertenlerini göstermektedir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/pamukkale_travertines.jpg",
+      "difficulty": 1,
+      "id": "COĞR_Q0055",
+      "image": "assets/images/questions/pamukkale_travertines.jpg"
+    },
+    {
+      "question": "ABD'nin başkenti New York'tur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "COĞR_Q0061",
+      "imageUrl": "assets/images/questions/washington_dc_capitol.jpg",
+      "image": "assets/images/questions/washington_dc_capitol.jpg"
+    },
+    {
+      "question": "Kızıldeniz, adını içindeki yosunlardan dolayı almaktadır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "COĞR_Q0062",
+      "imageUrl": "assets/images/questions/red_sea_coral.jpg",
+      "image": "assets/images/questions/red_sea_coral.jpg"
+    },
+    {
+      "question": "Çin, dünya nüfusu en kalabalık ülkedir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "COĞR_Q0063",
+      "imageUrl": "assets/images/questions/china_flag_population.jpg",
+      "image": "assets/images/questions/china_flag_population.jpg"
+    },
+    {
+      "question": "Peri bacaları, Nevşehir'in Ürgüp ilçesinde bulunmaktadır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "COĞR_Q0071",
+      "imageUrl": "assets/images/questions/cappadocia_fairy_chimneys.jpg",
+      "image": "assets/images/questions/cappadocia_fairy_chimneys.jpg"
+    },
+    {
+      "question": "Avrupa Birliği'nin resmi para birimi olan Euro, tüm üye ülkelerde kullanılmaktadır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "COĞR_Q0073",
+      "imageUrl": "assets/images/questions/euro_currency.jpg",
+      "image": "assets/images/questions/euro_currency.jpg"
+    },
+    {
+      "question": "Dünya'nın manyetik kuzey kutbu, coğrafi kuzey kutbuyla tam olarak aynı noktadadır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "COĞR_Q0179",
+      "imageUrl": "assets/images/questions/magnetic_north.jpg"
+    },
+    {
+      "question": "Mavi balinaların kalbi o kadar büyüktür ki bir insan damarları içinde yüzebilir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "COĞR_Q0182",
+      "imageUrl": "assets/images/questions/blue_whale_heart.jpg"
+    },
+    {
+      "question": "PNG dosya formatı, sıkıştırma için kullanılmayan bir format türüdür.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "COĞR_Q0269",
+      "imageUrl": "assets/images/questions/png_file_format.jpg"
+    },
+    {
+      "question": "Blockchain teknolojisi, sadece kripto paralar için kullanılır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "COĞR_Q0274",
+      "imageUrl": "assets/images/questions/blockchain_technology.jpg"
+    },
+    {
+      "question": "URL'deki 'WWW' ifadesi, web sitelerinin çalışması için zorunlu bir bileşendir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "COĞR_Q0283",
+      "imageUrl": "assets/images/questions/www_web.jpg"
+    },
+    {
+      "question": "Bir futbol maçında, kaleciler kendi ceza sahaları içinde topu elleri ile tutabilirler.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "COĞR_Q0359",
+      "imageUrl": "assets/images/questions/football_goalkeeper.jpg"
+    },
+    {
+      "question": "Bu görselde Nil Nehri görülmektedir.",
+      "options": [
+        "Nil Nehri",
+        "Amazon Nehri",
+        "Tuna Nehri",
+        "Fırat Nehri"
+      ],
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "type": "DoğruYanlış",
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "id": "COĞR_Q0541",
+      "imageUrl": "assets/images/questions/nile_river_egypt.jpg"
+    },
+    {
+      "question": "Bu görselde Alaska bölgesi görülmektedir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/alaska_landscape.jpg",
+      "difficulty": 1,
+      "id": "COĞR_Q0545"
+    },
+    {
+      "question": "Bu görselde Vezüv Yanardağı görülmektedir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "id": "COĞR_Q0546",
+      "imageUrl": "assets/images/questions/vesuvius_volcano.jpg"
+    },
+    {
+      "question": "Peri Bacaları Nevşehir'de bulunur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "id": "COĞR_Q0548",
+      "imageUrl": "assets/images/questions/cappadocia_chimneys.jpg"
+    },
+    {
+      "question": "Bu görseldeki ülke Japonya'dır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/japan_country.jpg",
+      "difficulty": 1,
+      "id": "COĞR_Q0549"
+    },
+    {
+      "question": "Türkiye yedi farklı coğrafi bölgeye ayrılmıştır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "COĞR_Q0550",
+      "imageUrl": "assets/images/questions/republic_proclamation.jpg"
+    },
+    {
+      "question": "Türkiye'nin en yüksek dağı Ağrı Dağı'dır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "COĞR_Q0551",
+      "imageUrl": "assets/images/questions/mount_ararat.jpg"
+    },
+    {
+      "question": "Akdeniz, Türkiye'nin güneyinde yer alır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "COĞR_Q0552",
+      "imageUrl": "assets/images/questions/mediterranean_sea.jpg"
+    },
+    {
+      "question": "Karadeniz, Türkiye'nin kuzeyinde yer alır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "COĞR_Q0553",
+      "imageUrl": "assets/images/questions/black_sea_coast.jpg"
+    },
+    {
+      "question": "Nil Nehri, dünyanın en uzun nehridir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "COĞR_Q0554",
+      "imageUrl": "assets/images/questions/nile_longest_river.jpg"
+    },
+    {
+      "question": "Everest, dünyanın en yüksek dağıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "COĞR_Q0556",
+      "imageUrl": "assets/images/questions/everest_highest.jpg"
+    },
+    {
+      "question": "Avustralya, hem bir kıta hem de bir ülkedir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "COĞR_Q0557",
+      "imageUrl": "assets/images/questions/australia_continent.jpg"
+    },
+    {
+      "question": "Türkiye'nin komşu ülke sayısı sekizdir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "COĞR_Q0560",
+      "imageUrl": "assets/images/questions/turkey_neighbors.jpg"
+    },
+    {
+      "question": "Türkiye'nin en büyük gölü Tuz Gölü'dür.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "COĞR_Q0564",
+      "imageUrl": "assets/images/questions/turkey_salt_lake.jpg"
+    },
+    {
+      "question": "Bu bayrak Türkiye'nin bayrağıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/turkey_flag.jpg",
+      "id": "COĞR_Q0708"
+    },
+    {
+      "question": "Bu bayrak Almanya'nın bayrağıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/germany_flag.jpg",
+      "id": "COĞR_Q0709"
+    },
+    {
+      "question": "Bu bayrak Fransa'nın bayrağıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/france_flag.jpg",
+      "id": "COĞR_Q0710"
+    },
+    {
+      "question": "Bu bayrak İngiltere'nin bayrağıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/uk_flag.jpg",
+      "id": "COĞR_Q0711"
+    },
+    {
+      "question": "Bu bayrak İtalya'nın bayrağıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/italy_flag.jpg",
+      "id": "COĞR_Q0712"
+    },
+    {
+      "question": "Bu bayrak İspanya'nın bayrağıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/spain_flag.jpg",
+      "id": "COĞR_Q0713"
+    },
+    {
+      "question": "Bu bayrak Rusya'nın bayrağıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/russia_flag.jpg",
+      "id": "COĞR_Q0714"
+    },
+    {
+      "question": "Bu bayrak Çin'in bayrağıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/china_flag.jpg",
+      "id": "COĞR_Q0715"
+    },
+    {
+      "question": "Bu bayrak Japonya'nın bayrağıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/japan_flag.JPG",
+      "id": "COĞR_Q0716"
+    },
+    {
+      "question": "Bu bayrak Güney Kore'nin bayrağıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/south_korea_flag.jpg",
+      "id": "COĞR_Q0717"
+    },
+    {
+      "question": "Türkiye'nin başkenti Ankara'dır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/ankara_capital.jpg",
+      "id": "COĞR_Q0720"
+    },
+    {
+      "question": "Fransa'nın başkenti Paris'tir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/paris_capital.jpg",
+      "id": "COĞR_Q0721"
+    },
+    {
+      "question": "İngiltere'nin başkenti Londra'dır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/london_capital.jpg",
+      "id": "COĞR_Q0722"
+    },
+    {
+      "question": "Almanya'nın başkenti Berlin'dir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/berlin_capital.jpg",
+      "id": "COĞR_Q0723"
+    },
+    {
+      "question": "İtalya'nın başkenti Roma'dır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/rome_capital.jpg",
+      "id": "COĞR_Q0724"
+    },
+    {
+      "question": "İspanya'nın başkenti Madrid'dir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/madrid_capital.jpg",
+      "id": "COĞR_Q0725"
+    },
+    {
+      "question": "Rusya'nın başkenti Moskova'dır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/moscow_capital.jpg",
+      "id": "COĞR_Q0726"
+    },
+    {
+      "question": "Japonya'nın başkenti Tokyo'dur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/tokyo_capital.jpg",
+      "id": "COĞR_Q0727"
+    },
+    {
+      "question": "Türkiye'nin başkenti İstanbul'dur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/turkey_capital_correction.jpg",
+      "id": "COĞR_Q0728"
+    },
+    {
+      "question": "Kanada'nın başkenti Toronto'dur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/canada_capital_correction.jpg",
+      "id": "COĞR_Q0730"
+    },
+    {
+      "question": "Avustralya'nın başkenti Sidney'dir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "category": "Coğrafya",
+      "imageUrl": "assets/images/questions/australia_capital_correction.jpg",
+      "id": "COĞR_Q0731"
+    },
+    {
+      "question": "Rap müziği 1970'lerde Amerika Birleşik Devletleri'nde ortaya çıkmıştır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "COĞR_Q0622",
+      "imageUrl": "assets/images/questions/music_rap_microphone.jpg"
+    },
+    {
+      "question": "Rock müziği Amerika'da doğmuştur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "COĞR_Q1142",
+      "imageUrl": "assets/images/questions/music_rock.jpg"
+    },
+    {
+      "question": "Haiku, Çin kökenli bir şiir türüdür.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "COĞR_Q0667",
+      "imageUrl": "assets/images/questions/literature_haiku.JPG"
+    },
+    {
+      "question": "Antartika, dünya üzerinde hiçbir ülkeye ait olmayan tek kıtadır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "COĞR_Q0563",
+      "imageUrl": "assets/images/questions/arctic_ocean.jpg",
+      "originalCategory": "Coğrafya",
+      "image": "assets/images/questions/arctic_ocean.jpg"
+    },
+    {
+      "question": "Rusya, dünya üzerinde en fazla ülkeye komşu olan ülkedir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "COĞR_Q0566",
+      "imageUrl": "assets/images/questions/geography_asia_largest.jpg",
+      "originalCategory": "Coğrafya",
+      "image": "assets/images/questions/geography_asia_largest.jpg"
     },
     {
       "question": "Hangi ülke yüzölçümü bakımından dünyanın en büyük ülkesidir?",
@@ -9616,9 +11511,122 @@
       "correctAnswer": "Tibet Platosu",
       "difficulty": 2,
       "id": "Q1212"
+    },
+    {
+      "question": "Eyfel Kulesi, 1889 Paris Dünya Fuarı için inşa edilmiştir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 2,
+      "id": "COĞR_Q0067",
+      "imageUrl": "assets/images/questions/eiffel_tower_paris.jpg",
+      "image": "assets/images/questions/eiffel_tower_paris.jpg"
     }
   ],
   "Müzik": [
+    {
+      "question": "Kemençe bir müzik aletidir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "id": "MÜZI_Q0607",
+      "imageUrl": "assets/images/questions/music_kemence.JPG"
+    },
+    {
+      "question": "Bu görseldeki kişi, ünlü besteci Wolfgang Amadeus Mozart'tır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/mozart_portrait_real.jpg",
+      "difficulty": 1,
+      "id": "MÜZI_Q0609"
+    },
+    {
+      "question": "Baglama/Saz bir müzik enstrümanıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "id": "MÜZI_Q0610",
+      "imageUrl": "assets/images/questions/music_baglama.jpg"
+    },
+    {
+      "question": "Klasik bir gitarda standart olarak 7 tel vardır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "MÜZI_Q0611",
+      "imageUrl": "assets/images/questions/music_guitar_fixed.jpg"
+    },
+    {
+      "question": "Johann Sebastian Bach, klasik dönem bestecisidir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "MÜZI_Q0614",
+      "imageUrl": "assets/images/questions/muzik_q0614_fixed.jpg"
+    },
+    {
+      "question": "Türk Halk Müziği'nde kullanılan temel enstrüman kemandır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "MÜZI_Q0616",
+      "imageUrl": "assets/images/questions/music_turkish_folk.jpg"
+    },
+    {
+      "question": "The Beatles grubu 5 üyeden oluşmaktadır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "MÜZI_Q0618",
+      "imageUrl": "assets/images/questions/music_beatles.jpg"
+    },
+    {
+      "question": "Opera sanatı İtalya'da doğmuştur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "MÜZI_Q0620",
+      "imageUrl": "assets/images/questions/music_violin.jpg"
+    },
+    {
+      "question": "Ney, Türk Tasavvuf Müziği'nde kullanılan önemli bir enstrümandır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "MÜZI_Q0625",
+      "imageUrl": "assets/images/questions/turkish_ney_instrument.jpg"
+    },
+    {
+      "id": "MÜZI_NEW_Q008",
+      "question": "Bu görseldeki geleneksel Türk enstrümanı ney dir.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 1,
+      "imageUrl": "assets/images/questions/muzik_yeni/ney_instrument.jpg"
+    },
+    {
+      "id": "MÜZI_NEW_Q010",
+      "question": "Bu görseldeki müzik festival sahnesi açık hava konseri düzenine sahiptir.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 1,
+      "imageUrl": "assets/images/questions/muzik_yeni/outdoor_festival_stage.jpg"
+    },
     {
       "question": "Türk Halk Müziği'nde kullanılan telli bir çalgı olan 'Bağlama' kaç tellidir?",
       "options": [
@@ -10805,9 +12813,298 @@
       "correctAnswer": "Vurmalı",
       "difficulty": 1,
       "id": "Q1178"
+    },
+    {
+      "question": "Klasik müzikte bir senfonide genellikle 4 bölüm vardır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 2,
+      "id": "MÜZI_Q1144",
+      "imageUrl": "assets/images/questions/music_symphony.jpg"
+    },
+    {
+      "id": "MÜZI_NEW_Q001",
+      "question": "Bu görseldeki geleneksel Türk enstrümanı zurnadır.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 2,
+      "imageUrl": "assets/images/questions/muzik_yeni/zurna_instrument.jpg"
+    },
+    {
+      "id": "MÜZI_NEW_Q002",
+      "question": "Bu görseldeki orkestra düzeninde yaylı çalgılar en önde yer alır.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 2,
+      "imageUrl": "assets/images/questions/muzik_yeni/orchestra_layout.jpg"
+    },
+    {
+      "id": "MÜZI_NEW_Q003",
+      "question": "Bu görseldeki müzik notasyonu treble clef (sol anahtarı) dır.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 2,
+      "imageUrl": "assets/images/questions/muzik_yeni/treble_clef.jpg"
+    },
+    {
+      "id": "MÜZI_NEW_Q004",
+      "question": "Bu görseldeki bale pozisyonu arabesque dur.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 2,
+      "imageUrl": "assets/images/questions/muzik_yeni/ballet_arabesque.jpg"
+    },
+    {
+      "id": "MÜZI_NEW_Q005",
+      "question": "Bu görseldeki geleneksel enstrüman didgeridoo dur.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 3,
+      "imageUrl": "assets/images/questions/muzik_yeni/didgeridoo_instrument.jpg"
+    },
+    {
+      "id": "MÜZI_NEW_Q006",
+      "question": "Bu görseldeki müzik stüdyosu recording booth (kayıt kabini) dir.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 2,
+      "imageUrl": "assets/images/questions/muzik_yeni/recording_studio.jpg"
+    },
+    {
+      "id": "MÜZI_NEW_Q007",
+      "question": "Bu görseldeki elektronik müzik aleti synthesizer dır.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 2,
+      "imageUrl": "assets/images/questions/muzik_yeni/synthesizer_keyboard.jpg"
+    },
+    {
+      "id": "MÜZI_NEW_Q009",
+      "question": "Bu görseldeki opera sahnesi La Scala opera binasındadır.",
+      "type": "DoğruYanlış",
+      "answer": "Doğru",
+      "difficulty": 3,
+      "imageUrl": "assets/images/questions/muzik_yeni/la_scala_opera.jpg"
     }
   ],
   "Edebiyat": [
+    {
+      "question": "Nobel Ödülleri, Alfred Nobel'in vasiyeti üzerine 1901 yılından beri verilmektedir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "EDEB_Q0060",
+      "imageUrl": "assets/images/questions/nobel_prize_medal.jpg",
+      "image": "assets/images/questions/nobel_prize_medal.jpg"
+    },
+    {
+      "question": "İstiklal Marşı'nın yazarı Yahya Kemal Beyatlı'dır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "imageUrl": "assets/images/questions/turkish_anthem.jpg",
+      "difficulty": 1,
+      "id": "EDEB_Q0448"
+    },
+    {
+      "question": "Görseldeki eser, J.K. Rowling'in Harry Potter serisinin ilk kitabıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "imageUrl": "assets/images/questions/edebiyat_q0655.JPG",
+      "difficulty": 1,
+      "id": "EDEB_Q0655"
+    },
+    {
+      "question": "Dostoyevski 'Suç ve Ceza' eserinin yazarıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "choices": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "options": [
+        "Doğru",
+        "Yanlış"
+      ],
+      "id": "EDEB_Q0657",
+      "imageUrl": "assets/images/questions/literature_dostoyevski.jpg"
+    },
+    {
+      "question": "Nazım Hikmet, 'Kürk Mantolu Madonna' romanının yazarıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "EDEB_Q0659",
+      "imageUrl": "assets/images/questions/literature_nazim_hikmet.jpg"
+    },
+    {
+      "question": "Cervantes, 'Don Kişot' romanının yazarıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "EDEB_Q0660",
+      "imageUrl": "assets/images/questions/literature_don_quixote.JPG"
+    },
+    {
+      "question": "'İnce Memed' romanı, Yaşar Kemal'in en bilinen eserlerinden biridir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "EDEB_Q0664",
+      "imageUrl": "assets/images/questions/literature_yasar_kemal.JPG"
+    },
+    {
+      "question": "Franz Kafka, Rus edebiyatının önemli yazarlarından biridir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "EDEB_Q0665",
+      "imageUrl": "assets/images/questions/literature_kafka.jpg"
+    },
+    {
+      "question": "Dostoyevski'nin 'Suç ve Ceza' romanının ana karakteri Raskolnikov'dur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "EDEB_Q0666",
+      "imageUrl": "assets/images/questions/literature_crime_punishment.jpg"
+    },
+    {
+      "question": "Gabriel Garcia Marquez, 'Yüzyıllık Yalnızlık' romanının yazarıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "EDEB_Q0668",
+      "imageUrl": "assets/images/questions/literature_garcia_marquez.jpg"
+    },
+    {
+      "question": "Victor Hugo, 'Sefiller' romanının yazarıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "EDEB_Q0670",
+      "imageUrl": "assets/images/questions/literature_victor_hugo.jpg"
+    },
+    {
+      "question": "Homer, 'Odysseia' destanının yazarı olarak kabul edilir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "EDEB_Q0671",
+      "imageUrl": "assets/images/questions/literature_homer.jpg"
+    },
+    {
+      "question": "Yunus Emre, Divan Edebiyatı'nın önemli şairlerindendir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "EDEB_Q0677",
+      "imageUrl": "assets/images/questions/literature_yunus_emre.jpg"
+    },
+    {
+      "question": "'Suç ve Ceza' romanı Tolstoy'a aittir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "EDEB_Q0678",
+      "imageUrl": "assets/images/questions/edebiyat_q0678.jpg"
+    },
+    {
+      "question": "'Mai ve Siyah' romanı Halit Ziya Uşaklıgil'e aittir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "EDEB_Q0679",
+      "imageUrl": "assets/images/questions/literature_halit_ziya.jpg"
+    },
+    {
+      "question": "İstiklal Marşı'nın yazarı Mehmet Akif Ersoy'dur.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "EDEB_Q0682",
+      "imageUrl": "assets/images/questions/literature_mehmet_akif.jpg"
+    },
+    {
+      "question": "Türk Edebiyatı'nda ilk köy romanı 'Yaban'dır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "EDEB_Q0683",
+      "imageUrl": "assets/images/questions/literature_yaban.jpeg"
+    },
+    {
+      "question": "Shakespeare, 'Romeo ve Juliet' eserinin yazarıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "EDEB_Q0684",
+      "imageUrl": "assets/images/questions/edebiyat_q0684.jpg"
+    },
+    {
+      "question": "Fuzuli, Türk Halk Edebiyatı'nın önemli şairlerindendir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "EDEB_Q0685",
+      "imageUrl": "assets/images/questions/literature_fuzuli_divan.jpg"
+    },
+    {
+      "question": "Sait Faik Abasıyanık, roman türündeki eserleriyle tanınır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "EDEB_Q0687",
+      "imageUrl": "assets/images/questions/literature_sait_faik.jpg"
+    },
+    {
+      "question": "'Çile' şiir kitabı Necip Fazıl Kısakürek'e aittir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "EDEB_Q0688",
+      "imageUrl": "assets/images/questions/literature_necip_fazil.jpg"
+    },
+    {
+      "question": "Peyami Safa, 'Dokuzuncu Hariciye Koğuşu' romanının yazarıdır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "EDEB_Q0689",
+      "imageUrl": "assets/images/questions/literature_peyami_safa.jpg"
+    },
+    {
+      "question": "Halide Edip Adıvar'ın 'Sinekli Bakkal' romanı, ilk Türkçe Nobel Edebiyat Ödülü'nü kazanmıştır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 1,
+      "id": "EDEB_Q0690",
+      "imageUrl": "assets/images/questions/literature_halide_edip.jpg"
+    },
+    {
+      "question": "Cahit Sıtkı Tarancı, 'Otuz Beş Yaş' şiiriyle tanınır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "EDEB_Q0691",
+      "imageUrl": "assets/images/questions/literature_cahit_sitki.jpg"
+    },
+    {
+      "question": "Yaşar Kemal'in 'İnce Memed' romanı dünya edebiyatının önemli eserlerindendir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "EDEB_Q0692",
+      "imageUrl": "assets/images/questions/literature_yasar_kemal_book.jpg"
+    },
+    {
+      "question": "Orhan Pamuk Nobel Edebiyat Ödülü almıştır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 1,
+      "id": "EDEB_Q1145",
+      "imageUrl": "assets/images/questions/literature_orhan_pamuk_nobel.jpg"
+    },
     {
       "question": "Türk Edebiyatı'nın ilk yazılı eseri hangisidir?",
       "options": [
@@ -11765,6 +14062,30 @@
       "correctAnswer": "Garip",
       "difficulty": 3,
       "id": "Q1134"
+    },
+    {
+      "question": "Türk Edebiyatı'nda 'Çalıkuşu' romanı Reşat Nuri Güntekin'e aittir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 2,
+      "id": "EDEB_Q0658",
+      "imageUrl": "assets/images/questions/literature_calikusu.jpg"
+    },
+    {
+      "question": "Orhan Pamuk, Nobel Edebiyat Ödülü'nü kazanan ilk Türk yazardır.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "DOĞRU",
+      "difficulty": 2,
+      "id": "EDEB_Q0661",
+      "imageUrl": "assets/images/questions/literature_nobel_prize.jpg"
+    },
+    {
+      "question": "'1984' romanının yazarı Aldous Huxley'dir.",
+      "type": "DoğruYanlış",
+      "correctAnswer": "YANLIŞ",
+      "difficulty": 2,
+      "id": "EDEB_Q1146",
+      "imageUrl": "assets/images/questions/literature_1984_orwell.jpg"
     }
   ],
   "Resimli Sorular": [
@@ -12517,7 +14838,7 @@
       "imageUrl": "assets/images/questions/istanbul_conquest.jpg"
     },
     {
-      "question": "TBMM'nin ilk binası görülmektedir.",
+      "question": "Bu görselde TBMM'nin ilk binası görülmektedir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
       "difficulty": 1,
@@ -12541,7 +14862,7 @@
       "id": "Q0448"
     },
     {
-      "question": "Çanakkale Cephesi görülmektedir.",
+      "question": "Bu görselde Çanakkale Cephesi görülmektedir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
       "difficulty": 1,
@@ -12717,7 +15038,7 @@
       "imageUrl": "assets/images/questions/berlin_wall_fall.jpg"
     },
     {
-      "question": "Nil Nehri görülmektedir.",
+      "question": "Bu görselde Nil Nehri görülmektedir.",
       "options": [
         "Nil Nehri",
         "Amazon Nehri",
@@ -12743,7 +15064,7 @@
       "id": "Q0545"
     },
     {
-      "question": "Vezüv Yanardağı görülmektedir.",
+      "question": "Bu görselde Vezüv Yanardağı görülmektedir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
       "difficulty": 1,
@@ -12759,7 +15080,7 @@
       "imageUrl": "assets/images/questions/vesuvius_volcano.jpg"
     },
     {
-      "question": "İstanbul şehri görülmektedir.",
+      "question": "Bu görselde İstanbul şehri görülmektedir.",
       "type": "DoğruYanlış",
       "correctAnswer": "DOĞRU",
       "difficulty": 1,
@@ -12793,7 +15114,7 @@
     {
       "question": "Bu görseldeki ülke Japonya'dır.",
       "type": "DoğruYanlış",
-      "correctAnswer": "YANLIŞ",
+      "correctAnswer": "DOĞRU",
       "imageUrl": "assets/images/questions/japan_country.jpg",
       "difficulty": 1,
       "id": "Q0549"

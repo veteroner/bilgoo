@@ -67,11 +67,6 @@ public class MainActivity extends BridgeActivity {
     
     private void setupAdContainer() {
         try {
-            Log.d(TAG, "Ad container devre dışı bırakıldı - iOS ile tutarlılık için");
-            // iOS ile tutarlılık için Android'de banner reklamı devre dışı bırak
-            // Bu şekilde her iki platformda da aynı görünüm elde edilir
-            
-            /*
             // Basit container oluştur
             adContainerView = new FrameLayout(this);
             adContainerView.setId(android.view.View.generateViewId());
@@ -93,7 +88,6 @@ public class MainActivity extends BridgeActivity {
             } else {
                 Log.e(TAG, "Ana layout bulunamadı");
             }
-            */
         } catch (Exception e) {
             Log.e(TAG, "Container hatası: " + e.getMessage());
         }
@@ -101,10 +95,6 @@ public class MainActivity extends BridgeActivity {
     
     private void loadBannerAd() {
         try {
-            Log.d(TAG, "Banner reklam yükleme devre dışı - iOS ile tutarlılık için");
-            // iOS ile tutarlılık için Android'de banner reklamı devre dışı bırak
-            
-            /*
             Log.d(TAG, "Banner yükleniyor...");
             
             if (adContainerView == null) {
@@ -136,7 +126,6 @@ public class MainActivity extends BridgeActivity {
             // Ad request
             AdRequest adRequest = new AdRequest.Builder().build();
             adView.loadAd(adRequest);
-            */
             
         } catch (Exception e) {
             Log.e(TAG, "Banner hatası: " + e.getMessage());

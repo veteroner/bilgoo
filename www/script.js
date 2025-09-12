@@ -415,7 +415,7 @@ function initFullscreenMode() {
             height: 100dvh !important;
             margin: 0 !important;
             padding: 0 !important;
-            /* Üst boşluk MonetizationManager.applyTopPadding ile yönetilecek */
+            padding-top: 110px !important; /* Banner reklam için üst boşluk */
             overflow-y: auto !important;
         }
         
@@ -1211,8 +1211,8 @@ const quizApp = {
                         if (['tr', 'en', 'de'].includes(lang)) {
                             this.currentLanguage = lang;
                         } else {
-                            // Desteklenmeyen dil durumunda varsayılan olarak İngilizce
-                            this.currentLanguage = 'en';
+                            // Desteklenmeyen dil durumunda varsayılan olarak Türkçe
+                            this.currentLanguage = 'tr';
                         }
                         
                         console.log(`Tarayıcı dili: ${browserLang}, Uygulama dili: ${this.currentLanguage}`);
@@ -1736,20 +1736,20 @@ const quizApp = {
         try {
             const lang = this.currentLanguage || 'tr';
             
-            // Alt menü butonları
-            this.updateMobileTabText('tab-home', 'Ana Sayfa', 'Home', 'Startseite');
-            this.updateMobileTabText('tab-profile', 'Profil', 'Profile', 'Profil');
-            this.updateMobileTabText('tab-friends', 'Arkadaş', 'Friends', 'Freunde');
-            this.updateMobileTabText('tab-logout', 'Çıkış', 'Logout', 'Abmelden');
-            this.updateMobileTabText('tab-settings', 'Ayarlar', 'Settings', 'Einstellungen');
+            // Alt menü butonları - languages.js'ten çevirileri al
+            this.updateMobileTabTextFromLanguage('tab-home', 'home');
+            this.updateMobileTabTextFromLanguage('tab-profile', 'profile');
+            this.updateMobileTabTextFromLanguage('tab-friends', 'friends');
+            this.updateMobileTabTextFromLanguage('tab-logout', 'logout');
+            this.updateMobileTabTextFromLanguage('tab-settings', 'settings');
             
-            // Joker butonları
+            // Joker butonları - bunlar daha spesifik olabilir
             this.updateMobileTabText('joker-tab-fifty', '50:50', '50:50', '50:50');
-            this.updateMobileTabText('joker-tab-hint', 'İpucu', 'Hint', 'Tipp');
-            this.updateMobileTabText('joker-tab-time', 'Süre', 'Time', 'Zeit');
-            this.updateMobileTabText('joker-tab-skip', 'Pas', 'Pass', 'Passen');
+            this.updateMobileTabTextFromLanguage('joker-tab-hint', 'hint');
+            this.updateMobileTabTextFromLanguage('joker-tab-time', 'timeExtension');
+            this.updateMobileTabTextFromLanguage('joker-tab-skip', 'skipQuestion');
             this.updateMobileTabText('joker-tab-store', 'Mağaza', 'Store', 'Shop');
-            this.updateMobileTabText('joker-tab-home', 'Çıkış', 'Exit', 'Beenden');
+            this.updateMobileTabTextFromLanguage('joker-tab-home', 'exit');
             
             console.log("Mobil menü ve joker menü çevirileri güncellendi. Dil:", lang);
         } catch (error) {
@@ -1773,6 +1773,17 @@ const quizApp = {
             }
             
             // Metni uygula
+            if (text) {
+                element.querySelector('span').textContent = text;
+            }
+        }
+    },
+
+    // Languages.js'ten çeviri alan mobil tab metin güncelleme fonksiyonu
+    updateMobileTabTextFromLanguage: function(elementId, translationKey) {
+        const element = document.getElementById(elementId);
+        if (element && element.querySelector('span')) {
+            const text = this.getTranslation(translationKey);
             if (text) {
                 element.querySelector('span').textContent = text;
             }

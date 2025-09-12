@@ -66,21 +66,21 @@
         margin-top: 0 !important;
         margin-left: auto !important;
         margin-right: auto !important;
-        padding-top: 20px !important; /* Android için banner reklam kaldırıldığı için azaltıldı */
+        padding-top: 110px !important; /* Reklam alanı için üst boşluk artırıldı (+20px toplam) */
         width: min(90%, 600px) !important;
         max-width: 600px !important;
     }
 
-    /* Banner görünürken ana konteyner için sabit büyük padding uygulama; üst boşluğu JS yönetir */
+    /* Banner görünürken ana konteyneri 20px daha aşağı kaydır (toplam +20px) */
     body.has-top-banner .container {
-        padding-top: 20px !important; /* minimum */
-        margin-top: 0 !important;
+        padding-top: 130px !important;
+        margin-top: 20px !important; /* Banner ile konteyner arasında boşluk */
     }
 
     /* PWA fullscreen modunda en yüksek öncelik: dinamik stilleri geçersiz kıl */
     body.pwa-fullscreen.has-top-banner .container {
-        padding-top: 20px !important; /* minimum */
-        margin-top: 0 !important;
+        padding-top: 130px !important;
+        margin-top: 20px !important;
     }
     
     /* Diğer elementleri normal konumuna getir */
@@ -94,23 +94,23 @@
     .main-menu .container,
     .quiz-container .container,
     .profile-container .container {
-        padding-top: 20px !important; /* Android için banner reklam kaldırıldığı için azaltıldı */
+        padding-top: 90px !important;
         margin-left: auto !important;
         margin-right: auto !important;
         text-align: center !important;
     }
     
-    /* Oyun başladığında game-header'ı normal konumda tut */
+    /* Oyun başladığında tüm game-header'ı (can, süre, puan, yıldız) reklam alanının altına kaydır */
     .game-header {
-        margin-top: 5px !important;
+        margin-top: 5px !important; /* Reklam alanı için yeterli boşluk */
         padding-top: 10px !important;
         position: relative !important;
         z-index: 10 !important;
     }
     
-    /* Quiz container'ının kendisini normal konumda tut */
+    /* Quiz container'ının kendisini de aşağı kaydır */
     #quiz {
-        padding-top: 0 !important;
+        padding-top: 0 !important; /* Önceki ayarı sıfırla */
     }
     
     /* Quiz container içindeki elemanları düzenle */
@@ -119,7 +119,7 @@
         padding-top: 0 !important;
     }
     
-    /* Soru container'ını normal konumda tut */
+    /* Soru container'ını da düzenle */
     #question-container,
     .question-container {
         margin-top: 10px !important;
