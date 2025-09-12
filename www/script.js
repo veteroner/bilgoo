@@ -5045,6 +5045,13 @@ const quizApp = {
                 this.remainingTimeSnapshot = this.timeLeft;
             }
             this.isAppBackgrounded = true;
+            
+            // Quiz aktifse cevap seçimini geçici olarak devre dışı bırak
+            if (this.currentQuestionIndex !== null && !this.answerProcessing) {
+                this.answerProcessing = true;
+                console.log('[PAUSE] Quiz cevap seçimi geçici olarak devre dışı bırakıldı');
+            }
+            
             // Ses elementlerini duraklat
             this.pauseAllAudio();
             console.log('[PAUSE] Uygulama arka plana geçti. Sayaç durdu ve sesler duraklatıldı. Kalan süre:', this.remainingTimeSnapshot);
@@ -5053,6 +5060,13 @@ const quizApp = {
         const resumeTimer = () => {
             if (!this.isAppBackgrounded) return;
             this.isAppBackgrounded = false;
+            
+            // Quiz aktifse cevap seçimini tekrar etkinleştir
+            if (this.currentQuestionIndex !== null && this.answerProcessing) {
+                this.answerProcessing = false;
+                console.log('[RESUME] Quiz cevap seçimi tekrar etkinleştirildi');
+            }
+            
             // Quiz aktif mi ve cevap işleme yok mu?
             if (this.currentQuestionIndex != null && !this.answerProcessing && typeof this.remainingTimeSnapshot === 'number') {
                 // timeLeft'i snapshot ile devam ettir
@@ -5192,24 +5206,55 @@ const quizApp = {
     // Oyunu arka plan için duraklat
     pauseGameForBackground: function() {
         console.log('[BACKGROUND] Oyun arka plan için duraklatılıyor...');
+        
+        // Timer'ı durdur
         if (this.timerInterval) {
             clearInterval(this.timerInterval);
+            this.timerInterval = null;
         }
+        
+        // Quiz aktifse durdurun - cevap işlemesini engelleyin
+        if (this.currentQuestionIndex !== null && !this.answerProcessing) {
+            this.answerProcessing = true; // Cevap seçimini geçici olarak engelle
+            console.log('[BACKGROUND] Quiz cevap seçimi geçici olarak devre dışı bırakıldı');
+        }
+        
         // Event listener'ları geçici olarak kaldır
         this.removeTemporaryEventListeners();
         
         // Tüm ses elementlerini duraklat
         this.pauseAllAudio();
+        
+        // Arka plan durumu flagini set et
+        this.isAppBackgrounded = true;
     },
     
     // Oyunu arka plandan devam ettir  
     resumeGameFromBackground: function() {
         console.log('[FOREGROUND] Oyun arka plandan devam ettiriliyor...');
+        
+        // Arka plan durumunu temizle
+        this.isAppBackgrounded = false;
+        
+        // Quiz aktifse ve cevap işlemi engellenmiş ise geri aç
+        if (this.currentQuestionIndex !== null && this.answerProcessing) {
+            this.answerProcessing = false; // Cevap seçimini tekrar etkinleştir
+            console.log('[FOREGROUND] Quiz cevap seçimi tekrar etkinleştirildi');
+        }
+        
         // Event listener'ları tekrar ekle
         this.addTemporaryEventListeners();
         
         // Ses elementlerini yeniden etkinleştir (sadece user interaction sonrası çalacak)
         this.resumeAllAudio();
+        
+        // Timer'ı yeniden başlat (eğer quiz aktifse)
+        if (this.currentQuestionIndex !== null && typeof this.remainingTimeSnapshot === 'number') {
+            this.timeLeft = this.remainingTimeSnapshot;
+            this.updateTimeDisplay();
+            this.startTimer();
+            console.log('[FOREGROUND] Timer kaldığı yerden devam ediyor:', this.timeLeft);
+        }
     },
     
     // Oyunu tamamen temizle (uygulama kapanırken)

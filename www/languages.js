@@ -95,6 +95,7 @@ const languages = {
         jokerHint: 'İpucu',
         jokerTime: '+Süre',
         jokerSkip: 'Pas',
+        skipQuestion: 'Pas',
         jokerStore: 'Joker Mağazası',
         jokerUsed: 'Kullanıldı',
         
@@ -614,6 +615,7 @@ const languages = {
         jokerHint: 'Hint',
         jokerTime: '+Time',
         jokerSkip: 'Skip',
+        skipQuestion: 'Skip',
         jokerStore: 'Joker Store',
         jokerUsed: 'Used',
         
