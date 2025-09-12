@@ -18,13 +18,8 @@ const PushNotificationManager = {
             }
             
             // Mobil ortamda Capacitor push notifications
-            if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.PushNotifications) {
-                const PushNotifications = window.Capacitor.Plugins.PushNotifications;
-                await this.initMobileNotifications(PushNotifications);
-            } else {
-                console.log('Capacitor PushNotifications plugin bulunamadı, web bildirimleri kullanılacak');
-                await this.initWebNotifications();
-            }
+            const { PushNotifications } = await import('@capacitor/push-notifications');
+            await this.initMobileNotifications(PushNotifications);
             
             this.isInitialized = true;
             console.log('✅ Push Notification sistemi başarıyla başlatıldı');

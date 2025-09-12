@@ -1185,28 +1185,6 @@ const quizApp = {
     // Dil ayarlarını yükle
     loadLanguageSettings: function() {
         try {
-            // 2025-09-12: Dil migrasyonu - açık bir kullanıcı seçimi yoksa cihaz diline (TR ise TR) geç
-            try {
-                const MIGRATION_FLAG = 'lang_fix_20250912';
-                if (!localStorage.getItem(MIGRATION_FLAG)) {
-                    const explicitLangKeys = [
-                        localStorage.getItem('language'),
-                        localStorage.getItem('selectedLanguage'),
-                        localStorage.getItem(this.LANGUAGE_KEY)
-                    ].filter(Boolean);
-                    const userLangStored = localStorage.getItem('user_language');
-                    const supported = ['tr', 'en', 'de'];
-
-                    // Eğer kullanıcı daha önce açıkça seçim yapmamışsa: varsayılanı daima TR yap
-                    if (explicitLangKeys.length === 0 && (!userLangStored || !supported.includes(userLangStored))) {
-                        localStorage.setItem('user_language', 'tr');
-                        localStorage.setItem(this.LANGUAGE_KEY, 'tr');
-                        localStorage.setItem('quizLanguage', 'tr'); // geriye dönük uyumluluk
-                    }
-                    localStorage.setItem(MIGRATION_FLAG, '1');
-                }
-            } catch (_) { /* mig hata verirse görmezden gel */ }
-
             // Local storage'dan tercihler ekranında seçilen dili kontrol et
             const userLanguage = localStorage.getItem('user_language');
             
@@ -1224,12 +1202,21 @@ const quizApp = {
                     this.currentLanguage = savedLanguage;
                     console.log(`Kaydedilmiş dil ayarı: ${this.currentLanguage}`);
                 } else {
-                    // İlk çalıştırmada varsayılan dili doğrudan Türkçe yap
-                    this.currentLanguage = 'tr';
-                    localStorage.setItem('user_language', 'tr');
-                    localStorage.setItem(this.LANGUAGE_KEY, 'tr');
-                    localStorage.setItem('quizLanguage', 'tr');
-                    console.log('İlk kurulum: Varsayılan dil TR olarak ayarlandı');
+                    // Tarayıcı dilini kontrol et
+                    const browserLang = navigator.language || navigator.userLanguage;
+                    if (browserLang) {
+                        const lang = browserLang.substring(0, 2).toLowerCase();
+                        
+                        // Desteklenen diller
+                        if (['tr', 'en', 'de'].includes(lang)) {
+                            this.currentLanguage = lang;
+                        } else {
+                            // Desteklenmeyen dil durumunda varsayılan olarak Türkçe
+                            this.currentLanguage = 'tr';
+                        }
+                        
+                        console.log(`Tarayıcı dili: ${browserLang}, Uygulama dili: ${this.currentLanguage}`);
+                    }
                 }
             }
             
@@ -1758,12 +1745,11 @@ const quizApp = {
             
             // Joker butonları - bunlar daha spesifik olabilir
             this.updateMobileTabText('joker-tab-fifty', '50:50', '50:50', '50:50');
-            // languages.js anahtarları: jokerHint, jokerTime, jokerSkip, jokerStore, backToMenu
-            this.updateMobileTabTextFromLanguage('joker-tab-hint', 'jokerHint');
-            this.updateMobileTabTextFromLanguage('joker-tab-time', 'jokerTime');
-            this.updateMobileTabTextFromLanguage('joker-tab-skip', 'jokerSkip');
-            this.updateMobileTabTextFromLanguage('joker-tab-store', 'jokerStore');
-            this.updateMobileTabTextFromLanguage('joker-tab-home', 'backToMenu');
+            this.updateMobileTabTextFromLanguage('joker-tab-hint', 'hint');
+            this.updateMobileTabTextFromLanguage('joker-tab-time', 'timeExtension');
+            this.updateMobileTabTextFromLanguage('joker-tab-skip', 'skipQuestion');
+            this.updateMobileTabText('joker-tab-store', 'Mağaza', 'Store', 'Shop');
+            this.updateMobileTabTextFromLanguage('joker-tab-home', 'exit');
             
             console.log("Mobil menü ve joker menü çevirileri güncellendi. Dil:", lang);
         } catch (error) {
@@ -10492,20 +10478,11 @@ const quizApp = {
                     };
                     
                     // Firestore'a boş istatistik verisi kaydet
-                    if (firebase && firebase.firestore && typeof firebase.firestore === 'function') {
-                        const db = firebase.firestore();
-                        if (db && typeof db.collection === 'function') {
-                            db.collection('users').doc(userId).update({
-                                stats: this.userStats
-                            }).catch(error => {
-                                console.error('İstatistik güncelleme hatası:', error);
-                            });
-                        } else {
-                            console.warn('Firestore collection method not available for stats update');
-                        }
-                    } else {
-                        console.warn('Firebase not available for stats update');
-                    }
+                    db.collection('users').doc(userId).update({
+                        stats: this.userStats
+                    }).catch(error => {
+                        console.error('İstatistik güncelleme hatası:', error);
+                    });
                 }
             })
             .catch((error) => {
@@ -10585,33 +10562,24 @@ const quizApp = {
             };
             
             // Firestore bağlantısını test et (izin hatalarını kontrol et)
-            if (firebase && firebase.firestore && typeof firebase.firestore === 'function') {
-                try {
-                    // Firestore kurallarını test et
-                    const db = firebase.firestore();
-                    if (db && typeof db.collection === 'function') {
-                        db.collection('highScores').limit(1)
-                            .get()
-                            .then(() => {
-                                console.log('✅ Firestore bağlantısı ve izinleri başarılı');
-                            })
-                            .catch(error => {
-                                console.warn('⚠️ Firestore bağlantı sorunu:', error.message);
-                                
-                                if (error.message.includes('Missing or insufficient permissions')) {
-                                    console.error('🔒 Firestore güvenlik kuralları yetersiz! Admin panelinden kuralları güncelleyin.');
-                                    this.showToast('Veri tabanı izinleri güncellenmeli - Admin ile iletişime geçin', 'toast-warning');
-                                } else if (error.code === 'unavailable') {
-                                    console.warn('📡 Firebase sunucularına ulaşılamıyor');
-                                    this.showToast('Sunucu bağlantısı kurulamadı, tek oyunculu modda oynayın', 'toast-info');
-                                }
-                            });
-                    } else {
-                        console.warn('⚠️ Firestore collection method not available');
-                    }
-                } catch (error) {
-                    console.warn('⚠️ Firestore initialization error:', error.message);
-                }
+            if (firebase.firestore) {
+                // Firestore kurallarını test et
+                firebase.firestore().collection('highScores').limit(1)
+                    .get()
+                    .then(() => {
+                        console.log('✅ Firestore bağlantısı ve izinleri başarılı');
+                    })
+                    .catch(error => {
+                        console.warn('⚠️ Firestore bağlantı sorunu:', error.message);
+                        
+                        if (error.message.includes('Missing or insufficient permissions')) {
+                            console.error('🔒 Firestore güvenlik kuralları yetersiz! Admin panelinden kuralları güncelleyin.');
+                            this.showToast('Veri tabanı izinleri güncellenmeli - Admin ile iletişime geçin', 'toast-warning');
+                        } else if (error.code === 'unavailable') {
+                            console.warn('📡 Firebase sunucularına ulaşılamıyor');
+                            this.showToast('Sunucu bağlantısı kurulamadı, tek oyunculu modda oynayın', 'toast-info');
+                        }
+                    });
             }
         } catch (error) {
             console.error('Tarayıcı engelleme testi sırasında hata:', error);

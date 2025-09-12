@@ -31,33 +31,23 @@ const initializeFirebaseWithPrivacy = function() {
       }
       
       // Firebase veritabanı ve kimlik doğrulama referansları
-      if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
-        // Firebase başarıyla yüklendi
-        if (firebase.database && typeof firebase.database === 'function') {
-          database = firebase.database();
-        }
-        
-        if (firebase.auth && typeof firebase.auth === 'function') {
-          auth = firebase.auth();
-        }
+      if (typeof firebase !== 'undefined') {
+        database = firebase.database();
+        auth = firebase.auth();
         
         // Firestore için minimal ayarlar - analytics devre dışı
-        if (firebase.firestore && typeof firebase.firestore === 'function') {
+        if (firebase.firestore) {
           firestore = firebase.firestore();
           
           // Minimal Firestore ayarları - analytics olmadan
-          try {
-            const firestoreSettings = {
-              experimentalForceLongPolling: false,
-              cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED,
-              merge: true
-            };
-            
-            firestore.settings(firestoreSettings);
-            console.log("Firebase başarıyla başlatıldı (Privacy-compliant mode)");
-          } catch (settingsError) {
-            console.warn("Firestore settings error:", settingsError.message);
-          }
+          const firestoreSettings = {
+            experimentalForceLongPolling: false,
+            cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED,
+            merge: true
+          };
+          
+          firestore.settings(firestoreSettings);
+          console.log("Firebase başarıyla başlatıldı (Privacy-compliant mode)");
         }
         
         // Analytics sadece kullanıcı izni varsa yüklensin
