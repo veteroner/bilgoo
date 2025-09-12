@@ -35,9 +35,6 @@ const MonetizationManager = {
         const platform = window.Capacitor ? window.Capacitor.getPlatform() : 'web';
         const isNativeApp = platform === 'ios' || platform === 'android';
         
-        // Ağ bağlantısını kontrol et
-        this.checkNetworkConnectivity();
-        
         if (isNativeApp) {
             // Native uygulamalar: Çerez bildirimi yok, direkt ATT + reklam
             console.log('[Monetization Debug] Native app detected, enabling ads directly');
@@ -56,57 +53,6 @@ const MonetizationManager = {
         }
         
         this.isInitialized = true;
-    },
-
-    // === NETWORK CONNECTIVITY CHECK ===
-    checkNetworkConnectivity: function() {
-        // Online/offline durumunu kontrol et
-        if (!navigator.onLine) {
-            console.warn('[Monetization Debug] Device is offline, ads may not load');
-            return false;
-        }
-
-        // Google DNS'e ping at
-        const testConnectivity = () => {
-            return fetch('https://dns.google/resolve?name=google.com&type=A', {
-                method: 'GET',
-                mode: 'cors',
-                cache: 'no-cache'
-            }).then(response => {
-                if (response.ok) {
-                    console.log('[Monetization Debug] Network connectivity confirmed');
-                    return true;
-                } else {
-                    console.warn('[Monetization Debug] Network response not ok:', response.status);
-                    return false;
-                }
-            }).catch(error => {
-                console.warn('[Monetization Debug] Network connectivity test failed:', error.message);
-                return false;
-            });
-        };
-
-        // Network state listener
-        window.addEventListener('online', () => {
-            console.log('[Monetization Debug] Device came online');
-            this.retryFailedAds();
-        });
-
-        window.addEventListener('offline', () => {
-            console.log('[Monetization Debug] Device went offline');
-        });
-
-        return testConnectivity();
-    },
-
-    // === RETRY FAILED ADS ===
-    retryFailedAds: function() {
-        if (AdMob && this.cookiePreferences.advertising) {
-            console.log('[Monetization Debug] Retrying failed ads after network restoration');
-            setTimeout(() => {
-                this.initPlatformAds();
-            }, 2000);
-        }
     },
 
     // === EARLY ATT REQUEST (iOS) ===
@@ -192,66 +138,31 @@ const MonetizationManager = {
 
     // === ADMOB EVENT LISTENERS ===
     setupAdMobListeners: function() {
-        if (!AdMob) {
-            console.warn('[Monetization Debug] AdMob plugin not available');
-            return;
-        }
+        if (!AdMob) return;
 
-        try {
-            // Listen for banner load events (correct event name)
-            AdMob.addListener('bannerAdLoaded', (info) => {
-                console.log('[Monetization Debug] Banner ad loaded:', info);
-                const bannerHeight = info?.height || 0;
-                this.applyTopPadding(bannerHeight);
-                document.body.classList.add('has-top-banner');
-            });
+        // Listen for banner load events (correct event name)
+        AdMob.addListener('bannerAdLoaded', (info) => {
+            console.log('Banner ad loaded:', info);
+            const bannerHeight = info?.height || 0;
+            this.applyTopPadding(bannerHeight);
+            document.body.classList.add('has-top-banner');
+        });
 
-            // Listen for banner size changes (correct event name)
-            AdMob.addListener('bannerAdSizeChanged', (info) => {
-                console.log('[Monetization Debug] Banner ad size changed:', info);
-                const bannerHeight = info?.height || 0;
-                this.applyTopPadding(bannerHeight);
-                document.body.classList.add('has-top-banner');
-            });
+        // Listen for banner size changes (correct event name)
+        AdMob.addListener('bannerAdSizeChanged', (info) => {
+            console.log('Banner ad size changed:', info);
+            const bannerHeight = info?.height || 0;
+            this.applyTopPadding(bannerHeight);
+            document.body.classList.add('has-top-banner');
+        });
 
-            // Listen for banner failures (correct event name)
-            AdMob.addListener('bannerAdFailedToLoad', (error) => {
-                console.warn('[Monetization Debug] Banner ad failed to load:', error);
-                // Apply default padding when banner fails
-                this.applyTopPadding(0);
-                document.body.classList.remove('has-top-banner');
-                
-                // Retry after a delay if network error
-                if (error && (error.code === 0 || error.message?.includes('network'))) {
-                    console.log('[Monetization Debug] Network error detected, will retry');
-                    setTimeout(() => {
-                        this.retryFailedAds();
-                    }, 10000); // 10 saniye sonra tekrar dene
-                }
-            });
-
-            // Listen for interstitial ad events
-            AdMob.addListener('interstitialAdLoaded', () => {
-                console.log('[Monetization Debug] Interstitial ad loaded');
-            });
-
-            AdMob.addListener('interstitialAdFailedToLoad', (error) => {
-                console.warn('[Monetization Debug] Interstitial ad failed to load:', error);
-            });
-
-            // Listen for rewarded ad events
-            AdMob.addListener('rewardedAdLoaded', () => {
-                console.log('[Monetization Debug] Rewarded ad loaded');
-            });
-
-            AdMob.addListener('rewardedAdFailedToLoad', (error) => {
-                console.warn('[Monetization Debug] Rewarded ad failed to load:', error);
-            });
-
-            console.log('[Monetization Debug] AdMob listeners set up successfully');
-        } catch (error) {
-            console.error('[Monetization Debug] Error setting up AdMob listeners:', error);
-        }
+        // Listen for banner failures (correct event name)
+        AdMob.addListener('bannerAdFailedToLoad', (error) => {
+            console.log('Banner ad failed to load:', error);
+            // Apply default padding when banner fails
+            this.applyTopPadding(0);
+            document.body.classList.remove('has-top-banner');
+        });
     },
 
     // === COOKIE CONSENT MANAGEMENT ===

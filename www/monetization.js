@@ -31,9 +31,6 @@ const MonetizationManager = {
     init: function() {
         if (this.isInitialized) return;
         
-        // Network durumunu test et
-        this.testNetworkConnection();
-        
         // Platform tespiti
         const platform = window.Capacitor ? window.Capacitor.getPlatform() : 'web';
         const isNativeApp = platform === 'ios' || platform === 'android';
@@ -56,30 +53,6 @@ const MonetizationManager = {
         }
         
         this.isInitialized = true;
-    },
-
-    // Network bağlantısını test et
-    testNetworkConnection: function() {
-        console.log('[Monetization Debug] Testing network connection...');
-        console.log('[Monetization Debug] Navigator.onLine:', navigator.onLine);
-        
-        // Google DNS'e ping atarak gerçek bağlantıyı test et
-        if (navigator.onLine) {
-            fetch('https://dns.google/resolve?name=google.com&type=A', {
-                method: 'GET',
-                mode: 'cors',
-                cache: 'no-cache'
-            }).then(response => {
-                if (response.ok) {
-                    console.log('[Monetization Debug] Network connection verified: OK');
-                } else {
-                    console.log('[Monetization Debug] Network connection test failed: Response not OK');
-                }
-            }).catch(error => {
-                console.log('[Monetization Debug] Network connection test failed:', error.message);
-                console.log('[Monetization Debug] This might be an emulator without internet access');
-            });
-        }
     },
 
     // === EARLY ATT REQUEST (iOS) ===

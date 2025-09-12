@@ -582,20 +582,6 @@ document.addEventListener('DOMContentLoaded', () => {
         container.classList.add('fade-in');
     }
     
-    // Main menu ve logoyu görünür yap
-    const mainMenu = document.getElementById('main-menu');
-    const mainLogo = document.querySelector('.main-logo-container');
-    
-    if (mainMenu) {
-        mainMenu.style.display = 'block';
-        console.log('✅ Main menu görünür yapıldı');
-    }
-    
-    if (mainLogo) {
-        mainLogo.style.display = 'block';
-        console.log('✅ Main logo görünür yapıldı');
-    }
-    
     // Android'de 1 saniye sonra tekrar kontrol et
     if (platform === 'capacitor') {
         setTimeout(() => {
