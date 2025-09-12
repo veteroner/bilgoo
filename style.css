@@ -40,6 +40,291 @@
     border-radius: 0 !important;
 }
 
+/* Android Platform Specific Login & Language Selection Fixes */
+.platform-android .user-preferences-container,
+body.platform-android .user-preferences-container,
+html.platform-android .user-preferences-container,
+[data-platform="android"] .user-preferences-container {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 10000 !important;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+}
+
+.platform-android .user-preferences-container.hidden,
+body.platform-android .user-preferences-container.hidden,
+html.platform-android .user-preferences-container.hidden,
+[data-platform="android"] .user-preferences-container.hidden {
+    display: none !important;
+}
+
+.platform-android .login-container,
+body.platform-android .login-container,
+html.platform-android .login-container,
+[data-platform="android"] .login-container {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 10000 !important;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+}
+
+.platform-android .auth-box,
+body.platform-android .auth-box,
+html.platform-android .auth-box,
+[data-platform="android"] .auth-box {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-radius: 16px !important;
+    padding: 30px !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    max-width: 500px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    position: relative !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+}
+
+.platform-android .language-btn,
+body.platform-android .language-btn,
+html.platform-android .language-btn,
+[data-platform="android"] .language-btn {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding: 12px 24px !important;
+    margin: 5px !important;
+    border: 2px solid #4a90e2 !important;
+    background: white !important;
+    color: #4a90e2 !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+.platform-android .language-btn:hover,
+.platform-android .language-btn.selected,
+body.platform-android .language-btn:hover,
+body.platform-android .language-btn.selected,
+html.platform-android .language-btn:hover,
+html.platform-android .language-btn.selected,
+[data-platform="android"] .language-btn:hover,
+[data-platform="android"] .language-btn.selected {
+    background: #4a90e2 !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3) !important;
+}
+
+.platform-android .btn-primary,
+body.platform-android .btn-primary,
+html.platform-android .btn-primary,
+[data-platform="android"] .btn-primary {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    padding: 15px !important;
+    background: linear-gradient(45deg, #4a90e2, #357abd) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    margin-top: 15px !important;
+}
+
+.platform-android .btn-primary:hover {
+    background: linear-gradient(45deg, #357abd, #2c6aa0) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4) !important;
+}
+
+/* Android Platform Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.platform-android .fade-in {
+    animation: fadeInUp 0.5s ease-out !important;
+}
+
+/* Android Input Fields Fix */
+.platform-android input[type="email"],
+.platform-android input[type="password"],
+.platform-android input[type="text"],
+body.platform-android input[type="email"],
+body.platform-android input[type="password"],
+body.platform-android input[type="text"],
+html.platform-android input[type="email"],
+html.platform-android input[type="password"],
+html.platform-android input[type="text"],
+[data-platform="android"] input[type="email"],
+[data-platform="android"] input[type="password"],
+[data-platform="android"] input[type="text"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    padding: 12px 16px !important;
+    border: 2px solid #e1e8ed !important;
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    background: white !important;
+    color: #333 !important;
+    box-sizing: border-box !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+}
+
+.platform-android input[type="email"]:focus,
+.platform-android input[type="password"]:focus,
+.platform-android input[type="text"]:focus,
+body.platform-android input[type="email"]:focus,
+body.platform-android input[type="password"]:focus,
+body.platform-android input[type="text"]:focus,
+html.platform-android input[type="email"]:focus,
+html.platform-android input[type="password"]:focus,
+html.platform-android input[type="text"]:focus,
+[data-platform="android"] input[type="email"]:focus,
+[data-platform="android"] input[type="password"]:focus,
+[data-platform="android"] input[type="text"]:focus {
+    border-color: #4a90e2 !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1) !important;
+}
+
+/* Android Form Group Fix */
+.platform-android .form-group,
+body.platform-android .form-group,
+html.platform-android .form-group,
+[data-platform="android"] .form-group {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin-bottom: 20px !important;
+    width: 100% !important;
+}
+
+.platform-android .form-group label,
+body.platform-android .form-group label,
+html.platform-android .form-group label,
+[data-platform="android"] .form-group label {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin-bottom: 8px !important;
+    font-weight: 600 !important;
+    color: #333 !important;
+    font-size: 14px !important;
+}
+
+/* Android Language Options Fix */
+.platform-android .language-options,
+body.platform-android .language-options,
+html.platform-android .language-options,
+[data-platform="android"] .language-options {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    justify-content: center !important;
+    margin-top: 15px !important;
+}
+
+/* Android Splash Screen Override */
+.platform-android #splash-screen,
+body.platform-android #splash-screen,
+html.platform-android #splash-screen,
+[data-platform="android"] #splash-screen {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Android Emergency Fallback - Force All Login Elements Visible */
+@media screen and (max-width: 2000px) {
+    /* En geniş media query ile Android için tüm elementleri zorla görünür yap */
+    body[data-platform="android"] .user-preferences-container,
+    body[data-platform="android"] .login-container,
+    html[data-platform="android"] .user-preferences-container,
+    html[data-platform="android"] .login-container {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        z-index: 99999 !important;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    }
+    
+    body[data-platform="android"] .auth-box,
+    html[data-platform="android"] .auth-box {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        padding: 30px !important;
+        border-radius: 16px !important;
+        margin: 50px auto !important;
+        max-width: 500px !important;
+        width: calc(100% - 40px) !important;
+    }
+    
+    body[data-platform="android"] .language-btn,
+    body[data-platform="android"] .btn-primary,
+    body[data-platform="android"] input,
+    body[data-platform="android"] label,
+    body[data-platform="android"] .form-group,
+    html[data-platform="android"] .language-btn,
+    html[data-platform="android"] .btn-primary,
+    html[data-platform="android"] input,
+    html[data-platform="android"] label,
+    html[data-platform="android"] .form-group {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
+
 .mobile-top-banner .adsbygoogle {
     width: 320px !important;
     height: 50px !important;

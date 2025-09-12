@@ -3,6 +3,101 @@
 // Bu dosya JavaScript'tir, TypeScript değildir.
 // Script Version 3.0 - Firebase puan kaydetme sistemi tamamlandı
 
+// === DEBOUNCE SİSTEMİ - UYGULAMANİN KİLİTLENMESİNİ ÖNLER ===
+window.ClickManager = {
+    isProcessing: false,
+    lastClickTime: 0,
+    debounceDelay: 300, // 300ms bekleme süresi
+    
+    // Güvenli click handler
+    safeClick: function(callback, element) {
+        const now = Date.now();
+        
+        // Çok hızlı tıklamaları engelle
+        if (now - this.lastClickTime < this.debounceDelay) {
+            console.log('⚠️ Click çok hızlı, engellendi');
+            return false;
+        }
+        
+        // Zaten işlem yapılıyorsa engelle
+        if (this.isProcessing) {
+            console.log('⚠️ İşlem devam ediyor, click engellendi');
+            return false;
+        }
+        
+        this.isProcessing = true;
+        this.lastClickTime = now;
+        
+        // Element'i geçici olarak devre dışı bırak
+        if (element) {
+            element.style.pointerEvents = 'none';
+            element.style.opacity = '0.7';
+        }
+        
+        try {
+            // Callback'i çalıştır
+            const result = callback();
+            
+            // Promise ise bekleme ekle
+            if (result && typeof result.then === 'function') {
+                return result.finally(() => {
+                    this.resetState(element);
+                });
+            } else {
+                // Normal fonksiyon ise kısa bir gecikme ekle
+                setTimeout(() => {
+                    this.resetState(element);
+                }, 200);
+                return result;
+            }
+        } catch (error) {
+            console.error('Click callback error:', error);
+            this.resetState(element);
+            return false;
+        }
+    },
+    
+    // State'i sıfırla
+    resetState: function(element) {
+        this.isProcessing = false;
+        
+        if (element) {
+            element.style.pointerEvents = '';
+            element.style.opacity = '';
+        }
+    },
+    
+    // Tüm butonlara güvenli click ekle
+    initSafeClicks: function() {
+        console.log('🔒 Güvenli click sistemi başlatılıyor...');
+        
+        // Tüm butonları bul
+        const buttons = document.querySelectorAll('button, .btn, .option, .tab-item, .menu-item');
+        
+        buttons.forEach(button => {
+            // Eski event listener'ları temizle
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+            
+            // Yeni güvenli event listener ekle
+            newButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Orijinal click handler'ı bul ve çalıştır
+                const onclick = newButton.getAttribute('onclick');
+                if (onclick) {
+                    this.safeClick(() => {
+                        eval(onclick);
+                    }, newButton);
+                }
+            });
+        });
+        
+        console.log(`✅ ${buttons.length} butona güvenli click eklendi`);
+    }
+};
+
 // Global debug fonksiyonları - İstatistik sorunlarını çözmek için
 window.testProfileStats = function() {
     console.log('=== PROFİL İSTATİSTİK TEST ===');
@@ -11692,24 +11787,193 @@ function getCurrentLanguage() {
 }
 
 // Çerez bildirimi dil desteği
+// Çerez bildirimi dil desteği (geriye uyumluluk için)
 window.updateCookieConsentLanguage = function() {
+    // Yeni fonksiyonu çağır
+    if (typeof window.updateCookieConsentTexts === 'function') {
+        window.updateCookieConsentTexts();
+        return;
+    }
+    
     const currentLang = getCurrentLanguage();
     const cookieTexts = window.languages && window.languages[currentLang]?.cookies || 
                        window.languages && window.languages['tr'].cookies || {
         title: 'Çerez Bildirimi',
         message: 'Web sitemiz, size daha iyi hizmet verebilmek ve reklamları kişiselleştirmek için çerezler kullanır.',
-        acceptEssential: 'Sadece Gerekli',
         acceptAll: 'Tümünü Kabul Et',
-        settings: 'Ayarlar',
+        acceptEssential: 'Sadece Gerekli',
+        customize: 'Özelleştir'
+    };
+    
+    // Cookie consent elementlerini güncelle
+    const titleElement = document.querySelector('#cookie-consent h3');
+    if (titleElement) titleElement.textContent = cookieTexts.title;
+    
+    const messageElement = document.querySelector('#cookie-consent .cookie-text p');
+    if (messageElement) messageElement.innerHTML = cookieTexts.message + ' <a href="privacy-policy.html" target="_blank">Gizlilik Politikası</a>';
+    
+    const acceptAllBtn = document.getElementById('accept-all');
+    if (acceptAllBtn) acceptAllBtn.textContent = cookieTexts.acceptAll;
+    
+    const acceptEssentialBtn = document.getElementById('accept-essential');
+    if (acceptEssentialBtn) acceptEssentialBtn.textContent = cookieTexts.acceptEssential;
+    
+    const customizeBtn = document.getElementById('customize-cookies');
+    if (customizeBtn) customizeBtn.textContent = cookieTexts.customize;
+};
+
+// Font Awesome icon yükleme kontrolü ve fallback sistemi
+window.initializeIcons = function() {
+    console.log('🎨 Icon sistemi başlatılıyor...');
+    
+    // Font Awesome yüklenip yüklenmediğini kontrol et
+    function checkFontAwesome() {
+        const testElement = document.createElement('i');
+        testElement.className = 'fa fa-home';
+        testElement.style.position = 'absolute';
+        testElement.style.left = '-9999px';
+        document.body.appendChild(testElement);
+        
+        const isLoaded = window.getComputedStyle(testElement, ':before').content !== 'none';
+        document.body.removeChild(testElement);
+        
+        return isLoaded;
+    }
+    
+    // Icon fallback sistemi
+    function applyIconFallbacks() {
+        console.log('📱 Icon fallback sistemi aktif');
+        
+        // Kritik iconları fallback ile değiştir
+        const iconMappings = {
+            'fa-heart': '♥',
+            'fa-star': '★', 
+            'fa-home': '🏠',
+            'fa-user': '👤',
+            'fa-users': '👥',
+            'fa-trophy': '🏆',
+            'fa-cog': '⚙',
+            'fa-gear': '⚙',
+            'fa-sun': '☀',
+            'fa-moon': '🌙',
+            'fa-times': '×',
+            'fa-close': '×',
+            'fa-check': '✓',
+            'fa-question': '?',
+            'fa-lightbulb': '💡',
+            'fa-clock': '⏰',
+            'fa-bars': '☰',
+            'fa-play': '▶',
+            'fa-pause': '⏸',
+            'fa-stop': '⏹',
+            'fa-medal': '🏅',
+            'fa-crown': '👑',
+            'fa-fire': '🔥',
+            'fa-bolt': '⚡',
+            'fa-gamepad': '🎮',
+            'fa-brain': '🧠'
+        };
+        
+        // Her icon sınıfı için fallback uygula
+        Object.entries(iconMappings).forEach(([className, symbol]) => {
+            const elements = document.querySelectorAll(`.${className}`);
+            elements.forEach(el => {
+                if (!el.textContent.trim()) {
+                    el.textContent = symbol;
+                    el.style.fontFamily = 'inherit';
+                    el.style.fontSize = '1em';
+                }
+            });
+        });
+    }
+    
+    // Font Awesome kontrol et
+    setTimeout(() => {
+        if (!checkFontAwesome()) {
+            console.warn('⚠️ Font Awesome yüklenemedi, fallback sistemi devreye giriyor');
+            applyIconFallbacks();
+            
+            // Yerel CSS dosyasını yükle
+            const fallbackLink = document.createElement('link');
+            fallbackLink.rel = 'stylesheet';
+            fallbackLink.href = 'font-awesome-minimal.css';
+            document.head.appendChild(fallbackLink);
+        } else {
+            console.log('✅ Font Awesome başarıyla yüklendi');
+        }
+    }, 1000);
+};
+
+// DOM yüklendiğinde çalışacak fonksiyonlar
+document.addEventListener('DOMContentLoaded', function() {
+    // Icon sistemini başlat
+    if (typeof window.initializeIcons === 'function') {
+        window.initializeIcons();
+    }
+    
+    // Cookie consent dil desteğini başlat
+    if (typeof window.updateCookieConsentTexts === 'function') {
+        window.updateCookieConsentTexts();
+    }
+});
+
+// Uygulama kilitleniyor sorunu için event listener optimizasyonu
+window.optimizeEventListeners = function() {
+    console.log('🔧 Event listener optimizasyonu başlatılıyor...');
+    
+    // Passive event listener'lar için touch eventleri
+    document.addEventListener('touchstart', function(e) {
+        // Dokunma başlangıcı için optimizasyon
+    }, { passive: true });
+    
+    document.addEventListener('touchmove', function(e) {
+        // Dokunma hareketi için optimizasyon
+    }, { passive: true });
+    
+    // Click event'lerini debounce et
+    const originalAddEventListener = Element.prototype.addEventListener;
+    Element.prototype.addEventListener = function(type, listener, options) {
+        if (type === 'click') {
+            const debouncedListener = debounce(listener, 300);
+            return originalAddEventListener.call(this, type, debouncedListener, options);
+        }
+        return originalAddEventListener.call(this, type, listener, options);
+    };
+    
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+    
+    console.log('✅ Event listener optimizasyonu tamamlandı');
+};
+
+// Çerez bildirimi dil desteği güncelleyici
+window.updateCookieConsentTexts = function() {
+    const currentLang = getCurrentLanguage();
+    const cookieTexts = window.languages && window.languages[currentLang]?.cookies || 
+                       window.languages && window.languages['tr'].cookies || {
+        title: 'Çerez Bildirimi',
+        message: 'Web sitemiz, size daha iyi hizmet verebilmek ve reklamları kişiselleştirmek için çerezler kullanır.',
+        acceptAll: 'Tümünü Kabul Et',
+        acceptEssential: 'Sadece Gerekli',
+        customize: 'Özelleştir',
         settingsTitle: 'Çerez Ayarları',
-        essentialCookies: 'Zorunlu Çerezler',
-        essentialCookiesDesc: 'Sitenin çalışması için gerekli çerezler',
+        essentialCookies: 'Gerekli Çerezler',
+        essentialCookiesDesc: 'Bu çerezler web sitesinin çalışması için gereklidir.',
         analyticsCookies: 'Analitik Çerezler',
-        analyticsCookiesDesc: 'Site kullanımını analiz etmek için kullanılır',
+        analyticsCookiesDesc: 'Bu çerezler web sitesi performansını analiz etmek için kullanılır.',
         advertisingCookies: 'Reklam Çerezleri',
-        advertisingCookiesDesc: 'Kişiselleştirilmiş reklamlar göstermek için kullanılır',
+        advertisingCookiesDesc: 'Bu çerezler kişiselleştirilmiş reklamlar göstermek için kullanılır.',
         save: 'Kaydet',
-        privacyPolicy: 'Gizlilik Politikamızı'
+        privacyPolicy: 'Gizlilik Politikası'
     };
     
     // Çerez banneri
@@ -11752,14 +12016,80 @@ window.updateCookieConsentLanguage = function() {
 document.addEventListener('languageChanged', function() {
     console.log('🌐 Dil değişti, çerez bildirimi güncelleniyor...');
     setTimeout(() => {
-        window.updateCookieConsentLanguage?.();
+        if (typeof window.updateCookieConsentTexts === 'function') {
+            window.updateCookieConsentTexts();
+        }
+    }, 100);
+});
+
+// DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('📱 DOM yüklendi, sistemler başlatılıyor...');
+    
+    // Platform sınıflarını hemen ekle
+    if (window.Capacitor) {
+        const platform = window.Capacitor.getPlatform();
+        console.log('🔧 Capacitor platform:', platform);
+        
+        document.body.classList.add('platform-capacitor');
+        document.documentElement.classList.add('platform-capacitor');
+        
+        if (platform) {
+            document.body.classList.add(`platform-${platform}`);
+            document.documentElement.classList.add(`platform-${platform}`);
+            console.log(`✅ Platform sınıfları eklendi: platform-capacitor, platform-${platform}`);
+        }
+        
+        // Mobile tab bar'ı hemen aktif et
+        setTimeout(() => {
+            const mobileTabBar = document.querySelector('.mobile-tab-bar');
+            if (mobileTabBar) {
+                mobileTabBar.style.display = 'flex';
+                mobileTabBar.style.visibility = 'visible';
+                mobileTabBar.style.position = 'fixed';
+                mobileTabBar.style.bottom = '0';
+                mobileTabBar.style.zIndex = '9999';
+                console.log('📱 Mobile tab bar aktif edildi');
+            }
+            
+            // Desktop hamburger menüyü gizle
+            const hamburgerToggle = document.querySelector('.hamburger-toggle');
+            if (hamburgerToggle) {
+                hamburgerToggle.style.display = 'none';
+            }
+        }, 100);
+    }
+    
+    // Click güvenlik sistemini başlat
+    if (window.ClickManager) {
+        window.ClickManager.initSafeClicks();
+    }
+    
+    // Icon sistemini başlat
+    if (window.initializeIcons) {
+        window.initializeIcons();
+    }
+    
+    // Event listener optimizasyonu
+    if (window.optimizeEventListeners) {
+        window.optimizeEventListeners();
+    }
+    
+    console.log('✅ Tüm sistemler başlatıldı');
+});
+
+// languageChanged eventini dinle
+document.addEventListener('languageChanged', function() {
+    console.log('🌐 Dil değişti, çerez bildirimi güncelleniyor...');
+    setTimeout(() => {
+        window.updateCookieConsentTexts?.();
     }, 100);
 });
 
 // Sayfa yüklendiğinde çerez bildirimi dilini güncelle
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
-        window.updateCookieConsentLanguage?.();
+        window.updateCookieConsentTexts?.();
     }, 500);
 });
 

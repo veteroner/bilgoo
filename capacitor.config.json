@@ -18,6 +18,9 @@
       "maxAdContentRating": "MA",
       "autobind": true
     },
+    "Network": {
+      "alias": "NetworkPlugin"
+    },
     "ATTrackingManager": {
       "requestAuthorizationMessage": "Bu uygulama, size daha alakalı ve kişiselleştirilmiş reklamlar gösterebilmek için diğer şirketlerin uygulama ve web sitelerinden gelen verilerinizi kullanmak istiyor. Bu izni vermezseniz de uygulamayı tam olarak kullanabilirsiniz."
     },
