@@ -1185,6 +1185,28 @@ const quizApp = {
     // Dil ayarlarını yükle
     loadLanguageSettings: function() {
         try {
+            // 2025-09-12: Dil migrasyonu - açık bir kullanıcı seçimi yoksa cihaz diline (TR ise TR) geç
+            try {
+                const MIGRATION_FLAG = 'lang_fix_20250912';
+                if (!localStorage.getItem(MIGRATION_FLAG)) {
+                    const explicitLangKeys = [
+                        localStorage.getItem('language'),
+                        localStorage.getItem('selectedLanguage'),
+                        localStorage.getItem(this.LANGUAGE_KEY)
+                    ].filter(Boolean);
+                    const userLangStored = localStorage.getItem('user_language');
+                    const supported = ['tr', 'en', 'de'];
+
+                    // Eğer kullanıcı daha önce açıkça seçim yapmamışsa: varsayılanı daima TR yap
+                    if (explicitLangKeys.length === 0 && (!userLangStored || !supported.includes(userLangStored))) {
+                        localStorage.setItem('user_language', 'tr');
+                        localStorage.setItem(this.LANGUAGE_KEY, 'tr');
+                        localStorage.setItem('quizLanguage', 'tr'); // geriye dönük uyumluluk
+                    }
+                    localStorage.setItem(MIGRATION_FLAG, '1');
+                }
+            } catch (_) { /* mig hata verirse görmezden gel */ }
+
             // Local storage'dan tercihler ekranında seçilen dili kontrol et
             const userLanguage = localStorage.getItem('user_language');
             
@@ -1202,21 +1224,12 @@ const quizApp = {
                     this.currentLanguage = savedLanguage;
                     console.log(`Kaydedilmiş dil ayarı: ${this.currentLanguage}`);
                 } else {
-                    // Tarayıcı dilini kontrol et
-                    const browserLang = navigator.language || navigator.userLanguage;
-                    if (browserLang) {
-                        const lang = browserLang.substring(0, 2).toLowerCase();
-                        
-                        // Desteklenen diller
-                        if (['tr', 'en', 'de'].includes(lang)) {
-                            this.currentLanguage = lang;
-                        } else {
-                            // Desteklenmeyen dil durumunda varsayılan olarak Türkçe
-                            this.currentLanguage = 'tr';
-                        }
-                        
-                        console.log(`Tarayıcı dili: ${browserLang}, Uygulama dili: ${this.currentLanguage}`);
-                    }
+                    // İlk çalıştırmada varsayılan dili doğrudan Türkçe yap
+                    this.currentLanguage = 'tr';
+                    localStorage.setItem('user_language', 'tr');
+                    localStorage.setItem(this.LANGUAGE_KEY, 'tr');
+                    localStorage.setItem('quizLanguage', 'tr');
+                    console.log('İlk kurulum: Varsayılan dil TR olarak ayarlandı');
                 }
             }
             
@@ -1745,11 +1758,12 @@ const quizApp = {
             
             // Joker butonları - bunlar daha spesifik olabilir
             this.updateMobileTabText('joker-tab-fifty', '50:50', '50:50', '50:50');
-            this.updateMobileTabTextFromLanguage('joker-tab-hint', 'hint');
-            this.updateMobileTabTextFromLanguage('joker-tab-time', 'timeExtension');
-            this.updateMobileTabTextFromLanguage('joker-tab-skip', 'skipQuestion');
-            this.updateMobileTabText('joker-tab-store', 'Mağaza', 'Store', 'Shop');
-            this.updateMobileTabTextFromLanguage('joker-tab-home', 'exit');
+            // languages.js anahtarları: jokerHint, jokerTime, jokerSkip, jokerStore, backToMenu
+            this.updateMobileTabTextFromLanguage('joker-tab-hint', 'jokerHint');
+            this.updateMobileTabTextFromLanguage('joker-tab-time', 'jokerTime');
+            this.updateMobileTabTextFromLanguage('joker-tab-skip', 'jokerSkip');
+            this.updateMobileTabTextFromLanguage('joker-tab-store', 'jokerStore');
+            this.updateMobileTabTextFromLanguage('joker-tab-home', 'backToMenu');
             
             console.log("Mobil menü ve joker menü çevirileri güncellendi. Dil:", lang);
         } catch (error) {
