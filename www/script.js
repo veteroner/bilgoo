@@ -10492,11 +10492,20 @@ const quizApp = {
                     };
                     
                     // Firestore'a boş istatistik verisi kaydet
-                    db.collection('users').doc(userId).update({
-                        stats: this.userStats
-                    }).catch(error => {
-                        console.error('İstatistik güncelleme hatası:', error);
-                    });
+                    if (firebase && firebase.firestore && typeof firebase.firestore === 'function') {
+                        const db = firebase.firestore();
+                        if (db && typeof db.collection === 'function') {
+                            db.collection('users').doc(userId).update({
+                                stats: this.userStats
+                            }).catch(error => {
+                                console.error('İstatistik güncelleme hatası:', error);
+                            });
+                        } else {
+                            console.warn('Firestore collection method not available for stats update');
+                        }
+                    } else {
+                        console.warn('Firebase not available for stats update');
+                    }
                 }
             })
             .catch((error) => {
@@ -10576,24 +10585,33 @@ const quizApp = {
             };
             
             // Firestore bağlantısını test et (izin hatalarını kontrol et)
-            if (firebase.firestore) {
-                // Firestore kurallarını test et
-                firebase.firestore().collection('highScores').limit(1)
-                    .get()
-                    .then(() => {
-                        console.log('✅ Firestore bağlantısı ve izinleri başarılı');
-                    })
-                    .catch(error => {
-                        console.warn('⚠️ Firestore bağlantı sorunu:', error.message);
-                        
-                        if (error.message.includes('Missing or insufficient permissions')) {
-                            console.error('🔒 Firestore güvenlik kuralları yetersiz! Admin panelinden kuralları güncelleyin.');
-                            this.showToast('Veri tabanı izinleri güncellenmeli - Admin ile iletişime geçin', 'toast-warning');
-                        } else if (error.code === 'unavailable') {
-                            console.warn('📡 Firebase sunucularına ulaşılamıyor');
-                            this.showToast('Sunucu bağlantısı kurulamadı, tek oyunculu modda oynayın', 'toast-info');
-                        }
-                    });
+            if (firebase && firebase.firestore && typeof firebase.firestore === 'function') {
+                try {
+                    // Firestore kurallarını test et
+                    const db = firebase.firestore();
+                    if (db && typeof db.collection === 'function') {
+                        db.collection('highScores').limit(1)
+                            .get()
+                            .then(() => {
+                                console.log('✅ Firestore bağlantısı ve izinleri başarılı');
+                            })
+                            .catch(error => {
+                                console.warn('⚠️ Firestore bağlantı sorunu:', error.message);
+                                
+                                if (error.message.includes('Missing or insufficient permissions')) {
+                                    console.error('🔒 Firestore güvenlik kuralları yetersiz! Admin panelinden kuralları güncelleyin.');
+                                    this.showToast('Veri tabanı izinleri güncellenmeli - Admin ile iletişime geçin', 'toast-warning');
+                                } else if (error.code === 'unavailable') {
+                                    console.warn('📡 Firebase sunucularına ulaşılamıyor');
+                                    this.showToast('Sunucu bağlantısı kurulamadı, tek oyunculu modda oynayın', 'toast-info');
+                                }
+                            });
+                    } else {
+                        console.warn('⚠️ Firestore collection method not available');
+                    }
+                } catch (error) {
+                    console.warn('⚠️ Firestore initialization error:', error.message);
+                }
             }
         } catch (error) {
             console.error('Tarayıcı engelleme testi sırasında hata:', error);
