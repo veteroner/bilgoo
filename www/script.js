@@ -11717,4 +11717,38 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 500);
 });
 
+// Android özel düzeltmeler
+document.addEventListener('DOMContentLoaded', function() {
+    // Sadece Android platformunda android-fixes.css dosyasını yükle
+    if (window.Capacitor && window.Capacitor.getPlatform && window.Capacitor.getPlatform() === 'android') {
+        const androidCSS = document.createElement('link');
+        androidCSS.rel = 'stylesheet';
+        androidCSS.href = 'android-fixes.css?v=1.0';
+        document.head.appendChild(androidCSS);
+        console.log('Android özel CSS yüklendi');
+        
+        // Android'de joker tab metinlerini Türkçe yap
+        setTimeout(() => {
+            const jokerTabs = {
+                'joker-tab-fifty': '50:50',
+                'joker-tab-hint': 'İpucu',
+                'joker-tab-time': 'Süre',
+                'joker-tab-skip': 'Geç',
+                'joker-tab-store': 'Mağaza',
+                'joker-tab-home': 'Çıkış'
+            };
+            
+            Object.entries(jokerTabs).forEach(([id, text]) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    const span = element.querySelector('span');
+                    if (span) span.textContent = text;
+                }
+            });
+            
+            console.log('Android joker tab metinleri Türkçe yapıldı');
+        }, 1000);
+    }
+});
+
  
