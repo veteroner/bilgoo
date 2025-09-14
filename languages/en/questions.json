@@ -1180,11 +1180,11 @@
       "correctAnswer": "SYLLABLE"
     },
     {
-      "question": "In Divan literature, _____ is an important form.",
+      "question": "In Classical poetry, _____ is an important form.",
       "difficulty": 2,
       "id": "Q0103",
       "options": [],
-      "correctAnswer": "GAZELLE"
+      "correctAnswer": "SONNET"
     },
     {
       "question": "Which philosophical school was founded by Heraclitus and is known for the principle 'Everything flows'?",
@@ -1233,7 +1233,7 @@
         "Everglades"
       ],
       "correctAnswer": "Yellowstone",
-      "imageUrl": "assets/images/questions/geography_cappadocia.jpg"
+      "imageUrl": "assets/images/questions/geography_yellowstone.jpg"
     },
     {
       "question": "What does Edmund Husserl's fundamental concept 'Epoché', founder of phenomenology, refer to?",
@@ -5877,7 +5877,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/history_fatih_sultan.jpg"
+      "imageUrl": "assets/images/questions/history_henry_viii.jpg"
     },
     {
       "question": "The American War of Independence took place between 1775-1783.",
@@ -7014,7 +7014,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/geography_istanbul.jpg"
+      "imageUrl": "assets/images/questions/geography_london.jpg"
     },
     {
       "question": "The Grand Canyon is located in Arizona.",
@@ -8667,15 +8667,15 @@
       "id": "Q1018"
     },
     {
-      "question": "In Turkish Folk Music, what does 'türkü' mean?",
+      "question": "In American Folk Music, what does 'ballad' mean?",
       "type": "MultipleChoice",
       "options": [
         "Dance",
-        "Song",
+        "Narrative song",
         "Instrument",
         "Rhythm"
       ],
-      "correctAnswer": "Song",
+      "correctAnswer": "Narrative song",
       "difficulty": 1,
       "id": "Q1019"
     },
@@ -9764,15 +9764,15 @@
       "correctAnswer": "16th century"
     },
     {
-      "question": "Who founded the 'Büyük Doğu' magazine in Turkish literature?",
+      "question": "Who founded 'The Atlantic' magazine in American literature?",
       "type": "MultipleChoice",
       "options": [
-        "Necip Fazıl Kısakürek",
-        "Sezai Karakoç",
-        "Cahit Zarifoğlu",
-        "Mehmet Akif Ersoy"
+        "Ralph Waldo Emerson",
+        "Henry Wadsworth Longfellow",
+        "Oliver Wendell Holmes Sr.",
+        "James Russell Lowell"
       ],
-      "correctAnswer": "Necip Fazıl Kısakürek",
+      "correctAnswer": "James Russell Lowell",
       "difficulty": 3,
       "id": "Q1025"
     },
@@ -9842,249 +9842,712 @@
       "id": "Q1030"
     },
     {
-      "question": "What is the first Turkish novel?",
+      "question": "What is considered the first American novel?",
       "type": "MultipleChoice",
       "options": [
-        "Taaşşuk-u Talat ve Fitnat",
-        "Araba Sevdası",
-        "İntibah",
-        "Felâtun Bey ile Râkım Efendi"
+        "The Power of Sympathy",
+        "Charlotte Temple",
+        "The Coquette",
+        "Wieland"
       ],
-      "correctAnswer": "Taaşşuk-u Talat ve Fitnat",
+      "correctAnswer": "The Power of Sympathy",
       "difficulty": 3,
       "id": "Q1031"
     }
   ],
   "Image Questions": [
     {
-      "question": "What is the name of this musical instrument?",
-      "type": "MultipleChoice",
-      "options": [
-        "Violin",
-        "Viola",
-        "Cello",
-        "Double bass"
-      ],
-      "correctAnswer": "Violin",
+      "question": "Is this historic building located in London Big Ben?",
       "difficulty": 1,
-      "id": "Q1009",
-      "imageUrl": "assets/images/questions/music_violin.jpg",
-      "originalCategory": "Music"
+      "id": "Q0054",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_026.jpg"
     },
     {
-      "question": "Who is this composer?",
-      "type": "MultipleChoice",
-      "options": [
-        "Mozart",
-        "Beethoven",
-        "Bach",
-        "Chopin"
-      ],
-      "correctAnswer": "Mozart",
-      "difficulty": 2,
-      "id": "Q1010",
-      "imageUrl": "assets/images/questions/music_mozart.jpg",
-      "originalCategory": "Music"
-    },
-    {
-      "question": "Who is this famous writer?",
-      "type": "MultipleChoice",
-      "options": [
-        "Orhan Pamuk",
-        "Yaşar Kemal",
-        "Nazım Hikmet",
-        "Sabahattin Ali"
-      ],
-      "correctAnswer": "Orhan Pamuk",
-      "difficulty": 2,
-      "id": "Q1011",
-      "imageUrl": "assets/images/questions/literature_orhan_pamuk.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "Which author wrote this classic work?",
-      "type": "MultipleChoice",
-      "options": [
-        "William Shakespeare",
-        "Charles Dickens",
-        "Mark Twain",
-        "Oscar Wilde"
-      ],
-      "correctAnswer": "William Shakespeare",
-      "difficulty": 2,
-      "id": "Q1012",
-      "imageUrl": "assets/images/questions/literature_hamlet.jpg",
-      "originalCategory": "Literature"
-    },
-    {
-      "question": "Which planet is shown in this image?",
-      "type": "MultipleChoice",
-      "options": [
-        "Mars",
-        "Venus",
-        "Jupiter",
-        "Saturn"
-      ],
-      "correctAnswer": "Mars",
-      "difficulty": 2,
-      "id": "Q1013",
-      "imageUrl": "assets/images/questions/science_mars.jpg",
-      "originalCategory": "Science"
-    },
-    {
-      "question": "Which civilization does this historical structure belong to?",
-      "type": "MultipleChoice",
-      "options": [
-        "Roman",
-        "Greek",
-        "Egyptian",
-        "Babylonian"
-      ],
-      "correctAnswer": "Roman",
-      "difficulty": 2,
-      "id": "Q1014",
-      "imageUrl": "assets/images/questions/history_colosseum.jpg",
-      "originalCategory": "History"
-    },
-    {
-      "question": "Which ball is used in this sport?",
-      "type": "MultipleChoice",
-      "options": [
-        "Basketball",
-        "Football",
-        "Tennis ball",
-        "Volleyball"
-      ],
-      "correctAnswer": "Basketball",
+      "question": "This image shows Yellowstone National Park's hot springs.",
       "difficulty": 1,
-      "id": "Q1015",
-      "imageUrl": "assets/images/questions/sports_basketball.jpg",
-      "originalCategory": "Sports"
+      "id": "Q0055",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_027.jpg"
     },
     {
-      "question": "What is this technological device?",
-      "type": "MultipleChoice",
-      "options": [
-        "SSD Drive",
-        "RAM Memory",
-        "Processor",
-        "Motherboard"
-      ],
-      "correctAnswer": "SSD Drive",
-      "difficulty": 2,
-      "id": "Q1016",
-      "imageUrl": "assets/images/questions/tech_ssd.jpg",
-      "originalCategory": "Technology"
-    }
-  ],
-  "General Knowledge Extended": [
-    {
-      "question": "What is the largest ocean on Earth?",
+      "question": "The structure in this image is Buckingham Palace.",
       "difficulty": 1,
-      "id": "Q0800",
-      "options": [
-        "Atlantic Ocean",
-        "Indian Ocean",
-        "Pacific Ocean",
-        "Arctic Ocean"
+      "id": "Q0056",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
       ],
-      "correctAnswer": "Pacific Ocean"
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_028.jpg"
     },
     {
-      "question": "Which vitamin is produced when skin is exposed to sunlight?",
-      "difficulty": 2,
-      "id": "Q0801",
-      "options": [
-        "Vitamin A",
-        "Vitamin B",
-        "Vitamin C",
-        "Vitamin D"
-      ],
-      "correctAnswer": "Vitamin D"
-    },
-    {
-      "question": "What is the smallest country in the world?",
-      "difficulty": 2,
-      "id": "Q0802",
-      "options": [
-        "Monaco",
-        "Vatican City",
-        "San Marino",
-        "Liechtenstein"
-      ],
-      "correctAnswer": "Vatican City"
-    },
-    {
-      "question": "Which element has the chemical symbol 'Au'?",
-      "difficulty": 2,
-      "id": "Q0803",
-      "options": [
-        "Silver",
-        "Gold",
-        "Aluminum",
-        "Argon"
-      ],
-      "correctAnswer": "Gold"
-    },
-    {
-      "question": "What is the fastest land animal?",
+      "question": "The historical structure in this image is the Tower of London.",
       "difficulty": 1,
-      "id": "Q0804",
-      "options": [
-        "Lion",
-        "Cheetah",
-        "Leopard",
-        "Gazelle"
+      "id": "Q0057",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
       ],
-      "correctAnswer": "Cheetah"
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_029.jpg"
     },
     {
-      "question": "Who invented the telephone?",
+      "question": "The structure in this image is the Parthenon in ancient Athens.",
+      "difficulty": 1,
+      "id": "Q0058",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_030.jpg"
+    },
+    {
+      "question": "The world's tallest building, Burj Khalifa, is in Dubai.",
+      "difficulty": 1,
+      "id": "Q0059",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_burj_khalifa.jpg"
+    },
+    {
+      "question": "Nobel Prizes have been awarded since 1901 according to Alfred Nobel's will.",
+      "difficulty": 1,
+      "id": "Q0060",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_nobel_medal.jpg"
+    },
+    {
+      "question": "The capital of the USA is New York.",
+      "difficulty": 1,
+      "id": "Q0061",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_069.jpg"
+    },
+    {
+      "question": "The Red Sea gets its name from the algae it contains.",
+      "difficulty": 1,
+      "id": "Q0062",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_red_sea.jpg"
+    },
+    {
+      "question": "China is the most populous country in the world.",
+      "difficulty": 1,
+      "id": "Q0063",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/geography_china_population.jpg"
+    },
+    {
+      "question": "The 50 stars on the US flag represent the 50 states of America.",
+      "difficulty": 1,
+      "id": "Q0064",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_031.png"
+    },
+    {
+      "question": "Da Vinci's 'The Last Supper' painting is displayed in the Louvre Museum.",
+      "difficulty": 1,
+      "id": "Q0065",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_louvre.jpg"
+    },
+    {
+      "question": "E. coli, a type of bacteria, naturally exists in the healthy human body.",
+      "difficulty": 1,
+      "id": "Q0066",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_bacteria_ecoli.svg"
+    },
+    {
+      "question": "The Eiffel Tower was built for the 1889 Paris World's Fair.",
       "difficulty": 2,
-      "id": "Q0900",
-      "options": [
-        "Thomas Edison",
-        "Alexander Graham Bell",
-        "Nikola Tesla",
-        "Benjamin Franklin"
+      "id": "Q0067",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
       ],
-      "correctAnswer": "Alexander Graham Bell"
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_032.jpg"
     },
     {
-      "question": "What is the currency of Japan?",
+      "question": "The longest bone in the human body is the arm bone.",
       "difficulty": 1,
-      "id": "Q0901",
-      "options": [
-        "Yuan",
-        "Won",
-        "Yen",
-        "Rupee"
+      "id": "Q0068",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "choices": [
+        "True",
+        "False"
       ],
-      "correctAnswer": "Yen"
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_human_bones.jpg"
     },
     {
-      "question": "Which planet is closest to the Sun?",
+      "question": "London is the largest city in the United Kingdom.",
       "difficulty": 1,
-      "id": "Q0902",
-      "options": [
-        "Venus",
-        "Earth",
-        "Mercury",
-        "Mars"
+      "id": "Q0069",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
       ],
-      "correctAnswer": "Mercury"
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_london.jpg"
     },
     {
-      "question": "What does UNESCO stand for?",
-      "difficulty": 3,
-      "id": "Q0903",
-      "options": [
-        "United Nations Educational, Scientific and Cultural Organization",
-        "Universal Network for Education, Science and Culture Organization",
-        "United Nations Economic, Social and Cultural Organization",
-        "Universal Nations Educational, Scientific and Cultural Organization"
+      "question": "The British Grenadiers is one of the world's oldest known military marches.",
+      "difficulty": 1,
+      "id": "Q0070",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
       ],
-      "correctAnswer": "United Nations Educational, Scientific and Cultural Organization"
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_british_march.jpg"
+    },
+    {
+      "question": "The Giant's Causeway is located in Northern Ireland.",
+      "difficulty": 1,
+      "id": "Q0071",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_giants_causeway.jpg"
+    },
+    {
+      "question": "Humans have 23 pairs of chromosomes.",
+      "difficulty": 1,
+      "id": "Q0072",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_chromosome.jpg"
+    },
+    {
+      "question": "The Euro, which is the official currency of the European Union, is used in all member countries.",
+      "difficulty": 1,
+      "id": "Q0073",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_033.png"
+    },
+    {
+      "question": "The sport of golf has its roots in Scotland.",
+      "difficulty": 1,
+      "id": "Q0083",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_golf.jpg"
+    },
+    {
+      "question": "Is this historic building in New York the Statue of Liberty?",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "imageUrl": "assets/images/questions/hagia_sophia_istanbul.jpg",
+      "difficulty": 1,
+      "id": "Q1054",
+      "image": "assets/images/questions/hagia_sophia_istanbul.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "This image shows the Grand Canyon formations.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "imageUrl": "assets/images/questions/pamukkale_travertines.jpg",
+      "difficulty": 1,
+      "id": "Q1055",
+      "image": "assets/images/questions/pamukkale_travertines.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The building in this image is Dolmabahçe Palace.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "imageUrl": "assets/images/questions/dolmabahce_palace.jpg",
+      "difficulty": 1,
+      "id": "Q1056",
+      "image": "assets/images/questions/dolmabahce_palace.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The historic building in this image is the Maiden's Tower.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "imageUrl": "assets/images/questions/maiden_tower_istanbul.jpg",
+      "difficulty": 1,
+      "id": "Q1057",
+      "image": "assets/images/questions/maiden_tower_istanbul.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The building in this image is the Library of Congress in Washington D.C.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "imageUrl": "assets/images/questions/ephesus_celsus_library.jpg",
+      "difficulty": 1,
+      "id": "Q1058",
+      "image": "assets/images/questions/ephesus_celsus_library.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The world's tallest building, Burj Khalifa, is in Dubai.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q1059",
+      "imageUrl": "assets/images/questions/burj_khalifa_dubai.jpg",
+      "image": "assets/images/questions/burj_khalifa_dubai.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Nobel Prizes have been awarded since 1901 according to Alfred Nobel's will.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q1060",
+      "imageUrl": "assets/images/questions/nobel_prize_medal.jpg",
+      "image": "assets/images/questions/nobel_prize_medal.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The capital of the USA is New York.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 1,
+      "id": "Q1061",
+      "imageUrl": "assets/images/questions/washington_dc_capitol.jpg",
+      "image": "assets/images/questions/washington_dc_capitol.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The Red Sea gets its name from the algae it contains.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q1062",
+      "imageUrl": "assets/images/questions/red_sea_coral.jpg",
+      "image": "assets/images/questions/red_sea_coral.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "China is the most populous country in the world.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 1,
+      "id": "Q1063",
+      "imageUrl": "assets/images/questions/china_flag_population.jpg",
+      "image": "assets/images/questions/china_flag_population.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The 16 stars on the Presidential flag represent the 16 great Turkish states in Turkish history.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q1064",
+      "imageUrl": "assets/images/questions/presidential_flag_turkey.JPG",
+      "image": "assets/images/questions/presidential_flag_turkey.JPG",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Da Vinci's 'The Last Supper' painting is displayed in the Louvre Museum.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 1,
+      "id": "Q1065",
+      "imageUrl": "assets/images/questions/last_supper_davinci.jpg",
+      "image": "assets/images/questions/last_supper_davinci.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "E. coli, a type of bacteria, naturally exists in the healthy human body.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q1066",
+      "imageUrl": "assets/images/questions/ecoli_bacteria.jpg",
+      "image": "assets/images/questions/ecoli_bacteria.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The Eiffel Tower was built for the 1889 Paris World's Fair.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q1067",
+      "imageUrl": "assets/images/questions/eiffel_tower_paris.jpg",
+      "image": "assets/images/questions/eiffel_tower_paris.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The longest bone in the human body is the arm bone.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 1,
+      "id": "Q1068",
+      "imageUrl": "assets/images/questions/human_femur_bone.jpg",
+      "image": "assets/images/questions/human_femur_bone.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "London is the largest city in the United Kingdom.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q1069",
+      "imageUrl": "assets/images/questions/london_big_ben.jpg",
+      "image": "assets/images/questions/london_big_ben.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The Mehter March is the oldest known military march in the world.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q1070",
+      "imageUrl": "assets/images/questions/ottoman_mehter_band.jpg",
+      "image": "assets/images/questions/ottoman_mehter_band.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Fairy chimneys are located in the Ürgüp district of Nevşehir.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q1071",
+      "imageUrl": "assets/images/questions/cappadocia_fairy_chimneys.jpg",
+      "image": "assets/images/questions/cappadocia_fairy_chimneys.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Humans have 23 pairs of chromosomes.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q1072",
+      "imageUrl": "assets/images/questions/human_chromosomes.jpg",
+      "image": "assets/images/questions/human_chromosomes.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The Euro, the official currency of the European Union, is used in all member countries.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 1,
+      "id": "Q1073",
+      "imageUrl": "assets/images/questions/euro_currency.jpg",
+      "image": "assets/images/questions/euro_currency.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The sport of golf has its origins in Scotland.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q1083",
+      "imageUrl": "assets/images/questions/golf_scotland.jpg",
+      "image": "assets/images/questions/golf_scotland.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
     }
   ]
 }

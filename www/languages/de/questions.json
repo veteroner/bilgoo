@@ -9240,128 +9240,6 @@
       "id": "Q1024"
     }
   ],
-  "Bildfragen": [
-    {
-      "question": "Wie heißt dieses Musikinstrument?",
-      "type": "MultipleChoice",
-      "options": [
-        "Geige",
-        "Bratsche",
-        "Cello",
-        "Kontrabass"
-      ],
-      "correctAnswer": "Geige",
-      "difficulty": 1,
-      "id": "Q1009",
-      "imageUrl": "assets/images/questions/music_violin.jpg",
-      "originalCategory": "Musik"
-    },
-    {
-      "question": "Wer ist dieser Komponist?",
-      "type": "MultipleChoice",
-      "options": [
-        "Mozart",
-        "Beethoven",
-        "Bach",
-        "Chopin"
-      ],
-      "correctAnswer": "Mozart",
-      "difficulty": 2,
-      "id": "Q1010",
-      "imageUrl": "assets/images/questions/music_mozart.jpg",
-      "originalCategory": "Musik"
-    },
-    {
-      "question": "Wer ist dieser berühmte Schriftsteller?",
-      "type": "MultipleChoice",
-      "options": [
-        "Orhan Pamuk",
-        "Yaşar Kemal",
-        "Nazım Hikmet",
-        "Sabahattin Ali"
-      ],
-      "correctAnswer": "Orhan Pamuk",
-      "difficulty": 2,
-      "id": "Q1011",
-      "imageUrl": "assets/images/questions/literature_orhan_pamuk.jpg",
-      "originalCategory": "Literatur"
-    },
-    {
-      "question": "Welcher Autor schrieb dieses klassische Werk?",
-      "type": "MultipleChoice",
-      "options": [
-        "William Shakespeare",
-        "Charles Dickens",
-        "Mark Twain",
-        "Oscar Wilde"
-      ],
-      "correctAnswer": "William Shakespeare",
-      "difficulty": 2,
-      "id": "Q1012",
-      "imageUrl": "assets/images/questions/literature_hamlet.jpg",
-      "originalCategory": "Literatur"
-    },
-    {
-      "question": "Welcher Planet ist in diesem Bild zu sehen?",
-      "type": "MultipleChoice",
-      "options": [
-        "Mars",
-        "Venus",
-        "Jupiter",
-        "Saturn"
-      ],
-      "correctAnswer": "Mars",
-      "difficulty": 2,
-      "id": "Q1013",
-      "imageUrl": "assets/images/questions/science_mars.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Zu welcher Zivilisation gehört dieses historische Bauwerk?",
-      "type": "MultipleChoice",
-      "options": [
-        "Römisch",
-        "Griechisch",
-        "Ägyptisch",
-        "Babylonisch"
-      ],
-      "correctAnswer": "Römisch",
-      "difficulty": 2,
-      "id": "Q1014",
-      "imageUrl": "assets/images/questions/history_colosseum.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Welcher Ball wird in dieser Sportart verwendet?",
-      "type": "MultipleChoice",
-      "options": [
-        "Basketball",
-        "Fußball",
-        "Tennisball",
-        "Volleyball"
-      ],
-      "correctAnswer": "Basketball",
-      "difficulty": 1,
-      "id": "Q1015",
-      "imageUrl": "assets/images/questions/sports_basketball.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "Was ist dieses technologische Gerät?",
-      "type": "MultipleChoice",
-      "options": [
-        "SSD-Laufwerk",
-        "RAM-Speicher",
-        "Prozessor",
-        "Motherboard"
-      ],
-      "correctAnswer": "SSD-Laufwerk",
-      "difficulty": 2,
-      "id": "Q1016",
-      "imageUrl": "assets/images/questions/tech_ssd.jpg",
-      "originalCategory": "Technologie"
-    }
-  ],
   "Literatur": [
     {
       "question": "Wer gründete die Zeitschrift 'Büyük Doğu' in der türkischen Literatur?",
@@ -9453,6 +9331,701 @@
       "correctAnswer": "Taaşşuk-u Talat ve Fitnat",
       "difficulty": 3,
       "id": "Q1031"
+    }
+  ],
+  "Bildfragen": [
+    {
+      "question": "Ist dieses in London befindliche historische Gebäude Big Ben?",
+      "difficulty": 1,
+      "id": "Q2054",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_026.jpg"
+    },
+    {
+      "question": "Dieses Bild zeigt die heißen Quellen des Yellowstone-Nationalparks.",
+      "difficulty": 1,
+      "id": "Q2055",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_027.jpg"
+    },
+    {
+      "question": "Das Gebäude auf diesem Bild ist der Buckingham Palace.",
+      "difficulty": 1,
+      "id": "Q2056",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_028.jpg"
+    },
+    {
+      "question": "Das historische Gebäude auf diesem Bild ist der Tower of London.",
+      "difficulty": 1,
+      "id": "Q2057",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_029.jpg"
+    },
+    {
+      "question": "Das Gebäude auf diesem Bild ist das Parthenon im antiken Athen.",
+      "difficulty": 1,
+      "id": "Q2058",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_030.jpg"
+    },
+    {
+      "question": "Das höchste Gebäude der Welt, Burj Khalifa, befindet sich in Dubai.",
+      "difficulty": 1,
+      "id": "Q2059",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_burj_khalifa.jpg"
+    },
+    {
+      "question": "Die Nobelpreise werden seit 1901 gemäß Alfred Nobels Testament verliehen.",
+      "difficulty": 1,
+      "id": "Q2060",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_nobel_medal.jpg"
+    },
+    {
+      "question": "Die Hauptstadt der USA ist New York.",
+      "difficulty": 1,
+      "id": "Q2061",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_069.jpg"
+    },
+    {
+      "question": "Das Rote Meer erhält seinen Namen von den darin enthaltenen Algen.",
+      "difficulty": 1,
+      "id": "Q2062",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_red_sea.jpg"
+    },
+    {
+      "question": "China ist das bevölkerungsreichste Land der Welt.",
+      "difficulty": 1,
+      "id": "Q2063",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/geography_china_population.jpg"
+    },
+    {
+      "question": "Die 50 Sterne auf der US-Flagge repräsentieren die 50 Bundesstaaten Amerikas.",
+      "difficulty": 1,
+      "id": "Q2064",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_031.png"
+    },
+    {
+      "question": "Da Vincis Gemälde 'Das Abendmahl' wird im Louvre-Museum ausgestellt.",
+      "difficulty": 1,
+      "id": "Q2065",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_louvre.jpg"
+    },
+    {
+      "question": "E. coli, eine Bakterienart, kommt natürlich im gesunden menschlichen Körper vor.",
+      "difficulty": 1,
+      "id": "Q2066",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_bacteria_ecoli.svg"
+    },
+    {
+      "question": "Der Eiffelturm wurde für die Pariser Weltausstellung 1889 gebaut.",
+      "difficulty": 2,
+      "id": "Q2067",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_032.jpg"
+    },
+    {
+      "question": "Der längste Knochen im menschlichen Körper ist der Armknochen.",
+      "difficulty": 1,
+      "id": "Q2068",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_human_bones.jpg"
+    },
+    {
+      "question": "London ist die größte Stadt im Vereinigten Königreich.",
+      "difficulty": 1,
+      "id": "Q2069",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_london.jpg"
+    },
+    {
+      "question": "Die British Grenadiers ist einer der ältesten bekannten Militärmärsche der Welt.",
+      "difficulty": 1,
+      "id": "Q2070",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_british_march.jpg"
+    },
+    {
+      "question": "Giant's Causeway befindet sich in Nordirland.",
+      "difficulty": 1,
+      "id": "Q2071",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_giants_causeway.jpg"
+    },
+    {
+      "question": "Menschen haben 23 Chromosomenpaare.",
+      "difficulty": 1,
+      "id": "Q2072",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_chromosome.jpg"
+    },
+    {
+      "question": "Der Euro, die offizielle Währung der Europäischen Union, wird in allen Mitgliedsländern verwendet.",
+      "difficulty": 1,
+      "id": "Q2073",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_033.png"
+    },
+    {
+      "question": "Der Golfsport hat seine Wurzeln in Schottland.",
+      "difficulty": 1,
+      "id": "Q2083",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_golf.jpg"
+    },
+    {
+      "question": "Ist dieses historische Gebäude in Istanbul die Hagia Sophia?",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "imageUrl": "assets/images/questions/hagia_sophia_istanbul.jpg",
+      "difficulty": 1,
+      "id": "Q3054",
+      "image": "assets/images/questions/hagia_sophia_istanbul.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Dieses Bild zeigt die Pamukkale-Travertinterrassen.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "imageUrl": "assets/images/questions/pamukkale_travertines.jpg",
+      "difficulty": 1,
+      "id": "Q3055",
+      "image": "assets/images/questions/pamukkale_travertines.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Das Gebäude auf diesem Bild ist der Dolmabahçe-Palast.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "imageUrl": "assets/images/questions/dolmabahce_palace.jpg",
+      "difficulty": 1,
+      "id": "Q3056",
+      "image": "assets/images/questions/dolmabahce_palace.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Das historische Gebäude auf diesem Bild ist der Mädchenturm.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "imageUrl": "assets/images/questions/maiden_tower_istanbul.jpg",
+      "difficulty": 1,
+      "id": "Q3057",
+      "image": "assets/images/questions/maiden_tower_istanbul.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Das Gebäude auf diesem Bild ist die Celsus-Bibliothek in der antiken Stadt Ephesos.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "imageUrl": "assets/images/questions/ephesus_celsus_library.jpg",
+      "difficulty": 1,
+      "id": "Q3058",
+      "image": "assets/images/questions/ephesus_celsus_library.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Das höchste Gebäude der Welt, Burj Khalifa, befindet sich in Dubai.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3059",
+      "imageUrl": "assets/images/questions/burj_khalifa_dubai.jpg",
+      "image": "assets/images/questions/burj_khalifa_dubai.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Die Nobelpreise werden seit 1901 gemäß Alfred Nobels Testament verliehen.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3060",
+      "imageUrl": "assets/images/questions/nobel_prize_medal.jpg",
+      "image": "assets/images/questions/nobel_prize_medal.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Die Hauptstadt der USA ist New York.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 1,
+      "id": "Q3061",
+      "imageUrl": "assets/images/questions/washington_dc_capitol.jpg",
+      "image": "assets/images/questions/washington_dc_capitol.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Das Rote Meer erhielt seinen Namen durch die darin enthaltenen Algen.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3062",
+      "imageUrl": "assets/images/questions/red_sea_coral.jpg",
+      "image": "assets/images/questions/red_sea_coral.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "China ist das bevölkerungsreichste Land der Welt.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 1,
+      "id": "Q3063",
+      "imageUrl": "assets/images/questions/china_flag_population.jpg",
+      "image": "assets/images/questions/china_flag_population.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Die 16 Sterne auf der Präsidentschaftsstandarte repräsentieren die 16 großen türkischen Staaten in der türkischen Geschichte.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3064",
+      "imageUrl": "assets/images/questions/presidential_flag_turkey.JPG",
+      "image": "assets/images/questions/presidential_flag_turkey.JPG",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Da Vincis 'Das Abendmahl' wird im Louvre Museum ausgestellt.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 1,
+      "id": "Q3065",
+      "imageUrl": "assets/images/questions/last_supper_davinci.jpg",
+      "image": "assets/images/questions/last_supper_davinci.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Die Bakterienart E. coli kommt natürlich im gesunden menschlichen Körper vor.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3066",
+      "imageUrl": "assets/images/questions/ecoli_bacteria.jpg",
+      "image": "assets/images/questions/ecoli_bacteria.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der Eiffelturm wurde für die Pariser Weltausstellung von 1889 erbaut.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3067",
+      "imageUrl": "assets/images/questions/eiffel_tower_paris.jpg",
+      "image": "assets/images/questions/eiffel_tower_paris.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der längste Knochen im menschlichen Körper ist der Armknochen.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 1,
+      "id": "Q3068",
+      "imageUrl": "assets/images/questions/human_femur_bone.jpg",
+      "image": "assets/images/questions/human_femur_bone.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "London ist die größte Stadt des Vereinigten Königreichs.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3069",
+      "imageUrl": "assets/images/questions/london_big_ben.jpg",
+      "image": "assets/images/questions/london_big_ben.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der Mehter-Marsch ist der älteste bekannte Militärmarsch der Welt.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3070",
+      "imageUrl": "assets/images/questions/ottoman_mehter_band.jpg",
+      "image": "assets/images/questions/ottoman_mehter_band.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Die Feenkamine befinden sich im Bezirk Ürgüp von Nevşehir.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3071",
+      "imageUrl": "assets/images/questions/cappadocia_fairy_chimneys.jpg",
+      "image": "assets/images/questions/cappadocia_fairy_chimneys.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Menschen haben 23 Chromosomenpaare.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3072",
+      "imageUrl": "assets/images/questions/human_chromosomes.jpg",
+      "image": "assets/images/questions/human_chromosomes.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der Euro, die offizielle Währung der Europäischen Union, wird in allen Mitgliedsländern verwendet.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 1,
+      "id": "Q3073",
+      "imageUrl": "assets/images/questions/euro_currency.jpg",
+      "image": "assets/images/questions/euro_currency.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der Golfsport hat seine Ursprünge in Schottland.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3083",
+      "imageUrl": "assets/images/questions/golf_scotland.jpg",
+      "image": "assets/images/questions/golf_scotland.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
     }
   ]
 }

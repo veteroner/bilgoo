@@ -5327,7 +5327,7 @@
         </div>
         <div class="joker-tab home-tab" id="joker-tab-home">
             <i class="fas fa-home"></i>
-            <span>Çıkış</span>
+            <span id="joker-home-text">Çıkış</span>
         </div>
     </div>
 
@@ -6499,7 +6499,7 @@
                             break;
                         case 'tab-logout':
                 // Çıkış yap
-                if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                if (confirm(window.QuizGame ? window.QuizGame.getTranslation('exitConfirm') : 'Çıkış yapmak istediğinizden emin misiniz?')) {
                     // Firebase'den çıkış yap
                     if (firebase.auth) {
                         firebase.auth().signOut().then(() => {
@@ -6637,7 +6637,7 @@
                 menuOverlay.classList.remove('active');
                 
                 // Çıkış yap
-                if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+                if (confirm(window.QuizGame ? window.QuizGame.getTranslation('exitConfirm') : 'Çıkış yapmak istediğinizden emin misiniz?')) {
                     // Firebase'den çıkış yap
                     if (firebase.auth) {
                         firebase.auth().signOut().then(() => {
@@ -7250,7 +7250,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2><i class="fas fa-store"></i> <span data-i18n="jokerStore">Joker Mağazası</span></h2>
-                <span class="close-modal">&times;</span>
             </div>
             <div class="modal-body">
                 <div class="joker-store-points">
@@ -7312,6 +7311,9 @@
                         <div class="joker-count"><span data-i18n="currentLives">Mevcut canınız</span>: <span class="lives-count">3</span></div>
                         <button class="lives-buy-btn" data-i18n="buyButton">Satın Al</button>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="close-modal modal-close-btn"><i class="fas fa-times"></i> <span data-i18n="close">Kapat</span></button>
                 </div>
             </div>
         </div>

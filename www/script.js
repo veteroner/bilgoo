@@ -1745,10 +1745,10 @@ const quizApp = {
             
             // Joker butonları - bunlar daha spesifik olabilir
             this.updateMobileTabText('joker-tab-fifty', '50:50', '50:50', '50:50');
-            this.updateMobileTabTextFromLanguage('joker-tab-hint', 'hint');
-            this.updateMobileTabTextFromLanguage('joker-tab-time', 'timeExtension');
-            this.updateMobileTabTextFromLanguage('joker-tab-skip', 'skipQuestion');
-            this.updateMobileTabText('joker-tab-store', 'Mağaza', 'Store', 'Shop');
+            this.updateMobileTabTextFromLanguage('joker-tab-hint', 'jokerHint');
+            this.updateMobileTabTextFromLanguage('joker-tab-time', 'jokerTime');
+            this.updateMobileTabTextFromLanguage('joker-tab-skip', 'jokerSkip');
+            this.updateMobileTabTextFromLanguage('joker-tab-store', 'jokerStore');
             this.updateMobileTabTextFromLanguage('joker-tab-home', 'exit');
             
             console.log("Mobil menü ve joker menü çevirileri güncellendi. Dil:", lang);
@@ -11762,37 +11762,52 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 500);
 });
 
-// Android özel düzeltmeler
+// Platform özel düzeltmeler
 document.addEventListener('DOMContentLoaded', function() {
-    // Sadece Android platformunda android-fixes.css dosyasını yükle
-    if (window.Capacitor && window.Capacitor.getPlatform && window.Capacitor.getPlatform() === 'android') {
+    const platform = window.Capacitor && window.Capacitor.getPlatform ? window.Capacitor.getPlatform() : null;
+    
+    // Joker tab metinlerini güncelleyen fonksiyon (dil değişikliği için)
+    function updateJokerTabTexts() {
+        if (!window.QuizGame) return;
+        
+        const jokerTabUpdates = {
+            'joker-tab-fifty': '50:50', // Sabit
+            'joker-tab-hint': window.QuizGame.getTranslation('jokerHint'),
+            'joker-tab-time': window.QuizGame.getTranslation('jokerTime'),
+            'joker-tab-skip': window.QuizGame.getTranslation('jokerSkip'),
+            'joker-tab-store': window.QuizGame.getTranslation('jokerStore'),
+            'joker-tab-home': window.QuizGame.getTranslation('jokerHome')
+        };
+        
+        Object.entries(jokerTabUpdates).forEach(([id, text]) => {
+            const element = document.getElementById(id);
+            if (element && text) {
+                const span = element.querySelector('span');
+                if (span) span.textContent = text;
+            }
+        });
+    }
+    
+    // Android özel düzeltmeler
+    if (platform === 'android') {
         const androidCSS = document.createElement('link');
         androidCSS.rel = 'stylesheet';
         androidCSS.href = 'android-fixes.css?v=1.0';
         document.head.appendChild(androidCSS);
         console.log('Android özel CSS yüklendi');
+    }
+    
+    // Her iki platform için joker tab metinlerini güncelle
+    if (platform === 'android' || platform === 'ios') {
+        console.log(platform + ' platformu algılandı');
         
-        // Android'de joker tab metinlerini Türkçe yap
-        setTimeout(() => {
-            const jokerTabs = {
-                'joker-tab-fifty': '50:50',
-                'joker-tab-hint': 'İpucu',
-                'joker-tab-time': 'Süre',
-                'joker-tab-skip': 'Geç',
-                'joker-tab-store': 'Mağaza',
-                'joker-tab-home': 'Çıkış'
-            };
-            
-            Object.entries(jokerTabs).forEach(([id, text]) => {
-                const element = document.getElementById(id);
-                if (element) {
-                    const span = element.querySelector('span');
-                    if (span) span.textContent = text;
-                }
-            });
-            
-            console.log('Android joker tab metinleri Türkçe yapıldı');
-        }, 1000);
+        // İlk yükleme
+        setTimeout(updateJokerTabTexts, 1000);
+        
+        // Dil değişikliği sonrası güncelleme için event listener
+        document.addEventListener('languageChanged', updateJokerTabTexts);
+        
+        console.log(platform + ' joker tab çeviri sistemi kuruldu');
     }
 });
 

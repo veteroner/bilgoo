@@ -390,7 +390,7 @@
       "imageUrl": "assets/images/questions/img_026.jpg"
     },
     {
-      "question": "Dieses Bild zeigt die Travertine von Pamukkale.",
+      "question": "Dieses Bild zeigt das Schloss Neuschwanstein in Bayern.",
       "difficulty": 1,
       "id": "Q0055",
       "type": "TrueFalse",
@@ -438,7 +438,7 @@
       "imageUrl": "assets/images/questions/img_029.jpg"
     },
     {
-      "question": "Das Bauwerk auf diesem Bild ist die Celsus-Bibliothek in Ephesos.",
+      "question": "Das Bauwerk auf diesem Bild ist die Porta Nigra in Trier.",
       "difficulty": 1,
       "id": "Q0058",
       "type": "TrueFalse",
@@ -3856,16 +3856,16 @@
       "correctAnswer": "7"
     },
     {
-      "question": "In welchem Jahr wurde Galatasaray gegründet?",
+      "question": "In welchem Jahr wurde der FC Bayern München gegründet?",
       "difficulty": 1,
       "id": "Q0327",
       "options": [
-        "1903",
-        "1905",
-        "1907",
-        "1910"
+        "1898",
+        "1900",
+        "1902",
+        "1905"
       ],
-      "correctAnswer": "1905"
+      "correctAnswer": "1900"
     },
     {
       "question": "Über wie viele Sätze wird ein Volleyballspiel gespielt?",
@@ -4192,7 +4192,7 @@
       "imageUrl": "assets/images/questions/img_050.jpg"
     },
     {
-      "question": "Die Person auf dem Bild ist Metin Oktay, einer der berühmtesten Spieler von Galatasaray.",
+      "question": "Die Person auf dem Bild ist Franz Beckenbauer, einer der berühmtesten deutschen Fußballspieler.",
       "difficulty": 1,
       "id": "Q0355",
       "type": "TrueFalse",
@@ -5437,7 +5437,7 @@
       "imageUrl": "assets/images/questions/history_republic_proclamation.jpg"
     },
     {
-      "question": "Die auf dem Bild gezeigte antike Stadt ist Ephesos.",
+      "question": "Die auf dem Bild gezeigte antike Stadt ist Regensburg.",
       "difficulty": 1,
       "id": "Q0451",
       "type": "TrueFalse",
@@ -5485,7 +5485,7 @@
       "imageUrl": "assets/images/questions/history_wwi.jpg"
     },
     {
-      "question": "Der Gründer des Osmanischen Reiches ist Osman Bey.",
+      "question": "Der Gründer des Heiligen Römischen Reiches ist Karl der Große.",
       "difficulty": 2,
       "id": "Q0454",
       "type": "TrueFalse",
@@ -5517,7 +5517,7 @@
       "imageUrl": "assets/images/questions/history_fatih_sultan.jpg"
     },
     {
-      "question": "Der Befreiungskrieg fand zwischen 1919 und 1922 statt.",
+      "question": "Der Dreißigjährige Krieg fand zwischen 1618 und 1648 statt.",
       "difficulty": 1,
       "id": "Q0456",
       "type": "TrueFalse",
@@ -5597,7 +5597,7 @@
       "imageUrl": "assets/images/questions/history_alexander_great.jpg"
     },
     {
-      "question": "Süleyman der Prächtige ist der am längsten herrschende Sultan des Osmanischen Reiches.",
+      "question": "Friedrich Barbarossa war der berühmteste Kaiser des Heiligen Römischen Reiches.",
       "difficulty": 2,
       "id": "Q0461",
       "type": "TrueFalse",
@@ -5645,7 +5645,7 @@
       "imageUrl": "assets/images/questions/history_napoleon.jpg"
     },
     {
-      "question": "Die Schlacht von Malazgirt fand im Jahr 1071 statt.",
+      "question": "Die Schlacht bei Waterloo fand im Jahr 1815 statt.",
       "difficulty": 1,
       "id": "Q0464",
       "type": "TrueFalse",
@@ -5661,7 +5661,7 @@
       "imageUrl": "assets/images/questions/history_berlin_wall.jpg"
     },
     {
-      "question": "Die Schlacht von Gallipoli fand während des Ersten Weltkriegs statt.",
+      "question": "Die Schlacht an der Somme fand während des Ersten Weltkriegs statt.",
       "difficulty": 1,
       "id": "Q0465",
       "type": "TrueFalse",
@@ -5753,16 +5753,16 @@
       "correctAnswer": "1992"
     },
     {
-      "question": "In welcher Schlacht fiel Konstantin XI. Palaiologos, der letzte Kaiser von Byzanz?",
+      "question": "In welcher Schlacht fiel Napoleon Bonaparte endgültig?",
       "difficulty": 3,
       "id": "Q0473",
       "options": [
-        "Schlacht bei Ankara (1402)",
-        "Schlacht im Kosovo (1389)",
-        "Eroberung Konstantinopels (1453)",
-        "Schlacht bei Varna (1444)"
+        "Schlacht bei Leipzig (1813)",
+        "Schlacht bei Königgrätz (1866)",
+        "Schlacht bei Sedan (1870)",
+        "Schlacht bei Tannenberg (1914)"
       ],
-      "correctAnswer": "Eroberung Konstantinopels (1453)"
+      "correctAnswer": "Schlacht bei Sedan (1870)"
     },
     {
       "question": "In welcher antiken Zivilisation wurde das Schriftsystem der Keilschrift (Cuneiform) entwickelt?",
@@ -5777,16 +5777,16 @@
       "correctAnswer": "Sumerer"
     },
     {
-      "question": "Von wem und in welchem Jahr wurde im Osmanischen Reich das 'Tanzimat‑Edikt' verkündet?",
+      "question": "Von wem und in welchem Jahr wurde das Deutsche Reich proklamiert?",
       "difficulty": 3,
       "id": "Q0475",
       "options": [
-        "Sultan Abdülmecit - 1839",
-        "Sultan Mahmut II - 1826",
-        "Sultan Abdülaziz - 1861",
-        "Sultan Abdülhamit II - 1876"
+        "Otto von Bismarck - 1871",
+        "Kaiser Wilhelm I. - 1871",
+        "Friedrich III. - 1888",
+        "Kaiser Wilhelm II. - 1888"
       ],
-      "correctAnswer": "Sultan Abdülmecit - 1839"
+      "correctAnswer": "Kaiser Wilhelm I. - 1871"
     },
     {
       "question": "Welcher römische Kaiser erklärte das Christentum zur Staatsreligion und gründete Konstantinopel?",
@@ -5813,16 +5813,16 @@
       "correctAnswer": "Leo III. und Konstantin V."
     },
     {
-      "question": "Unter welchem Sultan wurde im Osmanischen Reich das 'Devshirme'‑System institutionell etabliert?",
+      "question": "Unter welchem Kaiser wurde das Heilige Römische Reich zur Großmacht?",
       "difficulty": 3,
       "id": "Q0478",
       "options": [
-        "Mehmed I.",
-        "Bayezid I.",
-        "Orhan (I.)",
-        "Murad I."
+        "Otto I.",
+        "Friedrich Barbarossa",
+        "Karl der Große",
+        "Heinrich IV."
       ],
-      "correctAnswer": "Murad I."
+      "correctAnswer": "Karl der Große"
     },
     {
       "question": "Von wem wurde im Mongolenreich das Gesetzessystem 'Yassa' geschaffen?",
@@ -5921,16 +5921,16 @@
       "correctAnswer": "3114 v. Chr. (11. August)"
     },
     {
-      "question": "In welcher Periode stellte die Familie Köprülü im Osmanischen Reich Großwesire?",
+      "question": "In welcher Periode regierten die Habsburger das Heilige Römische Reich?",
       "difficulty": 3,
       "id": "Q0487",
       "options": [
-        "15. Jahrhundert",
-        "18. Jahrhundert",
-        "Zweite Hälfte des 17. Jahrhunderts",
-        "Erste Hälfte des 16. Jahrhunderts"
+        "12.-13. Jahrhundert",
+        "14.-15. Jahrhundert",
+        "15.-18. Jahrhundert",
+        "19. Jahrhundert"
       ],
-      "correctAnswer": "Zweite Hälfte des 17. Jahrhunderts"
+      "correctAnswer": "15.-18. Jahrhundert"
     }
   ],
   "Geographie": [
@@ -6843,7 +6843,7 @@
       "imageUrl": "assets/images/questions/geography_pacific.jpg"
     },
     {
-      "question": "Der Bosporus trennt Asien und Europa voneinander.",
+      "question": "Der Rhein fließt durch mehrere europäische Länder.",
       "difficulty": 1,
       "id": "Q0561",
       "type": "TrueFalse",
@@ -7189,7 +7189,7 @@
       "correctAnswer": "Ganges-Brahmaputra"
     },
     {
-      "question": "Diese Flagge gehört zur Türkei.",
+      "question": "Diese Flagge gehört zu Österreich.",
       "difficulty": 1,
       "id": "Q0708",
       "type": "TrueFalse",
@@ -7349,7 +7349,7 @@
       "imageUrl": "assets/images/questions/img_109.jpg"
     },
     {
-      "question": "Die Hauptstadt der Türkei ist Ankara.",
+      "question": "Die Hauptstadt von Österreich ist Wien.",
       "difficulty": 1,
       "id": "Q0720",
       "type": "TrueFalse",
@@ -7461,11 +7461,11 @@
       "imageUrl": "assets/images/questions/img_118.jpg"
     },
     {
-      "question": "Die Hauptstadt der Türkei ist Istanbul.",
+      "question": "Die Hauptstadt von Belgien ist Brüssel.",
       "difficulty": 1,
       "id": "Q0728",
       "type": "TrueFalse",
-      "correctAnswer": "FALSE",
+      "correctAnswer": "TRUE",
       "choices": [
         "Richtig",
         "Falsch"
@@ -7899,7 +7899,7 @@
       "imageUrl": "assets/images/questions/music_beatles.jpg"
     },
     {
-      "question": "Die Kanun ist ein Saiteninstrument der türkischen Musik.",
+      "question": "Die Zither ist ein traditionelles deutsches Saiteninstrument.",
       "difficulty": 1,
       "id": "Q0619",
       "type": "TrueFalse",
@@ -8567,11 +8567,11 @@
       "imageUrl": "assets/images/questions/literature_garcia_marquez.jpg"
     },
     {
-      "question": "Die Garip‑Bewegung entstand in der Türkei in den 1950er‑Jahren.",
+      "question": "Die Sturm und Drang-Bewegung entstand in Deutschland in den 1770er-Jahren.",
       "difficulty": 2,
       "id": "Q0669",
       "type": "TrueFalse",
-      "correctAnswer": "FALSE",
+      "correctAnswer": "TRUE",
       "choices": [
         "Richtig",
         "Falsch"
@@ -9162,15 +9162,15 @@
       "id": "Q1018"
     },
     {
-      "question": "Was bedeutet 'türkü' in der türkischen Volksmusik?",
+      "question": "Was bedeutet 'Lied' in der deutschen Volksmusik?",
       "type": "MultipleChoice",
       "options": [
         "Tanz",
-        "Lied",
+        "Melodie mit Text",
         "Instrument",
         "Rhythmus"
       ],
-      "correctAnswer": "Lied",
+      "correctAnswer": "Melodie mit Text",
       "difficulty": 1,
       "id": "Q1019"
     },
@@ -9240,140 +9240,18 @@
       "id": "Q1024"
     }
   ],
-  "Bildfragen": [
-    {
-      "question": "Wie heißt dieses Musikinstrument?",
-      "type": "MultipleChoice",
-      "options": [
-        "Geige",
-        "Bratsche",
-        "Cello",
-        "Kontrabass"
-      ],
-      "correctAnswer": "Geige",
-      "difficulty": 1,
-      "id": "Q1009",
-      "imageUrl": "assets/images/questions/music_violin.jpg",
-      "originalCategory": "Musik"
-    },
-    {
-      "question": "Wer ist dieser Komponist?",
-      "type": "MultipleChoice",
-      "options": [
-        "Mozart",
-        "Beethoven",
-        "Bach",
-        "Chopin"
-      ],
-      "correctAnswer": "Mozart",
-      "difficulty": 2,
-      "id": "Q1010",
-      "imageUrl": "assets/images/questions/music_mozart.jpg",
-      "originalCategory": "Musik"
-    },
-    {
-      "question": "Wer ist dieser berühmte Schriftsteller?",
-      "type": "MultipleChoice",
-      "options": [
-        "Orhan Pamuk",
-        "Yaşar Kemal",
-        "Nazım Hikmet",
-        "Sabahattin Ali"
-      ],
-      "correctAnswer": "Orhan Pamuk",
-      "difficulty": 2,
-      "id": "Q1011",
-      "imageUrl": "assets/images/questions/literature_orhan_pamuk.jpg",
-      "originalCategory": "Literatur"
-    },
-    {
-      "question": "Welcher Autor schrieb dieses klassische Werk?",
-      "type": "MultipleChoice",
-      "options": [
-        "William Shakespeare",
-        "Charles Dickens",
-        "Mark Twain",
-        "Oscar Wilde"
-      ],
-      "correctAnswer": "William Shakespeare",
-      "difficulty": 2,
-      "id": "Q1012",
-      "imageUrl": "assets/images/questions/literature_hamlet.jpg",
-      "originalCategory": "Literatur"
-    },
-    {
-      "question": "Welcher Planet ist in diesem Bild zu sehen?",
-      "type": "MultipleChoice",
-      "options": [
-        "Mars",
-        "Venus",
-        "Jupiter",
-        "Saturn"
-      ],
-      "correctAnswer": "Mars",
-      "difficulty": 2,
-      "id": "Q1013",
-      "imageUrl": "assets/images/questions/science_mars.jpg",
-      "originalCategory": "Wissenschaft"
-    },
-    {
-      "question": "Zu welcher Zivilisation gehört dieses historische Bauwerk?",
-      "type": "MultipleChoice",
-      "options": [
-        "Römisch",
-        "Griechisch",
-        "Ägyptisch",
-        "Babylonisch"
-      ],
-      "correctAnswer": "Römisch",
-      "difficulty": 2,
-      "id": "Q1014",
-      "imageUrl": "assets/images/questions/history_colosseum.jpg",
-      "originalCategory": "Geschichte"
-    },
-    {
-      "question": "Welcher Ball wird in dieser Sportart verwendet?",
-      "type": "MultipleChoice",
-      "options": [
-        "Basketball",
-        "Fußball",
-        "Tennisball",
-        "Volleyball"
-      ],
-      "correctAnswer": "Basketball",
-      "difficulty": 1,
-      "id": "Q1015",
-      "imageUrl": "assets/images/questions/sports_basketball.jpg",
-      "originalCategory": "Sport"
-    },
-    {
-      "question": "Was ist dieses technologische Gerät?",
-      "type": "MultipleChoice",
-      "options": [
-        "SSD-Laufwerk",
-        "RAM-Speicher",
-        "Prozessor",
-        "Motherboard"
-      ],
-      "correctAnswer": "SSD-Laufwerk",
-      "difficulty": 2,
-      "id": "Q1016",
-      "imageUrl": "assets/images/questions/tech_ssd.jpg",
-      "originalCategory": "Technologie"
-    }
-  ],
   "Literatur": [
     {
-      "question": "Wer gründete die Zeitschrift 'Büyük Doğu' in der türkischen Literatur?",
+      "question": "Wer schrieb 'Die Leiden des jungen Werthers'?",
       "type": "MultipleChoice",
       "options": [
-        "Necip Fazıl Kısakürek",
-        "Sezai Karakoç",
-        "Cahit Zarifoğlu",
-        "Mehmet Akif Ersoy"
+        "Johann Wolfgang von Goethe",
+        "Friedrich Schiller",
+        "Heinrich Heine",
+        "Thomas Mann"
       ],
-      "correctAnswer": "Necip Fazıl Kısakürek",
-      "difficulty": 3,
+      "correctAnswer": "Johann Wolfgang von Goethe",
+      "difficulty": 2,
       "id": "Q1025"
     },
     {
@@ -9403,16 +9281,16 @@
       "id": "Q1027"
     },
     {
-      "question": "Wer ist der Autor von 'Araba Sevdası' (Die Kutschenaffäre)?",
+      "question": "Wer ist der Autor von 'Die Buddenbrooks'?",
       "type": "MultipleChoice",
       "options": [
-        "Ahmet Mithat Efendi",
-        "Recaizade Mahmut Ekrem",
-        "Namık Kemal",
-        "Ziya Paşa"
+        "Thomas Mann",
+        "Heinrich Mann",
+        "Hermann Hesse",
+        "Theodor Fontane"
       ],
-      "correctAnswer": "Recaizade Mahmut Ekrem",
-      "difficulty": 3,
+      "correctAnswer": "Thomas Mann",
+      "difficulty": 2,
       "id": "Q1028"
     },
     {
@@ -9429,30 +9307,725 @@
       "id": "Q1029"
     },
     {
-      "question": "Wer ist der Autor des Theaterstücks 'Şair Evlenmesi' (Die Hochzeit des Dichters)?",
+      "question": "Wer ist der Autor des Theaterstücks 'Die Räuber'?",
       "type": "MultipleChoice",
       "options": [
-        "Namık Kemal",
-        "Ahmet Vefik Paşa",
-        "Ziya Paşa",
-        "Recaizade Mahmut Ekrem"
+        "Johann Wolfgang von Goethe",
+        "Friedrich Schiller",
+        "Gotthold Ephraim Lessing",
+        "Heinrich von Kleist"
       ],
-      "correctAnswer": "Namık Kemal",
+      "correctAnswer": "Friedrich Schiller",
       "difficulty": 2,
       "id": "Q1030"
     },
     {
-      "question": "Was ist der erste türkische Roman?",
+      "question": "Welches ist der erste deutsche Roman?",
       "type": "MultipleChoice",
       "options": [
-        "Taaşşuk-u Talat ve Fitnat",
-        "Araba Sevdası",
-        "İntibah",
-        "Felâtun Bey ile Râkım Efendi"
+        "Der Simplicissimus",
+        "Die Leiden des jungen Werthers",
+        "Wilhelm Meisters Lehrjahre",
+        "Der grüne Heinrich"
       ],
-      "correctAnswer": "Taaşşuk-u Talat ve Fitnat",
+      "correctAnswer": "Der Simplicissimus",
       "difficulty": 3,
       "id": "Q1031"
+    }
+  ],
+  "Bildfragen": [
+    {
+      "question": "Ist dieses in London befindliche historische Gebäude Big Ben?",
+      "difficulty": 1,
+      "id": "Q2054",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_026.jpg"
+    },
+    {
+      "question": "Dieses Bild zeigt die heißen Quellen des Yellowstone-Nationalparks.",
+      "difficulty": 1,
+      "id": "Q2055",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_027.jpg"
+    },
+    {
+      "question": "Das Gebäude auf diesem Bild ist der Buckingham Palace.",
+      "difficulty": 1,
+      "id": "Q2056",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_028.jpg"
+    },
+    {
+      "question": "Das historische Gebäude auf diesem Bild ist der Tower of London.",
+      "difficulty": 1,
+      "id": "Q2057",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_029.jpg"
+    },
+    {
+      "question": "Das Gebäude auf diesem Bild ist das Parthenon im antiken Athen.",
+      "difficulty": 1,
+      "id": "Q2058",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_030.jpg"
+    },
+    {
+      "question": "Das höchste Gebäude der Welt, Burj Khalifa, befindet sich in Dubai.",
+      "difficulty": 1,
+      "id": "Q2059",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_burj_khalifa.jpg"
+    },
+    {
+      "question": "Die Nobelpreise werden seit 1901 gemäß Alfred Nobels Testament verliehen.",
+      "difficulty": 1,
+      "id": "Q2060",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_nobel_medal.jpg"
+    },
+    {
+      "question": "Die Hauptstadt der USA ist New York.",
+      "difficulty": 1,
+      "id": "Q2061",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_069.jpg"
+    },
+    {
+      "question": "Das Rote Meer erhält seinen Namen von den darin enthaltenen Algen.",
+      "difficulty": 1,
+      "id": "Q2062",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_red_sea.jpg"
+    },
+    {
+      "question": "China ist das bevölkerungsreichste Land der Welt.",
+      "difficulty": 1,
+      "id": "Q2063",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/geography_china_population.jpg"
+    },
+    {
+      "question": "Die 50 Sterne auf der US-Flagge repräsentieren die 50 Bundesstaaten Amerikas.",
+      "difficulty": 1,
+      "id": "Q2064",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_031.png"
+    },
+    {
+      "question": "Da Vincis Gemälde 'Das Abendmahl' wird im Louvre-Museum ausgestellt.",
+      "difficulty": 1,
+      "id": "Q2065",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_louvre.jpg"
+    },
+    {
+      "question": "E. coli, eine Bakterienart, kommt natürlich im gesunden menschlichen Körper vor.",
+      "difficulty": 1,
+      "id": "Q2066",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_bacteria_ecoli.svg"
+    },
+    {
+      "question": "Der Eiffelturm wurde für die Pariser Weltausstellung 1889 gebaut.",
+      "difficulty": 2,
+      "id": "Q2067",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_032.jpg"
+    },
+    {
+      "question": "Der längste Knochen im menschlichen Körper ist der Armknochen.",
+      "difficulty": 1,
+      "id": "Q2068",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_human_bones.jpg"
+    },
+    {
+      "question": "London ist die größte Stadt im Vereinigten Königreich.",
+      "difficulty": 1,
+      "id": "Q2069",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_london.jpg"
+    },
+    {
+      "question": "Die British Grenadiers ist einer der ältesten bekannten Militärmärsche der Welt.",
+      "difficulty": 1,
+      "id": "Q2070",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_british_march.jpg"
+    },
+    {
+      "question": "Giant's Causeway befindet sich in Nordirland.",
+      "difficulty": 1,
+      "id": "Q2071",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_giants_causeway.jpg"
+    },
+    {
+      "question": "Menschen haben 23 Chromosomenpaare.",
+      "difficulty": 1,
+      "id": "Q2072",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_chromosome.jpg"
+    },
+    {
+      "question": "Der Euro, die offizielle Währung der Europäischen Union, wird in allen Mitgliedsländern verwendet.",
+      "difficulty": 1,
+      "id": "Q2073",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_033.png"
+    },
+    {
+      "question": "Der Golfsport hat seine Wurzeln in Schottland.",
+      "difficulty": 1,
+      "id": "Q2083",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ],
+      "imageUrl": "assets/images/questions/img_golf.jpg"
+    },
+    {
+      "question": "Ist dieses historische Gebäude in Köln der Dom?",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "imageUrl": "assets/images/questions/hagia_sophia_istanbul.jpg",
+      "difficulty": 1,
+      "id": "Q3054",
+      "image": "assets/images/questions/hagia_sophia_istanbul.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Dieses Bild zeigt das Schloss Sanssouci in Potsdam.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "imageUrl": "assets/images/questions/pamukkale_travertines.jpg",
+      "difficulty": 1,
+      "id": "Q3055",
+      "image": "assets/images/questions/pamukkale_travertines.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Das Gebäude auf diesem Bild ist das Schloss Charlottenburg.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "imageUrl": "assets/images/questions/dolmabahce_palace.jpg",
+      "difficulty": 1,
+      "id": "Q3056",
+      "image": "assets/images/questions/dolmabahce_palace.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Das historische Gebäude auf diesem Bild ist der Zwinger in Dresden.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "imageUrl": "assets/images/questions/maiden_tower_istanbul.jpg",
+      "difficulty": 1,
+      "id": "Q3057",
+      "image": "assets/images/questions/maiden_tower_istanbul.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Das Gebäude auf diesem Bild ist die Celsus-Bibliothek in der antiken Stadt Ephesos.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "imageUrl": "assets/images/questions/ephesus_celsus_library.jpg",
+      "difficulty": 1,
+      "id": "Q3058",
+      "image": "assets/images/questions/ephesus_celsus_library.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Das höchste Gebäude der Welt, Burj Khalifa, befindet sich in Dubai.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3059",
+      "imageUrl": "assets/images/questions/burj_khalifa_dubai.jpg",
+      "image": "assets/images/questions/burj_khalifa_dubai.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Die Nobelpreise werden seit 1901 gemäß Alfred Nobels Testament verliehen.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3060",
+      "imageUrl": "assets/images/questions/nobel_prize_medal.jpg",
+      "image": "assets/images/questions/nobel_prize_medal.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Die Hauptstadt der USA ist New York.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 1,
+      "id": "Q3061",
+      "imageUrl": "assets/images/questions/washington_dc_capitol.jpg",
+      "image": "assets/images/questions/washington_dc_capitol.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Das Rote Meer erhielt seinen Namen durch die darin enthaltenen Algen.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3062",
+      "imageUrl": "assets/images/questions/red_sea_coral.jpg",
+      "image": "assets/images/questions/red_sea_coral.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "China ist das bevölkerungsreichste Land der Welt.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 1,
+      "id": "Q3063",
+      "imageUrl": "assets/images/questions/china_flag_population.jpg",
+      "image": "assets/images/questions/china_flag_population.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der deutsche Bundesadler hat die Flügel ausgebreitet.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3064",
+      "imageUrl": "assets/images/questions/presidential_flag_turkey.JPG",
+      "image": "assets/images/questions/presidential_flag_turkey.JPG",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Da Vincis 'Das Abendmahl' wird im Louvre Museum ausgestellt.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 1,
+      "id": "Q3065",
+      "imageUrl": "assets/images/questions/last_supper_davinci.jpg",
+      "image": "assets/images/questions/last_supper_davinci.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Die Bakterienart E. coli kommt natürlich im gesunden menschlichen Körper vor.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3066",
+      "imageUrl": "assets/images/questions/ecoli_bacteria.jpg",
+      "image": "assets/images/questions/ecoli_bacteria.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der Eiffelturm wurde für die Pariser Weltausstellung von 1889 erbaut.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3067",
+      "imageUrl": "assets/images/questions/eiffel_tower_paris.jpg",
+      "image": "assets/images/questions/eiffel_tower_paris.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der längste Knochen im menschlichen Körper ist der Armknochen.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 1,
+      "id": "Q3068",
+      "imageUrl": "assets/images/questions/human_femur_bone.jpg",
+      "image": "assets/images/questions/human_femur_bone.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "London ist die größte Stadt des Vereinigten Königreichs.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3069",
+      "imageUrl": "assets/images/questions/london_big_ben.jpg",
+      "image": "assets/images/questions/london_big_ben.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der deutsche Zapfenstreich ist ein traditioneller Militärmarsch.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3070",
+      "imageUrl": "assets/images/questions/ottoman_mehter_band.jpg",
+      "image": "assets/images/questions/ottoman_mehter_band.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Die Externsteine befinden sich im Teutoburger Wald in Nordrhein-Westfalen.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3071",
+      "imageUrl": "assets/images/questions/cappadocia_fairy_chimneys.jpg",
+      "image": "assets/images/questions/cappadocia_fairy_chimneys.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Menschen haben 23 Chromosomenpaare.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3072",
+      "imageUrl": "assets/images/questions/human_chromosomes.jpg",
+      "image": "assets/images/questions/human_chromosomes.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der Euro, die offizielle Währung der Europäischen Union, wird in allen Mitgliedsländern verwendet.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 1,
+      "id": "Q3073",
+      "imageUrl": "assets/images/questions/euro_currency.jpg",
+      "image": "assets/images/questions/euro_currency.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der Golfsport hat seine Ursprünge in Schottland.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 1,
+      "id": "Q3083",
+      "imageUrl": "assets/images/questions/golf_scotland.jpg",
+      "image": "assets/images/questions/golf_scotland.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
     }
   ]
 }
