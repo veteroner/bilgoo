@@ -638,7 +638,7 @@
       "correctAnswer": "British Museum"
     },
     {
-      "question": "Is this historic building located in London Big Ben?",
+      "question": "Is this historic building Big Ben located in London?",
       "difficulty": 1,
       "id": "Q0054",
       "type": "TrueFalse",
@@ -747,7 +747,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/img_nobel_medal.jpg"
+      "imageUrl": "assets/images/questions/literature_nobel_prize.jpg"
     },
     {
       "question": "The capital of the USA is New York.",
@@ -795,7 +795,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/geography_china_population.jpg"
+      "imageUrl": "assets/images/questions/china_flag_population.jpg"
     },
     {
       "question": "The 50 stars on the US flag represent the 50 states of America.",
@@ -1180,11 +1180,11 @@
       "correctAnswer": "SYLLABLE"
     },
     {
-      "question": "In Divan literature, _____ is an important form.",
+      "question": "In Classical poetry, _____ is an important form.",
       "difficulty": 2,
       "id": "Q0103",
       "options": [],
-      "correctAnswer": "GAZELLE"
+      "correctAnswer": "SONNET"
     },
     {
       "question": "Which philosophical school was founded by Heraclitus and is known for the principle 'Everything flows'?",
@@ -1233,7 +1233,7 @@
         "Everglades"
       ],
       "correctAnswer": "Yellowstone",
-      "imageUrl": "assets/images/questions/geography_cappadocia.jpg"
+      "imageUrl": "assets/images/questions/geography_yellowstone.jpg"
     },
     {
       "question": "What does Edmund Husserl's fundamental concept 'Epoché', founder of phenomenology, refer to?",
@@ -5877,7 +5877,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/history_fatih_sultan.jpg"
+      "imageUrl": "assets/images/questions/history_henry_viii.jpg"
     },
     {
       "question": "The American War of Independence took place between 1775-1783.",
@@ -7014,7 +7014,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/geography_istanbul.jpg"
+      "imageUrl": "assets/images/questions/geography_london.jpg"
     },
     {
       "question": "The Grand Canyon is located in Arizona.",
@@ -8667,15 +8667,15 @@
       "id": "Q1018"
     },
     {
-      "question": "In Turkish Folk Music, what does 'türkü' mean?",
+      "question": "In American Folk Music, what does 'ballad' mean?",
       "type": "MultipleChoice",
       "options": [
         "Dance",
-        "Song",
+        "Narrative song",
         "Instrument",
         "Rhythm"
       ],
-      "correctAnswer": "Song",
+      "correctAnswer": "Narrative song",
       "difficulty": 1,
       "id": "Q1019"
     },
@@ -9764,15 +9764,15 @@
       "correctAnswer": "16th century"
     },
     {
-      "question": "Who founded the 'Büyük Doğu' magazine in Turkish literature?",
+      "question": "Who founded 'The Atlantic' magazine in American literature?",
       "type": "MultipleChoice",
       "options": [
-        "Necip Fazıl Kısakürek",
-        "Sezai Karakoç",
-        "Cahit Zarifoğlu",
-        "Mehmet Akif Ersoy"
+        "Ralph Waldo Emerson",
+        "Henry Wadsworth Longfellow",
+        "Oliver Wendell Holmes Sr.",
+        "James Russell Lowell"
       ],
-      "correctAnswer": "Necip Fazıl Kısakürek",
+      "correctAnswer": "James Russell Lowell",
       "difficulty": 3,
       "id": "Q1025"
     },
@@ -9842,22 +9842,22 @@
       "id": "Q1030"
     },
     {
-      "question": "What is the first Turkish novel?",
+      "question": "What is considered the first American novel?",
       "type": "MultipleChoice",
       "options": [
-        "Taaşşuk-u Talat ve Fitnat",
-        "Araba Sevdası",
-        "İntibah",
-        "Felâtun Bey ile Râkım Efendi"
+        "The Power of Sympathy",
+        "Charlotte Temple",
+        "The Coquette",
+        "Wieland"
       ],
-      "correctAnswer": "Taaşşuk-u Talat ve Fitnat",
+      "correctAnswer": "The Power of Sympathy",
       "difficulty": 3,
       "id": "Q1031"
     }
   ],
   "Image Questions": [
     {
-      "question": "Is this historic building located in London Big Ben?",
+      "question": "Is this historic building Big Ben located in London?",
       "difficulty": 1,
       "id": "Q0054",
       "type": "TrueFalse",
@@ -10014,7 +10014,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/geography_china_population.jpg"
+      "imageUrl": "assets/images/questions/china_flag_population.jpg"
     },
     {
       "question": "The 50 stars on the US flag represent the 50 states of America.",
@@ -10193,7 +10193,7 @@
       "imageUrl": "assets/images/questions/img_golf.jpg"
     },
     {
-      "question": "Is this historic building in Istanbul the Hagia Sophia?",
+      "question": "Is this historic building in New York the Statue of Liberty?",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "imageUrl": "assets/images/questions/hagia_sophia_istanbul.jpg",
@@ -10210,7 +10210,7 @@
       ]
     },
     {
-      "question": "This image shows the Pamukkale travertines.",
+      "question": "This image shows the Grand Canyon formations.",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "imageUrl": "assets/images/questions/pamukkale_travertines.jpg",
@@ -10261,7 +10261,7 @@
       ]
     },
     {
-      "question": "The building in this image is the Celsus Library in Ephesus Ancient City.",
+      "question": "The building in this image is the Library of Congress in Washington D.C.",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "imageUrl": "assets/images/questions/ephesus_celsus_library.jpg",
@@ -10282,7 +10282,7 @@
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "difficulty": 1,
-      "id": "Q1059",
+      "id": "Q0059",
       "imageUrl": "assets/images/questions/burj_khalifa_dubai.jpg",
       "image": "assets/images/questions/burj_khalifa_dubai.jpg",
       "choices": [
@@ -10300,8 +10300,8 @@
       "correctAnswer": "TRUE",
       "difficulty": 1,
       "id": "Q1060",
-      "imageUrl": "assets/images/questions/nobel_prize_medal.jpg",
-      "image": "assets/images/questions/nobel_prize_medal.jpg",
+      "imageUrl": "assets/images/questions/literature_nobel_prize.jpg",
+      "image": "assets/images/questions/literature_nobel_prize.jpg",
       "choices": [
         "True",
         "False"

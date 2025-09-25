@@ -402,19 +402,6 @@ const MonetizationManager = {
     },
 
     initializeAdMobNormal: function() {
-        // Network bağlantısını kontrol et
-        const isOnline = navigator.onLine;
-        if (!isOnline) {
-            console.log('[Monetization Debug] Device is offline, applying default padding');
-            this.applyTopPadding(0);
-            // Online olduğunda tekrar dene
-            window.addEventListener('online', () => {
-                console.log('[Monetization Debug] Device came online, retrying AdMob initialization');
-                this.initializeAdMobNormal();
-            }, { once: true });
-            return;
-        }
-
         const initOptions = {
             requestTrackingAuthorization: false,
             testingDevices: [],
@@ -433,29 +420,11 @@ const MonetizationManager = {
             console.error('AdMob initialization failed:', error);
             // Apply default padding if AdMob fails
             this.applyTopPadding(0);
-            
-            // Network error ise 10 saniye sonra tekrar dene
-            if (error.message && error.message.includes('Unable to resolve host')) {
-                console.log('[Monetization Debug] Network error detected, retrying in 10 seconds');
-                setTimeout(() => {
-                    if (navigator.onLine) {
-                        console.log('[Monetization Debug] Retrying AdMob initialization after network error');
-                        this.initializeAdMobNormal();
-                    }
-                }, 10000);
-            }
         });
     },
 
     showBanner: function() {
         if (!AdMob) return;
-        
-        // Network bağlantısını kontrol et
-        if (!navigator.onLine) {
-            console.log('[Monetization Debug] Device offline, cannot show banner');
-            this.applyTopPadding(0);
-            return;
-        }
 
         const options = {
             adId: 'ca-app-pub-7610338885240453/6081192537', // Production Banner Unit ID
@@ -476,19 +445,8 @@ const MonetizationManager = {
             console.error('Banner reklam gösterilemedi:', error);
             // Apply default padding when banner fails
             this.applyTopPadding(0);
-            
-            // Network error değilse retry, network error ise bekle
-            if (error.message && error.message.includes('Unable to resolve host')) {
-                console.log('[Monetization Debug] Network error in banner, waiting for connection');
-                // Online olduğunda tekrar dene
-                window.addEventListener('online', () => {
-                    console.log('[Monetization Debug] Connection restored, retrying banner');
-                    setTimeout(() => this.showBanner(), 2000);
-                }, { once: true });
-            } else {
-                // Diğer hatalar için 5 saniye sonra tekrar dene
-                setTimeout(() => this.showBanner(), 5000);
-            }
+            // Retry after 5 seconds
+            setTimeout(() => this.showBanner(), 5000);
         });
     },
 

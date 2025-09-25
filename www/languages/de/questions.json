@@ -251,7 +251,7 @@
         "Bern"
       ],
       "correctAnswer": "Genf",
-      "imageUrl": "assets/images/questions/geography_turkey_world_heritage.jpg"
+      "imageUrl": "assets/images/questions/lake_geneva.jpg"
     },
     {
       "question": "Wie heißt das Gebäude mit dem höchsten Kirchturm der Welt in Deutschland?",
@@ -387,7 +387,7 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_026.jpg"
+      "imageUrl": "assets/images/questions/img_026_de.jpg"
     },
     {
       "question": "Dieses Bild zeigt die Travertine von Pamukkale.",
@@ -403,10 +403,10 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_027.jpg"
+      "imageUrl": "assets/images/questions/img_027_de.jpg"
     },
     {
-      "question": "Das Bauwerk auf diesem Bild ist der Schloss Neuschwanstein.",
+      "question": "Das Bauwerk auf diesem Bild ist das Schloss Neuschwanstein.",
       "difficulty": 1,
       "id": "Q0056",
       "type": "TrueFalse",
@@ -419,10 +419,10 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_028.jpg"
+      "imageUrl": "assets/images/questions/img_028_de.jpg"
     },
     {
-      "question": "Das historische Bauwerk auf diesem Bild ist der Kölner Dom.",
+      "question": "Das historische Bauwerk auf diesem Bild ist die Hagia Sophia.",
       "difficulty": 1,
       "id": "Q0057",
       "type": "TrueFalse",
@@ -435,10 +435,10 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_029.jpg"
+      "imageUrl": "assets/images/questions/img_029_de.jpg"
     },
     {
-      "question": "Das Bauwerk auf diesem Bild ist die Celsus-Bibliothek in Ephesos.",
+      "question": "Das Bauwerk auf diesem Bild ist das Kolosseum in Rom.",
       "difficulty": 1,
       "id": "Q0058",
       "type": "TrueFalse",
@@ -451,7 +451,7 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_030.jpg"
+      "imageUrl": "assets/images/questions/img_030_de.jpg"
     },
     {
       "question": "Das höchste Gebäude der Welt, der Burj Khalifa, steht in Dubai.",
@@ -3856,16 +3856,16 @@
       "correctAnswer": "7"
     },
     {
-      "question": "In welchem Jahr wurde Galatasaray gegründet?",
+      "question": "In welchem Jahr wurde der FC Bayern München gegründet?",
       "difficulty": 1,
       "id": "Q0327",
       "options": [
-        "1903",
-        "1905",
-        "1907",
-        "1910"
+        "1898",
+        "1900",
+        "1902",
+        "1905"
       ],
-      "correctAnswer": "1905"
+      "correctAnswer": "1900"
     },
     {
       "question": "Über wie viele Sätze wird ein Volleyballspiel gespielt?",
@@ -4192,7 +4192,7 @@
       "imageUrl": "assets/images/questions/img_050.jpg"
     },
     {
-      "question": "Die Person auf dem Bild ist Metin Oktay, einer der berühmtesten Spieler von Galatasaray.",
+      "question": "Die Person auf dem Bild ist Franz Beckenbauer, einer der berühmtesten deutschen Fußballspieler.",
       "difficulty": 1,
       "id": "Q0355",
       "type": "TrueFalse",
@@ -5437,7 +5437,7 @@
       "imageUrl": "assets/images/questions/history_republic_proclamation.jpg"
     },
     {
-      "question": "Die auf dem Bild gezeigte antike Stadt ist Ephesos.",
+      "question": "Die auf dem Bild gezeigte antike Stadt ist Regensburg.",
       "difficulty": 1,
       "id": "Q0451",
       "type": "TrueFalse",
@@ -5485,7 +5485,7 @@
       "imageUrl": "assets/images/questions/history_wwi.jpg"
     },
     {
-      "question": "Der Gründer des Osmanischen Reiches ist Osman Bey.",
+      "question": "Der Gründer des Heiligen Römischen Reiches ist Karl der Große.",
       "difficulty": 2,
       "id": "Q0454",
       "type": "TrueFalse",
@@ -5517,7 +5517,7 @@
       "imageUrl": "assets/images/questions/history_fatih_sultan.jpg"
     },
     {
-      "question": "Der Befreiungskrieg fand zwischen 1919 und 1922 statt.",
+      "question": "Der Dreißigjährige Krieg fand zwischen 1618 und 1648 statt.",
       "difficulty": 1,
       "id": "Q0456",
       "type": "TrueFalse",
@@ -5597,7 +5597,7 @@
       "imageUrl": "assets/images/questions/history_alexander_great.jpg"
     },
     {
-      "question": "Süleyman der Prächtige ist der am längsten herrschende Sultan des Osmanischen Reiches.",
+      "question": "Friedrich Barbarossa war der berühmteste Kaiser des Heiligen Römischen Reiches.",
       "difficulty": 2,
       "id": "Q0461",
       "type": "TrueFalse",
@@ -5645,7 +5645,7 @@
       "imageUrl": "assets/images/questions/history_napoleon.jpg"
     },
     {
-      "question": "Die Schlacht von Malazgirt fand im Jahr 1071 statt.",
+      "question": "Die Schlacht bei Waterloo fand im Jahr 1815 statt.",
       "difficulty": 1,
       "id": "Q0464",
       "type": "TrueFalse",
@@ -5661,7 +5661,7 @@
       "imageUrl": "assets/images/questions/history_berlin_wall.jpg"
     },
     {
-      "question": "Die Schlacht von Gallipoli fand während des Ersten Weltkriegs statt.",
+      "question": "Die Schlacht an der Somme fand während des Ersten Weltkriegs statt.",
       "difficulty": 1,
       "id": "Q0465",
       "type": "TrueFalse",
@@ -5753,16 +5753,16 @@
       "correctAnswer": "1992"
     },
     {
-      "question": "In welcher Schlacht fiel Konstantin XI. Palaiologos, der letzte Kaiser von Byzanz?",
+      "question": "In welcher Schlacht fiel Napoleon Bonaparte endgültig?",
       "difficulty": 3,
       "id": "Q0473",
       "options": [
-        "Schlacht bei Ankara (1402)",
-        "Schlacht im Kosovo (1389)",
-        "Eroberung Konstantinopels (1453)",
-        "Schlacht bei Varna (1444)"
+        "Schlacht bei Leipzig (1813)",
+        "Schlacht bei Königgrätz (1866)",
+        "Schlacht bei Sedan (1870)",
+        "Schlacht bei Tannenberg (1914)"
       ],
-      "correctAnswer": "Eroberung Konstantinopels (1453)"
+      "correctAnswer": "Schlacht bei Sedan (1870)"
     },
     {
       "question": "In welcher antiken Zivilisation wurde das Schriftsystem der Keilschrift (Cuneiform) entwickelt?",
@@ -5777,16 +5777,16 @@
       "correctAnswer": "Sumerer"
     },
     {
-      "question": "Von wem und in welchem Jahr wurde im Osmanischen Reich das 'Tanzimat‑Edikt' verkündet?",
+      "question": "Von wem und in welchem Jahr wurde das Deutsche Reich proklamiert?",
       "difficulty": 3,
       "id": "Q0475",
       "options": [
-        "Sultan Abdülmecit - 1839",
-        "Sultan Mahmut II - 1826",
-        "Sultan Abdülaziz - 1861",
-        "Sultan Abdülhamit II - 1876"
+        "Otto von Bismarck - 1871",
+        "Kaiser Wilhelm I. - 1871",
+        "Friedrich III. - 1888",
+        "Kaiser Wilhelm II. - 1888"
       ],
-      "correctAnswer": "Sultan Abdülmecit - 1839"
+      "correctAnswer": "Kaiser Wilhelm I. - 1871"
     },
     {
       "question": "Welcher römische Kaiser erklärte das Christentum zur Staatsreligion und gründete Konstantinopel?",
@@ -5813,16 +5813,16 @@
       "correctAnswer": "Leo III. und Konstantin V."
     },
     {
-      "question": "Unter welchem Sultan wurde im Osmanischen Reich das 'Devshirme'‑System institutionell etabliert?",
+      "question": "Unter welchem Kaiser wurde das Heilige Römische Reich zur Großmacht?",
       "difficulty": 3,
       "id": "Q0478",
       "options": [
-        "Mehmed I.",
-        "Bayezid I.",
-        "Orhan (I.)",
-        "Murad I."
+        "Otto I.",
+        "Friedrich Barbarossa",
+        "Karl der Große",
+        "Heinrich IV."
       ],
-      "correctAnswer": "Murad I."
+      "correctAnswer": "Karl der Große"
     },
     {
       "question": "Von wem wurde im Mongolenreich das Gesetzessystem 'Yassa' geschaffen?",
@@ -5921,16 +5921,16 @@
       "correctAnswer": "3114 v. Chr. (11. August)"
     },
     {
-      "question": "In welcher Periode stellte die Familie Köprülü im Osmanischen Reich Großwesire?",
+      "question": "In welcher Periode regierten die Habsburger das Heilige Römische Reich?",
       "difficulty": 3,
       "id": "Q0487",
       "options": [
-        "15. Jahrhundert",
-        "18. Jahrhundert",
-        "Zweite Hälfte des 17. Jahrhunderts",
-        "Erste Hälfte des 16. Jahrhunderts"
+        "12.-13. Jahrhundert",
+        "14.-15. Jahrhundert",
+        "15.-18. Jahrhundert",
+        "19. Jahrhundert"
       ],
-      "correctAnswer": "Zweite Hälfte des 17. Jahrhunderts"
+      "correctAnswer": "15.-18. Jahrhundert"
     }
   ],
   "Geographie": [
@@ -6843,7 +6843,7 @@
       "imageUrl": "assets/images/questions/geography_pacific.jpg"
     },
     {
-      "question": "Der Bosporus trennt Asien und Europa voneinander.",
+      "question": "Der Rhein fließt durch mehrere europäische Länder.",
       "difficulty": 1,
       "id": "Q0561",
       "type": "TrueFalse",
@@ -7189,7 +7189,7 @@
       "correctAnswer": "Ganges-Brahmaputra"
     },
     {
-      "question": "Diese Flagge gehört zur Türkei.",
+      "question": "Diese Flagge gehört zu Österreich.",
       "difficulty": 1,
       "id": "Q0708",
       "type": "TrueFalse",
@@ -7349,7 +7349,7 @@
       "imageUrl": "assets/images/questions/img_109.jpg"
     },
     {
-      "question": "Die Hauptstadt der Türkei ist Ankara.",
+      "question": "Die Hauptstadt von Österreich ist Wien.",
       "difficulty": 1,
       "id": "Q0720",
       "type": "TrueFalse",
@@ -7461,11 +7461,11 @@
       "imageUrl": "assets/images/questions/img_118.jpg"
     },
     {
-      "question": "Die Hauptstadt der Türkei ist Istanbul.",
+      "question": "Die Hauptstadt von Belgien ist Brüssel.",
       "difficulty": 1,
       "id": "Q0728",
       "type": "TrueFalse",
-      "correctAnswer": "FALSE",
+      "correctAnswer": "TRUE",
       "choices": [
         "Richtig",
         "Falsch"
@@ -7899,7 +7899,7 @@
       "imageUrl": "assets/images/questions/music_beatles.jpg"
     },
     {
-      "question": "Die Kanun ist ein Saiteninstrument der türkischen Musik.",
+      "question": "Die Zither ist ein traditionelles deutsches Saiteninstrument.",
       "difficulty": 1,
       "id": "Q0619",
       "type": "TrueFalse",
@@ -8567,11 +8567,11 @@
       "imageUrl": "assets/images/questions/literature_garcia_marquez.jpg"
     },
     {
-      "question": "Die Garip‑Bewegung entstand in der Türkei in den 1950er‑Jahren.",
+      "question": "Die Sturm und Drang-Bewegung entstand in Deutschland in den 1770er-Jahren.",
       "difficulty": 2,
       "id": "Q0669",
       "type": "TrueFalse",
-      "correctAnswer": "FALSE",
+      "correctAnswer": "TRUE",
       "choices": [
         "Richtig",
         "Falsch"
@@ -9162,15 +9162,15 @@
       "id": "Q1018"
     },
     {
-      "question": "Was bedeutet 'türkü' in der türkischen Volksmusik?",
+      "question": "Was bedeutet 'Lied' in der deutschen Volksmusik?",
       "type": "MultipleChoice",
       "options": [
         "Tanz",
-        "Lied",
+        "Melodie mit Text",
         "Instrument",
         "Rhythmus"
       ],
-      "correctAnswer": "Lied",
+      "correctAnswer": "Melodie mit Text",
       "difficulty": 1,
       "id": "Q1019"
     },
@@ -9242,16 +9242,16 @@
   ],
   "Literatur": [
     {
-      "question": "Wer gründete die Zeitschrift 'Büyük Doğu' in der türkischen Literatur?",
+      "question": "Wer schrieb 'Die Leiden des jungen Werthers'?",
       "type": "MultipleChoice",
       "options": [
-        "Necip Fazıl Kısakürek",
-        "Sezai Karakoç",
-        "Cahit Zarifoğlu",
-        "Mehmet Akif Ersoy"
+        "Johann Wolfgang von Goethe",
+        "Friedrich Schiller",
+        "Heinrich Heine",
+        "Thomas Mann"
       ],
-      "correctAnswer": "Necip Fazıl Kısakürek",
-      "difficulty": 3,
+      "correctAnswer": "Johann Wolfgang von Goethe",
+      "difficulty": 2,
       "id": "Q1025"
     },
     {
@@ -9281,16 +9281,16 @@
       "id": "Q1027"
     },
     {
-      "question": "Wer ist der Autor von 'Araba Sevdası' (Die Kutschenaffäre)?",
+      "question": "Wer ist der Autor von 'Die Buddenbrooks'?",
       "type": "MultipleChoice",
       "options": [
-        "Ahmet Mithat Efendi",
-        "Recaizade Mahmut Ekrem",
-        "Namık Kemal",
-        "Ziya Paşa"
+        "Thomas Mann",
+        "Heinrich Mann",
+        "Hermann Hesse",
+        "Theodor Fontane"
       ],
-      "correctAnswer": "Recaizade Mahmut Ekrem",
-      "difficulty": 3,
+      "correctAnswer": "Thomas Mann",
+      "difficulty": 2,
       "id": "Q1028"
     },
     {
@@ -9307,28 +9307,28 @@
       "id": "Q1029"
     },
     {
-      "question": "Wer ist der Autor des Theaterstücks 'Şair Evlenmesi' (Die Hochzeit des Dichters)?",
+      "question": "Wer ist der Autor des Theaterstücks 'Die Räuber'?",
       "type": "MultipleChoice",
       "options": [
-        "Namık Kemal",
-        "Ahmet Vefik Paşa",
-        "Ziya Paşa",
-        "Recaizade Mahmut Ekrem"
+        "Johann Wolfgang von Goethe",
+        "Friedrich Schiller",
+        "Gotthold Ephraim Lessing",
+        "Heinrich von Kleist"
       ],
-      "correctAnswer": "Namık Kemal",
+      "correctAnswer": "Friedrich Schiller",
       "difficulty": 2,
       "id": "Q1030"
     },
     {
-      "question": "Was ist der erste türkische Roman?",
+      "question": "Welches ist der erste deutsche Roman?",
       "type": "MultipleChoice",
       "options": [
-        "Taaşşuk-u Talat ve Fitnat",
-        "Araba Sevdası",
-        "İntibah",
-        "Felâtun Bey ile Râkım Efendi"
+        "Der Simplicissimus",
+        "Die Leiden des jungen Werthers",
+        "Wilhelm Meisters Lehrjahre",
+        "Der grüne Heinrich"
       ],
-      "correctAnswer": "Taaşşuk-u Talat ve Fitnat",
+      "correctAnswer": "Der Simplicissimus",
       "difficulty": 3,
       "id": "Q1031"
     }
@@ -9671,7 +9671,7 @@
       "imageUrl": "assets/images/questions/img_golf.jpg"
     },
     {
-      "question": "Ist dieses historische Gebäude in Istanbul die Hagia Sophia?",
+      "question": "Ist dieses historische Gebäude in Köln der Dom?",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "imageUrl": "assets/images/questions/hagia_sophia_istanbul.jpg",
@@ -9688,7 +9688,7 @@
       ]
     },
     {
-      "question": "Dieses Bild zeigt die Pamukkale-Travertinterrassen.",
+      "question": "Dieses Bild zeigt das Schloss Sanssouci in Potsdam.",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "imageUrl": "assets/images/questions/pamukkale_travertines.jpg",
@@ -9705,7 +9705,7 @@
       ]
     },
     {
-      "question": "Das Gebäude auf diesem Bild ist der Dolmabahçe-Palast.",
+      "question": "Das Gebäude auf diesem Bild ist das Schloss Charlottenburg.",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "imageUrl": "assets/images/questions/dolmabahce_palace.jpg",
@@ -9722,7 +9722,7 @@
       ]
     },
     {
-      "question": "Das historische Gebäude auf diesem Bild ist der Mädchenturm.",
+      "question": "Das historische Gebäude auf diesem Bild ist der Zwinger in Dresden.",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "imageUrl": "assets/images/questions/maiden_tower_istanbul.jpg",
@@ -9841,7 +9841,7 @@
       ]
     },
     {
-      "question": "Die 16 Sterne auf der Präsidentschaftsstandarte repräsentieren die 16 großen türkischen Staaten in der türkischen Geschichte.",
+      "question": "Der deutsche Bundesadler hat die Flügel ausgebreitet.",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "difficulty": 1,
@@ -9943,7 +9943,7 @@
       ]
     },
     {
-      "question": "Der Mehter-Marsch ist der älteste bekannte Militärmarsch der Welt.",
+      "question": "Der deutsche Zapfenstreich ist ein traditioneller Militärmarsch.",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "difficulty": 1,
@@ -9960,7 +9960,7 @@
       ]
     },
     {
-      "question": "Die Feenkamine befinden sich im Bezirk Ürgüp von Nevşehir.",
+      "question": "Die Externsteine befinden sich im Teutoburger Wald in Nordrhein-Westfalen.",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "difficulty": 1,

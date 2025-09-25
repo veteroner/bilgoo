@@ -48,6 +48,53 @@ window.testProfileStats = function() {
     return calculatedStats;
 };
 
+// Oyun durumunu debug etmek için fonksiyon
+window.debugGameState = function() {
+    console.log('=== OYUN DURUMU DEBUG ===');
+    console.log('quizApp.answerProcessing:', quizApp.answerProcessing);
+    console.log('quizApp.currentQuestionIndex:', quizApp.currentQuestionIndex);
+    console.log('quizApp.timeLeft:', quizApp.timeLeft);
+    console.log('quizApp.timerInterval:', quizApp.timerInterval);
+    console.log('Aktif modallar:', document.querySelectorAll('.correct-modal, .wrong-modal, .timeout-modal').length);
+    
+    // Aktif event listener'ları kontrol et
+    const modals = document.querySelectorAll('.correct-modal, .wrong-modal, .timeout-modal');
+    modals.forEach((modal, index) => {
+        console.log(`Modal ${index + 1}:`, modal.className);
+    });
+    
+    console.log('=== DEBUG TAMAMLANDI ===');
+};
+
+// Oyun donmasını çözmek için acil durum fonksiyonu
+window.resetGameState = function() {
+    console.log('=== OYUN DURUMU SIFIRLANIYOR ===');
+    
+    // Answer processing'i sıfırla
+    quizApp.answerProcessing = false;
+    
+    // Tüm modalları kaldır
+    const modals = document.querySelectorAll('.correct-modal, .wrong-modal, .timeout-modal');
+    modals.forEach(modal => {
+        if (modal.parentNode) {
+            modal.remove();
+        }
+    });
+    
+    // Timer'ı durdur
+    if (quizApp.timerInterval) {
+        clearInterval(quizApp.timerInterval);
+        quizApp.timerInterval = null;
+    }
+    
+    // Sonraki soruya geç
+    setTimeout(() => {
+        quizApp.showNextQuestion();
+    }, 500);
+    
+    console.log('=== SIFIRLAMA TAMAMLANDI ===');
+};
+
 window.forceUpdateStats = function() {
     console.log('İstatistikler zorla güncelleniyor...');
     
@@ -596,6 +643,143 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const quizApp = {
+    // AdMob Initialization
+    admobInitialized: false,
+    
+    async initializeAdMob() {
+        try {
+            if (typeof window.Capacitor !== 'undefined' && window.Capacitor.isNativePlatform()) {
+                const { AdMob } = await import('@capacitor-community/admob');
+                
+                await AdMob.initialize({
+                    initializeForTesting: false
+                });
+                
+                this.admobInitialized = true;
+                console.log('✅ AdMob initialized successfully');
+                
+                // Rewarded ad'ı preload et
+                this.preloadRewardedAd();
+                
+            } else {
+                console.log('ℹ️ AdMob sadece native platformlarda çalışır');
+            }
+        } catch (error) {
+            console.error('❌ AdMob initialization failed:', error);
+        }
+    },
+
+    async preloadRewardedAd() {
+        try {
+            if (!this.admobInitialized) return;
+            
+            const { AdMob } = await import('@capacitor-community/admob');
+            const platform = window.Capacitor.getPlatform();
+            const adId = platform === 'ios' 
+                ? 'ca-app-pub-7610338885240453/7161809021'
+                : 'ca-app-pub-7610338885240453/6595381556';
+
+            await AdMob.prepareRewardVideoAd({
+                adId: adId,
+                isTesting: false
+            });
+            
+            console.log('✅ Rewarded ad preloaded');
+        } catch (error) {
+            console.error('❌ Rewarded ad preload failed:', error);
+        }
+    },
+
+    async showRewardedAd(modal) {
+        try {
+            if (!this.admobInitialized) {
+                this.showToast('Reklam sistemi henüz hazır değil', 'toast-error');
+                return;
+            }
+
+            const { AdMob } = await import('@capacitor-community/admob');
+            const watchAdBtn = document.getElementById('watch-rewarded-ad');
+            
+            if (watchAdBtn) {
+                watchAdBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Reklam Yükleniyor...';
+                watchAdBtn.disabled = true;
+            }
+
+            // Ad göster
+            const result = await AdMob.showRewardVideoAd();
+            
+            if (result.rewarded) {
+                // Reklam başarıyla izlendi - 3 can ver
+                this.giveRewardedLives();
+                modal.remove();
+                this.showToast('🎉 Tebrikler! 3 can kazandınız!', 'toast-success');
+                
+                // Yeni rewarded ad preload et
+                setTimeout(() => this.preloadRewardedAd(), 1000);
+            } else {
+                this.showToast('Reklam tam olarak izlenmedi', 'toast-warning');
+                if (watchAdBtn) {
+                    watchAdBtn.innerHTML = '<i class="fas fa-play-circle"></i> 🎬 Reklam İzle - 3 Can Kazan';
+                    watchAdBtn.disabled = false;
+                }
+            }
+            
+        } catch (error) {
+            console.error('❌ Rewarded ad show failed:', error);
+            this.showToast('Reklam gösterilirken hata oluştu', 'toast-error');
+            
+            const watchAdBtn = document.getElementById('watch-rewarded-ad');
+            if (watchAdBtn) {
+                watchAdBtn.innerHTML = '<i class="fas fa-play-circle"></i> 🎬 Reklam İzle - 3 Can Kazan';
+                watchAdBtn.disabled = false;
+            }
+        }
+    },
+
+    giveRewardedLives() {
+        const REWARD_LIVES = 3;
+        
+        // Mevcut can sayısını al
+        let currentLives = parseInt(localStorage.getItem('lives') || '3');
+        
+        // 3 can ekle
+        currentLives += REWARD_LIVES;
+        
+        // Can sayısını güncelle
+        localStorage.setItem('lives', currentLives.toString());
+        
+        // UI'ı güncelle
+        this.updateLivesDisplay();
+        
+        // Firebase'e kaydet
+        this.updateUserLives(currentLives);
+        
+        // Audit log
+        this.safeAuditLog('info', 'lives', 'rewarded_ad_lives_earned', {
+            livesEarned: REWARD_LIVES,
+            newLivesTotal: currentLives,
+            timestamp: new Date().toISOString()
+        });
+        
+        console.log(`✅ Rewarded ad: +${REWARD_LIVES} can verildi. Toplam: ${currentLives}`);
+    },
+
+    async updateUserLives(lives) {
+        try {
+            const userId = this.getCurrentUserId();
+            if (userId && this.database) {
+                const userRef = this.database.collection('users').doc(userId);
+                await userRef.update({
+                    lives: lives,
+                    lastLivesUpdate: new Date().toISOString()
+                });
+                console.log(`✅ Firebase'e can güncellendi: ${lives}`);
+            }
+        } catch (error) {
+            console.error('❌ Firebase can güncelleme hatası:', error);
+        }
+    },
+
     // Güvenli audit log fonksiyonu
     safeAuditLog: function(level, category, action, details = {}) {
         try {
@@ -1745,10 +1929,10 @@ const quizApp = {
             
             // Joker butonları - bunlar daha spesifik olabilir
             this.updateMobileTabText('joker-tab-fifty', '50:50', '50:50', '50:50');
-            this.updateMobileTabTextFromLanguage('joker-tab-hint', 'jokerHint');
-            this.updateMobileTabTextFromLanguage('joker-tab-time', 'jokerTime');
-            this.updateMobileTabTextFromLanguage('joker-tab-skip', 'jokerSkip');
-            this.updateMobileTabTextFromLanguage('joker-tab-store', 'jokerStore');
+            this.updateMobileTabTextFromLanguage('joker-tab-hint', 'hint');
+            this.updateMobileTabTextFromLanguage('joker-tab-time', 'timeExtension');
+            this.updateMobileTabTextFromLanguage('joker-tab-skip', 'skipQuestion');
+            this.updateMobileTabText('joker-tab-store', 'Mağaza', 'Store', 'Shop');
             this.updateMobileTabTextFromLanguage('joker-tab-home', 'exit');
             
             console.log("Mobil menü ve joker menü çevirileri güncellendi. Dil:", lang);
@@ -3542,14 +3726,21 @@ const quizApp = {
     
     // Sonraki soruyu göster
     showNextQuestion: function() {
+        console.log('showNextQuestion çağrıldı');
+        
         // Oyun aktif değilse (ör. ana menüye dönüldüyse) hiçbir işlem yapma
         if (!this.isQuizActive()) {
+            console.log('Quiz aktif değil, işlem iptal ediliyor');
             return;
         }
+        
         // Eğer şu anda cevap işlemi devam ediyorsa bekle
         if (this.answerProcessing) {
+            console.log('Answer processing devam ediyor, işlem iptal ediliyor');
             return;
         }
+        
+        console.log('Sonraki soruya geçiliyor...');
         
         // Mevcut modalları temizle - güvenlik önlemi
         const existingModals = document.querySelectorAll('.correct-modal, .wrong-modal, .timeout-modal');
@@ -3561,6 +3752,7 @@ const quizApp = {
         
         // Cevap işlemini sıfırla
         this.answerProcessing = false;
+        console.log('Answer processing sıfırlandı');
         
         // Yeni soruya geçerken joker kullanımlarını sıfırla
         this.resetJokerUsage();
@@ -5045,13 +5237,6 @@ const quizApp = {
                 this.remainingTimeSnapshot = this.timeLeft;
             }
             this.isAppBackgrounded = true;
-            
-            // Quiz aktifse cevap seçimini geçici olarak devre dışı bırak
-            if (this.currentQuestionIndex !== null && !this.answerProcessing) {
-                this.answerProcessing = true;
-                console.log('[PAUSE] Quiz cevap seçimi geçici olarak devre dışı bırakıldı');
-            }
-            
             // Ses elementlerini duraklat
             this.pauseAllAudio();
             console.log('[PAUSE] Uygulama arka plana geçti. Sayaç durdu ve sesler duraklatıldı. Kalan süre:', this.remainingTimeSnapshot);
@@ -5060,13 +5245,6 @@ const quizApp = {
         const resumeTimer = () => {
             if (!this.isAppBackgrounded) return;
             this.isAppBackgrounded = false;
-            
-            // Quiz aktifse cevap seçimini tekrar etkinleştir
-            if (this.currentQuestionIndex !== null && this.answerProcessing) {
-                this.answerProcessing = false;
-                console.log('[RESUME] Quiz cevap seçimi tekrar etkinleştirildi');
-            }
-            
             // Quiz aktif mi ve cevap işleme yok mu?
             if (this.currentQuestionIndex != null && !this.answerProcessing && typeof this.remainingTimeSnapshot === 'number') {
                 // timeLeft'i snapshot ile devam ettir
@@ -5206,55 +5384,24 @@ const quizApp = {
     // Oyunu arka plan için duraklat
     pauseGameForBackground: function() {
         console.log('[BACKGROUND] Oyun arka plan için duraklatılıyor...');
-        
-        // Timer'ı durdur
         if (this.timerInterval) {
             clearInterval(this.timerInterval);
-            this.timerInterval = null;
         }
-        
-        // Quiz aktifse durdurun - cevap işlemesini engelleyin
-        if (this.currentQuestionIndex !== null && !this.answerProcessing) {
-            this.answerProcessing = true; // Cevap seçimini geçici olarak engelle
-            console.log('[BACKGROUND] Quiz cevap seçimi geçici olarak devre dışı bırakıldı');
-        }
-        
         // Event listener'ları geçici olarak kaldır
         this.removeTemporaryEventListeners();
         
         // Tüm ses elementlerini duraklat
         this.pauseAllAudio();
-        
-        // Arka plan durumu flagini set et
-        this.isAppBackgrounded = true;
     },
     
     // Oyunu arka plandan devam ettir  
     resumeGameFromBackground: function() {
         console.log('[FOREGROUND] Oyun arka plandan devam ettiriliyor...');
-        
-        // Arka plan durumunu temizle
-        this.isAppBackgrounded = false;
-        
-        // Quiz aktifse ve cevap işlemi engellenmiş ise geri aç
-        if (this.currentQuestionIndex !== null && this.answerProcessing) {
-            this.answerProcessing = false; // Cevap seçimini tekrar etkinleştir
-            console.log('[FOREGROUND] Quiz cevap seçimi tekrar etkinleştirildi');
-        }
-        
         // Event listener'ları tekrar ekle
         this.addTemporaryEventListeners();
         
         // Ses elementlerini yeniden etkinleştir (sadece user interaction sonrası çalacak)
         this.resumeAllAudio();
-        
-        // Timer'ı yeniden başlat (eğer quiz aktifse)
-        if (this.currentQuestionIndex !== null && typeof this.remainingTimeSnapshot === 'number') {
-            this.timeLeft = this.remainingTimeSnapshot;
-            this.updateTimeDisplay();
-            this.startTimer();
-            console.log('[FOREGROUND] Timer kaldığı yerden devam ediyor:', this.timeLeft);
-        }
     },
     
     // Oyunu tamamen temizle (uygulama kapanırken)
@@ -5382,9 +5529,11 @@ const quizApp = {
         
         // Çoklu tıklamayı önlemek için kontrol
         if (this.answerProcessing) {
+            console.log('Answer processing zaten aktif, işlem iptal ediliyor');
             return;
         }
         this.answerProcessing = true;
+        console.log('Answer processing başlatıldı');
         
         // Sayacı durdur
         clearInterval(this.timerInterval);
@@ -5473,22 +5622,30 @@ const quizApp = {
             nextBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                console.log('Doğru modal next button tıklandı');
                 if (correctModal.parentNode) {
                     correctModal.remove();
                 }
-                this.answerProcessing = false;
-                this.showNextQuestion();
+                // Kısa bir gecikme ile answerProcessing'i sıfırla ve sonraki soruya geç
+                setTimeout(() => {
+                    this.answerProcessing = false;
+                    this.showNextQuestion();
+                }, 100);
             }, { once: true });
             
             correctModal.addEventListener('click', (e) => {
                 if (e.target === correctModal) {
                     e.preventDefault();
                     e.stopPropagation();
+                    console.log('Doğru modal background tıklandı');
                     if (correctModal.parentNode) {
                         correctModal.remove();
                     }
-                    this.answerProcessing = false;
-                    this.showNextQuestion();
+                    // Kısa bir gecikme ile answerProcessing'i sıfırla ve sonraki soruya geç
+                    setTimeout(() => {
+                        this.answerProcessing = false;
+                        this.showNextQuestion();
+                    }, 100);
                 }
             }, { once: true });
             
@@ -5522,22 +5679,30 @@ const quizApp = {
             nextBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                console.log('Yanlış modal next button tıklandı');
                 if (wrongModal.parentNode) {
                     wrongModal.remove();
                 }
-                this.answerProcessing = false;
-                this.showNextQuestion();
+                // Kısa bir gecikme ile answerProcessing'i sıfırla ve sonraki soruya geç
+                setTimeout(() => {
+                    this.answerProcessing = false;
+                    this.showNextQuestion();
+                }, 100);
             }, { once: true });
             
             wrongModal.addEventListener('click', (e) => {
                 if (e.target === wrongModal) {
                     e.preventDefault();
                     e.stopPropagation();
+                    console.log('Yanlış modal background tıklandı');
                     if (wrongModal.parentNode) {
                         wrongModal.remove();
                     }
-                    this.answerProcessing = false;
-                    this.showNextQuestion();
+                    // Kısa bir gecikme ile answerProcessing'i sıfırla ve sonraki soruya geç
+                    setTimeout(() => {
+                        this.answerProcessing = false;
+                        this.showNextQuestion();
+                    }, 100);
                 }
             }, { once: true });
             
@@ -5592,22 +5757,30 @@ const quizApp = {
             nextBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                console.log('Blank filling doğru modal next button tıklandı');
                 if (correctModal.parentNode) {
                     correctModal.remove();
                 }
-                this.answerProcessing = false;
-                this.showNextQuestion();
+                // Kısa bir gecikme ile answerProcessing'i sıfırla ve sonraki soruya geç
+                setTimeout(() => {
+                    this.answerProcessing = false;
+                    this.showNextQuestion();
+                }, 100);
             }, { once: true });
             
             correctModal.addEventListener('click', (e) => {
                 if (e.target === correctModal) {
                     e.preventDefault();
                     e.stopPropagation();
+                    console.log('Blank filling doğru modal background tıklandı');
                     if (correctModal.parentNode) {
                         correctModal.remove();
                     }
-                    this.answerProcessing = false;
-                    this.showNextQuestion();
+                    // Kısa bir gecikme ile answerProcessing'i sıfırla ve sonraki soruya geç
+                    setTimeout(() => {
+                        this.answerProcessing = false;
+                        this.showNextQuestion();
+                    }, 100);
                 }
             }, { once: true });
             
@@ -5638,22 +5811,30 @@ const quizApp = {
             nextBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                console.log('Blank filling yanlış modal next button tıklandı');
                 if (wrongModal.parentNode) {
                     wrongModal.remove();
                 }
-                this.answerProcessing = false;
-                this.showNextQuestion();
+                // Kısa bir gecikme ile answerProcessing'i sıfırla ve sonraki soruya geç
+                setTimeout(() => {
+                    this.answerProcessing = false;
+                    this.showNextQuestion();
+                }, 100);
             }, { once: true });
             
             wrongModal.addEventListener('click', (e) => {
                 if (e.target === wrongModal) {
                     e.preventDefault();
                     e.stopPropagation();
+                    console.log('Blank filling yanlış modal background tıklandı');
                     if (wrongModal.parentNode) {
                         wrongModal.remove();
                     }
-                    this.answerProcessing = false;
-                    this.showNextQuestion();
+                    // Kısa bir gecikme ile answerProcessing'i sıfırla ve sonraki soruya geç
+                    setTimeout(() => {
+                        this.answerProcessing = false;
+                        this.showNextQuestion();
+                    }, 100);
                 }
             }, { once: true });
             
@@ -8324,13 +8505,17 @@ const quizApp = {
     
     // Süre dolduğunda yapılacaklar
     handleTimeUp: function() {
+        console.log('handleTimeUp çağrıldı - timeLeft:', this.timeLeft, 'answerProcessing:', this.answerProcessing);
+        
         // Eğer zaten cevap işlemi devam ediyorsa veya süre zaten durdurulmuşsa çıkış yap
         if (this.answerProcessing || this.timeLeft > 0) {
+            console.log('Time up işlemi iptal edildi - processing:', this.answerProcessing, 'timeLeft:', this.timeLeft);
             return;
         }
         
         // Çoklu çağrıyı önlemek için flag set et
         this.answerProcessing = true;
+        console.log('Time up - answer processing başlatıldı');
         
         this.stopTimer();
         this.timeLeftElement.textContent = "Süre Bitti!";
@@ -8378,22 +8563,30 @@ const quizApp = {
             nextBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                console.log('Timeout modal next button tıklandı');
                 if (timeoutModal.parentNode) {
                     timeoutModal.remove();
                 }
-                this.answerProcessing = false;
-                this.showNextQuestion();
+                // Kısa bir gecikme ile answerProcessing'i sıfırla ve sonraki soruya geç
+                setTimeout(() => {
+                    this.answerProcessing = false;
+                    this.showNextQuestion();
+                }, 100);
             }, { once: true });
             
             timeoutModal.addEventListener('click', (e) => {
                 if (e.target === timeoutModal) {
                     e.preventDefault();
                     e.stopPropagation();
+                    console.log('Timeout modal background tıklandı');
                     if (timeoutModal.parentNode) {
                         timeoutModal.remove();
                     }
-                    this.answerProcessing = false;
-                    this.showNextQuestion();
+                    // Kısa bir gecikme ile answerProcessing'i sıfırla ve sonraki soruya geç
+                    setTimeout(() => {
+                        this.answerProcessing = false;
+                        this.showNextQuestion();
+                    }, 100);
                 }
             }, { once: true });
             
@@ -8897,10 +9090,14 @@ const quizApp = {
         const successRate = (finalStats.correctAnswers / finalStats.totalQuestions) * 100;
         let congratsMessage, primaryColor, secondaryColor;
         
-        const celebrationTexts = languages[this.currentLanguage].celebration;
-        
-        // Rastgele atasözü seç
-        const randomWisdom = celebrationTexts.wisdomQuotes[Math.floor(Math.random() * celebrationTexts.wisdomQuotes.length)];
+        // Kutlama metinleri güvenli biçimde alın (bazı dillerde wisdomQuotes olmayabilir)
+        const celebrationTexts = (languages[this.currentLanguage] && languages[this.currentLanguage].celebration) || {};
+        const wisdomPool = Array.isArray(celebrationTexts.wisdomQuotes) && celebrationTexts.wisdomQuotes.length > 0
+            ? celebrationTexts.wisdomQuotes
+            : (Array.isArray(celebrationTexts.motivationalMessages) && celebrationTexts.motivationalMessages.length > 0
+                ? celebrationTexts.motivationalMessages
+                : ['🦉 "Her oyun yeni bir öğrenme fırsatıdır!"']);
+        const randomWisdom = wisdomPool[Math.floor(Math.random() * wisdomPool.length)];
         
         if (successRate >= 90) {
             congratsMessage = celebrationTexts.perfect;
@@ -9928,6 +10125,10 @@ const quizApp = {
                 </div>
                 
                 <div class="buy-lives-actions">
+                    <button id="watch-rewarded-ad" class="btn-watch-ad">
+                        <i class="fas fa-play-circle"></i>
+                        🎬 Reklam İzle - 3 Can Kazan
+                    </button>
                     ${currentPoints >= LIVES_PRICE ? 
                         `<button id="confirm-buy-lives" class="btn-buy-lives">
                             <i class="fas fa-shopping-cart"></i>
@@ -9947,6 +10148,14 @@ const quizApp = {
         `;
         
         document.body.appendChild(buyLivesModal);
+        
+        // Reklam izleme butonuna event listener ekle
+        const watchAdBtn = document.getElementById('watch-rewarded-ad');
+        if (watchAdBtn) {
+            watchAdBtn.addEventListener('click', () => {
+                this.showRewardedAd(buyLivesModal);
+            });
+        }
         
         // Satın alma butonuna event listener ekle
         const confirmBuyBtn = document.getElementById('confirm-buy-lives');
@@ -11762,52 +11971,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 500);
 });
 
-// Platform özel düzeltmeler
+// AdMob initialization - uygulama başlatıldığında çalıştır
 document.addEventListener('DOMContentLoaded', function() {
-    const platform = window.Capacitor && window.Capacitor.getPlatform ? window.Capacitor.getPlatform() : null;
-    
-    // Joker tab metinlerini güncelleyen fonksiyon (dil değişikliği için)
-    function updateJokerTabTexts() {
-        if (!window.QuizGame) return;
-        
-        const jokerTabUpdates = {
-            'joker-tab-fifty': '50:50', // Sabit
-            'joker-tab-hint': window.QuizGame.getTranslation('jokerHint'),
-            'joker-tab-time': window.QuizGame.getTranslation('jokerTime'),
-            'joker-tab-skip': window.QuizGame.getTranslation('jokerSkip'),
-            'joker-tab-store': window.QuizGame.getTranslation('jokerStore'),
-            'joker-tab-home': window.QuizGame.getTranslation('jokerHome')
-        };
-        
-        Object.entries(jokerTabUpdates).forEach(([id, text]) => {
-            const element = document.getElementById(id);
-            if (element && text) {
-                const span = element.querySelector('span');
-                if (span) span.textContent = text;
-            }
-        });
+    // AdMob'u initialize et
+    if (quizApp && typeof quizApp.initializeAdMob === 'function') {
+        quizApp.initializeAdMob();
     }
-    
-    // Android özel düzeltmeler
-    if (platform === 'android') {
-        const androidCSS = document.createElement('link');
-        androidCSS.rel = 'stylesheet';
-        androidCSS.href = 'android-fixes.css?v=1.0';
-        document.head.appendChild(androidCSS);
-        console.log('Android özel CSS yüklendi');
-    }
-    
-    // Her iki platform için joker tab metinlerini güncelle
-    if (platform === 'android' || platform === 'ios') {
-        console.log(platform + ' platformu algılandı');
-        
-        // İlk yükleme
-        setTimeout(updateJokerTabTexts, 1000);
-        
-        // Dil değişikliği sonrası güncelleme için event listener
-        document.addEventListener('languageChanged', updateJokerTabTexts);
-        
-        console.log(platform + ' joker tab çeviri sistemi kuruldu');
+});
+
+// Capacitor ready olduğunda da initialize et
+document.addEventListener('deviceready', function() {
+    if (quizApp && typeof quizApp.initializeAdMob === 'function') {
+        quizApp.initializeAdMob();
     }
 });
 

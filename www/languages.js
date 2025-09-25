@@ -95,11 +95,8 @@ const languages = {
         jokerHint: 'İpucu',
         jokerTime: '+Süre',
         jokerSkip: 'Pas',
-        skipQuestion: 'Pas',
         jokerStore: 'Joker Mağazası',
-        jokerHome: 'Çıkış',
         jokerUsed: 'Kullanıldı',
-        exitConfirm: 'Çıkış yapmak istediğinizden emin misiniz?',
         
         // Joker mağazası
         storeTitle: 'Joker Mağazası',
@@ -617,11 +614,8 @@ const languages = {
         jokerHint: 'Hint',
         jokerTime: '+Time',
         jokerSkip: 'Skip',
-        skipQuestion: 'Skip',
         jokerStore: 'Joker Store',
-        jokerHome: 'Exit',
         jokerUsed: 'Used',
-        exitConfirm: 'Are you sure you want to exit?',
         
         // Joker store
         storeTitle: 'Joker Store',
@@ -1164,11 +1158,8 @@ const languages = {
         jokerHint: 'Hinweis',
         jokerTime: '+Zeit',
         jokerSkip: 'Überspringen',
-        skipQuestion: 'Überspringen',
         jokerStore: 'Joker-Shop',
-        jokerHome: 'Beenden',
         jokerUsed: 'Benutzt',
-        exitConfirm: 'Sind Sie sicher, dass Sie beenden möchten?',
         
         // Joker shop
         storeTitle: 'Joker-Shop',

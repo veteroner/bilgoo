@@ -251,7 +251,7 @@
         "Bern"
       ],
       "correctAnswer": "Genf",
-      "imageUrl": "assets/images/questions/geography_turkey_world_heritage.jpg"
+      "imageUrl": "assets/images/questions/lake_geneva.jpg"
     },
     {
       "question": "Wie heißt das Gebäude mit dem höchsten Kirchturm der Welt in Deutschland?",
@@ -387,10 +387,10 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_026.jpg"
+      "imageUrl": "assets/images/questions/img_026_de.jpg"
     },
     {
-      "question": "Dieses Bild zeigt das Schloss Neuschwanstein in Bayern.",
+      "question": "Dieses Bild zeigt die Travertine von Pamukkale.",
       "difficulty": 1,
       "id": "Q0055",
       "type": "TrueFalse",
@@ -403,10 +403,10 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_027.jpg"
+      "imageUrl": "assets/images/questions/img_027_de.jpg"
     },
     {
-      "question": "Das Bauwerk auf diesem Bild ist der Schloss Neuschwanstein.",
+      "question": "Das Bauwerk auf diesem Bild ist das Schloss Neuschwanstein.",
       "difficulty": 1,
       "id": "Q0056",
       "type": "TrueFalse",
@@ -419,10 +419,10 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_028.jpg"
+      "imageUrl": "assets/images/questions/img_028_de.jpg"
     },
     {
-      "question": "Das historische Bauwerk auf diesem Bild ist der Kölner Dom.",
+      "question": "Das historische Bauwerk auf diesem Bild ist die Hagia Sophia.",
       "difficulty": 1,
       "id": "Q0057",
       "type": "TrueFalse",
@@ -435,10 +435,10 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_029.jpg"
+      "imageUrl": "assets/images/questions/img_029_de.jpg"
     },
     {
-      "question": "Das Bauwerk auf diesem Bild ist die Porta Nigra in Trier.",
+      "question": "Das Bauwerk auf diesem Bild ist das Kolosseum in Rom.",
       "difficulty": 1,
       "id": "Q0058",
       "type": "TrueFalse",
@@ -451,7 +451,7 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_030.jpg"
+      "imageUrl": "assets/images/questions/img_030_de.jpg"
     },
     {
       "question": "Das höchste Gebäude der Welt, der Burj Khalifa, steht in Dubai.",

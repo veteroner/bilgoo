@@ -1,23 +1,6 @@
 /* Font Awesome Minimal - Sadece Kullanılan İconlar */
 @charset "UTF-8";
 
-/* Android Capacitor App için özel icon sistemi */
-.platform-android .fa, 
-.platform-capacitor .fa,
-body.platform-android .fas,
-body.platform-capacitor .fas {
-    font-family: inherit !important;
-    font-weight: normal !important;
-    font-style: normal !important;
-    text-decoration: inherit !important;
-    text-rendering: auto !important;
-    -webkit-font-smoothing: antialiased !important;
-    -moz-osx-font-smoothing: grayscale !important;
-    display: inline-block !important;
-    line-height: 1 !important;
-    position: relative !important;
-}
-
 /* Font Face - Web Fonts olmadan, Unicode karakterler kullanarak */
 .fa, .fas, .far, .fal, .fab {
     font-family: inherit;
@@ -272,69 +255,6 @@ body.platform-capacitor .fas {
 .fa-pull-right {
     float: right;
     margin-left: 0.3em;
-}
-
-/* Mobile Tab Bar İcon'ları - Android için zorla göster */
-.platform-android .mobile-tab-bar .fa-home::before,
-.platform-capacitor .mobile-tab-bar .fa-home::before,
-body.platform-android .mobile-tab-bar .fa-home::before {
-    content: "🏠" !important;
-    display: inline-block !important;
-    font-size: 1.2em !important;
-}
-
-.platform-android .mobile-tab-bar .fa-user::before,
-.platform-capacitor .mobile-tab-bar .fa-user::before,
-body.platform-android .mobile-tab-bar .fa-user::before {
-    content: "👤" !important;
-    display: inline-block !important;
-    font-size: 1.2em !important;
-}
-
-.platform-android .mobile-tab-bar .fa-user-friends::before,
-.platform-capacitor .mobile-tab-bar .fa-user-friends::before,
-body.platform-android .mobile-tab-bar .fa-user-friends::before {
-    content: "👥" !important;
-    display: inline-block !important;
-    font-size: 1.2em !important;
-}
-
-.platform-android .mobile-tab-bar .fa-cog::before,
-.platform-capacitor .mobile-tab-bar .fa-cog::before,
-body.platform-android .mobile-tab-bar .fa-cog::before {
-    content: "⚙" !important;
-    display: inline-block !important;
-    font-size: 1.2em !important;
-}
-
-.platform-android .mobile-tab-bar .fa-sign-out-alt::before,
-.platform-capacitor .mobile-tab-bar .fa-sign-out-alt::before,
-body.platform-android .mobile-tab-bar .fa-sign-out-alt::before {
-    content: "🚪" !important;
-    display: inline-block !important;
-    font-size: 1.2em !important;
-}
-
-/* Can İcon'u - Android için zorla göster */
-.platform-android .fa-heart::before,
-.platform-capacitor .fa-heart::before,
-body.platform-android .fa-heart::before,
-.life-icon::before {
-    content: "❤" !important;
-    color: #e74c3c !important;
-    display: inline-block !important;
-    font-size: 1.1em !important;
-    text-shadow: 0 0 5px rgba(231, 76, 60, 0.5) !important;
-}
-
-/* Tüm icon'ları Android'de görünür kıl */
-.platform-android .fa,
-.platform-capacitor .fa,
-body.platform-android .fas,
-body.platform-capacitor .fas {
-    visibility: visible !important;
-    opacity: 1 !important;
-    display: inline-block !important;
 }
 
 /* Renkler */

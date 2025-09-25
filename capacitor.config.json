@@ -1,7 +1,7 @@
 {
   "appId": "com.bilgoo.quizapp",
   "appName": "Bilgoo - Quiz Oyunu",
-  "version": "14.14.0",
+  "version": "14.20.0",
   "webDir": "www",
   "server": {
     "androidScheme": "https"
@@ -12,6 +12,11 @@
   "plugins": {
     "AdMob": {
       "appId": "ca-app-pub-7610338885240453~5183201967",
+      "iosAppId": "ca-app-pub-7610338885240453~2583882725",
+      "rewardedAdId": {
+        "android": "ca-app-pub-7610338885240453/6595381556",
+        "ios": "ca-app-pub-7610338885240453/7161809021"
+      },
       "testingDevices": [],
       "tagForChildDirectedTreatment": false,
       "tagForUnderAgeOfConsent": false,
