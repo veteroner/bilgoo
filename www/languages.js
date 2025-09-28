@@ -15,10 +15,10 @@ const languages = {
         correctAnswer: 'Doğru cevap',
         restartingGame: 'Oyun yeniden başlatılıyor...',
         preparingQuestions: 'Sorular hazırlanıyor...',
-        pleaseWait: 'Lütfen bekleyiniz...',
+    pleaseWait: 'Lütfen bekleyiniz...',
         
-        // Login/Register
-        registerButton: 'Kayıt Ol',
+    // Login/Register
+    registerButton: 'Kayıt Ol',
         guestLogin: 'Misafir olarak devam et',
         
         // Çevrim içi mod
@@ -46,6 +46,25 @@ const languages = {
         no_rooms: 'Şu anda açık oda bulunmuyor. Yeni bir oda oluşturabilirsiniz.',
         global_leaderboard: 'Küresel Lider Tablosu',
         all_categories: 'Tüm Kategoriler',
+
+        // Rozet (Badge) çevirileri
+        badges: {
+            firstGame: { name: 'İlk Oyun', description: 'İlk oyununu tamamladın!', requirement: 'İlk oyununu tamamlamak.' },
+            perfectScore: { name: 'Mükemmel', description: 'Bir oyunda tüm soruları doğru cevapladın!', requirement: 'Bir oyunda tüm soruları doğru cevaplamak.' },
+            speedster: { name: 'Hız Ustası', description: '10 saniyenin altında cevap verdin!', requirement: '10 saniye altında 5 hızlı cevap vermek.' },
+            scholar: { name: 'Bilgi Ustası', description: '50 soruyu doğru cevapladın!', requirement: '50 soruyu doğru cevaplamak.' },
+            dedicated: { name: 'Azimli', description: '10 oyun tamamladın!', requirement: '10 oyun tamamlamak.' },
+            genius: { name: 'Deha', description: '%90 üzeri doğruluk oranına sahipsin!', requirement: '20+ soru sonrası %90 doğruluk elde etmek.' },
+            explorer: { name: 'Kaşif', description: '5 farklı kategoride oyun oynadın!', requirement: '5 farklı kategoride oyun oynamak.' }
+        },
+        badgeNewTitle: '🏆 Yeni Rozet Kazandınız!',
+        badgeCongratsMessage: 'Tebrikler! Başarınız için yeni bir rozet kazandınız.',
+        badgeRequirementTitle: 'Kazanma Koşulu',
+        badgeEarnedDateTitle: 'Kazanılma Tarihi',
+        badgeGreatButton: 'Harika!',
+        badgeShareButton: 'Paylaş',
+        badgeActivityEarned: '"{badge}" rozeti kazanıldı',
+        badgeToastNew: '🎉 Yeni rozet kazandınız: {badge}!',
         
         // Lider tablosu
         leaderboard_title: 'Küresel Lider Tablosu',
@@ -97,6 +116,15 @@ const languages = {
         jokerSkip: 'Pas',
         jokerStore: 'Joker Mağazası',
         jokerUsed: 'Kullanıldı',
+        timeExtension: 'Süre',
+        skipQuestion: 'Pas',
+        exit: 'Çıkış',
+        ok: 'Tamam',
+        
+        // Confirmation messages
+        exitConfirmMessage: 'Quiz\'den çıkmak istediğinize emin misiniz? İlerleyişiniz kaydedilecek.',
+        clearStatsConfirmMessage: 'Tüm istatistikleri silmek istediğinizden emin misiniz?',
+        logoutConfirmMessage: 'Çıkış yapmak istediğinizden emin misiniz?',
         
         // Joker mağazası
         storeTitle: 'Joker Mağazası',
@@ -191,6 +219,62 @@ const languages = {
         aboutMenu: 'Hakkımızda',
         modalLivesEndedTitle: 'Canlarınız Bitti!',
         modalLivesEndedMessage: 'Oyuna devam etmek için can satın alabilirsiniz.',
+        
+    // Profil sayfası
+    myProfile: 'Profilim',
+    membershipSince: 'Üyelik:',
+    myTotalScoreLabel: 'Toplam Puanım:',
+    levelLabel: 'Seviye:',
+    editProfile: 'Profili Düzenle',
+    statisticsTitle: 'İstatistikler',
+    totalGames: 'Toplam Oyun',
+    totalQuestions: 'Toplam Soru',
+    correctAnswers: 'Doğru Cevap',
+    accuracyRate: 'Doğruluk Oranı',
+    badgesTitle: 'Rozetler',
+    noBadgesYet: 'Henüz rozet kazanılmadı',
+    highScoresTitle: 'En Yüksek Skorlar',
+    categoryLabel: 'Kategori',
+    scoreLabel: 'Skor',
+    dateLabel: 'Tarih',
+    noScoresYet: 'Henüz kaydedilen skor yok',
+    recentActivitiesTitle: 'Son Aktiviteler',
+    activitiesLoading: 'Aktiviteler yükleniyor...',
+    backToMainMenu: 'Ana Menüye Dön',
+    deleteAccount: 'Hesabımı Sil',
+    
+    // Ayarlar sayfası
+    settingsPageTitle: 'Ayarlar',
+    soundSettings: 'Ses Ayarları',
+    soundEffects: 'Ses Efektleri',
+    soundEffectsDesc: 'Oyun sesleri ve efektlerini açar/kapatır',
+    notificationSounds: 'Bildirim Sesleri',
+    notificationSoundsDesc: 'Bildirim ve uyarı seslerini açar/kapatır',
+    themeSettings: 'Tema Ayarları',
+    darkMode: 'Karanlık Mod',
+    darkModeDesc: 'Koyu tema kullanarak göz yorgunluğunu azaltır',
+    autoTheme: 'Otomatik Tema',
+    autoThemeDesc: 'Sistem ayarlarına göre otomatik tema seçimi',
+    gameSettings: 'Oyun Ayarları',
+    questionTime: 'Soru Süresi',
+    questionTimeDesc: 'Her soru için ayrılan süre',
+    animations: 'Animasyonlar',
+    animationsDesc: 'Oyun animasyonlarını açar/kapatır',
+    vibration: 'Titreşim',
+    vibrationDesc: 'Mobil cihazlarda titreşim geri bildirimi',
+    notificationSettings: 'Bildirim Ayarları',
+    pushNotifications: 'Push Bildirimleri',
+    pushNotificationsDesc: 'Mobil cihazlarda push bildirimleri',
+    friendInvites: 'Arkadaş Davetleri',
+    friendInvitesDesc: 'Arkadaş davet bildirimlerini alır',
+    languageSettings: 'Dil Ayarları',
+    appLanguage: 'Uygulama Dili',
+    appLanguageDesc: 'Uygulama arayüz dili',
+    questionLanguage: 'Soru Dili',
+    questionLanguageDesc: 'Oyun sorularının dili',
+    saveSettings: 'Ayarları Kaydet',
+    resetSettings: 'Sıfırla',
+    goBack: 'Geri Dön',
         modalLivesPackageTitle: '3 Can Paketi',
         modalLivesPackageDescription: 'Oyuna 3 canla devam edin!',
         modalCurrentPoints: 'Mevcut Puanınız',
@@ -357,13 +441,13 @@ const languages = {
         yourPoints: 'Puanınız',
         yourStars: 'Yıldızlarınız',
         joker50Name: '50:50 Joker',
-        joker50Desc: 'İki yanlış şıkkı eleme',
+        joker50Desc: '2 yanlış şık eleyin',
         jokerHintName: 'İpucu Joker',
-        jokerHintDesc: 'Doğru cevap hakkında ipucu al',
+        jokerHintDesc: 'İpucu göster',
         jokerTimeName: 'Süre Joker',
-        jokerTimeDesc: 'Bu soru için 15 saniye ekle',
+        jokerTimeDesc: '+15 saniye ekle',
         jokerSkipName: 'Pas Joker',
-        jokerSkipDesc: 'Bu soruyu pas geç ve can kaybetme',
+        jokerSkipDesc: 'Soruyu pas geç',
         livesPackageName: 'Can Paketi',
         livesPackageDesc: '3 adet can satın al',
         jokerOwned: 'Sahip olduğunuz',
@@ -537,7 +621,27 @@ const languages = {
         pleaseWait: 'Please wait...',
         
         // Login/Register
-        registerButton: 'Register',
+    
+    // Badge translations
+    badges: {
+        firstGame: { name: 'First Game', description: 'You completed your first game!', requirement: 'Complete your first game.' },
+        perfectScore: { name: 'Perfect', description: 'You answered all questions correctly in a game!', requirement: 'Get a 100% score in a game.' },
+        speedster: { name: 'Speed Master', description: 'You answered under 10 seconds!', requirement: 'Give 5 fast answers (under 10s).' },
+        scholar: { name: 'Knowledge Master', description: 'You answered 50 questions correctly!', requirement: 'Answer 50 questions correctly.' },
+        dedicated: { name: 'Dedicated', description: 'You completed 10 games!', requirement: 'Complete 10 games.' },
+        genius: { name: 'Genius', description: 'You have over 90% accuracy!', requirement: 'Reach 90%+ accuracy after 20+ questions.' },
+        explorer: { name: 'Explorer', description: 'You played games in 5 different categories!', requirement: 'Play in 5 different categories.' }
+    },
+    badgeNewTitle: '🏆 You Earned a New Badge!',
+    badgeCongratsMessage: 'Congratulations! You earned a new badge for your achievement.',
+    badgeRequirementTitle: 'Requirement',
+    badgeEarnedDateTitle: 'Earned Date',
+    badgeGreatButton: 'Great!',
+    badgeShareButton: 'Share',
+    badgeActivityEarned: '"{badge}" badge earned',
+    badgeToastNew: '🎉 You earned a new badge: {badge}!',
+        
+    registerButton: 'Register',
         guestLogin: 'Continue as guest',
         
         // Online mode
@@ -616,6 +720,15 @@ const languages = {
         jokerSkip: 'Skip',
         jokerStore: 'Joker Store',
         jokerUsed: 'Used',
+        timeExtension: 'Time',
+        skipQuestion: 'Skip',
+        exit: 'Exit',
+        ok: 'Ok',
+        
+        // Confirmation messages
+        exitConfirmMessage: 'Are you sure you want to exit the quiz? Your progress will be saved.',
+        clearStatsConfirmMessage: 'Are you sure you want to delete all statistics?',
+        logoutConfirmMessage: 'Are you sure you want to log out?',
         
         // Joker store
         storeTitle: 'Joker Store',
@@ -633,6 +746,62 @@ const languages = {
         // Level and section
         level: 'Level',
         section: 'Section',
+        
+    // Profile page
+    myProfile: 'My Profile',
+    membershipSince: 'Member Since:',
+    myTotalScoreLabel: 'My Total Score:',
+    levelLabel: 'Level:',
+    editProfile: 'Edit Profile',
+    statisticsTitle: 'Statistics',
+    totalGames: 'Total Games',
+    totalQuestions: 'Total Questions',
+    correctAnswers: 'Correct Answers',
+    accuracyRate: 'Accuracy Rate',
+    badgesTitle: 'Badges',
+    noBadgesYet: 'No badges earned yet',
+    highScoresTitle: 'High Scores',
+    categoryLabel: 'Category',
+    scoreLabel: 'Score',
+    dateLabel: 'Date',
+    noScoresYet: 'No scores recorded yet',
+    recentActivitiesTitle: 'Recent Activities',
+    activitiesLoading: 'Loading activities...',
+    backToMainMenu: 'Back to Main Menu',
+    deleteAccount: 'Delete My Account',
+    
+    // Settings page
+    settingsPageTitle: 'Settings',
+    soundSettings: 'Sound Settings',
+    soundEffects: 'Sound Effects',
+    soundEffectsDesc: 'Enable/disable game sounds and effects',
+    notificationSounds: 'Notification Sounds',
+    notificationSoundsDesc: 'Enable/disable notification and alert sounds',
+    themeSettings: 'Theme Settings',
+    darkMode: 'Dark Mode',
+    darkModeDesc: 'Use dark theme to reduce eye strain',
+    autoTheme: 'Auto Theme',
+    autoThemeDesc: 'Automatic theme selection based on system settings',
+    gameSettings: 'Game Settings',
+    questionTime: 'Question Time',
+    questionTimeDesc: 'Time allocated for each question',
+    animations: 'Animations',
+    animationsDesc: 'Enable/disable game animations',
+    vibration: 'Vibration',
+    vibrationDesc: 'Vibration feedback on mobile devices',
+    notificationSettings: 'Notification Settings',
+    pushNotifications: 'Push Notifications',
+    pushNotificationsDesc: 'Push notifications on mobile devices',
+    friendInvites: 'Friend Invites',
+    friendInvitesDesc: 'Receive friend invitation notifications',
+    languageSettings: 'Language Settings',
+    appLanguage: 'App Language',
+    appLanguageDesc: 'Application interface language',
+    questionLanguage: 'Question Language',
+    questionLanguageDesc: 'Language of game questions',
+    saveSettings: 'Save Settings',
+    resetSettings: 'Reset',
+    goBack: 'Go Back',
         sectionCompleted: 'Section Completed!',
         levelCompleted: 'Level Completed!',
         currentScore: 'Current Score',
@@ -914,13 +1083,13 @@ const languages = {
         yourPoints: 'Your Points',
         yourStars: 'Your Stars',
         joker50Name: '50:50 Joker',
-        joker50Desc: 'Eliminate two wrong options',
+        joker50Desc: 'Remove 2 wrong options',
         jokerHintName: 'Hint Joker',
-        jokerHintDesc: 'Get a hint about the correct answer',
+        jokerHintDesc: 'Show hint',
         jokerTimeName: 'Time Joker',
-        jokerTimeDesc: 'Add 15 seconds for this question',
+        jokerTimeDesc: 'Add +15 seconds',
         jokerSkipName: 'Skip Joker',
-        jokerSkipDesc: 'Skip this question without losing life',
+        jokerSkipDesc: 'Skip question',
         livesPackageName: 'Lives Package',
         livesPackageDesc: 'Buy 3 lives',
         jokerOwned: 'You own',
@@ -1160,6 +1329,15 @@ const languages = {
         jokerSkip: 'Überspringen',
         jokerStore: 'Joker-Shop',
         jokerUsed: 'Benutzt',
+        timeExtension: 'Zeit',
+        skipQuestion: 'Überspringen',
+        exit: 'Verlassen',
+        ok: 'Ok',
+        
+        // Confirmation messages
+        exitConfirmMessage: 'Möchten Sie das Quiz wirklich verlassen? Ihr Fortschritt wird gespeichert.',
+        clearStatsConfirmMessage: 'Möchten Sie wirklich alle Statistiken löschen?',
+        logoutConfirmMessage: 'Bist du sicher, dass du dich abmelden möchtest?',
         
         // Joker shop
         storeTitle: 'Joker-Shop',
@@ -1177,6 +1355,62 @@ const languages = {
         // Level und Abschnitt
         level: 'Level',
         section: 'Abschnitt',
+        
+    // Profilseite
+    myProfile: 'Mein Profil',
+    membershipSince: 'Mitglied seit:',
+    myTotalScoreLabel: 'Meine Gesamtpunktzahl:',
+    levelLabel: 'Level:',
+    editProfile: 'Profil bearbeiten',
+    statisticsTitle: 'Statistiken',
+    totalGames: 'Gesamtspiele',
+    totalQuestions: 'Gesamtfragen',
+    correctAnswers: 'Richtige Antworten',
+    accuracyRate: 'Genauigkeitsrate',
+    badgesTitle: 'Abzeichen',
+    noBadgesYet: 'Noch keine Abzeichen erhalten',
+    highScoresTitle: 'Höchste Punktzahlen',
+    categoryLabel: 'Kategorie',
+    scoreLabel: 'Punktzahl',
+    dateLabel: 'Datum',
+    noScoresYet: 'Noch keine Punktzahlen aufgezeichnet',
+    recentActivitiesTitle: 'Letzte Aktivitäten',
+    activitiesLoading: 'Aktivitäten werden geladen...',
+    backToMainMenu: 'Zurück zum Hauptmenü',
+    deleteAccount: 'Mein Konto löschen',
+    
+    // Einstellungsseite
+    settingsPageTitle: 'Einstellungen',
+    soundSettings: 'Soundeinstellungen',
+    soundEffects: 'Soundeffekte',
+    soundEffectsDesc: 'Spielsounds und -effekte aktivieren/deaktivieren',
+    notificationSounds: 'Benachrichtigungstöne',
+    notificationSoundsDesc: 'Benachrichtigungs- und Warnsounds aktivieren/deaktivieren',
+    themeSettings: 'Theme-Einstellungen',
+    darkMode: 'Dunkler Modus',
+    darkModeDesc: 'Dunkles Theme verwenden, um Augenbelastung zu reduzieren',
+    autoTheme: 'Automatisches Theme',
+    autoThemeDesc: 'Automatische Theme-Auswahl basierend auf Systemeinstellungen',
+    gameSettings: 'Spieleinstellungen',
+    questionTime: 'Fragezeit',
+    questionTimeDesc: 'Für jede Frage zugeteilte Zeit',
+    animations: 'Animationen',
+    animationsDesc: 'Spielanimationen aktivieren/deaktivieren',
+    vibration: 'Vibration',
+    vibrationDesc: 'Vibrations-Feedback auf mobilen Geräten',
+    notificationSettings: 'Benachrichtigungseinstellungen',
+    pushNotifications: 'Push-Benachrichtigungen',
+    pushNotificationsDesc: 'Push-Benachrichtigungen auf mobilen Geräten',
+    friendInvites: 'Freundeseinladungen',
+    friendInvitesDesc: 'Benachrichtigungen für Freundeseinladungen erhalten',
+    languageSettings: 'Spracheinstellungen',
+    appLanguage: 'App-Sprache',
+    appLanguageDesc: 'Sprache der Anwendungsoberfläche',
+    questionLanguage: 'Fragesprache',
+    questionLanguageDesc: 'Sprache der Spielfragen',
+    saveSettings: 'Einstellungen speichern',
+    resetSettings: 'Zurücksetzen',
+    goBack: 'Zurück',
         sectionCompleted: 'Abschnitt abgeschlossen!',
         levelCompleted: 'Level abgeschlossen!',
         currentScore: 'Aktuelle Punktzahl',
@@ -1396,13 +1630,13 @@ const languages = {
         yourPoints: 'Ihre Punkte',
         yourStars: 'Ihre Sterne',
         joker50Name: '50:50 Joker',
-        joker50Desc: 'Zwei falsche Optionen eliminieren',
+        joker50Desc: '2 falsche Optionen entfernen',
         jokerHintName: 'Hinweis-Joker',
-        jokerHintDesc: 'Einen Hinweis zur richtigen Antwort erhalten',
+        jokerHintDesc: 'Hinweis anzeigen',
         jokerTimeName: 'Zeit-Joker',
-        jokerTimeDesc: '15 Sekunden für diese Frage hinzufügen',
+        jokerTimeDesc: '+15 Sekunden hinzufügen',
         jokerSkipName: 'Überspringen-Joker',
-        jokerSkipDesc: 'Diese Frage überspringen ohne Leben zu verlieren',
+        jokerSkipDesc: 'Frage überspringen',
         livesPackageName: 'Leben-Paket',
         livesPackageDesc: '3 Leben kaufen',
         jokerOwned: 'Sie besitzen',
@@ -1554,9 +1788,43 @@ const languages = {
             contactWebLabel: 'Web',
             contactSupportLabel: 'Unterstützung',
             backLink: 'Zurück zur Startseite'
-        }
+        },
+        
+        // Temel UI menü çevirileri
+        settings: 'Einstellungen',
+        friends: 'Freunde',
+        profile: 'Mein Profil',
+        privacySettings: 'Datenschutz-Einstellungen',
+        home: 'Startseite',
+        app: 'Anwendung',
+        leaderboardMenu: 'Bestenliste'
     }
 };
+
+// Almanca rozet çevirilerini ekle (ana nesnede de eklenebilirdi; düzen kolaylığı için burada ekleme)
+languages.de.badges = {
+    firstGame: { name: 'Erstes Spiel', description: 'Du hast dein erstes Spiel abgeschlossen!', requirement: 'Beende dein erstes Spiel.' },
+    perfectScore: { name: 'Perfekt', description: 'Du hast in einem Spiel alle Fragen richtig beantwortet!', requirement: 'Erziele 100% in einem Spiel.' },
+    speedster: { name: 'Geschwindigkeitsmeister', description: 'Du hast unter 10 Sekunden geantwortet!', requirement: 'Gib 5 schnelle Antworten (unter 10s).' },
+    scholar: { name: 'Wissensmeister', description: 'Du hast 50 Fragen richtig beantwortet!', requirement: 'Beantworte 50 Fragen richtig.' },
+    dedicated: { name: 'Engagiert', description: 'Du hast 10 Spiele abgeschlossen!', requirement: 'Schließe 10 Spiele ab.' },
+    genius: { name: 'Genie', description: 'Du hast über 90% Genauigkeit!', requirement: 'Erreiche 90%+ Genauigkeit nach 20+ Fragen.' },
+    explorer: { name: 'Entdecker', description: 'Du hast Spiele in 5 verschiedenen Kategorien gespielt!', requirement: 'Spiele in 5 verschiedenen Kategorien.' }
+};
+
+// Almanca rozet UI çevirileri
+languages.de.badgeNewTitle = '🏆 Du hast eine neue Auszeichnung erhalten!';
+languages.de.badgeCongratsMessage = 'Herzlichen Glückwunsch! Du hast eine neue Auszeichnung für deine Leistung erhalten.';
+languages.de.badgeRequirementTitle = 'Anforderung';
+languages.de.badgeEarnedDateTitle = 'Erhaltenes Datum';
+languages.de.badgeGreatButton = 'Toll!';
+languages.de.badgeShareButton = 'Teilen';
+languages.de.badgeActivityEarned = '"{badge}" Auszeichnung erhalten';
+languages.de.badgeToastNew = '🎉 Du hast eine neue Auszeichnung erhalten: {badge}!';
+
+// Tüm Ayarlar menü öğesi ve ayarlar menüsü eklemeleri
+languages.de.allSettings = 'Alle Einstellungen';
+languages.de.menuDeleteAccountText = 'Konto löschen';
 
 // Global olarak languages objesini ata
 window.languages = languages;

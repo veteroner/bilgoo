@@ -5732,90 +5732,90 @@
         <!-- Profil Sayfası -->
         <div id="profile-page" style="display: none;">
             <div class="profile-page-header">
-                <h2><i class="fas fa-user-circle"></i> Profilim</h2>
+                <h2><i class="fas fa-user-circle"></i> <span data-i18n="myProfile">Profilim</span></h2>
             </div>
             
             <div class="profile-container">
                 <div class="profile-card">
                     <div class="profile-details">
-                        <h2 id="profile-name">Kullanıcı Adı</h2>
-                        <p id="profile-email">kullanici@email.com</p>
-                        <p class="profile-since">Üyelik: <span id="profile-join-date">01.01.2025</span></p>
+                        <h2 id="profile-name" data-i18n-static="profileUserNamePlaceholder">Kullanıcı Adı</h2>
+                        <p id="profile-email" data-i18n-static="profileEmailPlaceholder">kullanici@email.com</p>
+                        <p class="profile-since"><span data-i18n="membershipSince">Üyelik:</span> <span id="profile-join-date">01.01.2025</span></p>
                         <div class="profile-score">
                             <div class="score-info">
-                                <span class="score-label">Toplam Puanım:</span>
+                                <span class="score-label" data-i18n="myTotalScoreLabel">Toplam Puanım:</span>
                                 <span class="score-value" id="profile-total-score">0</span>
                             </div>
                             <div class="level-info">
-                                <span class="level-label">Seviye:</span>
+                                <span class="level-label" data-i18n="levelLabel">Seviye:</span>
                                 <span class="level-value" id="profile-user-level">1</span>
                             </div>
                         </div>
                     </div>
                     <div class="profile-actions-secondary">
-                        <button class="btn-secondary" id="edit-profile-btn"><i class="fas fa-edit"></i> Profili Düzenle</button>
+                        <button class="btn-secondary" id="edit-profile-btn"><i class="fas fa-edit"></i> <span data-i18n="editProfile">Profili Düzenle</span></button>
                     </div>
                 </div>
                 
                 <div class="stats-card">
-                    <h3><i class="fas fa-chart-line"></i> İstatistikler</h3>
+                    <h3><i class="fas fa-chart-line"></i> <span data-i18n="statisticsTitle">İstatistikler</span></h3>
                     <div class="stats-grid">
                         <div class="stat-item">
                             <span class="stat-value" id="stats-total-games">0</span>
-                            <span class="stat-label">Toplam Oyun</span>
+                            <span class="stat-label" data-i18n="totalGames">Toplam Oyun</span>
                         </div>
                         <div class="stat-item">
                             <span class="stat-value" id="stats-total-questions">0</span>
-                            <span class="stat-label">Toplam Soru</span>
+                            <span class="stat-label" data-i18n="totalQuestions">Toplam Soru</span>
                         </div>
                         <div class="stat-item">
                             <span class="stat-value" id="stats-correct-answers">0</span>
-                            <span class="stat-label">Doğru Cevap</span>
+                            <span class="stat-label" data-i18n="correctAnswers">Doğru Cevap</span>
                         </div>
                         <div class="stat-item">
                             <span class="stat-value" id="stats-accuracy">%0</span>
-                            <span class="stat-label">Doğruluk Oranı</span>
+                            <span class="stat-label" data-i18n="accuracyRate">Doğruluk Oranı</span>
                         </div>
                     </div>
                 </div>
                 
                 <div class="badges-showcase">
-                    <h3><i class="fas fa-award"></i> Rozetler</h3>
+                    <h3><i class="fas fa-award"></i> <span data-i18n="badgesTitle">Rozetler</span></h3>
                     <div class="badges-grid" id="profile-badges-container">
                         <!-- Rozetler burada gösterilecek -->
-                        <div class="badge-placeholder">Henüz rozet kazanılmadı</div>
+                        <div class="badge-placeholder" data-i18n="noBadgesYet">Henüz rozet kazanılmadı</div>
                     </div>
                 </div>
                 
                 <div class="high-scores-card">
-                    <h3><i class="fas fa-trophy"></i> En Yüksek Skorlar</h3>
+                    <h3><i class="fas fa-trophy"></i> <span data-i18n="highScoresTitle">En Yüksek Skorlar</span></h3>
                     <table class="high-scores-table">
                         <thead>
                             <tr>
-                                <th>Kategori</th>
-                                <th>Skor</th>
-                                <th>Tarih</th>
+                                <th data-i18n="categoryLabel">Kategori</th>
+                                <th data-i18n="scoreLabel">Skor</th>
+                                <th data-i18n="dateLabel">Tarih</th>
                             </tr>
                         </thead>
                         <tbody id="profile-high-scores">
                             <!-- Yüksek skorlar burada gösterilecek -->
-                            <tr><td colspan="3" class="no-data">Henüz kaydedilen skor yok</td></tr>
+                            <tr><td colspan="3" class="no-data" data-i18n="noScoresYet">Henüz kaydedilen skor yok</td></tr>
                         </tbody>
                     </table>
                 </div>
                 
                 <div class="recent-activities">
-                    <h3><i class="fas fa-history"></i> Son Aktiviteler</h3>
+                    <h3><i class="fas fa-history"></i> <span data-i18n="recentActivitiesTitle">Son Aktiviteler</span></h3>
                     <div class="activity-list" id="recent-activities-list">
                         <!-- Aktiviteler burada dinamik olarak yüklenecek -->
-                        <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Aktiviteler yükleniyor...</div>
+                        <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> <span data-i18n="activitiesLoading">Aktiviteler yükleniyor...</span></div>
                     </div>
                 </div>
                 
                 <div class="profile-actions">
-                    <button class="btn-primary" id="back-from-profile"><i class="fas fa-arrow-left"></i> Ana Menüye Dön</button>
-                    <button class="btn-danger" id="logout-from-profile"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</button>
-                    <button class="btn-warning" id="delete-account-button" style="background: #dc2626; margin-top: 10px;"><i class="fas fa-trash-alt"></i> Hesabımı Sil</button>
+                    <button class="btn-primary" id="back-from-profile"><i class="fas fa-arrow-left"></i> <span data-i18n="backToMainMenu">Ana Menüye Dön</span></button>
+                    <button class="btn-danger" id="logout-from-profile"><i class="fas fa-sign-out-alt"></i> <span data-i18n="logout">Çıkış Yap</span></button>
+                    <button class="btn-warning" id="delete-account-button" style="background: #dc2626; margin-top: 10px;"><i class="fas fa-trash-alt"></i> <span data-i18n="deleteAccount">Hesabımı Sil</span></button>
                 </div>
             </div>
         </div>
@@ -6498,24 +6498,7 @@
                             window.location.href = 'settings.html';
                             break;
                         case 'tab-logout':
-                // Çıkış yap
-                if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
-                    // Firebase'den çıkış yap
-                    if (firebase.auth) {
-                        firebase.auth().signOut().then(() => {
-                            // Çıkış başarılı
-                            localStorage.removeItem('currentUser');
-                            window.location.href = 'login.html';
-                        }).catch((error) => {
-                            console.error('Çıkış hatası:', error);
-                            alert('Çıkış yapılırken bir hata oluştu.');
-                        });
-                    } else {
-                        // Firebase yoksa sadece local storage'ı temizle
-                        localStorage.removeItem('currentUser');
-                        window.location.href = 'login.html';
-                                }
-                            }
+                            // Artık script.js içinde merkezi olarak ele alınıyor
                             break;
                     }
                 });
@@ -6632,36 +6615,7 @@
             }
             
             // Hamburger menü çıkış butonu
-            document.getElementById('menu-logout').addEventListener('click', function() {
-                hamburgerMenu.classList.remove('active');
-                menuOverlay.classList.remove('active');
-                
-                // Çıkış yap
-                if (confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
-                    // Firebase'den çıkış yap
-                    if (firebase.auth) {
-                        firebase.auth().signOut().then(() => {
-                            // Çıkış başarılı
-                            localStorage.removeItem('currentUser');
-                            window.location.href = 'login.html';
-                        }).catch((error) => {
-                            console.error('Çıkış hatası:', error);
-                            alert('Çıkış yapılırken bir hata oluştu.');
-                        });
-                    } else {
-                        // Firebase yoksa sadece local storage'ı temizle
-                        localStorage.removeItem('currentUser');
-                        window.location.href = 'login.html';
-                    }
-                }
-                
-                // Hamburger menü ikonunu bars'a geri çevir
-                const icon = hamburgerToggle.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            });
+            // menu-logout olayı artık script.js içinde merkezi olarak yönetiliyor
             
             // Gizlilik ayarları menü öğesi
             document.getElementById('menu-privacy-settings').addEventListener('click', function() {
@@ -7266,7 +7220,7 @@
                         <div class="joker-icon"><i class="fas fa-star-half-alt"></i></div>
                         <div class="joker-info">
                             <h3 data-i18n="joker50Name">50:50 Joker</h3>
-                            <p data-i18n="joker50Desc">İki yanlış şıkkı eleme</p>
+                            <p data-i18n="joker50Desc">2 yanlış şık eleyin</p>
                             <div class="joker-price">10 <i class="fas fa-coins"></i></div>
                         </div>
                         <div class="joker-count"><span data-i18n="jokerOwned">Sahip olduğunuz</span>: <span class="joker-owned-count">0</span></div>
@@ -7276,7 +7230,7 @@
                         <div class="joker-icon"><i class="fas fa-lightbulb"></i></div>
                         <div class="joker-info">
                             <h3 data-i18n="jokerHintName">İpucu Joker</h3>
-                            <p data-i18n="jokerHintDesc">Doğru cevap hakkında ipucu al</p>
+                            <p data-i18n="jokerHintDesc">İpucu göster</p>
                             <div class="joker-price">15 <i class="fas fa-coins"></i></div>
                         </div>
                         <div class="joker-count"><span data-i18n="jokerOwned">Sahip olduğunuz</span>: <span class="joker-owned-count">0</span></div>
@@ -7286,7 +7240,7 @@
                         <div class="joker-icon"><i class="fas fa-clock"></i></div>
                         <div class="joker-info">
                             <h3 data-i18n="jokerTimeName">Süre Joker</h3>
-                            <p data-i18n="jokerTimeDesc">Bu soru için 15 saniye ekle</p>
+                            <p data-i18n="jokerTimeDesc">+15 saniye ekle</p>
                             <div class="joker-price">20 <i class="fas fa-coins"></i></div>
                         </div>
                         <div class="joker-count"><span data-i18n="jokerOwned">Sahip olduğunuz</span>: <span class="joker-owned-count">0</span></div>
@@ -7296,7 +7250,7 @@
                         <div class="joker-icon"><i class="fas fa-forward"></i></div>
                         <div class="joker-info">
                             <h3 data-i18n="jokerSkipName">Pas Joker</h3>
-                            <p data-i18n="jokerSkipDesc">Bu soruyu pas geç ve can kaybetme</p>
+                            <p data-i18n="jokerSkipDesc">Soruyu pas geç</p>
                             <div class="joker-price">25 <i class="fas fa-coins"></i></div>
                         </div>
                         <div class="joker-count"><span data-i18n="jokerOwned">Sahip olduğunuz</span>: <span class="joker-owned-count">0</span></div>

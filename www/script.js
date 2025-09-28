@@ -247,18 +247,41 @@ window.createTestStats = function() {
 };
 
 window.clearAllStats = function() {
-    if (confirm('Tüm istatistikleri silmek istediğinizden emin misiniz?')) {
-        localStorage.removeItem('gameHistory');
-        localStorage.removeItem('userStats');
-        localStorage.removeItem('quiz-user-stats');
-        
-        const categories = ['Genel Kültür', 'Bilim', 'Teknoloji', 'Spor', 'Müzik', 'Tarih', 'Coğrafya', 'Sanat'];
-        categories.forEach(cat => {
-            localStorage.removeItem(`highScores_${cat}`);
-        });
-        
-        console.log('Tüm istatistikler silindi');
-        location.reload();
+    try {
+        const quizAppRef = window.quizApp || window.quizapp || window.QuizApp || null;
+        const currentLang = (quizAppRef && quizAppRef.currentLanguage) ? quizAppRef.currentLanguage : (localStorage.getItem('quizLanguage') || 'tr');
+        const langObj = (window.languages || window.Languages || {});
+        const message = (langObj[currentLang] && langObj[currentLang].clearStatsConfirmMessage) ?
+            langObj[currentLang].clearStatsConfirmMessage : 'Tüm istatistikleri silmek istediğinizden emin misiniz?';
+        const cancelText = (langObj[currentLang] && langObj[currentLang].cancel) ? langObj[currentLang].cancel : (currentLang === 'de' ? 'Abbrechen' : currentLang === 'en' ? 'Cancel' : 'İptal');
+        const okText = (langObj[currentLang] && langObj[currentLang].ok) ? langObj[currentLang].ok : (currentLang === 'de' ? 'OK' : currentLang === 'en' ? 'OK' : 'Tamam');
+
+        if (quizAppRef && typeof quizAppRef.showCustomConfirm === 'function') {
+            quizAppRef.showCustomConfirm(message, cancelText, okText, function(confirmed) {
+                if (confirmed) {
+                    localStorage.removeItem('gameHistory');
+                    localStorage.removeItem('userStats');
+                    localStorage.removeItem('quiz-user-stats');
+                    const categories = ['Genel Kültür', 'Bilim', 'Teknoloji', 'Spor', 'Müzik', 'Tarih', 'Coğrafya', 'Sanat'];
+                    categories.forEach(cat => localStorage.removeItem(`highScores_${cat}`));
+                    console.log('Tüm istatistikler silindi');
+                    location.reload();
+                }
+            });
+        } else {
+            // Fallback native confirm if custom dialog not available yet
+            if (confirm(message)) {
+                localStorage.removeItem('gameHistory');
+                localStorage.removeItem('userStats');
+                localStorage.removeItem('quiz-user-stats');
+                const categories = ['Genel Kültür', 'Bilim', 'Teknoloji', 'Spor', 'Müzik', 'Tarih', 'Coğrafya', 'Sanat'];
+                categories.forEach(cat => localStorage.removeItem(`highScores_${cat}`));
+                console.log('Tüm istatistikler silindi (fallback)');
+                location.reload();
+            }
+        }
+    } catch (e) {
+        console.error('clearAllStats hata:', e);
     }
 };
 
@@ -4887,18 +4910,97 @@ const quizApp = {
         const jokerTabHome = document.getElementById('joker-tab-home');
         if (jokerTabHome) {
             jokerTabHome.addEventListener('click', function() {
-                if (confirm('Quiz\'den çıkmak istediğinize emin misiniz? İlerleyişiniz kaydedilecek.')) {
-                    if (self && typeof self.exitToHome === 'function') {
-                        self.exitToHome();
-                    } else {
-                        // Minimum görünürlük düzeltmesi
-                        const quizElement = document.getElementById('quiz');
-                        if (quizElement) quizElement.style.display = 'none';
-                        const mainMenu = document.getElementById('main-menu');
-                        if (mainMenu) mainMenu.style.display = 'block';
-                        self.deactivateQuizMode();
+                const currentLang = self.currentLanguage || 'tr';
+                const langObj = (window.languages || window.Languages || {});
+                // Güvenli erişim
+                const message = (langObj[currentLang] && langObj[currentLang].exitConfirmMessage) ? 
+                    langObj[currentLang].exitConfirmMessage : 
+                    'Quiz\'den çıkmak istediğinize emin misiniz? İlerleyişiniz kaydedilecek.';
+                const cancelText = (langObj[currentLang] && langObj[currentLang].cancel) ? langObj[currentLang].cancel : (currentLang === 'de' ? 'Abbrechen' : currentLang === 'en' ? 'Cancel' : 'İptal');
+                const okText = (langObj[currentLang] && langObj[currentLang].ok) ? langObj[currentLang].ok : (currentLang === 'de' ? 'OK' : currentLang === 'en' ? 'OK' : 'Tamam');
+                
+                self.showCustomConfirm(message, cancelText, okText, function(confirmed) {
+                    if (confirmed) {
+                        if (self && typeof self.exitToHome === 'function') {
+                            self.exitToHome();
+                        } else {
+                            // Minimum görünürlük düzeltmesi
+                            const quizElement = document.getElementById('quiz');
+                            if (quizElement) quizElement.style.display = 'none';
+                            const mainMenu = document.getElementById('main-menu');
+                            if (mainMenu) mainMenu.style.display = 'block';
+                            self.deactivateQuizMode();
+                        }
                     }
-                }
+                });
+            });
+        }
+
+        // Global (mobil tab bar) logout butonu entegrasyonu
+        const mobileTabLogout = document.getElementById('tab-logout');
+        if (mobileTabLogout) {
+            mobileTabLogout.addEventListener('click', function(e) {
+                e.preventDefault();
+                const currentLang = self.currentLanguage || localStorage.getItem('quizLanguage') || 'tr';
+                const langObj = (window.languages || window.Languages || {});
+                console.log('[LogoutDebug] tab-logout click - detected lang:', currentLang, 'quizApp.currentLanguage:', self.currentLanguage, 'localStorage:', localStorage.getItem('quizLanguage'));
+                const message = (langObj[currentLang] && langObj[currentLang].logoutConfirmMessage) ?
+                    langObj[currentLang].logoutConfirmMessage : 'Çıkış yapmak istediğinizden emin misiniz?';
+                console.log('[LogoutDebug] tab-logout message chosen:', message);
+                const cancelText = (langObj[currentLang] && langObj[currentLang].cancel) ? langObj[currentLang].cancel : (currentLang==='de'?'Abbrechen':currentLang==='en'?'Cancel':'İptal');
+                const okText = (langObj[currentLang] && langObj[currentLang].ok) ? langObj[currentLang].ok : (currentLang==='de'?'OK':'OK');
+                self.showCustomConfirm(message, cancelText, okText, function(confirmed){
+                    if (!confirmed) return;
+                    if (firebase.auth) {
+                        firebase.auth().signOut().then(()=>{
+                            localStorage.removeItem('currentUser');
+                            window.location.href='login.html';
+                        }).catch(err=>{
+                            console.error('Logout hata:', err);
+                            alert('Çıkış yapılırken bir hata oluştu.');
+                        });
+                    } else {
+                        localStorage.removeItem('currentUser');
+                        window.location.href='login.html';
+                    }
+                });
+            });
+        }
+
+        // Hamburger menü logout (menu-logout) entegrasyonu
+        const menuLogoutBtn = document.getElementById('menu-logout');
+        if (menuLogoutBtn) {
+            menuLogoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                try {
+                    const hamburgerMenu = document.getElementById('hamburger-menu');
+                    const menuOverlay = document.getElementById('menu-overlay');
+                    if (hamburgerMenu) hamburgerMenu.classList.remove('active');
+                    if (menuOverlay) menuOverlay.classList.remove('active');
+                } catch(_) {}
+                const currentLang = self.currentLanguage || localStorage.getItem('quizLanguage') || 'tr';
+                const langObj = (window.languages || window.Languages || {});
+                console.log('[LogoutDebug] menu-logout click - detected lang:', currentLang, 'quizApp.currentLanguage:', self.currentLanguage, 'localStorage:', localStorage.getItem('quizLanguage'));
+                const message = (langObj[currentLang] && langObj[currentLang].logoutConfirmMessage) ?
+                    langObj[currentLang].logoutConfirmMessage : 'Çıkış yapmak istediğinizden emin misiniz?';
+                console.log('[LogoutDebug] menu-logout message chosen:', message);
+                const cancelText = (langObj[currentLang] && langObj[currentLang].cancel) ? langObj[currentLang].cancel : (currentLang==='de'?'Abbrechen':currentLang==='en'?'Cancel':'İptal');
+                const okText = (langObj[currentLang] && langObj[currentLang].ok) ? langObj[currentLang].ok : (currentLang==='de'?'OK':'OK');
+                self.showCustomConfirm(message, cancelText, okText, function(confirmed){
+                    if (!confirmed) return;
+                    if (firebase.auth) {
+                        firebase.auth().signOut().then(()=>{
+                            localStorage.removeItem('currentUser');
+                            window.location.href='login.html';
+                        }).catch(err=>{
+                            console.error('Logout hata:', err);
+                            alert('Çıkış yapılırken bir hata oluştu.');
+                        });
+                    } else {
+                        localStorage.removeItem('currentUser');
+                        window.location.href='login.html';
+                    }
+                });
             });
         }
     },
@@ -6536,7 +6638,12 @@ const quizApp = {
             });
             
             // Buton metnini güncelle
-            editProfileBtn.innerHTML = '<i class="fas fa-edit"></i> Profili Düzenle';
+            if (typeof self.getTranslation === 'function') {
+                const editText = self.getTranslation('editProfile') || 'Profili Düzenle';
+                editProfileBtn.innerHTML = '<i class="fas fa-edit"></i> ' + editText;
+            } else {
+                editProfileBtn.innerHTML = '<i class="fas fa-edit"></i> Profili Düzenle';
+            }
             console.log('Profil düzenleme butonu hazırlandı');
         } else {
             console.error('Profil düzenleme butonu bulunamadı!');
@@ -9092,11 +9199,13 @@ const quizApp = {
         
         // Kutlama metinleri güvenli biçimde alın (bazı dillerde wisdomQuotes olmayabilir)
         const celebrationTexts = (languages[this.currentLanguage] && languages[this.currentLanguage].celebration) || {};
+        // wisdomQuotes yoksa motivationalMessages veya basit bir yedek kullan
         const wisdomPool = Array.isArray(celebrationTexts.wisdomQuotes) && celebrationTexts.wisdomQuotes.length > 0
             ? celebrationTexts.wisdomQuotes
             : (Array.isArray(celebrationTexts.motivationalMessages) && celebrationTexts.motivationalMessages.length > 0
                 ? celebrationTexts.motivationalMessages
                 : ['🦉 "Her oyun yeni bir öğrenme fırsatıdır!"']);
+        // Rastgele atasözü / motivasyon cümlesi seç
         const randomWisdom = wisdomPool[Math.floor(Math.random() * wisdomPool.length)];
         
         if (successRate >= 90) {
@@ -11665,7 +11774,158 @@ const quizApp = {
         } else {
             console.log('7. Test kayıt atlandı - gerekli şartlar sağlanmadı');
         }
+    },
+
+    // Özel confirm dialog göster
+    showCustomConfirm: function(message, cancelText, okText, callback) {
+        // Mevcut dialog'u kaldır
+        const existingDialog = document.getElementById('custom-confirm-dialog');
+        if (existingDialog) {
+            existingDialog.remove();
         }
+
+        // Dialog container oluştur
+        const dialogOverlay = document.createElement('div');
+        dialogOverlay.id = 'custom-confirm-dialog';
+        dialogOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(3px);
+        `;
+
+        // Dialog içeriği
+        const dialogBox = document.createElement('div');
+        dialogBox.style.cssText = `
+            background: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            max-width: 320px;
+            width: 85%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        `;
+
+        // Mesaj
+        const messageElement = document.createElement('p');
+        messageElement.textContent = message;
+        messageElement.style.cssText = `
+            margin: 0 0 25px 0;
+            font-size: 16px;
+            line-height: 1.4;
+            color: #333;
+            font-weight: 400;
+        `;
+
+        // Buton container
+        const buttonContainer = document.createElement('div');
+        buttonContainer.style.cssText = `
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        `;
+
+        // Cancel butonu
+        const cancelButton = document.createElement('button');
+        cancelButton.textContent = cancelText;
+        cancelButton.style.cssText = `
+            flex: 1;
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            background: #f8f9fa;
+            color: #333;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        `;
+
+        // OK butonu
+        const okButton = document.createElement('button');
+        okButton.textContent = okText;
+        okButton.style.cssText = `
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            background: #007AFF;
+            color: white;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        `;
+
+        // Hover efektleri
+        cancelButton.addEventListener('mouseenter', function() {
+            cancelButton.style.background = '#e9ecef';
+        });
+        cancelButton.addEventListener('mouseleave', function() {
+            cancelButton.style.background = '#f8f9fa';
+        });
+
+        okButton.addEventListener('mouseenter', function() {
+            okButton.style.background = '#0056b3';
+        });
+        okButton.addEventListener('mouseleave', function() {
+            okButton.style.background = '#007AFF';
+        });
+
+        // Event listeners
+        cancelButton.addEventListener('click', function() {
+            dialogOverlay.remove();
+            if (typeof callback === 'function') callback(false);
+        });
+
+        okButton.addEventListener('click', function() {
+            dialogOverlay.remove();
+            if (typeof callback === 'function') callback(true);
+        });
+
+        // Overlay'e tıklayınca dialog'u kapat
+        dialogOverlay.addEventListener('click', function(e) {
+            if (e.target === dialogOverlay) {
+                dialogOverlay.remove();
+                if (typeof callback === 'function') callback(false);
+            }
+        });
+
+        // ESC tuşu ile kapat
+        document.addEventListener('keydown', function escHandler(e) {
+            if (e.key === 'Escape') {
+                document.removeEventListener('keydown', escHandler);
+                dialogOverlay.remove();
+                callback(false);
+            }
+        });
+
+        // DOM'a ekle
+        buttonContainer.appendChild(cancelButton);
+        buttonContainer.appendChild(okButton);
+        dialogBox.appendChild(messageElement);
+        dialogBox.appendChild(buttonContainer);
+        dialogOverlay.appendChild(dialogBox);
+        document.body.appendChild(dialogOverlay);
+
+        // Dialog animasyonu
+        dialogOverlay.style.opacity = '0';
+        dialogBox.style.transform = 'scale(0.9)';
+        requestAnimationFrame(function() {
+            dialogOverlay.style.transition = 'opacity 0.3s ease';
+            dialogBox.style.transition = 'transform 0.3s ease';
+            dialogOverlay.style.opacity = '1';
+            dialogBox.style.transform = 'scale(1)';
+        });
+    }
 };
 
 // Console'da kullanım kılavuzu

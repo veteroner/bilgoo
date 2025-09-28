@@ -247,18 +247,41 @@ window.createTestStats = function() {
 };
 
 window.clearAllStats = function() {
-    if (confirm('Tüm istatistikleri silmek istediğinizden emin misiniz?')) {
-        localStorage.removeItem('gameHistory');
-        localStorage.removeItem('userStats');
-        localStorage.removeItem('quiz-user-stats');
-        
-        const categories = ['Genel Kültür', 'Bilim', 'Teknoloji', 'Spor', 'Müzik', 'Tarih', 'Coğrafya', 'Sanat'];
-        categories.forEach(cat => {
-            localStorage.removeItem(`highScores_${cat}`);
-        });
-        
-        console.log('Tüm istatistikler silindi');
-        location.reload();
+    try {
+        const quizAppRef = window.quizApp || window.quizapp || window.QuizApp || null;
+        const currentLang = (quizAppRef && quizAppRef.currentLanguage) ? quizAppRef.currentLanguage : (localStorage.getItem('quizLanguage') || 'tr');
+        const langObj = (window.languages || window.Languages || {});
+        const message = (langObj[currentLang] && langObj[currentLang].clearStatsConfirmMessage) ?
+            langObj[currentLang].clearStatsConfirmMessage : 'Tüm istatistikleri silmek istediğinizden emin misiniz?';
+        const cancelText = (langObj[currentLang] && langObj[currentLang].cancel) ? langObj[currentLang].cancel : (currentLang === 'de' ? 'Abbrechen' : currentLang === 'en' ? 'Cancel' : 'İptal');
+        const okText = (langObj[currentLang] && langObj[currentLang].ok) ? langObj[currentLang].ok : (currentLang === 'de' ? 'OK' : currentLang === 'en' ? 'OK' : 'Tamam');
+
+        if (quizAppRef && typeof quizAppRef.showCustomConfirm === 'function') {
+            quizAppRef.showCustomConfirm(message, cancelText, okText, function(confirmed) {
+                if (confirmed) {
+                    localStorage.removeItem('gameHistory');
+                    localStorage.removeItem('userStats');
+                    localStorage.removeItem('quiz-user-stats');
+                    const categories = ['Genel Kültür', 'Bilim', 'Teknoloji', 'Spor', 'Müzik', 'Tarih', 'Coğrafya', 'Sanat'];
+                    categories.forEach(cat => localStorage.removeItem(`highScores_${cat}`));
+                    console.log('Tüm istatistikler silindi');
+                    location.reload();
+                }
+            });
+        } else {
+            // Fallback native confirm if custom dialog not available yet
+            if (confirm(message)) {
+                localStorage.removeItem('gameHistory');
+                localStorage.removeItem('userStats');
+                localStorage.removeItem('quiz-user-stats');
+                const categories = ['Genel Kültür', 'Bilim', 'Teknoloji', 'Spor', 'Müzik', 'Tarih', 'Coğrafya', 'Sanat'];
+                categories.forEach(cat => localStorage.removeItem(`highScores_${cat}`));
+                console.log('Tüm istatistikler silindi (fallback)');
+                location.reload();
+            }
+        }
+    } catch (e) {
+        console.error('clearAllStats hata:', e);
     }
 };
 
@@ -647,25 +670,42 @@ const quizApp = {
     admobInitialized: false,
     
     async initializeAdMob() {
+        console.log('[Script Debug] AdMob initialization başlatıldı');
         try {
-            if (typeof window.Capacitor !== 'undefined' && window.Capacitor.isNativePlatform()) {
+            const hasCapacitor = typeof window.Capacitor !== 'undefined';
+            const isNative = hasCapacitor && window.Capacitor.isNativePlatform();
+            
+            console.log('[Script Debug] Platform kontrolleri:', {
+                hasCapacitor: hasCapacitor,
+                isNative: isNative,
+                platform: hasCapacitor ? window.Capacitor.getPlatform() : 'web'
+            });
+            
+            if (isNative) {
+                console.log('[Script Debug] Native platform tespit edildi, AdMob yükleniyor...');
                 const { AdMob } = await import('@capacitor-community/admob');
                 
-                await AdMob.initialize({
-                    initializeForTesting: false
-                });
+                const initOptions = {
+                    initializeForTesting: true, // Test modunu aktif et
+                    testingDevices: ["33BE2250B43518CCDA7DE426D04EE231"]
+                };
+                
+                console.log('[Script Debug] AdMob initialize edilيyor:', initOptions);
+                await AdMob.initialize(initOptions);
                 
                 this.admobInitialized = true;
-                console.log('✅ AdMob initialized successfully');
+                console.log('[Script Debug] ✅ AdMob başarıyla initialize edildi');
                 
                 // Rewarded ad'ı preload et
+                console.log('[Script Debug] Rewarded ad preload başlatılıyor...');
                 this.preloadRewardedAd();
                 
             } else {
-                console.log('ℹ️ AdMob sadece native platformlarda çalışır');
+                console.log('[Script Debug] ℹ️ AdMob sadece native platformlarda çalışır');
             }
         } catch (error) {
-            console.error('❌ AdMob initialization failed:', error);
+            console.error('[Script Debug] ❌ AdMob initialization hatası:', error);
+            console.error('[Script Debug] Hata detayı:', JSON.stringify(error));
         }
     },
 
@@ -675,24 +715,51 @@ const quizApp = {
             
             const { AdMob } = await import('@capacitor-community/admob');
             const platform = window.Capacitor.getPlatform();
-            const adId = platform === 'ios' 
-                ? 'ca-app-pub-7610338885240453/7161809021'
-                : 'ca-app-pub-7610338885240453/6595381556';
+            
+            // Platform bazlı test ID seçimi (MonetizationManager'dan alınan harita)
+            let adId;
+            if (window.MonetizationManager && window.MonetizationManager.getActiveTestUnits) {
+                const activeUnits = window.MonetizationManager.getActiveTestUnits();
+                adId = activeUnits ? activeUnits.rewarded : null;
+            }
+            
+            // Fallback: Platform bazlı manuel seçim
+            if (!adId) {
+                if (platform === 'ios') {
+                    adId = 'ca-app-pub-3940256099942544/1712485313'; // iOS Test Rewarded
+                } else {
+                    adId = 'ca-app-pub-3940256099942544/5224354917'; // Android Test Rewarded
+                }
+            }
+            
+            console.log('[Script Debug] Rewarded ad hazırlanıyor:', {
+                platform: platform,
+                adId: adId,
+                isTesting: true
+            });
 
             await AdMob.prepareRewardVideoAd({
                 adId: adId,
-                isTesting: false
+                isTesting: true // Test modunu aktif et
             });
             
-            console.log('✅ Rewarded ad preloaded');
+            console.log('[Script Debug] ✅ Rewarded ad başarıyla preload edildi');
         } catch (error) {
-            console.error('❌ Rewarded ad preload failed:', error);
+            console.error('[Script Debug] ❌ Rewarded ad preload hatası:', error);
+            console.error('[Script Debug] Hata detayı:', JSON.stringify(error));
         }
     },
 
     async showRewardedAd(modal) {
+        console.log('[Script Debug] Rewarded ad gösterme çağrıldı');
         try {
+            console.log('[Script Debug] AdMob durumu:', {
+                admobInitialized: this.admobInitialized,
+                hasAdMob: !!window.Capacitor?.Plugins?.AdMob
+            });
+            
             if (!this.admobInitialized) {
+                console.log('[Script Debug] AdMob henüz initialize edilmemiş');
                 this.showToast('Reklam sistemi henüz hazır değil', 'toast-error');
                 return;
             }
@@ -705,18 +772,25 @@ const quizApp = {
                 watchAdBtn.disabled = true;
             }
 
+            console.log('[Script Debug] Rewarded ad gösteriliyor...');
             // Ad göster
             const result = await AdMob.showRewardVideoAd();
+            console.log('[Script Debug] Rewarded ad sonucu:', result);
             
             if (result.rewarded) {
+                console.log('[Script Debug] ✅ Reklam başarıyla izlendi - ödül veriliyor');
                 // Reklam başarıyla izlendi - 3 can ver
                 this.giveRewardedLives();
                 modal.remove();
                 this.showToast('🎉 Tebrikler! 3 can kazandınız!', 'toast-success');
                 
                 // Yeni rewarded ad preload et
-                setTimeout(() => this.preloadRewardedAd(), 1000);
+                setTimeout(() => {
+                    console.log('[Script Debug] Yeni rewarded ad preload ediliyor');
+                    this.preloadRewardedAd();
+                }, 1000);
             } else {
+                console.log('[Script Debug] ⚠️ Reklam tam olarak izlenmedi');
                 this.showToast('Reklam tam olarak izlenmedi', 'toast-warning');
                 if (watchAdBtn) {
                     watchAdBtn.innerHTML = '<i class="fas fa-play-circle"></i> 🎬 Reklam İzle - 3 Can Kazan';
@@ -725,7 +799,8 @@ const quizApp = {
             }
             
         } catch (error) {
-            console.error('❌ Rewarded ad show failed:', error);
+            console.error('[Script Debug] ❌ Rewarded ad gösterim hatası:', error);
+            console.error('[Script Debug] Hata detayı:', JSON.stringify(error));
             this.showToast('Reklam gösterilirken hata oluştu', 'toast-error');
             
             const watchAdBtn = document.getElementById('watch-rewarded-ad');
@@ -739,11 +814,15 @@ const quizApp = {
     giveRewardedLives() {
         const REWARD_LIVES = 3;
         
+        console.log('[Script Debug] giveRewardedLives çağrıldı');
+        
         // Mevcut can sayısını al
         let currentLives = parseInt(localStorage.getItem('lives') || '3');
+        console.log('[Script Debug] Mevcut can sayısı:', currentLives);
         
         // 3 can ekle
         currentLives += REWARD_LIVES;
+        console.log('[Script Debug] Yeni can sayısı:', currentLives);
         
         // Can sayısını güncelle
         localStorage.setItem('lives', currentLives.toString());
@@ -761,7 +840,21 @@ const quizApp = {
             timestamp: new Date().toISOString()
         });
         
-        console.log(`✅ Rewarded ad: +${REWARD_LIVES} can verildi. Toplam: ${currentLives}`);
+        console.log(`[Script Debug] ✅ Rewarded ad: +${REWARD_LIVES} can verildi. Toplam: ${currentLives}`);
+    },
+
+    // Test amaçlı manuel rewarded ad çağırma fonksiyonu
+    testRewardedAd: function() {
+        console.log('[Script Debug] TEST: Manual rewarded ad çağrıldı');
+        console.log('[Script Debug] TEST: AdMob durumu:', this.admobInitialized);
+        
+        // Test amaçlı modal oluştur
+        const testModal = document.createElement('div');
+        testModal.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; background: white; padding: 20px; border: 1px solid black;';
+        testModal.innerHTML = '<p>Test Modal</p>';
+        document.body.appendChild(testModal);
+        
+        this.showRewardedAd(testModal);
     },
 
     async updateUserLives(lives) {
@@ -1844,6 +1937,18 @@ const quizApp = {
         const privacyText = document.getElementById('menu-privacy-text');
         if (privacyText) {
             privacyText.textContent = this.getTranslation('privacySettings');
+        }
+        
+        // Tüm Ayarlar
+        const allSettingsText = document.getElementById('menu-all-settings-text');
+        if (allSettingsText) {
+            allSettingsText.textContent = this.getTranslation('allSettings') || this.getTranslation('settings');
+        }
+        
+        // Hesap Silme
+        const deleteAccountText = document.getElementById('menu-delete-account-text');
+        if (deleteAccountText) {
+            deleteAccountText.textContent = this.getTranslation('menuDeleteAccountText') || 'Hesabımı Sil';
         }
         
         // Zorluk seviyeleri
@@ -4887,18 +4992,97 @@ const quizApp = {
         const jokerTabHome = document.getElementById('joker-tab-home');
         if (jokerTabHome) {
             jokerTabHome.addEventListener('click', function() {
-                if (confirm('Quiz\'den çıkmak istediğinize emin misiniz? İlerleyişiniz kaydedilecek.')) {
-                    if (self && typeof self.exitToHome === 'function') {
-                        self.exitToHome();
-                    } else {
-                        // Minimum görünürlük düzeltmesi
-                        const quizElement = document.getElementById('quiz');
-                        if (quizElement) quizElement.style.display = 'none';
-                        const mainMenu = document.getElementById('main-menu');
-                        if (mainMenu) mainMenu.style.display = 'block';
-                        self.deactivateQuizMode();
+                const currentLang = self.currentLanguage || 'tr';
+                const langObj = (window.languages || window.Languages || {});
+                // Güvenli erişim
+                const message = (langObj[currentLang] && langObj[currentLang].exitConfirmMessage) ? 
+                    langObj[currentLang].exitConfirmMessage : 
+                    'Quiz\'den çıkmak istediğinize emin misiniz? İlerleyişiniz kaydedilecek.';
+                const cancelText = (langObj[currentLang] && langObj[currentLang].cancel) ? langObj[currentLang].cancel : (currentLang === 'de' ? 'Abbrechen' : currentLang === 'en' ? 'Cancel' : 'İptal');
+                const okText = (langObj[currentLang] && langObj[currentLang].ok) ? langObj[currentLang].ok : (currentLang === 'de' ? 'OK' : currentLang === 'en' ? 'OK' : 'Tamam');
+                
+                self.showCustomConfirm(message, cancelText, okText, function(confirmed) {
+                    if (confirmed) {
+                        if (self && typeof self.exitToHome === 'function') {
+                            self.exitToHome();
+                        } else {
+                            // Minimum görünürlük düzeltmesi
+                            const quizElement = document.getElementById('quiz');
+                            if (quizElement) quizElement.style.display = 'none';
+                            const mainMenu = document.getElementById('main-menu');
+                            if (mainMenu) mainMenu.style.display = 'block';
+                            self.deactivateQuizMode();
+                        }
                     }
-                }
+                });
+            });
+        }
+
+        // Global (mobil tab bar) logout butonu entegrasyonu
+        const mobileTabLogout = document.getElementById('tab-logout');
+        if (mobileTabLogout) {
+            mobileTabLogout.addEventListener('click', function(e) {
+                e.preventDefault();
+                const currentLang = self.currentLanguage || localStorage.getItem('quizLanguage') || 'tr';
+                const langObj = (window.languages || window.Languages || {});
+                console.log('[LogoutDebug] tab-logout click - detected lang:', currentLang, 'quizApp.currentLanguage:', self.currentLanguage, 'localStorage:', localStorage.getItem('quizLanguage'));
+                const message = (langObj[currentLang] && langObj[currentLang].logoutConfirmMessage) ?
+                    langObj[currentLang].logoutConfirmMessage : 'Çıkış yapmak istediğinizden emin misiniz?';
+                console.log('[LogoutDebug] tab-logout message chosen:', message);
+                const cancelText = (langObj[currentLang] && langObj[currentLang].cancel) ? langObj[currentLang].cancel : (currentLang==='de'?'Abbrechen':currentLang==='en'?'Cancel':'İptal');
+                const okText = (langObj[currentLang] && langObj[currentLang].ok) ? langObj[currentLang].ok : (currentLang==='de'?'OK':'OK');
+                self.showCustomConfirm(message, cancelText, okText, function(confirmed){
+                    if (!confirmed) return;
+                    if (firebase.auth) {
+                        firebase.auth().signOut().then(()=>{
+                            localStorage.removeItem('currentUser');
+                            window.location.href='login.html';
+                        }).catch(err=>{
+                            console.error('Logout hata:', err);
+                            alert('Çıkış yapılırken bir hata oluştu.');
+                        });
+                    } else {
+                        localStorage.removeItem('currentUser');
+                        window.location.href='login.html';
+                    }
+                });
+            });
+        }
+
+        // Hamburger menü logout (menu-logout) entegrasyonu
+        const menuLogoutBtn = document.getElementById('menu-logout');
+        if (menuLogoutBtn) {
+            menuLogoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                try {
+                    const hamburgerMenu = document.getElementById('hamburger-menu');
+                    const menuOverlay = document.getElementById('menu-overlay');
+                    if (hamburgerMenu) hamburgerMenu.classList.remove('active');
+                    if (menuOverlay) menuOverlay.classList.remove('active');
+                } catch(_) {}
+                const currentLang = self.currentLanguage || localStorage.getItem('quizLanguage') || 'tr';
+                const langObj = (window.languages || window.Languages || {});
+                console.log('[LogoutDebug] menu-logout click - detected lang:', currentLang, 'quizApp.currentLanguage:', self.currentLanguage, 'localStorage:', localStorage.getItem('quizLanguage'));
+                const message = (langObj[currentLang] && langObj[currentLang].logoutConfirmMessage) ?
+                    langObj[currentLang].logoutConfirmMessage : 'Çıkış yapmak istediğinizden emin misiniz?';
+                console.log('[LogoutDebug] menu-logout message chosen:', message);
+                const cancelText = (langObj[currentLang] && langObj[currentLang].cancel) ? langObj[currentLang].cancel : (currentLang==='de'?'Abbrechen':currentLang==='en'?'Cancel':'İptal');
+                const okText = (langObj[currentLang] && langObj[currentLang].ok) ? langObj[currentLang].ok : (currentLang==='de'?'OK':'OK');
+                self.showCustomConfirm(message, cancelText, okText, function(confirmed){
+                    if (!confirmed) return;
+                    if (firebase.auth) {
+                        firebase.auth().signOut().then(()=>{
+                            localStorage.removeItem('currentUser');
+                            window.location.href='login.html';
+                        }).catch(err=>{
+                            console.error('Logout hata:', err);
+                            alert('Çıkış yapılırken bir hata oluştu.');
+                        });
+                    } else {
+                        localStorage.removeItem('currentUser');
+                        window.location.href='login.html';
+                    }
+                });
             });
         }
     },
@@ -6536,7 +6720,13 @@ const quizApp = {
             });
             
             // Buton metnini güncelle
-            editProfileBtn.innerHTML = '<i class="fas fa-edit"></i> Profili Düzenle';
+            // Çok dillilik: buton metnini çeviri anahtarından al
+            if (typeof self.getTranslation === 'function') {
+                const editText = self.getTranslation('editProfile') || 'Profili Düzenle';
+                editProfileBtn.innerHTML = '<i class="fas fa-edit"></i> ' + editText;
+            } else {
+                editProfileBtn.innerHTML = '<i class="fas fa-edit"></i> Profili Düzenle';
+            }
             console.log('Profil düzenleme butonu hazırlandı');
         } else {
             console.error('Profil düzenleme butonu bulunamadı!');
@@ -7927,56 +8117,15 @@ const quizApp = {
     // Rozet sistemi
     badgeSystem: {
         // Mevcut rozetler tanımları
+        // Not: name ve description artık sabit değil; UI gösterimi sırasında languages.js içinden çekilir.
         badges: {
-            firstGame: {
-                id: 'firstGame',
-                name: 'İlk Oyun',
-                description: 'İlk oyununu tamamladın!',
-                icon: 'fas fa-play',
-                condition: (stats) => stats.totalGames >= 1
-            },
-            perfectScore: {
-                id: 'perfectScore',
-                name: 'Mükemmel',
-                description: 'Bir oyunda tüm soruları doğru cevapladın!',
-                icon: 'fas fa-star',
-                condition: (stats) => stats.perfectGames >= 1
-            },
-            speedster: {
-                id: 'speedster',
-                name: 'Hız Ustası',
-                description: '10 saniyede altında cevap verdin!',
-                icon: 'fas fa-bolt',
-                condition: (stats) => stats.fastAnswers >= 5
-            },
-            scholar: {
-                id: 'scholar',
-                name: 'Bilgi Ustası',
-                description: '50 soruyu doğru cevapladın!',
-                icon: 'fas fa-graduation-cap',
-                condition: (stats) => stats.correctAnswers >= 50
-            },
-            dedicated: {
-                id: 'dedicated',
-                name: 'Azimli',
-                description: '10 oyun tamamladın!',
-                icon: 'fas fa-trophy',
-                condition: (stats) => stats.totalGames >= 10
-            },
-            genius: {
-                id: 'genius',
-                name: 'Deha',
-                description: '%90 üzeri doğruluk oranına sahipsin!',
-                icon: 'fas fa-brain',
-                condition: (stats) => stats.totalQuestions > 20 && (stats.correctAnswers / stats.totalQuestions) >= 0.9
-            },
-            explorer: {
-                id: 'explorer',
-                name: 'Kaşif',
-                description: '5 farklı kategoride oyun oynadın!',
-                icon: 'fas fa-compass',
-                condition: (stats) => stats.categoriesPlayed >= 5
-            }
+            firstGame: { id: 'firstGame', icon: 'fas fa-play', condition: (stats) => stats.totalGames >= 1 },
+            perfectScore: { id: 'perfectScore', icon: 'fas fa-star', condition: (stats) => stats.perfectGames >= 1 },
+            speedster: { id: 'speedster', icon: 'fas fa-bolt', condition: (stats) => stats.fastAnswers >= 5 },
+            scholar: { id: 'scholar', icon: 'fas fa-graduation-cap', condition: (stats) => stats.correctAnswers >= 50 },
+            dedicated: { id: 'dedicated', icon: 'fas fa-trophy', condition: (stats) => stats.totalGames >= 10 },
+            genius: { id: 'genius', icon: 'fas fa-brain', condition: (stats) => stats.totalQuestions > 20 && (stats.correctAnswers / stats.totalQuestions) >= 0.9 },
+            explorer: { id: 'explorer', icon: 'fas fa-compass', condition: (stats) => stats.categoriesPlayed >= 5 }
         },
 
         // Kullanıcının rozetlerini kontrol et ve yeni rozetler ver
@@ -8059,13 +8208,19 @@ const quizApp = {
 
         // Rozet ver
         awardBadge: function(userId, badge) {
+            // Lokalize isim/açıklama üret (kaydetmeden önce)
+            const lang = quizApp.currentLanguage || localStorage.getItem('quizLanguage') || 'tr';
+            const langPack = window.languages?.[lang] || window.languages.tr;
+            const localized = langPack.badges?.[badge.id] || {};
+            const badgeName = localized.name || badge.name || badge.id;
+            const badgeDesc = localized.description || badge.description || '';
             const userBadges = this.getUserBadges(userId);
             
             // Firebase için güvenli badge verisi oluştur (fonksiyonları hariç tut)
             const safeBadgeData = {
                 id: badge.id,
-                name: badge.name,
-                description: badge.description,
+                name: badgeName,
+                description: badgeDesc,
                 icon: badge.icon,
                 earnedDate: new Date().toISOString()
             };
@@ -8073,6 +8228,8 @@ const quizApp = {
             // localStorage için tam veri (fonksiyonlar dahil)
             const fullBadgeData = {
                 ...badge,
+                name: badgeName,
+                description: badgeDesc,
                 earnedDate: new Date().toISOString()
             };
             
@@ -8081,7 +8238,7 @@ const quizApp = {
             try {
                 // LocalStorage'a kaydet (tam veri ile)
                 localStorage.setItem(`user-badges-${userId}`, JSON.stringify(userBadges));
-                console.log(`Rozet localStorage'a kaydedildi: ${badge.name}`);
+                console.log(`Rozet localStorage'a kaydedildi: ${badgeName}`);
                 
                 // Firebase için güvenli rozetler objesi oluştur
                 const safeBadgesForFirebase = {};
@@ -8103,7 +8260,7 @@ const quizApp = {
                         badges: safeBadgesForFirebase,
                         lastUpdated: new Date()
                     }, { merge: true }).then(() => {
-                        console.log(`Rozet Firestore'a kaydedildi: ${badge.name}`);
+                        console.log(`Rozet Firestore'a kaydedildi: ${badgeName}`);
                     }).catch(error => {
                         console.error('Rozet Firestore\'a kaydedilemedi:', error);
                     });
@@ -8112,7 +8269,7 @@ const quizApp = {
                 // Firebase Realtime Database'e de kaydet (güvenli veri ile)
                 if (firebase.database) {
                     firebase.database().ref(`users/${userId}/badges/${badge.id}`).set(safeBadgeData).then(() => {
-                        console.log(`Rozet Realtime Database'e kaydedildi: ${badge.name}`);
+                        console.log(`Rozet Realtime Database'e kaydedildi: ${badgeName}`);
                     }).catch(error => {
                         console.error('Rozet Firebase Realtime\'a kaydedilemedi:', error);
                     });
@@ -8124,23 +8281,34 @@ const quizApp = {
 
         // Rozet bildirimi göster
         showBadgeNotification: function(newBadges) {
+            const lang = quizApp.currentLanguage || localStorage.getItem('quizLanguage') || 'tr';
+            const langPack = window.languages?.[lang] || window.languages.tr;
+            // TODO: After editing localization logic here ensure build output (/www) is regenerated (capacitor sync) so mobile apps pick up changes.
             newBadges.forEach(badge => {
-                // Toast ile kısa bildirimi göster
-                quizApp.showToast(`🎉 Yeni rozet kazandınız: ${badge.name}!`, 'toast-success');
-                
-                // Tam ekran modal ile rozet bilgisini göster
-                quizApp.showBadgeEarnedModal(badge);
+                const localized = langPack.badges?.[badge.id] || {};
+                const localizedBadge = {
+                    ...badge,
+                    name: localized.name || badge.name || badge.id,
+                    description: localized.description || badge.description || '',
+                    _requirement: localized.requirement
+                };
+                const toastTemplate = langPack.badgeToastNew || '🎉 Yeni rozet kazandınız: {badge}!';
+                quizApp.showToast(toastTemplate.replace('{badge}', localizedBadge.name), 'toast-success');
+                quizApp.showBadgeEarnedModal(localizedBadge, langPack);
             });
         }
     },
     
     // Rozet kazanma modalını göster (tam ekran)
-    showBadgeEarnedModal: function(badge) {
+    showBadgeEarnedModal: function(badge, langPackOverride) {
         // Önceki badge modali varsa kapat
         const existingModal = document.querySelector('.badge-earned-modal');
         if (existingModal) {
             existingModal.remove();
         }
+
+        const lang = this.currentLanguage || localStorage.getItem('quizLanguage') || 'tr';
+        const langPack = langPackOverride || window.languages?.[lang] || window.languages.tr;
         
         // Arka plan müziği ve ses efektleri
         let badgeSound = null;
@@ -8174,15 +8342,15 @@ const quizApp = {
         }
         
         // Requirement text
-        const requirementText = this.getBadgeRequirementText(badge);
+    let requirementText = badge._requirement || this.getBadgeRequirementText(badge);
         
         badgeModal.innerHTML = `
             <div class="badge-earned-content">
                 <div class="badge-earned-overlay"></div>
                 <div class="badge-earned-inner">
                     <div class="badge-earned-header">
-                        <h2>🏆 Yeni Rozet Kazandınız!</h2>
-                        <p>Tebrikler! Başarınız için yeni bir rozet kazandınız.</p>
+                        <h2>${langPack.badgeNewTitle || '🏆 Yeni Rozet Kazandınız!'}</h2>
+                        <p>${langPack.badgeCongratsMessage || 'Tebrikler! Başarınız için yeni bir rozet kazandınız.'}</p>
                     </div>
                     
                     <div class="badge-earned-showcase" style="background: ${badgeBg};">
@@ -8204,21 +8372,21 @@ const quizApp = {
                     
                     <div class="badge-earned-details">
                         <div class="badge-earned-requirement">
-                            <h4><i class="fas fa-check-circle"></i> Kazanma Koşulu</h4>
+                            <h4><i class="fas fa-check-circle"></i> ${langPack.badgeRequirementTitle || 'Kazanma Koşulu'}</h4>
                             <p>${requirementText}</p>
                         </div>
                         <div class="badge-earned-date">
-                            <h4><i class="fas fa-calendar-alt"></i> Kazanılma Tarihi</h4>
-                            <p>${new Date().toLocaleDateString('tr-TR')} • ${new Date().toLocaleTimeString('tr-TR')}</p>
+                            <h4><i class="fas fa-calendar-alt"></i> ${langPack.badgeEarnedDateTitle || 'Kazanılma Tarihi'}</h4>
+                            <p>${new Date().toLocaleDateString(lang === 'en' ? 'en-US' : (lang === 'de' ? 'de-DE' : 'tr-TR'))} • ${new Date().toLocaleTimeString(lang === 'en' ? 'en-US' : (lang === 'de' ? 'de-DE' : 'tr-TR'))}</p>
                         </div>
                     </div>
                     
                     <div class="badge-earned-actions">
                         <button class="btn-badge-close">
-                            <i class="fas fa-check"></i> Harika!
+                            <i class="fas fa-check"></i> ${langPack.badgeGreatButton || 'Harika!'}
                         </button>
                         <button class="btn-badge-share">
-                            <i class="fas fa-share-alt"></i> Paylaş
+                            <i class="fas fa-share-alt"></i> ${langPack.badgeShareButton || 'Paylaş'}
                         </button>
                     </div>
                 </div>
@@ -8233,7 +8401,10 @@ const quizApp = {
         }, 100);
         
         // Badge aktivite kaydet
-        this.createUserActivity('badge', `"${badge.name}" rozeti kazanıldı`);
+    const lang = this.currentLanguage || localStorage.getItem('quizLanguage') || 'tr';
+    const langPack = window.languages?.[lang] || window.languages.tr;
+    const activityTemplate = langPack.badgeActivityEarned || '"{badge}" rozeti kazanıldı';
+    this.createUserActivity('badge', activityTemplate.replace('{badge}', badge.name));
         
         // Butonlara event listener ekle
         const closeButton = badgeModal.querySelector('.btn-badge-close');
@@ -8272,32 +8443,21 @@ const quizApp = {
     
     // Rozet gereksinimleri için açıklama metni oluştur
     getBadgeRequirementText: function(badge) {
-        let text = "";
-        
-        switch(badge.id) {
-            case 'perfectScore':
-                text = "Bir kategoride %100 doğru cevap vererek mükemmel skor elde etmek.";
-                break;
-            case 'genius':
-                text = "Arka arkaya 10 soruyu doğru cevaplamak.";
-                break;
-            case 'explorer':
-                text = "5 farklı kategoride en az 5'er soru çözmek.";
-                break;
-            case 'dedicated':
-                text = "Toplam 100 soru çözmek.";
-                break;
-            case 'speedster':
-                text = "10 soruyu ortalama 5 saniyeden kısa sürede cevaplamak.";
-                break;
-            case 'scholar':
-                text = "Tüm kategorilerde en az %70 başarı oranı elde etmek.";
-                break;
-            default:
-                text = "Bu rozeti kazanmak için gerekli koşulları sağlamak.";
+        const lang = this.currentLanguage || localStorage.getItem('quizLanguage') || 'tr';
+        const langPack = window.languages?.[lang];
+        if (langPack && langPack.badges && langPack.badges[badge.id]) {
+            return langPack.badges[badge.id].requirement || '';
         }
-        
-        return text;
+        // Eski fallback Türkçe açıklamalar
+        const fallback = {
+            perfectScore: "Bir kategoride %100 doğru cevap vererek mükemmel skor elde etmek.",
+            genius: "Arka arkaya 10 soruyu doğru cevaplamak.",
+            explorer: "5 farklı kategoride en az 5'er soru çözmek.",
+            dedicated: "Toplam 100 soru çözmek.",
+            speedster: "10 soruyu ortalama 5 saniyeden kısa sürede cevaplamak.",
+            scholar: "Tüm kategorilerde en az %70 başarı oranı elde etmek."
+        };
+        return fallback[badge.id] || "Bu rozeti kazanmak için gerekli koşulları sağlamak.";
     },
     
     // Zaman farkını hesapla (ne kadar zaman önce)
@@ -11667,7 +11827,158 @@ const quizApp = {
         } else {
             console.log('7. Test kayıt atlandı - gerekli şartlar sağlanmadı');
         }
+    },
+
+    // Özel confirm dialog göster
+    showCustomConfirm: function(message, cancelText, okText, callback) {
+        // Mevcut dialog'u kaldır
+        const existingDialog = document.getElementById('custom-confirm-dialog');
+        if (existingDialog) {
+            existingDialog.remove();
         }
+
+        // Dialog container oluştur
+        const dialogOverlay = document.createElement('div');
+        dialogOverlay.id = 'custom-confirm-dialog';
+        dialogOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(3px);
+        `;
+
+        // Dialog içeriği
+        const dialogBox = document.createElement('div');
+        dialogBox.style.cssText = `
+            background: #fff;
+            border-radius: 15px;
+            padding: 25px;
+            max-width: 320px;
+            width: 85%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        `;
+
+        // Mesaj
+        const messageElement = document.createElement('p');
+        messageElement.textContent = message;
+        messageElement.style.cssText = `
+            margin: 0 0 25px 0;
+            font-size: 16px;
+            line-height: 1.4;
+            color: #333;
+            font-weight: 400;
+        `;
+
+        // Buton container
+        const buttonContainer = document.createElement('div');
+        buttonContainer.style.cssText = `
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        `;
+
+        // Cancel butonu
+        const cancelButton = document.createElement('button');
+        cancelButton.textContent = cancelText;
+        cancelButton.style.cssText = `
+            flex: 1;
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            background: #f8f9fa;
+            color: #333;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        `;
+
+        // OK butonu
+        const okButton = document.createElement('button');
+        okButton.textContent = okText;
+        okButton.style.cssText = `
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            background: #007AFF;
+            color: white;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        `;
+
+        // Hover efektleri
+        cancelButton.addEventListener('mouseenter', function() {
+            cancelButton.style.background = '#e9ecef';
+        });
+        cancelButton.addEventListener('mouseleave', function() {
+            cancelButton.style.background = '#f8f9fa';
+        });
+
+        okButton.addEventListener('mouseenter', function() {
+            okButton.style.background = '#0056b3';
+        });
+        okButton.addEventListener('mouseleave', function() {
+            okButton.style.background = '#007AFF';
+        });
+
+        // Event listeners
+        cancelButton.addEventListener('click', function() {
+            dialogOverlay.remove();
+            if (typeof callback === 'function') callback(false);
+        });
+
+        okButton.addEventListener('click', function() {
+            dialogOverlay.remove();
+            if (typeof callback === 'function') callback(true);
+        });
+
+        // Overlay'e tıklayınca dialog'u kapat
+        dialogOverlay.addEventListener('click', function(e) {
+            if (e.target === dialogOverlay) {
+                dialogOverlay.remove();
+                if (typeof callback === 'function') callback(false);
+            }
+        });
+
+        // ESC tuşu ile kapat
+        document.addEventListener('keydown', function escHandler(e) {
+            if (e.key === 'Escape') {
+                document.removeEventListener('keydown', escHandler);
+                dialogOverlay.remove();
+                callback(false);
+            }
+        });
+
+        // DOM'a ekle
+        buttonContainer.appendChild(cancelButton);
+        buttonContainer.appendChild(okButton);
+        dialogBox.appendChild(messageElement);
+        dialogBox.appendChild(buttonContainer);
+        dialogOverlay.appendChild(dialogBox);
+        document.body.appendChild(dialogOverlay);
+
+        // Dialog animasyonu
+        dialogOverlay.style.opacity = '0';
+        dialogBox.style.transform = 'scale(0.9)';
+        requestAnimationFrame(function() {
+            dialogOverlay.style.transition = 'opacity 0.3s ease';
+            dialogBox.style.transition = 'transform 0.3s ease';
+            dialogOverlay.style.opacity = '1';
+            dialogBox.style.transform = 'scale(1)';
+        });
+    }
 };
 
 // Console'da kullanım kılavuzu
@@ -11708,6 +12019,26 @@ quizApp.init();
 
 // QuizApp modülünü global olarak erişilebilir yap
 window.quizApp = quizApp;
+
+// Test fonksiyonlarını global erişime aç
+window.testRewardedAd = function() {
+    console.log('[Global Debug] testRewardedAd çağrıldı');
+    if (quizApp && typeof quizApp.testRewardedAd === 'function') {
+        quizApp.testRewardedAd();
+    } else {
+        console.error('[Global Debug] QuizApp veya testRewardedAd fonksiyonu bulunamadı');
+    }
+};
+
+window.debugAdMob = function() {
+    console.log('[Global Debug] AdMob Durumu:', {
+        admobInitialized: quizApp ? quizApp.admobInitialized : 'QuizApp bulunamadı',
+        hasCapacitor: !!window.Capacitor,
+        platform: window.Capacitor ? window.Capacitor.getPlatform() : 'web',
+        hasAdMobPlugin: !!(window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.AdMob),
+        monetizationDebugStatus: window.MonetizationManager ? window.MonetizationManager.debugAdMobStatus() : 'MonetizationManager bulunamadı'
+    });
+};
 
 // Debug fonksiyonlarını global erişim için ekle
 window.debugFirebase = function() {
