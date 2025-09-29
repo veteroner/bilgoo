@@ -1,18 +1,18 @@
 PODS:
-  - Capacitor (5.7.8):
+  - Capacitor (7.4.3):
     - CapacitorCordova
   - CapacitorCommunityAdmob (7.0.3):
     - Capacitor
     - Google-Mobile-Ads-SDK (= 11.3.0)
     - GoogleUserMessagingPlatform (< 3.0.0, >= 2.7.0)
-  - CapacitorCordova (5.7.8)
+  - CapacitorCordova (7.4.3)
   - CapacitorPluginAppTrackingTransparency (2.0.5):
     - Capacitor
-  - CapacitorPushNotifications (5.1.2):
+  - CapacitorPushNotifications (7.0.3):
     - Capacitor
-  - CapacitorSplashScreen (5.0.8):
+  - CapacitorSplashScreen (7.0.3):
     - Capacitor
-  - CapacitorStatusBar (5.0.8):
+  - CapacitorStatusBar (7.0.3):
     - Capacitor
   - Google-Mobile-Ads-SDK (11.3.0):
     - GoogleUserMessagingPlatform (>= 1.1)
@@ -50,13 +50,13 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/status-bar"
 
 SPEC CHECKSUMS:
-  Capacitor: 747aadb4fa786f460d8cd9d0557cb81440a13747
+  Capacitor: b4741ca7affb32c1b70debd03df92cbf522d8a80
   CapacitorCommunityAdmob: 9267ae3b473314fa65765ce4bead9a9175902ab2
-  CapacitorCordova: 31ab98dca2ddcee051027a1afe7e8c85c82f7297
+  CapacitorCordova: 435121e81a2df4d0034f0fb11fcefab5104cfdb5
   CapacitorPluginAppTrackingTransparency: 2a2792623a5a72795f2e8f9ab3f1147573732fd8
-  CapacitorPushNotifications: 18108623c4f6a2629e7560c07c157820a511bcdd
-  CapacitorSplashScreen: 7a69e693bc1ef83e4bd3fb073bd8c8fa33e9059e
-  CapacitorStatusBar: 51af549cfcf35aac3ab072b062967ae5971ee485
+  CapacitorPushNotifications: 729ade0d2791ec1969feaf931a15e28d929a6d70
+  CapacitorSplashScreen: d06ae8804808e9f649a08e7bb7f283c77b688084
+  CapacitorStatusBar: 7d8fcbd6768db014bd721d75e246590b014928e8
   Google-Mobile-Ads-SDK: 301a16c461c331ba34ff4dab40a22ab7c147af61
   GoogleUserMessagingPlatform: a8b56893477f67212fbc8411c139e61d463349f5
 
