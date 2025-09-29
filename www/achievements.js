@@ -274,7 +274,7 @@ const achievements = {
         
         // Kategori başarımları
         const categoriesPlayed = Object.keys(stats.categoryStats || {}).length;
-        const totalCategories = Object.keys(quizApp.allQuestionsData).length;
+        const totalCategories = window.quizApp && window.quizApp.allQuestionsData ? Object.keys(window.quizApp.allQuestionsData).length : 0;
         
         let perfectCategories = 0;
         for (const category in stats.categoryStats) {
@@ -357,8 +357,8 @@ const achievements = {
             notification.classList.add('show');
             
             // Ses çal
-            if (quizApp.soundEnabled) {
-                quizApp.playSound(quizApp.soundVictory);
+            if (window.quizApp && window.quizApp.soundEnabled) {
+                window.quizApp.playSound(window.quizApp.soundVictory);
             }
             
             // 6 saniye sonra kaldır
@@ -451,7 +451,7 @@ const achievements = {
         // Quiz sonuçlarını dinle
         document.addEventListener('quizCompleted', (e) => {
             // quizApp'ten istatistikleri al
-            const stats = quizApp.getStats();
+            const stats = window.quizApp ? window.quizApp.getStats() : {};
             
             this.processGameResults({
                 score: e.detail.score,

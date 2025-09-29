@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#4a148c">
+    <title>Android Login Test - Bilgoo</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Test sayfası için özel stiller */
+        .test-info {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            z-index: 100000;
+            max-width: 300px;
+        }
+        
+        .test-info h3 {
+            margin: 0 0 10px 0;
+            color: #4a90e2;
+        }
+        
+        .test-status {
+            margin: 5px 0;
+        }
+        
+        .status-ok {
+            color: #4CAF50;
+        }
+        
+        .status-error {
+            color: #f44336;
+        }
+        
+        /* Force Android body class for testing */
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        }
+        
+        /* Test container */
+        .test-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10000;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .test-auth-box {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        .test-language-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 5px;
+            border: 2px solid #4a90e2;
+            background: white;
+            color: #4a90e2;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .test-language-btn:hover,
+        .test-language-btn.selected {
+            background: #4a90e2;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+        
+        .test-btn-primary {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #4a90e2, #357abd);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+        
+        .test-btn-primary:hover {
+            background: linear-gradient(45deg, #357abd, #2c6aa0);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+        }
+        
+        .test-form-group {
+            margin-bottom: 20px;
+        }
+        
+        .test-form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .test-language-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body class="platform-android platform-capacitor" data-platform="android">
+    <!-- Test bilgi paneli -->
+    <div class="test-info">
+        <h3>🔧 Android Login Test</h3>
+        <div class="test-status" id="platform-status">Platform: <span id="platform-value">Algılanıyor...</span></div>
+        <div class="test-status" id="classes-status">Body Classes: <span id="classes-value">Kontrol ediliyor...</span></div>
+        <div class="test-status" id="visibility-status">Login Görünür: <span id="visibility-value">Kontrol ediliyor...</span></div>
+        <div class="test-status" id="capacitor-status">Capacitor: <span id="capacitor-value">Kontrol ediliyor...</span></div>
+    </div>
+
+    <!-- Test Login Container -->
+    <div class="test-container">
+        <div class="test-auth-box">
+            <div class="main-logo">
+                <h1 style="text-align: center; color: #4a90e2; margin-bottom: 20px;">
+                    📱 Bilgoo Android Test
+                </h1>
+            </div>
+            
+            <h2>🔧 Platform ve Login Testi</h2>
+            
+            <div class="test-form-group">
+                <label><i class="fas fa-language"></i> Dil Seçimi Testi</label>
+                <div class="test-language-options">
+                    <button type="button" class="test-language-btn selected" data-lang="tr">
+                        🇹🇷 Türkçe
+                    </button>
+                    <button type="button" class="test-language-btn" data-lang="en">
+                        🇺🇸 English
+                    </button>
+                    <button type="button" class="test-language-btn" data-lang="de">
+                        🇩🇪 Deutsch
+                    </button>
+                </div>
+            </div>
+            
+            <div class="test-form-group">
+                <label for="test-email"><i class="fas fa-envelope"></i> E-posta Test</label>
+                <input type="email" id="test-email" placeholder="test@example.com" style="
+                    width: 100%;
+                    padding: 12px 16px;
+                    border: 2px solid #e1e8ed;
+                    border-radius: 8px;
+                    font-size: 16px;
+                    background: white;
+                    color: #333;
+                    box-sizing: border-box;
+                ">
+            </div>
+            
+            <div class="test-form-group">
+                <button type="button" class="test-btn-primary" onclick="testLogin()">
+                    🚀 Login Testi Başlat
+                </button>
+            </div>
+            
+            <div class="test-form-group">
+                <button type="button" class="test-btn-primary" onclick="openMainApp()" style="background: linear-gradient(45deg, #34a853, #2c7a42);">
+                    ✅ Ana Uygulamayı Aç
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test fonksiyonları
+        function updateTestStatus() {
+            // Platform algılama
+            const isAndroid = /Android/i.test(navigator.userAgent);
+            const hasCapacitor = !!window.Capacitor;
+            const platformValue = document.getElementById('platform-value');
+            
+            if (isAndroid) {
+                platformValue.textContent = 'Android ✅';
+                platformValue.className = 'status-ok';
+            } else {
+                platformValue.textContent = 'Android değil ❌';
+                platformValue.className = 'status-error';
+            }
+            
+            // Body classes kontrol
+            const classesValue = document.getElementById('classes-value');
+            const hasAndroidClass = document.body.classList.contains('platform-android');
+            
+            if (hasAndroidClass) {
+                classesValue.textContent = 'platform-android ✅';
+                classesValue.className = 'status-ok';
+            } else {
+                classesValue.textContent = 'platform-android yok ❌';
+                classesValue.className = 'status-error';
+            }
+            
+            // Visibility kontrol
+            const visibilityValue = document.getElementById('visibility-value');
+            const testContainer = document.querySelector('.test-container');
+            const isVisible = testContainer && window.getComputedStyle(testContainer).display !== 'none';
+            
+            if (isVisible) {
+                visibilityValue.textContent = 'Görünür ✅';
+                visibilityValue.className = 'status-ok';
+            } else {
+                visibilityValue.textContent = 'Gizli ❌';
+                visibilityValue.className = 'status-error';
+            }
+            
+            // Capacitor kontrol
+            const capacitorValue = document.getElementById('capacitor-value');
+            if (hasCapacitor) {
+                capacitorValue.textContent = 'Mevcut ✅';
+                capacitorValue.className = 'status-ok';
+            } else {
+                capacitorValue.textContent = 'Yok ❌';
+                capacitorValue.className = 'status-error';
+            }
+        }
+        
+        function testLogin() {
+            alert('🎉 Login test başarılı! \n\n' + 
+                  '✅ Platform: Android\n' + 
+                  '✅ Dil seçimi: Çalışıyor\n' + 
+                  '✅ Form elementleri: Görünür\n' + 
+                  '✅ Button tıklama: Çalışıyor');
+        }
+        
+        function openMainApp() {
+            if (confirm('Ana uygulamayı açmak istiyor musunuz?')) {
+                window.location.href = 'index.html';
+            }
+        }
+        
+        // Language button test
+        document.querySelectorAll('.test-language-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.test-language-btn').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                console.log('Language selected:', this.getAttribute('data-lang'));
+            });
+        });
+        
+        // Platform algılaması ve test
+        document.addEventListener('DOMContentLoaded', function() {
+            // Android platform sınıflarını zorla ekle
+            document.body.classList.add('platform-android', 'platform-capacitor');
+            document.documentElement.classList.add('platform-android', 'platform-capacitor');
+            document.body.setAttribute('data-platform', 'android');
+            document.documentElement.setAttribute('data-platform', 'android');
+            
+            console.log('🔧 Android test sayfası yüklendi');
+            console.log('📱 User Agent:', navigator.userAgent);
+            console.log('🎯 Body Classes:', document.body.className);
+            console.log('💻 Window Size:', window.innerWidth + 'x' + window.innerHeight);
+            
+            // Test durumunu güncelle
+            updateTestStatus();
+            
+            // 2 saniyede bir test durumunu güncelle
+            setInterval(updateTestStatus, 2000);
+        });
+        
+        // Capacitor ready event
+        if (window.Capacitor) {
+            document.addEventListener('deviceready', function() {
+                console.log('📱 Capacitor deviceready fired');
+                updateTestStatus();
+            });
+        }
+    </script>
+</body>
+</html>

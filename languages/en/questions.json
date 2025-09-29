@@ -514,8 +514,7 @@
         "Big Ben",
         "Buckingham Palace"
       ],
-      "correctAnswer": "Buckingham Palace",
-      "imageUrl": "assets/images/questions/geography_turkey_world_heritage.jpg"
+      "correctAnswer": "Buckingham Palace"
     },
     {
       "question": "What are the projecting upper floors of traditional Tudor houses called?",
@@ -983,52 +982,122 @@
     },
     {
       "question": "The capital of Canada is _____.",
+      "correctAnswer": "OTTAWA",
+      "choices": [
+        "O",
+        "T",
+        "T",
+        "A",
+        "W",
+        "A",
+        "M",
+        "N"
+      ],
+      "type": "BlankFilling",
       "difficulty": 1,
-      "id": "Q0076",
-      "options": [],
-      "correctAnswer": "OTTAWA"
+      "id": "Q0076"
     },
     {
       "question": "The largest island in the Mediterranean Sea is _____.",
+      "correctAnswer": "SICILY",
+      "choices": [
+        "S",
+        "I",
+        "C",
+        "I",
+        "L",
+        "Y",
+        "C",
+        "R"
+      ],
+      "type": "BlankFilling",
       "difficulty": 1,
-      "id": "Q0077",
-      "options": [],
-      "correctAnswer": "SICILY"
+      "id": "Q0077"
     },
     {
       "question": "The hottest planet in the solar system is _____.",
+      "correctAnswer": "VENUS",
+      "choices": [
+        "V",
+        "E",
+        "N",
+        "U",
+        "S",
+        "M",
+        "A",
+        "R"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0078",
-      "options": [],
-      "correctAnswer": "VENUS"
+      "id": "Q0078"
     },
     {
       "question": "The largest lake in the United States is Lake _____.",
+      "correctAnswer": "SUPERIOR",
+      "choices": [
+        "S",
+        "U",
+        "P",
+        "E",
+        "R",
+        "I",
+        "O",
+        "R"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0079",
-      "options": [],
-      "correctAnswer": "SUPERIOR"
+      "id": "Q0079"
     },
     {
       "question": "The capital of Italy is _____.",
+      "correctAnswer": "ROME",
+      "choices": [
+        "R",
+        "O",
+        "M",
+        "E",
+        "I",
+        "T",
+        "A",
+        "L"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0080",
-      "options": [],
-      "correctAnswer": "ROME"
+      "id": "Q0080"
     },
     {
-      "question": "Aya first ayak basan insan _____ Armstrong'tur.",
+      "question": "The first human to step foot on the Moon was _____ Armstrong.",
+      "correctAnswer": "NEIL",
+      "choices": [
+        "N",
+        "E",
+        "I",
+        "L",
+        "A",
+        "R",
+        "M",
+        "S"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0081",
-      "options": [],
-      "correctAnswer": "NEIL"
+      "id": "Q0081"
     },
     {
       "question": "The largest organ in the human body is the _____.",
+      "correctAnswer": "SKIN",
+      "choices": [
+        "S",
+        "K",
+        "I",
+        "N",
+        "L",
+        "I",
+        "V",
+        "E"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0082",
-      "options": [],
-      "correctAnswer": "SKIN"
+      "id": "Q0082"
     },
     {
       "question": "The sport of golf has its roots in Scotland.",
@@ -1048,143 +1117,343 @@
     },
     {
       "question": "Africa's longest river is the _____.",
+      "correctAnswer": "NILE",
+      "choices": [
+        "N",
+        "I",
+        "L",
+        "E",
+        "C",
+        "O",
+        "N",
+        "G"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0084",
-      "options": [],
-      "correctAnswer": "NILE"
+      "id": "Q0084"
     },
     {
       "question": "The leader of the American Civil Rights Movement was Martin Luther _____ Jr.",
+      "correctAnswer": "KING",
+      "choices": [
+        "K",
+        "I",
+        "N",
+        "G",
+        "J",
+        "R",
+        "L",
+        "U"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0085",
-      "options": [],
-      "correctAnswer": "KING"
+      "id": "Q0085"
     },
     {
       "question": "The largest lake in Africa is Lake _____.",
+      "correctAnswer": "VICTORIA",
+      "choices": [
+        "V",
+        "I",
+        "C",
+        "T",
+        "O",
+        "R",
+        "I",
+        "A"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0086",
-      "options": [],
-      "correctAnswer": "VICTORIA"
+      "id": "Q0086"
     },
     {
       "question": "The white precipitation that falls in winter is _____.",
+      "correctAnswer": "SNOW",
+      "choices": [
+        "S",
+        "N",
+        "O",
+        "W",
+        "R",
+        "A",
+        "I",
+        "N"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0087",
-      "options": [],
-      "correctAnswer": "SNOW"
+      "id": "Q0087"
     },
     {
       "question": "There are _____ days in one week.",
+      "correctAnswer": "SEVEN",
+      "choices": [
+        "S",
+        "E",
+        "V",
+        "E",
+        "N",
+        "F",
+        "I",
+        "V"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0088",
-      "options": [],
-      "correctAnswer": "SEVEN"
+      "id": "Q0088"
     },
     {
       "question": "The currency of the United States is the _____.",
+      "correctAnswer": "DOLLAR",
+      "choices": [
+        "D",
+        "O",
+        "L",
+        "L",
+        "A",
+        "R",
+        "E",
+        "U"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0089",
-      "options": [],
-      "correctAnswer": "DOLLAR"
+      "id": "Q0089"
     },
     {
       "question": "The most populous city in the UK is _____.",
+      "correctAnswer": "LONDON",
+      "choices": [
+        "L",
+        "O",
+        "N",
+        "D",
+        "O",
+        "N",
+        "P",
+        "A"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0090",
-      "options": [],
-      "correctAnswer": "LONDON"
+      "id": "Q0090"
     },
     {
       "question": "The shortest day is in _____.",
+      "correctAnswer": "DECEMBER",
+      "choices": [
+        "D",
+        "E",
+        "C",
+        "E",
+        "M",
+        "B",
+        "E",
+        "R"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0091",
-      "options": [],
-      "correctAnswer": "DECEMBER"
+      "id": "Q0091"
     },
     {
       "question": "The smallest country in the world is _____.",
+      "correctAnswer": "VATICAN",
+      "choices": [
+        "V",
+        "A",
+        "T",
+        "I",
+        "C",
+        "N",
+        "B",
+        "R"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0092",
-      "options": [],
-      "correctAnswer": "VATICAN"
+      "id": "Q0092"
     },
     {
       "question": "Our body's main source of energy is _____.",
+      "correctAnswer": "GLUCOSE",
+      "choices": [
+        "G",
+        "L",
+        "U",
+        "C",
+        "O",
+        "S",
+        "E",
+        "A"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0093",
-      "options": [],
-      "correctAnswer": "GLUCOSE"
+      "id": "Q0093"
     },
     {
       "question": "Plants produce food using _____.",
+      "correctAnswer": "LIGHT",
+      "choices": [
+        "L",
+        "I",
+        "G",
+        "H",
+        "T",
+        "S",
+        "A",
+        "N"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0094",
-      "options": [],
-      "correctAnswer": "LIGHT"
+      "id": "Q0094"
     },
     {
       "question": "The smallest bone is in the _____.",
+      "correctAnswer": "EAR",
+      "choices": [
+        "E",
+        "A",
+        "R",
+        "N",
+        "O",
+        "S",
+        "T",
+        "I"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0095",
-      "options": [],
-      "correctAnswer": "EAR"
+      "id": "Q0095"
     },
     {
       "question": "Basketball is played on a _____.",
+      "correctAnswer": "COURT",
+      "choices": [
+        "C",
+        "O",
+        "U",
+        "R",
+        "T",
+        "F",
+        "I",
+        "E"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0096",
-      "options": [],
-      "correctAnswer": "COURT"
+      "id": "Q0096"
     },
     {
       "question": "The surface where football is played is _____.",
+      "correctAnswer": "GRASS",
+      "choices": [
+        "G",
+        "R",
+        "A",
+        "S",
+        "S",
+        "T",
+        "U",
+        "R"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0097",
-      "options": [],
-      "correctAnswer": "GRASS"
+      "id": "Q0097"
     },
     {
       "question": "In tennis, scoring starts with _____.",
+      "correctAnswer": "LOVE",
+      "choices": [
+        "L",
+        "O",
+        "V",
+        "E",
+        "Z",
+        "E",
+        "R",
+        "O"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0098",
-      "options": [],
-      "correctAnswer": "LOVE"
+      "id": "Q0098"
     },
     {
       "question": "The westernmost state of the US is _____.",
+      "correctAnswer": "HAWAII",
+      "choices": [
+        "H",
+        "A",
+        "W",
+        "A",
+        "I",
+        "I",
+        "C",
+        "L"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0099",
-      "options": [],
-      "correctAnswer": "HAWAII"
+      "id": "Q0099"
     },
     {
       "question": "The longest river is the _____.",
+      "correctAnswer": "NILE",
+      "choices": [
+        "N",
+        "I",
+        "L",
+        "E",
+        "A",
+        "M",
+        "A",
+        "Z"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0100",
-      "options": [],
-      "correctAnswer": "NILE"
+      "id": "Q0100"
     },
     {
       "question": "The first novel in English literature is often considered to be _____.",
+      "correctAnswer": "PAMELA",
+      "choices": [
+        "P",
+        "A",
+        "M",
+        "E",
+        "L",
+        "A",
+        "C",
+        "L"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0101",
-      "options": [],
-      "correctAnswer": "PAMELA"
+      "id": "Q0101"
     },
     {
       "question": "In poetry, the _____ meter is used.",
+      "correctAnswer": "SYLLABLE",
+      "choices": [
+        "S",
+        "Y",
+        "L",
+        "L",
+        "A",
+        "B",
+        "L",
+        "E"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0102",
-      "options": [],
-      "correctAnswer": "SYLLABLE"
+      "id": "Q0102"
     },
     {
       "question": "In Classical poetry, _____ is an important form.",
+      "correctAnswer": "SONNET",
+      "choices": [
+        "S",
+        "O",
+        "N",
+        "N",
+        "E",
+        "T",
+        "P",
+        "O"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0103",
-      "options": [],
-      "correctAnswer": "SONNET"
+      "id": "Q0103"
     },
     {
       "question": "Which philosophical school was founded by Heraclitus and is known for the principle 'Everything flows'?",
@@ -2307,24 +2576,54 @@
     },
     {
       "question": "Earth's satellite is _____.",
+      "correctAnswer": "MOON",
+      "choices": [
+        "M",
+        "O",
+        "O",
+        "N",
+        "S",
+        "U",
+        "N",
+        "S"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0191",
-      "options": [],
-      "correctAnswer": "MOON"
+      "id": "Q0191"
     },
     {
       "question": "Humans use _____ to breathe.",
+      "correctAnswer": "LUNGS",
+      "choices": [
+        "L",
+        "U",
+        "N",
+        "G",
+        "S",
+        "H",
+        "E",
+        "A"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0192",
-      "options": [],
-      "correctAnswer": "LUNGS"
+      "id": "Q0192"
     },
     {
       "question": "The main component of tea is _____.",
+      "correctAnswer": "WATER",
+      "choices": [
+        "W",
+        "A",
+        "T",
+        "E",
+        "R",
+        "C",
+        "O",
+        "F"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0193",
-      "options": [],
-      "correctAnswer": "WATER"
+      "id": "Q0193"
     },
     {
       "question": "According to the Schrödinger equation, what physical quantity does a particle's wave function Ψ(x,t) represent?",
@@ -3657,16 +3956,16 @@
       "correctAnswer": "Computation on encrypted data"
     },
     {
-      "question": "Apache Spark'ta 'RDD (Resilient Distributed Dataset)' why fault-tolerant'tır?",
+      "question": "Why are RDDs (Resilient Distributed Datasets) fault-tolerant in Apache Spark?",
       "difficulty": 3,
       "id": "Q0295",
       "options": [
         "Checkpointing",
         "Backup storage",
-        "Lineage graph sayesinde",
+        "Lineage graph tracking",
         "Replication mechanism"
       ],
-      "correctAnswer": "Lineage graph sayesinde"
+      "correctAnswer": "Lineage graph tracking"
     },
     {
       "question": "What problem does the 'Circuit Breaker Pattern' solve in microservices architecture?",
@@ -4395,7 +4694,7 @@
       "correctAnswer": "Real Madrid"
     },
     {
-      "question": "Basketbolda one player how many faul hakkına sahiptir?",
+      "question": "How many fouls can a basketball player commit before fouling out?",
       "difficulty": 1,
       "id": "Q0348",
       "options": [
@@ -4776,38 +5075,89 @@
     },
     {
       "question": "In basketball, one team consists of _____ players.",
+      "correctAnswer": "FIVE",
+      "choices": [
+        "F",
+        "I",
+        "V",
+        "E",
+        "S",
+        "I",
+        "X",
+        "T"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0373",
-      "options": [],
-      "correctAnswer": "five"
+      "id": "Q0373"
     },
     {
       "question": "In football, one team plays with _____ players including the goalkeeper.",
+      "correctAnswer": "ELEVEN",
+      "choices": [
+        "E",
+        "L",
+        "E",
+        "V",
+        "E",
+        "N",
+        "T",
+        "W"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0374",
-      "options": [],
-      "correctAnswer": "eleven"
+      "id": "Q0374"
     },
     {
       "question": "The ball used in soccer matches is typically _____ in color.",
       "difficulty": 2,
       "id": "Q0375",
-      "options": [],
-      "correctAnswer": "WHITE"
+      "correctAnswer": "WHITE",
+      "choices": [
+        "A",
+        "T",
+        "I",
+        "W",
+        "Z",
+        "D",
+        "H",
+        "E"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "A basketball hoop is _____ meters high.",
       "difficulty": 2,
       "id": "Q0376",
-      "options": [],
-      "correctAnswer": "THREE"
+      "correctAnswer": "THREE",
+      "choices": [
+        "E",
+        "E",
+        "R",
+        "P",
+        "W",
+        "H",
+        "B",
+        "T"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "The sport played on a tennis court is _____.",
       "difficulty": 2,
       "id": "Q0377",
-      "options": [],
-      "correctAnswer": "TENNIS"
+      "correctAnswer": "TENNIS",
+      "choices": [
+        "Z",
+        "Q",
+        "S",
+        "E",
+        "T",
+        "N",
+        "I",
+        "W",
+        "N"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "In which sport was the 'Perfect 10' score first achieved by Nadia Comăneci at the Olympics?",
@@ -6091,29 +6441,77 @@
       "question": "The founder of the United States was born in _____ in 1732 in Virginia.",
       "difficulty": 2,
       "id": "Q0469",
-      "options": [],
-      "correctAnswer": "WASHINGTON"
+      "correctAnswer": "WASHINGTON",
+      "choices": [
+        "D",
+        "T",
+        "W",
+        "M",
+        "I",
+        "O",
+        "S",
+        "N",
+        "G",
+        "Q",
+        "A",
+        "N",
+        "H"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "In 1066, England was conquered by _____ the Conqueror.",
       "difficulty": 2,
       "id": "Q0470",
-      "options": [],
-      "correctAnswer": "WILLIAM"
+      "correctAnswer": "WILLIAM",
+      "choices": [
+        "Q",
+        "W",
+        "L",
+        "L",
+        "V",
+        "A",
+        "M",
+        "I",
+        "E",
+        "I"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "The founder of the Tudor dynasty was _____ VII.",
       "difficulty": 2,
       "id": "Q0471",
-      "options": [],
-      "correctAnswer": "HENRY"
+      "correctAnswer": "HENRY",
+      "choices": [
+        "J",
+        "N",
+        "C",
+        "R",
+        "B",
+        "E",
+        "H",
+        "Y"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "The leader of the American Revolution was General _____ Washington.",
       "difficulty": 2,
       "id": "Q0472",
-      "options": [],
-      "correctAnswer": "GEORGE"
+      "correctAnswer": "GEORGE",
+      "choices": [
+        "Y",
+        "R",
+        "G",
+        "G",
+        "O",
+        "N",
+        "E",
+        "H",
+        "E"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "The last Anglo-Saxon king Harold Godwinson died in which battle?",
@@ -6397,8 +6795,13 @@
       "question": "What is the world's highest waterfall?",
       "difficulty": 1,
       "id": "Q0493",
-      "options": [],
-      "correctAnswer": "ANGEL FALLS"
+      "options": [
+        "Niagara Falls",
+        "Angel Falls", 
+        "Victoria Falls",
+        "Iguazu Falls"
+      ],
+      "correctAnswer": "Angel Falls"
     },
     {
       "question": "Which countries span two continents?",
@@ -7340,15 +7743,34 @@
       "question": "The world's largest continent is _____.",
       "difficulty": 2,
       "id": "Q0568",
-      "options": [],
-      "correctAnswer": "ASIA"
+      "correctAnswer": "ASIA",
+      "choices": [
+        "A",
+        "J",
+        "U",
+        "S",
+        "I",
+        "G",
+        "A"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "The capital of France is _____.",
       "difficulty": 2,
       "id": "Q0570",
-      "options": [],
-      "correctAnswer": "PARIS"
+      "correctAnswer": "PARIS",
+      "choices": [
+        "S",
+        "J",
+        "Z",
+        "A",
+        "P",
+        "R",
+        "I",
+        "C"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Which is the oldest university in the United Kingdom?",
@@ -7366,29 +7788,74 @@
       "question": "The largest lake in Africa is _____.",
       "difficulty": 2,
       "id": "Q0572",
-      "options": [],
-      "correctAnswer": "VICTORIA"
+      "correctAnswer": "VICTORIA",
+      "choices": [
+        "V",
+        "R",
+        "T",
+        "J",
+        "W",
+        "I",
+        "I",
+        "O",
+        "C",
+        "A",
+        "Q"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "The first human to step foot on the Moon was _____ Armstrong.",
       "difficulty": 2,
       "id": "Q0573",
-      "options": [],
-      "correctAnswer": "NEIL"
+      "correctAnswer": "NEIL",
+      "choices": [
+        "Q",
+        "I",
+        "N",
+        "L",
+        "W",
+        "P",
+        "E"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "The longest river in the United States is the _____ River.",
       "difficulty": 2,
       "id": "Q0574",
-      "options": [],
-      "correctAnswer": "MISSOURI"
+      "correctAnswer": "MISSOURI",
+      "choices": [
+        "D",
+        "M",
+        "U",
+        "S",
+        "I",
+        "O",
+        "S",
+        "E",
+        "I",
+        "R",
+        "F"
+      ],
+      "type": "BlankFilling"
     },
     {
-      "question": "En kısa ay _____'tır.",
+      "question": "The shortest month is _____.",
       "difficulty": 2,
       "id": "Q0575",
-      "options": [],
-      "correctAnswer": "SUBAT"
+      "correctAnswer": "FEBRUARY",
+      "choices": [
+        "F",
+        "E",
+        "B",
+        "R",
+        "U",
+        "A",
+        "R",
+        "Y"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "The deepest ocean trench in the world is the Mariana Trench. In which ocean is it located and what is its depth?",
@@ -8317,7 +8784,7 @@
       "imageUrl": "assets/images/questions/music_turkish_folk.jpg"
     },
     {
-      "question": "Soprano, erkek sound sınıflandırmasıdır.",
+      "question": "Soprano is a male voice classification.",
       "difficulty": 1,
       "id": "Q0617",
       "type": "TrueFalse",
@@ -9023,7 +9490,7 @@
       "imageUrl": "assets/images/questions/literature_calikusu.jpg"
     },
     {
-      "question": "Charles Dickens, 'Wuthering Heights' romanının yazarıdır.",
+      "question": "Charles Dickens is the author of 'Wuthering Heights'.",
       "difficulty": 1,
       "id": "Q0659",
       "type": "TrueFalse",
@@ -9199,7 +9666,7 @@
       "imageUrl": "assets/images/questions/literature_garip_movement.jpg"
     },
     {
-      "question": "Victor Hugo, 'Sefiller' romanının yazarıdır.",
+      "question": "Victor Hugo is the author of 'Les Misérables'.",
       "difficulty": 1,
       "id": "Q0670",
       "type": "TrueFalse",
@@ -9554,22 +10021,53 @@
       "question": "An important name in English poetry is _____ KEATS.",
       "difficulty": 2,
       "id": "Q0693",
-      "options": [],
-      "correctAnswer": "JOHN"
+      "correctAnswer": "JOHN",
+      "choices": [
+        "F",
+        "N",
+        "U",
+        "O",
+        "H",
+        "J",
+        "K"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "An important movement in English poetry is the _____ movement.",
       "difficulty": 2,
       "id": "Q0694",
-      "options": [],
-      "correctAnswer": "ROMANTIC"
+      "correctAnswer": "ROMANTIC",
+      "choices": [
+        "A",
+        "N",
+        "I",
+        "O",
+        "B",
+        "M",
+        "H",
+        "R",
+        "C",
+        "T",
+        "Y"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "The author of the novel 'Les Misérables' is Victor _____.",
       "difficulty": 2,
       "id": "Q0695",
-      "options": [],
-      "correctAnswer": "HUGO"
+      "correctAnswer": "HUGO",
+      "choices": [
+        "G",
+        "O",
+        "C",
+        "U",
+        "W",
+        "H",
+        "S"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "What narrative technique does James Joyce use in his novel 'Ulysses'?",

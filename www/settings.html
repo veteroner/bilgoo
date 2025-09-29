@@ -290,20 +290,20 @@
 <body>
     <div class="settings-container">
         <div class="settings-header">
-            <h1>Ayarlar</h1>
+            <h1 data-i18n="settingsPageTitle">Ayarlar</h1>
         </div>
         
         <div class="settings-content">
             <!-- Ses Ayarları -->
             <div class="settings-section">
-                <h3><i class="fas fa-volume-up"></i> Ses Ayarları</h3>
+                <h3><i class="fas fa-volume-up"></i> <span data-i18n="soundSettings">Ses Ayarları</span></h3>
                 
                 <div class="setting-item">
                     <div class="setting-label">
                         <i class="fas fa-music"></i>
                         <div class="setting-text">
-                            <div class="setting-title">Ses Efektleri</div>
-                            <div class="setting-description">Oyun sesleri ve efektlerini açar/kapatır</div>
+                            <div class="setting-title" data-i18n="soundEffects">Ses Efektleri</div>
+                            <div class="setting-description" data-i18n="soundEffectsDesc">Oyun sesleri ve efektlerini açar/kapatır</div>
                         </div>
                     </div>
                     <label class="toggle-switch">
@@ -316,8 +316,8 @@
                     <div class="setting-label">
                         <i class="fas fa-bell"></i>
                         <div class="setting-text">
-                            <div class="setting-title">Bildirim Sesleri</div>
-                            <div class="setting-description">Bildirim ve uyarı seslerini açar/kapatır</div>
+                            <div class="setting-title" data-i18n="notificationSounds">Bildirim Sesleri</div>
+                            <div class="setting-description" data-i18n="notificationSoundsDesc">Bildirim ve uyarı seslerini açar/kapatır</div>
                         </div>
                     </div>
                     <label class="toggle-switch">
@@ -329,14 +329,14 @@
             
             <!-- Tema Ayarları -->
             <div class="settings-section">
-                <h3><i class="fas fa-palette"></i> Tema Ayarları</h3>
+                <h3><i class="fas fa-palette"></i> <span data-i18n="themeSettings">Tema Ayarları</span></h3>
                 
                 <div class="setting-item">
                     <div class="setting-label">
                         <i class="fas fa-moon"></i>
                         <div class="setting-text">
-                            <div class="setting-title">Karanlık Mod</div>
-                            <div class="setting-description">Koyu tema kullanarak göz yorgunluğunu azaltır</div>
+                            <div class="setting-title" data-i18n="darkMode">Karanlık Mod</div>
+                            <div class="setting-description" data-i18n="darkModeDesc">Koyu tema kullanarak göz yorgunluğunu azaltır</div>
                         </div>
                     </div>
                     <label class="toggle-switch">
@@ -349,8 +349,8 @@
                     <div class="setting-label">
                         <i class="fas fa-adjust"></i>
                         <div class="setting-text">
-                            <div class="setting-title">Otomatik Tema</div>
-                            <div class="setting-description">Sistem ayarlarına göre otomatik tema seçimi</div>
+                            <div class="setting-title" data-i18n="autoTheme">Otomatik Tema</div>
+                            <div class="setting-description" data-i18n="autoThemeDesc">Sistem ayarlarına göre otomatik tema seçimi</div>
                         </div>
                     </div>
                     <label class="toggle-switch">
@@ -362,14 +362,14 @@
             
             <!-- Oyun Ayarları -->
             <div class="settings-section">
-                <h3><i class="fas fa-gamepad"></i> Oyun Ayarları</h3>
+                <h3><i class="fas fa-gamepad"></i> <span data-i18n="gameSettings">Oyun Ayarları</span></h3>
                 
                 <div class="setting-item">
                     <div class="setting-label">
                         <i class="fas fa-clock"></i>
                         <div class="setting-text">
-                            <div class="setting-title">Soru Süresi</div>
-                            <div class="setting-description">Her soru için ayrılan süre</div>
+                            <div class="setting-title" data-i18n="questionTime">Soru Süresi</div>
+                            <div class="setting-description" data-i18n="questionTimeDesc">Her soru için ayrılan süre</div>
                         </div>
                     </div>
                     <div class="select-wrapper">
@@ -386,8 +386,8 @@
                     <div class="setting-label">
                         <i class="fas fa-trophy"></i>
                         <div class="setting-text">
-                            <div class="setting-title">Animasyonlar</div>
-                            <div class="setting-description">Oyun animasyonlarını açar/kapatır</div>
+                            <div class="setting-title" data-i18n="animations">Animasyonlar</div>
+                            <div class="setting-description" data-i18n="animationsDesc">Oyun animasyonlarını açar/kapatır</div>
                         </div>
                     </div>
                     <label class="toggle-switch">
@@ -400,8 +400,8 @@
                     <div class="setting-label">
                         <i class="fas fa-vibrate"></i>
                         <div class="setting-text">
-                            <div class="setting-title">Titreşim</div>
-                            <div class="setting-description">Mobil cihazlarda titreşim geri bildirimi</div>
+                            <div class="setting-title" data-i18n="vibration">Titreşim</div>
+                            <div class="setting-description" data-i18n="vibrationDesc">Mobil cihazlarda titreşim geri bildirimi</div>
                         </div>
                     </div>
                     <label class="toggle-switch">
@@ -413,14 +413,14 @@
             
             <!-- Bildirim Ayarları -->
             <div class="settings-section">
-                <h3><i class="fas fa-bell"></i> Bildirim Ayarları</h3>
+                <h3><i class="fas fa-bell"></i> <span data-i18n="notificationSettings">Bildirim Ayarları</span></h3>
                 
                 <div class="setting-item">
                     <div class="setting-label">
                         <i class="fas fa-mobile-alt"></i>
                         <div class="setting-text">
-                            <div class="setting-title">Push Bildirimleri</div>
-                            <div class="setting-description">Mobil cihazlarda push bildirimleri</div>
+                            <div class="setting-title" data-i18n="pushNotifications">Push Bildirimleri</div>
+                            <div class="setting-description" data-i18n="pushNotificationsDesc">Mobil cihazlarda push bildirimleri</div>
                         </div>
                     </div>
                     <label class="toggle-switch">
@@ -433,8 +433,8 @@
                     <div class="setting-label">
                         <i class="fas fa-users"></i>
                         <div class="setting-text">
-                            <div class="setting-title">Arkadaş Davetleri</div>
-                            <div class="setting-description">Arkadaş davet bildirimlerini alır</div>
+                            <div class="setting-title" data-i18n="friendInvites">Arkadaş Davetleri</div>
+                            <div class="setting-description" data-i18n="friendInvitesDesc">Arkadaş davet bildirimlerini alır</div>
                         </div>
                     </div>
                     <label class="toggle-switch">
@@ -446,14 +446,14 @@
             
             <!-- Dil Ayarları -->
             <div class="settings-section">
-                <h3><i class="fas fa-language"></i> Dil Ayarları</h3>
+                <h3><i class="fas fa-language"></i> <span data-i18n="languageSettings">Dil Ayarları</span></h3>
                 
                 <div class="setting-item">
                     <div class="setting-label">
                         <i class="fas fa-globe"></i>
                         <div class="setting-text">
-                            <div class="setting-title">Uygulama Dili</div>
-                            <div class="setting-description">Uygulama arayüz dili</div>
+                            <div class="setting-title" data-i18n="appLanguage">Uygulama Dili</div>
+                            <div class="setting-description" data-i18n="appLanguageDesc">Uygulama arayüz dili</div>
                         </div>
                     </div>
                     <div class="select-wrapper">
@@ -469,8 +469,8 @@
                     <div class="setting-label">
                         <i class="fas fa-question-circle"></i>
                         <div class="setting-text">
-                            <div class="setting-title">Soru Dili</div>
-                            <div class="setting-description">Oyun sorularının dili</div>
+                            <div class="setting-title" data-i18n="questionLanguage">Soru Dili</div>
+                            <div class="setting-description" data-i18n="questionLanguageDesc">Oyun sorularının dili</div>
                         </div>
                     </div>
                     <div class="select-wrapper">
@@ -486,13 +486,13 @@
         
         <div class="action-buttons">
             <button class="btn btn-primary" onclick="saveSettings()">
-                <i class="fas fa-save"></i> Ayarları Kaydet
+                <i class="fas fa-save"></i> <span data-i18n="saveSettings">Ayarları Kaydet</span>
             </button>
             <button class="btn btn-secondary" onclick="resetSettings()">
-                <i class="fas fa-undo"></i> Sıfırla
+                <i class="fas fa-undo"></i> <span data-i18n="resetSettings">Sıfırla</span>
             </button>
             <button class="btn btn-secondary" onclick="goBack()">
-                <i class="fas fa-arrow-left"></i> Geri Dön
+                <i class="fas fa-arrow-left"></i> <span data-i18n="goBack">Geri Dön</span>
             </button>
         </div>
     </div>

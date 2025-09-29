@@ -11,16 +11,15 @@
   },
   "plugins": {
     "AdMob": {
-      "appId": "ca-app-pub-3940256099942544~3347511713",
-      "iosAppId": "ca-app-pub-3940256099942544~1458002511",
+  "appId": "ca-app-pub-3940256099942544~3347511713",
+  "iosAppId": "ca-app-pub-3940256099942544~1458002511",
       "rewardedAdId": {
         "android": "ca-app-pub-3940256099942544/5224354917",
-        "ios": "ca-app-pub-3940256099942544/5224354917"
+        "ios": "ca-app-pub-3940256099942544/1712485313"
       },
       "testingDevices": ["33BE2250B43518CCDA7DE426D04EE231"],
       "tagForChildDirectedTreatment": false,
       "tagForUnderAgeOfConsent": false,
-      "maxAdContentRating": "MA",
       "autobind": true
     },
     "Network": {

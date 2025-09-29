@@ -1,0 +1,83 @@
+# Capacitor ignore dosyası - Android build'ine dahil edilmeyecek dosya ve klasörler
+
+# Git dosyaları
+.git/
+.gitignore
+.github/
+
+# Yedek klasörleri
+backup/
+backup_unused_images/
+
+# Deploy dosyaları
+netlify-deploy/
+netlify.toml
+
+# Development dosyaları
+node_modules/
+.vscode/
+.idea/
+
+# Firebase dev dosyaları
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# Geçici dosyalar
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Büyük medya dosyaları (opsiyonel)
+# assets/videos/
+# *.mp4
+# *.mov
+
+# Documentation
+README.md
+*.md
+CHANGELOG.md
+
+# Test dosyaları
+test/
+tests/
+*.test.js
+*.spec.js
+
+# Build dosyaları
+dist/
+build/
+
+# Log dosyaları
+*.log
+logs/
+
+# Package dosyaları
+package-lock.json
+yarn.lock
+
+# Environment dosyaları
+.env
+.env.local
+.env.production
+
+# Audit ve config dosyaları
+audit-*.bat
+setup-*.bat
+cleanup-*.bat
+*.bat
+
+# Python dosyaları
+*.py
+__pycache__/
+*.pyc
+
+# Keystore dosyaları (güvenlik)
+*.jks
+*.keystore
+
+# Özel config dosyaları
+jsconfig.json
+tsconfig.json
+workbox-config.js

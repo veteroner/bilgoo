@@ -425,10 +425,117 @@
 
         // Splash screen işlemleri
         document.addEventListener('DOMContentLoaded', function() {
+            // Android platform algılaması ve class ekleme
+            function detectAndroidPlatform() {
+                // Birden fazla yöntemle Android tespiti yap
+                const isAndroid = /Android/i.test(navigator.userAgent) || 
+                                window.DeviceInfo?.platform === 'android' ||
+                                (window.Capacitor && window.Capacitor.getPlatform() === 'android') ||
+                                (typeof device !== 'undefined' && device.platform === 'Android') ||
+                                window.navigator.userAgent.includes('wv') ||
+                                document.referrer.includes('android-app://') ||
+                                window.location.protocol === 'capacitor:';
+                
+                console.log('🔍 Android platform algılama:', {
+                    userAgent: navigator.userAgent,
+                    hasCapacitor: !!window.Capacitor,
+                    capacitorPlatform: window.Capacitor?.getPlatform?.(),
+                    referrer: document.referrer,
+                    protocol: window.location.protocol,
+                    isAndroid: isAndroid
+                });
+                
+                if (isAndroid) {
+                    document.body.classList.add('platform-android', 'platform-capacitor');
+                    document.documentElement.classList.add('platform-android', 'platform-capacitor');
+                    console.log('✅ Android platform detected, platform classes added');
+                    
+                    // HTML elementine de platform attribute ekle
+                    document.documentElement.setAttribute('data-platform', 'android');
+                    document.body.setAttribute('data-platform', 'android');
+                    
+                    return true;
+                } else {
+                    console.log('❌ Android platform not detected');
+                    return false;
+                }
+            }
+            
+            // Platform algılamasını hemen çalıştır
+            const isAndroidDetected = detectAndroidPlatform();
+            
+            // Capacitor ready event'i için de dinle
+            if (window.Capacitor) {
+                document.addEventListener('deviceready', function() {
+                    console.log('📱 Capacitor deviceready event fired');
+                    detectAndroidPlatform();
+                    forceAndroidVisibility();
+                });
+                
+                // Capacitor.ready() promise'i varsa da dinle
+                if (typeof window.Capacitor.ready === 'function') {
+                    window.Capacitor.ready().then(() => {
+                        console.log('📱 Capacitor ready promise resolved');
+                        detectAndroidPlatform();
+                        forceAndroidVisibility();
+                    });
+                }
+            }
+            
+            // Additional detection after a short delay
+            setTimeout(() => {
+                if (!document.body.classList.contains('platform-android')) {
+                    console.log('🔄 Delayed Android detection attempt');
+                    detectAndroidPlatform();
+                    forceAndroidVisibility();
+                }
+            }, 1000);
+            
             const splashScreen = document.getElementById('splash-screen');
             const preferencesContainer = document.querySelector('.user-preferences-container');
             const loginContainer = document.querySelector('.login-container');
             const preferencesForm = document.getElementById('user-preferences-form');
+            
+            // Android'de login/tercih sayfalarının görünürlüğünü force et
+            function forceAndroidVisibility() {
+                if (document.body.classList.contains('platform-android')) {
+                    console.log('Forcing Android visibility for login/preferences pages');
+                    
+                    // Preferences container için
+                    if (preferencesContainer) {
+                        preferencesContainer.style.cssText += `
+                            display: flex !important;
+                            visibility: visible !important;
+                            opacity: 1 !important;
+                            position: fixed !important;
+                            top: 0 !important;
+                            left: 0 !important;
+                            right: 0 !important;
+                            bottom: 0 !important;
+                            width: 100vw !important;
+                            height: 100vh !important;
+                            z-index: 10000 !important;
+                        `;
+                    }
+                    
+                    // Login container için
+                    if (loginContainer) {
+                        loginContainer.style.cssText += `
+                            display: block !important;
+                            visibility: visible !important;
+                            opacity: 1 !important;
+                            position: fixed !important;
+                            top: 0 !important;
+                            left: 0 !important;
+                            right: 0 !important;
+                            bottom: 0 !important;
+                            width: 100vw !important;
+                            height: 100vh !important;
+                            z-index: 10000 !important;
+                        `;
+                    }
+                }
+            }
             
             // Splash screen'ler için akış kontrolü
             function initSplashScreens() {
@@ -445,8 +552,16 @@
                     splashScreen.classList.add('fade-out');
                     setTimeout(function() {
                         splashScreen.style.display = 'none';
-                                preferencesContainer.style.display = 'block';
-                            }, 500); // Geçiş animasyonu için süre
+                        preferencesContainer.style.display = 'flex';
+                        
+                        // Android visibility fix
+                        forceAndroidVisibility();
+                        
+                        // Android'de özel animasyon ekle
+                        if (document.body.classList.contains('platform-android')) {
+                            preferencesContainer.style.animation = 'fadeInUp 0.5s ease-out';
+                        }
+                    }, 500); // Geçiş animasyonu için süre
                 }, 10000); // İlk splash screen gösterme süresi - 10 saniye
             }
             
@@ -543,6 +658,7 @@
                 if (currentPreferencesContainer) {
                     console.log('Preferences container gizleniyor...');
                     currentPreferencesContainer.classList.add('hidden');
+                    currentPreferencesContainer.style.display = 'none';
                 } else {
                     console.error('Preferences container bulunamadı!');
                 }
@@ -552,6 +668,29 @@
                     currentLoginContainer.style.visibility = 'visible';
                     currentLoginContainer.style.display = 'block';
                     currentLoginContainer.classList.add('fade-in');
+                    
+                    // Android için özel görünürlük fix
+                    if (document.body.classList.contains('platform-android')) {
+                        console.log('Applying Android visibility fix for login container');
+                        currentLoginContainer.style.cssText += `
+                            display: block !important;
+                            visibility: visible !important;
+                            opacity: 1 !important;
+                            position: fixed !important;
+                            top: 0 !important;
+                            left: 0 !important;
+                            right: 0 !important;
+                            bottom: 0 !important;
+                            width: 100vw !important;
+                            height: 100vh !important;
+                            z-index: 10000 !important;
+                        `;
+                        // Android animasyon efekti
+                        currentLoginContainer.style.animation = 'fadeInUp 0.5s ease-out';
+                    }
+                    
+                    // Android visibility force
+                    forceAndroidVisibility();
                 } else {
                     console.error('Login container bulunamadı!');
                 }

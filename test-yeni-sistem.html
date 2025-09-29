@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeni Soru Sistemi Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .test-container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+        }
+        .button:hover {
+            background: #45a049;
+        }
+        .log {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .stat-box {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFD700;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 Yeni Akıllı Soru Sistemi Test</h1>
+    
+    <div class="test-container">
+        <h2>📊 Sistem Özellikleri</h2>
+        <ul>
+            <li><strong>Soğuma Sistemi:</strong> Görülen sorular 3 oyun sonra tekrar çıkabilir</li>
+            <li><strong>Karma Sistem:</strong> Yeterli yeni soru yoksa eski+yeni karışımı</li>
+            <li><strong>Akıllı Dağılım:</strong> Oyuncu seviyesine göre zorluk dengesi</li>
+            <li><strong>Çeşitlilik:</strong> Her oyun farklı soru kombinasyonu</li>
+        </ul>
+    </div>
+
+    <div class="test-container">
+        <h2>🎮 Test Kontrolleri</h2>
+        <button class="button" onclick="testCooldownSystem()">Soğuma Sistemi Test</button>
+        <button class="button" onclick="testMixedSystem()">Karma Sistem Test</button>
+        <button class="button" onclick="testPlayerLevel()">Oyuncu Seviyesi Test</button>
+        <button class="button" onclick="clearTestData()">Test Verilerini Temizle</button>
+    </div>
+
+    <div class="stats">
+        <div class="stat-box">
+            <div class="stat-number" id="total-games">0</div>
+            <div>Toplam Oyun</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number" id="unique-questions">0</div>
+            <div>Benzersiz Soru</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number" id="cooldown-questions">0</div>
+            <div>Soğuyan Soru</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number" id="player-level">Başlangıç</div>
+            <div>Oyuncu Seviyesi</div>
+        </div>
+    </div>
+
+    <div class="test-container">
+        <h2>📝 Test Sonuçları</h2>
+        <div id="log" class="log"></div>
+    </div>
+
+    <script>
+        // Test için basit mock soru verileri
+        const mockQuestions = {
+            "Genel Kültür": [
+                {id: 1, question: "Türkiye'nin başkenti?", difficulty: 1},
+                {id: 2, question: "En büyük okyanusun adı?", difficulty: 1},
+                {id: 3, question: "Dünyanın en yüksek dağı?", difficulty: 2},
+                {id: 4, question: "Osmanlı İmparatorluğu ne zaman kuruldu?", difficulty: 2},
+                {id: 5, question: "Kuantum fiziği hangi bilim dalıdır?", difficulty: 3},
+                {id: 6, question: "DNA'nın açılımı nedir?", difficulty: 2},
+                {id: 7, question: "Hangi gezegen güneşe en yakın?", difficulty: 1},
+                {id: 8, question: "Mozart hangi ülkedendir?", difficulty: 2},
+                {id: 9, question: "Relativite teorisini kim geliştirdi?", difficulty: 3},
+                {id: 10, question: "İstanbul kaç yılında fethedildi?", difficulty: 2},
+                {id: 11, question: "Suyun kaynama noktası?", difficulty: 1},
+                {id: 12, question: "En küçük element hangisidir?", difficulty: 3}
+            ]
+        };
+
+        let gameCounter = 0;
+        let seenQuestions = new Set();
+
+        function log(message) {
+            const logElement = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            logElement.innerHTML += `[${timestamp}] ${message}<br>`;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        function updateStats() {
+            document.getElementById('total-games').textContent = gameCounter;
+            document.getElementById('unique-questions').textContent = seenQuestions.size;
+            
+            const cooldownQuestions = getCooldownQuestions().length;
+            document.getElementById('cooldown-questions').textContent = cooldownQuestions;
+            
+            const level = calculatePlayerLevel();
+            document.getElementById('player-level').textContent = level;
+        }
+
+        function calculatePlayerLevel() {
+            if (gameCounter === 0) return 'Başlangıç';
+            if (gameCounter < 3) return 'Başlangıç';
+            if (gameCounter < 8) return 'Orta';
+            return 'İleri';
+        }
+
+        function getCooldownQuestions() {
+            const COOLDOWN_GAMES = 3;
+            const timestamps = JSON.parse(localStorage.getItem('test_timestamps') || '{}');
+            
+            return mockQuestions["Genel Kültür"].filter(q => {
+                const lastSeen = timestamps[q.id] || 0;
+                return (gameCounter - lastSeen) >= COOLDOWN_GAMES;
+            });
+        }
+
+        function selectQuestionsWithCooldown(count = 10) {
+            const allQuestions = mockQuestions["Genel Kültür"];
+            const timestamps = JSON.parse(localStorage.getItem('test_timestamps') || '{}');
+            const COOLDOWN_GAMES = 3;
+
+            // Soğuma süresi geçen soruları bul
+            const cooldownQuestions = allQuestions.filter(q => {
+                const lastSeen = timestamps[q.id] || 0;
+                return (gameCounter - lastSeen) >= COOLDOWN_GAMES;
+            });
+
+            log(`🕐 ${cooldownQuestions.length}/${allQuestions.length} soru soğuma süresini tamamladı`);
+
+            let selectedQuestions;
+            if (cooldownQuestions.length >= count) {
+                selectedQuestions = cooldownQuestions.sort(() => Math.random() - 0.5).slice(0, count);
+            } else {
+                // En eski sorulardan seç
+                const sortedByAge = allQuestions.sort((a, b) => {
+                    return (timestamps[a.id] || 0) - (timestamps[b.id] || 0);
+                });
+                selectedQuestions = sortedByAge.slice(0, count);
+            }
+
+            // Zaman damgalarını güncelle
+            selectedQuestions.forEach(q => {
+                timestamps[q.id] = gameCounter;
+                seenQuestions.add(q.id);
+            });
+            localStorage.setItem('test_timestamps', JSON.stringify(timestamps));
+
+            return selectedQuestions;
+        }
+
+        function getQuestionDistribution(level) {
+            switch (level) {
+                case 'Başlangıç':
+                    return { easy: 7, medium: 3, hard: 0 };
+                case 'Orta':
+                    return { easy: 5, medium: 4, hard: 1 };
+                case 'İleri':
+                    return { easy: 3, medium: 4, hard: 3 };
+                default:
+                    return { easy: 6, medium: 3, hard: 1 };
+            }
+        }
+
+        function testCooldownSystem() {
+            gameCounter++;
+            log(`🎮 Oyun #${gameCounter} başlıyor...`);
+            
+            const selected = selectQuestionsWithCooldown(5);
+            
+            log(`📝 Seçilen sorular:`);
+            selected.forEach((q, i) => {
+                log(`  ${i+1}. ${q.question} (Zorluk: ${q.difficulty})`);
+            });
+            
+            updateStats();
+            log(`✅ Oyun #${gameCounter} tamamlandı!`);
+            log(`---`);
+        }
+
+        function testMixedSystem() {
+            const level = calculatePlayerLevel();
+            const distribution = getQuestionDistribution(level);
+            
+            log(`🎯 Seviye: ${level}`);
+            log(`📊 Hedef dağılım: Kolay:${distribution.easy}, Orta:${distribution.medium}, Zor:${distribution.hard}`);
+            
+            const allQuestions = mockQuestions["Genel Kültür"];
+            const easyQuestions = allQuestions.filter(q => q.difficulty === 1);
+            const mediumQuestions = allQuestions.filter(q => q.difficulty === 2);
+            const hardQuestions = allQuestions.filter(q => q.difficulty === 3);
+            
+            const selected = [];
+            
+            // Kolay sorular
+            if (distribution.easy > 0) {
+                const shuffled = easyQuestions.sort(() => Math.random() - 0.5);
+                selected.push(...shuffled.slice(0, Math.min(distribution.easy, shuffled.length)));
+            }
+            
+            // Orta sorular
+            if (distribution.medium > 0) {
+                const shuffled = mediumQuestions.sort(() => Math.random() - 0.5);
+                selected.push(...shuffled.slice(0, Math.min(distribution.medium, shuffled.length)));
+            }
+            
+            // Zor sorular
+            if (distribution.hard > 0) {
+                const shuffled = hardQuestions.sort(() => Math.random() - 0.5);
+                selected.push(...shuffled.slice(0, Math.min(distribution.hard, shuffled.length)));
+            }
+            
+            log(`🎲 Seçilen ${selected.length} soru:`);
+            selected.forEach((q, i) => {
+                const diffText = q.difficulty === 1 ? 'Kolay' : q.difficulty === 2 ? 'Orta' : 'Zor';
+                log(`  ${i+1}. ${q.question} (${diffText})`);
+            });
+            
+            log(`---`);
+        }
+
+        function testPlayerLevel() {
+            for (let i = 0; i < 3; i++) {
+                gameCounter++;
+                const level = calculatePlayerLevel();
+                const distribution = getQuestionDistribution(level);
+                log(`🎮 Oyun #${gameCounter} - Seviye: ${level} - Dağılım: K:${distribution.easy} O:${distribution.medium} Z:${distribution.hard}`);
+            }
+            updateStats();
+        }
+
+        function clearTestData() {
+            localStorage.removeItem('test_timestamps');
+            gameCounter = 0;
+            seenQuestions.clear();
+            updateStats();
+            document.getElementById('log').innerHTML = '';
+            log('🧹 Test verileri temizlendi!');
+        }
+
+        // Sayfa yüklendiğinde istatistikleri güncelle
+        updateStats();
+        log('✅ Test sistemi hazır! Butonlara tıklayarak test edebilirsiniz.');
+    </script>
+</body>
+</html>

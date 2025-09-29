@@ -663,90 +663,125 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 1000);
     }
+
+    // AdMob hazır olunca rewarded preload et (MonetizationManager tetiklediğinde)
+    document.addEventListener('admob-ready', () => {
+        console.log('[Script Debug] admob-ready event alındı (global dinleyici)');
+        quizApp.admobInitialized = true;
+        quizApp.preloadRewardedAd();
+    }, { once: true });
 });
 
 const quizApp = {
     // AdMob Initialization
     admobInitialized: false,
-    
-    async initializeAdMob() {
-        console.log('[Script Debug] AdMob initialization başlatıldı');
-        try {
-            const hasCapacitor = typeof window.Capacitor !== 'undefined';
-            const isNative = hasCapacitor && window.Capacitor.isNativePlatform();
-            
-            console.log('[Script Debug] Platform kontrolleri:', {
-                hasCapacitor: hasCapacitor,
-                isNative: isNative,
-                platform: hasCapacitor ? window.Capacitor.getPlatform() : 'web'
-            });
-            
-            if (isNative) {
-                console.log('[Script Debug] Native platform tespit edildi, AdMob yükleniyor...');
-                const { AdMob } = await import('@capacitor-community/admob');
-                
-                const initOptions = {
-                    initializeForTesting: true, // Test modunu aktif et
-                    testingDevices: ["33BE2250B43518CCDA7DE426D04EE231"]
-                };
-                
-                console.log('[Script Debug] AdMob initialize edilيyor:', initOptions);
-                await AdMob.initialize(initOptions);
-                
-                this.admobInitialized = true;
-                console.log('[Script Debug] ✅ AdMob başarıyla initialize edildi');
-                
-                // Rewarded ad'ı preload et
-                console.log('[Script Debug] Rewarded ad preload başlatılıyor...');
-                this.preloadRewardedAd();
-                
-            } else {
-                console.log('[Script Debug] ℹ️ AdMob sadece native platformlarda çalışır');
-            }
-        } catch (error) {
-            console.error('[Script Debug] ❌ AdMob initialization hatası:', error);
-            console.error('[Script Debug] Hata detayı:', JSON.stringify(error));
+    rewardedReady: false,
+    _rewardedLoading: false,
+
+    updateRewardedButtonState() {
+        const btn = document.getElementById('watch-rewarded-ad');
+        if (!btn) return;
+        if (!this.admobInitialized) {
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Reklam sistemi açılıyor...';
+        } else if (this._rewardedLoading) {
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Reklam hazırlanıyor...';
+        } else if (this.rewardedReady) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-play-circle"></i> 🎬 Reklam İzle - 3 Can Kazan';
+        } else {
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Reklam hazırlanıyor...';
         }
     },
 
-    async preloadRewardedAd() {
-        try {
-            if (!this.admobInitialized) return;
-            
-            const { AdMob } = await import('@capacitor-community/admob');
-            const platform = window.Capacitor.getPlatform();
-            
-            // Platform bazlı test ID seçimi (MonetizationManager'dan alınan harita)
-            let adId;
-            if (window.MonetizationManager && window.MonetizationManager.getActiveTestUnits) {
-                const activeUnits = window.MonetizationManager.getActiveTestUnits();
-                adId = activeUnits ? activeUnits.rewarded : null;
-            }
-            
-            // Fallback: Platform bazlı manuel seçim
-            if (!adId) {
-                if (platform === 'ios') {
-                    adId = 'ca-app-pub-3940256099942544/1712485313'; // iOS Test Rewarded
-                } else {
-                    adId = 'ca-app-pub-3940256099942544/5224354917'; // Android Test Rewarded
-                }
-            }
-            
-            console.log('[Script Debug] Rewarded ad hazırlanıyor:', {
-                platform: platform,
-                adId: adId,
-                isTesting: true
-            });
+    // AdMob plugin yardımcı erişim fonksiyonu
+    _getAdMobPlugin() {
+        const plugin = window?.Capacitor?.Plugins?.AdMob;
+        if (!plugin) {
+            console.error('[Script Debug] AdMob plugin bulunamadı (window.Capacitor.Plugins.AdMob yok)');
+            return null;
+        }
+        return plugin;
+    },
+    
+    async initializeAdMob() {
+        // Artık MonetizationManager AdMob initialize ediyor.
+        // Bu fonksiyon sadece geriye dönük çağrılar için bırakıldı.
+        if (this.admobInitialized) {
+            console.log('[Script Debug] initializeAdMob çağrıldı ancak zaten hazır');
+            return;
+        }
+        if (window.MonetizationManager && window.MonetizationManager.isAdMobReady && window.MonetizationManager.isAdMobReady()) {
+            console.log('[Script Debug] MonetizationManager AdMob hazır bildirdi (initializeAdMob stub)');
+            this.admobInitialized = true;
+            this.preloadRewardedAd();
+            return;
+        }
+        console.log('[Script Debug] AdMob henüz hazır değil, admob-ready eventine abone olunuyor');
+        document.addEventListener('admob-ready', () => {
+            console.log('[Script Debug] admob-ready event alındı (initializeAdMob stub)');
+            this.admobInitialized = true;
+            this.preloadRewardedAd();
+        }, { once: true });
+    },
 
-            await AdMob.prepareRewardVideoAd({
-                adId: adId,
-                isTesting: true // Test modunu aktif et
-            });
+    _rewardedRetryAttempt: 0,
+    async preloadRewardedAd(force = false) {
+        try {
+            if (!this.admobInitialized && !force) {
+                console.log('[Script Debug] preloadRewardedAd iptal - AdMob hazır değil');
+                return;
+            }
+            if (this._rewardedLoading) {
+                console.log('[Script Debug] Zaten rewarded yükleniyor, atlanıyor');
+                return;
+            }
+            this._rewardedLoading = true;
+            this.rewardedReady = false;
+            this.updateRewardedButtonState();
+            const AdMob = this._getAdMobPlugin();
+            if (!AdMob) {
+                throw new Error('AdMob plugin native ortamda bulunamadı');
+            }
+            const platform = window.Capacitor.getPlatform();
+            let adId;
+            if (window.MonetizationManager?.getActiveTestUnits) {
+                adId = window.MonetizationManager.getActiveTestUnits()?.rewarded;
+            }
+            if (!adId) {
+                adId = platform === 'ios' ? 'ca-app-pub-3940256099942544/1712485313' : 'ca-app-pub-3940256099942544/5224354917';
+            }
+            console.log('[Script Debug] Rewarded ad hazırlanıyor (attempt ' + this._rewardedRetryAttempt + '):', { platform, adId });
+            console.log('[Script Debug] PrepareRewardVideoAd çağrısı yapılıyor...');
             
-            console.log('[Script Debug] ✅ Rewarded ad başarıyla preload edildi');
+            const prepareOptions = { 
+                adId: adId, 
+                isTesting: true 
+            };
+            console.log('[Script Debug] Prepare seçenekleri:', prepareOptions);
+            
+            await AdMob.prepareRewardVideoAd(prepareOptions);
+            console.log('[Script Debug] ✅ Rewarded ad preload edildi');
+            this._rewardedRetryAttempt = 0; // success reset
+            this.rewardedReady = true;
+            this.updateRewardedButtonState();
         } catch (error) {
             console.error('[Script Debug] ❌ Rewarded ad preload hatası:', error);
-            console.error('[Script Debug] Hata detayı:', JSON.stringify(error));
+            console.error('[Script Debug] Error details:', {
+                message: error?.message,
+                code: error?.code,
+                stack: error?.stack,
+                fullError: JSON.stringify(error)
+            });
+            const delay = Math.min(30000, Math.pow(2, this._rewardedRetryAttempt) * 1000 + 1000);
+            console.log(`[Script Debug] Rewarded retry ${this._rewardedRetryAttempt} -> ${delay}ms sonra`);
+            this._rewardedRetryAttempt++;
+            setTimeout(() => this.preloadRewardedAd(), delay);
+        } finally {
+            this._rewardedLoading = false;
+            this.updateRewardedButtonState();
         }
     },
 
@@ -764,7 +799,20 @@ const quizApp = {
                 return;
             }
 
-            const { AdMob } = await import('@capacitor-community/admob');
+            if (!this.rewardedReady) {
+                console.log('[Script Debug] Rewarded henüz hazır değil, yeniden preload denenecek');
+                this.preloadRewardedAd(true);
+                this.showToast('Reklam hazırlanıyor, lütfen birkaç saniye sonra tekrar deneyin', 'toast-warning');
+                this.updateRewardedButtonState();
+                return;
+            }
+
+            const AdMob = this._getAdMobPlugin();
+            if (!AdMob) {
+                this.showToast('Reklam eklentisi bulunamadı', 'toast-error');
+                this.preloadRewardedAd(true);
+                return;
+            }
             const watchAdBtn = document.getElementById('watch-rewarded-ad');
             
             if (watchAdBtn) {
@@ -1392,6 +1440,7 @@ const quizApp = {
                         this.loadQuestionsData()
                             .then(() => {
                                 console.log("İkinci deneme: Soru verileri yüklendi");
+                                this.displayCategories();
                             })
                             .catch(err => {
                                 console.error("İkinci deneme başarısız:", err);
@@ -1401,6 +1450,9 @@ const quizApp = {
                     
                     // Soruları çevir
                     this.translateQuestions();
+                    
+                    // Kategorileri göster
+                    this.displayCategories();
                 })
                 .catch(error => {
                     console.error("Soru verileri yüklenirken hata oluştu:", error);
@@ -4556,13 +4608,23 @@ const quizApp = {
             gameChatContainer.style.display = 'none';
         }
         
-        // Aktif kategori verilerini al
-        const activeQuestionData = this.currentLanguage === 'tr' ? this.questionsData : this.translatedQuestions;
+        // Aktif kategori verilerini al - önce questionsData'yı kontrol et, sonra translated'ı
+        let activeQuestionData = this.questionsData;
         
-        console.log("displayCategories çağrıldı! Mevcut kategoriler:", activeQuestionData ? Object.keys(activeQuestionData) : "Veri yok");
+        // Eğer farklı dildeyse ve çevrilmiş sorular varsa onları kullan
+        if (this.currentLanguage !== 'tr' && this.translatedQuestions && Object.keys(this.translatedQuestions).length > 0) {
+            activeQuestionData = this.translatedQuestions;
+        }
+        
+        console.log("displayCategories çağrıldı! Dil:", this.currentLanguage);
+        console.log("questionsData kategorileri:", this.questionsData ? Object.keys(this.questionsData) : "Veri yok");
+        console.log("translatedQuestions kategorileri:", this.translatedQuestions ? Object.keys(this.translatedQuestions) : "Veri yok");
+        console.log("Kullanılacak kategoriler:", activeQuestionData ? Object.keys(activeQuestionData) : "Veri yok");
+        
         if (!activeQuestionData || Object.keys(activeQuestionData).length === 0) {
             // Yükleniyor mesajı göster
             categoriesContainer.innerHTML = `<div class="loading">${this.getTranslation('loading')}</div>`;
+            console.log("Kategoriler boş - yükleme mesajı gösteriliyor");
             return;
         }
         
@@ -8401,9 +8463,7 @@ const quizApp = {
         }, 100);
         
         // Badge aktivite kaydet
-    const lang = this.currentLanguage || localStorage.getItem('quizLanguage') || 'tr';
-    const langPack = window.languages?.[lang] || window.languages.tr;
-    const activityTemplate = langPack.badgeActivityEarned || '"{badge}" rozeti kazanıldı';
+        const activityTemplate = langPack.badgeActivityEarned || '"{badge}" rozeti kazanıldı';
     this.createUserActivity('badge', activityTemplate.replace('{badge}', badge.name));
         
         // Butonlara event listener ekle
