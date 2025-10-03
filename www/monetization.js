@@ -1,6 +1,17 @@
 /**
  * PRODUCTION MONETIZATION SYSTEM
- * Clean, minimal, AdMob policy compliant
+    _PROD_AD_UNITS: {
+        android: {
+            banner: 'ca-app-pub-7610338885240453/6081192537',
+            interstitial: 'ca-app-pub-7610338885240453/2112105479',
+            rewarded: 'ca-app-pub-7610338885240453/6595381556' // Production ID
+        },
+        ios: {
+            banner: 'ca-app-pub-7610338885240453/6497080109',
+            interstitial: 'ca-app-pub-7610338885240453/2112105479',
+            rewarded: 'ca-app-pub-7610338885240453/7161809021' // Production ID
+        }
+    },nimal, AdMob policy compliant
  * Version: 2.0.0 Production
  * Risk Level: 0%
  */
@@ -15,36 +26,40 @@ try {
     // Silent fail - no debug logs in production
 }
 
-// === PLATFORM SPECIFIC TEST AD UNITS (mirrors source) ===
-const TEST_AD_UNITS = {
-    android: {
-        bannerAdaptive: 'ca-app-pub-3940256099942544/9214589741',
-        bannerFixed: 'ca-app-pub-3940256099942544/6300978111',
-        interstitial: 'ca-app-pub-3940256099942544/1033173712',
-        rewarded: 'ca-app-pub-3940256099942544/5224354917',
-        rewardedInterstitial: 'ca-app-pub-3940256099942544/5354046379'
-    },
-    ios: {
-        bannerAdaptive: 'ca-app-pub-3940256099942544/2435281174',
-        bannerFixed: 'ca-app-pub-3940256099942544/2934735716',
-        interstitial: 'ca-app-pub-3940256099942544/4411468910',
-        rewarded: 'ca-app-pub-3940256099942544/1712485313',
-        rewardedInterstitial: 'ca-app-pub-3940256099942544/6978759866'
-    }
-};
-
-let ACTIVE_TEST_UNITS = null;
-
 const MonetizationManager = {
     // State Management
     isInitialized: false,
-    adMobInitStarted: false,
-    adMobReady: false,
     cookiePreferences: {
         essential: true,
         analytics: false,
         advertising: false
     },
+    // Ad Unit Maps (Test & Production)
+    _TEST_AD_UNITS: {
+        android: {
+            banner: 'ca-app-pub-3940256099942544/6300978111',
+            interstitial: 'ca-app-pub-3940256099942544/1033173712',
+            rewarded: 'ca-app-pub-3940256099942544/5224354917'
+        },
+        ios: {
+            banner: 'ca-app-pub-3940256099942544/2934735716',
+            interstitial: 'ca-app-pub-3940256099942544/4411468910',
+            rewarded: 'ca-app-pub-3940256099942544/1712485313'
+        }
+    },
+    _PROD_AD_UNITS: {
+        android: {
+            banner: 'ca-app-pub-7610338885240453/6081192537',
+            interstitial: 'ca-app-pub-7610338885240453/2112105479',
+            rewarded: 'ca-app-pub-7610338885240453/6595381556' // Production ID
+        },
+        ios: {
+            banner: 'ca-app-pub-7610338885240453/6497080109',
+            interstitial: 'ca-app-pub-7610338885240453/2112105479',
+            rewarded: 'ca-app-pub-7610338885240453/7161809021' // Production ID
+        }
+    },
+    _admobReady: false,
     
     // Top padding management
     defaultTopOffset: 60, // Base offset: 60px (+20px extra to avoid overlap)
@@ -58,8 +73,6 @@ const MonetizationManager = {
         const isNativeApp = platform === 'ios' || platform === 'android';
         
         if (isNativeApp) {
-            ACTIVE_TEST_UNITS = TEST_AD_UNITS[platform] || TEST_AD_UNITS.android;
-            console.log('[Monetization Debug] Aktif test reklam ID seti:', { platform, units: ACTIVE_TEST_UNITS });
             // Native uygulamalar: Çerez bildirimi yok, direkt ATT + reklam
             console.log('[Monetization Debug] Native app detected, enabling ads directly');
             this.cookiePreferences.advertising = true; // Native'de reklam izni varsayılan
@@ -380,28 +393,29 @@ const MonetizationManager = {
         const trackingEnabled = (attStatus === 'authorized');
         
         const initOptions = {
-            requestTrackingAuthorization: false,
-            testingDevices: ["33BE2250B43518CCDA7DE426D04EE231"],
-            initializeForTesting: true,
+            requestTrackingAuthorization: false, // Zaten yukarıda yaptık
+            testingDevices: [],
+            initializeForTesting: false, // PRODUCTION MODE
             tagForChildDirectedTreatment: false,
             tagForUnderAgeOfConsent: false,
-            npa: trackingEnabled ? '0' : '1'
+            maxAdContentRating: 'MA',
+            // ATT status'a göre tracking ayarları
+            npa: trackingEnabled ? '0' : '1' // Non-personalized ads if no tracking
         };
-        console.log('[Monetization Debug] AdMob init seçenekleri (ATT ile):', initOptions);
-        if (this.adMobInitStarted && this.adMobReady) {
-            console.log('[Monetization Debug] AdMob already initialized (ATT path), skipping duplicate init');
-            return;
-        }
-        this.adMobInitStarted = true;
+
         AdMob.initialize(initOptions).then(() => {
-            console.log('[Monetization Debug] ✅ AdMob başarıyla initialize edildi (ATT ile):', attStatus);
-            this.adMobReady = true;
-            document.dispatchEvent(new CustomEvent('admob-ready', { detail: { attStatus, trackingEnabled, initOptions } }));
-            setTimeout(() => { console.log('[Monetization Debug] Banner gösterimi başlatılıyor...'); this.showBanner(); }, 2000);
-            setTimeout(() => { console.log('[Monetization Debug] Interstitial hazırlama başlatılıyor...'); this.prepareInterstitial(); }, 4000);
+            console.log('AdMob initialized with ATT status:', attStatus);
+            this._admobReady = true;
+            try { 
+                document.dispatchEvent(new Event('admob-ready')); 
+                console.log('[Monetization Debug] ✅ admob-ready event dispatched (ATT)');
+            } catch(_) {}
+            setTimeout(() => this.showBanner(), 1500);
+            // Interstitial ads disabled for better UX
             this.isInterstitialReady = false;
         }).catch((error) => {
-            console.error('[Monetization Debug] ❌ AdMob initialization başarısız:', error);
+            console.error('AdMob initialization failed:', error);
+            // Apply default padding if AdMob fails
             this.applyTopPadding(0);
         });
     },
@@ -409,27 +423,27 @@ const MonetizationManager = {
     initializeAdMobWithoutTracking: function() {
         const initOptions = {
             requestTrackingAuthorization: false,
-            testingDevices: ["33BE2250B43518CCDA7DE426D04EE231"],
-            initializeForTesting: true,
+            testingDevices: [],
+            initializeForTesting: false, // PRODUCTION MODE
             tagForChildDirectedTreatment: false,
             tagForUnderAgeOfConsent: false,
-            npa: '1'
+            maxAdContentRating: 'MA',
+            npa: '1' // Non-personalized ads only
         };
-        console.log('[Monetization Debug] AdMob init seçenekleri (tracking olmadan):', initOptions);
-        if (this.adMobInitStarted && this.adMobReady) {
-            console.log('[Monetization Debug] AdMob already initialized (no-tracking path), skipping duplicate init');
-            return;
-        }
-        this.adMobInitStarted = true;
+
         AdMob.initialize(initOptions).then(() => {
-            console.log('[Monetization Debug] ✅ AdMob başarıyla initialize edildi (tracking olmadan)');
-            this.adMobReady = true;
-            document.dispatchEvent(new CustomEvent('admob-ready', { detail: { trackingEnabled: false, initOptions } }));
-            setTimeout(() => { console.log('[Monetization Debug] Banner gösterimi başlatılıyor...'); this.showBanner(); }, 2000);
-            setTimeout(() => { console.log('[Monetization Debug] Interstitial hazırlama başlatılıyor...'); this.prepareInterstitial(); }, 4000);
+            console.log('AdMob initialized without tracking');
+            this._admobReady = true;
+            try { 
+                document.dispatchEvent(new Event('admob-ready')); 
+                console.log('[Monetization Debug] ✅ admob-ready event dispatched (no tracking)');
+            } catch(_) {}
+            setTimeout(() => this.showBanner(), 1500);
+            // Interstitial ads disabled for better UX
             this.isInterstitialReady = false;
         }).catch((error) => {
-            console.error('[Monetization Debug] ❌ AdMob initialization başarısız (tracking olmadan):', error);
+            console.error('AdMob initialization failed:', error);
+            // Apply default padding if AdMob fails
             this.applyTopPadding(0);
         });
     },
@@ -437,36 +451,44 @@ const MonetizationManager = {
     initializeAdMobNormal: function() {
         const initOptions = {
             requestTrackingAuthorization: false,
-            testingDevices: ["33BE2250B43518CCDA7DE426D04EE231"],
-            initializeForTesting: true,
+            testingDevices: [],
+            initializeForTesting: false, // PRODUCTION MODE
             tagForChildDirectedTreatment: false,
-            tagForUnderAgeOfConsent: false
+            tagForUnderAgeOfConsent: false,
+            maxAdContentRating: 'MA'
         };
-        console.log('[Monetization Debug] AdMob init seçenekleri (normal):', initOptions);
-        if (this.adMobInitStarted && this.adMobReady) {
-            console.log('[Monetization Debug] AdMob already initialized (normal path), skipping duplicate init');
-            return;
-        }
-        this.adMobInitStarted = true;
+
         AdMob.initialize(initOptions).then(() => {
-            console.log('[Monetization Debug] ✅ AdMob başarıyla initialize edildi (normal)');
-            this.adMobReady = true;
-            document.dispatchEvent(new CustomEvent('admob-ready', { detail: { trackingEnabled: null, initOptions } }));
-            setTimeout(() => { console.log('[Monetization Debug] Banner gösterimi başlatılıyor...'); this.showBanner(); }, 2000);
-            setTimeout(() => { console.log('[Monetization Debug] Interstitial hazırlama başlatılıyor...'); this.prepareInterstitial(); }, 4000);
+            console.log('AdMob initialized normally');
+            this._admobReady = true;
+            try { 
+                document.dispatchEvent(new Event('admob-ready')); 
+                console.log('[Monetization Debug] ✅ admob-ready event dispatched (normal)');
+            } catch(_) {}
+            setTimeout(() => this.showBanner(), 1500);
+            // Interstitial ads disabled for better UX
             this.isInterstitialReady = false;
         }).catch((error) => {
-            console.error('[Monetization Debug] ❌ AdMob initialization başarısız (normal):', error);
+            console.error('AdMob initialization failed:', error);
+            // Apply default padding if AdMob fails
             this.applyTopPadding(0);
         });
     },
 
     showBanner: function() {
         if (!AdMob) return;
-        const adId = (ACTIVE_TEST_UNITS && (ACTIVE_TEST_UNITS.bannerAdaptive || ACTIVE_TEST_UNITS.bannerFixed)) || 'ca-app-pub-3940256099942544/6300978111';
-        console.log('[Monetization Debug] Banner adId kullanılacak:', adId);
-        const options = { adId, adSize: 'ADAPTIVE_BANNER', position: 'TOP_CENTER', margin: 0, isTesting: true };
-        console.log('[Monetization Debug] Banner reklam seçenekleri:', options);
+        const platform = window.Capacitor ? window.Capacitor.getPlatform() : 'web';
+        const isNative = platform === 'ios' || platform === 'android';
+        const units = this.getActiveTestUnits();
+        const bannerId = isNative ? units.banner : 'ca-app-pub-3940256099942544/6300978111';
+        const options = {
+            adId: bannerId,
+            adSize: 'ADAPTIVE_BANNER',
+            position: 'TOP_CENTER',
+            margin: 0,
+            isTesting: this.isTestMode()
+        };
+
         AdMob.showBanner(options).then(() => {
             // Initial fallback: apply 40px base padding
             setTimeout(() => {
@@ -475,7 +497,7 @@ const MonetizationManager = {
                 document.body.classList.add('has-top-banner');
             }, 500);
         }).catch((error) => {
-            console.error('[Monetization Debug] Banner reklam gösterilemedi:', error);
+            console.error('Banner reklam gösterilemedi:', error);
             // Apply default padding when banner fails
             this.applyTopPadding(0);
             // Retry after 5 seconds
@@ -497,36 +519,13 @@ const MonetizationManager = {
     },
 
     prepareInterstitial: function() {
-        if (!AdMob) return;
-        const adId = (ACTIVE_TEST_UNITS && ACTIVE_TEST_UNITS.interstitial) || 'ca-app-pub-3940256099942544/1033173712';
-        console.log('[Monetization Debug] Interstitial adId kullanılacak:', adId);
-        const options = { adId, isTesting: true };
-        console.log('[Monetization Debug] Interstitial reklam seçenekleri:', options);
-        AdMob.prepareInterstitial(options).then(() => {
-            // Interstitial reklam hazır
-            this.isInterstitialReady = true;
-            console.log('[Monetization Debug] Interstitial reklam başarıyla hazırlandı');
-        }).catch((error) => {
-            console.error('[Monetization Debug] Interstitial reklam hazırlanamadı:', error);
-            // Retry after 10 seconds
-            setTimeout(() => this.prepareInterstitial(), 10000);
-            this.isInterstitialReady = false;
-        });
+        // Interstitial ads disabled for better user experience
+        return;
     },
 
     showInterstitial: function() {
-        if (!AdMob || !this.isInterstitialReady) return;
-        
-        // Mark as used before showing
-        this.isInterstitialReady = false;
-        
-        AdMob.showInterstitial().then(() => {
-            // Başarılı gösterim sonrası yeni reklam hazırla
-            setTimeout(() => this.prepareInterstitial(), 3000);
-        }).catch(() => {
-            // Reklam gösterilemedi, yeniden hazırla
-            setTimeout(() => this.prepareInterstitial(), 2000);
-        });
+        // Interstitial ads disabled for better user experience
+        return;
     },
 
     // === MOBILE WEB ADS ===
@@ -589,28 +588,14 @@ const MonetizationManager = {
     onQuizComplete: function() {
         this.trackEvent('quiz_complete');
         
-        // Advanced interstitial frequency control
+        // Quiz completion tracking (interstitial ads disabled for better UX)
         const completions = parseInt(localStorage.getItem('quizCompletions') || '0') + 1;
         localStorage.setItem('quizCompletions', completions.toString());
-        
-        // Show interstitial at natural transition points (Google best practice)
-        if (completions % 3 === 0 && this.isInterstitialReady) {
-            // Delay to ensure smooth UX transition
-            setTimeout(() => {
-                this.showInterstitial();
-            }, 1500);
-        } else if (completions % 3 === 0 && !this.isInterstitialReady) {
-            // Try to prepare for next time
-            this.prepareInterstitial();
-        }
     },
 
     // Additional utility for manual interstitial trigger
     showInterstitialIfReady: function() {
-        if (this.isInterstitialReady) {
-            this.showInterstitial();
-            return true;
-        }
+        // Interstitial ads disabled for better user experience
         return false;
     },
 
@@ -626,6 +611,41 @@ const MonetizationManager = {
         }
     }
 };
+
+// === TEST / PROD HELPERS ===
+MonetizationManager.isTestMode = function() {
+    // Explicit override (developer toggle)
+    const forced = localStorage.getItem('admobTestMode');
+    if (forced === 'true') return true;
+    if (forced === 'false') return false;
+
+    const qp = /[?&]testads=1/.test(location.search);
+    if (qp) return true; // explicit query param
+
+    // Native (Capacitor) ortamında hostname genelde 'localhost' gelir; PROD'da test moduna düşmemeli
+    const isNative = !!(window.Capacitor && (['ios','android'].includes(window.Capacitor.getPlatform?.() || '')));
+    if (isNative) return false; // sadece explicit override / query ile açılabilir
+
+    // Web geliştirme ortamı
+    const host = location.hostname;
+    return host === 'localhost' || host === '127.0.0.1';
+};
+
+// Yeni net isimli yardımcı
+MonetizationManager.getActiveAdUnits = function() {
+    const platform = window.Capacitor ? window.Capacitor.getPlatform() : 'web';
+    const isNative = platform === 'ios' || platform === 'android';
+    const map = this.isTestMode() ? this._TEST_AD_UNITS : this._PROD_AD_UNITS;
+    return isNative ? (map[platform] || this._PROD_AD_UNITS.android) : this._TEST_AD_UNITS.android;
+};
+
+// Geriye dönük uyumluluk (eski çağrılar)
+MonetizationManager.getActiveTestUnits = function() { return this.getActiveAdUnits(); };
+
+MonetizationManager.isAdMobReady = function() { return !!this._admobReady; };
+
+// Backward compatibility alias (script.js initialize() çağırabiliyor)
+MonetizationManager.initialize = function() { return this.init(); };
 
 // Auto-initialize on DOM ready
 document.addEventListener('DOMContentLoaded', function() {

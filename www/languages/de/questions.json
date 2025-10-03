@@ -2164,7 +2164,7 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg"
+      "imageUrl": "assets/images/questions/skin_organ.jpg"
     },
     {
       "question": "Die menschliche DNA ist zu etwa 99% mit der von Schimpansen identisch.",
@@ -2180,7 +2180,7 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg"
+      "imageUrl": "assets/images/questions/dna_structure.jpg"
     },
     {
       "question": "Der magnetische Nordpol der Erde befindet sich genau am geografischen Nordpol.",
@@ -2356,7 +2356,7 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg"
+      "imageUrl": "assets/images/questions/brain_activity.jpg"
     },
     {
       "question": "Strauße stecken bei Gefahr den Kopf in den Sand.",
@@ -2372,7 +2372,7 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg"
+      "imageUrl": "assets/images/questions/ostrich_animal.jpg"
     },
     {
       "question": "Der natürliche Satellit der Erde ist der _____.",
@@ -4612,7 +4612,7 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_sports_general.jpg"
+      "imageUrl": "assets/images/questions/formula1_racing.jpg"
     },
     {
       "question": "Tennis entstand im 18. Jahrhundert in England.",
@@ -4644,7 +4644,7 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_sports_general.jpg"
+      "imageUrl": "assets/images/questions/volleyball_olympic.jpg"
     },
     {
       "question": "Die Höhe eines Basketballkorbs über dem Boden beträgt 3,05 Meter.",
@@ -4740,7 +4740,7 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_sports_general.jpg"
+      "imageUrl": "assets/images/questions/water_polo_sport.jpg"
     },
     {
       "question": "Im Boxen sind neben Schlägen auch Tritte erlaubt.",
@@ -10354,13 +10354,13 @@
       ]
     },
     {
-      "question": "Der deutsche Bundesadler hat die Flügel ausgebreitet.",
+      "question": "Die Vereinten Nationen haben 193 Mitgliedsländer.",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "difficulty": 1,
       "id": "Q3064",
-      "imageUrl": "assets/images/questions/presidential_flag_turkey.JPG",
-      "image": "assets/images/questions/presidential_flag_turkey.JPG",
+      "imageUrl": "assets/images/questions/united_nations_flag.jpg",
+      "image": "assets/images/questions/united_nations_flag.jpg",
       "choices": [
         "True",
         "False"
@@ -10456,13 +10456,13 @@
       ]
     },
     {
-      "question": "Der deutsche Zapfenstreich ist ein traditioneller Militärmarsch.",
+      "question": "Die Olympischen Spiele finden alle 4 Jahre statt.",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "difficulty": 1,
       "id": "Q3070",
-      "imageUrl": "assets/images/questions/ottoman_mehter_band.jpg",
-      "image": "assets/images/questions/ottoman_mehter_band.jpg",
+      "imageUrl": "assets/images/questions/olympic_rings.jpg",
+      "image": "assets/images/questions/olympic_rings.jpg",
       "choices": [
         "True",
         "False"
@@ -10473,13 +10473,13 @@
       ]
     },
     {
-      "question": "Die Externsteine befinden sich im Teutoburger Wald in Nordrhein-Westfalen.",
+      "question": "Die Sahara-Wüste befindet sich in Nordafrika.",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "difficulty": 1,
       "id": "Q3071",
-      "imageUrl": "assets/images/questions/cappadocia_fairy_chimneys.jpg",
-      "image": "assets/images/questions/cappadocia_fairy_chimneys.jpg",
+      "imageUrl": "assets/images/questions/sahara_desert.jpg",
+      "image": "assets/images/questions/sahara_desert.jpg",
       "choices": [
         "True",
         "False"
@@ -10531,6 +10531,363 @@
       "id": "Q3083",
       "imageUrl": "assets/images/questions/golf_scotland.jpg",
       "image": "assets/images/questions/golf_scotland.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Protonen und Neutronen befinden sich im zentralen Atomkern.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3173",
+      "imageUrl": "assets/images/questions/atom_nucleus.jpg",
+      "image": "assets/images/questions/atom_nucleus.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der Erdkern besteht aus Eisen und Nickel.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3148",
+      "imageUrl": "assets/images/questions/earth_core_iron.jpg",
+      "image": "assets/images/questions/earth_core_iron.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Das Internet wurde 1991 öffentlich zugänglich gemacht.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3153",
+      "imageUrl": "assets/images/questions/internet_history.jpg",
+      "image": "assets/images/questions/internet_history.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "FIFA ist die Abkürzung für Fédération Internationale de Football Association.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3364",
+      "imageUrl": "assets/images/questions/fifa_football.jpg",
+      "image": "assets/images/questions/fifa_football.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Im Fußball werden Elfmeter aus 12 Metern Entfernung ausgeführt.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 2,
+      "id": "Q3152",
+      "imageUrl": "assets/images/questions/football_penalty.jpg",
+      "image": "assets/images/questions/football_penalty.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Die Klarinette ist ein Holzblasinstrument.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 2,
+      "id": "Q3143",
+      "imageUrl": "assets/images/questions/music_clarinet.jpg",
+      "image": "assets/images/questions/music_clarinet.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Eine Symphonie in der klassischen Musik hat typischerweise 4 Sätze.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3144",
+      "imageUrl": "assets/images/questions/music_symphony.jpg",
+      "image": "assets/images/questions/music_symphony.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der Autor des Romans '1984' ist Aldous Huxley.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 2,
+      "id": "Q3146",
+      "imageUrl": "assets/images/questions/literature_1984_orwell.jpg",
+      "image": "assets/images/questions/literature_1984_orwell.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der erste Computervirus trat 1980 auf.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 3,
+      "id": "Q3154",
+      "imageUrl": "assets/images/questions/computer_virus.jpg",
+      "image": "assets/images/questions/computer_virus.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Ein Sonett hat typischerweise 14 Zeilen.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 3,
+      "id": "Q3147",
+      "imageUrl": "assets/images/questions/literature_sonnet.jpg",
+      "image": "assets/images/questions/literature_sonnet.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der Amazonas ist der längste Fluss der Welt.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3200",
+      "imageUrl": "assets/images/questions/amazon_river.jpg",
+      "image": "assets/images/questions/amazon_river.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der Mount Everest liegt in Nepal und Tibet.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3201",
+      "imageUrl": "assets/images/questions/mount_everest.jpg",
+      "image": "assets/images/questions/mount_everest.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der Pazifische Ozean ist der größte Ozean der Erde.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 2,
+      "id": "Q3202",
+      "imageUrl": "assets/images/questions/pacific_ocean.jpg",
+      "image": "assets/images/questions/pacific_ocean.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Die Antarktis ist der kälteste Kontinent der Erde.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 2,
+      "id": "Q3203",
+      "imageUrl": "assets/images/questions/antarctica_ice.jpg",
+      "image": "assets/images/questions/antarctica_ice.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Das menschliche Gehirn verbraucht etwa 20% der gesamten Körperenergie.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3204",
+      "imageUrl": "assets/images/questions/human_brain.jpg",
+      "image": "assets/images/questions/human_brain.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Die Photosynthese produziert Sauerstoff als Nebenprodukt.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3205",
+      "imageUrl": "assets/images/questions/photosynthesis.jpg",
+      "image": "assets/images/questions/photosynthesis.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Saturn hat mehr als 80 bekannte Monde.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3206",
+      "imageUrl": "assets/images/questions/saturn_moons.jpg",
+      "image": "assets/images/questions/saturn_moons.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Das Great Barrier Reef liegt vor der Küste Australiens.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 3,
+      "id": "Q3207",
+      "imageUrl": "assets/images/questions/great_barrier_reef.jpg",
+      "image": "assets/images/questions/great_barrier_reef.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Leonardo da Vinci malte die Decke der Sixtinischen Kapelle.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 3,
+      "id": "Q3208",
+      "imageUrl": "assets/images/questions/sistine_chapel.jpg",
+      "image": "assets/images/questions/sistine_chapel.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Die Berliner Mauer fiel 1989.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 3,
+      "id": "Q3209",
+      "imageUrl": "assets/images/questions/berlin_wall.jpg",
+      "image": "assets/images/questions/berlin_wall.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Marie Curie war die erste Frau, die einen Nobelpreis gewann.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 3,
+      "id": "Q3210",
+      "imageUrl": "assets/images/questions/marie_curie.jpg",
+      "image": "assets/images/questions/marie_curie.jpg",
       "choices": [
         "True",
         "False"

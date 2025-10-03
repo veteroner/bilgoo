@@ -2364,7 +2364,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg"
+      "imageUrl": "assets/images/questions/skin_organ.jpg"
     },
     {
       "question": "Human DNA is approximately 99% identical to that of chimpanzees.",
@@ -2380,7 +2380,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg"
+      "imageUrl": "assets/images/questions/dna_structure.jpg"
     },
     {
       "question": "Earth's magnetic north pole is exactly at the same point as the geographic north pole.",
@@ -2556,7 +2556,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg"
+      "imageUrl": "assets/images/questions/brain_activity.jpg"
     },
     {
       "question": "Ostriches bury their heads in sand when in danger.",
@@ -2572,7 +2572,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg"
+      "imageUrl": "assets/images/questions/ostrich_animal.jpg"
     },
     {
       "question": "Earth's satellite is _____.",
@@ -4883,7 +4883,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/img_sports_general.jpg"
+      "imageUrl": "assets/images/questions/formula1_racing.jpg"
     },
     {
       "question": "Tennis is a sport that emerged in England in the 18th century.",
@@ -4915,7 +4915,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/img_sports_general.jpg"
+      "imageUrl": "assets/images/questions/volleyball_olympic.jpg"
     },
     {
       "question": "The height of a basketball hoop from the ground is 3.05 meters.",
@@ -5027,7 +5027,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/img_sports_general.jpg"
+      "imageUrl": "assets/images/questions/water_polo_sport.jpg"
     },
     {
       "question": "In boxing matches, kicking is allowed in addition to punching according to the rules.",
@@ -6083,7 +6083,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/history_london_wwii.jpg"
+      "imageUrl": "assets/images/questions/history_wwi.jpg"
     },
     {
       "question": "The building shown is the Houses of Parliament in London.",
@@ -6227,7 +6227,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/history_henry_viii.jpg"
+      "imageUrl": "assets/images/questions/history_napoleon.jpg"
     },
     {
       "question": "The American War of Independence took place between 1775-1783.",
@@ -6371,7 +6371,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/history_berlin_wall.jpg"
+      "imageUrl": "assets/images/questions/history_french_revolution.jpg"
     },
     {
       "question": "The Battle of the Somme took place during World War I.",
@@ -6403,7 +6403,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/history_ancient_egypt.jpg"
+      "imageUrl": "assets/images/questions/history_alexander_great.jpg"
     },
     {
       "question": "The Treaty of Versailles was never fully implemented.",
@@ -6435,7 +6435,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/img_history_ancient.jpg"
+      "imageUrl": "assets/images/questions/history_alexander_great.jpg"
     },
     {
       "question": "The founder of the United States was born in _____ in 1732 in Virginia.",
@@ -7401,7 +7401,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/geography_vesuvius.jpg"
+      "imageUrl": "assets/images/questions/geography_cappadocia.jpg"
     },
     {
       "question": "London city is shown.",
@@ -7417,7 +7417,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/geography_london.jpg"
+      "imageUrl": "assets/images/questions/geography_istanbul.jpg"
     },
     {
       "question": "The Grand Canyon is located in Arizona.",
@@ -7481,7 +7481,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/geography_mount_ararat.jpg"
+      "imageUrl": "assets/images/questions/geography_mount_everest.jpg"
     },
     {
       "question": "The English Channel is located south of the United Kingdom.",
@@ -7596,7 +7596,7 @@
       "imageUrl": "assets/images/questions/geography_amazon.jpg"
     },
     {
-      "question": "The Mariana Trench is the world's deepest point.",
+      "question": "The Sahara Desert is located in North Africa.",
       "difficulty": 1,
       "id": "Q0559",
       "type": "TrueFalse",
@@ -7609,7 +7609,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/geography_antarctica.jpg"
+      "imageUrl": "assets/images/questions/geography_sahara.jpg"
     },
     {
       "question": "The United Kingdom has only one neighboring country.",
@@ -7721,7 +7721,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/geography_asia_largest.jpg"
+      "imageUrl": "assets/images/questions/geography_pacific.jpg"
     },
     {
       "question": "The United Kingdom consists of four constituent countries.",
@@ -7737,7 +7737,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/geography_russia_largest.jpg"
+      "imageUrl": "assets/images/questions/geography_pacific.jpg"
     },
     {
       "question": "The world's largest continent is _____.",
@@ -8637,7 +8637,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/music_kemence.jpg"
+      "imageUrl": "assets/images/questions/music_violin.jpg"
     },
     {
       "question": "This person is the world-famous tenor Luciano Pavarotti.",
@@ -9519,7 +9519,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/literature_don_quixote.jpg"
+      "imageUrl": "assets/images/questions/literature_crime_punishment.jpg"
     },
     {
       "question": "Winston Churchill was the first British Prime Minister to win the Nobel Prize in Literature.",
@@ -9583,7 +9583,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/literature_yasar_kemal.jpg"
+      "imageUrl": "assets/images/questions/literature_yasar_kemal_book.jpg"
     },
     {
       "question": "Franz Kafka is one of the important writers of Russian literature.",
@@ -9631,7 +9631,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/literature_haiku.jpg"
+      "imageUrl": "assets/images/questions/literature_poetry.jpg"
     },
     {
       "question": "Gabriel Garcia Marquez is the author of the novel 'One Hundred Years of Solitude'.",
@@ -10464,7 +10464,7 @@
         "True",
         "False"
       ],
-      "imageUrl": "assets/images/questions/img_nobel_medal.jpg"
+      "imageUrl": "assets/images/questions/literature_nobel_prize.jpg"
     },
     {
       "question": "The capital of the USA is New York.",
@@ -10861,13 +10861,13 @@
       ]
     },
     {
-      "question": "The 16 stars on the Presidential flag represent the 16 great Turkish states in Turkish history.",
+      "question": "The United Nations has 193 member countries.",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "difficulty": 1,
       "id": "Q1064",
-      "imageUrl": "assets/images/questions/presidential_flag_turkey.JPG",
-      "image": "assets/images/questions/presidential_flag_turkey.JPG",
+      "imageUrl": "assets/images/questions/united_nations_flag.jpg",
+      "image": "assets/images/questions/united_nations_flag.jpg",
       "choices": [
         "True",
         "False"
@@ -10963,13 +10963,13 @@
       ]
     },
     {
-      "question": "The Mehter March is the oldest known military march in the world.",
+      "question": "The Olympic Games are held every 4 years.",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "difficulty": 1,
       "id": "Q1070",
-      "imageUrl": "assets/images/questions/ottoman_mehter_band.jpg",
-      "image": "assets/images/questions/ottoman_mehter_band.jpg",
+      "imageUrl": "assets/images/questions/olympic_rings.jpg",
+      "image": "assets/images/questions/olympic_rings.jpg",
       "choices": [
         "True",
         "False"
@@ -10980,13 +10980,13 @@
       ]
     },
     {
-      "question": "Fairy chimneys are located in the Ürgüp district of Nevşehir.",
+      "question": "The Sahara Desert is located in North Africa.",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "difficulty": 1,
       "id": "Q1071",
-      "imageUrl": "assets/images/questions/cappadocia_fairy_chimneys.jpg",
-      "image": "assets/images/questions/cappadocia_fairy_chimneys.jpg",
+      "imageUrl": "assets/images/questions/sahara_desert.jpg",
+      "image": "assets/images/questions/sahara_desert.jpg",
       "choices": [
         "True",
         "False"
@@ -11038,6 +11038,363 @@
       "id": "Q1083",
       "imageUrl": "assets/images/questions/golf_scotland.jpg",
       "image": "assets/images/questions/golf_scotland.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Protons and neutrons are located in the central nucleus of the atom.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q1173",
+      "imageUrl": "assets/images/questions/atom_nucleus.jpg",
+      "image": "assets/images/questions/atom_nucleus.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Earth's core is composed of iron and nickel.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q1148",
+      "imageUrl": "assets/images/questions/earth_core_iron.jpg",
+      "image": "assets/images/questions/earth_core_iron.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The Internet became publicly available in 1991.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q1153",
+      "imageUrl": "assets/images/questions/internet_history.jpg",
+      "image": "assets/images/questions/internet_history.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "FIFA is the abbreviation for the International Federation of Association Football.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q1364",
+      "imageUrl": "assets/images/questions/fifa_football.jpg",
+      "image": "assets/images/questions/fifa_football.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "In football, penalty kicks are taken from 12 meters.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 2,
+      "id": "Q1152",
+      "imageUrl": "assets/images/questions/football_penalty.jpg",
+      "image": "assets/images/questions/football_penalty.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The clarinet is a woodwind instrument.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q1143",
+      "imageUrl": "assets/images/questions/music_clarinet.jpg",
+      "image": "assets/images/questions/music_clarinet.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "A symphony in classical music typically has 4 movements.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q1144",
+      "imageUrl": "assets/images/questions/music_symphony.jpg",
+      "image": "assets/images/questions/music_symphony.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The author of the novel '1984' is Aldous Huxley.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 2,
+      "id": "Q1146",
+      "imageUrl": "assets/images/questions/literature_1984_orwell.jpg",
+      "image": "assets/images/questions/literature_1984_orwell.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The first computer virus appeared in 1980.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 3,
+      "id": "Q1154",
+      "imageUrl": "assets/images/questions/computer_virus.jpg",
+      "image": "assets/images/questions/computer_virus.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "A sonnet typically has 14 lines.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 3,
+      "id": "Q1147",
+      "imageUrl": "assets/images/questions/literature_sonnet.jpg",
+      "image": "assets/images/questions/literature_sonnet.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The Amazon River is the longest river in the world.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q1200",
+      "imageUrl": "assets/images/questions/amazon_river.jpg",
+      "image": "assets/images/questions/amazon_river.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Mount Everest is located in Nepal and Tibet.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q1201",
+      "imageUrl": "assets/images/questions/mount_everest.jpg",
+      "image": "assets/images/questions/mount_everest.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The Pacific Ocean is the largest ocean on Earth.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q1202",
+      "imageUrl": "assets/images/questions/pacific_ocean.jpg",
+      "image": "assets/images/questions/pacific_ocean.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The Sahara Desert is the largest hot desert in the world.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q1203",
+      "imageUrl": "assets/images/questions/sahara_desert.jpg",
+      "image": "assets/images/questions/sahara_desert.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The human brain uses approximately 20% of the body's total energy.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q1204",
+      "imageUrl": "assets/images/questions/human_brain.jpg",
+      "image": "assets/images/questions/human_brain.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Photosynthesis produces oxygen as a byproduct.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q1205",
+      "imageUrl": "assets/images/questions/photosynthesis.jpg",
+      "image": "assets/images/questions/photosynthesis.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Saturn has more than 80 known moons.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q1206",
+      "imageUrl": "assets/images/questions/saturn_moons.jpg",
+      "image": "assets/images/questions/saturn_moons.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The Great Barrier Reef is located off the coast of Australia.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 3,
+      "id": "Q1207",
+      "imageUrl": "assets/images/questions/great_barrier_reef.jpg",
+      "image": "assets/images/questions/great_barrier_reef.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Leonardo da Vinci painted the ceiling of the Sistine Chapel.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 3,
+      "id": "Q1208",
+      "imageUrl": "assets/images/questions/sistine_chapel.jpg",
+      "image": "assets/images/questions/sistine_chapel.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "The French Revolution began in 1789.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 3,
+      "id": "Q1209",
+      "imageUrl": "assets/images/questions/history_french_revolution.jpg",
+      "image": "assets/images/questions/history_french_revolution.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Marie Curie was the first woman to win a Nobel Prize.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 3,
+      "id": "Q1210",
+      "imageUrl": "assets/images/questions/marie_curie.jpg",
+      "image": "assets/images/questions/marie_curie.jpg",
       "choices": [
         "True",
         "False"

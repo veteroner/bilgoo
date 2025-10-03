@@ -1065,7 +1065,7 @@ const onlineGame = {
     // Kategori seçeneklerini doldur
     populateCategoryOptions: function() {
         // Lider tablosu kategori filtresine tüm kategorileri ekle
-        if (this.leaderboardCategory && window.quizApp && window.quizApp.questionsData) {
+        if (this.leaderboardCategory) {
             for (const category in window.quizApp.questionsData) {
                 const option = document.createElement('option');
                 option.value = category;

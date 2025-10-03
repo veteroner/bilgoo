@@ -251,7 +251,7 @@
         "Bern"
       ],
       "correctAnswer": "Genf",
-      "imageUrl": "assets/images/questions/geography_turkey_world_heritage.jpg"
+      "imageUrl": "assets/images/questions/lake_geneva.jpg"
     },
     {
       "question": "Wie heißt das Gebäude mit dem höchsten Kirchturm der Welt in Deutschland?",
@@ -726,45 +726,102 @@
     },
     {
       "question": "Die größte Insel Deutschlands ist _____.",
+      "correctAnswer": "RÜGEN",
+      "choices": [
+        "R",
+        "Ü",
+        "G",
+        "E",
+        "N",
+        "S",
+        "Y",
+        "L"
+      ],
+      "type": "BlankFilling",
       "difficulty": 1,
-      "id": "Q0077",
-      "options": [],
-      "correctAnswer": "RÜGEN"
+      "id": "Q0077"
     },
     {
       "question": "Der heißeste Planet des Sonnensystems ist _____.",
+      "correctAnswer": "VENUS",
+      "choices": [
+        "V",
+        "E",
+        "N",
+        "U",
+        "S",
+        "M",
+        "A",
+        "R"
+      ],
+      "type": "BlankFilling",
       "difficulty": 2,
-      "id": "Q0078",
-      "options": [],
-      "correctAnswer": "VENUS"
+      "id": "Q0078"
     },
     {
       "question": "Der größte vollständig in Deutschland liegende See ist die _____.",
       "difficulty": 2,
       "id": "Q0079",
-      "options": [],
-      "correctAnswer": "MÜRITZ"
+      "correctAnswer": "MÜRITZ",
+      "choices": [
+        "M",
+        "I",
+        "Z",
+        "R",
+        "F",
+        "T",
+        "Ü",
+        "V",
+        "J"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Die Hauptstadt Italiens ist _____.",
       "difficulty": 2,
       "id": "Q0080",
-      "options": [],
-      "correctAnswer": "ROM"
+      "correctAnswer": "ROM",
+      "choices": [
+        "M",
+        "Q",
+        "T",
+        "R",
+        "D",
+        "O"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Der erste Mensch auf dem Mond war _____ Armstrong.",
       "difficulty": 2,
       "id": "Q0081",
-      "options": [],
-      "correctAnswer": "NEIL"
+      "correctAnswer": "NEIL",
+      "choices": [
+        "V",
+        "L",
+        "I",
+        "J",
+        "N",
+        "E",
+        "W"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Das größte Organ des menschlichen Körpers ist _____.",
       "difficulty": 2,
       "id": "Q0082",
-      "options": [],
-      "correctAnswer": "HAUT"
+      "correctAnswer": "HAUT",
+      "choices": [
+        "J",
+        "D",
+        "T",
+        "A",
+        "H",
+        "U",
+        "C"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Die Wurzeln des Golfsports liegen in Schottland.",
@@ -786,141 +843,381 @@
       "question": "Der längste Fluss Afrikas ist _____.",
       "difficulty": 2,
       "id": "Q0084",
-      "options": [],
-      "correctAnswer": "NIL"
+      "correctAnswer": "NIL",
+      "choices": [
+        "L",
+        "I",
+        "N",
+        "G",
+        "U",
+        "E"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Der erste Bundeskanzler der Bundesrepublik Deutschland war _____ Adenauer.",
       "difficulty": 2,
       "id": "Q0085",
-      "options": [],
-      "correctAnswer": "KONRAD"
+      "correctAnswer": "KONRAD",
+      "choices": [
+        "F",
+        "K",
+        "I",
+        "A",
+        "D",
+        "R",
+        "N",
+        "T",
+        "O"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Der größte See Afrikas ist _____.",
       "difficulty": 2,
       "id": "Q0086",
-      "options": [],
-      "correctAnswer": "VICTORIASEE"
+      "correctAnswer": "VICTORIASEE",
+      "choices": [
+        "D",
+        "V",
+        "O",
+        "C",
+        "I",
+        "S",
+        "K",
+        "A",
+        "E",
+        "E",
+        "T",
+        "I",
+        "R",
+        "G"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Der weiße Niederschlag im Winter ist _____.",
       "difficulty": 2,
       "id": "Q0087",
-      "options": [],
-      "correctAnswer": "SCHNEE"
+      "correctAnswer": "SCHNEE",
+      "choices": [
+        "W",
+        "H",
+        "N",
+        "D",
+        "T",
+        "E",
+        "E",
+        "S",
+        "C"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Eine Woche hat _____ Tage.",
       "difficulty": 2,
       "id": "Q0088",
-      "options": [],
-      "correctAnswer": "SIEBEN"
+      "correctAnswer": "SIEBEN",
+      "choices": [
+        "E",
+        "E",
+        "N",
+        "U",
+        "Y",
+        "I",
+        "S",
+        "R",
+        "B"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Die Währung der Schweiz ist _____.",
       "difficulty": 2,
       "id": "Q0089",
-      "options": [],
-      "correctAnswer": "FRANKEN"
+      "correctAnswer": "FRANKEN",
+      "choices": [
+        "K",
+        "N",
+        "E",
+        "F",
+        "N",
+        "T",
+        "R",
+        "A",
+        "U",
+        "O"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Die bevölkerungsreichste Stadt Deutschlands ist _____.",
       "difficulty": 2,
       "id": "Q0090",
-      "options": [],
-      "correctAnswer": "BERLIN"
+      "correctAnswer": "BERLIN",
+      "choices": [
+        "L",
+        "Y",
+        "N",
+        "E",
+        "P",
+        "I",
+        "B",
+        "R",
+        "C"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Der kürzeste Tag ist im Monat _____.",
       "difficulty": 2,
       "id": "Q0091",
-      "options": [],
-      "correctAnswer": "DEZEMBER"
+      "correctAnswer": "DEZEMBER",
+      "choices": [
+        "E",
+        "K",
+        "R",
+        "Z",
+        "M",
+        "B",
+        "G",
+        "E",
+        "D",
+        "E",
+        "Q"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Das kleinste Land der Welt ist _____.",
       "difficulty": 2,
       "id": "Q0092",
-      "options": [],
-      "correctAnswer": "VATIKANSTADT"
+      "correctAnswer": "VATIKANSTADT",
+      "choices": [
+        "A",
+        "L",
+        "T",
+        "M",
+        "T",
+        "I",
+        "V",
+        "A",
+        "A",
+        "S",
+        "K",
+        "P",
+        "D",
+        "T",
+        "N"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Die Hauptenergiequelle unseres Körpers ist _____.",
       "difficulty": 2,
       "id": "Q0093",
-      "options": [],
-      "correctAnswer": "GLUKOSE"
+      "correctAnswer": "GLUKOSE",
+      "choices": [
+        "G",
+        "O",
+        "F",
+        "X",
+        "M",
+        "E",
+        "U",
+        "K",
+        "L",
+        "S"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Pflanzen stellen mit _____ Nahrung her.",
       "difficulty": 2,
       "id": "Q0094",
-      "options": [],
-      "correctAnswer": "LICHT"
+      "correctAnswer": "LICHT",
+      "choices": [
+        "A",
+        "H",
+        "V",
+        "C",
+        "I",
+        "L",
+        "Y",
+        "T"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Der kleinste Knochen befindet sich im _____.",
       "difficulty": 2,
       "id": "Q0095",
-      "options": [],
-      "correctAnswer": "OHR"
+      "correctAnswer": "OHR",
+      "choices": [
+        "O",
+        "U",
+        "J",
+        "H",
+        "E",
+        "R"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Das Spielfeld für Basketball ist _____.",
       "difficulty": 2,
       "id": "Q0096",
-      "options": [],
-      "correctAnswer": "FELD"
+      "correctAnswer": "FELD",
+      "choices": [
+        "Z",
+        "F",
+        "E",
+        "D",
+        "J",
+        "L",
+        "Y"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Der Boden, auf dem Fußball gespielt wird, ist _____.",
       "difficulty": 2,
       "id": "Q0097",
-      "options": [],
-      "correctAnswer": "RASEN"
+      "correctAnswer": "RASEN",
+      "choices": [
+        "E",
+        "N",
+        "Q",
+        "D",
+        "A",
+        "S",
+        "K",
+        "R"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Beim Tennis beginnt der Punktestand mit _____.",
       "difficulty": 2,
       "id": "Q0098",
-      "options": [],
-      "correctAnswer": "NULL"
+      "correctAnswer": "NULL",
+      "choices": [
+        "U",
+        "L",
+        "L",
+        "P",
+        "Z",
+        "N",
+        "T"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Das westlichste Bundesland Deutschlands ist _____.",
       "difficulty": 2,
       "id": "Q0099",
-      "options": [],
-      "correctAnswer": "NORDRHEIN-WESTFALEN"
+      "correctAnswer": "NORDRHEIN-WESTFALEN",
+      "choices": [
+        "I",
+        "R",
+        "M",
+        "N",
+        "A",
+        "B",
+        "E",
+        "E",
+        "L",
+        "W",
+        "D",
+        "F",
+        "N",
+        "S",
+        "H",
+        "-",
+        "O",
+        "U",
+        "T",
+        "R",
+        "E",
+        "N"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Der längste Fluss Europas ist _____.",
       "difficulty": 2,
       "id": "Q0100",
-      "options": [],
-      "correctAnswer": "WOLGA"
+      "correctAnswer": "WOLGA",
+      "choices": [
+        "R",
+        "W",
+        "A",
+        "O",
+        "G",
+        "B",
+        "H",
+        "L"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Der Autor von 'Faust' heißt _____.",
       "difficulty": 2,
       "id": "Q0101",
-      "options": [],
-      "correctAnswer": "GOETHE"
+      "correctAnswer": "GOETHE",
+      "choices": [
+        "D",
+        "E",
+        "G",
+        "H",
+        "E",
+        "B",
+        "O",
+        "T",
+        "Q"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Das Nationalgericht der Schweiz ist _____.",
       "difficulty": 2,
       "id": "Q0102",
-      "options": [],
-      "correctAnswer": "FONDUE"
+      "correctAnswer": "FONDUE",
+      "choices": [
+        "R",
+        "O",
+        "D",
+        "J",
+        "N",
+        "F",
+        "A",
+        "U",
+        "E"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Das größte Volksfest der Welt ist das _____.",
       "difficulty": 2,
       "id": "Q0103",
-      "options": [],
-      "correctAnswer": "OKTOBERFEST"
+      "correctAnswer": "OKTOBERFEST",
+      "choices": [
+        "E",
+        "E",
+        "F",
+        "R",
+        "Z",
+        "O",
+        "T",
+        "A",
+        "O",
+        "P",
+        "S",
+        "T",
+        "B",
+        "K"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Welcher philosophischen Richtung wird Heraklit als Begründer zugerechnet und mit dem Prinzip 'Alles fließt' verbunden?",
@@ -1867,7 +2164,7 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg"
+      "imageUrl": "assets/images/questions/skin_organ.jpg"
     },
     {
       "question": "Die menschliche DNA ist zu etwa 99% mit der von Schimpansen identisch.",
@@ -1883,7 +2180,7 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg"
+      "imageUrl": "assets/images/questions/dna_structure.jpg"
     },
     {
       "question": "Der magnetische Nordpol der Erde befindet sich genau am geografischen Nordpol.",
@@ -2059,7 +2356,7 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg"
+      "imageUrl": "assets/images/questions/brain_activity.jpg"
     },
     {
       "question": "Strauße stecken bei Gefahr den Kopf in den Sand.",
@@ -2075,28 +2372,58 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_science_general.jpg"
+      "imageUrl": "assets/images/questions/ostrich_animal.jpg"
     },
     {
       "question": "Der natürliche Satellit der Erde ist der _____.",
       "difficulty": 2,
       "id": "Q0191",
-      "options": [],
-      "correctAnswer": "MOND"
+      "correctAnswer": "MOND",
+      "choices": [
+        "O",
+        "Q",
+        "H",
+        "W",
+        "D",
+        "M",
+        "N"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Menschen benutzen zum Atmen die _____.",
       "difficulty": 2,
       "id": "Q0192",
-      "options": [],
-      "correctAnswer": "LUNGE"
+      "correctAnswer": "LUNGE",
+      "choices": [
+        "R",
+        "U",
+        "G",
+        "C",
+        "L",
+        "N",
+        "E",
+        "P"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Der Hauptbestandteil von Tee ist _____.",
       "difficulty": 2,
       "id": "Q0193",
-      "options": [],
-      "correctAnswer": "WASSER"
+      "correctAnswer": "WASSER",
+      "choices": [
+        "W",
+        "O",
+        "M",
+        "P",
+        "R",
+        "S",
+        "A",
+        "S",
+        "E"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Nach der Schrödinger-Gleichung: Welche physikalische Größe repräsentiert die Wellenfunktion Ψ(x,t) eines Teilchens?",
@@ -4285,7 +4612,7 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_sports_general.jpg"
+      "imageUrl": "assets/images/questions/formula1_racing.jpg"
     },
     {
       "question": "Tennis entstand im 18. Jahrhundert in England.",
@@ -4317,7 +4644,7 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_sports_general.jpg"
+      "imageUrl": "assets/images/questions/volleyball_olympic.jpg"
     },
     {
       "question": "Die Höhe eines Basketballkorbs über dem Boden beträgt 3,05 Meter.",
@@ -4413,7 +4740,7 @@
         "Richtig",
         "Falsch"
       ],
-      "imageUrl": "assets/images/questions/img_sports_general.jpg"
+      "imageUrl": "assets/images/questions/water_polo_sport.jpg"
     },
     {
       "question": "Im Boxen sind neben Schlägen auch Tritte erlaubt.",
@@ -4463,36 +4790,83 @@
       "question": "Eine Basketballmannschaft besteht aus _____ Spielern.",
       "difficulty": 2,
       "id": "Q0373",
-      "options": [],
-      "correctAnswer": "FÜNF"
+      "correctAnswer": "FÜNF",
+      "choices": [
+        "F",
+        "O",
+        "T",
+        "F",
+        "Ü",
+        "A",
+        "N"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Im Fußball spielt eine Mannschaft pro Spiel, inklusive Torwart, mit _____ Spielern.",
       "difficulty": 2,
       "id": "Q0374",
-      "options": [],
-      "correctAnswer": "ELF"
+      "correctAnswer": "ELF",
+      "choices": [
+        "I",
+        "E",
+        "F",
+        "L",
+        "R",
+        "Y"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Die Farbe des im Fußball verwendeten Balls ist in der Regel _____.",
       "difficulty": 2,
       "id": "Q0375",
-      "options": [],
-      "correctAnswer": "WEISS"
+      "correctAnswer": "WEISS",
+      "choices": [
+        "S",
+        "S",
+        "T",
+        "Z",
+        "I",
+        "E",
+        "W",
+        "L"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Die Höhe des Basketballkorbs beträgt _____ Meter.",
       "difficulty": 2,
       "id": "Q0376",
-      "options": [],
-      "correctAnswer": "DREI"
+      "correctAnswer": "DREI",
+      "choices": [
+        "E",
+        "B",
+        "R",
+        "K",
+        "D",
+        "A",
+        "I"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Auf dem Tennisplatz wird die Sportart _____ gespielt.",
       "difficulty": 2,
       "id": "Q0377",
-      "options": [],
-      "correctAnswer": "TENNIS"
+      "correctAnswer": "TENNIS",
+      "choices": [
+        "U",
+        "Z",
+        "E",
+        "I",
+        "T",
+        "P",
+        "S",
+        "N",
+        "N"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "In welcher Sportart wurde bei den Olympischen Spielen erstmals die Wertung 'Perfect 10' von Nadia Comăneci erreicht?",
@@ -5728,29 +6102,76 @@
       "question": "Der erste Bundeskanzler der Bundesrepublik Deutschland war _____.",
       "difficulty": 2,
       "id": "Q0469",
-      "options": [],
-      "correctAnswer": "KONRAD ADENAUER"
+      "correctAnswer": "KONRAD ADENAUER",
+      "choices": [
+        "K",
+        "W",
+        "E",
+        "A",
+        "A",
+        "I",
+        " ",
+        "D",
+        "E",
+        "D",
+        "N",
+        "R",
+        "U",
+        "N",
+        "Y",
+        "R",
+        "A",
+        "O"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Die deutsche Wiedervereinigung erfolgte im Jahr _____.",
       "difficulty": 2,
       "id": "Q0470",
-      "options": [],
-      "correctAnswer": "1990"
+      "correctAnswer": "1990",
+      "choices": [
+        "1",
+        "F",
+        "P",
+        "X",
+        "9",
+        "9",
+        "0"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Die Hauptstadt der Schweiz ist _____.",
       "difficulty": 2,
       "id": "Q0471",
-      "options": [],
-      "correctAnswer": "BERN"
+      "correctAnswer": "BERN",
+      "choices": [
+        "J",
+        "Y",
+        "K",
+        "E",
+        "R",
+        "B",
+        "N"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Der Vertrag von Maastricht wurde im Jahr _____ unterzeichnet.",
       "difficulty": 2,
       "id": "Q0472",
-      "options": [],
-      "correctAnswer": "1992"
+      "correctAnswer": "1992",
+      "choices": [
+        "K",
+        "1",
+        "9",
+        "2",
+        "R",
+        "C",
+        "9"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "In welcher Schlacht fiel Napoleon Bonaparte endgültig?",
@@ -6958,22 +7379,50 @@
       "question": "Der größte Kontinent der Erde ist _____.",
       "difficulty": 2,
       "id": "Q0568",
-      "options": [],
-      "correctAnswer": "ASIEN"
+      "correctAnswer": "ASIEN",
+      "choices": [
+        "S",
+        "R",
+        "A",
+        "J",
+        "E",
+        "N",
+        "I",
+        "D"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Die Hauptstadt von Italien ist _____.",
       "difficulty": 2,
       "id": "Q0569",
-      "options": [],
-      "correctAnswer": "ROM"
+      "correctAnswer": "ROM",
+      "choices": [
+        "M",
+        "N",
+        "O",
+        "P",
+        "R",
+        "V"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Die Hauptstadt von Frankreich ist _____.",
       "difficulty": 2,
       "id": "Q0570",
-      "options": [],
-      "correctAnswer": "PARIS"
+      "correctAnswer": "PARIS",
+      "choices": [
+        "R",
+        "P",
+        "I",
+        "A",
+        "O",
+        "N",
+        "S",
+        "L"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Welche ist die älteste Universität Deutschlands?",
@@ -6991,22 +7440,53 @@
       "question": "Der erste Mensch auf dem Mond war _____. Armstrong.",
       "difficulty": 2,
       "id": "Q0573",
-      "options": [],
-      "correctAnswer": "NEIL"
+      "correctAnswer": "NEIL",
+      "choices": [
+        "E",
+        "T",
+        "K",
+        "R",
+        "I",
+        "L",
+        "N"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Der längste Fluss, der durch Deutschland fließt, ist _____.",
       "difficulty": 2,
       "id": "Q0574",
-      "options": [],
-      "correctAnswer": "DONAU"
+      "correctAnswer": "DONAU",
+      "choices": [
+        "N",
+        "O",
+        "G",
+        "W",
+        "S",
+        "U",
+        "A",
+        "D"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Der kürzeste Monat ist _____.",
       "difficulty": 2,
       "id": "Q0575",
-      "options": [],
-      "correctAnswer": "FEBRUAR"
+      "correctAnswer": "FEBRUAR",
+      "choices": [
+        "J",
+        "T",
+        "A",
+        "I",
+        "R",
+        "E",
+        "B",
+        "R",
+        "U",
+        "F"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "In welchem Ozean liegt der Marianengraben und wie tief ist er?",
@@ -8938,22 +9418,55 @@
       "question": "Eine wichtige Persönlichkeit der deutschen Lyrik ist _____ RILKE.",
       "difficulty": 2,
       "id": "Q0693",
-      "options": [],
-      "correctAnswer": "RAINER"
+      "correctAnswer": "RAINER",
+      "choices": [
+        "I",
+        "N",
+        "Z",
+        "L",
+        "E",
+        "R",
+        "R",
+        "S",
+        "A"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "In der deutschen Lyrik ist eine wichtige Strömung die _____.",
       "difficulty": 2,
       "id": "Q0694",
-      "options": [],
-      "correctAnswer": "ROMANTIK"
+      "correctAnswer": "ROMANTIK",
+      "choices": [
+        "T",
+        "N",
+        "K",
+        "D",
+        "C",
+        "I",
+        "O",
+        "M",
+        "R",
+        "B",
+        "A"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Der Autor des Romans „Sefiller“ (Die Elenden) ist Victor _____.",
       "difficulty": 2,
       "id": "Q0695",
-      "options": [],
-      "correctAnswer": "HUGO"
+      "correctAnswer": "HUGO",
+      "choices": [
+        "G",
+        "N",
+        "O",
+        "H",
+        "K",
+        "R",
+        "U"
+      ],
+      "type": "BlankFilling"
     },
     {
       "question": "Welche Erzähltechnik verwendet James Joyce im Roman „Ulysses“?",
@@ -9841,13 +10354,13 @@
       ]
     },
     {
-      "question": "Der deutsche Bundesadler hat die Flügel ausgebreitet.",
+      "question": "Die Vereinten Nationen haben 193 Mitgliedsländer.",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "difficulty": 1,
       "id": "Q3064",
-      "imageUrl": "assets/images/questions/presidential_flag_turkey.JPG",
-      "image": "assets/images/questions/presidential_flag_turkey.JPG",
+      "imageUrl": "assets/images/questions/united_nations_flag.jpg",
+      "image": "assets/images/questions/united_nations_flag.jpg",
       "choices": [
         "True",
         "False"
@@ -9943,13 +10456,13 @@
       ]
     },
     {
-      "question": "Der deutsche Zapfenstreich ist ein traditioneller Militärmarsch.",
+      "question": "Die Olympischen Spiele finden alle 4 Jahre statt.",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "difficulty": 1,
       "id": "Q3070",
-      "imageUrl": "assets/images/questions/ottoman_mehter_band.jpg",
-      "image": "assets/images/questions/ottoman_mehter_band.jpg",
+      "imageUrl": "assets/images/questions/olympic_rings.jpg",
+      "image": "assets/images/questions/olympic_rings.jpg",
       "choices": [
         "True",
         "False"
@@ -9960,13 +10473,13 @@
       ]
     },
     {
-      "question": "Die Externsteine befinden sich im Teutoburger Wald in Nordrhein-Westfalen.",
+      "question": "Die Sahara-Wüste befindet sich in Nordafrika.",
       "type": "TrueFalse",
       "correctAnswer": "TRUE",
       "difficulty": 1,
       "id": "Q3071",
-      "imageUrl": "assets/images/questions/cappadocia_fairy_chimneys.jpg",
-      "image": "assets/images/questions/cappadocia_fairy_chimneys.jpg",
+      "imageUrl": "assets/images/questions/sahara_desert.jpg",
+      "image": "assets/images/questions/sahara_desert.jpg",
       "choices": [
         "True",
         "False"
@@ -10018,6 +10531,363 @@
       "id": "Q3083",
       "imageUrl": "assets/images/questions/golf_scotland.jpg",
       "image": "assets/images/questions/golf_scotland.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Protonen und Neutronen befinden sich im zentralen Atomkern.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3173",
+      "imageUrl": "assets/images/questions/atom_nucleus.jpg",
+      "image": "assets/images/questions/atom_nucleus.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der Erdkern besteht aus Eisen und Nickel.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3148",
+      "imageUrl": "assets/images/questions/earth_core_iron.jpg",
+      "image": "assets/images/questions/earth_core_iron.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Das Internet wurde 1991 öffentlich zugänglich gemacht.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3153",
+      "imageUrl": "assets/images/questions/internet_history.jpg",
+      "image": "assets/images/questions/internet_history.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "FIFA ist die Abkürzung für Fédération Internationale de Football Association.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3364",
+      "imageUrl": "assets/images/questions/fifa_football.jpg",
+      "image": "assets/images/questions/fifa_football.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Im Fußball werden Elfmeter aus 12 Metern Entfernung ausgeführt.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 2,
+      "id": "Q3152",
+      "imageUrl": "assets/images/questions/football_penalty.jpg",
+      "image": "assets/images/questions/football_penalty.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Die Klarinette ist ein Holzblasinstrument.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 2,
+      "id": "Q3143",
+      "imageUrl": "assets/images/questions/music_clarinet.jpg",
+      "image": "assets/images/questions/music_clarinet.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Eine Symphonie in der klassischen Musik hat typischerweise 4 Sätze.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3144",
+      "imageUrl": "assets/images/questions/music_symphony.jpg",
+      "image": "assets/images/questions/music_symphony.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der Autor des Romans '1984' ist Aldous Huxley.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 2,
+      "id": "Q3146",
+      "imageUrl": "assets/images/questions/literature_1984_orwell.jpg",
+      "image": "assets/images/questions/literature_1984_orwell.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der erste Computervirus trat 1980 auf.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 3,
+      "id": "Q3154",
+      "imageUrl": "assets/images/questions/computer_virus.jpg",
+      "image": "assets/images/questions/computer_virus.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Ein Sonett hat typischerweise 14 Zeilen.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 3,
+      "id": "Q3147",
+      "imageUrl": "assets/images/questions/literature_sonnet.jpg",
+      "image": "assets/images/questions/literature_sonnet.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der Amazonas ist der längste Fluss der Welt.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3200",
+      "imageUrl": "assets/images/questions/amazon_river.jpg",
+      "image": "assets/images/questions/amazon_river.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der Mount Everest liegt in Nepal und Tibet.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3201",
+      "imageUrl": "assets/images/questions/mount_everest.jpg",
+      "image": "assets/images/questions/mount_everest.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Der Pazifische Ozean ist der größte Ozean der Erde.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 2,
+      "id": "Q3202",
+      "imageUrl": "assets/images/questions/pacific_ocean.jpg",
+      "image": "assets/images/questions/pacific_ocean.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Die Antarktis ist der kälteste Kontinent der Erde.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 2,
+      "id": "Q3203",
+      "imageUrl": "assets/images/questions/antarctica_ice.jpg",
+      "image": "assets/images/questions/antarctica_ice.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Das menschliche Gehirn verbraucht etwa 20% der gesamten Körperenergie.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3204",
+      "imageUrl": "assets/images/questions/human_brain.jpg",
+      "image": "assets/images/questions/human_brain.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Die Photosynthese produziert Sauerstoff als Nebenprodukt.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3205",
+      "imageUrl": "assets/images/questions/photosynthesis.jpg",
+      "image": "assets/images/questions/photosynthesis.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Saturn hat mehr als 80 bekannte Monde.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 2,
+      "id": "Q3206",
+      "imageUrl": "assets/images/questions/saturn_moons.jpg",
+      "image": "assets/images/questions/saturn_moons.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Das Great Barrier Reef liegt vor der Küste Australiens.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 3,
+      "id": "Q3207",
+      "imageUrl": "assets/images/questions/great_barrier_reef.jpg",
+      "image": "assets/images/questions/great_barrier_reef.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Leonardo da Vinci malte die Decke der Sixtinischen Kapelle.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 3,
+      "id": "Q3208",
+      "imageUrl": "assets/images/questions/sistine_chapel.jpg",
+      "image": "assets/images/questions/sistine_chapel.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Die Berliner Mauer fiel 1989.",
+      "type": "TrueFalse",
+      "correctAnswer": "TRUE",
+      "difficulty": 3,
+      "id": "Q3209",
+      "imageUrl": "assets/images/questions/berlin_wall.jpg",
+      "image": "assets/images/questions/berlin_wall.jpg",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "options": [
+        "True",
+        "False"
+      ]
+    },
+    {
+      "question": "Marie Curie war die erste Frau, die einen Nobelpreis gewann.",
+      "type": "TrueFalse",
+      "correctAnswer": "FALSE",
+      "difficulty": 3,
+      "id": "Q3210",
+      "imageUrl": "assets/images/questions/marie_curie.jpg",
+      "image": "assets/images/questions/marie_curie.jpg",
       "choices": [
         "True",
         "False"

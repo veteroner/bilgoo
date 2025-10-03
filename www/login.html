@@ -197,7 +197,7 @@
         </div>
     </div>
 
-    <div class="container login-container" style="visibility: hidden;">
+    <div class="container login-container" style="display:none; visibility:hidden;">
         <div class="auth-box" id="login-box">
             <div class="main-logo">
                 <svg width="300" height="84" viewBox="0 0 500 140" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto 10px auto; display: block;">
@@ -427,38 +427,37 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Android platform algılaması ve class ekleme
             function detectAndroidPlatform() {
-                // Birden fazla yöntemle Android tespiti yap
-                const isAndroid = /Android/i.test(navigator.userAgent) || 
-                                window.DeviceInfo?.platform === 'android' ||
-                                (window.Capacitor && window.Capacitor.getPlatform() === 'android') ||
-                                (typeof device !== 'undefined' && device.platform === 'Android') ||
-                                window.navigator.userAgent.includes('wv') ||
-                                document.referrer.includes('android-app://') ||
-                                window.location.protocol === 'capacitor:';
+                // Sadece gerçek Android kontrolü
+                const userAgent = navigator.userAgent;
+                const capacitorPlatform = window.Capacitor?.getPlatform?.();
+                const devicePlatform = typeof device !== 'undefined' ? device.platform : null;
                 
-                console.log('🔍 Android platform algılama:', {
-                    userAgent: navigator.userAgent,
-                    hasCapacitor: !!window.Capacitor,
-                    capacitorPlatform: window.Capacitor?.getPlatform?.(),
-                    referrer: document.referrer,
-                    protocol: window.location.protocol,
-                    isAndroid: isAndroid
+                // Strict Android detection - tüm koşullar kesin olmalı
+                const isRealAndroid = /Android/i.test(userAgent) && 
+                                     (capacitorPlatform === 'android' || devicePlatform === 'Android');
+
+                console.log('🔍 Platform algılama:', {
+                    userAgent: userAgent,
+                    capacitorPlatform: capacitorPlatform,
+                    devicePlatform: devicePlatform,
+                    detectedAndroid: isRealAndroid
                 });
-                
-                if (isAndroid) {
-                    document.body.classList.add('platform-android', 'platform-capacitor');
-                    document.documentElement.classList.add('platform-android', 'platform-capacitor');
-                    console.log('✅ Android platform detected, platform classes added');
-                    
-                    // HTML elementine de platform attribute ekle
-                    document.documentElement.setAttribute('data-platform', 'android');
-                    document.body.setAttribute('data-platform', 'android');
-                    
+
+                if (isRealAndroid) {
+                    document.body.classList.add('platform-android','platform-capacitor');
+                    document.documentElement.classList.add('platform-android','platform-capacitor');
+                    document.documentElement.setAttribute('data-platform','android');
+                    document.body.setAttribute('data-platform','android');
                     return true;
-                } else {
-                    console.log('❌ Android platform not detected');
+                } else if (window.Capacitor) {
+                    // iOS/diğer platformlar için
+                    document.body.classList.add('platform-ios','platform-capacitor');
+                    document.documentElement.classList.add('platform-ios','platform-capacitor');
+                    document.documentElement.setAttribute('data-platform','ios');
+                    document.body.setAttribute('data-platform','ios');
                     return false;
                 }
+                return false;
             }
             
             // Platform algılamasını hemen çalıştır
@@ -468,26 +467,32 @@
             if (window.Capacitor) {
                 document.addEventListener('deviceready', function() {
                     console.log('📱 Capacitor deviceready event fired');
-                    detectAndroidPlatform();
-                    forceAndroidVisibility();
+                    const isAndroid = detectAndroidPlatform();
+                    if (isAndroid) {
+                        forceAndroidVisibility();
+                    }
                 });
                 
                 // Capacitor.ready() promise'i varsa da dinle
                 if (typeof window.Capacitor.ready === 'function') {
                     window.Capacitor.ready().then(() => {
                         console.log('📱 Capacitor ready promise resolved');
-                        detectAndroidPlatform();
-                        forceAndroidVisibility();
+                        const isAndroid = detectAndroidPlatform();
+                        if (isAndroid) {
+                            forceAndroidVisibility();
+                        }
                     });
                 }
             }
             
             // Additional detection after a short delay
             setTimeout(() => {
-                if (!document.body.classList.contains('platform-android')) {
-                    console.log('🔄 Delayed Android detection attempt');
-                    detectAndroidPlatform();
+                const isAndroid = detectAndroidPlatform();
+                if (isAndroid) {
+                    console.log('🔄 Delayed Android detection - forcing visibility');
                     forceAndroidVisibility();
+                } else {
+                    console.log('🔄 iOS detected - using normal sequence flow');
                 }
             }, 1000);
             
@@ -495,46 +500,43 @@
             const preferencesContainer = document.querySelector('.user-preferences-container');
             const loginContainer = document.querySelector('.login-container');
             const preferencesForm = document.getElementById('user-preferences-form');
+                let preferencesCompleted = false; // Tercih ekranı tamamlandı mı
             
-            // Android'de login/tercih sayfalarının görünürlüğünü force et
-            function forceAndroidVisibility() {
-                if (document.body.classList.contains('platform-android')) {
-                    console.log('Forcing Android visibility for login/preferences pages');
-                    
-                    // Preferences container için
+            // Container sequence'ını kontrol et
+            function forceSequenceVisibility() {
+                console.log('🎯 forceSequenceVisibility() çalışıyor:', {
+                    preferencesCompleted: preferencesCompleted,
+                    preferencesContainer: preferencesContainer ? 'var' : 'null',
+                    loginContainer: loginContainer ? 'var' : 'null'
+                });
+                
+                // Dil seçimi tamamlanana kadar sadece preferences
+                if (!preferencesCompleted) {
+                    console.log('👆 Preferences ekranı gösteriliyor...');
                     if (preferencesContainer) {
-                        preferencesContainer.style.cssText += `
-                            display: flex !important;
-                            visibility: visible !important;
-                            opacity: 1 !important;
-                            position: fixed !important;
-                            top: 0 !important;
-                            left: 0 !important;
-                            right: 0 !important;
-                            bottom: 0 !important;
-                            width: 100vw !important;
-                            height: 100vh !important;
-                            z-index: 10000 !important;
-                        `;
+                        preferencesContainer.style.display = 'flex';
+                        preferencesContainer.style.visibility = 'visible';
+                        preferencesContainer.classList.remove('hidden');
                     }
-                    
-                    // Login container için
                     if (loginContainer) {
-                        loginContainer.style.cssText += `
-                            display: block !important;
-                            visibility: visible !important;
-                            opacity: 1 !important;
-                            position: fixed !important;
-                            top: 0 !important;
-                            left: 0 !important;
-                            right: 0 !important;
-                            bottom: 0 !important;
-                            width: 100vw !important;
-                            height: 100vh !important;
-                            z-index: 10000 !important;
-                        `;
+                        loginContainer.style.display = 'none';
+                        loginContainer.style.visibility = 'hidden';
+                    }
+                } else {
+                    console.log('🔐 Login ekranı gösteriliyor...');
+                    if (preferencesContainer) {
+                        preferencesContainer.style.display = 'none';
+                        preferencesContainer.style.visibility = 'hidden';
+                        preferencesContainer.classList.add('hidden');
+                    }
+                    if (loginContainer) {
+                        loginContainer.style.display = 'block';
+                        loginContainer.style.visibility = 'visible';
+                        loginContainer.classList.remove('hidden');
                     }
                 }
+                
+                console.log('✅ forceSequenceVisibility() tamamlandı');
             }
             
             // Splash screen'ler için akış kontrolü
@@ -552,12 +554,12 @@
                     splashScreen.classList.add('fade-out');
                     setTimeout(function() {
                         splashScreen.style.display = 'none';
-                        preferencesContainer.style.display = 'flex';
+                        // Tercih durumunu sıfırla ve sequence visibility'yi çağır
+                        preferencesCompleted = false;
+                        console.log('🎬 Splash screen tamamlandı, tercih ekranı gösteriliyor');
+                        forceSequenceVisibility();
                         
-                        // Android visibility fix
-                        forceAndroidVisibility();
-                        
-                        // Android'de özel animasyon ekle
+                        // Android'de özel animasyon ekle  
                         if (document.body.classList.contains('platform-android')) {
                             preferencesContainer.style.animation = 'fadeInUp 0.5s ease-out';
                         }
@@ -648,51 +650,19 @@
                 console.log(`Tercihler kaydedildi: Dil=${language}, Yaş Grubu=adult`);
                 
                 // Tercihler ekranını kapat ve login ekranını göster
-                console.log('Ekran geçişi yapılıyor...');
-                const currentPreferencesContainer = document.querySelector('.user-preferences-container');
+                console.log('✅ Tercihler tamamlandı, login ekranına geçiliyor...');
+                
+                // Tercihler tamamlandı bayrağı ayarla
+                preferencesCompleted = true;
+                
+                // Sequence visibility ile temiz geçiş yap
+                console.log('🔄 forceSequenceVisibility() çağrılıyor...');
+                forceSequenceVisibility();
+                
+                // Animasyon ekle
                 const currentLoginContainer = document.querySelector('.login-container');
-                
-                console.log('Preferences container:', currentPreferencesContainer);
-                console.log('Login container:', currentLoginContainer);
-                
-                if (currentPreferencesContainer) {
-                    console.log('Preferences container gizleniyor...');
-                    currentPreferencesContainer.classList.add('hidden');
-                    currentPreferencesContainer.style.display = 'none';
-                } else {
-                    console.error('Preferences container bulunamadı!');
-                }
-                
                 if (currentLoginContainer) {
-                    console.log('Login container gösteriliyor...');
-                    currentLoginContainer.style.visibility = 'visible';
-                    currentLoginContainer.style.display = 'block';
-                    currentLoginContainer.classList.add('fade-in');
-                    
-                    // Android için özel görünürlük fix
-                    if (document.body.classList.contains('platform-android')) {
-                        console.log('Applying Android visibility fix for login container');
-                        currentLoginContainer.style.cssText += `
-                            display: block !important;
-                            visibility: visible !important;
-                            opacity: 1 !important;
-                            position: fixed !important;
-                            top: 0 !important;
-                            left: 0 !important;
-                            right: 0 !important;
-                            bottom: 0 !important;
-                            width: 100vw !important;
-                            height: 100vh !important;
-                            z-index: 10000 !important;
-                        `;
-                        // Android animasyon efekti
-                        currentLoginContainer.style.animation = 'fadeInUp 0.5s ease-out';
-                    }
-                    
-                    // Android visibility force
-                    forceAndroidVisibility();
-                } else {
-                    console.error('Login container bulunamadı!');
+                    currentLoginContainer.style.animation = 'fadeInUp 0.4s ease-out';
                 }
                 
                 console.log('Ekran geçişi tamamlandı');
