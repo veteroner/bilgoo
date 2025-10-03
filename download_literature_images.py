@@ -1,0 +1,81 @@
+#!/usr/bin/env python3
+import requests
+import os
+
+# Edebiyat kategorisi için eksik görseller
+literature_images = {
+    # Türk edebiyatı
+    'literature_calikusu_book.jpg': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'literature_sinekli_bakkal.jpg': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'literature_araba_sevdasi.jpg': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'literature_mahur_beste.jpg': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'literature_kirik_hayatlar.jpg': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'literature_atesle_oyun.jpg': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'literature_yaban.jpg': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'literature_yorgun_savasci.jpg': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    
+    # Dünya edebiyatı
+    'literature_war_peace.jpg': 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'literature_pride_prejudice.jpg': 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'literature_1984.jpg': 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'literature_hamlet.jpg': 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'literature_don_quixote.jpg': 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'literature_gatsby.jpg': 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'literature_crime_punishment.jpg': 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'literature_one_hundred_years.jpg': 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    
+    # Şiir ve genel
+    'literature_poetry.jpg': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'literature_novel.jpg': 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'literature_drama.jpg': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    'literature_essay.jpg': 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+}
+
+def download_image(url, filename):
+    """Resmi indir ve kaydet"""
+    try:
+        print(f"İndiriliyor: {filename}")
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+        response = requests.get(url, headers=headers, timeout=30)
+        response.raise_for_status()
+        
+        # Assets klasörüne kaydet
+        filepath = f'/Users/onerozbey/Desktop/quiz-oyunu/assets/images/questions/{filename}'
+        
+        # Dizin yoksa oluştur
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        
+        with open(filepath, 'wb') as f:
+            f.write(response.content)
+        
+        print(f"✅ Başarıyla indirildi: {filename}")
+        return True
+        
+    except Exception as e:
+        print(f"❌ Hata {filename}: {e}")
+        return False
+
+def main():
+    """Ana fonksiyon"""
+    print("📚 Edebiyat kategorisi eksik görselleri indiriliyor...")
+    print(f"📝 Toplam {len(literature_images)} edebiyat görseli")
+    print()
+    
+    success_count = 0
+    total_count = len(literature_images)
+    
+    for filename, url in literature_images.items():
+        if download_image(url, filename):
+            success_count += 1
+    
+    print(f"\n📊 Sonuç: {success_count}/{total_count} edebiyat görseli başarıyla indirildi")
+    
+    if success_count == total_count:
+        print("🎉 Tüm edebiyat görselleri başarıyla eklendi!")
+    else:
+        print("⚠️  Bazı edebiyat görselleri indirilemedi.")
+
+if __name__ == "__main__":
+    main()
