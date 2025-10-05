@@ -124,6 +124,18 @@
     <link rel="stylesheet" href="admin-pending-styles.css">
     <!-- Manifest linki direkt olarak ekle -->
     <link rel="manifest" href="manifest.json">
+        <script>
+            // Sayfa bazlı merkezleme: Android uygulamada ana container'ı ortala
+            document.addEventListener('DOMContentLoaded', function() {
+                try {
+                    var isAndroid = /Android/i.test(navigator.userAgent) || (window.Capacitor && window.Capacitor.getPlatform && window.Capacitor.getPlatform() === 'android');
+                    if (isAndroid) {
+                        var c = document.querySelector('.container');
+                        if (c) c.classList.add('center-screen');
+                    }
+                } catch(e) { /* no-op */ }
+            });
+        </script>
     <style>
         /* Genel stil */
         :root {
