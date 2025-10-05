@@ -526,63 +526,49 @@ function detectPlatform() {
     // Cordova ortamında mı?
     const isCordova = window.cordova || document.URL.indexOf('http://') === -1 && document.URL.indexOf('https://') === -1;
     
-    // Platform tespiti - Capacitor platform API'sini kullan
-    let detectedPlatform = 'web';
-    let isAndroid = false;
-    let isIOS = false;
-    
-    if (isCapacitor && window.Capacitor?.getPlatform) {
-        detectedPlatform = window.Capacitor.getPlatform();
-        isAndroid = detectedPlatform === 'android';
-        isIOS = detectedPlatform === 'ios';
-    } else {
-        // Fallback: User agent kontrolü
-        isAndroid = /Android/i.test(navigator.userAgent);
-        isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-    }
+    // Android cihaz mı?
+    const isAndroid = /Android/i.test(navigator.userAgent);
     
     // WebView kontrolü
     const isWebView = window.navigator.userAgent.includes('wv') || 
                       window.navigator.userAgent.includes('Version/') && window.navigator.userAgent.includes('Mobile');
     
-    console.log('🔍 Platform tespiti başlatılıyor...');
     console.log('Platform bilgileri:', {
         isCapacitor,
-        detectedPlatform,
+        isCordova,
         isAndroid,
-        isIOS,
+        isWebView,
         userAgent: navigator.userAgent,
         location: window.location.href,
         referrer: document.referrer,
         protocol: window.location.protocol
     });
     
-    // Emülatör tespiti - sadece gerçek Android için
-    const isEmulator = isAndroid && navigator.userAgent.includes('Android') && 
+    // Emülatör tespiti - Android Studio emülatörü için
+    const isEmulator = navigator.userAgent.includes('Android') && 
                        (navigator.userAgent.includes('sdk_gphone') || 
                         navigator.userAgent.includes('Emulator') ||
                         navigator.userAgent.includes('generic') ||
                         window.location.href.includes('10.0.2.2'));
     
-    // Tablet tespiti - sadece geniş ekranlar için
-    const isTablet = window.innerWidth >= 768;
+    // TABLET ZORLA TESPİTİ - 1px üzeri tüm cihazlar için (tabletler de mobil)
+    const isTablet = window.innerWidth >= 1;
     
-    // Android app tespiti - sadece gerçek Android platformda
-    const isAndroidApp = isAndroid &&
-                        (isCapacitor || isCordova || isWebView || isEmulator ||
+    // ZORLA ANDROID APP TESPİTİ - HER ANDROID CİHAZ İÇİN
+    // Bu satır her Android cihazda mobile tab bar'ı aktif hale getirir
+    const isAndroidApp = isAndroid || // ZORLA: Her Android için aktif
+                         (isAndroid && (isCapacitor || isCordova || isWebView || isEmulator || isTablet ||
                           window.location.protocol === 'file:' || 
                           window.location.protocol === 'capacitor:' ||
                           document.URL.includes('localhost') ||
                           document.URL.includes('127.0.0.1') ||
                           window.location.href.includes('localhost') ||
                           window.location.href.includes('10.0.2.2') ||
-                          document.referrer === '');
+                          document.referrer === '' && isAndroid));
     
     console.log('🎯 Android App tespiti:', isAndroidApp);
     console.log('🔍 Detaylı kontrol:', {
-        detectedPlatform,
         isAndroid,
-        isIOS,
         isCapacitor,
         isCordova,
         isWebView,
@@ -597,57 +583,45 @@ function detectPlatform() {
         userAgent: navigator.userAgent
     });
     
-    // Platform sınıflarını ekle - doğru platform tespitine göre
-    if (isCapacitor) {
-        if (isAndroidApp) {
-            document.body.classList.add('platform-capacitor', 'platform-android');
-            document.documentElement.classList.add('platform-capacitor', 'platform-android');
-            console.log('✅ Platform sınıfları eklendi: platform-capacitor, platform-android');
-        } else if (isIOS) {
-            document.body.classList.add('platform-capacitor', 'platform-ios');
-            document.documentElement.classList.add('platform-capacitor', 'platform-ios');
-            console.log('✅ Platform sınıfları eklendi: platform-capacitor, platform-ios');
-        } else {
-            document.body.classList.add('platform-capacitor');
-            document.documentElement.classList.add('platform-capacitor');
-            console.log('✅ Platform sınıfı eklendi: platform-capacitor');
-        }
+    // Platform sınıflarını ekle
+    if (isAndroidApp) {
+        document.body.classList.add('platform-capacitor', 'platform-android');
+        document.documentElement.classList.add('platform-capacitor', 'platform-android');
+        console.log('✅ Platform sınıfları eklendi: platform-capacitor, platform-android');
         
-        // Mobile tab bar göster (hem Android hem iOS için)
-        if (isAndroidApp || isIOS) {
-            setTimeout(() => {
-                const mobileTabBar = document.querySelector('.mobile-tab-bar');
-                const hamburgerToggle = document.querySelector('.hamburger-toggle');
-                
-                if (mobileTabBar) {
-                    mobileTabBar.style.display = 'flex !important';
-                    mobileTabBar.style.visibility = 'visible !important';
-                    mobileTabBar.style.position = 'fixed !important';
-                    mobileTabBar.style.bottom = '0 !important';
-                    mobileTabBar.style.left = '0 !important';
-                    mobileTabBar.style.right = '0 !important';
-                    mobileTabBar.style.zIndex = '9999 !important';
-                    mobileTabBar.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important';
-                    mobileTabBar.style.height = '70px !important';
-                    console.log('✅ Mobile tab bar gösterildi (platform:', detectedPlatform, ')');
-                } else {
-                    console.error('❌ Mobile tab bar bulunamadı!');
-                }
-                
-                if (hamburgerToggle) {
-                    hamburgerToggle.style.display = 'none !important';
-                    hamburgerToggle.style.visibility = 'hidden !important';
-                    console.log('✅ Hamburger menu gizlendi');
-                }
-                
-                // Container'ı ayarla
-                const container = document.querySelector('.container');
-                if (container) {
-                    container.style.paddingBottom = '80px !important';
-                    console.log('✅ Container alt boşluk eklendi');
-                }
-            }, 100);
-        }
+        // Zorla mobile tab bar göster
+        setTimeout(() => {
+            const mobileTabBar = document.querySelector('.mobile-tab-bar');
+            const hamburgerToggle = document.querySelector('.hamburger-toggle');
+            
+            if (mobileTabBar) {
+                mobileTabBar.style.display = 'flex !important';
+                mobileTabBar.style.visibility = 'visible !important';
+                mobileTabBar.style.position = 'fixed !important';
+                mobileTabBar.style.bottom = '0 !important';
+                mobileTabBar.style.left = '0 !important';
+                mobileTabBar.style.right = '0 !important';
+                mobileTabBar.style.zIndex = '9999 !important';
+                mobileTabBar.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important';
+                mobileTabBar.style.height = '70px !important';
+                console.log('✅ Mobile tab bar zorla gösterildi');
+            } else {
+                console.error('❌ Mobile tab bar bulunamadı!');
+            }
+            
+            if (hamburgerToggle) {
+                hamburgerToggle.style.display = 'none !important';
+                hamburgerToggle.style.visibility = 'hidden !important';
+                console.log('✅ Hamburger menu gizlendi');
+            }
+            
+            // Container'ı ayarla
+            const container = document.querySelector('.container');
+            if (container) {
+                container.style.paddingBottom = '80px !important';
+                console.log('✅ Container alt boşluk eklendi');
+            }
+        }, 100);
         
         return 'capacitor';
     } else if (isCordova) {
@@ -664,6 +638,15 @@ function detectPlatform() {
 
 // Sayfa Yükleme İşlemleri
 document.addEventListener('DOMContentLoaded', () => {
+    // 🔥 CRITICAL: MonetizationManager'ı hemen başlat
+    console.log('🚀 CRITICAL: MonetizationManager başlatılıyor...');
+    if (window.MonetizationManager && typeof window.MonetizationManager.initialize === 'function') {
+        window.MonetizationManager.initialize();
+        console.log('🚀 CRITICAL: MonetizationManager.initialize() çağrıldı');
+    } else {
+        console.error('🚀 CRITICAL ERROR: MonetizationManager bulunamadı veya initialize fonksiyonu yok');
+    }
+    
     // Platform tespitini hemen yap
     const platform = detectPlatform();
     console.log('🎯 Tespit edilen platform:', platform);
@@ -691,11 +674,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // AdMob hazır olunca rewarded preload et (MonetizationManager tetiklediğinde)
+    console.log('🎯 CRITICAL: admob-ready event listener ekleniyor...');
     document.addEventListener('admob-ready', () => {
-        console.log('[Script Debug] admob-ready event alındı (global dinleyici)');
+        console.log('🎉 CRITICAL SUCCESS: admob-ready event alındı (global dinleyici)');
+        // Üretim: Önceden zorla açılmış test modu varsa temizle (sadece query param yoksa)
+        try {
+            if (localStorage.getItem('admobTestMode') === 'true' && !/[?&]testads=1/.test(location.search)) {
+                localStorage.removeItem('admobTestMode');
+                console.log('[Script Debug] Eski zorunlu test modu kaldırıldı');
+            }
+        } catch(_) {}
         quizApp.admobInitialized = true;
         quizApp.preloadRewardedAd();
     }, { once: true });
+    console.log('🎯 CRITICAL: admob-ready event listener başarıyla eklendi');
 });
 
 const quizApp = {
@@ -705,8 +697,19 @@ const quizApp = {
     _rewardedLoading: false,
 
     updateRewardedButtonState() {
+        // Birden fazla aynı ID kullanımı (index.html ve modal) olabileceği için tüm ilgili butonları güncelle
         const buttons = Array.from(document.querySelectorAll('#watch-rewarded-ad, .buy-lives-modal #watch-rewarded-ad, .buy-lives-modal .btn-watch-ad'));
         if (buttons.length === 0) return;
+        const stateSnapshot = {
+            admobInitialized: this.admobInitialized,
+            rewardedReady: this.rewardedReady,
+            _rewardedLoading: this._rewardedLoading,
+            monetizationAdMobReady: window.MonetizationManager?.isAdMobReady?.(),
+            testMode: window.MonetizationManager?.isTestMode?.(),
+            activeUnits: window.MonetizationManager?.getActiveTestUnits?.(),
+            buttonsFound: buttons.length
+        };
+        console.log('[Rewarded UI] updateRewardedButtonState()', stateSnapshot);
         buttons.forEach(btn => {
             if (!this.admobInitialized) {
                 btn.disabled = true;
@@ -721,6 +724,7 @@ const quizApp = {
                 btn.disabled = true;
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Reklam hazırlanıyor...';
             }
+            console.log('[Rewarded UI] Buton güncellendi -> disabled:', btn.disabled, 'text:', btn.textContent.trim());
         });
     },
 
@@ -762,6 +766,7 @@ const quizApp = {
                 console.log('[Script Debug] preloadRewardedAd iptal - AdMob hazür değil');
                 return;
             }
+            console.log('[Rewarded Preload] Başlıyor force=', force, 'admobInitialized=', this.admobInitialized);
             if (this._rewardedLoading) {
                 console.log('[Script Debug] Zaten rewarded yükleniyor, atlanıyor');
                 return;
@@ -789,6 +794,7 @@ const quizApp = {
             
             const prepareOptions = { 
                 adId: adId, 
+                // Sadece gerçek test koşullarında true, aksi halde production
                 isTesting: !!window.MonetizationManager?.isTestMode?.()
             };
             console.log('[Script Debug] Prepare seçenekleri:', prepareOptions);
@@ -798,6 +804,7 @@ const quizApp = {
             this._rewardedRetryAttempt = 0; // success reset
             this.rewardedReady = true;
             this.updateRewardedButtonState();
+            console.log('[Rewarded Preload] ✅ Başarılı - rewardedReady=true');
         } catch (error) {
             console.error('[Script Debug] ❌ Rewarded ad preload hatası:', error);
             console.error('[Script Debug] Error details:', {
@@ -818,7 +825,10 @@ const quizApp = {
 
     async showRewardedAd(modal) {
         console.log('[Script Debug] Rewarded ad gösterme çağrıldı');
+        // Her çağrıda benzersiz bir invoke ID üret (debug korelasyonu için)
         const invokeId = (this._rewardedInvokeSeq = (this._rewardedInvokeSeq || 0) + 1);
+        
+        // 🔧 DETAYLI LOGLAMA BAŞLANGICI
         console.log(`[Rewarded#${invokeId}] 🚀 BAŞLANGIÇ - Rewarded ad gösterim süreci`);
         console.log(`[Rewarded#${invokeId}] 📱 Platform kontrolü:`, {
             isCapacitor: !!window.Capacitor,
@@ -828,16 +838,23 @@ const quizApp = {
             monetizationTestMode: window.MonetizationManager?.isTestMode?.(),
             testUnits: window.MonetizationManager?.getActiveTestUnits?.()
         });
+        
+        // Her yeni gösterim denemesinde resume guard sıfırlanır
         this._rewardResumeDone = false;
-        let rewardHandled = false;
+        let rewardHandled = false; // Başarılı ödül akışı tamamlandı mı?
+
+        // Reentrancy guard: aynı anda ikinci kez çağrılmasını engelle
         if (this._rewardedInProgress) {
             console.log(`[Script Debug][Rewarded#${invokeId}] ⏳ Zaten aktif bir rewarded akışı var, yeni istek yok sayıldı`);
             return;
         }
         this._rewardedInProgress = true;
         console.log(`[Script Debug][Rewarded#${invokeId}] ▶️ Akış başlatılıyor`);
+
+        // Global reward success flag - geç native hatalarını bastırmak için
         const rewardSuccessKey = `_rewardSuccess_${invokeId}`;
         this[rewardSuccessKey] = false;
+
         try {
             console.log(`[Rewarded#${invokeId}] 🔍 AdMob durum kontrolü başlıyor...`);
             console.log(`[Rewarded#${invokeId}] AdMob durumu:`, {
@@ -846,11 +863,13 @@ const quizApp = {
                 rewardedReady: this.rewardedReady,
                 testMode: window.MonetizationManager?.isTestMode?.() || false
             });
+            
             if (!this.admobInitialized) {
                 console.log(`[Rewarded#${invokeId}] ❌ AdMob henüz initialize edilmemiş`);
                 this.showToast('Reklam sistemi henüz hazır değil', 'toast-error');
                 return;
             }
+
             if (!this.rewardedReady) {
                 console.log(`[Rewarded#${invokeId}] ❌ Rewarded henüz hazır değil, yeniden preload denenecek`);
                 this.preloadRewardedAd(true);
@@ -858,6 +877,8 @@ const quizApp = {
                 this.updateRewardedButtonState();
                 return;
             }
+
+            // 🔧 CAPACITOR v7 FIX: Direct plugin access
             const { AdMob } = window.Capacitor.Plugins;
             if (!AdMob) {
                 console.log(`[Rewarded#${invokeId}] ❌ AdMob eklentisi bulunamadı`);
@@ -865,14 +886,19 @@ const quizApp = {
                 this.preloadRewardedAd(true);
                 return;
             }
+            
             console.log(`[Rewarded#${invokeId}] ✅ AdMob eklentisi bulundu, fonksiyonlar:`, Object.keys(AdMob));
+            
             const watchAdBtn = document.getElementById('watch-rewarded-ad');
+            
             if (watchAdBtn) {
                 watchAdBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Reklam Yükleniyor...';
                 watchAdBtn.disabled = true;
                 console.log(`[Rewarded#${invokeId}] 🔄 Buton durumu güncellendi`);
             }
+
             console.log(`[Rewarded#${invokeId}] 🎬 Rewarded ad gösteriliyor...`);
+            // Ad göster
             const result = await AdMob.showRewardVideoAd();
             console.log(`[Rewarded#${invokeId}] 📊 Rewarded ad sonucu:`, result);
             console.log(`[Rewarded#${invokeId}] 🔍 Result detay analizi:`, {
@@ -886,27 +912,37 @@ const quizApp = {
                 hasRewarded: result?.rewarded !== undefined,
                 keys: result ? Object.keys(result) : 'null'
             });
+            
+            // 🔧 Test reklamları için çeşitli koşulları kontrol et
             const isRewardValid = result && (
                 result.rewarded === true || 
                 (result.amount !== undefined && result.type !== undefined) ||
-                result.rewarded !== false
+                result.rewarded !== false  // Test reklamları bazen sadece empty object döner
             );
+            
             console.log(`[Rewarded#${invokeId}] 🎯 Ödül geçerlilik kontrolü:`, {
                 isRewardValid: isRewardValid,
                 condition1_rewarded: result?.rewarded === true,
                 condition2_amountType: (result?.amount !== undefined && result?.type !== undefined),
                 condition3_notFalse: result?.rewarded !== false
             });
+            
             if (isRewardValid) {
                 console.log(`[Rewarded#${invokeId}] ✅ Reklam başarıyla izlendi - ödül veriliyor`);
+                
+                // 🛡️ KORUMA: Ödül işleminin başarılı olduğunu işaretle (catch bloklarından önce)
                 rewardHandled = true;
                 this[rewardSuccessKey] = true;
+                
                 try {
+                    // Reklam başarıyla izlendi - 3 can ver
                     this.giveRewardedLives();
                     console.log(`[Rewarded#${invokeId}] ✅ Can verme işlemi tamamlandı`);
                 } catch (livesError) {
                     console.error(`[Rewarded#${invokeId}] Can verme hatası:`, livesError);
                 }
+                
+                // Modal'ı kaldır (güvenli şekilde)
                 try {
                     if (modal && modal.remove) {
                         modal.remove();
@@ -914,12 +950,18 @@ const quizApp = {
                     }
                 } catch (modalError) {
                     console.error(`[Rewarded#${invokeId}] Modal kaldırma hatası:`, modalError);
+                    // Alternatif yöntem
                     if (modal && modal.parentNode) {
                         modal.parentNode.removeChild(modal);
                     }
                 }
+                
                 this.showToast('🎉 Tebrikler! 3 can kazandınız! Oyun devam ediyor...', 'toast-success');
+
+                // Ödül sonrası devam ettirme denemeleri - GÜÇLENDİRİLMİŞ
                 console.log(`[Rewarded#${invokeId}] 🎮 continueGameAfterReward denemeleri başlatılıyor...`);
+                
+                // Anında deneme
                 try { 
                     console.log(`[Rewarded#${invokeId}] immediate continueGameAfterReward çağrılıyor...`);
                     this.continueGameAfterReward('immediate'); 
@@ -927,6 +969,8 @@ const quizApp = {
                 } catch(e){ 
                     console.error(`[Rewarded#${invokeId}] immediate continue hata:`, e); 
                 }
+                
+                // Modal kapatma - oyun devam etsin diye
                 setTimeout(() => {
                     try {
                         if (modal && modal.remove) modal.remove();
@@ -937,6 +981,8 @@ const quizApp = {
                         console.error(`[Rewarded#${invokeId}] Modal kapatma hatası:`, e);
                     }
                 }, 100);
+                
+                // Güçlendirilmiş devam ettirme denemeleri
                 [500, 1000, 1500, 2500].forEach((delay, index) => {
                     setTimeout(() => { 
                         try { 
@@ -949,6 +995,8 @@ const quizApp = {
                         } 
                     }, delay);
                 });
+
+                // Sonraki reklam hazırlığı
                 setTimeout(() => {
                     try {
                         console.log(`[Rewarded#${invokeId}] Yeni rewarded ad preload ediliyor`);
@@ -957,14 +1005,18 @@ const quizApp = {
                         console.error(`[Rewarded#${invokeId}] Yeni preload hata:`, preErr);
                     }
                 }, 3500);
+
                 console.log(`[Rewarded#${invokeId}] ✅ Ödül akışı başarıyla tamamlandı!`);
+                
+                // Geç gelen native hataları bastırmak için 5 saniye sonrasını da koruma altına al
                 setTimeout(() => {
                     if (this[rewardSuccessKey]) {
                         delete this[rewardSuccessKey];
                         console.log(`[Rewarded#${invokeId}] 🛡️ Koruma süresi doldu, geç hata koruması kaldırıldı`);
                     }
                 }, 5000);
-                return;
+                
+                return; // Başarılı durumda try sonlandırılır
             } else {
                 console.log('[Script Debug] ⚠️ Reklam tam olarak izlenmedi');
                 this.showToast('Reklam tam olarak izlenmedi', 'toast-warning');
@@ -973,12 +1025,16 @@ const quizApp = {
                     watchAdBtn.disabled = false;
                 }
             }
+            
         } catch (error) {
+            // Çoklu koruma: rewardHandled + global success flag kontrolleri
             const isProtected = rewardHandled === true || this[rewardSuccessKey] === true;
+            
             if (isProtected) {
                 console.log(`[Rewarded#${invokeId}] ✅ Ödül başarılı, geç native hata yok sayıldı: ${JSON.stringify(error)}`);
-                return;
+                return; // Başarılı tamamlanan işlem için hata işleme yapmıyoruz
             } else {
+                // Sadece gerçek hataları logla
                 console.error(`[Rewarded#${invokeId}] ❌ Rewarded ad gerçek hata:`, error);
                 console.error(`[Rewarded#${invokeId}] Hata detayları:`, {
                     message: error?.message,
@@ -987,6 +1043,7 @@ const quizApp = {
                     stack: error?.stack
                 });
                 this.showToast('Reklam gösterilirken hata oluştu', 'toast-error');
+
                 const watchAdBtn = document.getElementById('watch-rewarded-ad');
                 if (watchAdBtn) {
                     watchAdBtn.innerHTML = '<i class="fas fa-play-circle"></i> 🎬 Reklam İzle - 3 Can Kazan';
@@ -994,6 +1051,7 @@ const quizApp = {
                 }
             }
         } finally {
+            // Her durumda progress flag temizlenir
             if (this._rewardedInProgress) {
                 this._rewardedInProgress = false;
                 console.log(`[Script Debug][Rewarded#${invokeId}] 🧹 Akış sonlandırıldı. rewardHandled: ${rewardHandled}`);
@@ -1014,19 +1072,14 @@ const quizApp = {
         let currentLives = parseInt(livesFromStorage || '3');
         console.log('[Script Debug] parseInt sonrası mevcut can sayısı:', currentLives);
         console.log('[Script Debug] currentLives <= 0 koşulu:', currentLives <= 0);
+    const oldLives = currentLives;
+    // Her durumda kesin olarak 3 cana set et (eski sistem restorasyonu)
+    currentLives = REWARD_LIVES;
+    console.log('[Script Debug] 🎯 ÖDÜL UYGULANDI: Eski can:', oldLives, '→ Yeni can (Sabit 3):', currentLives);
         
-        // 🔧 FIX: Can birikimi yerine sabit 3 can ver (canlar bittiğinde)
-        // Eğer canlar 0 veya negatifse, tam olarak 3 can ver
-        if (currentLives <= 0) {
-            console.log('[Script Debug] 🎯 DURUM: Canlar bitmiş, tam 3 can veriliyor...');
-            currentLives = REWARD_LIVES;
-            console.log('[Script Debug] ✅ Canlar bitmişti, tam 3 can verildi. Yeni değer:', currentLives);
-        } else {
-            console.log('[Script Debug] 🎯 DURUM: Can var, maksimum 3\'e tamamlanıyor...');
-            const oldLives = currentLives;
-            currentLives = Math.min(currentLives + REWARD_LIVES, 3);
-            console.log('[Script Debug] ✅ Mevcut canlar tamamlandı. Eski:', oldLives, 'Yeni:', currentLives);
-        }
+    // Ödül sonrası ani yanlış loseLife çağrılarını yumuşatmak için geçici kalkan
+    this.rewardShieldUntil = Date.now() + 4000; // 4 saniye koruma
+    console.log('[Script Debug] 🛡️ rewardShieldUntil set:', new Date(this.rewardShieldUntil).toISOString());
         
         console.log('[Script Debug] 📊 FINAL: Yeni can sayısı:', currentLives);
         
@@ -10546,6 +10599,11 @@ const quizApp = {
     
     // Can kaybetme fonksiyonu
     loseLife: function() {
+        // Reward sonrası koruma kalkanı aktifse can düşüşünü yok say
+        if (this.rewardShieldUntil && Date.now() < this.rewardShieldUntil) {
+            console.log('[Lives Debug] 🛡️ Reward shield aktif, loseLife yok sayıldı');
+            return;
+        }
         // Önce canı azalt
         this.lives--; 
         
@@ -10652,7 +10710,7 @@ const quizApp = {
         
         document.body.appendChild(buyLivesModal);
         
-        // Reklam izleme butonuna event listener ekle
+    // Reklam izleme butonuna event listener ekle (modal içinden seç, duplicate ID sorunu için)
     const watchAdBtn = buyLivesModal.querySelector('#watch-rewarded-ad') || buyLivesModal.querySelector('.btn-watch-ad');
         if (watchAdBtn) {
             watchAdBtn.addEventListener('click', () => {

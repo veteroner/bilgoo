@@ -1,17 +1,6 @@
 /**
  * PRODUCTION MONETIZATION SYSTEM
-    _PROD_AD_UNITS: {
-        android: {
-            banner: 'ca-app-pub-7610338885240453/6081192537',
-            interstitial: 'ca-app-pub-7610338885240453/2112105479',
-            rewarded: 'ca-app-pub-7610338885240453/6595381556' // Production ID
-        },
-        ios: {
-            banner: 'ca-app-pub-7610338885240453/6497080109',
-            interstitial: 'ca-app-pub-7610338885240453/2112105479',
-            rewarded: 'ca-app-pub-7610338885240453/7161809021' // Production ID
-        }
-    },nimal, AdMob policy compliant
+ * Clean, minimal, AdMob policy compliant
  * Version: 2.0.0 Production
  * Risk Level: 0%
  */
@@ -34,6 +23,7 @@ const MonetizationManager = {
         analytics: false,
         advertising: false
     },
+    
     // Ad Unit Maps (Test & Production)
     _TEST_AD_UNITS: {
         android: {
@@ -65,6 +55,8 @@ const MonetizationManager = {
     defaultTopOffset: 60, // Base offset: 60px (+20px extra to avoid overlap)
 
     // === INITIALIZATION ===
+    // ÖNEMLİ: script.js içinde initialize() adıyla çağrıldığı için
+    // burada backward compatibility için initialize alias'ı ekleniyor.
     init: function() {
         if (this.isInitialized) return;
         
@@ -91,6 +83,9 @@ const MonetizationManager = {
         
         this.isInitialized = true;
     },
+
+    // Backward compatibility alias (script.js 'initialize' çağırıyor)
+    initialize: function() { return this.init(); },
 
     // === EARLY ATT REQUEST (iOS) ===
     ensureEarlyATTOnIOS: function() {
@@ -408,9 +403,9 @@ const MonetizationManager = {
             this._admobReady = true;
             try { 
                 document.dispatchEvent(new Event('admob-ready')); 
-                console.log('[Monetization Debug] ✅ admob-ready event dispatched (ATT)');
+                console.log('[Monetization Debug] admob-ready event dispatched (ATT)');
             } catch(_) {}
-            setTimeout(() => this.showBanner(), 1500);
+            setTimeout(() => this.showBanner(), 2000);
             // Interstitial ads disabled for better UX
             this.isInterstitialReady = false;
         }).catch((error) => {
@@ -436,9 +431,9 @@ const MonetizationManager = {
             this._admobReady = true;
             try { 
                 document.dispatchEvent(new Event('admob-ready')); 
-                console.log('[Monetization Debug] ✅ admob-ready event dispatched (no tracking)');
+                console.log('[Monetization Debug] admob-ready event dispatched (no tracking)');
             } catch(_) {}
-            setTimeout(() => this.showBanner(), 1500);
+            setTimeout(() => this.showBanner(), 2000);
             // Interstitial ads disabled for better UX
             this.isInterstitialReady = false;
         }).catch((error) => {
@@ -463,9 +458,9 @@ const MonetizationManager = {
             this._admobReady = true;
             try { 
                 document.dispatchEvent(new Event('admob-ready')); 
-                console.log('[Monetization Debug] ✅ admob-ready event dispatched (normal)');
+                console.log('[Monetization Debug] admob-ready event dispatched (normal)');
             } catch(_) {}
-            setTimeout(() => this.showBanner(), 1500);
+            setTimeout(() => this.showBanner(), 2000);
             // Interstitial ads disabled for better UX
             this.isInterstitialReady = false;
         }).catch((error) => {
@@ -643,9 +638,6 @@ MonetizationManager.getActiveAdUnits = function() {
 MonetizationManager.getActiveTestUnits = function() { return this.getActiveAdUnits(); };
 
 MonetizationManager.isAdMobReady = function() { return !!this._admobReady; };
-
-// Backward compatibility alias (script.js initialize() çağırabiliyor)
-MonetizationManager.initialize = function() { return this.init(); };
 
 // Auto-initialize on DOM ready
 document.addEventListener('DOMContentLoaded', function() {

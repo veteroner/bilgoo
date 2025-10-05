@@ -5,10 +5,12 @@
   "main": "achievements.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:ios": "npx cap sync ios && npx cap open ios",
+    "sync:all": "./sync-files.sh",
+    "sync:files": "cp index.html style.css script.js *.js *.css *.html *.json www/ 2>/dev/null || true",
+    "build:ios": "npm run sync:files && npx cap sync ios && npx cap open ios",
     "sync:ios": "npx cap sync ios",
     "open:ios": "npx cap open ios",
-    "build:android": "npx cap sync android && npx cap open android",
+    "build:android": "npm run sync:files && npx cap sync android && npx cap open android",
     "sync:android": "npx cap sync android",
     "open:android": "npx cap open android",
     "copy:www": "cp -r *.html *.css *.js *.json *.ico *.svg *.png *.md icons/ languages/ www/ 2>/dev/null || true"
