@@ -1392,44 +1392,6 @@ body.fullscreen .container {
     min-height: calc(var(--app-vh) * 100);
 }
 
-/* Utility: vertically and horizontally center specific page containers */
-.center-screen,
-.test-container.center-screen,
-.debug-container.center-screen,
-.success-container.center-screen,
-.settings-container.center-screen,
-.login-container.center-screen,
-.user-preferences-container.center-screen {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    text-align: center !important;
-}
-
-@supports (height: 100dvh) {
-    .center-screen,
-    .test-container.center-screen,
-    .debug-container.center-screen,
-    .success-container.center-screen,
-    .settings-container.center-screen,
-    .login-container.center-screen,
-    .user-preferences-container.center-screen {
-        min-height: 100dvh;
-    }
-}
-
-.center-screen,
-.test-container.center-screen,
-.debug-container.center-screen,
-.success-container.center-screen,
-.settings-container.center-screen,
-.login-container.center-screen,
-.user-preferences-container.center-screen {
-    min-height: calc(var(--app-vh) * 100);
-}
 
 @media (max-width: 480px) {
     .leaderboard-table th:nth-child(5),
