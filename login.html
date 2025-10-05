@@ -13,30 +13,42 @@
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        /* Ekstra ortalama için CSS */
-        .user-preferences-container {
+        /* MUTLAK ORTALAMA: Transform bazlı - her platform için garanti */
+        .user-preferences-container,
+        .login-container {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: none !important;
+            margin: 0 !important;
+            padding: 20px !important;
             display: flex !important;
             justify-content: center !important;
             align-items: center !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
             z-index: 1000 !important;
-            padding: 20px !important;
+            overflow: hidden !important;
         }
         
         .user-preferences-container.hidden {
             display: none !important;
         }
         
-        .user-preferences-container .auth-box {
+        /* İç kutular */
+        .user-preferences-container .auth-box,
+        .login-container .auth-box {
             margin: 0 auto !important;
             max-width: 500px !important;
             width: 100% !important;
+        }
+        
+        /* Pseudo elementleri kaldır */
+        .user-preferences-container::before,
+        .login-container::before {
+            display: none !important;
+            content: none !important;
         }
         
         /* Butonlar arasındaki boşluğu azalt */
@@ -52,27 +64,18 @@
             margin-bottom: 10px;
         }
 
-        /* Login container da aynı şekilde merkezde ve tam ekran olsun */
-        .login-container {
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            right: 0 !important;
-            bottom: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            z-index: 1000 !important;
-            padding: 20px !important;
-        }
-
-        /* Viewport yükseklik düzeltmesi: dvh + JS fallback (sadece login için) */
+        /* Viewport yükseklik düzeltmesi: dvh + JS fallback */
         @supports (height: 100dvh) {
-            .login-container { min-height: 100dvh; }
+            .user-preferences-container,
+            .login-container { 
+                height: 100dvh !important;
+                min-height: 100dvh !important;
+            }
         }
-        .login-container { min-height: calc(var(--app-vh, 1vh) * 100); }
+        .user-preferences-container,
+        .login-container { 
+            min-height: calc(var(--app-vh, 1vh) * 100) !important;
+        }
     </style>
 </head>
 <body>
