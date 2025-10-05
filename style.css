@@ -8822,6 +8822,7 @@ body.quiz-active .main-logo-container svg {
     border-radius: 18px;
     box-shadow: 0 4px 18px rgba(74,20,140,0.10), 0 1.5px 6px rgba(233,30,99,0.08);
     margin-bottom: 18px;
+    margin-top: 95px; /* Banner reklam için üstten boşluk */
     position: relative;
     z-index: 2;
 }
