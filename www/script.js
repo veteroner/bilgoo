@@ -653,6 +653,22 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Tam ekran modunu başlat
     initFullscreenMode();
+
+    // Viewport height variable setup for mobile webviews
+    try {
+        const setAppVh = () => {
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--app-vh', `${vh}px`);
+        };
+        setAppVh();
+        window.addEventListener('resize', setAppVh);
+        window.addEventListener('orientationchange', setAppVh);
+        document.body.classList.add('fullscreen');
+        const mainContainer = document.querySelector('.container');
+        if (mainContainer) mainContainer.classList.add('fullscreen');
+    } catch (e) {
+        console.warn('viewport vh init error:', e);
+    }
     
     // Ana içeriği görünür yap
     const container = document.querySelector('.container');

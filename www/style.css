@@ -1373,6 +1373,25 @@ input:checked + .slider:before {
     }
 }
 
+/* Viewport height fixes for mobile (Android WebView + iOS Safari) */
+:root {
+    --app-vh: 1vh; /* fallback */
+}
+
+/* Prefer dynamic viewport when available */
+@supports (height: 100dvh) {
+    .container.fullscreen,
+    body.fullscreen .container {
+        min-height: 100dvh;
+    }
+}
+
+/* Fallback using JS-updated --app-vh unit */
+.container.fullscreen,
+body.fullscreen .container {
+    min-height: calc(var(--app-vh) * 100);
+}
+
 @media (max-width: 480px) {
     .leaderboard-table th:nth-child(5),
     .leaderboard-table td:nth-child(5) {
