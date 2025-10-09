@@ -1,7 +1,7 @@
 {
   "appId": "com.bilgoo.quizapp",
   "appName": "Bilgoo - Quiz Oyunu",
-  "version": "14.20.0",
+  "version": "14.23.0",
   "webDir": "www",
   "server": {
     "androidScheme": "https"

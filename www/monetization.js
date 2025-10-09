@@ -26,16 +26,8 @@ const MonetizationManager = {
     
     // Ad Unit Maps (Test & Production)
     _TEST_AD_UNITS: {
-        android: {
-            banner: 'ca-app-pub-3940256099942544/6300978111',
-            interstitial: 'ca-app-pub-3940256099942544/1033173712',
-            rewarded: 'ca-app-pub-3940256099942544/5224354917'
-        },
-        ios: {
-            banner: 'ca-app-pub-3940256099942544/2934735716',
-            interstitial: 'ca-app-pub-3940256099942544/4411468910',
-            rewarded: 'ca-app-pub-3940256099942544/1712485313'
-        }
+        android: { banner: '', interstitial: '', rewarded: '' },
+        ios: { banner: '', interstitial: '', rewarded: '' }
     },
     _PROD_AD_UNITS: {
         android: {
@@ -474,14 +466,15 @@ const MonetizationManager = {
         if (!AdMob) return;
         const platform = window.Capacitor ? window.Capacitor.getPlatform() : 'web';
         const isNative = platform === 'ios' || platform === 'android';
-        const units = this.getActiveTestUnits();
-        const bannerId = isNative ? units.banner : 'ca-app-pub-3940256099942544/6300978111';
+        const units = this.getActiveAdUnits();
+        if (!isNative) { return; }
+        const bannerId = units.banner;
         const options = {
             adId: bannerId,
             adSize: 'ADAPTIVE_BANNER',
             position: 'TOP_CENTER',
             margin: 0,
-            isTesting: this.isTestMode()
+            isTesting: false
         };
 
         AdMob.showBanner(options).then(() => {
@@ -609,29 +602,15 @@ const MonetizationManager = {
 
 // === TEST / PROD HELPERS ===
 MonetizationManager.isTestMode = function() {
-    // Explicit override (developer toggle)
-    const forced = localStorage.getItem('admobTestMode');
-    if (forced === 'true') return true;
-    if (forced === 'false') return false;
-
-    const qp = /[?&]testads=1/.test(location.search);
-    if (qp) return true; // explicit query param
-
-    // Native (Capacitor) ortamında hostname genelde 'localhost' gelir; PROD'da test moduna düşmemeli
-    const isNative = !!(window.Capacitor && (['ios','android'].includes(window.Capacitor.getPlatform?.() || '')));
-    if (isNative) return false; // sadece explicit override / query ile açılabilir
-
-    // Web geliştirme ortamı
-    const host = location.hostname;
-    return host === 'localhost' || host === '127.0.0.1';
+    return false;
 };
 
 // Yeni net isimli yardımcı
 MonetizationManager.getActiveAdUnits = function() {
     const platform = window.Capacitor ? window.Capacitor.getPlatform() : 'web';
     const isNative = platform === 'ios' || platform === 'android';
-    const map = this.isTestMode() ? this._TEST_AD_UNITS : this._PROD_AD_UNITS;
-    return isNative ? (map[platform] || this._PROD_AD_UNITS.android) : this._TEST_AD_UNITS.android;
+    const map = this._PROD_AD_UNITS;
+    return isNative ? (map[platform] || this._PROD_AD_UNITS.android) : null;
 };
 
 // Geriye dönük uyumluluk (eski çağrılar)

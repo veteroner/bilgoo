@@ -694,12 +694,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('admob-ready', () => {
         console.log('🎉 CRITICAL SUCCESS: admob-ready event alındı (global dinleyici)');
         // Üretim: Önceden zorla açılmış test modu varsa temizle (sadece query param yoksa)
-        try {
-            if (localStorage.getItem('admobTestMode') === 'true' && !/[?&]testads=1/.test(location.search)) {
-                localStorage.removeItem('admobTestMode');
-                console.log('[Script Debug] Eski zorunlu test modu kaldırıldı');
-            }
-        } catch(_) {}
+        try { localStorage.removeItem('admobTestMode'); } catch(_) {}
         quizApp.admobInitialized = true;
         quizApp.preloadRewardedAd();
     }, { once: true });
