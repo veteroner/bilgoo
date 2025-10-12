@@ -322,5 +322,9 @@
 	</array>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>Bu uygulama, size daha alakalı ve kişiselleştirilmiş reklamlar gösterebilmek için diğer şirketlerin uygulama ve web sitelerinden gelen verilerinizi kullanmak istiyor. Bu izni vermezseniz de uygulamayı tam olarak kullanabilirsiniz.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Bu uygulama konumunuzu daha alakalı reklamlar göstermek için kullanabilir.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Bu uygulama konumunuzu daha alakalı reklamlar göstermek için kullanabilir.</string>
 </dict>
 </plist>

@@ -31,14 +31,14 @@ const MonetizationManager = {
     },
     _PROD_AD_UNITS: {
         android: {
-            banner: 'ca-app-pub-7610338885240453/6081192537',
-            interstitial: 'ca-app-pub-7610338885240453/2112105479',
-            rewarded: 'ca-app-pub-7610338885240453/6595381556' // Production ID
+            banner: 'ca-app-pub-7610338885240453/3665814891',
+            interstitial: 'ca-app-pub-7610338885240453/1220131878', // YENİ Interstitial ID
+            rewarded: 'ca-app-pub-7610338885240453/3634025302' // Production ID
         },
         ios: {
-            banner: 'ca-app-pub-7610338885240453/6497080109',
-            interstitial: 'ca-app-pub-7610338885240453/2112105479',
-            rewarded: 'ca-app-pub-7610338885240453/7161809021' // Production ID
+            banner: 'ca-app-pub-7610338885240453/2815767654',
+            interstitial: 'ca-app-pub-7610338885240453/5988725909', // YENİ Interstitial ID
+            rewarded: 'ca-app-pub-7610338885240453/7876522645' // Production ID
         }
     },
     _admobReady: false,
@@ -167,6 +167,7 @@ const MonetizationManager = {
         // Listen for banner load events (correct event name)
         AdMob.addListener('bannerAdLoaded', (info) => {
             console.log('Banner ad loaded:', info);
+            this.trackAdSuccess('banner', info.adUnitId);
             const bannerHeight = info?.height || 0;
             this.applyTopPadding(bannerHeight);
             document.body.classList.add('has-top-banner');
@@ -183,6 +184,7 @@ const MonetizationManager = {
         // Listen for banner failures (correct event name)
         AdMob.addListener('bannerAdFailedToLoad', (error) => {
             console.log('Banner ad failed to load:', error);
+            this.trackAdError('banner', error);
             // Apply default padding when banner fails
             this.applyTopPadding(0);
             document.body.classList.remove('has-top-banner');
@@ -398,7 +400,8 @@ const MonetizationManager = {
                 console.log('[Monetization Debug] admob-ready event dispatched (ATT)');
             } catch(_) {}
             setTimeout(() => this.showBanner(), 2000);
-            // Interstitial ads disabled for better UX
+            // Interstitial reklamları aktifleştir
+            setTimeout(() => this.prepareInterstitial(), 3000);
             this.isInterstitialReady = false;
         }).catch((error) => {
             console.error('AdMob initialization failed:', error);
@@ -426,7 +429,8 @@ const MonetizationManager = {
                 console.log('[Monetization Debug] admob-ready event dispatched (no tracking)');
             } catch(_) {}
             setTimeout(() => this.showBanner(), 2000);
-            // Interstitial ads disabled for better UX
+            // Interstitial reklamları aktifleştir
+            setTimeout(() => this.prepareInterstitial(), 3000);
             this.isInterstitialReady = false;
         }).catch((error) => {
             console.error('AdMob initialization failed:', error);
@@ -453,7 +457,8 @@ const MonetizationManager = {
                 console.log('[Monetization Debug] admob-ready event dispatched (normal)');
             } catch(_) {}
             setTimeout(() => this.showBanner(), 2000);
-            // Interstitial ads disabled for better UX
+            // Interstitial reklamları aktifleştir
+            setTimeout(() => this.prepareInterstitial(), 3000);
             this.isInterstitialReady = false;
         }).catch((error) => {
             console.error('AdMob initialization failed:', error);
@@ -507,13 +512,54 @@ const MonetizationManager = {
     },
 
     prepareInterstitial: function() {
-        // Interstitial ads disabled for better user experience
-        return;
+        if (!AdMob) return;
+        const platform = window.Capacitor ? window.Capacitor.getPlatform() : 'web';
+        const isNative = platform === 'ios' || platform === 'android';
+        if (!isNative) return;
+        
+        const units = this.getActiveAdUnits();
+        const interstitialId = units.interstitial;
+        
+        if (!interstitialId) {
+            console.log('[Monetization] Interstitial ID bulunamadı');
+            return;
+        }
+
+        const options = {
+            adId: interstitialId,
+            isTesting: false
+        };
+
+        AdMob.prepareInterstitial(options).then(() => {
+            console.log('[Monetization] Interstitial hazırlandı');
+            this.isInterstitialReady = true;
+        }).catch((error) => {
+            console.error('[Monetization] Interstitial hazırlama hatası:', error);
+            this.isInterstitialReady = false;
+            // 30 saniye sonra tekrar dene
+            setTimeout(() => this.prepareInterstitial(), 30000);
+        });
     },
 
     showInterstitial: function() {
-        // Interstitial ads disabled for better user experience
-        return;
+        if (!AdMob || !this.isInterstitialReady) {
+            console.log('[Monetization] Interstitial hazır değil');
+            return false;
+        }
+
+        AdMob.showInterstitial().then(() => {
+            console.log('[Monetization] Interstitial gösterildi');
+            this.isInterstitialReady = false;
+            // Bir sonraki için hazırla
+            setTimeout(() => this.prepareInterstitial(), 3000);
+        }).catch((error) => {
+            console.error('[Monetization] Interstitial gösterme hatası:', error);
+            this.isInterstitialReady = false;
+            // Hata durumunda yeniden hazırla
+            setTimeout(() => this.prepareInterstitial(), 5000);
+        });
+        
+        return true;
     },
 
     // === MOBILE WEB ADS ===
@@ -572,19 +618,67 @@ const MonetizationManager = {
         }
     },
 
-    // === GAME INTEGRATION ===
+    // === ANALYTICS & ERROR TRACKING ===
+    trackAdError: function(adType, error) {
+        try {
+            // Firebase Analytics'e error gönder
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'ad_error', {
+                    ad_format: adType,
+                    error_code: error.code || 'unknown',
+                    error_message: error.message || 'Unknown error',
+                    custom_map: { error_details: JSON.stringify(error) }
+                });
+            }
+            
+            // Console'da detaylı log
+            console.error(`[AdMob Error - ${adType}]:`, {
+                code: error.code,
+                message: error.message,
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent
+            });
+        } catch (e) {
+            console.error('Error tracking failed:', e);
+        }
+    },
+
+    trackAdSuccess: function(adType, adUnitId) {
+        try {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'ad_loaded', {
+                    ad_format: adType,
+                    ad_unit_id: adUnitId,
+                    timestamp: Date.now()
+                });
+            }
+        } catch (e) {
+            console.error('Success tracking failed:', e);
+        }
+    },
     onQuizComplete: function() {
         this.trackEvent('quiz_complete');
         
-        // Quiz completion tracking (interstitial ads disabled for better UX)
+        // Quiz tamamlandığında interstitial reklam göster
         const completions = parseInt(localStorage.getItem('quizCompletions') || '0') + 1;
         localStorage.setItem('quizCompletions', completions.toString());
+        
+        // Her 3 quiz'de bir interstitial göster
+        if (completions % 3 === 0) {
+            setTimeout(() => {
+                this.showInterstitialIfReady();
+            }, 1000);
+        }
     },
 
     // Additional utility for manual interstitial trigger
     showInterstitialIfReady: function() {
-        // Interstitial ads disabled for better user experience
-        return false;
+        if (this.isInterstitialReady) {
+            return this.showInterstitial();
+        } else {
+            console.log('[Monetization] Interstitial henüz hazır değil');
+            return false;
+        }
     },
 
     // === MOBILE BANNER PREFERENCES ===

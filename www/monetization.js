@@ -31,14 +31,14 @@ const MonetizationManager = {
     },
     _PROD_AD_UNITS: {
         android: {
-            banner: 'ca-app-pub-7610338885240453/6081192537',
-            interstitial: 'ca-app-pub-7610338885240453/2112105479',
-            rewarded: 'ca-app-pub-7610338885240453/6595381556' // Production ID
+            banner: 'ca-app-pub-7610338885240453/3665814891',
+            interstitial: 'ca-app-pub-7610338885240453/1220131878', // Doğru Android Interstitial ID
+            rewarded: 'ca-app-pub-7610338885240453/3634025302' // Production ID
         },
         ios: {
-            banner: 'ca-app-pub-7610338885240453/6497080109',
-            interstitial: 'ca-app-pub-7610338885240453/2112105479',
-            rewarded: 'ca-app-pub-7610338885240453/7161809021' // Production ID
+            banner: 'ca-app-pub-7610338885240453/2815767654',
+            interstitial: 'ca-app-pub-7610338885240453/5988725909', // Doğru iOS Interstitial ID
+            rewarded: 'ca-app-pub-7610338885240453/7876522645' // Production ID
         }
     },
     _admobReady: false,
@@ -167,6 +167,7 @@ const MonetizationManager = {
         // Listen for banner load events (correct event name)
         AdMob.addListener('bannerAdLoaded', (info) => {
             console.log('Banner ad loaded:', info);
+            this.trackAdSuccess('banner', info.adUnitId);
             const bannerHeight = info?.height || 0;
             this.applyTopPadding(bannerHeight);
             document.body.classList.add('has-top-banner');
@@ -183,6 +184,7 @@ const MonetizationManager = {
         // Listen for banner failures (correct event name)
         AdMob.addListener('bannerAdFailedToLoad', (error) => {
             console.log('Banner ad failed to load:', error);
+            this.trackAdError('banner', error);
             // Apply default padding when banner fails
             this.applyTopPadding(0);
             document.body.classList.remove('has-top-banner');
@@ -569,6 +571,45 @@ const MonetizationManager = {
     trackEvent: function(eventName, parameters = {}) {
         if (this.cookiePreferences.analytics && typeof gtag !== 'undefined') {
             gtag('event', eventName, parameters);
+        }
+    },
+
+    // === ANALYTICS & ERROR TRACKING ===
+    trackAdError: function(adType, error) {
+        try {
+            // Firebase Analytics'e error gönder
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'ad_error', {
+                    ad_format: adType,
+                    error_code: error.code || 'unknown',
+                    error_message: error.message || 'Unknown error',
+                    custom_map: { error_details: JSON.stringify(error) }
+                });
+            }
+            
+            // Console'da detaylı log
+            console.error(`[AdMob Error - ${adType}]:`, {
+                code: error.code,
+                message: error.message,
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent
+            });
+        } catch (e) {
+            console.error('Error tracking failed:', e);
+        }
+    },
+
+    trackAdSuccess: function(adType, adUnitId) {
+        try {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'ad_loaded', {
+                    ad_format: adType,
+                    ad_unit_id: adUnitId,
+                    timestamp: Date.now()
+                });
+            }
+        } catch (e) {
+            console.error('Success tracking failed:', e);
         }
     },
 

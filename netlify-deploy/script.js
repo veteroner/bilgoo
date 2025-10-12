@@ -7791,21 +7791,24 @@ const quizApp = {
             const mainMenuBtn = document.getElementById('main-menu-btn');
             const shareBtn = document.getElementById('share-btn');
             
+            // this scope'unu korumak için self referansı
+            const self = this;
+            
             if (shareBtn) {
-                shareBtn.addEventListener('click', () => {
+                shareBtn.addEventListener('click', function() {
                     console.log('🔄 Share button clicked');
-                    this.shareResults(finalStats);
+                    self.shareResults(finalStats);
                 });
             }
             
             if (mainMenuBtn) {
-                mainMenuBtn.addEventListener('click', () => {
+                mainMenuBtn.addEventListener('click', function() {
                     celebrationModal.remove();
                     style.remove();
                     window.location.reload();
                 });
             }
-        }, 100);
+        }.bind(this), 100);
         
         // Ses efekti çal
         if (this.soundEnabled) {

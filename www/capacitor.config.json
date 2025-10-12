@@ -13,9 +13,17 @@
     "AdMob": {
       "appId": "ca-app-pub-7610338885240453~5183201967",
       "iosAppId": "ca-app-pub-7610338885240453~2583882725",
+      "bannerAdId": {
+        "android": "ca-app-pub-7610338885240453/3665814891",
+        "ios": "ca-app-pub-7610338885240453/2815767654"
+      },
+      "interstitialAdId": {
+        "android": "ca-app-pub-7610338885240453/1220131878",
+        "ios": "ca-app-pub-7610338885240453/5988725909"
+      },
       "rewardedAdId": {
-        "android": "ca-app-pub-7610338885240453/6595381556",
-        "ios": "ca-app-pub-7610338885240453/7161809021"
+        "android": "ca-app-pub-7610338885240453/3634025302",
+        "ios": "ca-app-pub-7610338885240453/7876522645"
       },
       "testingDevices": [],
       "tagForChildDirectedTreatment": false,

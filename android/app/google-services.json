@@ -1,39 +1,46 @@
 {
   "project_info": {
-    "project_number": "123456789012",
-    "project_id": "bilgoo-quiz-app",
-    "storage_bucket": "bilgoo-quiz-app.appspot.com"
+    "project_number": "1176024748",
+    "project_id": "bilgoo",
+    "storage_bucket": "bilgoo.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:123456789012:android:abcdef123456789012345678",
+        "mobilesdk_app_id": "1:1176024748:android:6a9726235910f44238d109",
         "android_client_info": {
           "package_name": "com.bilgoo.quizapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "123456789012-abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com",
+          "client_id": "1176024748-1l02iv1ska8bi9gqpo52cmbmrm6rqldt.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAbCdEfGhIjKlMnOpQrStUvWxYz1234567"
+          "current_key": "AIzaSyDKeh7HXCE2KEo6FQ6wkxaUOV9DITvnSxA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "123456789012-abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com",
+              "client_id": "1176024748-1l02iv1ska8bi9gqpo52cmbmrm6rqldt.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1176024748-kjbrbgc269m1b12cklemoq22hs5q9jsj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.veteroner.quiz2025mobile"
+              }
             }
           ]
         }
       },
-      "admob_app_id": "ca-app-pub-7610338885240453~1234567890"
+      "admob_app_id": "ca-app-pub-7610338885240453~5183201967"
     }
   ],
   "configuration_version": "1"

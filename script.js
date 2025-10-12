@@ -798,7 +798,7 @@ const quizApp = {
                 adId = window.MonetizationManager.getActiveTestUnits()?.rewarded;
             }
             if (!adId) {
-                adId = platform === 'ios' ? 'ca-app-pub-7610338885240453/7161809021' : 'ca-app-pub-7610338885240453/6595381556';
+                adId = platform === 'ios' ? 'ca-app-pub-7610338885240453/7876522645' : 'ca-app-pub-7610338885240453/3634025302';
             }
             console.log('[Script Debug] Rewarded ad hazırlanıyor (attempt ' + this._rewardedRetryAttempt + '):', { platform, adId });
             console.log('[Script Debug] PrepareRewardVideoAd çağrısı yapılıyor...');
@@ -9868,25 +9868,22 @@ const quizApp = {
         const mainMenuBtn = celebrationModal.querySelector('#main-menu-btn');
         const shareBtn = celebrationModal.querySelector('#share-btn');
         
+        // this scope'unu korumak için self referansı
+        const self = this;
+        
         if (shareBtn) {
-            shareBtn.addEventListener('click', () => {
+            shareBtn.addEventListener('click', function() {
                 console.log('🔄 Share button clicked');
-                this.shareResults(finalStats);
+                self.shareResults(finalStats);
             });
         }
         
         if (mainMenuBtn) {
-            mainMenuBtn.addEventListener('click', () => {
+            mainMenuBtn.addEventListener('click', function() {
                 console.log('Main menu button clicked');
                 celebrationModal.remove();
                 badgeStyle.remove();
                 window.location.reload();
-            });
-        }
-        
-        if (shareBtn) {
-            shareBtn.addEventListener('click', () => {
-                this.shareResults(finalStats);
             });
         }
         
@@ -9993,33 +9990,236 @@ const quizApp = {
             shareTitle = 'Meine Quiz-Spiel Ergebnisse';
         }
         
-        if (navigator.share) {
+        console.log('🔄 Paylaşım başlatılıyor...');
+        console.log('Share data:', {
+            title: shareTitle,
+            text: shareText,
+            url: window.location.href
+        });
+        
+        if (navigator.share && navigator.canShare && navigator.canShare({
+            title: shareTitle,
+            text: shareText,
+            url: window.location.href
+        })) {
+            console.log('✅ Native share API kullanılıyor');
             navigator.share({
                 title: shareTitle,
                 text: shareText,
                 url: window.location.href
-            }).catch(err => console.log('Paylaşım hatası:', err));
-        } else {
-            // Fallback: metni kopyala
-            navigator.clipboard.writeText(shareText).then(() => {
-                const copyMessage = this.currentLanguage === 'tr' ? 'Sonuçlar panoya kopyalandı! 📋' :
-                                    this.currentLanguage === 'en' ? 'Results copied to clipboard! 📋' :
-                                    'Ergebnisse in die Zwischenablage kopiert! 📋';
-                alert(copyMessage);
-            }).catch(() => {
-                // Manuel kopyalama için modal göster
-                const tempTextArea = document.createElement('textarea');
-                tempTextArea.value = shareText;
-                document.body.appendChild(tempTextArea);
-                tempTextArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(tempTextArea);
-                const copyMessage = this.currentLanguage === 'tr' ? 'Sonuçlar panoya kopyalandı! 📋' :
-                                    this.currentLanguage === 'en' ? 'Results copied to clipboard! 📋' :
-                                    'Ergebnisse in die Zwischenablage kopiert! 📋';
-                alert(copyMessage);
+            }).then(() => {
+                console.log('✅ Paylaşım başarılı');
+            }).catch(err => {
+                console.error('❌ Native share hatası:', err);
+                console.error('Hata detayı:', JSON.stringify(err));
+                // Fallback'e geç
+                this.fallbackShare(shareText);
             });
+        } else {
+            console.log('ℹ️ Native share desteklenmiyor, fallback kullanılacak');
+            this.fallbackShare(shareText);
         }
+    },
+
+    // Fallback paylaşım fonksiyonu
+    fallbackShare: function(shareText) {
+        console.log('🔄 Fallback paylaşım başlatılıyor...');
+        
+        // Önce clipboard API'sini dene
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            console.log('📋 Clipboard API kullanılıyor');
+            navigator.clipboard.writeText(shareText).then(() => {
+                console.log('✅ Panoya kopyalama başarılı');
+                const copyMessage = this.currentLanguage === 'tr' ? '📋 Sonuçlar panoya kopyalandı! Paylaşmak için yapıştırabilirsiniz.' :
+                                    this.currentLanguage === 'en' ? '📋 Results copied to clipboard! You can paste to share.' :
+                                    '📋 Ergebnisse in die Zwischenablage kopiert! Zum Teilen einfügen.';
+                
+                // Güzel bir toast göster
+                this.showShareToast(copyMessage);
+            }).catch((clipboardErr) => {
+                console.error('❌ Clipboard hatası:', clipboardErr);
+                this.manualCopyFallback(shareText);
+            });
+        } else {
+            console.log('ℹ️ Clipboard API desteklenmiyor, manuel kopyalama');
+            this.manualCopyFallback(shareText);
+        }
+    },
+
+    // Manuel kopyalama fallback'i
+    manualCopyFallback: function(shareText) {
+        console.log('🔄 Manuel kopyalama başlatılıyor...');
+        try {
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = shareText;
+            tempTextArea.style.position = 'fixed';
+            tempTextArea.style.left = '-999999px';
+            tempTextArea.style.top = '-999999px';
+            document.body.appendChild(tempTextArea);
+            tempTextArea.focus();
+            tempTextArea.select();
+            
+            const successful = document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+            
+            if (successful) {
+                console.log('✅ Manuel kopyalama başarılı');
+                const copyMessage = this.currentLanguage === 'tr' ? '📋 Sonuçlar kopyalandı! Paylaşmak için yapıştırabilirsiniz.' :
+                                    this.currentLanguage === 'en' ? '📋 Results copied! You can paste to share.' :
+                                    '📋 Ergebnisse kopiert! Zum Teilen einfügen.';
+                this.showShareToast(copyMessage);
+            } else {
+                throw new Error('execCommand failed');
+            }
+        } catch (err) {
+            console.error('❌ Manuel kopyalama hatası:', err);
+            this.showShareModal(shareText);
+        }
+    },
+
+    // Paylaşım toast'ı göster
+    showShareToast: function(message) {
+        // Varolan toast'ı kaldır
+        const existingToast = document.querySelector('.share-toast');
+        if (existingToast) {
+            existingToast.remove();
+        }
+
+        const toast = document.createElement('div');
+        toast.className = 'share-toast';
+        toast.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            z-index: 100000;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: shareToastIn 0.3s ease-out;
+            text-align: center;
+            max-width: 300px;
+            line-height: 1.4;
+        `;
+        
+        toast.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 10px; justify-content: center;">
+                <i class="fas fa-check-circle" style="font-size: 1.3rem;"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        // CSS animasyonu ekle
+        if (!document.querySelector('#shareToastStyle')) {
+            const style = document.createElement('style');
+            style.id = 'shareToastStyle';
+            style.textContent = `
+                @keyframes shareToastIn {
+                    0% { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
+                    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+                }
+                @keyframes shareToastOut {
+                    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+                    100% { transform: translate(-50%, -50%) scale(0.7); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        document.body.appendChild(toast);
+
+        // 3 saniye sonra kaldır
+        setTimeout(() => {
+            toast.style.animation = 'shareToastOut 0.3s ease-in';
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
+    },
+
+    // Paylaşım modalı göster (son çare)
+    showShareModal: function(shareText) {
+        console.log('🔄 Paylaşım modalı gösteriliyor...');
+        
+        const modal = document.createElement('div');
+        modal.className = 'share-modal';
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        `;
+
+        const modalContent = document.createElement('div');
+        modalContent.style.cssText = `
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        `;
+
+        const title = this.currentLanguage === 'tr' ? 'Sonuçlarını Paylaş' :
+                      this.currentLanguage === 'en' ? 'Share Your Results' :
+                      'Teile deine Ergebnisse';
+
+        const instruction = this.currentLanguage === 'tr' ? 'Aşağıdaki metni kopyalayarak paylaşabilirsiniz:' :
+                           this.currentLanguage === 'en' ? 'You can copy and share the text below:' :
+                           'Du kannst den folgenden Text kopieren und teilen:';
+
+        modalContent.innerHTML = `
+            <h3 style="margin: 0 0 20px 0; color: #333; font-size: 1.5rem;">${title}</h3>
+            <p style="margin: 0 0 20px 0; color: #666; font-size: 1rem;">${instruction}</p>
+            <textarea readonly style="
+                width: 100%;
+                height: 120px;
+                padding: 15px;
+                border: 2px solid #e5e7eb;
+                border-radius: 10px;
+                font-size: 0.9rem;
+                resize: none;
+                background: #f9fafb;
+                color: #333;
+                margin-bottom: 20px;
+                box-sizing: border-box;
+            ">${shareText}</textarea>
+            <button onclick="this.parentElement.parentElement.remove()" style="
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                border: none;
+                padding: 12px 30px;
+                border-radius: 25px;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+            ">Tamam</button>
+        `;
+
+        modal.appendChild(modalContent);
+        document.body.appendChild(modal);
+
+        // Modal dışına tıklayınca kapat
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
     },
 
     // Sesi güvenli şekilde çal
