@@ -400,7 +400,8 @@ const MonetizationManager = {
                 console.log('[Monetization Debug] admob-ready event dispatched (ATT)');
             } catch(_) {}
             setTimeout(() => this.showBanner(), 2000);
-            // Interstitial ads disabled for better UX
+            // Interstitial hazırlığını başlat
+            setTimeout(() => this.prepareInterstitial(), 3000);
             this.isInterstitialReady = false;
         }).catch((error) => {
             console.error('AdMob initialization failed:', error);
@@ -428,7 +429,8 @@ const MonetizationManager = {
                 console.log('[Monetization Debug] admob-ready event dispatched (no tracking)');
             } catch(_) {}
             setTimeout(() => this.showBanner(), 2000);
-            // Interstitial ads disabled for better UX
+            // Interstitial hazırlığını başlat
+            setTimeout(() => this.prepareInterstitial(), 3000);
             this.isInterstitialReady = false;
         }).catch((error) => {
             console.error('AdMob initialization failed:', error);
@@ -455,7 +457,8 @@ const MonetizationManager = {
                 console.log('[Monetization Debug] admob-ready event dispatched (normal)');
             } catch(_) {}
             setTimeout(() => this.showBanner(), 2000);
-            // Interstitial ads disabled for better UX
+            // Interstitial hazırlığını başlat
+            setTimeout(() => this.prepareInterstitial(), 3000);
             this.isInterstitialReady = false;
         }).catch((error) => {
             console.error('AdMob initialization failed:', error);
@@ -509,13 +512,47 @@ const MonetizationManager = {
     },
 
     prepareInterstitial: function() {
-        // Interstitial ads disabled for better user experience
-        return;
+        if (!AdMob) return;
+        const platform = window.Capacitor ? window.Capacitor.getPlatform() : 'web';
+        const isNative = platform === 'ios' || platform === 'android';
+        if (!isNative) return;
+
+        const units = this.getActiveAdUnits();
+        const interstitialId = units?.interstitial;
+        if (!interstitialId) return;
+
+        const options = { adId: interstitialId, isTesting: false };
+
+        AdMob.prepareInterstitial(options).then(() => {
+            console.log('[Monetization] Interstitial hazırlandı');
+            this.isInterstitialReady = true;
+        }).catch((error) => {
+            console.error('[Monetization] Interstitial hazırlama hatası:', error);
+            this.isInterstitialReady = false;
+            // 30 saniye sonra tekrar dene
+            setTimeout(() => this.prepareInterstitial(), 30000);
+        });
     },
 
     showInterstitial: function() {
-        // Interstitial ads disabled for better user experience
-        return;
+        if (!AdMob || !this.isInterstitialReady) {
+            console.log('[Monetization] Interstitial hazır değil');
+            return false;
+        }
+
+        AdMob.showInterstitial().then(() => {
+            console.log('[Monetization] Interstitial gösterildi');
+            this.isInterstitialReady = false;
+            // Bir sonraki için yeniden hazırla
+            setTimeout(() => this.prepareInterstitial(), 3000);
+        }).catch((error) => {
+            console.error('[Monetization] Interstitial gösterme hatası:', error);
+            this.isInterstitialReady = false;
+            // Hata durumunda yeniden hazırla
+            setTimeout(() => this.prepareInterstitial(), 5000);
+        });
+
+        return true;
     },
 
     // === MOBILE WEB ADS ===
@@ -617,15 +654,24 @@ const MonetizationManager = {
     onQuizComplete: function() {
         this.trackEvent('quiz_complete');
         
-        // Quiz completion tracking (interstitial ads disabled for better UX)
+        // Quiz tamamlandığında interstitial kontrolü
         const completions = parseInt(localStorage.getItem('quizCompletions') || '0') + 1;
         localStorage.setItem('quizCompletions', completions.toString());
+        if (completions % 3 === 0) {
+            setTimeout(() => {
+                this.showInterstitialIfReady();
+            }, 1000);
+        }
     },
 
     // Additional utility for manual interstitial trigger
     showInterstitialIfReady: function() {
-        // Interstitial ads disabled for better user experience
-        return false;
+        if (this.isInterstitialReady) {
+            return this.showInterstitial();
+        } else {
+            console.log('[Monetization] Interstitial henüz hazır değil');
+            return false;
+        }
     },
 
     // === MOBILE BANNER PREFERENCES ===
