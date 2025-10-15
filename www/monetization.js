@@ -32,12 +32,12 @@ const MonetizationManager = {
     _PROD_AD_UNITS: {
         android: {
             banner: 'ca-app-pub-7610338885240453/3665814891',
-            interstitial: 'ca-app-pub-7610338885240453/1220131878', // Doğru Android Interstitial ID
+            interstitial: 'ca-app-pub-7610338885240453/1220131878', // YENİ Interstitial ID
             rewarded: 'ca-app-pub-7610338885240453/3634025302' // Production ID
         },
         ios: {
             banner: 'ca-app-pub-7610338885240453/2815767654',
-            interstitial: 'ca-app-pub-7610338885240453/5988725909', // Doğru iOS Interstitial ID
+            interstitial: 'ca-app-pub-7610338885240453/5988725909', // YENİ Interstitial ID
             rewarded: 'ca-app-pub-7610338885240453/7876522645' // Production ID
         }
     },
@@ -400,7 +400,7 @@ const MonetizationManager = {
                 console.log('[Monetization Debug] admob-ready event dispatched (ATT)');
             } catch(_) {}
             setTimeout(() => this.showBanner(), 2000);
-            // Interstitial hazırlığını başlat
+            // Interstitial reklamları aktifleştir
             setTimeout(() => this.prepareInterstitial(), 3000);
             this.isInterstitialReady = false;
         }).catch((error) => {
@@ -429,7 +429,7 @@ const MonetizationManager = {
                 console.log('[Monetization Debug] admob-ready event dispatched (no tracking)');
             } catch(_) {}
             setTimeout(() => this.showBanner(), 2000);
-            // Interstitial hazırlığını başlat
+            // Interstitial reklamları aktifleştir
             setTimeout(() => this.prepareInterstitial(), 3000);
             this.isInterstitialReady = false;
         }).catch((error) => {
@@ -457,7 +457,7 @@ const MonetizationManager = {
                 console.log('[Monetization Debug] admob-ready event dispatched (normal)');
             } catch(_) {}
             setTimeout(() => this.showBanner(), 2000);
-            // Interstitial hazırlığını başlat
+            // Interstitial reklamları aktifleştir
             setTimeout(() => this.prepareInterstitial(), 3000);
             this.isInterstitialReady = false;
         }).catch((error) => {
@@ -516,12 +516,19 @@ const MonetizationManager = {
         const platform = window.Capacitor ? window.Capacitor.getPlatform() : 'web';
         const isNative = platform === 'ios' || platform === 'android';
         if (!isNative) return;
-
+        
         const units = this.getActiveAdUnits();
-        const interstitialId = units?.interstitial;
-        if (!interstitialId) return;
+        const interstitialId = units.interstitial;
+        
+        if (!interstitialId) {
+            console.log('[Monetization] Interstitial ID bulunamadı');
+            return;
+        }
 
-        const options = { adId: interstitialId, isTesting: false };
+        const options = {
+            adId: interstitialId,
+            isTesting: false
+        };
 
         AdMob.prepareInterstitial(options).then(() => {
             console.log('[Monetization] Interstitial hazırlandı');
@@ -543,7 +550,7 @@ const MonetizationManager = {
         AdMob.showInterstitial().then(() => {
             console.log('[Monetization] Interstitial gösterildi');
             this.isInterstitialReady = false;
-            // Bir sonraki için yeniden hazırla
+            // Bir sonraki için hazırla
             setTimeout(() => this.prepareInterstitial(), 3000);
         }).catch((error) => {
             console.error('[Monetization] Interstitial gösterme hatası:', error);
@@ -551,7 +558,7 @@ const MonetizationManager = {
             // Hata durumunda yeniden hazırla
             setTimeout(() => this.prepareInterstitial(), 5000);
         });
-
+        
         return true;
     },
 
@@ -649,14 +656,14 @@ const MonetizationManager = {
             console.error('Success tracking failed:', e);
         }
     },
-
-    // === GAME INTEGRATION ===
     onQuizComplete: function() {
         this.trackEvent('quiz_complete');
         
-        // Quiz tamamlandığında interstitial kontrolü
+        // Quiz tamamlandığında interstitial reklam göster
         const completions = parseInt(localStorage.getItem('quizCompletions') || '0') + 1;
         localStorage.setItem('quizCompletions', completions.toString());
+        
+        // Her 3 quiz'de bir interstitial göster
         if (completions % 3 === 0) {
             setTimeout(() => {
                 this.showInterstitialIfReady();
