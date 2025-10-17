@@ -378,19 +378,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				INFOPLIST_FILE = App/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Bilgoo;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.educational-games";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 14.25.0;
+			CODE_SIGN_IDENTITY = "Apple Development";
+			CODE_SIGN_STYLE = Automatic;
+			CURRENT_PROJECT_VERSION = 12;
+			ENABLE_USER_SCRIPT_SANDBOXING = NO;
+			INFOPLIST_FILE = App/Info.plist;
+			INFOPLIST_KEY_CFBundleDisplayName = Bilgoo;
+			INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.educational-games";
+			IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+			LD_RUNPATH_SEARCH_PATHS = (
+				"$(inherited)",
+				"@executable_path/Frameworks",
+			);
+			MARKETING_VERSION = 14.26.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.veteroner.quiz2025mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -405,22 +405,22 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BE98F1608BFC41138B099045 /* Pods-App.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				INFOPLIST_FILE = App/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Bilgoo;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.educational-games";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 14.25.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.veteroner.quiz2025mobile;
+			ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+			ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+			CODE_SIGN_IDENTITY = "Apple Development";
+			CODE_SIGN_STYLE = Automatic;
+			CURRENT_PROJECT_VERSION = 12;
+			ENABLE_USER_SCRIPT_SANDBOXING = NO;
+			INFOPLIST_FILE = App/Info.plist;
+			INFOPLIST_KEY_CFBundleDisplayName = Bilgoo;
+			INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.educational-games";
+			IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+			LD_RUNPATH_SEARCH_PATHS = (
+				"$(inherited)",
+				"@executable_path/Frameworks",
+			);
+			MARKETING_VERSION = 14.26.0;
+			PRODUCT_BUNDLE_IDENTIFIER = com.veteroner.quiz2025mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";

@@ -7,8 +7,8 @@ android {
         applicationId "com.bilgoo.quizapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 41
-        versionName "14.25.0"
+        versionCode 42
+        versionName "14.26.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         aaptOptions {
