@@ -20,6 +20,11 @@ target 'App' do
   capacitor_pods
   # Updated UserMessagingPlatform version for compatibility with AdMob 7.0.3
   pod 'GoogleUserMessagingPlatform', '~> 2.7.0'
+  # Unity Ads SDK - Downgraded due to WKWebView eval sandbox issue (4.10.0+ affected)
+  # Known working version for WebView based hybrid apps: 4.8.0
+  pod 'UnityAds', '4.8.0'
+  # Removed AdMob Mediation Unity adapter due to version conflicts with GMA 11.x.
+  # AdMob account is restricted; mediation not needed on iOS.
   # Add your Pods here
 end
 
@@ -51,6 +56,27 @@ post_install do |installer|
     project.targets.each do |target|
       target.build_configurations.each do |config|
         config.build_settings['ENABLE_USER_SCRIPT_SANDBOXING'] = 'NO'
+      end
+    end
+  end
+  
+  # Fix "Based on dependency analysis" warning for CocoaPods script phases
+  # Set alwaysOutOfDate to "1" to suppress the warning about missing outputs
+  installer.pods_project.targets.each do |target|
+    target.build_phases.each do |build_phase|
+      if build_phase.respond_to?(:name) && build_phase.name&.start_with?('[CP')
+        build_phase.always_out_of_date = "1"
+      end
+    end
+  end
+  
+  # Fix script phases in the main app target as well
+  installer.aggregate_targets.each do |aggregate_target|
+    aggregate_target.user_project.native_targets.each do |native_target|
+      native_target.build_phases.each do |build_phase|
+        if build_phase.respond_to?(:name) && build_phase.name&.start_with?('[CP')
+          build_phase.always_out_of_date = "1"
+        end
       end
     end
   end

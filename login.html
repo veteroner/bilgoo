@@ -5,13 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#4a148c">
     
-    <!-- Google AdSense Kodu -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7610338885240453"
-     crossorigin="anonymous"></script>
-    
     <title>Bilgoo - Kullanıcı Girişi</title>
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script>
+        // Simple splash screen management
+        function hideSplash(){
+            try{
+                if(window.Capacitor?.Plugins?.SplashScreen) {
+                    window.Capacitor.Plugins.SplashScreen.hide();
+                }
+            }catch(e){
+                console.error('Capacitor splash hide error:', e.message);
+            }
+            var s=document.getElementById('splash-screen');
+            if(s) {
+                s.style.display='none';
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded',()=>{
+            setTimeout(()=>{
+                hideSplash();
+            },1500);
+        });
+    </script>
     <style>
         /* VIEWPORT ANCHOR: transform yerine viewport'a sabitleme */
         .user-preferences-container,
@@ -33,6 +51,8 @@
             z-index: 1000 !important;
             overflow-y: auto !important;
             overflow-x: hidden !important;
+            /* Opacity transition için hazırlık */
+            transition: opacity 0.3s ease-in-out;
         }
         
         .user-preferences-container.hidden {
@@ -184,7 +204,8 @@
     </div>
 
     <!-- Kullanıcı Tercihleri Ekranı -->
-    <div class="container user-preferences-container" style="display: flex; visibility: hidden;">
+    <div class="container user-preferences-container" style="display: flex; visibility: visible; opacity: 0;">
+
         <div class="auth-box" id="preferences-box">
             <div class="main-logo">
                 <svg width="300" height="84" viewBox="0 0 500 140" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto 10px auto; display: block;">
@@ -257,7 +278,7 @@
         </div>
     </div>
 
-    <div class="container login-container" style="display:none; visibility:hidden;">
+    <div class="container login-container" style="display:none; visibility:hidden; opacity:0;">
         <div class="auth-box" id="login-box">
             <div class="main-logo">
                 <svg width="300" height="84" viewBox="0 0 500 140" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto 10px auto; display: block;">
@@ -485,108 +506,50 @@
 
         // Splash screen işlemleri
         document.addEventListener('DOMContentLoaded', function() {
-            // Android platform algılaması ve class ekleme
-            function detectAndroidPlatform() {
-                // Sadece gerçek Android kontrolü
-                const userAgent = navigator.userAgent;
-                const capacitorPlatform = window.Capacitor?.getPlatform?.();
-                const devicePlatform = typeof device !== 'undefined' ? device.platform : null;
-                
-                // Strict Android detection - tüm koşullar kesin olmalı
-                const isRealAndroid = /Android/i.test(userAgent) && 
-                                     (capacitorPlatform === 'android' || devicePlatform === 'Android');
-
-                console.log('🔍 Platform algılama:', {
-                    userAgent: userAgent,
-                    capacitorPlatform: capacitorPlatform,
-                    devicePlatform: devicePlatform,
-                    detectedAndroid: isRealAndroid
-                });
-
-                if (isRealAndroid) {
-                    document.body.classList.add('platform-android','platform-capacitor');
-                    document.documentElement.classList.add('platform-android','platform-capacitor');
-                    document.documentElement.setAttribute('data-platform','android');
-                    document.body.setAttribute('data-platform','android');
-                    return true;
-                } else if (window.Capacitor) {
-                    // iOS/diğer platformlar için
-                    document.body.classList.add('platform-ios','platform-capacitor');
-                    document.documentElement.classList.add('platform-ios','platform-capacitor');
-                    document.documentElement.setAttribute('data-platform','ios');
-                    document.body.setAttribute('data-platform','ios');
-                    return false;
-                }
-                return false;
-            }
             
-            // Platform algılamasını hemen çalıştır
-            const isAndroidDetected = detectAndroidPlatform();
-            
-            // Capacitor ready event'i için de dinle
-            if (window.Capacitor) {
-                document.addEventListener('deviceready', function() {
-                    console.log('📱 Capacitor deviceready event fired');
-                    const isAndroid = detectAndroidPlatform();
-                    if (isAndroid) {
-                        forceAndroidVisibility();
-                    }
-                });
-                
-                // Capacitor.ready() promise'i varsa da dinle
-                if (typeof window.Capacitor.ready === 'function') {
-                    window.Capacitor.ready().then(() => {
-                        console.log('📱 Capacitor ready promise resolved');
-                        const isAndroid = detectAndroidPlatform();
-                        if (isAndroid) {
-                            forceAndroidVisibility();
-                        }
-                    });
+            // ÖNEMLİ: Monetization'ı login yüklendikten SONRA başlat
+            setTimeout(function(){
+                // Unity Ads init - eğer index.html'de başlatılmadıysa
+                if(window.UnityAdsManager && !window.UnityAdsManager.isInitialized) {
+                    window.UnityAdsManager.initialize();
                 }
-            }
-            
-            // Additional detection after a short delay
-            setTimeout(() => {
-                const isAndroid = detectAndroidPlatform();
-                if (isAndroid) {
-                    console.log('🔄 Delayed Android detection - forcing visibility');
-                    forceAndroidVisibility();
-                } else {
-                    console.log('🔄 iOS detected - using normal sequence flow');
-                }
-            }, 1000);
+            }, 3000);
             
             const splashScreen = document.getElementById('splash-screen');
             const preferencesContainer = document.querySelector('.user-preferences-container');
             const loginContainer = document.querySelector('.login-container');
             const preferencesForm = document.getElementById('user-preferences-form');
-                let preferencesCompleted = false; // Tercih ekranı tamamlandı mı
+            
+            let preferencesCompleted = false;
             
             // Container sequence'ını kontrol et
             function forceSequenceVisibility() {
-                // Preferences daima DOM'da kalsın; sadece görünürlük yönetilsin
-                if (preferencesContainer) {
-                    preferencesContainer.style.display = 'flex';
-                }
                 if (!preferencesCompleted) {
+                    // Tercih ekranı gösterilecek
                     if (preferencesContainer) {
+                        preferencesContainer.style.display = 'flex';
                         preferencesContainer.style.visibility = 'visible';
+                        preferencesContainer.style.opacity = '1';
                         preferencesContainer.style.pointerEvents = 'auto';
                         preferencesContainer.classList.remove('hidden');
                     }
                     if (loginContainer) {
                         loginContainer.style.display = 'none';
                         loginContainer.style.visibility = 'hidden';
+                        loginContainer.style.opacity = '0';
                     }
                 } else {
+                    // Login ekranı gösterilecek
                     if (preferencesContainer) {
                         preferencesContainer.style.visibility = 'hidden';
+                        preferencesContainer.style.opacity = '0';
                         preferencesContainer.style.pointerEvents = 'none';
                         preferencesContainer.classList.add('hidden');
                     }
                     if (loginContainer) {
                         loginContainer.style.display = 'flex';
                         loginContainer.style.visibility = 'visible';
+                        loginContainer.style.opacity = '1';
                         loginContainer.classList.remove('hidden');
                     }
                 }
@@ -596,25 +559,30 @@
             function initSplashScreens() {
                 // Splash screen animasyonları için gerekli CSS sınıflarını uygula
                 if (splashScreen) {
-                    // İlk ekran logosu için animasyonları başlat
                     createSplashParticles();
                     animateCircuitNodes();
                     updateLoaderPercentage();
                 }
 
-                // İlk splash ekranı 10 saniye sonra kapatıp doğrudan tercihler ekranına geç
-                setTimeout(function() {
+                // Kısa splash süresi (1s)
+                setTimeout(function(){
                     splashScreen.classList.add('fade-out');
-                    setTimeout(function() {
-                        splashScreen.style.display = 'none';
-                        // Tercih durumunu sıfırla ve sequence visibility'yi çağır
-                        preferencesCompleted = false;
-                        console.log('🎬 Splash screen tamamlandı, tercih ekranı gösteriliyor');
-                        forceSequenceVisibility();
+                    setTimeout(function(){
+                        splashScreen.style.display='none';
+                        // Preferences container'ı görünür yap (opacity transition)
+                        if(preferencesContainer) {
+                            preferencesContainer.style.opacity = '1';
+                            preferencesContainer.style.transition = 'opacity 0.3s ease-in';
+                        }
                         
-                        // Animasyon artık CSS'te otomatik olarak uygulanıyor
-                    }, 500); // Geçiş animasyonu için süre
-                }, 10000); // İlk splash screen gösterme süresi - 10 saniye
+                        // Ek güvence kontrolü
+                        setTimeout(function(){
+                            if(preferencesContainer && window.getComputedStyle(preferencesContainer).opacity !== '1') {
+                                preferencesContainer.style.opacity = '1';
+                            }
+                        }, 500);
+                    }, 400);
+                }, 1000);
             }
             
             // Splash screen akışını başlat
@@ -682,12 +650,10 @@
             
             // Kullanıcı tercihlerini kaydetme fonksiyonu
             function saveUserPreferences() {
-                console.log('saveUserPreferences fonksiyonu başladı');
                 const language = document.getElementById('user-language').value;
                 
                 // Tercihleri localStorage'a kaydet
                 localStorage.setItem('user_language', language);
-                // Varsayılan yaş grubu olarak "adult" kullanılacak
                 localStorage.setItem('user_age_group', 'adult');
                 
                 // Dil tercihini HTML etiketlerine hemen uygula
@@ -697,21 +663,26 @@
                 // Sayfadaki metinleri hemen değiştir
                 applyLanguageToUI(language);
                 
-                console.log(`Tercihler kaydedildi: Dil=${language}, Yaş Grubu=adult`);
-                
-                // Tercihler ekranını kapat ve login ekranını göster
-                console.log('✅ Tercihler tamamlandı, login ekranına geçiliyor...');
-                
                 // Tercihler tamamlandı bayrağı ayarla
                 preferencesCompleted = true;
                 
-                // Sequence visibility ile temiz geçiş yap
-                console.log('🔄 forceSequenceVisibility() çağrılıyor...');
-                forceSequenceVisibility();
+                // Fade out preferences, fade in login
+                if (preferencesContainer) {
+                    preferencesContainer.style.transition = 'opacity 0.3s ease-out';
+                    preferencesContainer.style.opacity = '0';
+                }
                 
-                // Animasyon artık CSS'te otomatik olarak uygulanıyor
-                
-                console.log('Ekran geçişi tamamlandı');
+                setTimeout(function(){
+                    forceSequenceVisibility();
+                    
+                    // Login container'a fade-in efekti
+                    if(loginContainer) {
+                        loginContainer.style.transition = 'opacity 0.3s ease-in';
+                        setTimeout(()=> {
+                            loginContainer.style.opacity = '1';
+                        }, 50);
+                    }
+                }, 300);
             }
             
             // Arayüz dilini anında değiştir
@@ -904,53 +875,41 @@
             // Dil butonlarına tıklama olayı ekle
             langButtons.forEach(button => {
                 button.addEventListener('click', function() {
+                    const lang = this.getAttribute('data-lang');
+                    
                     // Tüm butonlardan selected sınıfını kaldır
                     langButtons.forEach(btn => btn.classList.remove('selected'));
                     // Tıklanan butona selected sınıfını ekle
                     this.classList.add('selected');
                     // Gizli input değerini güncelle
-                    userLanguageInput.value = this.getAttribute('data-lang');
+                    userLanguageInput.value = lang;
                     
                     // Dil değişimini uygula
                     const selectedLanguage = userLanguageInput.value;
-                document.documentElement.setAttribute('lang', selectedLanguage);
-                document.documentElement.setAttribute('data-language', selectedLanguage);
-                applyLanguageToUI(selectedLanguage);
+                    document.documentElement.setAttribute('lang', selectedLanguage);
+                    document.documentElement.setAttribute('data-language', selectedLanguage);
+                    applyLanguageToUI(selectedLanguage);
                 });
             });
             
-            // Yaş seçimi kaldırıldığı için bu event listener'a gerek kalmadı
-            
             // Preferences form submit işlemi
             if (preferencesForm) {
-                console.log('Preferences form bulundu, event listener ekleniyor...');
                 preferencesForm.addEventListener('submit', function(e) {
-                    console.log('Form submit event tetiklendi!');
                     e.preventDefault();
-                    console.log('Tercihler kaydediliyor...');
                     saveUserPreferences();
                 });
-            } else {
-                console.error('Preferences form bulunamadı!');
             }
             
             // Devam Et butonuna da direkt click event ekleyelim
             const saveBtn = document.getElementById('save-preferences');
             if (saveBtn) {
-                console.log('Devam Et butonu bulundu, click event ekleniyor...');
                 saveBtn.addEventListener('click', function(e) {
-                    console.log('Devam Et butonuna tıklandı!');
                     // Form submit olup olmadığını kontrol et
-                    if (e.target.form) {
-                        console.log('Buton bir formun içinde, form submit tetiklenecek');
-                    } else {
-                        console.log('Buton form dışında, manuel kaydetme...');
+                    if (!e.target.form) {
                         e.preventDefault();
                         saveUserPreferences();
                     }
                 });
-                                } else {
-                console.error('Devam Et butonu bulunamadı!');
             }
         });
     </script>

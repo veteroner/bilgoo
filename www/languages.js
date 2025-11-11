@@ -453,6 +453,7 @@ const languages = {
         jokerOwned: 'Sahip olduğunuz',
         currentLives: 'Mevcut canınız',
         buyButton: 'Satın Al',
+        watchAdButton: 'Reklam İzle',
         
         // Joker kullanım mesajları
         joker50UsedTitle: '50:50 Jokeri Kullanıldı',
@@ -1095,6 +1096,7 @@ const languages = {
         jokerOwned: 'You own',
         currentLives: 'Current lives',
         buyButton: 'Buy',
+        watchAdButton: 'Watch Ad',
         
         // Joker usage messages
         joker50UsedTitle: '50:50 Joker Used',
@@ -1642,6 +1644,7 @@ const languages = {
         jokerOwned: 'Sie besitzen',
         currentLives: 'Aktuelle leben',
         buyButton: 'Kaufen',
+        watchAdButton: 'Werbung ansehen',
         
         // Joker-Verwendungsnachrichten
         joker50UsedTitle: '50:50 Joker Verwendet',

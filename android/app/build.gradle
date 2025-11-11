@@ -7,8 +7,8 @@ android {
         applicationId "com.bilgoo.quizapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 42
-        versionName "14.26.0"
+    versionCode 43
+    versionName "14.26.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         aaptOptions {
@@ -65,8 +65,12 @@ dependencies {
     implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
     implementation project(':capacitor-android')
     
-    // Google AdMob SDK - Latest Version
+    // Unity Ads SDK - Downgraded to 4.8.0 due to iOS WKWebView eval sandbox issue in 4.10+
+    implementation 'com.unity3d.ads:unity-ads:4.8.0'
+    
+    // Google AdMob SDK - Fallback (şu an sınırlandırılmış ama gelecekte kullanılabilir)
     implementation 'com.google.android.gms:play-services-ads:24.6.0'
+    // Unity Ads mediation adapter REMOVED - AdMob hesabı sınırlandırılmış, direkt SDK kullanılıyor
     
     // Multidex support
     implementation 'androidx.multidex:multidex:2.0.1'

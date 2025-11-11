@@ -1,5 +1,19 @@
 {
     "java.configuration.updateBuildConfiguration": "automatic",
     "java.compile.nullAnalysis.mode": "disabled",
-    "java.errors.incompleteClasspath.severity": "ignore"
+    "java.errors.incompleteClasspath.severity": "ignore",
+    "java.sharedIndexes.enabled": "off",
+    "java.autobuild.enabled": false,
+    "java.project.sourcePaths": [],
+    "java.project.referencedLibraries": [],
+    "java.configuration.runtimes": [],
+    "java.import.gradle.enabled": false,
+    "java.import.maven.enabled": false,
+    "swift.sourcekit-lsp.serverPath": "/usr/bin/sourcekit-lsp",
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    }
 }

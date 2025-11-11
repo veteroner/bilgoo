@@ -1,19 +1,24 @@
 /**
  * PRODUCTION MONETIZATION SYSTEM
- * Clean, minimal, AdMob policy compliant
- * Version: 2.0.0 Production
+ * Unity Ads (Primary) + AdMob (Fallback)
+ * Version: 3.0.0 Production
  * Risk Level: 0%
  */
 
-// AdMob Plugin - Production Only
+// AdMob Plugin - Fallback (currently restricted)
 let AdMob = null;
 try {
     if (window.Capacitor?.Plugins?.AdMob) {
         AdMob = window.Capacitor.Plugins.AdMob;
     }
 } catch (e) {
-    // Silent fail - no debug logs in production
+    // Silent fail
 }
+
+// Unity Ads - Native Bridge (Primary)
+// Android native bridge is automatically available via MainActivity.java
+// Provides: UnityAdsAndroid.showInterstitial(), showRewarded(), isInterstitialReady(), isRewardedReady()
+// Reward callback: window.UnityAdsRewardCallback(true/false)
 
 const MonetizationManager = {
     // State Management
@@ -24,31 +29,48 @@ const MonetizationManager = {
         advertising: false
     },
     
-    // Ad Unit Maps (Test & Production)
-    _TEST_AD_UNITS: {
-        android: { banner: '', interstitial: '', rewarded: '' },
-        ios: { banner: '', interstitial: '', rewarded: '' }
+    // Unity Ads Configuration (Primary) - PRODUCTION IDs
+    _UNITY_CONFIG: {
+        // NOT: Native taraf ile tutarlılık için ID'ler düzeltildi.
+        // Android: 5968313  |  iOS: 5968312
+        android: {
+            gameId: '5968313', // Unity Dashboard - GROW project (Android)
+            interstitial: 'Interstitial_Android',
+            rewarded: 'Rewarded_Android'
+        },
+        ios: {
+            gameId: '5968312', // Unity Dashboard - GROW project (iOS)
+            interstitial: 'Interstitial_iOS',
+            rewarded: 'Rewarded_iOS'
+        },
+        testMode: false // Production mode aktif
     },
+    
+    // AdMob Configuration (Fallback)
     _PROD_AD_UNITS: {
         android: {
             banner: 'ca-app-pub-7610338885240453/3665814891',
-            interstitial: 'ca-app-pub-7610338885240453/1220131878', // YENİ Interstitial ID
-            rewarded: 'ca-app-pub-7610338885240453/3634025302' // Production ID
+            interstitial: 'ca-app-pub-7610338885240453/1220131878',
+            rewarded: 'ca-app-pub-7610338885240453/3634025302'
         },
         ios: {
             banner: 'ca-app-pub-7610338885240453/2815767654',
-            interstitial: 'ca-app-pub-7610338885240453/5988725909', // YENİ Interstitial ID
-            rewarded: 'ca-app-pub-7610338885240453/7876522645' // Production ID
+            interstitial: 'ca-app-pub-7610338885240453/5988725909',
+            rewarded: 'ca-app-pub-7610338885240453/7876522645'
         }
     },
+    
+    // Ad provider status tracking
+    _unityReady: false,
     _admobReady: false,
+    _isInterstitialReady: false,
+    _isRewardedReady: false,
+    _rewardedCallbackResolve: null, // Unity Ads reward callback promise resolver
     
     // Top padding management
-    defaultTopOffset: 60, // Base offset: 60px (+20px extra to avoid overlap)
+    defaultTopOffset: 0,
 
     // === INITIALIZATION ===
-    // ÖNEMLİ: script.js içinde initialize() adıyla çağrıldığı için
-    // burada backward compatibility için initialize alias'ı ekleniyor.
     init: function() {
         if (this.isInitialized) return;
         
@@ -57,16 +79,15 @@ const MonetizationManager = {
         const isNativeApp = platform === 'ios' || platform === 'android';
         
         if (isNativeApp) {
-            // Native uygulamalar: Çerez bildirimi yok, direkt ATT + reklam
-            console.log('[Monetization Debug] Native app detected, enabling ads directly');
-            this.cookiePreferences.advertising = true; // Native'de reklam izni varsayılan
+            console.log('[Monetization] Native app detected, initializing Unity Ads + AdMob');
+            this.cookiePreferences.advertising = true;
             this.setupEventListeners();
             this.ensureEarlyATTOnIOS();
-            this.setupAdMobListeners();
+            this.setupUnityAds(); // Unity Ads önce
+            this.setupAdMobListeners(); // AdMob fallback
             this.initPlatformAds();
         } else {
-            // Web: GDPR için çerez bildirimi gerekli
-            console.log('[Monetization Debug] Web platform detected, checking cookie consent');
+            console.log('[Monetization] Web platform detected');
             this.checkCookieConsent();
             this.setupEventListeners();
             this.setupAdMobListeners();
@@ -76,8 +97,162 @@ const MonetizationManager = {
         this.isInitialized = true;
     },
 
-    // Backward compatibility alias (script.js 'initialize' çağırıyor)
+    // Backward compatibility alias
     initialize: function() { return this.init(); },
+
+    // === UNITY ADS SETUP ===
+    setupUnityAds: async function() {
+        // Unity Ads native bridge kontrolü (Android)
+        if (window.UnityAdsAndroid) {
+            console.log('[Unity Ads] ✅ Native bridge detected (Android)');
+            this._unityReady = true;
+            
+            // Reward callback listener setup
+            if (!window.UnityAdsRewardCallback) {
+                window.UnityAdsRewardCallback = (rewarded) => {
+                    console.log('[Unity Ads] 🎯 REWARD CALLBACK RECEIVED:', rewarded);
+                    console.log('[Unity Ads] 📱 Callback details:', {
+                        rewarded: rewarded,
+                        hasResolver: !!this._rewardedCallbackResolve,
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    if (this._rewardedCallbackResolve) {
+                        console.log('[Unity Ads] ✅ Resolving promise with reward:', rewarded);
+                        this._rewardedCallbackResolve({ rewarded: rewarded, provider: 'unity' });
+                        this._rewardedCallbackResolve = null;
+                    } else {
+                        console.warn('[Unity Ads] ⚠️ No resolver found - callback ignored!');
+                    }
+                };
+            }
+            
+            // Native bridge üzerinden hazır durumu kontrol et
+            setTimeout(() => {
+                this.checkUnityAdsReady();
+            }, 2000);
+            
+            return;
+        }
+        
+        // Unity Ads native bridge kontrolü (iOS)
+        if (window.webkit?.messageHandlers?.UnityAdsIOS) {
+            console.log('[Unity Ads] ✅ Native bridge detected (iOS)');
+            this._unityReady = true;
+            
+            // Reward callback listener setup
+            if (!window.UnityAdsRewardCallback) {
+                window.UnityAdsRewardCallback = (rewarded) => {
+                    console.log('[Unity Ads] 🎯 REWARD CALLBACK RECEIVED (iOS):', rewarded);
+                    console.log('[Unity Ads] 📱 iOS Callback details:', {
+                        rewarded: rewarded,
+                        hasResolver: !!this._rewardedCallbackResolve,
+                        timestamp: new Date().toISOString()
+                    });
+                    
+                    if (this._rewardedCallbackResolve) {
+                        console.log('[Unity Ads] ✅ Resolving iOS promise with reward:', rewarded);
+                        this._rewardedCallbackResolve({ rewarded: rewarded, provider: 'unity' });
+                        this._rewardedCallbackResolve = null;
+                    } else {
+                        console.warn('[Unity Ads] ⚠️ No iOS resolver found - callback ignored!');
+                    }
+                };
+            }
+            
+            // Ready status callback listeners
+            if (!window.UnityAdsInterstitialReadyCallback) {
+                window.UnityAdsInterstitialReadyCallback = (ready) => {
+                    this._isInterstitialReady = ready;
+                    console.log('[Unity Ads] Interstitial ready (iOS):', ready);
+                };
+            }
+            
+            if (!window.UnityAdsRewardedReadyCallback) {
+                window.UnityAdsRewardedReadyCallback = (ready) => {
+                    this._isRewardedReady = ready;
+                    console.log('[Unity Ads] Rewarded ready (iOS):', ready);
+                };
+            }
+            
+            // iOS bridge üzerinden hazır durumu kontrol et
+            setTimeout(() => {
+                this.checkUnityAdsReady();
+            }, 2000);
+            
+            return;
+        }
+        
+        // Fallback
+        console.log('[Monetization] Unity Ads native bridge not available, will use AdMob fallback');
+    },
+
+    checkUnityAdsReady: function() {
+        // Android
+        if (window.UnityAdsAndroid) {
+            try {
+                const interstitialReady = window.UnityAdsAndroid.isInterstitialReady();
+                const rewardedReady = window.UnityAdsAndroid.isRewardedReady();
+                
+                this._isInterstitialReady = interstitialReady;
+                this._isRewardedReady = rewardedReady;
+                
+                console.log('[Unity Ads] Interstitial ready:', interstitialReady);
+                console.log('[Unity Ads] Rewarded ready:', rewardedReady);
+                
+                // Her 30 saniyede bir kontrol et
+                setTimeout(() => this.checkUnityAdsReady(), 30000);
+            } catch (error) {
+                console.error('[Unity Ads] Error checking ready status:', error);
+            }
+            return;
+        }
+        
+        // iOS
+        if (window.webkit?.messageHandlers?.UnityAdsIOS) {
+            try {
+                // iOS için ready status istekleri gönder
+                window.webkit.messageHandlers.UnityAdsIOS.postMessage({
+                    action: 'isInterstitialReady'
+                });
+                
+                window.webkit.messageHandlers.UnityAdsIOS.postMessage({
+                    action: 'isRewardedReady'
+                });
+                
+                // Her 30 saniyede bir kontrol et
+                setTimeout(() => this.checkUnityAdsReady(), 30000);
+            } catch (error) {
+                console.error('[Unity Ads] Error checking ready status (iOS):', error);
+            }
+        }
+    },
+
+    loadUnityInterstitial: async function() {
+        // Native bridge otomatik load ediyor, sadece ready durumunu kontrol et
+        if (window.UnityAdsAndroid) {
+            try {
+                this._isInterstitialReady = window.UnityAdsAndroid.isInterstitialReady();
+                console.log('[Unity Ads] Interstitial ready status:', this._isInterstitialReady);
+            } catch (error) {
+                console.error('[Unity Ads] Error checking interstitial:', error);
+                this._isInterstitialReady = false;
+            }
+        }
+    },
+
+    loadUnityRewarded: async function() {
+        // Native bridge otomatik load ediyor, sadece ready durumunu kontrol et
+        if (window.UnityAdsAndroid) {
+            try {
+                this._isRewardedReady = window.UnityAdsAndroid.isRewardedReady();
+                console.log('[Unity Ads] Rewarded ready status:', this._isRewardedReady);
+            } catch (error) {
+                console.error('[Unity Ads] Error checking rewarded:', error);
+                this._isRewardedReady = false;
+            }
+        }
+    },
 
     // === EARLY ATT REQUEST (iOS) ===
     ensureEarlyATTOnIOS: function() {
@@ -162,33 +337,8 @@ const MonetizationManager = {
 
     // === ADMOB EVENT LISTENERS ===
     setupAdMobListeners: function() {
-        if (!AdMob) return;
-
-        // Listen for banner load events (correct event name)
-        AdMob.addListener('bannerAdLoaded', (info) => {
-            console.log('Banner ad loaded:', info);
-            this.trackAdSuccess('banner', info.adUnitId);
-            const bannerHeight = info?.height || 0;
-            this.applyTopPadding(bannerHeight);
-            document.body.classList.add('has-top-banner');
-        });
-
-        // Listen for banner size changes (correct event name)
-        AdMob.addListener('bannerAdSizeChanged', (info) => {
-            console.log('Banner ad size changed:', info);
-            const bannerHeight = info?.height || 0;
-            this.applyTopPadding(bannerHeight);
-            document.body.classList.add('has-top-banner');
-        });
-
-        // Listen for banner failures (correct event name)
-        AdMob.addListener('bannerAdFailedToLoad', (error) => {
-            console.log('Banner ad failed to load:', error);
-            this.trackAdError('banner', error);
-            // Apply default padding when banner fails
-            this.applyTopPadding(0);
-            document.body.classList.remove('has-top-banner');
-        });
+        // Banner reklamları devre dışı: dinleyici eklenmiyor
+        return;
     },
 
     // === COOKIE CONSENT MANAGEMENT ===
@@ -383,11 +533,10 @@ const MonetizationManager = {
         
         const initOptions = {
             requestTrackingAuthorization: false, // Zaten yukarıda yaptık
-            testingDevices: [],
-            initializeForTesting: false, // PRODUCTION MODE
+            testingDevices: [], // ✅ PRODUCTION: Test devices kaldırıldı
+            initializeForTesting: false, // ✅ PRODUCTION: Test mode kapalı
             tagForChildDirectedTreatment: false,
             tagForUnderAgeOfConsent: false,
-            maxAdContentRating: 'MA',
             // ATT status'a göre tracking ayarları
             npa: trackingEnabled ? '0' : '1' // Non-personalized ads if no tracking
         };
@@ -395,11 +544,12 @@ const MonetizationManager = {
         AdMob.initialize(initOptions).then(() => {
             console.log('AdMob initialized with ATT status:', attStatus);
             this._admobReady = true;
+            // ✅ PRODUCTION: Test environment flag kapalı
+            this._testEnv = false;
             try { 
                 document.dispatchEvent(new Event('admob-ready')); 
                 console.log('[Monetization Debug] admob-ready event dispatched (ATT)');
             } catch(_) {}
-            setTimeout(() => this.showBanner(), 2000);
             // Interstitial reklamları aktifleştir
             setTimeout(() => this.prepareInterstitial(), 3000);
             this.isInterstitialReady = false;
@@ -413,22 +563,22 @@ const MonetizationManager = {
     initializeAdMobWithoutTracking: function() {
         const initOptions = {
             requestTrackingAuthorization: false,
-            testingDevices: [],
-            initializeForTesting: false, // PRODUCTION MODE
+            testingDevices: [], // ✅ PRODUCTION: Test devices kaldırıldı
+            initializeForTesting: false, // ✅ PRODUCTION: Test mode kapalı
             tagForChildDirectedTreatment: false,
             tagForUnderAgeOfConsent: false,
-            maxAdContentRating: 'MA',
             npa: '1' // Non-personalized ads only
         };
 
         AdMob.initialize(initOptions).then(() => {
             console.log('AdMob initialized without tracking');
             this._admobReady = true;
+            // ✅ PRODUCTION: Test environment flag kapalı
+            this._testEnv = false;
             try { 
                 document.dispatchEvent(new Event('admob-ready')); 
                 console.log('[Monetization Debug] admob-ready event dispatched (no tracking)');
             } catch(_) {}
-            setTimeout(() => this.showBanner(), 2000);
             // Interstitial reklamları aktifleştir
             setTimeout(() => this.prepareInterstitial(), 3000);
             this.isInterstitialReady = false;
@@ -442,21 +592,21 @@ const MonetizationManager = {
     initializeAdMobNormal: function() {
         const initOptions = {
             requestTrackingAuthorization: false,
-            testingDevices: [],
-            initializeForTesting: false, // PRODUCTION MODE
+            testingDevices: [], // ✅ PRODUCTION: Test devices kaldırıldı
+            initializeForTesting: false, // ✅ PRODUCTION: Test mode kapalı
             tagForChildDirectedTreatment: false,
             tagForUnderAgeOfConsent: false,
-            maxAdContentRating: 'MA'
         };
 
         AdMob.initialize(initOptions).then(() => {
             console.log('AdMob initialized normally');
             this._admobReady = true;
+            // ✅ PRODUCTION: Test environment flag kapalı
+            this._testEnv = false;
             try { 
                 document.dispatchEvent(new Event('admob-ready')); 
                 console.log('[Monetization Debug] admob-ready event dispatched (normal)');
             } catch(_) {}
-            setTimeout(() => this.showBanner(), 2000);
             // Interstitial reklamları aktifleştir
             setTimeout(() => this.prepareInterstitial(), 3000);
             this.isInterstitialReady = false;
@@ -468,47 +618,15 @@ const MonetizationManager = {
     },
 
     showBanner: function() {
-        if (!AdMob) return;
-        const platform = window.Capacitor ? window.Capacitor.getPlatform() : 'web';
-        const isNative = platform === 'ios' || platform === 'android';
-        const units = this.getActiveAdUnits();
-        if (!isNative) { return; }
-        const bannerId = units.banner;
-        const options = {
-            adId: bannerId,
-            adSize: 'ADAPTIVE_BANNER',
-            position: 'TOP_CENTER',
-            margin: 0,
-            isTesting: false
-        };
-
-        AdMob.showBanner(options).then(() => {
-            // Initial fallback: apply 40px base padding
-            setTimeout(() => {
-                this.applyTopPadding(0); // Base 40px will be applied
-                // Mark that a top banner is visible for container spacing
-                document.body.classList.add('has-top-banner');
-            }, 500);
-        }).catch((error) => {
-            console.error('Banner reklam gösterilemedi:', error);
-            // Apply default padding when banner fails
-            this.applyTopPadding(0);
-            // Retry after 5 seconds
-            setTimeout(() => this.showBanner(), 5000);
-        });
+        // Banner reklamları kaldırıldı
+        return;
     },
 
     hideBanner: function() {
-        if (!AdMob) return;
-        AdMob.hideBanner().then(() => {
-            // Reset to default padding when banner is hidden
-            this.applyTopPadding(0);
-            document.body.classList.remove('has-top-banner');
-        }).catch(() => {
-            // Apply default padding even if hide fails
-            this.applyTopPadding(0);
-            document.body.classList.remove('has-top-banner');
-        });
+        // Banner reklamları kaldırıldı
+        this.applyTopPadding(0);
+        document.body.classList.remove('has-top-banner');
+        return;
     },
 
     prepareInterstitial: function() {
@@ -525,9 +643,10 @@ const MonetizationManager = {
             return;
         }
 
+        const useTestFlag = !!this._testEnv;
         const options = {
             adId: interstitialId,
-            isTesting: false
+            isTesting: useTestFlag
         };
 
         AdMob.prepareInterstitial(options).then(() => {
@@ -541,25 +660,200 @@ const MonetizationManager = {
         });
     },
 
-    showInterstitial: function() {
-        if (!AdMob || !this.isInterstitialReady) {
-            console.log('[Monetization] Interstitial hazır değil');
-            return false;
-        }
-
-        AdMob.showInterstitial().then(() => {
-            console.log('[Monetization] Interstitial gösterildi');
-            this.isInterstitialReady = false;
-            // Bir sonraki için hazırla
-            setTimeout(() => this.prepareInterstitial(), 3000);
-        }).catch((error) => {
-            console.error('[Monetization] Interstitial gösterme hatası:', error);
-            this.isInterstitialReady = false;
-            // Hata durumunda yeniden hazırla
-            setTimeout(() => this.prepareInterstitial(), 5000);
-        });
+    // === SHOW INTERSTITIAL (Unity Ads + AdMob Fallback) ===
+    showInterstitial: async function() {
+        console.log('[Monetization] Interstitial gösterme talebi');
         
-        return true;
+        // 1. Önce Unity Ads native bridge dene (Android)
+        if (this._unityReady && window.UnityAdsAndroid) {
+            try {
+                const isReady = window.UnityAdsAndroid.isInterstitialReady();
+                console.log('[Unity Ads] Interstitial ready status:', isReady);
+                
+                if (isReady) {
+                    console.log('[Unity Ads] Interstitial gösteriliyor (Android)...');
+                    window.UnityAdsAndroid.showInterstitial();
+                    
+                    // Native bridge callback beklemeden başarılı say
+                    // Native kod kendi lifecycle'ını yönetiyor
+                    this._isInterstitialReady = false;
+                    
+                    // 3 saniye sonra ready durumunu tekrar kontrol et
+                    setTimeout(() => this.loadUnityInterstitial(), 3000);
+                    
+                    return true;
+                }
+            } catch (error) {
+                console.error('[Unity Ads] ❌ Interstitial gösterme hatası:', error);
+                // Unity başarısız, fallback dene
+            }
+        }
+        
+        // 1b. Unity Ads native bridge dene (iOS)
+        if (this._unityReady && window.webkit?.messageHandlers?.UnityAdsIOS) {
+            try {
+                if (this._isInterstitialReady) {
+                    console.log('[Unity Ads] Interstitial gösteriliyor (iOS)...');
+                    window.webkit.messageHandlers.UnityAdsIOS.postMessage({
+                        action: 'showInterstitial'
+                    });
+                    
+                    this._isInterstitialReady = false;
+                    
+                    // 3 saniye sonra ready durumunu tekrar kontrol et
+                    setTimeout(() => this.loadUnityInterstitial(), 3000);
+                    
+                    return true;
+                }
+            } catch (error) {
+                console.error('[Unity Ads] ❌ Interstitial gösterme hatası (iOS):', error);
+                // Unity başarısız, fallback dene
+            }
+        }
+        
+        // 2. Unity başarısız veya hazır değil - AdMob fallback
+        if (AdMob && this.isInterstitialReady) {
+            try {
+                console.log('[AdMob] Fallback: Interstitial gösteriliyor...');
+                await AdMob.showInterstitial();
+                console.log('[AdMob] ✅ Interstitial başarıyla gösterildi');
+                this.isInterstitialReady = false;
+                setTimeout(() => this.prepareInterstitial(), 3000);
+                return true;
+            } catch (error) {
+                console.error('[AdMob] ❌ Interstitial gösterme hatası:', error);
+                this.isInterstitialReady = false;
+                setTimeout(() => this.prepareInterstitial(), 5000);
+                return false;
+            }
+        }
+        
+        console.log('[Monetization] ⚠️ Hiçbir reklam hazır değil');
+        return false;
+    },
+
+    // === SHOW REWARDED (Unity Ads + AdMob Fallback) ===
+    showRewarded: async function() {
+        console.log('[Monetization] Rewarded ad gösterme talebi');
+        
+        return new Promise(async (resolve, reject) => {
+            // 1. Önce Unity Ads native bridge dene (Android)
+            if (this._unityReady && window.UnityAdsAndroid) {
+                try {
+                    const isReady = window.UnityAdsAndroid.isRewardedReady();
+                    console.log('[Unity Ads] Rewarded ready status (Android):', isReady);
+                    
+                    if (isReady) {
+                        console.log('[Unity Ads] 🎬 REWARDED AD GÖSTERILIYOR (Android)...');
+                        console.log('[Unity Ads] 📊 Unity Ad Status:', {
+                            ready: isReady,
+                            hasCallback: !!window.UnityAdsRewardCallback,
+                            platform: 'android'
+                        });
+                        
+                        // Callback promise'i kaydet
+                        this._rewardedCallbackResolve = resolve;
+                        console.log('[Unity Ads] 🔗 Promise resolver kaydedildi');
+                        
+                        // Native bridge üzerinden göster
+                        // Callback window.UnityAdsRewardCallback(true/false) ile gelecek
+                        window.UnityAdsAndroid.showRewarded();
+                        console.log('[Unity Ads] ✅ showRewarded() çağrıldı - callback bekleniyor...');
+                        
+                        this._isRewardedReady = false;
+                        
+                        // 3 saniye sonra ready durumunu tekrar kontrol et
+                        setTimeout(() => this.loadUnityRewarded(), 3000);
+                        
+                        // Timeout: 60 saniye içinde callback gelmezse fallback
+                        setTimeout(() => {
+                            if (this._rewardedCallbackResolve) {
+                                console.warn('[Unity Ads] ⚠️ Timeout - callback gelmedi');
+                                this._rewardedCallbackResolve = null;
+                                // AdMob fallback'e geç
+                                this.showRewardedAdMobFallback(resolve, reject);
+                            }
+                        }, 60000);
+                        
+                        return; // Promise callback'ten resolve edilecek
+                    }
+                } catch (error) {
+                    console.error('[Unity Ads] ❌ Rewarded ad gösterme hatası (Android):', error);
+                    // Unity başarısız, fallback dene
+                }
+            }
+            
+            // 1b. Unity Ads native bridge dene (iOS)
+            if (this._unityReady && window.webkit?.messageHandlers?.UnityAdsIOS) {
+                try {
+                    if (this._isRewardedReady) {
+                        console.log('[Unity Ads] 🎬 REWARDED AD GÖSTERILIYOR (iOS)...');
+                        console.log('[Unity Ads] 📊 Unity iOS Ad Status:', {
+                            ready: this._isRewardedReady,
+                            hasCallback: !!window.UnityAdsRewardCallback,
+                            platform: 'ios'
+                        });
+                        
+                        // Callback promise'i kaydet
+                        this._rewardedCallbackResolve = resolve;
+                        console.log('[Unity Ads] 🔗 iOS Promise resolver kaydedildi');
+                        
+                        // iOS bridge üzerinden göster
+                        // Callback window.UnityAdsRewardCallback(true/false) ile gelecek
+                        window.webkit.messageHandlers.UnityAdsIOS.postMessage({
+                            action: 'showRewarded'
+                        });
+                        console.log('[Unity Ads] ✅ iOS showRewarded() çağrıldı - callback bekleniyor...');
+                        
+                        this._isRewardedReady = false;
+                        
+                        // 3 saniye sonra ready durumunu tekrar kontrol et
+                        setTimeout(() => this.loadUnityRewarded(), 3000);
+                        
+                        // Timeout: 60 saniye içinde callback gelmezse fallback
+                        setTimeout(() => {
+                            if (this._rewardedCallbackResolve) {
+                                console.warn('[Unity Ads] ⚠️ Timeout (iOS) - callback gelmedi');
+                                this._rewardedCallbackResolve = null;
+                                // AdMob fallback'e geç
+                                this.showRewardedAdMobFallback(resolve, reject);
+                            }
+                        }, 60000);
+                        
+                        return; // Promise callback'ten resolve edilecek
+                    }
+                } catch (error) {
+                    console.error('[Unity Ads] ❌ Rewarded ad gösterme hatası (iOS):', error);
+                    // Unity başarısız, fallback dene
+                }
+            }
+            
+            // 2. Unity başarısız veya hazır değil - AdMob fallback
+            this.showRewardedAdMobFallback(resolve, reject);
+        });
+    },
+    
+    showRewardedAdMobFallback: async function(resolve, reject) {
+        if (AdMob) {
+            try {
+                console.log('[AdMob] Fallback: Rewarded ad gösteriliyor...');
+                const result = await AdMob.showRewardVideoAd();
+                
+                if (result && result.rewarded) {
+                    console.log('[AdMob] ✅ Rewarded ad tamamlandı - ödül verilecek');
+                    resolve({ rewarded: true, provider: 'admob' });
+                } else {
+                    console.log('[AdMob] ⚠️ Kullanıcı reklamı tamamlamadı');
+                    resolve({ rewarded: false, provider: 'admob' });
+                }
+            } catch (error) {
+                console.error('[AdMob] ❌ Rewarded ad gösterme hatası:', error);
+                reject(error);
+            }
+        } else {
+            console.log('[Monetization] ⚠️ Hiçbir reklam sağlayıcı hazır değil');
+            reject(new Error('No ad provider available'));
+        }
     },
 
     // === MOBILE WEB ADS ===
@@ -663,20 +957,25 @@ const MonetizationManager = {
         const completions = parseInt(localStorage.getItem('quizCompletions') || '0') + 1;
         localStorage.setItem('quizCompletions', completions.toString());
         
-        // Her 3 quiz'de bir interstitial göster
-        if (completions % 3 === 0) {
-            setTimeout(() => {
-                this.showInterstitialIfReady();
-            }, 1000);
-        }
+        // Bölüm bazlı reklam gösterimi script.js'de yapılıyor
+        // Bu fonksiyon sadece analytics için kullanılıyor
+        console.log(`[Monetization] Quiz tamamlandı. Toplam: ${completions}`);
     },
 
     // Additional utility for manual interstitial trigger
     showInterstitialIfReady: function() {
-        if (this.isInterstitialReady) {
+        console.log('[Monetization] showInterstitialIfReady çağrıldı');
+        console.log('[Monetization] Unity hazır:', this._unityReady && this._isInterstitialReady);
+        console.log('[Monetization] AdMob hazır:', this.isInterstitialReady);
+        
+        if ((this._unityReady && this._isInterstitialReady) || this.isInterstitialReady) {
+            console.log('[Monetization] ✅ Interstitial gösteriliyor...');
             return this.showInterstitial();
         } else {
-            console.log('[Monetization] Interstitial henüz hazır değil');
+            console.log('[Monetization] ⚠️ Interstitial henüz hazır değil');
+            // Unity ve AdMob'u hazırla
+            if (this._unityReady) this.loadUnityInterstitial();
+            this.prepareInterstitial();
             return false;
         }
     },
@@ -695,14 +994,20 @@ const MonetizationManager = {
 };
 
 // === TEST / PROD HELPERS ===
+// Google'ın iOS sample ad unit ID'leri (diagnostic fallback)
+// ✅ PRODUCTION: Test ad units tamamen kaldırıldı (Google policy compliance)
+// _IOS_SAMPLE_UNITS objesi kaldırıldı
+
 MonetizationManager.isTestMode = function() {
-    return false;
+    return false; // ✅ PRODUCTION: Test mode kapalı
 };
 
 // Yeni net isimli yardımcı
 MonetizationManager.getActiveAdUnits = function() {
     const platform = window.Capacitor ? window.Capacitor.getPlatform() : 'web';
     const isNative = platform === 'ios' || platform === 'android';
+    
+    // ✅ PRODUCTION: Sadece production ad units kullan
     const map = this._PROD_AD_UNITS;
     return isNative ? (map[platform] || this._PROD_AD_UNITS.android) : null;
 };

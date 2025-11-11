@@ -1,231 +1,8 @@
 /* Version 3.0 - Firebase puan kaydetme sistemi tamamlandı */
 
-/* Mobil Reklam Stilleri */
-
-/* Mobil cihazlarda normal reklam alanlarını gizle */
-/* Tabletlerde de mobil görünüm uygula (1920px'e kadar - tablet ve telefon aynı) */
-@media (max-width: 1920px) {
-    .ad-container, 
-    .adsbygoogle:not(.mobile-banner):not(.mobile-inline) {
-        display: none !important;
-        pointer-events: none !important;
-        visibility: hidden !important;
-    }
-    
-    .ad-sidebar-left, 
-    .ad-sidebar-right {
-        display: none !important;
-        pointer-events: none !important;
-        visibility: hidden !important;
-    }
-}
-
-/* Mobil Üst Banner Reklam - Sabit pozisyon */
-.mobile-top-banner {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    height: 80px !important; /* Yükseklik artırıldı */
-    background: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: blur(10px) !important;
-    z-index: 1000 !important;
-    border: none !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
-    margin-bottom: 0 !important;
-    border-radius: 0 !important;
-}
-
-.mobile-top-banner .adsbygoogle {
-    width: 320px !important;
-    height: 50px !important;
-    min-width: 320px !important;
-}
-
-/* Mobil banner için container padding sınıfı */
-.with-top-banner {
-    padding-top: 80px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
-
-/* Mobil Inline Reklamlar */
-.mobile-inline-ad {
-    width: 100%;
-    max-width: 320px;
-    height: 100px;
-    margin: 20px auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.mobile-inline-ad .adsbygoogle {
-    width: 300px !important;
-    height: 100px !important;
-    min-width: 300px !important;
-    max-width: 300px !important;
-    min-height: 100px !important;
-    max-height: 100px !important;
-    display: block !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: none !important;
-    background: transparent !important;
-}
-
-/* Reklam Kapatma Butonu */
-.mobile-ad-close {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 20px;
-    height: 20px;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    font-size: 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10001;
-}
-
-.mobile-ad-close:hover {
-    background: rgba(0, 0, 0, 0.7);
-}
-
-/* Karanlık tema desteği */
-[data-theme="dark"] .mobile-top-banner {
-    background: transparent !important;
-    border: none !important;
-}
-
-[data-theme="dark"] .mobile-inline-ad {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Banner reklamlar herzaman görünür kalacak - quiz sırasında gizleme kuralı kaldırıldı */
-
-/* Küçük ekranlar için responsive */
-@media (max-width: 360px) {
-    .mobile-top-banner .adsbygoogle {
-        width: 300px !important;
-        max-width: 300px !important;
-    }
-    
-    .mobile-inline-ad .adsbygoogle {
-        width: 280px !important;
-        max-width: 280px !important;
-    }
-}
+/* Banner reklamlar kaldırıldı - sadece interstitial ve rewarded aktif */
 
 /* Temel Stil ve Sıfırlama */
-
-/* Reklam Alanları Stilleri - Tamamen şeffaf */
-.ad-container, .adsbygoogle {
-    display: block !important;
-    background: transparent !important;
-    border: none !important;
-    outline: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    text-align: center;
-    width: 100% !important;
-    min-width: 320px !important;
-    max-width: 100% !important;
-    height: auto;
-    min-height: 250px;
-    max-height: 600px;
-    overflow: hidden;
-    position: relative;
-    z-index: 1;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-/* Sayfa kenarında sabit reklam alanları - Tamamen şeffaf */
-.ad-sidebar-left, .ad-sidebar-right {
-    position: fixed;
-    width: 180px !important;
-    min-width: 180px !important;
-    height: 400px !important;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    display: block !important;
-    visibility: visible !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    border: none !important;
-    outline: none !important;
-    padding: 0;
-}
-
-/* Karanlık tema için şeffaf yan reklam alanları */
-[data-theme="dark"] .ad-sidebar-left,
-[data-theme="dark"] .ad-sidebar-right {
-    background: transparent !important;
-    border: none !important;
-}
-
-[data-theme="dark"] .side-ad-container {
-    background: transparent !important;
-    border: none !important;
-}
-
-.ad-sidebar-left {
-    left: 15px;
-}
-
-.ad-sidebar-right {
-    right: 15px;
-}
-
-/* Reklam container'ları için ek stiller - Tamamen şeffaf */
-.side-ad-container {
-    display: flex !important;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100% !important;
-    min-width: 160px !important;
-    min-height: 200px !important;
-    background: transparent !important;
-    margin: 0;
-    padding: 0;
-    visibility: visible !important;
-    box-shadow: none !important;
-    border: none !important;
-    outline: none !important;
-}
-
-/* Mobil cihazlarda kenar reklamlarını gizle */
-/* Tabletlerde de kenar reklamlarını gizle (1920px'e kadar - tablet ve telefon aynı) */
-@media (max-width: 1920px) {
-    .ad-sidebar-left, .ad-sidebar-right {
-        display: none;
-    }
-}
-
-/* Karanlık tema için reklam stilleri - Tamamen şeffaf */
-[data-theme="dark"] .ad-container, 
-[data-theme="dark"] .adsbygoogle {
-    background: transparent !important;
-    border: none !important;
-    outline: none !important;
-    color: #ccc;
-}
 :root {
     --primary-color: #4a148c;
     --secondary-color: #e91e63;
@@ -780,7 +557,7 @@ input:checked + .slider:before {
     filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.8));
 }
 
-/* Joker Mağazası Modal */
+/* Joker Mağazası Modal - Tam Ekran */
 .modal {
     display: none;
     position: fixed;
@@ -789,18 +566,20 @@ input:checked + .slider:before {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: #f5f5f5;
     overflow-y: auto;
 }
 
 .modal-content {
-    background-color: var(--bg-color);
-    margin: 5% auto;
+    background-color: #f5f5f5;
+    margin: 0;
     padding: 0;
-    border-radius: var(--border-radius);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    width: 90%;
-    max-width: 600px;
+    border-radius: 0;
+    box-shadow: none;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    min-height: 100vh;
     animation: modal-appear 0.3s ease-out forwards;
 }
 
@@ -816,18 +595,22 @@ input:checked + .slider:before {
 }
 
 .modal-header {
-    padding: 15px 20px;
-    background-color: var(--primary-color);
+    padding: 20px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    border-radius: 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .modal-header h2 {
     margin: 0;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
 }
 
 .modal-header h2 i {
@@ -836,50 +619,83 @@ input:checked + .slider:before {
 
 .close-modal {
     color: white;
-    font-size: 24px;
+    font-size: 32px;
     font-weight: bold;
     cursor: pointer;
+    transition: transform 0.2s ease;
+    padding: 5px 10px;
+    line-height: 1;
+}
+
+.close-modal:hover {
+    transform: scale(1.2);
 }
 
 .modal-body {
     padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #f5f5f5;
+    min-height: calc(100vh - 80px);
 }
 
 .joker-store-points {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: 600;
-    margin-bottom: 20px;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 152, 0, 0.1) 100%);
     border-radius: var(--border-radius);
     text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    border: 2px solid rgba(255, 193, 7, 0.3);
+}
+
+.joker-store-points .points-display,
+.joker-store-points .stars-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .joker-store-points i {
     color: var(--accent-color);
     margin-right: 5px;
+    font-size: 1.4rem;
+}
+
+.joker-store-points .star-icon {
+    font-size: 1.4rem;
 }
 
 .joker-store-items {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 15px;
-    padding: 0 10px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    padding: 0 10px 20px;
 }
 
 .joker-store-item {
-    background-color: white;
-    border-radius: var(--border-radius);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 15px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    transition: transform 0.2s ease;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 1;
 }
 
 .joker-store-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary-color);
+    z-index: 2;
 }
 
 .joker-icon {
@@ -940,6 +756,49 @@ input:checked + .slider:before {
     background-color: #ccc;
     cursor: not-allowed;
 }
+
+/* Joker Actions Container */
+.joker-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Watch Ad Button */
+.joker-watch-ad-btn {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: none;
+    padding: 8px 0;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.joker-watch-ad-btn:hover {
+    background: linear-gradient(135deg, #059669, #047857);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.joker-watch-ad-btn:disabled {
+    background: linear-gradient(135deg, #ccc, #999);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.joker-watch-ad-btn i {
+    font-size: 1rem;
+}
+
 
 /* Lider Tablosu Stilleri */
 #global-leaderboard {
@@ -6315,6 +6174,53 @@ input:checked + .switch-label:before {
 
 /* ... existing code ... */
 
+/* Bilgoo Logo Stilleri */
+.app-logo-container {
+    text-align: center;
+    margin: 2rem auto 1.5rem;
+    padding: 0;
+}
+
+/* Logo SVG boyutunu büyüt */
+.app-logo-container svg {
+    width: 400px !important;
+    height: 112px !important;
+    max-width: 90vw;
+}
+
+.app-logo-container .app-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin: 0;
+    padding: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .app-logo-container svg {
+        width: 350px !important;
+        height: 98px !important;
+    }
+    
+    .app-logo-container .app-title {
+        font-size: 2.8rem;
+        letter-spacing: 1.5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-logo-container svg {
+        width: 280px !important;
+        height: 78px !important;
+    }
+    
+    .app-logo-container .app-title {
+        font-size: 2.2rem;
+        letter-spacing: 1px;
+    }
+}
+
 .main-menu {
     display: flex;
     flex-direction: column;
@@ -7537,6 +7443,8 @@ input:checked + .switch-label:before {
 }
 
 /* Logo gizleme stilleri - kategori seçimi ve oyun sırasında profesyonel görünüm */
+body.category-selection .app-logo-container,
+body.quiz-active .app-logo-container,
 body.category-selection .main-logo-container,
 body.quiz-active .main-logo-container {
     display: none !important;
@@ -7548,7 +7456,8 @@ body.quiz-active .main-logo-container {
     overflow: hidden !important;
 }
 
-/* Ana menüde logo görünür */
+/* Ana menüde logo görünür - sadece ana sayfa */
+body:not(.category-selection):not(.quiz-active) .app-logo-container,
 body:not(.category-selection):not(.quiz-active) .main-logo-container {
     display: block !important;
     opacity: 1 !important;
@@ -8822,7 +8731,7 @@ body.quiz-active .main-logo-container svg {
     border-radius: 18px;
     box-shadow: 0 4px 18px rgba(74,20,140,0.10), 0 1.5px 6px rgba(233,30,99,0.08);
     margin-bottom: 18px;
-    margin-top: 95px; /* Banner reklam için üstten boşluk */
+    margin-top: 60px; /* Üstteki saat/tarih/ada için boşluk */
     position: relative;
     z-index: 2;
 }

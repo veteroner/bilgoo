@@ -17,6 +17,7 @@ PODS:
   - Google-Mobile-Ads-SDK (11.3.0):
     - GoogleUserMessagingPlatform (>= 1.1)
   - GoogleUserMessagingPlatform (2.7.0)
+  - UnityAds (4.8.0)
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
@@ -27,11 +28,13 @@ DEPENDENCIES:
   - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
   - GoogleUserMessagingPlatform (~> 2.7.0)
+  - UnityAds (= 4.8.0)
 
 SPEC REPOS:
   trunk:
     - Google-Mobile-Ads-SDK
     - GoogleUserMessagingPlatform
+    - UnityAds
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -59,7 +62,8 @@ SPEC CHECKSUMS:
   CapacitorStatusBar: 7d8fcbd6768db014bd721d75e246590b014928e8
   Google-Mobile-Ads-SDK: 301a16c461c331ba34ff4dab40a22ab7c147af61
   GoogleUserMessagingPlatform: a8b56893477f67212fbc8411c139e61d463349f5
+  UnityAds: 390144b2029ac9ce2ec81c3cfd0007686b59236a
 
-PODFILE CHECKSUM: a4efe78ecc746e205d22aec025aab1e31dc02c08
+PODFILE CHECKSUM: 992e9af0f648656d2add230e8df93242ae59e7a6
 
 COCOAPODS: 1.16.2

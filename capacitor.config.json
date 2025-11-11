@@ -13,10 +13,6 @@
     "AdMob": {
       "appId": "ca-app-pub-7610338885240453~5183201967",
       "iosAppId": "ca-app-pub-7610338885240453~2583882725",
-      "bannerAdId": {
-        "android": "ca-app-pub-7610338885240453/3665814891",
-        "ios": "ca-app-pub-7610338885240453/2815767654"
-      },
       "interstitialAdId": {
         "android": "ca-app-pub-7610338885240453/1220131878",
         "ios": "ca-app-pub-7610338885240453/5988725909"
@@ -38,8 +34,8 @@
       "requestAuthorizationMessage": "Bu uygulama, size daha alakalı ve kişiselleştirilmiş reklamlar gösterebilmek için diğer şirketlerin uygulama ve web sitelerinden gelen verilerinizi kullanmak istiyor. Bu izni vermezseniz de uygulamayı tam olarak kullanabilirsiniz."
     },
     "SplashScreen": {
-      "launchShowDuration": 3000,
-      "launchAutoHide": true,
+      "launchShowDuration": 5000,
+      "launchAutoHide": false,
       "backgroundColor": "#ffffff",
       "androidSplashResourceName": "splash",
       "androidScaleType": "CENTER_INSIDE",
@@ -57,7 +53,7 @@
       "presentationOptions": ["badge", "sound", "banner", "list"]
     },
     "App": {
-      "launchUrl": "index.html",
+      "launchUrl": "login.html",
       "handleAppUrlOpen": true,
       "appUrlOpen": true
     }

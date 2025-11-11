@@ -11,7 +11,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: windowScene)
         
-        if let viewController = CAPBridge.getOrCreateRootViewController() {
+        // Load CAPBridgeViewController from storyboard or create directly
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let viewController = storyboard.instantiateInitialViewController() as? CAPBridgeViewController {
+            
+            // CRITICAL FIX: Override Capacitor config to force login.html as start page
+            print("🔧 [SceneDelegate] Forcing serverURL to login.html")
+            if let bridge = viewController.bridge {
+                // Force load login.html after bridge is ready
+                DispatchQueue.main.async {
+                    let loginURL = URL(string: "capacitor://localhost/login.html")!
+                    let request = URLRequest(url: loginURL)
+                    viewController.bridge?.webView?.load(request)
+                    print("✅ [SceneDelegate] Loaded login.html explicitly")
+                }
+            }
+            
+            window?.rootViewController = viewController
+            window?.makeKeyAndVisible()
+        } else {
+            // Fallback: create CAPBridgeViewController directly
+            let viewController = CAPBridgeViewController()
             window?.rootViewController = viewController
             window?.makeKeyAndVisible()
         }
@@ -35,5 +55,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneDidEnterBackground(_ scene: UIScene) {
         // Called as the scene transitions from the foreground to the background.
+        // Pause media playback
+        if let window = self.window,
+           let rootViewController = window.rootViewController as? CAPBridgeViewController {
+            
+            if #available(iOS 14.0, *) {
+                if #available(iOS 15.0, *) {
+                    rootViewController.bridge?.webView?.setAllMediaPlaybackSuspended(true, completionHandler: {
+                        print("Media playback suspended")
+                    })
+                }
+            } else {
+                rootViewController.bridge?.webView?.evaluateJavaScript("""
+                    if (window.quizApp && typeof window.quizApp.pauseAllAudio === 'function') {
+                        window.quizApp.pauseAllAudio();
+                    }
+                """, completionHandler: { result, error in
+                    if let error = error {
+                        // Log but don't treat as critical - this is a background operation
+                        print("[SceneDelegate] Media pause JS eval warning: \(error.localizedDescription)")
+                    }
+                })
+            }
+        }
     }
 }

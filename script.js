@@ -3,6 +3,77 @@
 // Bu dosya JavaScript'tir, TypeScript değildir.
 // Script Version 3.0 - Firebase puan kaydetme sistemi tamamlandı
 
+// ==== GLOBAL RUNTIME ERROR OVERLAY & EARLY SPLASH CONTROL (Injected) ====
+// Amaç: iOS WebView'de görünmeyen login / beyaz ekran sorununda gerçek ilk hatayı
+// yakalayıp görsel olarak göstermek ve splash ekranını gereksiz yere bekletmemek.
+(() => {
+    if (window.__BILGOO_ERROR_OVERLAY_INSTALLED__) return; // idempotent
+    window.__BILGOO_ERROR_OVERLAY_INSTALLED__ = true;
+
+    let firstErrorShown = false;
+    const MAX_STACK = 1200;
+
+    function showOverlay(kind, message, errorObj) {
+        if (firstErrorShown) return;
+        firstErrorShown = true;
+        try { localStorage.setItem('lastFatalErrorAt', Date.now().toString()); } catch(_) {}
+        const overlay = document.createElement('div');
+        overlay.id = 'runtime-error-overlay';
+        overlay.style.cssText = [
+            'position:fixed','inset:0','background:rgba(20,0,30,0.92)','color:#fff','font-family:monospace',
+            'font-size:13px','padding:16px','z-index:999999','overflow:auto','line-height:1.4'
+        ].join(';');
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = 'Kapat';
+        closeBtn.style.cssText = 'position:absolute;top:10px;right:10px;background:#ff2d55;color:#fff;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;font-weight:600;';
+        closeBtn.onclick = () => overlay.remove();
+
+        const pre = document.createElement('pre');
+        pre.style.whiteSpace = 'pre-wrap';
+        pre.style.wordBreak = 'break-word';
+        const stack = (errorObj && (errorObj.stack || errorObj.message)) || '';
+        pre.textContent = [
+            '🛑 Uygulama Çalışması Durduruldu (İlk Hata)',
+            'Tür: ' + kind,
+            'Mesaj: ' + message,
+            stack ? ('Stack:\n' + stack.slice(0, MAX_STACK)) : 'Stack yok',
+            '\nİPUCU: Bu ekranın ekran görüntüsünü al ve paylaş. Hata düzeltildikten sonra bu overlay otomatik kaybolur.'
+        ].join('\n\n');
+
+        overlay.appendChild(closeBtn);
+        overlay.appendChild(pre);
+        document.documentElement.appendChild(overlay);
+
+        // Splash varsa hemen gizle ki boş ekran izlenimi devam etmesin
+        hideSplashImmediate();
+    }
+
+    function hideSplashImmediate() {
+        // Capacitor Splash API
+        try { if (window.Capacitor?.Plugins?.SplashScreen) window.Capacitor.Plugins.SplashScreen.hide(); } catch(_) {}
+        const splash = document.getElementById('splash-screen');
+        if (splash) splash.style.display = 'none';
+    }
+
+    window.addEventListener('error', (e) => {
+        showOverlay('window.error', e.message + ' @ ' + (e.filename||'') + ':' + (e.lineno||0), e.error || e);
+    });
+    window.addEventListener('unhandledrejection', (e) => {
+        const reason = e.reason || {};
+        const msg = typeof reason === 'string' ? reason : (reason.message || JSON.stringify(reason));
+        showOverlay('unhandledrejection', msg, reason);
+    });
+
+    // Erken splash gizleme stratejisi: DOMContentLoaded + kısa idle + kritik modüller yük kontrolü
+    document.addEventListener('DOMContentLoaded', () => {
+        // Çok uzun beklemesin; 1500ms sonra hâlâ hata yoksa splash'ı kaldır.
+        setTimeout(() => {
+            if (!firstErrorShown) hideSplashImmediate();
+        }, 1500);
+    });
+})();
+// ==== END ERROR OVERLAY INJECTION ====
+
 // Global debug fonksiyonları - İstatistik sorunlarını çözmek için
 window.testProfileStats = function() {
     console.log('=== PROFİL İSTATİSTİK TEST ===');
@@ -485,14 +556,17 @@ function initFullscreenMode() {
             height: 100dvh !important;
             margin: 0 !important;
             padding: 0 !important;
-            padding-top: 110px !important; /* Banner reklam için üst boşluk */
+            /* Banner kaldırıldı: önceki sabit 110px üst boşluk beyaz ekran algısı yaratıyordu.
+               Artık sadece güvenli alan + küçük bir temel üst boşluk (16px) uygulanıyor. */
+            padding-top: 16px !important;
             overflow-y: auto !important;
         }
         
         /* Safe area için padding ekle */
         @supports (padding: max(0px)) {
             .pwa-fullscreen .container {
-                padding-top: max(env(safe-area-inset-top), 0px) !important;
+                /* Safe area + temel padding birleşimi */
+                padding-top: calc(max(env(safe-area-inset-top), 0px) + 16px) !important;
                 padding-bottom: max(env(safe-area-inset-bottom), 0px) !important;
                 padding-left: max(env(safe-area-inset-left), 0px) !important;
                 padding-right: max(env(safe-area-inset-right), 0px) !important;
@@ -638,18 +712,68 @@ function detectPlatform() {
 
 // Sayfa Yükleme İşlemleri
 document.addEventListener('DOMContentLoaded', () => {
-    // 🔥 CRITICAL: MonetizationManager'ı hemen başlat
-    console.log('🚀 CRITICAL: MonetizationManager başlatılıyor...');
-    if (window.MonetizationManager && typeof window.MonetizationManager.initialize === 'function') {
-        window.MonetizationManager.initialize();
-        console.log('🚀 CRITICAL: MonetizationManager.initialize() çağrıldı');
-    } else {
-        console.error('🚀 CRITICAL ERROR: MonetizationManager bulunamadı veya initialize fonksiyonu yok');
-    }
+    console.log('🎯 DOMContentLoaded event fired');
     
     // Platform tespitini hemen yap
     const platform = detectPlatform();
     console.log('🎯 Tespit edilen platform:', platform);
+    
+    // Capacitor native app ise, Capacitor'ın tam hazır olmasını bekle
+    if (platform === 'capacitor') {
+        console.log('📱 Capacitor platform detected, waiting for plugins to be ready...');
+        
+        let attempts = 0;
+        const maxAttempts = 100; // Maksimum 5 saniye bekle (100 * 50ms)
+        
+        // Capacitor plugins'lerin hazır olmasını bekle
+        const waitForCapacitor = () => {
+            attempts++;
+            
+            if (window.Capacitor && 
+                window.Capacitor.Plugins && 
+                window.Capacitor.isNativePlatform && 
+                window.Capacitor.isNativePlatform()) {
+                
+                console.log('✅ Capacitor plugins are ready!');
+                console.log('Available plugins:', Object.keys(window.Capacitor.Plugins));
+                
+                // Capacitor hazır, şimdi MonetizationManager'ı başlat
+                if (window.MonetizationManager && typeof window.MonetizationManager.initialize === 'function') {
+                    console.log('🚀 CRITICAL: MonetizationManager başlatılıyor...');
+                    window.MonetizationManager.initialize();
+                    console.log('🚀 CRITICAL: MonetizationManager.initialize() çağrıldı');
+                } else {
+                    console.error('🚀 CRITICAL ERROR: MonetizationManager bulunamadı');
+                }
+            } else if (attempts >= maxAttempts) {
+                console.error('❌ Capacitor plugins timeout after 5 seconds!');
+                console.error('Capacitor status:', {
+                    hasCapacitor: !!window.Capacitor,
+                    hasPlugins: !!(window.Capacitor && window.Capacitor.Plugins),
+                    isNative: window.Capacitor?.isNativePlatform?.()
+                });
+                
+                // Timeout olsa bile MonetizationManager'ı başlatmayı dene
+                if (window.MonetizationManager && typeof window.MonetizationManager.initialize === 'function') {
+                    console.log('⚠️ Forcing MonetizationManager initialization despite timeout...');
+                    window.MonetizationManager.initialize();
+                }
+            } else {
+                console.log(`⏳ Attempt ${attempts}/${maxAttempts} - Capacitor not ready yet, waiting...`);
+                setTimeout(waitForCapacitor, 50); // 50ms sonra tekrar dene
+            }
+        };
+        
+        // Capacitor hazırlık kontrolünü başlat
+        waitForCapacitor();
+    } else {
+        // Web platform - direkt başlat
+        console.log('🌐 Web platform detected, initializing immediately');
+        if (window.MonetizationManager && typeof window.MonetizationManager.initialize === 'function') {
+            window.MonetizationManager.initialize();
+            console.log('🚀 MonetizationManager.initialize() çağrıldı');
+        }
+    }
     
     // Tam ekran modunu başlat
     initFullscreenMode();
@@ -835,238 +959,82 @@ const quizApp = {
     },
 
     async showRewardedAd(modal) {
-        console.log('[Script Debug] Rewarded ad gösterme çağrıldı');
-        // Her çağrıda benzersiz bir invoke ID üret (debug korelasyonu için)
-        const invokeId = (this._rewardedInvokeSeq = (this._rewardedInvokeSeq || 0) + 1);
+        console.log('[Script] Rewarded ad gösterme çağrıldı');
         
-        // 🔧 DETAYLI LOGLAMA BAŞLANGICI
-        console.log(`[Rewarded#${invokeId}] 🚀 BAŞLANGIÇ - Rewarded ad gösterim süreci`);
-        console.log(`[Rewarded#${invokeId}] 📱 Platform kontrolü:`, {
-            isCapacitor: !!window.Capacitor,
-            hasPlugins: !!window.Capacitor?.Plugins,
-            hasAdMob: !!window.Capacitor?.Plugins?.AdMob,
-            userAgent: navigator.userAgent,
-            monetizationTestMode: window.MonetizationManager?.isTestMode?.(),
-            testUnits: window.MonetizationManager?.getActiveTestUnits?.()
-        });
-        
-        // Her yeni gösterim denemesinde resume guard sıfırlanır
-        this._rewardResumeDone = false;
-        let rewardHandled = false; // Başarılı ödül akışı tamamlandı mı?
-
-        // Reentrancy guard: aynı anda ikinci kez çağrılmasını engelle
+        // Reentrancy guard
         if (this._rewardedInProgress) {
-            console.log(`[Script Debug][Rewarded#${invokeId}] ⏳ Zaten aktif bir rewarded akışı var, yeni istek yok sayıldı`);
+            console.log('[Script] ⏳ Zaten aktif bir rewarded akışı var');
             return;
         }
         this._rewardedInProgress = true;
-        console.log(`[Script Debug][Rewarded#${invokeId}] ▶️ Akış başlatılıyor`);
-
-        // Global reward success flag - geç native hatalarını bastırmak için
-        const rewardSuccessKey = `_rewardSuccess_${invokeId}`;
-        this[rewardSuccessKey] = false;
 
         try {
-            console.log(`[Rewarded#${invokeId}] 🔍 AdMob durum kontrolü başlıyor...`);
-            console.log(`[Rewarded#${invokeId}] AdMob durumu:`, {
-                admobInitialized: this.admobInitialized,
-                hasAdMob: !!window.Capacitor?.Plugins?.AdMob,
-                rewardedReady: this.rewardedReady,
-                testMode: window.MonetizationManager?.isTestMode?.() || false
-            });
-            
-            if (!this.admobInitialized) {
-                console.log(`[Rewarded#${invokeId}] ❌ AdMob henüz initialize edilmemiş`);
-                this.showToast('Reklam sistemi henüz hazır değil', 'toast-error');
-                return;
-            }
-
-            if (!this.rewardedReady) {
-                console.log(`[Rewarded#${invokeId}] ❌ Rewarded henüz hazır değil, yeniden preload denenecek`);
-                this.preloadRewardedAd(true);
-                this.showToast('Reklam hazırlanıyor, lütfen birkaç saniye sonra tekrar deneyin', 'toast-warning');
-                this.updateRewardedButtonState();
-                return;
-            }
-
-            // 🔧 CAPACITOR v7 FIX: Direct plugin access
-            const { AdMob } = window.Capacitor.Plugins;
-            if (!AdMob) {
-                console.log(`[Rewarded#${invokeId}] ❌ AdMob eklentisi bulunamadı`);
-                this.showToast('Reklam eklentisi bulunamadı', 'toast-error');
-                this.preloadRewardedAd(true);
-                return;
-            }
-            
-            console.log(`[Rewarded#${invokeId}] ✅ AdMob eklentisi bulundu, fonksiyonlar:`, Object.keys(AdMob));
-            
             const watchAdBtn = document.getElementById('watch-rewarded-ad');
             
             if (watchAdBtn) {
                 watchAdBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Reklam Yükleniyor...';
                 watchAdBtn.disabled = true;
-                console.log(`[Rewarded#${invokeId}] 🔄 Buton durumu güncellendi`);
             }
 
-            console.log(`[Rewarded#${invokeId}] 🎬 Rewarded ad gösteriliyor...`);
-            // Ad göster
-            const result = await AdMob.showRewardVideoAd();
-            console.log(`[Rewarded#${invokeId}] 📊 Rewarded ad sonucu:`, result);
-            console.log(`[Rewarded#${invokeId}] 🔍 Result detay analizi:`, {
-                result: result,
-                type: typeof result,
-                amount: result?.amount,
-                typeField: result?.type,
-                rewarded: result?.rewarded,
-                hasAmount: result?.amount !== undefined,
-                hasType: result?.type !== undefined,
-                hasRewarded: result?.rewarded !== undefined,
-                keys: result ? Object.keys(result) : 'null'
-            });
+            // MonetizationManager'dan rewarded ad göster (Unity Ads + AdMob fallback)
+            console.log('[Script] MonetizationManager.showRewarded() çağrılıyor...');
+            const result = await window.MonetizationManager.showRewarded();
             
-            // 🔧 Test reklamları için çeşitli koşulları kontrol et
-            const isRewardValid = result && (
-                result.rewarded === true || 
-                (result.amount !== undefined && result.type !== undefined) ||
-                result.rewarded !== false  // Test reklamları bazen sadece empty object döner
-            );
+            console.log('[Script] Rewarded ad sonucu:', result);
             
-            console.log(`[Rewarded#${invokeId}] 🎯 Ödül geçerlilik kontrolü:`, {
-                isRewardValid: isRewardValid,
-                condition1_rewarded: result?.rewarded === true,
-                condition2_amountType: (result?.amount !== undefined && result?.type !== undefined),
-                condition3_notFalse: result?.rewarded !== false
-            });
-            
-            if (isRewardValid) {
-                console.log(`[Rewarded#${invokeId}] ✅ Reklam başarıyla izlendi - ödül veriliyor`);
-                
-                // 🛡️ KORUMA: Ödül işleminin başarılı olduğunu işaretle (catch bloklarından önce)
-                rewardHandled = true;
-                this[rewardSuccessKey] = true;
-                
-                try {
-                    // Reklam başarıyla izlendi - 3 can ver
-                    this.giveRewardedLives();
-                    console.log(`[Rewarded#${invokeId}] ✅ Can verme işlemi tamamlandı`);
-                } catch (livesError) {
-                    console.error(`[Rewarded#${invokeId}] Can verme hatası:`, livesError);
-                }
-                
-                // Modal'ı kaldır (güvenli şekilde)
-                try {
-                    if (modal && modal.remove) {
-                        modal.remove();
-                        console.log(`[Rewarded#${invokeId}] ✅ Modal başarıyla kaldırıldı`);
-                    }
-                } catch (modalError) {
-                    console.error(`[Rewarded#${invokeId}] Modal kaldırma hatası:`, modalError);
-                    // Alternatif yöntem
-                    if (modal && modal.parentNode) {
-                        modal.parentNode.removeChild(modal);
-                    }
-                }
-                
-                this.showToast('🎉 Tebrikler! 3 can kazandınız! Oyun devam ediyor...', 'toast-success');
-
-                // Ödül sonrası devam ettirme denemeleri - GÜÇLENDİRİLMİŞ
-                console.log(`[Rewarded#${invokeId}] 🎮 continueGameAfterReward denemeleri başlatılıyor...`);
-                
-                // Anında deneme
-                try { 
-                    console.log(`[Rewarded#${invokeId}] immediate continueGameAfterReward çağrılıyor...`);
-                    this.continueGameAfterReward('immediate'); 
-                    console.log(`[Rewarded#${invokeId}] immediate continueGameAfterReward başarılı`);
-                } catch(e){ 
-                    console.error(`[Rewarded#${invokeId}] immediate continue hata:`, e); 
-                }
-                
-                // Modal kapatma - oyun devam etsin diye
-                setTimeout(() => {
-                    try {
-                        if (modal && modal.remove) modal.remove();
-                        const buyModal = document.getElementById('buy-lives-modal');
-                        if (buyModal) buyModal.style.display = 'none';
-                        console.log(`[Rewarded#${invokeId}] Modal kapatıldı`);
-                    } catch(e) {
-                        console.error(`[Rewarded#${invokeId}] Modal kapatma hatası:`, e);
-                    }
-                }, 100);
-                
-                // Güçlendirilmiş devam ettirme denemeleri
-                [500, 1000, 1500, 2500].forEach((delay, index) => {
-                    setTimeout(() => { 
-                        try { 
-                            const attempt = `retry${delay}`;
-                            console.log(`[Rewarded#${invokeId}] ${attempt} continueGameAfterReward çağrılıyor...`);
-                            this.continueGameAfterReward(attempt); 
-                            console.log(`[Rewarded#${invokeId}] ${attempt} continueGameAfterReward başarılı`);
-                        } catch(e){ 
-                            console.error(`[Rewarded#${invokeId}] ${attempt} continue hata:`, e);
-                        } 
-                    }, delay);
+            if (result && result.rewarded) {
+                console.log(`[Script] 🎉 REKLAM TAMAMLANDI! Provider: ${result.provider}`);
+                console.log('[Script] 💖 CAN EKLEME İŞLEMİ:', {
+                    currentLives: this.lives,
+                    maxLives: this.maxLives,
+                    rewardAmount: 3,
+                    provider: result.provider
                 });
-
-                // Sonraki reklam hazırlığı
-                setTimeout(() => {
-                    try {
-                        console.log(`[Rewarded#${invokeId}] Yeni rewarded ad preload ediliyor`);
-                        this.preloadRewardedAd();
-                    } catch(preErr){
-                        console.error(`[Rewarded#${invokeId}] Yeni preload hata:`, preErr);
-                    }
-                }, 3500);
-
-                console.log(`[Rewarded#${invokeId}] ✅ Ödül akışı başarıyla tamamlandı!`);
                 
-                // Geç gelen native hataları bastırmak için 5 saniye sonrasını da koruma altına al
-                setTimeout(() => {
-                    if (this[rewardSuccessKey]) {
-                        delete this[rewardSuccessKey];
-                        console.log(`[Rewarded#${invokeId}] 🛡️ Koruma süresi doldu, geç hata koruması kaldırıldı`);
-                    }
-                }, 5000);
+                // Ödül ver
+                // Can sistemi düzgün çalışması için localStorage'dan mevcut can sayısını al
+                const currentLivesFromStorage = localStorage.getItem('lives');
+                let oldLives = parseInt(currentLivesFromStorage) || 0;
+                let newLives = Math.min(oldLives + 3, 5); // Maksimum 5 can
                 
-                return; // Başarılı durumda try sonlandırılır
-            } else {
-                console.log('[Script Debug] ⚠️ Reklam tam olarak izlenmedi');
-                this.showToast('Reklam tam olarak izlenmedi', 'toast-warning');
-                if (watchAdBtn) {
-                    watchAdBtn.innerHTML = '<i class="fas fa-play-circle"></i> 🎬 Reklam İzle - 3 Can Kazan';
-                    watchAdBtn.disabled = false;
+                // localStorage'a kaydet
+                localStorage.setItem('lives', newLives.toString());
+                
+                console.log(`[Script] ✅ CAN EKLENDI: ${oldLives} → ${newLives} (+${newLives - oldLives})`);
+                
+                // Global window.quizApp nesnesinde updateLives fonksiyonunu çağır
+                if (window.quizApp && typeof window.quizApp.updateLives === 'function') {
+                    // quizApp nesnesindeki lives değerini de güncelle
+                    window.quizApp.lives = newLives;
+                    window.quizApp.updateLives();
+                } else {
+                    console.warn('[Script] window.quizApp.updateLives fonksiyonu bulunamadı');
                 }
+                
+                if (modal) modal.style.display = 'none';
+                
+                this.showToast('🎉 3 can kazandınız!', 'toast-success');
+                
+                // Analytics
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'rewarded_ad_completed', {
+                        provider: result.provider,
+                        reward_amount: 3,
+                        lives_before: oldLives,
+                        lives_after: newLives
+                    });
+                }
+            } else {
+                console.log('[Script] ⚠️ Kullanıcı reklamı tamamlamadı');
+                this.showToast('Reklam tamamlanmadı', 'toast-warning');
             }
             
         } catch (error) {
-            // Çoklu koruma: rewardHandled + global success flag kontrolleri
-            const isProtected = rewardHandled === true || this[rewardSuccessKey] === true;
-            
-            if (isProtected) {
-                console.log(`[Rewarded#${invokeId}] ✅ Ödül başarılı, geç native hata yok sayıldı: ${JSON.stringify(error)}`);
-                return; // Başarılı tamamlanan işlem için hata işleme yapmıyoruz
-            } else {
-                // Sadece gerçek hataları logla
-                console.error(`[Rewarded#${invokeId}] ❌ Rewarded ad gerçek hata:`, error);
-                console.error(`[Rewarded#${invokeId}] Hata detayları:`, {
-                    message: error?.message,
-                    code: error?.code,
-                    name: error?.name,
-                    stack: error?.stack
-                });
-                this.showToast('Reklam gösterilirken hata oluştu', 'toast-error');
-
-                const watchAdBtn = document.getElementById('watch-rewarded-ad');
-                if (watchAdBtn) {
-                    watchAdBtn.innerHTML = '<i class="fas fa-play-circle"></i> 🎬 Reklam İzle - 3 Can Kazan';
-                    watchAdBtn.disabled = false;
-                }
-            }
+            console.error('[Script] ❌ Rewarded ad hatası:', error);
+            this.showToast('Reklam gösterilemedi, lütfen tekrar deneyin', 'toast-error');
         } finally {
-            // Her durumda progress flag temizlenir
-            if (this._rewardedInProgress) {
-                this._rewardedInProgress = false;
-                console.log(`[Script Debug][Rewarded#${invokeId}] 🧹 Akış sonlandırıldı. rewardHandled: ${rewardHandled}`);
-            }
+            this._rewardedInProgress = false;
+            this.updateRewardedButtonState();
         }
     },
 
@@ -3209,6 +3177,24 @@ const quizApp = {
             btn.style.webkitTapHighlightColor = 'transparent';
         }.bind(this));
         
+        // Reklam izle butonları için event listener'lar ekle
+        const watchAdButtons = modal.querySelectorAll('.joker-watch-ad-btn');
+        watchAdButtons.forEach(function(btn) {
+            var self = this;
+            btn.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const jokerType = btn.dataset.jokerType;
+                console.log('🎬 Reklam izle butonuna tıklandı:', jokerType);
+                self.watchAdForJoker(jokerType, modal);
+            };
+            
+            // Mobil cihazlar için ek optimizasyonlar
+            btn.style.touchAction = 'manipulation';
+            btn.style.webkitTapHighlightColor = 'transparent';
+        }.bind(this));
+        
         // Can satın alma fonksiyonu
         if (livesBuyBtn) {
             const livesPrice = 15; // 15 yıldız = 3 can
@@ -3240,7 +3226,11 @@ const quizApp = {
                     livesCountDisplay.textContent = this.lives;
                     
                     // Can gösterimini güncelle
-                    this.updateLivesDisplay();
+                    if (typeof this.updateLives === 'function') {
+                        this.updateLives();
+                    } else {
+                        console.warn('[Script] updateLives fonksiyonu bulunamadı (buyLives)');
+                    }
                     
                     // Buton durumunu güncelle
                     livesBuyBtn.disabled = this.totalStars < livesPrice;
@@ -3673,6 +3663,66 @@ const quizApp = {
             btn.disabled = this.totalScore < price;
             console.log(`Buton durumu güncellendi: Fiyat ${price}, Toplam puan ${this.totalScore}, Aktif: ${this.totalScore >= price}`);
         });
+    },
+
+    // Reklam izleyerek joker kazan
+    watchAdForJoker: function(jokerType, modal) {
+        console.log(`🎬 Reklam izle tıklandı: ${jokerType}`);
+        
+        // Günlük limit kontrolü
+        const today = new Date().toDateString();
+        const adWatchKey = 'joker_ad_watch_data';
+        let adWatchData = JSON.parse(localStorage.getItem(adWatchKey) || '{}');
+        
+        // Yeni gün ise sıfırla
+        if (adWatchData.date !== today) {
+            adWatchData = { date: today, count: 0 };
+        }
+        
+        // Günlük limit kontrolü (10 reklam)
+        if (adWatchData.count >= 10) {
+            this.showToast("Bugün maksimum joker kazandınız! (10/10)", "toast-error");
+            return;
+        }
+        
+        // Reklam göster
+        if (typeof MonetizationManager !== 'undefined' && MonetizationManager.showRewarded) {
+            MonetizationManager.showRewarded()
+                .then(() => {
+                    console.log('✅ Reklam başarıyla izlendi, joker ekleniyor');
+                    
+                    // Jokeri envantere ekle
+                    this.jokerInventory[jokerType] = (this.jokerInventory[jokerType] || 0) + 1;
+                    this.saveJokerInventory();
+                    
+                    // Günlük sayacı artır
+                    adWatchData.count++;
+                    localStorage.setItem(adWatchKey, JSON.stringify(adWatchData));
+                    
+                    // Göstergeleri güncelle
+                    this.updateJokerStoreDisplay(modal);
+                    this.updateJokerButtons();
+                    this.updateJokerTabBar();
+                    
+                    // Firebase'e kaydet
+                    if (this.isLoggedIn) {
+                        this.delayedSaveUserData();
+                    }
+                    
+                    // Başarı mesajı
+                    const jokerName = jokerType === 'fifty' ? '50:50' : 
+                        jokerType === 'hint' ? 'İpucu' : 
+                        jokerType === 'time' ? 'Süre' : 'Pas';
+                    this.showToast(`${jokerName} jokeri kazandınız! 🎉 (${adWatchData.count}/10)`, "toast-success");
+                })
+                .catch((error) => {
+                    console.error('❌ Reklam izleme hatası:', error);
+                    this.showToast("Reklam yüklenemedi, lütfen tekrar deneyin", "toast-error");
+                });
+        } else {
+            console.error('MonetizationManager bulunamadı');
+            this.showToast("Reklam sistemi yüklenemedi", "toast-error");
+        }
     },
 
     // Joker kullanım durumlarını sıfırla (envanter korunur)
@@ -4297,7 +4347,7 @@ const quizApp = {
         if (this.currentQuestionIndex > 0 && this.currentQuestionIndex % 5 === 0 && this.currentQuestionIndex < this.questions.length) {
             // Bölüm sayısını artır
             this.currentSection++; 
-            console.log(`🔼 Bölüm artırıldı: ${this.currentSection}`);
+            console.log(`🔼 Bölüm artırıldı: ${this.currentSection} (Toplam soru: ${this.currentQuestionIndex})`);
             
             // Progressive difficulty sistemi ile dinamik bölüm sayısı
             const maxSections = this.getMaxSectionsForCategory();
@@ -4575,6 +4625,9 @@ const quizApp = {
         
         console.log(`Genel Kültür kategorisi ${this.currentSection} bölüm ile tamamlandı!`);
         
+        // ℹ️ Geçiş reklamları artık 10 soruda bir gösterildiği için burada kaldırıldı
+        // Bu sayede kullanıcı deneyimi daha akıcı ve daha az rahatsız edici
+        
         // Kategori tamamlama modalını oluştur
         const categoryCompletionModal = document.createElement('div');
         categoryCompletionModal.className = 'category-completion-modal';
@@ -4811,11 +4864,29 @@ const quizApp = {
         
         // Tamamlanan bölüm numarası (0-tabanlı) - currentSection 1'den başladığı için -1
         const sectionIndex = this.currentSection - 2; // Bir önceki tamamlanan bölüm
+        const completedSection = sectionIndex + 1; // İnsan okunabilir bölüm numarası
         
         // Bölüm istatistiklerini al
         const stats = this.sectionStats[sectionIndex] || { correct: 0, total: 0 };
         
-        console.log(`Bölüm geçişi gösteriliyor. Bölüm: ${sectionIndex+1}, İstatistikler:`, stats);
+        console.log(`Bölüm geçişi gösteriliyor. Bölüm: ${completedSection}, İstatistikler:`, stats);
+        
+        // ✅ HER 2 BÖLÜMDE BİR (10 SORUDA BİR) INTERSTITIAL REKLAM GÖSTER
+        if (completedSection > 0 && completedSection % 2 === 0) {
+            console.log(`🎯 Bölüm ${completedSection} tamamlandı (10 soru) - Interstitial reklam gösteriliyor!`);
+            console.log(`📱 MonetizationManager mevcut mu:`, !!window.MonetizationManager);
+            console.log(`📱 showInterstitialIfReady fonksiyonu mevcut mu:`, !!(window.MonetizationManager && window.MonetizationManager.showInterstitialIfReady));
+            
+            if (window.MonetizationManager && window.MonetizationManager.showInterstitialIfReady) {
+                console.log(`⏱️ Hemen interstitial gösteriliyor...`);
+                const result = window.MonetizationManager.showInterstitialIfReady();
+                console.log(`📊 showInterstitialIfReady sonucu:`, result);
+            } else {
+                console.error(`❌ MonetizationManager veya showInterstitialIfReady bulunamadı!`);
+            }
+        } else if (completedSection > 0) {
+            console.log(`⏭️ Bölüm ${completedSection} tamamlandı - reklam gösterilmiyor (sadece çift bölümlerde reklam var)`);
+        }
         
         // Doğru cevap yüzdesini hesapla
         const correctPercentage = stats.total > 0 
@@ -5317,6 +5388,9 @@ const quizApp = {
             if (quizElement) quizElement.style.display = 'none';
             const mainMenu = document.getElementById('main-menu');
             if (mainMenu) mainMenu.style.display = 'block';
+            // Logo'yu göster
+            const appLogo = document.getElementById('app-logo-container');
+            if (appLogo) appLogo.style.display = 'block';
             const categorySelection = document.getElementById('category-selection');
             if (categorySelection) categorySelection.style.display = 'none';
             // Global lider tablosu açıksa gizle (ana menüye dönünce görünmemeli)
@@ -5523,6 +5597,9 @@ const quizApp = {
         // Oyun arayüzüne kalan diğer elemanları da gizle
         const mainMenu = document.getElementById('main-menu');
         if (mainMenu) mainMenu.style.display = 'none';
+        // Logo'yu gizle
+        const appLogo = document.getElementById('app-logo-container');
+        if (appLogo) appLogo.style.display = 'none';
         
         const onlineGameOptions = document.getElementById('online-game-options');
         if (onlineGameOptions) onlineGameOptions.style.display = 'none';
@@ -7013,6 +7090,9 @@ const quizApp = {
         
         const mainMenu = document.getElementById('main-menu');
         if (mainMenu) mainMenu.style.display = 'none';
+        // Logo'yu gizle
+        const appLogo = document.getElementById('app-logo-container');
+        if (appLogo) appLogo.style.display = 'none';
         
         const onlineGameOptions = document.getElementById('online-game-options');
         if (onlineGameOptions) onlineGameOptions.style.display = 'none';
@@ -8896,6 +8976,9 @@ const quizApp = {
         
         const mainMenu = document.getElementById('main-menu');
         if (mainMenu) mainMenu.style.display = 'none';
+        // Logo'yu gizle
+        const appLogo = document.getElementById('app-logo-container');
+        if (appLogo) appLogo.style.display = 'none';
         
         const onlineGameOptions = document.getElementById('online-game-options');
         if (onlineGameOptions) onlineGameOptions.style.display = 'none';
