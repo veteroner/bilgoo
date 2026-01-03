@@ -3842,6 +3842,7 @@ const quizApp = {
                 this.soundEnabled = this.userSettings.soundEnabled !== undefined ? this.userSettings.soundEnabled : true;
                 this.animationsEnabled = this.userSettings.animationsEnabled !== undefined ? this.userSettings.animationsEnabled : true;
                 this.notificationsEnabled = this.userSettings.notificationsEnabled !== undefined ? this.userSettings.notificationsEnabled : true;
+                this.vibrationEnabled = this.userSettings.vibrationEnabled !== undefined ? this.userSettings.vibrationEnabled : true;
                 this.theme = this.userSettings.theme || 'light';
                 
                 console.log("Kullanıcı ayarları yüklendi:", this.userSettings);
@@ -3851,6 +3852,7 @@ const quizApp = {
                 this.soundEnabled = true;
                 this.animationsEnabled = true;
                 this.notificationsEnabled = true;
+                this.vibrationEnabled = true;
                 this.theme = 'light';
                 
                 console.log("Varsayılan ayarlar kullanılıyor");
@@ -3884,6 +3886,7 @@ const quizApp = {
             this.userSettings.soundEnabled = this.soundEnabled;
             this.userSettings.animationsEnabled = this.animationsEnabled;
             this.userSettings.notificationsEnabled = this.notificationsEnabled;
+            this.userSettings.vibrationEnabled = this.vibrationEnabled;
             this.userSettings.theme = this.theme;
             
             localStorage.setItem(this.USER_SETTINGS_KEY, JSON.stringify(this.userSettings));
@@ -3896,6 +3899,34 @@ const quizApp = {
     // Tema uygula
     applyTheme: function() {
         document.body.className = this.theme === 'dark' ? 'dark-theme' : '';
+    },
+    
+    // Ayarları uygula (settings.html'den çağrılabilir)
+    applySettings: function() {
+        if (this.userSettings) {
+            this.soundEnabled = this.userSettings.soundEnabled !== undefined ? this.userSettings.soundEnabled : true;
+            this.animationsEnabled = this.userSettings.animationsEnabled !== undefined ? this.userSettings.animationsEnabled : true;
+            this.notificationsEnabled = this.userSettings.notificationsEnabled !== undefined ? this.userSettings.notificationsEnabled : true;
+            this.vibrationEnabled = this.userSettings.vibrationEnabled !== undefined ? this.userSettings.vibrationEnabled : (this.userSettings.vibration !== undefined ? this.userSettings.vibration : true);
+            this.theme = this.userSettings.theme || (this.userSettings.darkMode ? 'dark' : 'light');
+            this.applyTheme();
+            this.saveUserSettings();
+            console.log('Ayarlar uygulandı:', this.userSettings);
+        }
+    },
+    
+    // Titreşim fonksiyonu (web ve mobil uyumlu)
+    vibrate: function(pattern) {
+        if (!this.vibrationEnabled) return;
+        
+        // Navigator.vibrate API desteği kontrolü (modern tarayıcılarda ve mobilde çalışır)
+        if (navigator.vibrate) {
+            try {
+                navigator.vibrate(pattern);
+            } catch (e) {
+                console.log('Vibration not supported:', e);
+            }
+        }
     },
     
     // İstatistikleri getir
@@ -6269,6 +6300,9 @@ const quizApp = {
         
         // Modal oluştur ve göster
         if (isCorrect) {
+            // Doğru cevap için titreşim (kısa tek titreşim)
+            this.vibrate(100);
+            
             // Tam ekran doğru modalı
             const correctModal = document.createElement('div');
             correctModal.className = 'correct-modal';
@@ -6326,6 +6360,9 @@ const quizApp = {
                 if (correctSound) correctSound.play().catch(e => console.error("Ses çalınamadı:", e));
             }
         } else {
+            // Yanlış cevap için titreşim (iki kısa titreşim)
+            this.vibrate([100, 50, 100]);
+            
             // Tam ekran yanlış modalı
             this.loseLife();
             const wrongModal = document.createElement('div');
