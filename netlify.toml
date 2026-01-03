@@ -1,9 +1,9 @@
 [build]
-  # The directory to serve from
-  publish = "."
+  # Vite build output directory
+  publish = "dist"
   
-  # Commands to run before deployment
-  command = "echo 'No build command needed for static site'"
+  # Vite build command
+  command = "npm run build"
 
 [build.environment]
   NODE_VERSION = "18"

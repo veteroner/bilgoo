@@ -1,0 +1,70 @@
+import { defineConfig } from 'vite';
+import { resolve } from 'path';
+import { copyFileSync, cpSync, existsSync } from 'fs';
+
+export default defineConfig({
+  root: process.cwd(),
+  publicDir: 'public',
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'public/index.html'),
+        login: resolve(__dirname, 'public/login.html'),
+        settings: resolve(__dirname, 'public/settings.html'),
+        about: resolve(__dirname, 'public/about.html'),
+        contact: resolve(__dirname, 'public/contact.html')
+      }
+    }
+  },
+  server: {
+    port: 3000,
+    open: true
+  },
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
+      '@config': resolve(__dirname, './src/config'),
+      '@core': resolve(__dirname, './src/core'),
+      '@features': resolve(__dirname, './src/features'),
+      '@ui': resolve(__dirname, './src/ui'),
+      '@utils': resolve(__dirname, './src/utils'),
+      '@services': resolve(__dirname, './src/services'),
+      '@styles': resolve(__dirname, './src/styles')
+    }
+  },
+  // Build sonrası hook - gerekli dosyaları kopyala
+  plugins: [{
+    name: 'copy-assets-after-build',
+    closeBundle() {
+      const filesToCopy = [
+        { src: 'style.css', dest: 'dist/style.css' },
+        { src: 'statistics.css', dest: 'dist/statistics.css' },
+        { src: 'custom-question-styles.css', dest: 'dist/custom-question-styles.css' },
+        { src: 'admin-pending-styles.css', dest: 'dist/admin-pending-styles.css' }
+      ];
+      
+      const dirsToCopy = [
+        { src: 'icons', dest: 'dist/icons' },
+        { src: 'languages', dest: 'dist/languages' }
+      ];
+      
+      // Dosyaları kopyala
+      filesToCopy.forEach(({ src, dest }) => {
+        if (existsSync(src)) {
+          copyFileSync(src, dest);
+          console.log(`✓ Copied: ${src} → ${dest}`);
+        }
+      });
+      
+      // Klasörleri kopyala
+      dirsToCopy.forEach(({ src, dest }) => {
+        if (existsSync(src)) {
+          cpSync(src, dest, { recursive: true });
+          console.log(`✓ Copied: ${src}/ → ${dest}/`);
+        }
+      });
+    }
+  }]
+});
