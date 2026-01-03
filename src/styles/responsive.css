@@ -4,41 +4,51 @@
    DESKTOP (≥1024px) - Show Web Layout Only
    ============================================ */
 @media (min-width: 1024px) {
-  /* Hide ALL mobile elements on desktop */
-  #main-menu,
-  .main-menu,
-  #category-selection,
-  #categories,
-  #about-page,
-  .menu-button,
-  .menu-buttons,
-  #single-player-btn,
-  #online-game-button,
-  #view-global-leaderboard,
-  #show-stats,
-  #add-question-button,
-  #about-button,
-  .bottom-nav,
-  .mobile-header,
-  .mobile-container,
-  .app-container.mobile {
+  /* Hide ALL mobile elements on desktop - FORCE */
+  body #main-menu,
+  body .main-menu,
+  body #category-selection,
+  body #categories,
+  body #about-page,
+  body .menu-button,
+  body .menu-buttons,
+  body #single-player-btn,
+  body #online-game-button,
+  body #view-global-leaderboard,
+  body #show-stats,
+  body #add-question-button,
+  body #about-button,
+  body .bottom-nav,
+  body .mobile-header,
+  body .mobile-container,
+  body .app-container.mobile {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 
-  /* Show web layout */
-  .web-desktop-layout,
-  .web-navbar,
-  .web-hero,
-  .categories-section,
-  .web-main-content {
+  /* Force show web layout */
+  body .web-desktop-layout,
+  body .web-navbar,
+  body .web-hero,
+  body .categories-section,
+  body .web-main-content {
     display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 
   /* Hide old desktop layout (sidebar version) */
-  .desktop-layout,
-  .desktop-sidebar-wrapper,
-  .desktop-main {
+  body .desktop-layout,
+  body .desktop-sidebar-wrapper,
+  body .desktop-main {
     display: none !important;
+  }
+  
+  /* Force body background for web */
+  body {
+    background: var(--web-bg, #f8fafc) !important;
   }
 }
 

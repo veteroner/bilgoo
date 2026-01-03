@@ -14,6 +14,15 @@
     <!-- Vite entry point -->
     <script type="module" src="/src/main.js"></script>
     
+    <!-- Force hide mobile on desktop before JS loads -->
+    <style>
+        @media (min-width: 1024px) {
+            #main-menu, .main-menu, #category-selection, .bottom-nav { 
+                display: none !important; 
+            }
+        }
+    </style>
+    
     <script>
         // Simple splash screen management
         function hideSplash(){
