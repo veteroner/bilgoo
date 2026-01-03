@@ -4,8 +4,12 @@
   "description": "Bilgoo uygulaması, kullanıcıların bilgilerini çeşitli kategorilerde test edebilecekleri interaktif bir web uygulamasıdır.",
   "main": "achievements.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "vite:dev": "vite",
+    "vite:build": "vite build",
     "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1",
     "sync:all": "./sync-files.sh",
@@ -31,9 +35,17 @@
     "@capacitor/splash-screen": "^7.0.3",
     "@capacitor/status-bar": "^7.0.3",
     "capacitor-plugin-app-tracking-transparency": "^2.0.5",
-    "firebase": "^12.7.0"
+    "firebase": "^12.7.0",
+    "next": "^16.1.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.4.23",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18",
     "vite": "^7.3.0"
   },
   "type": "module",
