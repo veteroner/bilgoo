@@ -4,7 +4,10 @@
  */
 
 // Stilleri import et
+import './styles/web-theme.css';
+import './styles/web-layout.css';
 import './styles/desktop-layout.css';
+import './styles/responsive.css';
 
 // Core modül testlerini çalıştır
 import './core/test-core-modules.js';
@@ -25,6 +28,17 @@ window.__BILGOO_PLATFORM__ = {
 console.log('🚀 Bilgoo Web v2.0 başlatılıyor...');
 console.log('📱 Platform:', isMobile ? 'Mobile' : 'Desktop');
 console.log('⚡ Vite build sistemi aktif');
+console.log('🎨 Modern web tasarımı yüklendi');
+
+// Desktop'ta eski mobile elementi gizle
+if (!isMobile) {
+    console.log('🖥️ Desktop mod aktif - mobil elementler gizleniyor');
+    // Eski mobil elementleri gizle
+    const mobileElements = document.querySelectorAll('#main-menu, .main-menu, .bottom-nav, .mobile-header');
+    mobileElements.forEach(el => {
+        if (el) el.style.display = 'none';
+    });
+}
 
 // Layout Manager'ı başlat
 const layoutManager = new LayoutManager({

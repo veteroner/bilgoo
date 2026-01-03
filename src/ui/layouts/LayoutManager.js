@@ -55,6 +55,14 @@ export class LayoutManager {
     loadDesktopLayout() {
         console.log('🖥️ Desktop layout yükleniyor...');
         
+        // Önce tüm mobil elementleri gizle
+        const mobileElements = document.querySelectorAll(
+            '#main-menu, .main-menu, .bottom-nav, .mobile-header, #category-selection'
+        );
+        mobileElements.forEach(el => {
+            if (el) el.style.display = 'none';
+        });
+        
         // Desktop layout oluştur
         this.currentLayout = new DesktopLayout({
             onNavigate: (route) => this.onNavigate(route)
@@ -76,6 +84,28 @@ export class LayoutManager {
     
     loadMobileLayout() {
         console.log('📱 Mobile layout yükleniyor...');
+        
+        // Desktop layout varsa temizle
+        if (this.currentLayout) {
+            this.currentLayout.destroy();
+            this.currentLayout = null;
+        }
+        
+        // Web elementlerini gizle
+        const webElements = document.querySelectorAll(
+            '.web-desktop-layout, .web-navbar, .web-hero, .categories-section'
+        );
+        webElements.forEach(el => {
+            if (el) el.style.display = 'none';
+        });
+        
+        // Mobil elementleri göster
+        const mobileElements = document.querySelectorAll(
+            '#main-menu, .main-menu'
+        );
+        mobileElements.forEach(el => {
+            if (el) el.style.display = '';
+        });
         
         // Mevcut HTML yapısını kullan (index.html'deki mobile-friendly yapı)
         document.body.classList.add('mobile-mode');

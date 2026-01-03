@@ -1,0 +1,77 @@
+/* Modern Web Theme - Desktop Only */
+:root {
+  /* Modern Color Palette */
+  --web-primary: #2563eb;
+  --web-primary-dark: #1d4ed8;
+  --web-primary-light: #3b82f6;
+  --web-secondary: #10b981;
+  --web-secondary-dark: #059669;
+  --web-accent: #f59e0b;
+  --web-accent-light: #fbbf24;
+  
+  /* Neutrals */
+  --web-bg: #f8fafc;
+  --web-bg-alt: #ffffff;
+  --web-surface: #ffffff;
+  --web-border: #e2e8f0;
+  --web-text-primary: #1e293b;
+  --web-text-secondary: #64748b;
+  --web-text-muted: #94a3b8;
+  
+  /* Shadows */
+  --web-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --web-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --web-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --web-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  
+  /* Gradients */
+  --web-gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --web-gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --web-gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --web-gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  
+  /* Spacing */
+  --web-spacing-xs: 0.5rem;
+  --web-spacing-sm: 0.75rem;
+  --web-spacing-md: 1rem;
+  --web-spacing-lg: 1.5rem;
+  --web-spacing-xl: 2rem;
+  --web-spacing-2xl: 3rem;
+  --web-spacing-3xl: 4rem;
+  
+  /* Border Radius */
+  --web-radius-sm: 0.375rem;
+  --web-radius-md: 0.5rem;
+  --web-radius-lg: 0.75rem;
+  --web-radius-xl: 1rem;
+  --web-radius-2xl: 1.5rem;
+  --web-radius-full: 9999px;
+  
+  /* Transitions */
+  --web-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --web-transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --web-transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Category Colors */
+:root {
+  --category-genel-kultur: #3b82f6;
+  --category-tarih: #ef4444;
+  --category-cografya: #10b981;
+  --category-bilim: #8b5cf6;
+  --category-edebiyat: #ec4899;
+  --category-spor: #f59e0b;
+  --category-muzik: #06b6d4;
+  --category-teknoloji: #6366f1;
+}
+
+/* Desktop-only styles */
+@media (min-width: 1024px) {
+  body {
+    background: var(--web-bg);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}

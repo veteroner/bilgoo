@@ -1,14 +1,18 @@
 /**
- * DesktopLayout.js - Desktop grid layout yönetimi
- * Faz 3: Desktop Layout
+ * DesktopLayout.js - Modern Web Layout for Desktop
+ * Updated with new web design components
  */
 
-import { Sidebar } from '../components/Sidebar.js';
+import { WebNavbar } from '../components/WebNavbar.js';
+import { WebHero } from '../components/WebHero.js';
+import { CategoriesGrid } from '../sections/CategoriesGrid.js';
 
 export class DesktopLayout {
     constructor(config = {}) {
         this.container = null;
-        this.sidebar = null;
+        this.navbar = null;
+        this.hero = null;
+        this.categoriesGrid = null;
         this.mainContent = null;
         this.currentView = 'home';
         
@@ -20,117 +24,118 @@ export class DesktopLayout {
     
     init() {
         this.createLayout();
-        this.createSidebar();
+        this.createComponents();
         this.attachEventListeners();
+        this.renderHomePage();
     }
     
     createLayout() {
         this.container = document.createElement('div');
-        this.container.className = 'desktop-layout';
+        this.container.className = 'web-desktop-layout';
         this.container.innerHTML = `
-            <div class="desktop-sidebar-wrapper"></div>
-            <main class="desktop-main">
-                <div class="desktop-header">
-                    <div class="desktop-header-left">
-                        <h1 class="desktop-page-title">Ana Sayfa</h1>
-                    </div>
-                    <div class="desktop-header-right">
-                        <div class="desktop-user-stats">
-                            <div class="stat-item">
-                                <i class="fas fa-coins"></i>
-                                <span id="desktop-score">0</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-star"></i>
-                                <span id="desktop-stars">0</span>
-                            </div>
-                            <div class="stat-item">
-                                <i class="fas fa-heart"></i>
-                                <span id="desktop-lives">3</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="desktop-content" id="desktop-content">
-                    <!-- İçerik buraya yüklenecek -->
-                </div>
+            <div id="web-navbar-container"></div>
+            <main class="web-main-content" id="web-main-content">
+                <!-- Dynamic content will be loaded here -->
             </main>
+            <footer class="web-footer">
+                <div class="web-footer-container">
+                    <p>&copy; 2025 Bilgoo - Tüm hakları saklıdır</p>
+                </div>
+            </footer>
         `;
         
-        this.mainContent = this.container.querySelector('#desktop-content');
+        this.mainContent = this.container.querySelector('#web-main-content');
     }
     
-    createSidebar() {
-        this.sidebar = new Sidebar({
-            onNavigate: (route) => this.navigate(route),
-            onToggle: (isCollapsed) => {
-                this.container.classList.toggle('sidebar-collapsed', isCollapsed);
-            }
-        });
+    createComponents() {
+        // Create navbar
+        this.navbar = new WebNavbar();
+        const navbarContainer = this.container.querySelector('#web-navbar-container');
+        navbarContainer.appendChild(this.navbar.create());
         
-        const sidebarWrapper = this.container.querySelector('.desktop-sidebar-wrapper');
-        this.sidebar.mount(sidebarWrapper);
+        // Create hero section
+        this.hero = new WebHero();
+        
+        // Create categories grid
+        this.categoriesGrid = new CategoriesGrid();
     }
     
-    navigate(route) {
-        console.log('🧭 Desktop navigasyon:', route);
-        this.currentView = route;
+    
+    renderHomePage() {
+        // Clear main content
+        this.mainContent.innerHTML = '';
         
-        // Sayfa başlığını güncelle
-        const pageTitle = this.container.querySelector('.desktop-page-title');
-        if (pageTitle) {
-            pageTitle.textContent = this.getPageTitle(route);
+        // Add hero section
+        this.mainContent.appendChild(this.hero.create());
+        
+        // Add categories grid
+        this.mainContent.appendChild(this.categoriesGrid.create());
+    }
+    
+    renderCategoriesPage() {
+        this.mainContent.innerHTML = '';
+        this.mainContent.appendChild(this.categoriesGrid.create());
+    }
+    
+    navigate(page) {
+        console.log('🧭 Navigation:', page);
+        this.currentView = page;
+        
+        switch(page) {
+            case 'home':
+                this.renderHomePage();
+                break;
+            case 'categories':
+                this.renderCategoriesPage();
+                break;
+            case 'leaderboard':
+                this.renderLeaderboard();
+                break;
+            case 'stats':
+                this.renderStats();
+                break;
+            case 'about':
+                window.location.href = '/about.html';
+                break;
+            default:
+                this.renderHomePage();
         }
         
         // Callback çağır
-        this.onNavigate(route);
+        this.onNavigate(page);
     }
     
-    getPageTitle(route) {
-        const titles = {
-            home: 'Ana Sayfa',
-            play: 'Oyna',
-            categories: 'Kategoriler',
-            leaderboard: 'Lider Tablosu',
-            friends: 'Arkadaşlar',
-            online: 'Online Oyun',
-            profile: 'Profilim',
-            achievements: 'Başarılar',
-            statistics: 'İstatistikler',
-            settings: 'Ayarlar',
-            about: 'Hakkında'
-        };
-        return titles[route] || 'Bilgoo';
+    renderLeaderboard() {
+        this.mainContent.innerHTML = `
+            <section class="web-page-section">
+                <div class="web-page-container">
+                    <h2 class="web-page-title">🏆 Lider Tablosu</h2>
+                    <p class="web-page-subtitle">En başarılı oyuncular</p>
+                    <div class="leaderboard-placeholder">
+                        <p>Lider tablosu yükleniyor...</p>
+                    </div>
+                </div>
+            </section>
+        `;
+    }
+    
+    renderStats() {
+        this.mainContent.innerHTML = `
+            <section class="web-page-section">
+                <div class="web-page-container">
+                    <h2 class="web-page-title">📊 İstatistikler</h2>
+                    <p class="web-page-subtitle">Performans analizin</p>
+                    <div class="stats-placeholder">
+                        <p>İstatistikler yükleniyor...</p>
+                    </div>
+                </div>
+            </section>
+        `;
     }
     
     updateStats(stats) {
-        const scoreEl = this.container.querySelector('#desktop-score');
-        const starsEl = this.container.querySelector('#desktop-stars');
-        const livesEl = this.container.querySelector('#desktop-lives');
-        
-        if (scoreEl) scoreEl.textContent = this.formatNumber(stats.score || 0);
-        if (starsEl) starsEl.textContent = this.formatNumber(stats.stars || 0);
-        if (livesEl) livesEl.textContent = stats.lives || 3;
-        
-        // Sidebar'daki kullanıcı bilgisini de güncelle
-        if (this.sidebar) {
-            this.sidebar.updateUserInfo({
-                displayName: stats.displayName,
-                stats: {
-                    stars: stats.stars,
-                    lives: stats.lives
-                }
-            });
-        }
-    }
-    
-    formatNumber(num) {
-        if (num >= 1000000) {
-            return (num / 1000000).toFixed(1) + 'M';
-        } else if (num >= 1000) {
-            return (num / 1000).toFixed(1) + 'K';
-        }
-        return num.toString();
+        // Stats can be updated via navbar or other components if needed
+        console.log('Stats updated:', stats);
     }
     
     setContent(html) {
@@ -140,6 +145,23 @@ export class DesktopLayout {
     }
     
     attachEventListeners() {
+        // Navigation events
+        document.addEventListener('web:navigate', (e) => {
+            this.navigate(e.detail.page);
+        });
+        
+        // Show categories event
+        document.addEventListener('web:show-categories', () => {
+            this.navigate('categories');
+        });
+        
+        // Category selected event
+        document.addEventListener('category:selected', (e) => {
+            console.log('Category selected:', e.detail.category);
+            // Start quiz with selected category
+            // This will integrate with existing quiz logic
+        });
+        
         // Responsive kontrol
         window.addEventListener('resize', () => {
             this.handleResize();
@@ -151,29 +173,32 @@ export class DesktopLayout {
         
         // 1024px altında mobile layout'a geç
         if (width < 1024) {
-            console.log('📱 Mobile layout\'a geçiliyor...');
-            // Layout değiştirme mantığı buraya gelecek
+            console.log('📱 Mobile layout aktif - web bileşenleri gizlendi');
         }
     }
     
     mount(parentElement) {
         if (parentElement && this.container) {
             parentElement.appendChild(this.container);
-            console.log('🖥️ Desktop layout monte edildi');
+            console.log('🖥️ Modern web layout monte edildi');
         }
     }
     
     destroy() {
-        if (this.sidebar) {
-            this.sidebar.destroy();
+        if (this.navbar) {
+            this.navbar.destroy();
+        }
+        
+        if (this.hero) {
+            this.hero.destroy();
+        }
+        
+        if (this.categoriesGrid) {
+            this.categoriesGrid.destroy();
         }
         
         if (this.container && this.container.parentElement) {
             this.container.parentElement.removeChild(this.container);
         }
-    }
-    
-    attachEventListeners() {
-        window.addEventListener('resize', () => this.handleResize());
     }
 }

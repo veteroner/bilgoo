@@ -1,0 +1,91 @@
+/* Responsive Styles - Platform-based visibility */
+
+/* ============================================
+   DESKTOP (≥1024px) - Show Web Layout Only
+   ============================================ */
+@media (min-width: 1024px) {
+  /* Hide ALL mobile elements on desktop */
+  #main-menu,
+  .main-menu,
+  #category-selection,
+  #categories,
+  #about-page,
+  .menu-button,
+  .menu-buttons,
+  #single-player-btn,
+  #online-game-button,
+  #view-global-leaderboard,
+  #show-stats,
+  #add-question-button,
+  #about-button,
+  .bottom-nav,
+  .mobile-header,
+  .mobile-container,
+  .app-container.mobile {
+    display: none !important;
+  }
+
+  /* Show web layout */
+  .web-desktop-layout,
+  .web-navbar,
+  .web-hero,
+  .categories-section,
+  .web-main-content {
+    display: block !important;
+  }
+
+  /* Hide old desktop layout (sidebar version) */
+  .desktop-layout,
+  .desktop-sidebar-wrapper,
+  .desktop-main {
+    display: none !important;
+  }
+}
+
+/* ============================================
+   MOBILE (<1024px) - Show Mobile Layout Only
+   ============================================ */
+@media (max-width: 1023px) {
+  /* Hide ALL web elements on mobile */
+  .web-desktop-layout,
+  .web-navbar,
+  .web-hero,
+  .categories-section,
+  .web-main-content,
+  .web-footer,
+  .web-navbar-container,
+  .desktop-layout,
+  .desktop-sidebar-wrapper,
+  .desktop-main {
+    display: none !important;
+  }
+
+  /* Show mobile layout */
+  #main-menu,
+  .main-menu,
+  .menu-buttons,
+  .bottom-nav,
+  .mobile-header,
+  .mobile-container {
+    display: block !important;
+  }
+
+  /* Ensure mobile elements are visible */
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+}
+
+/* ============================================
+   LAYOUT MANAGER ROOT
+   ============================================ */
+#app {
+  min-height: 100vh;
+}
+
+/* Smooth transitions between layouts */
+.web-desktop-layout,
+.desktop-layout,
+#main-menu {
+  transition: opacity 0.3s ease-in-out;
+}
