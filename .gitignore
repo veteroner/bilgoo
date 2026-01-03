@@ -3,3 +3,12 @@ android/.gradle/
 android/build/
 **/build/
 **/.transforms/
+
+# Next.js
+.next/
+out/
+dist/
+
+# macOS
+.DS_Store
+._*
