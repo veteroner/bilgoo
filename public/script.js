@@ -6731,20 +6731,45 @@ const quizApp = {
             }
             
             // Eğer soruda görsel varsa göster
-            if (questionData.imageUrl) {
+            console.log("🖼️ Görsel kontrol:", {
+                hasImageUrl: !!questionData.imageUrl,
+                imageUrl: questionData.imageUrl,
+                imageSource: questionData.imageSource,
+                resimliSoru: questionData.resimliSoru
+            });
+            
+            if (questionData.imageUrl || questionData.imageSource || questionData.resimliSoru) {
+                const imageUrl = questionData.imageUrl || questionData.imageSource || questionData.resimliSoru;
+                console.log("✅ Görsel yükleniyor:", imageUrl);
+                
                 const imageContainer = document.createElement('div');
                 imageContainer.className = 'question-image';
                 const img = document.createElement('img');
-                img.src = questionData.imageUrl;
+                img.src = imageUrl;
                 img.alt = this.getTranslation('questionImage');
                 img.style.maxWidth = '100%';
                 img.style.maxHeight = '300px';
                 img.style.margin = '10px auto';
                 img.style.display = 'block';
+                img.style.borderRadius = '8px';
+                img.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+                
+                // Yükleme hatası kontrolü
+                img.onerror = () => {
+                    console.error("❌ Görsel yüklenemedi:", imageUrl);
+                    imageContainer.remove();
+                };
+                
+                img.onload = () => {
+                    console.log("✅ Görsel başarıyla yüklendi:", imageUrl);
+                };
+                
                 const oldImages = this.questionElement.querySelectorAll('.question-image');
                 oldImages.forEach(img => img.remove());
                 imageContainer.appendChild(img);
                 this.questionElement.appendChild(imageContainer);
+            } else {
+                console.log("⚠️ Soru görseli yok");
             }
         }
         
