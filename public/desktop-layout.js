@@ -179,5 +179,23 @@
         subtree: true
     });
     
+    // Kategori seçim sayfası değişikliklerini izle
+    const categoryObserver = new MutationObserver(function() {
+        const categorySelection = document.getElementById('category-selection');
+        if (categorySelection && categorySelection.style.display !== 'none') {
+            setTimeout(() => enhanceCategoryCards(), 100);
+        }
+    });
+    
+    const categorySelectionEl = document.getElementById('category-selection');
+    if (categorySelectionEl) {
+        categoryObserver.observe(categorySelectionEl, {
+            attributes: true,
+            attributeFilter: ['style'],
+            childList: true,
+            subtree: true
+        });
+    }
+    
     console.log('✅ Desktop layout hazır');
 })();

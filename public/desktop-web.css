@@ -153,6 +153,20 @@
         border-radius: 0 !important;
     }
     
+    /* Kategori seçim wrapper */
+    #category-selection {
+        background: #f5f7fa !important;
+        padding: 3rem 0 !important;
+    }
+    
+    #category-selection h2 {
+        text-align: center !important;
+        font-size: 2.5rem !important;
+        font-weight: 700 !important;
+        color: #1a202c !important;
+        margin-bottom: 3rem !important;
+    }
+    
     /* Hero Section - Sol taraf metin, sağ taraf demo */
     #homepage {
         padding: 0 !important;
@@ -359,9 +373,15 @@
         gap: 1.5rem !important;
         max-width: 1400px !important;
         margin: 0 auto !important;
-        padding: 3rem 4rem !important;
+        padding: 0 4rem 3rem !important;
         width: 100% !important;
         align-content: start !important;
+    }
+    
+    /* Kategori sayfasında da aynı grid */
+    #category-selection #categories {
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
     }
     
     .category-card,
