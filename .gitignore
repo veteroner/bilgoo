@@ -4,9 +4,11 @@ android/build/
 **/build/
 **/.transforms/
 
-# macOS Finder resource forks
-._*
-.DS_Store
-
-# Vite output
+# Next.js
+.next/
+out/
 dist/
+
+# macOS
+.DS_Store
+._*

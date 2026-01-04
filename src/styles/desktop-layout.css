@@ -317,6 +317,10 @@
     .desktop-layout {
         display: none;
     }
+    
+    body.desktop-mode {
+        /* Tablet'te mobile layout kullan */
+    }
 }
 
 /* ============================================
