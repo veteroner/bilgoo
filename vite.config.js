@@ -47,10 +47,25 @@ export default defineConfig({
     name: 'copy-assets-after-build',
     closeBundle() {
       const filesToCopy = [
-        { src: 'style.css', dest: 'dist/style.css' },
+        { src: 'public/style.css', dest: 'dist/style.css' },
+        { src: 'public/script.js', dest: 'dist/script.js' },
         { src: 'statistics.css', dest: 'dist/statistics.css' },
         { src: 'custom-question-styles.css', dest: 'dist/custom-question-styles.css' },
-        { src: 'admin-pending-styles.css', dest: 'dist/admin-pending-styles.css' }
+        { src: 'admin-pending-styles.css', dest: 'dist/admin-pending-styles.css' },
+        { src: 'firebase-config.js', dest: 'dist/firebase-config.js' },
+        { src: 'languages.js', dest: 'dist/languages.js' },
+        { src: 'online-game.js', dest: 'dist/online-game.js' },
+        { src: 'friends.js', dest: 'dist/friends.js' },
+        { src: 'daily-tasks.js', dest: 'dist/daily-tasks.js' },
+        { src: 'achievements.js', dest: 'dist/achievements.js' },
+        { src: 'progress-chart.js', dest: 'dist/progress-chart.js' },
+        { src: 'feedback.js', dest: 'dist/feedback.js' },
+        { src: 'admin-pending-questions.js', dest: 'dist/admin-pending-questions.js' },
+        { src: 'att-manager.js', dest: 'dist/att-manager.js' },
+        { src: 'monetization.js', dest: 'dist/monetization.js' },
+        { src: 'push-notifications.js', dest: 'dist/push-notifications.js' },
+        { src: 'data-retention.js', dest: 'dist/data-retention.js' },
+        { src: 'audit-log.js', dest: 'dist/audit-log.js' }
       ];
       
       const dirsToCopy = [

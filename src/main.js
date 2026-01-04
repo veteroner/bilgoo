@@ -3,89 +3,18 @@
  * Platform tespiti ve layout yönetimi
  */
 
-// Stilleri import et
-import './styles/web-theme.css';
-import './styles/web-layout.css';
-import './styles/desktop-layout.css';
-import './styles/desktop-web.css';
-import './styles/responsive.css';
+// NOT: Desktop header ve homepage şu an public/script.js'de
+// Vite modül sistemi ile çakışma olduğu için geçici olarak devre dışı
 
-// Core modül testlerini çalıştır
-import './core/test-core-modules.js';
+console.log('🚀 Bilgoo başlatılıyor...');
+console.log('⚡ Vite build sistemi aktif');
 
-// Layout Manager'ı import et
-import { LayoutManager } from './ui/layouts/LayoutManager.js';
-
-// Desktop Header'ı import et
-import { DesktopHeader } from './ui/desktop/DesktopHeader.js';
-
-// Desktop Homepage'i import et
-import { DesktopHomepage } from './ui/desktop/DesktopHomepage.js';
-
-// Platform tespiti
+// Platform bilgisi
 const isMobile = window.innerWidth < 1024;
-
-// Platform bilgisini global olarak sakla
 window.__BILGOO_PLATFORM__ = {
     isMobile,
     isDesktop: !isMobile,
     timestamp: Date.now()
 };
 
-console.log('🚀 Bilgoo Web v2.0 başlatılıyor...');
 console.log('📱 Platform:', isMobile ? 'Mobile' : 'Desktop');
-console.log('⚡ Vite build sistemi aktif');
-console.log('🎨 Modern web tasarımı yüklendi');
-
-// Desktop'ta eski mobile elementi gizle
-if (!isMobile) {
-    console.log('🖥️ Desktop mod aktif - mobil elementler gizleniyor');
-    // Eski mobil elementleri gizle
-    const mobileElements = document.querySelectorAll('#main-menu, .main-menu, .bottom-nav, .mobile-header');
-    mobileElements.forEach(el => {
-        if (el) el.style.display = 'none';
-    });
-    
-    // Desktop header'ı başlat
-    document.addEventListener('DOMContentLoaded', () => {
-        const desktopHeader = new DesktopHeader();
-        window.__BILGOO_DESKTOP_HEADER__ = desktopHeader;
-        console.log('✅ Desktop Header başlatıldı');
-        
-        // Ana sayfadaysa homepage'i de başlat
-        if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-            const desktopHomepage = new DesktopHomepage();
-            window.__BILGOO_DESKTOP_HOMEPAGE__ = desktopHomepage;
-            console.log('✅ Desktop Homepage başlatıldı');
-        }
-    });
-}
-
-// Layout Manager'ı başlat
-const layoutManager = new LayoutManager({
-    breakpoint: 1024,
-    onLayoutChange: (platform) => {
-        console.log('🔄 Layout değişti:', platform);
-        window.__BILGOO_PLATFORM__.isMobile = platform === 'mobile';
-        window.__BILGOO_PLATFORM__.isDesktop = platform === 'desktop';
-    },
-    onNavigate: (route) => {
-        console.log('🧭 Navigasyon:', route);
-        // Routing mantığı buraya gelecek
-    }
-});
-
-// Global erişim için
-window.__BILGOO_LAYOUT_MANAGER__ = layoutManager;
-
-console.log('✅ Layout Manager başlatıldı');
-
-// Test: Stats güncelleme
-setTimeout(() => {
-    layoutManager.updateStats({
-        score: 1250,
-        stars: 45,
-        lives: 3,
-        displayName: 'Test Kullanıcı'
-    });
-}, 2000);
