@@ -65,7 +65,8 @@ export default defineConfig({
         { src: 'monetization.js', dest: 'dist/monetization.js' },
         { src: 'push-notifications.js', dest: 'dist/push-notifications.js' },
         { src: 'data-retention.js', dest: 'dist/data-retention.js' },
-        { src: 'audit-log.js', dest: 'dist/audit-log.js' }
+        { src: 'audit-log.js', dest: 'dist/audit-log.js' },
+        { src: 'auth.js', dest: 'dist/auth.js' }
       ];
       
       const dirsToCopy = [
