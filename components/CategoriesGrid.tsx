@@ -41,7 +41,7 @@ export default function CategoriesGrid() {
 function CategoryCard({ category }: { category: typeof categories[0] }) {
   return (
     <Link
-      href={`/play/${category.id}`}
+      href={`/play?category=${category.id}`}
       className="card p-6 group relative overflow-hidden"
     >
       {/* Gradient Background on Hover */}
