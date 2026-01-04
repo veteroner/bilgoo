@@ -3,7 +3,8 @@
 import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { auth } from '@/lib/firebase';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { saveScore, saveGameHistory, updateUserStats } from '@/lib/game-service';
 
 const CATEGORIES: Record<string, { name: string; icon: string }> = {
   'genel-kultur': { name: 'Genel Kültür', icon: '🌍' },
@@ -29,26 +30,71 @@ function QuizGame() {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (!currentUser) router.push('/login');
-      else loadQuestions();
+      if (!currentUser) {
+        router.push('/login');
+      } else {
+        setUser(currentUser);
+        loadQuestions();
+      }
     });
     return () => unsubscribe();
   }, [category]);
 
   const loadQuestions = async () => {
     try {
+      console.log('Loading questions for category:', category);
       const response = await fetch(`/languages/tr/questions.json`);
+      if (!response.ok) throw new Error('Questions could not be loaded');
+      
       const data = await response.json();
-      const filtered = data.filter((q: any) => 
-        q.category?.toLowerCase().replace(/ı/g, 'i').replace(/ /g, '-') === category
-      );
-      setQuestions(filtered.sort(() => Math.random() - 0.5).slice(0, 10));
+      console.log('Questions data loaded:', Object.keys(data));
+      
+      let allQuestions: any[] = [];
+      const categoryMapping: Record<string, string> = {
+        'genel-kultur': 'Genel Kültür',
+        'tarih': 'Tarih',
+        'cografya': 'Coğrafya',
+        'bilim': 'Bilim',
+        'edebiyat': 'Edebiyat',
+        'spor': 'Spor',
+        'muzik': 'Müzik',
+        'teknoloji': 'Teknoloji'
+      };
+      
+      const categoryKey = categoryMapping[category] || 'Genel Kültür';
+      console.log('Looking for category:', categoryKey);
+      
+      if (data[categoryKey]) {
+        allQuestions = data[categoryKey];
+      }
+      
+      console.log('Found questions:', allQuestions.length);
+      
+      if (allQuestions.length === 0) {
+        console.error('No questions found for category:', categoryKey);
+        alert('Bu kategori için soru bulunamadı!');
+        setLoading(false);
+        return;
+      }
+      
+      const transformed = allQuestions.map((q: any) => {
+        const correctIndex = q.options.indexOf(q.correctAnswer);
+        return {
+          ...q,
+          correct: correctIndex >= 0 ? correctIndex : 0
+        };
+      });
+      
+      setQuestions(transformed.sort(() => Math.random() - 0.5).slice(0, 10));
       setLoading(false);
     } catch (error) {
-      console.error(error);
+      console.error('Error loading questions:', error);
+      alert('Sorular yüklenirken hata oluştu!');
       setLoading(false);
     }
   };
@@ -57,16 +103,40 @@ function QuizGame() {
     if (selectedAnswer !== null || showResult) return;
     setSelectedAnswer(index);
     setShowResult(true);
-    if (index === questions[currentIndex].correct) setScore(score + 10);
+    
+    const isCorrect = index === questions[currentIndex].correct;
+    if (isCorrect) {
+      setScore(score + 10);
+      setCorrectAnswers(correctAnswers + 1);
+    }
+    
     setTimeout(() => {
-      if (currentIndex + 1 >= questions.length) setGameOver(true);
-      else {
+      if (currentIndex + 1 >= questions.length) {
+        handleGameOver();
+      } else {
         setCurrentIndex(currentIndex + 1);
         setSelectedAnswer(null);
         setShowResult(false);
         setTimeLeft(30);
       }
     }, 2000);
+  };
+  
+  const handleGameOver = async () => {
+    setGameOver(true);
+    
+    if (user) {
+      const username = user.displayName || user.email || 'Anonim';
+      const categoryKey = CATEGORIES[category]?.name || 'Genel Kültür';
+      
+      await Promise.all([
+        saveScore(user.uid, categoryKey, score, username),
+        saveGameHistory(user.uid, categoryKey, score, questions.length, correctAnswers, questions),
+        updateUserStats(user.uid, questions.length, correctAnswers, score)
+      ]);
+      
+      console.log('Game saved to Firebase:', { category: categoryKey, score, correctAnswers });
+    }
   };
 
   if (loading) {
@@ -80,7 +150,9 @@ function QuizGame() {
           <div className="text-6xl mb-4">🎉</div>
           <h2 className="text-3xl font-bold mb-4">Oyun Bitti!</h2>
           <div className="text-5xl font-bold text-primary mb-6">{score} Puan</div>
-          <p className="text-gray-600 mb-8">{questions.length} sorudan {score / 10} doğru</p>
+          <p className="text-gray-600 mb-2">{questions.length} sorudan {correctAnswers} doğru</p>
+          <p className="text-gray-500 mb-4">Başarı Oranı: %{Math.round((correctAnswers / questions.length) * 100)}</p>
+          <p className="text-sm text-green-600 mb-8">✓ Skorunuz Firebase'e kaydedildi</p>
           <div className="flex gap-3">
             <button onClick={() => window.location.reload()} className="flex-1 bg-primary text-white font-semibold py-3 rounded-lg">Tekrar</button>
             <button onClick={() => router.push('/')} className="flex-1 bg-gray-200 text-gray-800 font-semibold py-3 rounded-lg">Ana Sayfa</button>

@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { auth, firestore } from '@/lib/firebase';
+import { auth } from '@/lib/firebase';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInAnonymously, updateProfile } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { createUserProfile } from '@/lib/game-service';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -23,7 +23,8 @@ export default function LoginPage() {
     const password = formData.get('password') as string;
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      await createUserProfile(userCredential.user.uid, email, userCredential.user.displayName || undefined);
       router.push('/');
     } catch (err: any) {
       if (err.code === 'auth/wrong-password') {
@@ -58,13 +59,7 @@ export default function LoginPage() {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(userCredential.user, { displayName: username });
-      await setDoc(doc(firestore, 'users', userCredential.user.uid), {
-        username,
-        email,
-        createdAt: new Date().toISOString(),
-        totalScore: 0,
-        gamesPlayed: 0
-      });
+      await createUserProfile(userCredential.user.uid, email, username);
       router.push('/');
     } catch (err: any) {
       if (err.code === 'auth/email-already-in-use') {
@@ -82,7 +77,8 @@ export default function LoginPage() {
   const handleAnonymousLogin = async () => {
     setLoading(true);
     try {
-      await signInAnonymously(auth);
+      const userCredential = await signInAnonymously(auth);
+      await createUserProfile(userCredential.user.uid, 'anonymous@bilgoo.app', 'Misafir');
       router.push('/');
     } catch (err: any) {
       setError(err.message);
@@ -99,27 +95,23 @@ export default function LoginPage() {
         </Link>
 
         <div className="bg-white rounded-2xl shadow-2xl p-8">
-          <div className="flex gap-2 mb-6">
+          <div className="flex mb-6 bg-gray-100 rounded-lg p-1">
             <button
               onClick={() => setIsRegister(false)}
-              className={`flex-1 py-2 rounded-lg font-semibold transition-colors ${
-                !isRegister ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600'
-              }`}
+              className={`flex-1 py-2 rounded-md font-semibold transition ${!isRegister ? 'bg-white shadow' : ''}`}
             >
               Giriş Yap
             </button>
             <button
               onClick={() => setIsRegister(true)}
-              className={`flex-1 py-2 rounded-lg font-semibold transition-colors ${
-                isRegister ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600'
-              }`}
+              className={`flex-1 py-2 rounded-md font-semibold transition ${isRegister ? 'bg-white shadow' : ''}`}
             >
               Kayıt Ol
             </button>
           </div>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
               {error}
             </div>
           )}
@@ -127,29 +119,29 @@ export default function LoginPage() {
           {!isRegister ? (
             <form onSubmit={handleLogin} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">E-posta</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">E-posta</label>
                 <input
                   type="email"
                   name="email"
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="ornek@email.com"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Şifre</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Şifre</label>
                 <input
                   type="password"
                   name="password"
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="••••••••"
                 />
               </div>
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 rounded-lg transition-colors disabled:opacity-50"
+                className="w-full bg-primary text-white font-semibold py-3 rounded-lg hover:bg-primary/90 transition disabled:opacity-50"
               >
                 {loading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
               </button>
@@ -157,64 +149,68 @@ export default function LoginPage() {
           ) : (
             <form onSubmit={handleRegister} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Kullanıcı Adı</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Kullanıcı Adı</label>
                 <input
                   type="text"
                   name="username"
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="kullaniciadi"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="Kullanıcı adınız"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">E-posta</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">E-posta</label>
                 <input
                   type="email"
                   name="email"
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="ornek@email.com"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Şifre</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Şifre</label>
                 <input
                   type="password"
                   name="password"
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="••••••••"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Şifre Tekrar</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Şifre Tekrar</label>
                 <input
                   type="password"
                   name="confirmPassword"
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   placeholder="••••••••"
                 />
               </div>
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 rounded-lg transition-colors disabled:opacity-50"
+                className="w-full bg-primary text-white font-semibold py-3 rounded-lg hover:bg-primary/90 transition disabled:opacity-50"
               >
-                {loading ? 'Kayıt yapılıyor...' : 'Kayıt Ol'}
+                {loading ? 'Kayıt olunuyor...' : 'Kayıt Ol'}
               </button>
             </form>
           )}
 
-          <div className="mt-6 text-center">
-            <button
-              onClick={handleAnonymousLogin}
-              disabled={loading}
-              className="text-primary hover:text-primary-dark font-medium text-sm disabled:opacity-50"
-            >
-              Misafir olarak devam et →
-            </button>
+          <div className="my-6 flex items-center">
+            <div className="flex-1 border-t border-gray-300"></div>
+            <span className="px-4 text-sm text-gray-500">veya</span>
+            <div className="flex-1 border-t border-gray-300"></div>
           </div>
+
+          <button
+            onClick={handleAnonymousLogin}
+            disabled={loading}
+            className="w-full bg-gray-100 text-gray-800 font-semibold py-3 rounded-lg hover:bg-gray-200 transition disabled:opacity-50"
+          >
+            👤 Misafir Girişi
+          </button>
         </div>
       </div>
     </div>
