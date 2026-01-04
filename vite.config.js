@@ -71,7 +71,8 @@ export default defineConfig({
       
       const dirsToCopy = [
         { src: 'icons', dest: 'dist/icons' },
-        { src: 'languages', dest: 'dist/languages' }
+        { src: 'languages', dest: 'dist/languages' },
+        { src: 'assets', dest: 'dist/assets' }
       ];
       
       // Dosyaları kopyala
