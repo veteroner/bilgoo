@@ -49,6 +49,7 @@ export default defineConfig({
       const filesToCopy = [
         { src: 'public/style.css', dest: 'dist/style.css' },
         { src: 'public/script.js', dest: 'dist/script.js' },
+        { src: 'public/desktop-web.css', dest: 'dist/desktop-web.css' },
         { src: 'statistics.css', dest: 'dist/statistics.css' },
         { src: 'custom-question-styles.css', dest: 'dist/custom-question-styles.css' },
         { src: 'admin-pending-styles.css', dest: 'dist/admin-pending-styles.css' },

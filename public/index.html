@@ -20,6 +20,9 @@
     <!-- Vite entry point -->
     <script type="module" src="/src/main.js"></script>
     
+    <!-- Desktop Web CSS -->
+    <link rel="stylesheet" href="desktop-web.css">
+    
     <script>
         // Simple splash screen management
         function hideSplash(){
@@ -5199,6 +5202,37 @@
     </style>
 </head>
 <body>
+    <!-- Desktop Header (sadece 1024px+ ekranlarda görünür) -->
+    <header class="desktop-header">
+        <a href="#" class="desktop-logo" id="desktop-logo-link">
+            <img src="icons/icon-96x96.png" alt="Bilgoo Logo">
+            <span>Bilgoo</span>
+        </a>
+        
+        <nav class="desktop-nav">
+            <a href="#" class="desktop-nav-link active" id="desktop-nav-home">
+                <i class="fas fa-home"></i> Ana Sayfa
+            </a>
+            <a href="#" class="desktop-nav-link" id="desktop-nav-categories">
+                <i class="fas fa-th-large"></i> Kategoriler
+            </a>
+            <a href="#" class="desktop-nav-link" id="desktop-nav-leaderboard">
+                <i class="fas fa-trophy"></i> Sıralama
+            </a>
+            <a href="#" class="desktop-nav-link" id="desktop-nav-friends">
+                <i class="fas fa-user-friends"></i> Arkadaşlar
+            </a>
+        </nav>
+        
+        <div class="desktop-user-menu">
+            <div class="desktop-user-avatar" id="desktop-user-avatar" title="Profil">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content Wrapper -->
+    <main class="desktop-main">
 
     
     <!-- Ana İçerik -->
@@ -12384,6 +12418,47 @@
         </style>
     </footer>
 
+    </main>
+    <!-- /Desktop Main Wrapper -->
+    
+    <!-- Desktop Footer (sadece 1024px+ ekranlarda görünür) -->
+    <footer class="desktop-footer">
+        <div class="desktop-footer-content">
+            <div class="desktop-footer-section">
+                <h3>Bilgoo</h3>
+                <p>Eğlenceli ve öğretici bilgi yarışması platformu. Binlerce soru ile bilginizi test edin!</p>
+            </div>
+            <div class="desktop-footer-section">
+                <h3>Hızlı Linkler</h3>
+                <ul>
+                    <li><a href="#">Ana Sayfa</a></li>
+                    <li><a href="#">Kategoriler</a></li>
+                    <li><a href="#">Sıralama</a></li>
+                    <li><a href="#">Arkadaşlar</a></li>
+                </ul>
+            </div>
+            <div class="desktop-footer-section">
+                <h3>Destek</h3>
+                <ul>
+                    <li><a href="#">Yardım Merkezi</a></li>
+                    <li><a href="#">İletişim</a></li>
+                    <li><a href="#">Gizlilik Politikası</a></li>
+                    <li><a href="#">Kullanım Şartları</a></li>
+                </ul>
+            </div>
+            <div class="desktop-footer-section">
+                <h3>Bizi Takip Edin</h3>
+                <ul>
+                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="desktop-footer-bottom">
+            <p>&copy; 2026 Bilgoo - Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
 
 </body>
 </html>

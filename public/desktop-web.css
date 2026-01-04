@@ -1,0 +1,412 @@
+/* MASAÜSTÜ WEB SÜRÜMÜ - Modern Web Sitesi Görünümü */
+/* Sadece masaüstü (1024px+) için geçerli */
+
+@media (min-width: 1024px) {
+    /* Body düzenlemesi - Web sitesi gibi */
+    body {
+        display: block;
+        padding: 0;
+        margin: 0;
+        background: #f8f9fa;
+    }
+    
+    body::before,
+    body::after {
+        display: none; /* Mobil gradient arka planı kaldır */
+    }
+    
+    /* Desktop Header - Modern Web Sitesi Navigation */
+    .desktop-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 70px;
+        background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);
+        box-shadow: 0 2px 20px rgba(74, 20, 140, 0.3);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 3rem;
+    }
+    
+    .desktop-logo {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: white;
+        text-decoration: none;
+        transition: transform 0.3s;
+    }
+    
+    .desktop-logo:hover {
+        transform: scale(1.05);
+    }
+    
+    .desktop-logo img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .desktop-nav {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+    
+    .desktop-nav-link {
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        transition: all 0.3s;
+        position: relative;
+    }
+    
+    .desktop-nav-link:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+    
+    .desktop-nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 30px;
+        height: 3px;
+        background: #e91e63;
+        border-radius: 3px;
+    }
+    
+    .desktop-user-menu {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+    
+    .desktop-user-avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #e91e63, #ff4081);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: transform 0.3s;
+        box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
+    }
+    
+    .desktop-user-avatar:hover {
+        transform: scale(1.1);
+    }
+    
+    /* Main Content Area */
+    .desktop-main {
+        margin-top: 70px;
+        min-height: calc(100vh - 70px);
+        background: #f8f9fa;
+    }
+    
+    /* Container - merkezi içerik alanı */
+    .container {
+        max-width: 1400px !important;
+        width: 95% !important;
+        margin: 0 auto !important;
+        padding: 2rem !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        min-height: auto !important;
+    }
+    
+    /* Hero Section - Ana Sayfa */
+    .desktop-hero {
+        background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 50%, #e91e63 100%);
+        padding: 4rem 0;
+        text-align: center;
+        color: white;
+        margin: -2rem -2rem 3rem -2rem;
+        border-radius: 0 0 30px 30px;
+        box-shadow: 0 10px 40px rgba(74, 20, 140, 0.3);
+    }
+    
+    .desktop-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    
+    .desktop-hero p {
+        font-size: 1.3rem;
+        opacity: 0.95;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    /* Card Grid - Kategori kartları */
+    .desktop-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+    
+    .desktop-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        transition: all 0.3s;
+        cursor: pointer;
+        border: 2px solid transparent;
+    }
+    
+    .desktop-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 40px rgba(74, 20, 140, 0.15);
+        border-color: #4a148c;
+    }
+    
+    .desktop-card-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+    
+    .desktop-card h3 {
+        font-size: 1.5rem;
+        color: #4a148c;
+        margin-bottom: 0.5rem;
+    }
+    
+    .desktop-card p {
+        color: #666;
+        line-height: 1.6;
+    }
+    
+    /* Quiz Container - Soru ekranı */
+    #quiz-container {
+        max-width: 900px !important;
+        margin: 2rem auto !important;
+        background: white !important;
+        border-radius: 24px !important;
+        padding: 3rem !important;
+        box-shadow: 0 10px 50px rgba(0,0,0,0.1) !important;
+    }
+    
+    #question {
+        font-size: 1.6rem !important;
+        line-height: 1.8 !important;
+        color: #2c3e50 !important;
+        margin-bottom: 2rem !important;
+    }
+    
+    #options {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+    
+    .option {
+        padding: 1.5rem 2rem !important;
+        font-size: 1.1rem !important;
+        border-radius: 15px !important;
+        background: linear-gradient(145deg, #ffffff, #f8f9fa) !important;
+        border: 2px solid #e9ecef !important;
+        transition: all 0.3s !important;
+        cursor: pointer !important;
+    }
+    
+    .option:hover {
+        transform: translateX(10px) !important;
+        border-color: #4a148c !important;
+        box-shadow: 0 4px 20px rgba(74, 20, 140, 0.15) !important;
+    }
+    
+    /* Stats Dashboard */
+    .desktop-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    .desktop-stat-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        text-align: center;
+        transition: transform 0.3s;
+    }
+    
+    .desktop-stat-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .desktop-stat-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        display: inline-block;
+        padding: 1rem;
+        background: linear-gradient(135deg, #4a148c, #7b1fa2);
+        border-radius: 50%;
+        color: white;
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+    }
+    
+    .desktop-stat-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #4a148c;
+        margin-bottom: 0.5rem;
+    }
+    
+    .desktop-stat-label {
+        color: #666;
+        font-size: 1rem;
+    }
+    
+    /* Leaderboard */
+    .desktop-leaderboard {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        margin: 2rem 0;
+    }
+    
+    .desktop-leaderboard h2 {
+        font-size: 2rem;
+        color: #4a148c;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    
+    .desktop-leaderboard-item {
+        display: flex;
+        align-items: center;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        background: linear-gradient(145deg, #ffffff, #f8f9fa);
+        transition: transform 0.3s;
+    }
+    
+    .desktop-leaderboard-item:hover {
+        transform: translateX(10px);
+        box-shadow: 0 4px 15px rgba(74, 20, 140, 0.1);
+    }
+    
+    .desktop-rank {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #4a148c;
+        width: 50px;
+        text-align: center;
+    }
+    
+    .desktop-rank.gold { color: #ffd700; }
+    .desktop-rank.silver { color: #c0c0c0; }
+    .desktop-rank.bronze { color: #cd7f32; }
+    
+    /* Footer */
+    .desktop-footer {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        color: white;
+        padding: 3rem 0 2rem;
+        margin-top: 4rem;
+    }
+    
+    .desktop-footer-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 3rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 3rem;
+    }
+    
+    .desktop-footer-section h3 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        color: #e91e63;
+    }
+    
+    .desktop-footer-section ul {
+        list-style: none;
+    }
+    
+    .desktop-footer-section a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        display: block;
+        padding: 0.5rem 0;
+        transition: color 0.3s;
+    }
+    
+    .desktop-footer-section a:hover {
+        color: white;
+    }
+    
+    .desktop-footer-bottom {
+        text-align: center;
+        padding-top: 2rem;
+        margin-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.6);
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 1400px) {
+        .container {
+            max-width: 1200px !important;
+        }
+    }
+    
+    @media (max-width: 1200px) {
+        .desktop-header {
+            padding: 0 2rem;
+        }
+        
+        .desktop-hero h1 {
+            font-size: 3rem;
+        }
+        
+        .desktop-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+    }
+}
+
+/* MOBİL (0-1023px) - Hiçbir değişiklik yapma, aynı kalsın */
+@media (max-width: 1023px) {
+    .desktop-header,
+    .desktop-hero,
+    .desktop-footer {
+        display: none !important;
+    }
+    
+    /* Mobil için tüm desktop class'ları gizle */
+    [class*="desktop-"] {
+        display: none !important;
+    }
+}
