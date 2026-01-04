@@ -6,7 +6,8 @@
   command = "npm run build"
 
 [build.environment]
-  NODE_VERSION = "18"
+  # Vite 7.x requires Node 20+
+  NODE_VERSION = "20"
 
 [[redirects]]
   # Redirect all routes to index.html for SPA routing (catch-all)
