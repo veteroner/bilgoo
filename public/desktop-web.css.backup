@@ -1,0 +1,1130 @@
+/* MASAÜSTÜ WEB SÜRÜMÜ - Modern Clean Design */
+/* Sadece masaüstü (1024px+) için geçerli */
+
+@media (min-width: 1024px) {
+    /* Body düzenlemesi - Beyaz temiz arka plan */
+    body {
+        display: block;
+        padding: 0;
+        margin: 0;
+        background: #f5f7fa;
+    }
+    
+    body::before,
+    body::after {
+        display: none;
+    }
+    
+    /* Desktop Header - Clean & Minimal */
+    .desktop-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 80px;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 4rem;
+    }
+    
+    .desktop-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #8b2fc9;
+        text-decoration: none;
+        transition: opacity 0.3s;
+    }
+    
+    .desktop-logo:hover {
+        opacity: 0.8;
+    }
+    
+    .desktop-logo img {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+    }
+    
+    .desktop-nav {
+        display: flex;
+        align-items: center;
+        gap: 3rem;
+        flex: 1;
+        justify-content: center;
+    }
+    
+    .desktop-nav-link {
+        color: #2d3748;
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 500;
+        padding: 0.5rem 0;
+        transition: all 0.3s;
+        position: relative;
+    }
+    
+    .desktop-nav-link:hover {
+        color: #8b2fc9;
+    }
+    
+    .desktop-nav-link i {
+        display: none;
+    }
+    
+    .desktop-nav-link.active {
+        color: #8b2fc9;
+    }
+    
+    .desktop-nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #8b2fc9;
+    }
+    
+    .desktop-user-menu {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .desktop-user-menu button,
+    .desktop-user-menu .btn {
+        background: linear-gradient(135deg, #8b2fc9 0%, #b24bf3 100%);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    
+    .desktop-user-menu button:hover,
+    .desktop-user-menu .btn:hover {
+        transform: translateY(-2px);
+    }
+    
+    .desktop-user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #8b2fc9, #b24bf3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.3s;
+    }
+    
+    .desktop-user-avatar:hover {
+        transform: scale(1.1);
+    }
+    
+    /* Main Content Area */
+    .desktop-main {
+        margin-top: 80px;
+        min-height: calc(100vh - 80px);
+        background: #f5f7fa;
+        width: 100%;
+    }
+    
+    /* Container - geniş ve merkezi */
+    .container {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+    }
+    
+    /* Hero Section - Sol taraf metin, sağ taraf demo */
+    #homepage {
+        padding: 0 !important;
+        background: linear-gradient(135deg, #f5f0ff 0%, #fff5f8 100%);
+    }
+    
+    .desktop-hero-wrapper {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 6rem 4rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+    }
+    
+    .desktop-hero-left h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+        color: #1a202c;
+    }
+    
+    .desktop-hero-left h1 .highlight {
+        background: linear-gradient(135deg, #8b2fc9, #b24bf3);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .desktop-hero-left p {
+        font-size: 1.2rem;
+        color: #4a5568;
+        line-height: 1.8;
+        margin-bottom: 2.5rem;
+    }
+    
+    .desktop-hero-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 3rem;
+    }
+    
+    .desktop-hero-buttons .btn-primary {
+        background: linear-gradient(135deg, #8b2fc9 0%, #b24bf3 100%);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+    
+    .desktop-hero-buttons .btn-secondary {
+        background: white;
+        color: #8b2fc9;
+        border: 2px solid #e9ecef;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+    
+    .desktop-hero-buttons button:hover,
+    .desktop-hero-buttons a:hover {
+        transform: translateY(-3px);
+    }
+    
+    .desktop-hero-stats {
+        display: flex;
+        gap: 3rem;
+    }
+    
+    .desktop-hero-stat h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #8b2fc9;
+        margin-bottom: 0.3rem;
+    }
+    
+    .desktop-hero-stat p {
+        font-size: 0.95rem;
+        color: #718096;
+        margin: 0;
+    }
+    
+    /* Hero Right - Demo Quiz Card */
+    .desktop-hero-right {
+        position: relative;
+    }
+    
+    .desktop-demo-card {
+        background: white;
+        border-radius: 24px;
+        padding: 2rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+    
+    .desktop-demo-badge {
+        position: absolute;
+        top: -12px;
+        left: 2rem;
+        background: linear-gradient(135deg, #e91e63, #f06292);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+    
+    .desktop-demo-stats {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-top: 1rem;
+    }
+    
+    .desktop-demo-question {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #1a202c;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+    
+    .desktop-demo-options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .desktop-demo-option {
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 1rem 1.2rem;
+        font-size: 1rem;
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+    
+    .desktop-demo-option:hover {
+        border-color: #8b2fc9;
+        background: #f5f0ff;
+    }
+    
+    .desktop-demo-option.correct {
+        background: #d4edda;
+        border-color: #28a745;
+    }
+    
+    /* Categories Section */
+    .desktop-categories-section {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 5rem 4rem;
+    }
+    
+    .desktop-categories-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    
+    .desktop-categories-header h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #1a202c;
+        margin-bottom: 0.8rem;
+    }
+    
+    .desktop-categories-header p {
+        font-size: 1.1rem;
+        color: #718096;
+    }
+    
+    /* Categories Grid - 4 sütun */
+    #categories-page,
+    .desktop-categories-grid {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 1.5rem !important;
+        padding: 0 !important;
+    }
+    
+    .category-card,
+    .category-btn {
+        background: white !important;
+        border-radius: 20px !important;
+        padding: 2rem 1.5rem !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
+        transition: all 0.3s !important;
+        cursor: pointer !important;
+        border: 2px solid transparent !important;
+        text-align: center !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 1rem !important;
+    }
+    
+    .category-card:hover,
+    .category-btn:hover {
+        transform: translateY(-8px) !important;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12) !important;
+    }
+    
+    .category-icon {
+        font-size: 3rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    .category-name,
+    .category-card h3 {
+        font-size: 1.3rem !important;
+        font-weight: 700 !important;
+        color: #1a202c !important;
+        margin: 0.5rem 0 !important;
+    }
+    
+    .category-stats {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin: 1rem 0;
+    }
+    
+    .category-stat {
+        text-align: center;
+    }
+    
+    .category-stat-label {
+        font-size: 0.75rem;
+        color: #a0aec0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: block;
+        margin-bottom: 0.3rem;
+    }
+    
+    .category-stat-value {
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+    
+    .category-stat-value.purple {
+        color: #8b2fc9;
+    }
+    
+    .category-stat-value.green {
+        color: #28a745;
+    }
+    
+    .category-start-btn {
+        width: 100%;
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: white;
+        cursor: pointer;
+        transition: transform 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .category-start-btn:hover {
+        transform: scale(1.05);
+    }
+    
+    /* Kategori renkleri */
+    .category-card[data-category="GenelKültür"] .category-start-btn,
+    .category-btn[data-category="GenelKültür"] .category-start-btn {
+        background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    }
+    
+    .category-card[data-category="Tarih"] .category-start-btn,
+    .category-btn[data-category="Tarih"] .category-start-btn {
+        background: linear-gradient(135deg, #ef4444, #f87171);
+    }
+    
+    .category-card[data-category="Coğrafya"] .category-start-btn,
+    .category-btn[data-category="Coğrafya"] .category-start-btn {
+        background: linear-gradient(135deg, #10b981, #34d399);
+    }
+    
+    .category-card[data-category="Bilim"] .category-start-btn,
+    .category-btn[data-category="Bilim"] .category-start-btn {
+        background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+    }
+    
+    .category-card[data-category="Edebiyat"] .category-start-btn,
+    .category-btn[data-category="Edebiyat"] .category-start-btn {
+        background: linear-gradient(135deg, #ec4899, #f472b6);
+    }
+    
+    .category-card[data-category="Spor"] .category-start-btn,
+    .category-btn[data-category="Spor"] .category-start-btn {
+        background: linear-gradient(135deg, #f97316, #fb923c);
+    }
+    
+    .category-card[data-category="Müzik"] .category-start-btn,
+    .category-btn[data-category="Müzik"] .category-start-btn {
+        background: linear-gradient(135deg, #06b6d4, #22d3ee);
+    }
+    
+    .category-card[data-category="Teknoloji"] .category-start-btn,
+    .category-btn[data-category="Teknoloji"] .category-start-btn {
+        background: linear-gradient(135deg, #6366f1, #818cf8);
+    }
+    
+    /* Quiz Container */
+    #quiz-container {
+        max-width: 900px !important;
+        margin: 3rem auto !important;
+        background: white !important;
+        border-radius: 24px !important;
+        padding: 3rem !important;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08) !important;
+    }
+    
+    /* Mobil öğeleri gizle */
+    .hamburger-toggle,
+    .hamburger-menu,
+    .menu-overlay,
+    .bottom-nav {
+        display: none !important;
+    }
+    
+    /* Footer */
+    .desktop-footer {
+        background: #1a202c;
+        color: white;
+        padding: 4rem 0 2rem;
+        margin-top: 6rem;
+    }
+    
+    .desktop-footer-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 4rem;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 3rem;
+    }
+    
+    .desktop-footer-section h3 {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+        color: white;
+    }
+    
+    .desktop-footer-section ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .desktop-footer-section a {
+        color: #a0aec0;
+        text-decoration: none;
+        display: block;
+        padding: 0.5rem 0;
+        transition: color 0.3s;
+    }
+    
+    .desktop-footer-section a:hover {
+        color: white;
+    }
+    
+    .desktop-footer-bottom {
+        text-align: center;
+        padding-top: 2rem;
+        margin-top: 3rem;
+        border-top: 1px solid #2d3748;
+        color: #718096;
+    }
+    
+    /* Responsive */
+    @media (max-width: 1400px) {
+        .desktop-categories-grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+        }
+    }
+    
+    @media (max-width: 1200px) {
+        .desktop-hero-wrapper {
+            grid-template-columns: 1fr;
+        }
+        
+        .desktop-categories-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+    }
+}
+
+/* MOBİL (0-1023px) - Aynı kalsın */
+@media (max-width: 1023px) {
+    .desktop-header,
+    .desktop-hero,
+    .desktop-footer,
+    .desktop-hero-wrapper,
+    .desktop-demo-card,
+    .desktop-categories-section {
+        display: none !important;
+    }
+    
+    [class*="desktop-"] {
+        display: none !important;
+    }
+}
+    /* Body düzenlemesi - Web sitesi gibi */
+    body {
+        display: block;
+        padding: 0;
+        margin: 0;
+        background: #f8f9fa;
+    }
+    
+    body::before,
+    body::after {
+        display: none; /* Mobil gradient arka planı kaldır */
+    }
+    
+    /* Desktop Header - Modern Web Sitesi Navigation */
+    .desktop-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 70px;
+        background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);
+        box-shadow: 0 2px 20px rgba(74, 20, 140, 0.3);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 3rem;
+    }
+    
+    .desktop-logo {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: white;
+        text-decoration: none;
+        transition: transform 0.3s;
+    }
+    
+    .desktop-logo:hover {
+        transform: scale(1.05);
+    }
+    
+    .desktop-logo img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .desktop-nav {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+    
+    .desktop-nav-link {
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        transition: all 0.3s;
+        position: relative;
+    }
+    
+    .desktop-nav-link:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+    
+    .desktop-nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 30px;
+        height: 3px;
+        background: #e91e63;
+        border-radius: 3px;
+    }
+    
+    .desktop-user-menu {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+    
+    .desktop-user-avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #e91e63, #ff4081);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: transform 0.3s;
+        box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
+    }
+    
+    .desktop-user-avatar:hover {
+        transform: scale(1.1);
+    }
+    
+    /* Main Content Area */
+    .desktop-main {
+        margin-top: 70px;
+        min-height: calc(100vh - 70px);
+        background: #f8f9fa;
+        width: 100%;
+    }
+    
+    /* Container - TAM SAYFA kullan, sıkıştırma */
+    .container {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        min-height: auto !important;
+    }
+    
+    /* Ana içerik wrapper'ı */
+    #main-content,
+    #homepage,
+    #categories-page,
+    #quiz-container,
+    #game-over-screen,
+    #statistics-page,
+    #leaderboard-page {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 2rem 4rem !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    
+    /* Hero Section - Ana Sayfa - TAM GENİŞLİK */
+    .desktop-hero {
+        background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 50%, #e91e63 100%);
+        padding: 5rem 4rem;
+        text-align: center;
+        color: white;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: 0 10px 40px rgba(74, 20, 140, 0.3);
+        width: 100%;
+    }
+    
+    .desktop-hero h1 {
+        font-size: 4rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    
+    .desktop-hero p {
+        font-size: 1.5rem;
+        opacity: 0.95;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    Ana Sayfa Grid - GENIŞ LAYOUT */
+    #homepage {
+        padding: 3rem 4rem !important;
+    }
+    
+    #homepage .main-logo {
+        font-size: 5rem !important;
+        margin-bottom: 2rem !important;
+    }
+    
+    #homepage .menu-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 2rem !important;
+        max-width: 1600px !important;
+        margin: 0 auto !important;
+    }
+    
+    #homepage .menu-btn {
+        padding: 2.5rem 2rem !important;
+        font-size: 1.3rem !important;
+        border-radius: 20px !important;
+        background: linear-gradient(145deg, #ffffff, #f8f9fa) !important;
+        border: 2px solid #e9ecef !important;
+        transition: all 0.3s !important;
+        min-height: 150px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 1rem !important;
+    }
+    
+    #homepage .menu-btn:hover {
+        transform: translateY(-10px) scale(1.02) !important;
+        border-color: #4a148c !important;
+        box-shadow: 0 15px 50px rgba(74, 20, 140, 0.2) !important;
+    }
+    
+    /* Kategori Grid - GENIŞ LAYOUT */
+    #categories-page .categories-container,
+    .categories-grid {GENIŞ SORU EKRANI */
+    #quiz-container {
+        max-width: 1200px !important;
+        margin: 3rem auto !important;
+        background: white !important;
+        border-radius: 30px !important;
+        padding: 4rem 5rem !important;
+        box-shadow: 0 10px 50px rgba(0,0,0,0.1) !important;
+    }
+    
+    #question {
+        font-size: 2rem !important;
+        line-height: 2 !important;
+        color: #2c3e50 !important;
+        margin-bottom: 3rem !important;
+        font-weight: 600 !important;
+    }
+    
+    /* Soru görseli için */
+    #question .question-image {
+        max-width: 600px !important;
+        margin: 2rem auto !important;
+    }
+    
+    #question .question-image img {
+        width: 100% !important;
+        max-height: 400px !important;
+        object-fit: cover !important;
+    }
+    
+    #options {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.5rem !important;
+        margin-top: 2rem !important;
+    }
+    
+    .option {
+        padding: 2rem 2.5rem !important;
+        font-size: 1.2r- TAM GENİŞLİK */
+    .desktop-stats,
+    #statistics-page,
+    .stats-container {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 2rem !important;
+        margin: 2rem 0 !important;
+        max-width: 1800px !important;
+        margin: 2rem auto !important;
+        padding: 0 4rem !importantr !important;
+        min-height: 100px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+    }
+    
+    .option:hover {
+        transform: scale(1.03) !important;
+        border-color: #4a148c !important;
+        box-shadow: 0 8px 30px rgba(74, 20, 140, 0.2) !important;
+        background: linear-gradient(145deg, #f8f9fa, #ffffff) !important;
+    }
+    
+    /* DoğruYanlış soruları için */
+    .true-false-buttons,
+    .swipe-container {
+        max-width: 800px !important;
+        margin: 2rem auto !important;
+    }
+    
+    .true-false-buttons button {
+        font-size: 1.3rem !important;
+        padding: 2rem 3rem !important;
+        min-width: 200px
+        background: white !important;
+        border-radius: 24px !important;
+        padding: 3rem !important;
+        box-shadow: 0 10px 50px rgba(0,0,0,0.1) !important;
+    }
+    
+    #question {
+        font-size: 1.6rem !important;
+        line-height: 1.8 !important;
+        color: #2c3e50 !important;
+        margin-bottom: 2rem !important;
+    }
+    
+    #options {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+    
+    .option {
+        padding: 1.5rem 2rem !important;
+        font-size: 1.1rem !important;
+        border-radius: 15px !important;
+        background: linear-gradient(145deg, #ffffff, #f8f9fa) !important;
+        border: 2px solid #e9ecef !important;
+        transition: all 0.3s !important;
+        cursor: pointer !important;
+    }
+    
+    .option:hover {
+        transform: translateX(10px) !important;
+        border-color: #4a148c !important;
+        box-shadow: 0 4px 20px rgba(74, 20, 140, 0.15) !important;
+    }
+    
+    /* Stats Dashboard */
+    .desktop-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    .desktop-stat-card {
+        background: white;
+        padding: 2rem;
+        border-radi- GENIŞ LAYOUT */
+    .desktop-leaderboard,
+    #leaderboard-page,
+    .leaderboard-container {
+        background: white !important;
+        border-radius: 30px !important;
+        padding: 3rem 4rem !important;
+        box-shadow: 0 10px 50px rgba(0,0,0,0.1) !important;
+        margin: 3rem auto !important;
+        max-width: 1400px !important;
+    }
+    
+    .desktop-leaderboard h2,
+    #leaderboard-page h2 {
+        font-size: 2.5rem !important;
+        color: #4a148c !important;
+        margin-bottom: 3rem !important;
+        text-align: center !importantock;
+        padding: 1rem;
+        background: linear-gradient(135deg, #4a148c, #7b1fa2);
+        border-radius: 50%;
+        color: white;
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+    }
+    
+    .desktop-stat-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #4a148c;
+        margin-bottom: 0.5rem;
+    }
+    
+    .desktop-stat-label {
+        color: #666;
+        font-size: 1rem;
+    }
+    
+    /* Leaderboard */
+    .desktop-leaderboard {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        margin: 2rem 0;
+    }
+    
+    .desktop-leaderboard h2 {
+        font-size: 2rem;
+        color: #4a148c;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+    
+    .desktop-leaderboard-item {
+        display: flex;
+        align-items: center;
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        background: linear-gradient(145deg, #ffffff, #f8f9fa);
+        transition: transform 0.3s;
+    }
+    
+    .desktop-leaderboard-item:hover {
+        transform: translateX(10px);
+        box-shadow: 0 4px 15px rgba(74, 20, 140, 0.1);
+    }
+    
+    .desktop-rank {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #4a148c;
+        width: 50px;
+        text-align: center;
+    }
+    
+    .desktop-rank.gold { color: #ffd700; }
+    .desktop-rank.silver { color: #c0c0c0; }
+    .desktop-rank.bronze { color: #cd7f32; }
+    
+    /* Footer */
+    .desktop-footer {
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        color: white;
+        padding: 3rem 0 2rem;
+       Game Over ve Result Ekranları */
+    #game-over-screen,
+    .result-modal,
+    .result-overlay {
+        max-width: 900px !important;
+        margin: 3rem auto !important;
+        padding: 3rem !important;
+    }
+    
+    /* Profile Page */
+    #profile-page,
+    .profile-container {
+        max-width: 1400px !important;
+        margin: 2rem auto !important;
+        padding: 2rem 4rem !important;
+    }
+    
+    /* Responsive Adjustments */
+    @media (min-width: 1600px) {
+        .desktop-header {
+            padding: 0 4rem;
+        }
+        
+        #homepage .menu-grid {
+            grid-template-columns: repeat(4, 1fr) !important;
+        }
+        
+        .categories-grid {
+            grid-template-columns: repeat(5, 1fr) !important;
+        }
+    }
+    
+    @media (max-width: 1400px) {
+        #homepage .menu-grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+        }
+        
+        .categories-grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+        }
+        
+        .desktop-stats {
+            grid-template-columns: repeat(3, 1fr) !important;
+        }
+    }
+    
+    @media (max-width: 1200px) {
+        .desktop-header {
+            padding: 0 2rem;
+        }
+        
+        .desktop-hero h1 {
+            font-size: 3.5rem;
+        }
+        
+        #homepage .menu-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+        
+        .categories-grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+        }
+        
+        #options {
+            grid-template-columns: 1fr !important
+    .desktop-footer-section ul {
+        list-style: none;
+    }
+    
+    .desktop-footer-section a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        display: block;
+        padding: 0.5rem 0;
+        transition: color 0.3s;
+    }
+    
+    .desktop-footer-section a:hover {
+        color: white;
+    }
+    
+    .desktop-footer-bottom {
+        text-align: center;
+        padding-top: 2rem;
+        margin-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.6);
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 1400px) {
+        .container {
+            max-width: 1200px !important;
+        }
+    }
+    
+    @media (max-width: 1200px) {
+        .desktop-header {
+            padding: 0 2rem;
+        }
+        
+        .desktop-hero h1 {
+            font-size: 3rem;
+        }
+        
+        .desktop-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+    }
+}
+
+/* MOBİL (0-1023px) - Hiçbir değişiklik yapma, aynı kalsın */
+@media (max-width: 1023px) {
+    .desktop-header,
+    .desktop-hero,
+    .desktop-footer {
+        display: none !important;
+    }
+    
+    /* Mobil için tüm desktop class'ları gizle */
+    [class*="desktop-"] {
+        display: none !important;
+    }
+}
