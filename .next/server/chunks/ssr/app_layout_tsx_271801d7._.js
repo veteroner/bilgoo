@@ -1,0 +1,3 @@
+module.exports=[33290,a=>{"use strict";var b=a.i(7997);function c({children:a}){return(0,b.jsxs)("html",{lang:"tr",children:[(0,b.jsxs)("head",{children:[(0,b.jsx)("link",{rel:"icon",href:"/favicon.ico"}),(0,b.jsx)("meta",{name:"theme-color",content:"#667eea"})]}),(0,b.jsx)("body",{className:"min-h-screen bg-gray-50",children:a})]})}a.s(["default",()=>c,"metadata",0,{title:"Bilgoo - Türkiye'nin En Eğlenceli Quiz Oyunu",description:"Ücretsiz Türkçe bilgi yarışması! Genel kültür, bilim, tarih ve daha fazla kategoride binlerce soru.",keywords:"bilgi yarışması, quiz, test, genel kültür, eğitim, oyun, türkçe, online, ücretsiz"}])}];
+
+//# sourceMappingURL=app_layout_tsx_271801d7._.js.map

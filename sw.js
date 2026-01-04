@@ -1,19 +1,12 @@
-const CACHE_NAME = 'quiz-oyunu-v1.5.1';
+// Cache versiyonu - her deploy'da otomatik güncellenir
+const CACHE_VERSION = Date.now();
+const CACHE_NAME = `quiz-oyunu-v${CACHE_VERSION}`;
+
+// Sadece kritik dosyaları cache'le, diğerleri network-first olsun
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/script.js',
   '/manifest.json',
-  '/sw.js',
   '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png',
-  '/icons/icon-144x144.png',
-  '/icons/icon-384x384.png',
-  '/icons/shortcut-96x96.png',
-  '/icons/online-96x96.png',
-  // Font awesome ikonları
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css'
+  '/icons/icon-512x512.png'
 ];
 
 // Service Worker yükleme
@@ -79,14 +72,42 @@ function isAdService(url) {
   return adDomains.some(domain => url.includes(domain));
 }
 
-// Network istekleri yakalama
+// Network-First strateji: Her zaman güncel dosyaları al
 self.addEventListener('fetch', event => {
   // Sadece GET isteklerini yakala
   if (event.request.method !== 'GET') {
     return;
   }
   
-  // Google AdSense ve reklam istekleri için Service Worker'ı araya sokma
+  // Reklam istekleri için bypass (cache'leme)
+  if (isAdService(event.request.url)) {
+    return; // Reklam isteklerini service worker bypass et
+  }
+  
+  // HTML, CSS, JS dosyaları için NETWORK-FIRST strateji
+  if (event.request.url.includes('.html') || 
+      event.request.url.includes('.css') || 
+      event.request.url.includes('.js') ||
+      event.request.url.includes('/src/')) {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          // Başarılı network yanıtı - cache'e kaydet
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, responseToCache);
+          });
+          return response;
+        })
+        .catch(() => {
+          // Network başarısız - cache'den dene
+          return caches.match(event.request);
+        })
+    );
+    return;
+  }
+  
+  // Diğer istekler için normal davran
   const adDomains = [
     'googlesyndication.com',
     'googleadservices.com', 

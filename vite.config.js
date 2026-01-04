@@ -8,6 +8,8 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    // Cache busting için otomatik hash ekle
+    assetsInlineLimit: 0,
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'public/index.html'),
@@ -15,6 +17,12 @@ export default defineConfig({
         settings: resolve(__dirname, 'public/settings.html'),
         about: resolve(__dirname, 'public/about.html'),
         contact: resolve(__dirname, 'public/contact.html')
+      },
+      output: {
+        // Her build'de benzersiz dosya adları (cache busting)
+        entryFileNames: 'assets/[name].[hash].js',
+        chunkFileNames: 'assets/[name].[hash].js',
+        assetFileNames: 'assets/[name].[hash].[ext]'
       }
     }
   },

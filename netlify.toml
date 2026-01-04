@@ -51,28 +51,42 @@
   status = 200
 
 [[headers]]
-  # Cache static assets
+  # HTML dosyaları - HİÇ cache'leme
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Pragma = "no-cache"
+    Expires = "0"
+
+[[headers]]
+  # JS ve CSS - Kısa cache, her zaman revalidate
   for = "/*.js"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
-  # Cache CSS files
+  # CSS files - Kısa cache
   for = "/*.css"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
-  # Cache images
+  # Src klasörü - Asla cache'leme (development)
+  for = "/src/*"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  # Images - Orta süre cache
   for = "/images/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=86400"
 
 [[headers]]
-  # Cache icons
+  # Icons - Orta süre cache
   for = "/icons/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=86400"
 
 [[headers]]
   # Security headers for all pages

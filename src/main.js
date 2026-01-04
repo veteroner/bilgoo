@@ -7,6 +7,7 @@
 import './styles/web-theme.css';
 import './styles/web-layout.css';
 import './styles/desktop-layout.css';
+import './styles/desktop-web.css';
 import './styles/responsive.css';
 
 // Core modül testlerini çalıştır
@@ -14,6 +15,12 @@ import './core/test-core-modules.js';
 
 // Layout Manager'ı import et
 import { LayoutManager } from './ui/layouts/LayoutManager.js';
+
+// Desktop Header'ı import et
+import { DesktopHeader } from './ui/desktop/DesktopHeader.js';
+
+// Desktop Homepage'i import et
+import { DesktopHomepage } from './ui/desktop/DesktopHomepage.js';
 
 // Platform tespiti
 const isMobile = window.innerWidth < 1024;
@@ -37,6 +44,20 @@ if (!isMobile) {
     const mobileElements = document.querySelectorAll('#main-menu, .main-menu, .bottom-nav, .mobile-header');
     mobileElements.forEach(el => {
         if (el) el.style.display = 'none';
+    });
+    
+    // Desktop header'ı başlat
+    document.addEventListener('DOMContentLoaded', () => {
+        const desktopHeader = new DesktopHeader();
+        window.__BILGOO_DESKTOP_HEADER__ = desktopHeader;
+        console.log('✅ Desktop Header başlatıldı');
+        
+        // Ana sayfadaysa homepage'i de başlat
+        if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+            const desktopHomepage = new DesktopHomepage();
+            window.__BILGOO_DESKTOP_HOMEPAGE__ = desktopHomepage;
+            console.log('✅ Desktop Homepage başlatıldı');
+        }
     });
 }
 
