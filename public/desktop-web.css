@@ -1,7 +1,585 @@
-/* MASAÜSTÜ WEB SÜRÜMÜ - Modern Web Sitesi Görünümü */
+/* MASAÜSTÜ WEB SÜRÜMÜ - Modern Clean Design */
 /* Sadece masaüstü (1024px+) için geçerli */
 
 @media (min-width: 1024px) {
+    /* Body düzenlemesi - Beyaz temiz arka plan */
+    body {
+        display: block;
+        padding: 0;
+        margin: 0;
+        background: #f5f7fa;
+    }
+    
+    body::before,
+    body::after {
+        display: none;
+    }
+    
+    /* Desktop Header - Clean & Minimal */
+    .desktop-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 80px;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 4rem;
+    }
+    
+    .desktop-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #8b2fc9;
+        text-decoration: none;
+        transition: opacity 0.3s;
+    }
+    
+    .desktop-logo:hover {
+        opacity: 0.8;
+    }
+    
+    .desktop-logo img {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+    }
+    
+    .desktop-nav {
+        display: flex;
+        align-items: center;
+        gap: 3rem;
+        flex: 1;
+        justify-content: center;
+    }
+    
+    .desktop-nav-link {
+        color: #2d3748;
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 500;
+        padding: 0.5rem 0;
+        transition: all 0.3s;
+        position: relative;
+    }
+    
+    .desktop-nav-link:hover {
+        color: #8b2fc9;
+    }
+    
+    .desktop-nav-link i {
+        display: none;
+    }
+    
+    .desktop-nav-link.active {
+        color: #8b2fc9;
+    }
+    
+    .desktop-nav-link.active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #8b2fc9;
+    }
+    
+    .desktop-user-menu {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .desktop-user-menu button,
+    .desktop-user-menu .btn {
+        background: linear-gradient(135deg, #8b2fc9 0%, #b24bf3 100%);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    
+    .desktop-user-menu button:hover,
+    .desktop-user-menu .btn:hover {
+        transform: translateY(-2px);
+    }
+    
+    .desktop-user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #8b2fc9, #b24bf3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.3s;
+    }
+    
+    .desktop-user-avatar:hover {
+        transform: scale(1.1);
+    }
+    
+    /* Main Content Area */
+    .desktop-main {
+        margin-top: 80px;
+        min-height: calc(100vh - 80px);
+        background: #f5f7fa;
+        width: 100%;
+    }
+    
+    /* Container - geniş ve merkezi */
+    .container {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+    }
+    
+    /* Hero Section - Sol taraf metin, sağ taraf demo */
+    #homepage {
+        padding: 0 !important;
+        background: linear-gradient(135deg, #f5f0ff 0%, #fff5f8 100%);
+    }
+    
+    .desktop-hero-wrapper {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 6rem 4rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+    }
+    
+    .desktop-hero-left h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+        color: #1a202c;
+    }
+    
+    .desktop-hero-left h1 .highlight {
+        background: linear-gradient(135deg, #8b2fc9, #b24bf3);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .desktop-hero-left p {
+        font-size: 1.2rem;
+        color: #4a5568;
+        line-height: 1.8;
+        margin-bottom: 2.5rem;
+    }
+    
+    .desktop-hero-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 3rem;
+    }
+    
+    .desktop-hero-buttons .btn-primary {
+        background: linear-gradient(135deg, #8b2fc9 0%, #b24bf3 100%);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+    
+    .desktop-hero-buttons .btn-secondary {
+        background: white;
+        color: #8b2fc9;
+        border: 2px solid #e9ecef;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+    
+    .desktop-hero-buttons button:hover,
+    .desktop-hero-buttons a:hover {
+        transform: translateY(-3px);
+    }
+    
+    .desktop-hero-stats {
+        display: flex;
+        gap: 3rem;
+    }
+    
+    .desktop-hero-stat h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #8b2fc9;
+        margin-bottom: 0.3rem;
+    }
+    
+    .desktop-hero-stat p {
+        font-size: 0.95rem;
+        color: #718096;
+        margin: 0;
+    }
+    
+    /* Hero Right - Demo Quiz Card */
+    .desktop-hero-right {
+        position: relative;
+    }
+    
+    .desktop-demo-card {
+        background: white;
+        border-radius: 24px;
+        padding: 2rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+    
+    .desktop-demo-badge {
+        position: absolute;
+        top: -12px;
+        left: 2rem;
+        background: linear-gradient(135deg, #e91e63, #f06292);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+    
+    .desktop-demo-stats {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-top: 1rem;
+    }
+    
+    .desktop-demo-question {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #1a202c;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+    
+    .desktop-demo-options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .desktop-demo-option {
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 1rem 1.2rem;
+        font-size: 1rem;
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+    
+    .desktop-demo-option:hover {
+        border-color: #8b2fc9;
+        background: #f5f0ff;
+    }
+    
+    .desktop-demo-option.correct {
+        background: #d4edda;
+        border-color: #28a745;
+    }
+    
+    /* Categories Section */
+    .desktop-categories-section {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 5rem 4rem;
+    }
+    
+    .desktop-categories-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    
+    .desktop-categories-header h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #1a202c;
+        margin-bottom: 0.8rem;
+    }
+    
+    .desktop-categories-header p {
+        font-size: 1.1rem;
+        color: #718096;
+    }
+    
+    /* Categories Grid - 4 sütun */
+    #categories-page,
+    .desktop-categories-grid {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 1.5rem !important;
+        padding: 0 !important;
+    }
+    
+    .category-card,
+    .category-btn {
+        background: white !important;
+        border-radius: 20px !important;
+        padding: 2rem 1.5rem !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06) !important;
+        transition: all 0.3s !important;
+        cursor: pointer !important;
+        border: 2px solid transparent !important;
+        text-align: center !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 1rem !important;
+    }
+    
+    .category-card:hover,
+    .category-btn:hover {
+        transform: translateY(-8px) !important;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12) !important;
+    }
+    
+    .category-icon {
+        font-size: 3rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    .category-name,
+    .category-card h3 {
+        font-size: 1.3rem !important;
+        font-weight: 700 !important;
+        color: #1a202c !important;
+        margin: 0.5rem 0 !important;
+    }
+    
+    .category-stats {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin: 1rem 0;
+    }
+    
+    .category-stat {
+        text-align: center;
+    }
+    
+    .category-stat-label {
+        font-size: 0.75rem;
+        color: #a0aec0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: block;
+        margin-bottom: 0.3rem;
+    }
+    
+    .category-stat-value {
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+    
+    .category-stat-value.purple {
+        color: #8b2fc9;
+    }
+    
+    .category-stat-value.green {
+        color: #28a745;
+    }
+    
+    .category-start-btn {
+        width: 100%;
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: white;
+        cursor: pointer;
+        transition: transform 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .category-start-btn:hover {
+        transform: scale(1.05);
+    }
+    
+    /* Kategori renkleri */
+    .category-card[data-category="GenelKültür"] .category-start-btn,
+    .category-btn[data-category="GenelKültür"] .category-start-btn {
+        background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    }
+    
+    .category-card[data-category="Tarih"] .category-start-btn,
+    .category-btn[data-category="Tarih"] .category-start-btn {
+        background: linear-gradient(135deg, #ef4444, #f87171);
+    }
+    
+    .category-card[data-category="Coğrafya"] .category-start-btn,
+    .category-btn[data-category="Coğrafya"] .category-start-btn {
+        background: linear-gradient(135deg, #10b981, #34d399);
+    }
+    
+    .category-card[data-category="Bilim"] .category-start-btn,
+    .category-btn[data-category="Bilim"] .category-start-btn {
+        background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+    }
+    
+    .category-card[data-category="Edebiyat"] .category-start-btn,
+    .category-btn[data-category="Edebiyat"] .category-start-btn {
+        background: linear-gradient(135deg, #ec4899, #f472b6);
+    }
+    
+    .category-card[data-category="Spor"] .category-start-btn,
+    .category-btn[data-category="Spor"] .category-start-btn {
+        background: linear-gradient(135deg, #f97316, #fb923c);
+    }
+    
+    .category-card[data-category="Müzik"] .category-start-btn,
+    .category-btn[data-category="Müzik"] .category-start-btn {
+        background: linear-gradient(135deg, #06b6d4, #22d3ee);
+    }
+    
+    .category-card[data-category="Teknoloji"] .category-start-btn,
+    .category-btn[data-category="Teknoloji"] .category-start-btn {
+        background: linear-gradient(135deg, #6366f1, #818cf8);
+    }
+    
+    /* Quiz Container */
+    #quiz-container {
+        max-width: 900px !important;
+        margin: 3rem auto !important;
+        background: white !important;
+        border-radius: 24px !important;
+        padding: 3rem !important;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08) !important;
+    }
+    
+    /* Mobil öğeleri gizle */
+    .hamburger-toggle,
+    .hamburger-menu,
+    .menu-overlay,
+    .bottom-nav {
+        display: none !important;
+    }
+    
+    /* Footer */
+    .desktop-footer {
+        background: #1a202c;
+        color: white;
+        padding: 4rem 0 2rem;
+        margin-top: 6rem;
+    }
+    
+    .desktop-footer-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 4rem;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 3rem;
+    }
+    
+    .desktop-footer-section h3 {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+        color: white;
+    }
+    
+    .desktop-footer-section ul {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .desktop-footer-section a {
+        color: #a0aec0;
+        text-decoration: none;
+        display: block;
+        padding: 0.5rem 0;
+        transition: color 0.3s;
+    }
+    
+    .desktop-footer-section a:hover {
+        color: white;
+    }
+    
+    .desktop-footer-bottom {
+        text-align: center;
+        padding-top: 2rem;
+        margin-top: 3rem;
+        border-top: 1px solid #2d3748;
+        color: #718096;
+    }
+    
+    /* Responsive */
+    @media (max-width: 1400px) {
+        .desktop-categories-grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+        }
+    }
+    
+    @media (max-width: 1200px) {
+        .desktop-hero-wrapper {
+            grid-template-columns: 1fr;
+        }
+        
+        .desktop-categories-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+    }
+}
+
+/* MOBİL (0-1023px) - Aynı kalsın */
+@media (max-width: 1023px) {
+    .desktop-header,
+    .desktop-hero,
+    .desktop-footer,
+    .desktop-hero-wrapper,
+    .desktop-demo-card,
+    .desktop-categories-section {
+        display: none !important;
+    }
+    
+    [class*="desktop-"] {
+        display: none !important;
+    }
+}
     /* Body düzenlemesi - Web sitesi gibi */
     body {
         display: block;

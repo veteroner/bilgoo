@@ -50,6 +50,7 @@ export default defineConfig({
         { src: 'public/style.css', dest: 'dist/style.css' },
         { src: 'public/script.js', dest: 'dist/script.js' },
         { src: 'public/desktop-web.css', dest: 'dist/desktop-web.css' },
+        { src: 'public/desktop-layout.js', dest: 'dist/desktop-layout.js' },
         { src: 'statistics.css', dest: 'dist/statistics.css' },
         { src: 'custom-question-styles.css', dest: 'dist/custom-question-styles.css' },
         { src: 'admin-pending-styles.css', dest: 'dist/admin-pending-styles.css' },
