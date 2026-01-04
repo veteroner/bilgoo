@@ -331,6 +331,81 @@
     .mobile-only {
         display: none !important;
     }
+    
+    /* Desktop Menu Grid Layout */
+    .main-menu {
+        max-width: 1200px;
+        margin: 40px auto !important;
+        padding: 40px !important;
+    }
+    
+    .menu-buttons {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 25px !important;
+        padding: 0 !important;
+    }
+    
+    .menu-button {
+        aspect-ratio: 1 / 1 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        padding: 30px !important;
+        font-size: 18px !important;
+        font-weight: 600 !important;
+        border-radius: 20px !important;
+        background: white !important;
+        color: #667eea !important;
+        border: 3px solid transparent !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        cursor: pointer !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+    
+    .menu-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 0;
+    }
+    
+    .menu-button:hover::before {
+        opacity: 1;
+    }
+    
+    .menu-button:hover {
+        transform: translateY(-8px) scale(1.02) !important;
+        border-color: #667eea !important;
+        color: white !important;
+        box-shadow: 0 12px 40px rgba(102, 126, 234, 0.3) !important;
+    }
+    
+    .menu-button:active {
+        transform: translateY(-4px) scale(0.98) !important;
+    }
+    
+    .menu-button span,
+    .menu-button i {
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* 2 kolonlu düzen için responsive */
+    @media (max-width: 1200px) and (min-width: 1024px) {
+        .menu-buttons {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+    }
 }
 
 /* Tablet responsive */
