@@ -179,9 +179,9 @@
     
     .desktop-hero-left h1 .highlight {
         background: linear-gradient(135deg, #8b2fc9, #b24bf3);
+        background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        background-clip: text;
     }
     
     .desktop-hero-left p {
